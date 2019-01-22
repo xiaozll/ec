@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>图片预览图</title>
+    <link rel="stylesheet" href="css/viewer.min.css">
+    <style>
+        * { margin: 0; padding: 0;}
+        #dowebok { width: 800px; margin: 0 auto; font-size: 0;}
+        #dowebok li {  display: inline-block;width: 50px;height: 50px; margin-left: 1%; padding-top: 1%;}
+        /*#dowebok li img { width: 200%;}*/
+    </style>
+</head>
+<body>
+<ul id="dowebok">
+    <li th:each="img : ${imgurls}"><img th:id="${img}"  th:url="${img}" th:src="${img}" width="1px" height="1px"></li>
+</ul>
+<script src="js/viewer.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var currentUrl = /*[[${currentUrl}]]*/
+    /*]]>*/
+    var viewer = new Viewer(document.getElementById('dowebok'), {
+        url: 'src',
+       navbar:false
+    });
+    document.getElementById(currentUrl).click();
+</script>
+</body>
+
+</html>

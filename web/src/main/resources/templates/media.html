@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>多媒体文件预览</title>
+    <link rel="stylesheet" href="webjars/plyr/plyr.css">
+</head>
+<style>
+    body{background-color: #262626}
+    .m{ margin-left: auto; margin-right: auto; width:640px; margin-top: 100px; }
+</style>
+<body>
+<div class="m">
+    <video controls>
+        <source th:src="@{__${mediaUrl}__}">
+    </video>
+</div>
+<script src="webjars/plyr/plyr.js"></script>
+<script>
+    plyr.setup();
+</script>
+</body>
+
+</html>

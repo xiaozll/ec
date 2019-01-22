@@ -36,7 +36,7 @@ public class ConverterManager {
         configuration.setOfficeHome(officeHome);
         configuration.setPortNumber(8100);
         officeManager = configuration.buildOfficeManager();
-        officeManager.start();
+//        officeManager.start();
         // 设置任务执行超时为5分钟
         // configuration.setTaskExecutionTimeout(1000 * 60 * 5L);//
         // 设置任务队列超时为24小时

@@ -23,6 +23,7 @@ import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +90,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-保存资源",logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Resource resource,String _parentId)  {
         Result result = null;

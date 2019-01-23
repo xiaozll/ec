@@ -33,6 +33,7 @@ import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -197,7 +198,7 @@ public class VersionLogController extends SimpleController {
      */
     @RequiresPermissions("sys:model:edit")
     @Logging(value = "版本更新-保存版本", logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") VersionLog model) {
         Result result;

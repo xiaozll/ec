@@ -73,6 +73,11 @@ public class LoginController extends SimpleController {
     @RequiresUser(required = false)
     @RequestMapping(value = {"welcome", ""})
     public ModelAndView welcome() throws Exception {
+        try {
+            userService.aop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);

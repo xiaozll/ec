@@ -29,6 +29,7 @@ import com.eryansky.modules.sys.service.*;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -115,8 +116,8 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-保存角色",logType = LogType.access)
-    @RequestMapping(value = {"save"})
-    @ResponseBody
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ResponseBody()
     public Result save(@ModelAttribute("model") Role role) {
         Result result;
         // 编码重复校验
@@ -176,7 +177,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-角色资源",logType = LogType.access)
-    @RequestMapping(value = {"updateRoleResource"})
+    @RequestMapping(value = {"updateRoleResource"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateRoleResource(@RequestParam(value = "resourceIds", required = false) Set<String> resourceIds,
                                      @ModelAttribute("model") Role role) {

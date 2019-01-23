@@ -16,6 +16,7 @@ import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSessionEvent;
@@ -48,16 +49,16 @@ public class SystemInitListener extends DefaultSystemInitListener{
 		clearTempDir();
 
 		//WebService发布
-		if(StringUtils.isNotBlank(AppConstants.getWebServiceUrl())){
-			logger.info("WebService发布...");
-			try {
-
-				Endpoint.publish(AppConstants.getWebServiceUrl(), Static.apiWebService);
-			} catch (Exception e) {
-				logger.error("WebService发布失败，"+e.getMessage(),e);
-			}
-			logger.info("WebService发布成功，发布地址：{}",AppConstants.getWebServiceUrl());
-		}
+//		if(StringUtils.isNotBlank(AppConstants.getWebServiceUrl())){
+//			logger.info("WebService发布...");
+//			try {
+//
+//				Endpoint.publish(AppConstants.getWebServiceUrl(), Static.apiWebService);
+//			} catch (Exception e) {
+//				logger.error("WebService发布失败，"+e.getMessage(),e);
+//			}
+//			logger.info("WebService发布成功，发布地址：{}",AppConstants.getWebServiceUrl());
+//		}
 	}
 
 	/**

@@ -16,6 +16,7 @@ import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Config;
 import com.eryansky.modules.sys.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +70,7 @@ public class ConfigController extends SimpleController {
 
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-保存配置",logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute Config model) {
         Result result;

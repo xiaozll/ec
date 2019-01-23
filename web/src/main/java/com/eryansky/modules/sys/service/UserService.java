@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.dao.UserDao;
 import com.eryansky.core.orm.mybatis.service.CrudService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.*;
@@ -42,6 +43,14 @@ public class UserService extends CrudService<UserDao, User> {
 
     @Autowired
     private UserDao dao;
+
+//    @Transactional
+    public void aop(){
+        boolean flag =true;
+        if(flag){
+            throw new ServiceException("aop");
+        }
+    }
 
     /**
      * 清空缓存 非Manager调用
@@ -72,10 +81,6 @@ public class UserService extends CrudService<UserDao, User> {
                 +","+CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
                 +","+CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 +","+CacheConstants.ORGAN_USER_TREE_CACHE);
-        boolean flag = true;
-        if(flag){
-            throw new SystemException("1");
-        }
         super.save(entity);
         //保存用户机构信息
 //        List<String> oldOrganIds = organService.findOrganIdsByUserId(entity.getId());

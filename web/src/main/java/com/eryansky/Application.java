@@ -1,14 +1,19 @@
 package com.eryansky;
 
-import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableScheduling
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
+//@EnableScheduling
 @ComponentScan(value = {"com.eryansky.j2cache.autoconfigure",
         "com.eryansky.common.spring",
         "com.eryansky.configure",
@@ -23,11 +28,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "com.eryansky.modules.notice.service",
         "com.eryansky.modules.notice.web"
 })
-// mapper 接口类扫描包配置
-@MapperScan(value = {"com.eryansky.modules.sys.dao",
-        "com.eryansky.modules.disk.dao",
-        "com.eryansky.modules.notice.dao"})
-@SpringBootApplication
+@EnableTransactionManagement
+@SpringBootApplication(exclude={MybatisAutoConfiguration.class})
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
@@ -39,4 +41,8 @@ public class Application extends SpringBootServletInitializer {
         return builder.sources(Application.class);
     }
 
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+    }
 }

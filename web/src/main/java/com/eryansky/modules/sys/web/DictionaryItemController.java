@@ -22,6 +22,7 @@ import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,7 +77,7 @@ public class DictionaryItemController extends SimpleController {
      */
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-保存字典项",logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute DictionaryItem dictionaryItem, String dictionaryId, String parentId) {
         Result result = null;

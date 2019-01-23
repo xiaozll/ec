@@ -19,7 +19,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import java.util.ArrayList;
@@ -38,13 +37,11 @@ public class MvcConfig implements WebMvcConfigurer {
    @Override
    public void addResourceHandlers(ResourceHandlerRegistry registry) {
       registry.addResourceHandler(
-              "/common/**",
               "/webjars/**",
               "/img/**",
               "/css/**",
               "/js/**")
               .addResourceLocations(
-                      "classpath:/webapp/",
                       "classpath:/webjars/",
                       "classpath:/META-INF/resources/webjars/",
                       "classpath:/static/img/",
@@ -95,6 +92,7 @@ public class MvcConfig implements WebMvcConfigurer {
       commonsMultipartResolver.setMaxUploadSize(Long.valueOf(AppConstants.getAppConfig("web.maxUploadSize","-1")));
       return commonsMultipartResolver;
    }
+
 
    @Bean
    public IFileManager getFileManager() {

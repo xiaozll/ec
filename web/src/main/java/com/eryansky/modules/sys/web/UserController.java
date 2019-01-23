@@ -43,6 +43,7 @@ import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.SelectType;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -156,7 +157,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-保存用户", logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") User user) {
         Result result = null;
@@ -225,7 +226,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @RequestMapping(value = {"updateUserPassword"})
+    @RequestMapping(value = {"updateUserPassword"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "id", required = true) String id,
                                      @RequestParam(value = "upateOperate", required = true) String upateOperate,
@@ -291,7 +292,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @RequestMapping(value = {"_updateUserPassword"})
+    @RequestMapping(value = {"_updateUserPassword"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "userIds", required = false) List<String> userIds,
                                      @RequestParam(value = "newPassword", required = true) String newPassword) throws Exception {
@@ -317,7 +318,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户角色", logType = LogType.access)
-    @RequestMapping(value = {"updateUserRole"})
+    @RequestMapping(value = {"updateUserRole"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserRole(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "roleIds", required = false) Set<String> roleIds) throws Exception {
@@ -365,7 +366,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户机构", logType = LogType.access)
-    @RequestMapping(value = {"updateUserOrgan"})
+    @RequestMapping(value = {"updateUserOrgan"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserOrgan(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                   @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) throws Exception {
@@ -393,7 +394,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户岗位", logType = LogType.access)
-    @RequestMapping(value = {"updateUserPost"})
+    @RequestMapping(value = {"updateUserPost"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserPost(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "postIds", required = false) Set<String> postIds) {
@@ -429,7 +430,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户资源", logType = LogType.access)
-    @RequestMapping(value = {"updateUserResource"})
+    @RequestMapping(value = {"updateUserResource"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserResource(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                      @RequestParam(value = "resourceIds", required = false) Set<String> resourceIds) throws Exception {
@@ -596,7 +597,7 @@ public class UserController extends SimpleController {
      * 保存用户信息.
      */
     @Logging(value = "用户管理-保存信息", logType = LogType.access)
-    @RequestMapping("saveUserinfo")
+    @RequestMapping(value = "saveUserinfo",produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result saveUserinfo(@ModelAttribute("model") User model) throws Exception {
         Result result = null;

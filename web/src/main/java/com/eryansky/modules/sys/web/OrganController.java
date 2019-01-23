@@ -33,6 +33,7 @@ import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -169,7 +170,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-保存机构",logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Organ organ,String _parentId) {
         Result result = null;
@@ -236,7 +237,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-机构用户",logType = LogType.access)
-    @RequestMapping(value = {"updateOrganUser"})
+    @RequestMapping(value = {"updateOrganUser"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateOrganUser(@ModelAttribute("model") Organ organ) throws Exception {
         Result result;

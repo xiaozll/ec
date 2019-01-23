@@ -26,12 +26,14 @@ import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -101,7 +103,7 @@ public class PostController extends SimpleController{
 
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-保存岗位",logType = LogType.access)
-    @RequestMapping(value = {"save"})
+    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model")Post model,String organId) {
         Result result;
@@ -155,7 +157,7 @@ public class PostController extends SimpleController{
      */
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-岗位用户",logType = LogType.access)
-    @RequestMapping(value = {"updatePostUser"})
+    @RequestMapping(value = {"updatePostUser"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updatePostUser(@ModelAttribute("model") Post model,
                                  @RequestParam(value = "userIds", required = false)Set<String> userIds) throws Exception {
@@ -175,7 +177,7 @@ public class PostController extends SimpleController{
         List<User> users = userService.findUsersByPostId(postId);
         Datagrid<User> dg;
         if(Collections3.isEmpty(users)){
-           dg = new Datagrid(0, Lists.newArrayList());
+           dg = new Datagrid(0, Collections.emptyList());
         }else{
            dg = new Datagrid<User>(users.size(), users);
         }

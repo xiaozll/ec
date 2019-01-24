@@ -2,10 +2,10 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../config/ehcache.xsd">
 
 
-    <diskStore path="java.io.tmpdir/essm/ehcache"/>
+    <diskStore path="java.io.tmpdir/ec/ehcache"/>
 
     <!-- 默认缓存配置. -->
-    <defaultCache maxEntriesLocalHeap="1000" eternal="false" overflowToDisk="true" timeToIdleSeconds="3600" timeToLiveSeconds="3600" >
+    <defaultCache maxEntriesLocalHeap="10000" eternal="false" overflowToDisk="true" timeToIdleSeconds="3600" timeToLiveSeconds="3600" >
     </defaultCache>
 
     <!--
@@ -18,7 +18,7 @@
     </cache>
 
     <!--自定义登录用户Session信息-->
-    <cache name="sessionCache" maxEntriesLocalHeap="10000" eternal="false" overflowToDisk="true" timeToLiveSeconds="1800" timeToIdleSeconds="1800"
+    <cache name="sessionCache" maxEntriesLocalHeap="100000" eternal="false" overflowToDisk="true" timeToLiveSeconds="1800" timeToIdleSeconds="1800"
            diskExpiryThreadIntervalSeconds="120">
     </cache>
 

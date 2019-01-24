@@ -41,7 +41,7 @@ public class QuartJobSchedulingListener implements ApplicationListener<ContextRe
     private void loadCronTriggers(ApplicationContext applicationContext, Scheduler scheduler) {
         Map<String, Object> quartzJobBeans = applicationContext.getBeansWithAnnotation(QuartzJob.class);
         Set<String> beanNames = quartzJobBeans.keySet();
-        List<CronTrigger> cronTriggerBeans = new ArrayList<CronTrigger>();
+//        List<CronTrigger> cronTriggerBeans = new ArrayList<CronTrigger>();
         for (String beanName : beanNames) {
             Object object = quartzJobBeans.get(beanName);
             try {

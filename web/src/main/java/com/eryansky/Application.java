@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
         "com.eryansky.modules.fop.task",
         "com.eryansky.modules.fop.manager",
         "com.eryansky.modules.fop.service",
+        "com.eryansky.modules.sys.quartz",
         "com.eryansky.modules.sys.service",
         "com.eryansky.modules.sys.web",
         "com.eryansky.modules.disk.service",

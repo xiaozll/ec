@@ -24,8 +24,6 @@
         <db2.driver.version>10.1</db2.driver.version>
         <druid-version>1.1.10</druid-version>
 
-        <quartz.version>2.2.1</quartz.version>
-
         <poi.version>3.17</poi.version>
         <xwpf.version>2.0.1</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
@@ -85,11 +83,11 @@
             <url>http://www.jfit.com.cn/nexus/content/groups/public</url>
             <!--<url>http://10.36.98.231:8081/nexus/content/groups/public</url>-->
         </repository>
-        <repository>
-            <!-- required for org.hyperic:sigar -->
-            <id>jboss-public-repository-group</id>
-            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-        </repository>
+        <!--<repository>-->
+            <!--&lt;!&ndash; required for org.hyperic:sigar &ndash;&gt;-->
+            <!--<id>jboss-public-repository-group</id>-->
+            <!--<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>-->
+        <!--</repository>-->
     </repositories>
     <dependencies>
         <dependency>
@@ -173,27 +171,24 @@
             <artifactId>sitemesh</artifactId>
             <version>${sitemesh.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-transcoder</artifactId>
-            <version>1.7</version>
-            <!--<exclusions>-->
-            <!--<exclusion>-->
-            <!--<groupId>org.apache.xmlgraphics</groupId>-->
-            <!--<artifactId>fop</artifactId>-->
-            <!--</exclusion>-->
-            <!--</exclusions>-->
-        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/fop -->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-ext</artifactId>
-            <version>1.7</version>
+            <artifactId>fop</artifactId>
+            <version>2.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-codec</artifactId>
-            <version>1.7</version>
+            <artifactId>batik-all</artifactId>
+            <version>1.10</version>
         </dependency>
 
         <dependency>
@@ -223,22 +218,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.quartz-scheduler</groupId>-->
-            <!--<artifactId>quartz</artifactId>-->
-            <!--<version>${quartz.version}</version>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>c3p0</groupId>-->
-                    <!--<artifactId>c3p0</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.quartz-scheduler</groupId>-->
-            <!--<artifactId>quartz-jobs</artifactId>-->
-            <!--<version>${quartz.version}</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.ant</groupId>

@@ -25,7 +25,8 @@ import java.util.UUID;
  * @author yudian-it
  * @date 2017/12/1
  */
-@RestController
+@RestController()
+@RequestMapping(value = "/fop")
 public class FileController {
     @Value("${file.dir}")
     String fileDir;

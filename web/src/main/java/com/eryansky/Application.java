@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.quartz.QuartzAutoConfiguration;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,21 +14,30 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-//@EnableScheduling
+//@ComponentScan(value = {"com.eryansky.j2cache.autoconfigure",
+//        "com.eryansky.common.spring",
+//        "com.eryansky.configure",
+////        "com.eryansky.modules.fop.web",
+//        "com.eryansky.modules.fop.task",
+//        "com.eryansky.modules.fop.manager",
+//        "com.eryansky.modules.fop.service",
+//        "com.eryansky.modules.sys.quartz",
+//        "com.eryansky.modules.sys.service",
+//        "com.eryansky.modules.sys.web",
+//        "com.eryansky.modules.disk.service",
+//        "com.eryansky.modules.disk.web",
+//        "com.eryansky.modules.notice.service",
+//        "com.eryansky.modules.notice.web"
+//})
 @ComponentScan(value = {"com.eryansky.j2cache.autoconfigure",
         "com.eryansky.common.spring",
         "com.eryansky.configure",
 //        "com.eryansky.modules.fop.web",
-        "com.eryansky.modules.fop.task",
-        "com.eryansky.modules.fop.manager",
-        "com.eryansky.modules.fop.service",
-        "com.eryansky.modules.sys.quartz",
-        "com.eryansky.modules.sys.service",
-        "com.eryansky.modules.sys.web",
-        "com.eryansky.modules.disk.service",
-        "com.eryansky.modules.disk.web",
-        "com.eryansky.modules.notice.service",
-        "com.eryansky.modules.notice.web"
+        "com.eryansky.modules.**.task",
+        "com.eryansky.modules.**.manager",
+        "com.eryansky.modules.**.service",
+        "com.eryansky.modules.**.quartz",
+        "com.eryansky.modules.**.web"
 })
 @EnableTransactionManagement
 @SpringBootApplication(exclude={MybatisAutoConfiguration.class})

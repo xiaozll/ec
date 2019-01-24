@@ -32,7 +32,8 @@ import java.util.List;
  * @author yudian-it
  */
 @Api(value = "OnlinePreview相关api",description = "OnlinePreview相关API",tags = "OnlinePreview")
-@Controller
+@Controller()
+@RequestMapping(value = "/fop")
 public class OnlinePreviewController {
 
     @Autowired

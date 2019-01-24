@@ -10,16 +10,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author yudian-it
  * @date 2017/12/27
  */
-@Controller
-public class IndexController {
+@Controller()
+@RequestMapping(value = "/fop")
+public class FopIndexController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String go2Index() {
         return "index";
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String root() {
-        return "redirect:/index";
+        System.out.println("v");
+        return "redirect:/fop/index";
+    }
+
+    @RequestMapping(value = "fop", method = RequestMethod.GET)
+    public String fop() {
+        System.out.println("fop");
+        return "fop/fop";
     }
 }

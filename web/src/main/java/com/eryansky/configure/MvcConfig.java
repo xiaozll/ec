@@ -7,23 +7,20 @@ import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
 import com.eryansky.modules.disk.extend.IFileManager;
 import com.eryansky.utils.AppConstants;
-import com.eryansky.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -60,7 +57,7 @@ public class MvcConfig implements WebMvcConfigurer {
    public void addInterceptors(InterceptorRegistry registry) {
       registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter)).addPathPatterns("/**").excludePathPatterns("/static/**");
       registry.addInterceptor(new AuthorityInterceptor().setRedirectURL("/jump.jsp")).addPathPatterns("/**")
-              .excludePathPatterns(Arrays.asList(new String[]{"/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**"}));
+              .excludePathPatterns(Arrays.asList(new String[]{"/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**","/fop/**"}));
       registry.addInterceptor(new MobileInterceptor()).addPathPatterns(AppConstants.getMobilePath()+"/*");
    }
 
@@ -99,4 +96,5 @@ public class MvcConfig implements WebMvcConfigurer {
       final IFileManager iFileManager = new DISKManager();
       return iFileManager;
    }
+
 }

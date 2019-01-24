@@ -18,12 +18,6 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 public class ServletListenerConfiguration {
 
 
-//    @Bean
-//    public ServletListenerRegistrationBean<ContextLoaderListener> getContextLoaderListener() {
-//        ServletListenerRegistrationBean<ContextLoaderListener> bean = new ServletListenerRegistrationBean<>(new ContextLoaderListener());
-//        return bean;
-//    }
-
     @Bean
     public ServletListenerRegistrationBean<IntrospectorCleanupListener> getIntrospectorCleanupListener() {
         ServletListenerRegistrationBean<IntrospectorCleanupListener> bean = new ServletListenerRegistrationBean<>(new IntrospectorCleanupListener());

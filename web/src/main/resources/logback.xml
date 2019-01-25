@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
     <logger name="org.springframework" level="warn"/>
     <logger name="com.eryansky" level="info"/>
     <!--<logger name="com.eryansky.modules.sys.dao" level="debug"/>-->
-    <contextName>es</contextName>
+    <contextName>ec</contextName>
     <!-- 记录文件到特定目录 -->
     <property name="log.path" value="logs/app.log" />
 
@@ -37,6 +37,6 @@
     <root level="info">
         <!--<appender-ref ref="stash"/>-->
         <appender-ref ref="console" />
-        <appender-ref ref="file" />
+        <!--<appender-ref ref="file" />-->
     </root>
 </configuration>

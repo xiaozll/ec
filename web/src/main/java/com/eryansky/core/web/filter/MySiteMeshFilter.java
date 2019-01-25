@@ -42,6 +42,10 @@ public class MySiteMeshFilter extends BaseFilter {
     @Override
     public void init() throws ServletException {
         this.filterConfig = config;
+        String configFile = filterConfig.getInitParameter("sitemesh.configfile");
+        if(configFile != null){
+            filterConfig.getServletContext().setInitParameter("sitemesh.configfile", configFile);
+        }
         containerTweaks = new ContainerTweaks();
     }
 

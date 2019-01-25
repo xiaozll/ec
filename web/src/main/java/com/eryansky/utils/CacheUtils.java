@@ -8,6 +8,7 @@ package com.eryansky.utils;
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.CacheObject;
+import com.eryansky.j2cache.J2Cache;
 import com.eryansky.listener.SystemInitListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,8 @@ public class CacheUtils {
 	 * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
 	 */
 	private static final class Static {
-		private static CacheChannel cacheChannel = SpringContextHolder.getBean(CacheChannel.class);
+		private static CacheChannel cacheChannel = J2Cache.getChannel();
+//		private static CacheChannel cacheChannel = SpringContextHolder.getBean(CacheChannel.class);
 	}
 
 	public static <T> T get(String key) {

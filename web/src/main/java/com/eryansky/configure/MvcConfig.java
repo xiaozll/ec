@@ -25,8 +25,6 @@ import java.util.*;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-   @Value("${file.dir}")
-   String fileDir;
 
    @Autowired
    private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
@@ -39,12 +37,12 @@ public class MvcConfig implements WebMvcConfigurer {
               "/css/**",
               "/js/**")
               .addResourceLocations(
+//                      "classpath:/webapp/",
                       "classpath:/webjars/",
                       "classpath:/META-INF/resources/webjars/",
                       "classpath:/static/img/",
                       "classpath:/static/css/",
-                      "classpath:/static/js/",
-                      "file:"+fileDir)
+                      "classpath:/static/js/")
               .resourceChain(false);
    }
 

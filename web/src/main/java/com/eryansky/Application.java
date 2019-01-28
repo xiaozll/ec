@@ -12,14 +12,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-@ComponentScan(value = {"com.eryansky.j2cache.autoconfigure",
-        "com.eryansky.common.spring",
-        "com.eryansky.configure",
-        "com.eryansky.modules.**.task",
-        "com.eryansky.modules.**.service",
-        "com.eryansky.modules.**.quartz",
-        "com.eryansky.modules.**.web"
-})
+//@ComponentScan(value = {"com.eryansky.j2cache.autoconfigure",
+//        "com.eryansky.common.spring",
+//        "com.eryansky.configure",
+//        "com.eryansky.modules.**.task",
+//        "com.eryansky.modules.**.service",
+//        "com.eryansky.modules.**.quartz",
+//        "com.eryansky.modules.**.web"
+//})
 @EnableTransactionManagement
 @SpringBootApplication(exclude={MybatisAutoConfiguration.class, FreeMarkerAutoConfiguration.class})
 public class Application extends SpringBootServletInitializer {

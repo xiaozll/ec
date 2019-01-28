@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -60,6 +61,15 @@ public class MvcConfig implements WebMvcConfigurer {
    }
 
    /**
+    * 跨域配置
+    * @param registry
+    */
+   @Override
+   public void addCorsMappings(CorsRegistry registry) {
+      registry.addMapping("/api/**");
+   }
+
+   /**
     * Json解析
     * @return
     */
@@ -72,7 +82,8 @@ public class MvcConfig implements WebMvcConfigurer {
       //设置中文编码格式
       List<MediaType> list = new ArrayList<MediaType>();
       list.add(MediaType.APPLICATION_JSON_UTF8);
-//      list.add(MediaType.TEXT_PLAIN);
+      list.add(MediaType.TEXT_PLAIN);
+      list.add(MediaType.TEXT_HTML);
       mappingJackson2HttpMessageConverter.setSupportedMediaTypes(list);
       return mappingJackson2HttpMessageConverter;
    }

@@ -14,7 +14,6 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.io.FileUtils;
-import com.eryansky.common.utils.io.PropertiesLoader;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;

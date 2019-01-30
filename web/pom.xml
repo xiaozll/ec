@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.2.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.eryansky</groupId>
+        <artifactId>ec-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../ec</relativePath>
     </parent>
     <groupId>com.eryansky</groupId>
     <artifactId>ec-web</artifactId>
@@ -18,12 +18,6 @@
 
     <properties>
         <!--<essm.j2cache.version>2.8.20181224</essm.j2cache.version>-->
-
-        <mariadb.driver.version>2.3.0</mariadb.driver.version>
-        <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>
-        <db2.driver.version>10.1</db2.driver.version>
-        <druid-version>1.1.10</druid-version>
-
         <poi.version>3.17</poi.version>
         <xwpf.version>2.0.1</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
@@ -37,7 +31,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
-
 
     <profiles>
         <profile>
@@ -58,6 +51,7 @@
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
+                    <version>${spring-boot.version}</version>
                     <exclusions>
                         <exclusion>
                             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -74,89 +68,7 @@
         </profile>
     </profiles>
 
-
-    <repositories>
-        <repository>
-            <id>jfit-nexus</id>
-            <name>Team Nexus ReposiDtory</name>
-            <url>http://www.jfit.com.cn/nexus/content/groups/public</url>
-            <!--<url>http://10.36.98.231:8081/nexus/content/groups/public</url>-->
-        </repository>
-        <!--<repository>-->
-            <!--&lt;!&ndash; required for org.hyperic:sigar &ndash;&gt;-->
-            <!--<id>jboss-public-repository-group</id>-->
-            <!--<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>-->
-        <!--</repository>-->
-    </repositories>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-        </dependency>
-        <!-- JSP 渲染引擎 -->
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- 模板引擎 Thymeleaf 依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-devtools</artifactId>-->
-            <!--<optional>true</optional>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-properties-migrator</artifactId>-->
-        <!--</dependency>-->
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mariadb.jdbc</groupId>
-            <artifactId>mariadb-java-client</artifactId>
-            <version>${mariadb.driver.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-dbcp</groupId>
-                    <artifactId>commons-dbcp</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <dependency>
             <groupId>opensymphony</groupId>
             <artifactId>sitemesh</artifactId>
@@ -205,7 +117,7 @@
 
         <dependency>
             <groupId>com.eryansky</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>ec-core</artifactId>
             <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
@@ -213,6 +125,11 @@
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.eryansky</groupId>
+            <artifactId>ec-j2cache-spring-boot-starter</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
 
@@ -269,19 +186,10 @@
             <version>20.0</version>
         </dependency>
 
-        <!-- Swagger -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-        </dependency>
+
     </dependencies>
     <build>
+        <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -323,8 +231,33 @@
         </resources>
         <plugins>
             <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <!--<packagingExcludes>-->
+                        <!--&lt;!&ndash;jump.jsp,&ndash;&gt;-->
+                        <!--static/**,-->
+                        <!--common/**,-->
+                        <!--META-INF/**,-->
+                        <!--&lt;!&ndash;WEB-INF/decorators.xml,&ndash;&gt;-->
+                        <!--WEB-INF/tags/**,-->
+                        <!--WEB-INF/tlds/**,-->
+                        <!--WEB-INF/views/**,-->
+                    <!--</packagingExcludes>-->
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

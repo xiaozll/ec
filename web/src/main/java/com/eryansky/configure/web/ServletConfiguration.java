@@ -1,6 +1,6 @@
 package com.eryansky.configure.web;
 
-import com.eryansky.common.web.servlet.StaticContentServlet;
+import com.eryansky.core.web.servlet.StaticContentServlet;
 import com.eryansky.common.web.servlet.ValidateCodeServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;

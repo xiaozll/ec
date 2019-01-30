@@ -5,6 +5,10 @@
  */
 package com.eryansky.modules.sys.web;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
+import ch.qos.logback.core.FileAppender;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
@@ -23,6 +27,7 @@ import com.eryansky.utils.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,10 +37,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统监控
@@ -196,19 +198,7 @@ public class SystemMonitorController extends SimpleController {
         Result result = null;
         File file = null;
         if(download || WebUtils.isAjaxRequest(request)){
-            PropertiesLoader propertiesLoader = AppConstants.getPropertiesLoader("log4j");
-            String appDir = AppUtils.getAppAbsolutePath();
-            String servletContextName = AppUtils.getServletContext().getContextPath();
-            String logConfigPath = StringUtils.substringAfter(propertiesLoader.getProperty("log4j.appender.RollingFile.File"),"/");
-            String logPath = null;
-            if ("/".equals(servletContextName)) {
-                logPath = appDir.replace("webapps", "") + logConfigPath;
-            } else {
-                logPath = StringUtils.substringBefore(appDir, servletContextName.replace("/", "")).replace("webapps", "") + logConfigPath;
-
-            }
-            logPath = logPath.replace("/", File.separator).replace(File.separator + File.separator, File.separator);
-            String _logPath = AppConstants.getLogPath(logPath);//读取配置文件配置的路径
+            String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
             file = new File(_logPath);
         }
         if(download){
@@ -251,6 +241,32 @@ public class SystemMonitorController extends SimpleController {
             }
         }
         return "modules/sys/systemMonitor-log";
+    }
+
+    /**
+     * 动态获取日志文件所在路径
+     * @return
+     */
+    private String findLogFilePath(){
+        String canonicalPath = null;
+        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        for (ch.qos.logback.classic.Logger logger : context.getLoggerList()) {
+            for (Iterator<Appender<ILoggingEvent>> index = logger.iteratorForAppenders(); index.hasNext();) {
+                Appender<ILoggingEvent> appender = index.next();
+                if(appender instanceof FileAppender){
+                    FileAppender fileAppender = (FileAppender) appender;
+                    File file = new File(fileAppender.getFile());
+                    try {
+                        canonicalPath = file.exists() ? file.getCanonicalPath():null;
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(),e);
+                    }
+                    return canonicalPath;
+                }
+            }
+        }
+        logger.info("Log path {}",canonicalPath);
+        return canonicalPath;
     }
 
 }

@@ -235,16 +235,9 @@
                 <version>3.2.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <!--<packagingExcludes>-->
-                        <!--&lt;!&ndash;jump.jsp,&ndash;&gt;-->
-                        <!--static/**,-->
-                        <!--common/**,-->
-                        <!--META-INF/**,-->
-                        <!--&lt;!&ndash;WEB-INF/decorators.xml,&ndash;&gt;-->
-                        <!--WEB-INF/tags/**,-->
-                        <!--WEB-INF/tlds/**,-->
-                        <!--WEB-INF/views/**,-->
-                    <!--</packagingExcludes>-->
+                    <packagingExcludes>
+                        WEB-INF/classes/META-INF/resources/**
+                    </packagingExcludes>
                 </configuration>
             </plugin>
             <plugin>

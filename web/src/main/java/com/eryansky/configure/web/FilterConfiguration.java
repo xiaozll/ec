@@ -36,8 +36,6 @@ public class FilterConfiguration {
     public FilterRegistrationBean<MySiteMeshFilter> getMySiteMeshFilter() {
         MySiteMeshFilter filter = new MySiteMeshFilter();
         FilterRegistrationBean<MySiteMeshFilter> bean = new FilterRegistrationBean<>(filter);
-//        bean.addInitParameter("sitemesh.configfile", "classpath:/WEB-INF/decorators.xml");
-        bean.addInitParameter("sitemesh.configfile", "classpath:/META-INF/resources/WEB-INF/decorators.xml");
         bean.addInitParameter("blackListURL","/static/**");
         bean.addInitParameter("whiteListURL","/**");
         return bean;

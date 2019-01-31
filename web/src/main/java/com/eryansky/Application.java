@@ -4,6 +4,7 @@ import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,7 +22,7 @@ import javax.servlet.ServletException;
 //        "com.eryansky.modules.**.web"
 //})
 @EnableTransactionManagement
-@SpringBootApplication(exclude={MybatisAutoConfiguration.class, FreeMarkerAutoConfiguration.class})
+@SpringBootApplication(exclude={MybatisAutoConfiguration.class, FreeMarkerAutoConfiguration.class, DataSourceAutoConfiguration.class})
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

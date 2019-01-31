@@ -8,6 +8,7 @@ package com.eryansky.configure;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -49,6 +50,7 @@ public class DBConfigure {
         sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
+        sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         sqlSessionFactoryBean.setTypeAliasesPackage("com.eryansky.modules.sys.mapper,com.eryansky.modules.disk.mapper,com.eryansky.modules.notice.mapper");
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappings/modules/**/*.xml"));
         return sqlSessionFactoryBean.getObject();
@@ -57,7 +59,7 @@ public class DBConfigure {
     @Bean
     public static MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer cfg = new MapperScannerConfigurer();
-        cfg.setBasePackage("com.eryansky.modules.*.dao");
+        cfg.setBasePackage("com.eryansky.modules.sys.dao,com.eryansky.modules.disk.dao,com.eryansky.modules.notice.dao");
         cfg.setSqlSessionFactoryBeanName("sqlSessionFactory");
         return cfg;
     }

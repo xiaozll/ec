@@ -11,6 +11,7 @@
 
     <groupId>com.eryansky</groupId>
     <artifactId>ec-core</artifactId>
+    <name>ec-core</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -23,7 +24,8 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-net.version>3.6</commons-net.version>
         <commons-collections.version>3.2.2</commons-collections.version>
-        <commons-pool2.version>2.6.0</commons-pool2.version>
+
+        <commons-logging.version>1.2</commons-logging.version>
 
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -79,13 +81,12 @@
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-            <version>1.1.3</version>
+            <version>${commons-logging.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -148,7 +149,7 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
-            <version>2.2</version>
+            <version>3.2.5</version>
         </dependency>
         <dependency>
             <groupId>com.belerweb</groupId>
@@ -172,7 +173,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.0.1</version>
+            <version>6.14.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

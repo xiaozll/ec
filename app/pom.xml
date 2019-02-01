@@ -10,10 +10,10 @@
         <relativePath>../../ec</relativePath>
     </parent>
     <groupId>com.eryansky</groupId>
-    <artifactId>ec-web</artifactId>
+    <artifactId>ec-app</artifactId>
     <version>1.0.0.20190124</version>
     <packaging>${project.packaging}</packaging>
-    <name>web</name>
+    <name>ec-app</name>
     <description>web</description>
 
     <properties>

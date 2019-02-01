@@ -10,7 +10,7 @@
         <module>common</module>
         <module>j2cache</module>
         <module>j2cache-spring-boot-starter</module>
-        <module>web</module>
+        <module>app</module>
     </modules>
     <packaging>pom</packaging>
     <!--<parent>-->

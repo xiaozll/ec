@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.eryansky</groupId>
             <artifactId>ec-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${ec-common.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>com.eryansky</groupId>
             <artifactId>ec-j2cache-spring-boot-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${ec-j2cache-spring-boot-starter.version}</version>
         </dependency>
 
 

@@ -6,7 +6,7 @@
     <!--<logger name="com.eryansky.modules.sys.dao" level="debug"/>-->
     <contextName>ec</contextName>
     <!-- 记录文件到特定目录 -->
-    <property name="log.path" value="logs/app.log" />
+    <property name="log.path" value="logs/ec_system.log" />
 
     <!--<appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
         <!--<destination>192.168.220.83:9601</destination>-->

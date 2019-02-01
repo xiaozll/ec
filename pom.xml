@@ -29,6 +29,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
+        <tomcat-plugin.version>2.2</tomcat-plugin.version>
+
         <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
         <logback.version>5.2</logback.version>
 
@@ -206,7 +208,24 @@
         </dependency>
     </dependencies>
 
-    <!--<build>-->
+    <build>
         <!--<finalName>${project.artifactId}</finalName>-->
-    <!--</build>-->
+        <plugins>
+            <!-- tomcat7插件 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${tomcat-plugin.version}</version>
+                <configuration>
+                    <!--<url>http://10.36.10.54:8080/manager/text</url>-->
+                    <url>http://10.37.242.54:8080/manager/text</url>
+                    <server>tomcat7</server>
+                    <username>admin</username>
+                    <password>password</password>
+                    <path>/ec</path>
+                    <uriEncoding>${project.build.sourceEncoding}</uriEncoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

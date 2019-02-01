@@ -22,8 +22,7 @@
         <xwpf.version>2.0.1</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
 
-        <servlet.version>3.1.0</servlet.version>
-        <jsp.version>2.3.2-b02</jsp.version>
+
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
 
@@ -243,9 +242,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
+                <!--<configuration>-->
+                    <!--<executable>true</executable>-->
+                <!--</configuration>-->
                 <executions>
                     <execution>
                         <goals>
@@ -253,6 +252,20 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- tomcat7插件 -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <!--<url>http://10.36.10.54:8080/manager/text</url>-->
+                    <url>http://10.37.242.54:8080/manager/text</url>
+                    <server>tomcat7</server>
+                    <username>admin</username>
+                    <password>password</password>
+                    <path>/ec</path>
+                    <uriEncoding>${project.build.sourceEncoding}</uriEncoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -115,7 +115,7 @@
 
         <dependency>
             <groupId>com.eryansky</groupId>
-            <artifactId>ec-core</artifactId>
+            <artifactId>ec-common</artifactId>
             <version>${ec-common.version}</version>
             <exclusions>
                 <exclusion>

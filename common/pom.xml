@@ -10,8 +10,8 @@
     </parent>
 
     <groupId>com.eryansky</groupId>
-    <artifactId>ec-core</artifactId>
-    <name>ec-core</name>
+    <artifactId>ec-common</artifactId>
+    <name>ec-common</name>
     <version>${ec-common.version}</version>
     <packaging>jar</packaging>
 

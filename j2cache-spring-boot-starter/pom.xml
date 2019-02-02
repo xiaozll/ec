@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.eryansky</groupId>
             <artifactId>ec-j2cache</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${ec-j2cache.version}</version>
         </dependency>
     </dependencies>
 

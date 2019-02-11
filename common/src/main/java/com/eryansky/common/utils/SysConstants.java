@@ -5,7 +5,8 @@
  */
 package com.eryansky.common.utils;
 
-import com.eryansky.common.utils.io.PropertiesLoader;
+import com.eryansky.common.spring.SpringContextHolder;
+import org.springframework.core.env.StandardEnvironment;
 
 
 /**
@@ -19,17 +20,16 @@ public class SysConstants {
      * session 验证码key
      */
     public static final String SESSION_VALIDATE_CODE = "validateCode";
-    public static final String APP_CONFIG_FILE_PATH = "application.properties";
 
     private static class SysConstantsHolder {
-        private static final PropertiesLoader appconfig = new PropertiesLoader(APP_CONFIG_FILE_PATH);
+        private static final StandardEnvironment standardEnvironment = SpringContextHolder.getBean(StandardEnvironment.class);
     }
 
     /**
      * 配置文件(appconfig.properties)
      */
-    public static PropertiesLoader getAppConfig() {
-        return SysConstantsHolder.appconfig;
+    public static StandardEnvironment getAppConfig() {
+        return SysConstantsHolder.standardEnvironment;
     }
 
     /**
@@ -47,23 +47,6 @@ public class SysConstants {
     }
 
     /**
-     * 修改配置文件
-     * @param key
-     * @param value
-     */
-    public static void modifyAppConfig(String key,String value) {
-        SysConstantsHolder.appconfig.modifyProperties(APP_CONFIG_FILE_PATH,key,value);
-    }
-    
-
-    /**
-     *  Properties文件加载器 示例：config 不带后缀“.properties”
-     */
-    public static PropertiesLoader getPropertiesLoader(String fileName) {
-        return new PropertiesLoader(fileName+".properties");
-    }
-
-    /**
      * jdbc type连接参数(默认:"").
      */
     public static String getJdbcType(){
@@ -74,7 +57,7 @@ public class SysConstants {
      * jdbc url连接参数(默认:"").
      */
     public static String getJdbcUrl(){
-    	return SysConstants.getAppConfig().getProperty("jdbc.url","");
+    	return SysConstants.getAppConfig().getProperty("spring.datasource.url","");
     }
 
     /**
@@ -82,7 +65,7 @@ public class SysConstants {
      * @return
      */
     public static String getJdbcDriverClassName(){
-        return SysConstants.getAppConfig().getProperty("jdbc.driverClassName","");
+        return SysConstants.getAppConfig().getProperty("spring.datasource.driver-class-name","");
     }
 
     /**
@@ -90,7 +73,7 @@ public class SysConstants {
      * @return
      */
     public static String getJdbcUserName(){
-        return SysConstants.getAppConfig().getProperty("jdbc.username","");
+        return SysConstants.getAppConfig().getProperty("spring.datasource.username","");
     }
 
     /**
@@ -106,7 +89,7 @@ public class SysConstants {
      * 获取是否是开发模式(默认:false).
      */
     public static Boolean isdevMode(){
-    	return getAppConfig().getBoolean("devMode",false);
+    	return Boolean.valueOf(getAppConfig().getProperty("devMode","false"));
     }
 
 }

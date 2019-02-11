@@ -259,8 +259,7 @@ public class AppConstants extends SysConstants {
         if (StringUtils.isBlank(value)) {
             return getDiskMaxUploadSize();
         }
-        Integer maxUploadSize = Integer.valueOf(value);
-        return maxUploadSize;
+        return Integer.valueOf(value);
     }
 
     /**

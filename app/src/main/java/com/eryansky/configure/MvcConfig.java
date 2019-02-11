@@ -87,17 +87,6 @@ public class MvcConfig implements WebMvcConfigurer {
       return mappingJackson2HttpMessageConverter;
    }
 
-   /**
-    * 附件上传大小配置
-    * @return
-    */
-   @Bean
-   public CommonsMultipartResolver commonsMultipartResolver() {
-      final CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-      commonsMultipartResolver.setMaxUploadSize(Long.valueOf(AppConstants.getAppConfig("web.maxUploadSize","-1")));
-      return commonsMultipartResolver;
-   }
-
 
    @Bean
    public IFileManager getFileManager() {

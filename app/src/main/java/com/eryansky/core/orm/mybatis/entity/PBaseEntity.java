@@ -73,11 +73,6 @@ public abstract class PBaseEntity<T, PK extends Serializable> extends AbstractBa
         return super.getEntityPage();
     }
 
-    @JsonIgnore
-    @Override
-    public PropertiesLoader getGlobal() {
-        return super.getGlobal();
-    }
 
     @JsonIgnore
     @XmlTransient

@@ -152,12 +152,6 @@ public abstract class AbstractBaseEntity<T, PK extends Serializable> implements 
         this.isNewRecord = isNewRecord;
     }
 
-    /**
-     * 全局变量对象
-     */
-    public PropertiesLoader getGlobal() {
-        return SysConstants.getAppConfig();
-    }
 
     /**
      * 获取数据库名称

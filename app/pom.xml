@@ -39,12 +39,16 @@
             </activation>
             <properties>
                 <project.packaging>jar</project.packaging>
+                <configSuffix></configSuffix>
+                <profileActive>dev</profileActive>
             </properties>
         </profile>
         <profile>
-            <id>release</id>
+            <id>prod</id>
             <properties>
                 <project.packaging>war</project.packaging>
+                <configSuffix>-dev</configSuffix>
+                <profileActive>prod</profileActive>
             </properties>
             <dependencies>
                 <dependency>
@@ -191,11 +195,18 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>application*.properties</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!-- 是否替换@xx@表示的maven properties属性值 -->
+                <filtering>true</filtering>
                 <includes>
-                    <include>**/*</include>
+                    <include>application.properties</include>
+                    <include>application-${profileActive}.properties</include>
                 </includes>
-                <!-- ！注意！：此处如果设置为true，表明该路径下的文件在拷贝的工程中需要过滤其中的ER表达式，及替换其中的表达式为配置的值 ，破坏了静态资源文件的原始编码格式  -->
-                <filtering>false</filtering>
             </resource>
             <resource>
                 <directory>src/main/webapp</directory>
@@ -228,6 +239,26 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <delete file="${project.build.outputDirectory}/config.properties"/>
+                                <copy file="src/main/resources/config${configSuffix}.properties"
+                                      tofile="${project.build.outputDirectory}/config.properties"/>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.2</version>

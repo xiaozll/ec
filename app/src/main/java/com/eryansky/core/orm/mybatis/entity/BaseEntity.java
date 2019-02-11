@@ -75,12 +75,6 @@ public abstract class BaseEntity<T> extends AbstractBaseEntity<T,String> {
     }
 
     @JsonIgnore
-    @Override
-    public PropertiesLoader getGlobal() {
-        return super.getGlobal();
-    }
-
-    @JsonIgnore
     @XmlTransient
     @Override
     public Map<String, String> getSqlMap() {

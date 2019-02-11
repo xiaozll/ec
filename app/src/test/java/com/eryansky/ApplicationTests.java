@@ -1,5 +1,6 @@
 package com.eryansky;
 
+import com.eryansky.modules.sys.service.ConfigService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,11 @@ import java.io.Serializable;
 public class ApplicationTests {
 
 	@Autowired
-	private RedisTemplate<String, Serializable> redisTemplate;
+	private ConfigService configService;
 
 	@Test
 	public void contextLoads() {
+		configService.syncFromProperties(false);
 	}
 
 

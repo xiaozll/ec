@@ -422,6 +422,7 @@ public class SecurityUtils {
         }
 
         Static.applicationSessionContext.addSession(sessionInfo);
+        request.getSession().setAttribute("loginUser",sessionInfo.getName()+"["+sessionInfo.getLoginName()+"]");
         return sessionInfo;
     }
 

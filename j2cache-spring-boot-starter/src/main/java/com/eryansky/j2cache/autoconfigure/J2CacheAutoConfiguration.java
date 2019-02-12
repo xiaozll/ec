@@ -1,14 +1,17 @@
 package com.eryansky.j2cache.autoconfigure;
 
+import com.eryansky.j2cache.properties.J2CacheSessionProperties;
+import com.eryansky.j2cache.session.J2CacheSessionFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.StandardEnvironment;
 
 import com.eryansky.j2cache.CacheChannel;
@@ -22,7 +25,8 @@ import com.eryansky.j2cache.cache.support.util.SpringUtil;
  *
  */
 @ConditionalOnClass(J2Cache.class)
-@EnableConfigurationProperties({J2CacheConfig.class})
+@EnableConfigurationProperties({J2CacheConfig.class, J2CacheSessionProperties.class})
+@Import(J2CacheSessionFilterConfiguration.class)
 @Configuration
 @PropertySource(value = "${j2cache.config-location}", encoding = "UTF-8", ignoreResourceNotFound = true)
 public class J2CacheAutoConfiguration {
@@ -57,5 +61,7 @@ public class J2CacheAutoConfiguration {
     public SpringUtil springUtil() {
     	return new SpringUtil();
     }
+
+
 
 }

@@ -221,12 +221,11 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>${tomcat-plugin.version}</version>
                 <configuration>
-                    <!--<url>http://10.36.10.54:8080/manager/text</url>-->
-                    <url>http://10.37.242.54:8080/manager/text</url>
+                    <url>http://127.0.0.1:8080/manager/text</url>
                     <server>tomcat7</server>
                     <username>admin</username>
                     <password>password</password>
-                    <path>/ec</path>
+                    <path>/</path>
                     <uriEncoding>${project.build.sourceEncoding}</uriEncoding>
                 </configuration>
             </plugin>

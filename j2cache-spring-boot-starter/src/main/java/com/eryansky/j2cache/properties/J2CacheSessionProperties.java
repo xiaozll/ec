@@ -15,18 +15,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("j2cache.session")
 public class J2CacheSessionProperties {
 
-    private Filter filter = new Filter();
+    private final Filter filter = new Filter();
     private String maxSizeInMemory;
-    private Redis redis = new Redis();
+    private final Redis redis = new Redis();
 
 
     public Filter getFilter() {
         return filter;
     }
 
-    public void setFilter(Filter filter) {
-        this.filter = filter;
-    }
 
     public String getMaxSizeInMemory() {
         return maxSizeInMemory;
@@ -40,15 +37,12 @@ public class J2CacheSessionProperties {
         return redis;
     }
 
-    public void setRedis(Redis redis) {
-        this.redis = redis;
-    }
-
     public static class Filter {
         /**
          * Enable SessionFilter.
          */
         private boolean enabled = true;
+        private Integer order;
         private String blackListURL;
         private String whiteListURL;
         private String cookieName;
@@ -63,6 +57,14 @@ public class J2CacheSessionProperties {
 
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
+        }
+
+        public Integer getOrder() {
+            return order;
+        }
+
+        public void setOrder(Integer order) {
+            this.order = order;
         }
 
         public String getBlackListURL() {

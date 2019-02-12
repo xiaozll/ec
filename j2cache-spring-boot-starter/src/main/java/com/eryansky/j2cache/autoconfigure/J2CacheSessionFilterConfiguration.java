@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.Ordered;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,8 @@ public class J2CacheSessionFilterConfiguration {
         map.put("redis.minIdle",redisConfig.getMinIdle());
         Map<String,String> param = map.entrySet().stream().filter(m->m.getValue() != null).collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
         bean.setInitParameters(param);
+        Integer order = filterConfig.getOrder();
+        bean.setOrder(order != null ? order:Ordered.HIGHEST_PRECEDENCE+30);
         return bean;
     }
 }

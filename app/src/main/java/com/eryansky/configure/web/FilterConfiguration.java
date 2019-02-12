@@ -5,6 +5,7 @@ import com.eryansky.filters.ChinesePathFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 
 
 /**
@@ -24,6 +25,7 @@ public class FilterConfiguration {
         ChinesePathFilter filter = new ChinesePathFilter();
         FilterRegistrationBean<ChinesePathFilter> bean = new FilterRegistrationBean<>(filter);
         bean.setFilter(filter);
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
     }
 
@@ -38,6 +40,7 @@ public class FilterConfiguration {
         FilterRegistrationBean<MySiteMeshFilter> bean = new FilterRegistrationBean<>(filter);
         bean.addInitParameter("blackListURL","/static/**");
         bean.addInitParameter("whiteListURL","/**");
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE+200);
         return bean;
     }
 }

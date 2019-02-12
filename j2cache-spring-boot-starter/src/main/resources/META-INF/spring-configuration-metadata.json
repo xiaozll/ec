@@ -9,6 +9,10 @@
       "description": "Enable SessionFilter.",
       "defaultValue": true
     },{
+      "name": "j2cache.session.filter.order",
+      "type": "java.lang.Integer",
+      "description": "SessionFilter Order."
+    },{
       "name": "j2cache.session.filter.blackListURL",
       "type": "java.lang.String"
     },{

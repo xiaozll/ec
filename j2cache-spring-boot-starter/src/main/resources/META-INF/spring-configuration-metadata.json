@@ -4,10 +4,35 @@
       "name": "j2cache.config-location",
       "type": "java.lang.String"
     },{
+      "name": "j2cache.open-spring-cache",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },{
+      "name": "j2cache.allow-null-values",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },{
+      "name": "j2cache.cache-clean-mode",
+      "type": "java.lang.String",
+      "defaultValue": "blend"
+    },{
+      "name": "j2cache.l2-cache-open",
+      "type": "java.lang.Boolean",
+      "defaultValue": false
+    },{
+      "name": "j2cache.redis-client",
+      "type": "java.lang.String",
+      "defaultValue": "lettuce"
+    },{
       "name": "j2cache.session.filter.enabled",
       "type": "java.lang.Boolean",
       "description": "Enable SessionFilter.",
-      "defaultValue": true
+      "defaultValue": true,
+      "sourceType": "com.eryansky.j2cache.properties.J2CacheSessionProperties"
+    },{
+      "name": "j2cache.session.maxSizeInMemory",
+      "type": "java.lang.Integer",
+      "defaultValue": "1000"
     },{
       "name": "j2cache.session.filter.order",
       "type": "java.lang.Integer",

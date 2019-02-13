@@ -15,6 +15,9 @@
  */
 package com.eryansky.j2cache.session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
@@ -25,6 +28,8 @@ import java.util.*;
  * @author Winter Lau (javayou@gmail.com)
  */
 public class J2CacheSession implements HttpSession {
+
+    private final Logger logger = LoggerFactory.getLogger(J2CacheSession.class);
 
     private SessionObject session;
     private boolean newSession = true;
@@ -88,7 +93,12 @@ public class J2CacheSession implements HttpSession {
 
     @Override
     public Object getAttribute(String name) {
-        checkValid();
+        try {
+            checkValid();
+        } catch (IllegalStateException e) {
+            logger.error(e.getMessage());
+            return null;
+        }
         return session.get(name);
     }
 

@@ -96,7 +96,7 @@ public class J2CacheSession implements HttpSession {
         try {
             checkValid();
         } catch (IllegalStateException e) {
-            logger.error(e.getMessage());
+            logger.warn(e.getMessage());
             return null;
         }
         return session.get(name);

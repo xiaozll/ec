@@ -1,6 +1,7 @@
 package com.eryansky;
 
 import com.eryansky.modules.sys.service.ConfigService;
+import com.eryansky.modules.sys.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ public class ApplicationTests {
 
 	@Autowired
 	private ConfigService configService;
+	@Autowired
+	private UserService userService;
 
 	@Test
 	public void contextLoads() {
-		configService.syncFromProperties(false);
+		userService.aop();
 	}
 
 

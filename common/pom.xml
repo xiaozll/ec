@@ -9,7 +9,6 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.eryansky</groupId>
     <artifactId>ec-common</artifactId>
     <name>ec-common</name>
     <version>${ec-common.version}</version>
@@ -30,7 +29,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
 
-        <guava.version>27.0.1-jre</guava.version>
+        <guava.version>20.0</guava.version>
         <joda.version>2.10.1</joda.version>
         <dozer.version>5.4.0</dozer.version>
         <freemarker.version>2.3.28</freemarker.version>
@@ -157,6 +156,8 @@
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.0</version>
+            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
 
 

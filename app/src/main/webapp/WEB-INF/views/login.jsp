@@ -1,4 +1,5 @@
 <%@ page import="com.eryansky.common.web.utils.CookieUtils" %>
+<%@ page import="com.eryansky.common.utils.encode.Encrypt" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ include file="/common/taglibs.jsp" %>
 <%
@@ -40,7 +41,7 @@
 <script src="${ctxStatic}/js/bootstrap/bsie/js/bootstrap-ie.min.js" type="text/javascript"></script><![endif]-->
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]> <script src="${ctxStatic}/js/common/html5.js"></script><![endif]-->
-
+    <script src="${ctxStatic}/js/md5/md5.min.js"></script>
     <%@ include file="/common/autocomplete.jsp"%>
     <style type="text/css">
         .control-group{border-bottom:0px;}
@@ -55,6 +56,9 @@
         var sysInitTime = "${sysInitTime}";
         var isValidateCodeLogin = "${isValidateCodeLogin}";
         var rememberMeCookieValue = "${cookie.rememberMe.value}";
+        var needEncrypt = ${empty cookie._password.value};
+        var SALT = "<%=Encrypt.SALT%>";
+        var homePage = "<%=request.getContextPath() + AppConstants.getAppHomePage()%>";
     </script>
     <script type="text/javascript" src="${ctxStatic}/app/login${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 </head>
@@ -88,7 +92,7 @@
                     <%--<label for="loginName" class="control-label">用户名</label>--%>
                     <div class="controls">
                         <input type="text" id="loginName" name="loginName" class="required" style="width: 210px;height:36px;padding: 5px;"
-                               value="admin" placeholder="用户名"/>
+                               value="${fns:urlDecode(loginNameOrName)}" placeholder="用户名"/>
                         <%--<i class="-user" title="用户名"></i>--%>
                         <i class="icon-search" title="选择" onclick="chooseUser()"></i>
                     </div>
@@ -97,7 +101,7 @@
                 <div class="control-group">
                     <%--<label for="password" class="control-label">密码</label>--%>
                     <div class="controls">
-                        <input type="password" id="password" name="password" value="1"
+                        <input type="password" id="password" name="password"  value="${cookie._password.value}"
                                class="required" style="width: 210px;height:36px;padding: 5px;" placeholder="密码"
                                onkeydown="if(event.keyCode==13)login()" />
                         <i class="icon-lock" title="密码"></i>

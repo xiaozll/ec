@@ -4,7 +4,9 @@ var ctxStatic = ctxStatic;
 var sysInitTime = sysInitTime;
 var isValidateCodeLogin = isValidateCodeLogin;
 var rememberMeCookieValue = rememberMeCookieValue;
-
+var needEncrypt = needEncrypt;
+var SALT = SALT;
+var homePage = homePage;
 
 
 var $loginForm;
@@ -48,18 +50,25 @@ $(function () {
 
     $rememberMe.prop("checked", rememberMeCookieValue == "" ? false : true);
 
+    $password.change(function(){
+        needEncrypt = true;
+    });
 
     $rememberMe.click(function () {
         var checked = $(this).prop('checked');
+        var _password = $password.val();
+        if(needEncrypt){
+            _password = md5(_password+SALT);
+        }
         if (checked) {
-            $.cookie('password', $password.val(), {
+            $.cookie('_password', _password, {
                 expires: 7
             });
             $.cookie('rememberMe', checked, {
                 expires: 7
             });
         } else {
-            $.cookie('password', "", {
+            $.cookie('_password', "", {
                 expires: 7
             });
             $.cookie('rememberMe', "", {
@@ -83,15 +92,19 @@ function login() {
     $.cookie('loginName', $("#loginName").val(), {
         expires: 7
     });
+    var _password = $password.val();
+    if(needEncrypt){
+        _password = md5(_password+SALT);
+    }
     if ($rememberMe.prop("checked")) {
-        $.cookie('password', $password.val(), {
+        $.cookie('_password', _password, {
             expires: 7
         });
     }
     $.ajax({
         url: ctxAdmin + '/login/login',
         type: 'post',
-        data: $.extend({theme: ''},$.serializeObject($("#loginForm"))),
+        data: {theme:'',encrypt:true,loginName:$("#loginName").val(),password:_password,validateCode:$("#validateCode").val()},
         traditional: true,
         async:false,
         dataType: 'json',

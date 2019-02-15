@@ -134,6 +134,7 @@ public class LoginController extends SimpleController {
      *
      * @param loginName 用户名
      * @param password  密码
+     * @param encrypt 加密
      * @param validateCode 验证码
      * @param theme     主题
      * @param request
@@ -144,6 +145,7 @@ public class LoginController extends SimpleController {
     @RequestMapping(value = {"login"})
     public Result login(@RequestParam(required = true) String loginName,
                         @RequestParam(required = true) String password,
+                        @RequestParam(defaultValue = "false") Boolean encrypt,
                         String validateCode,
                         String theme, HttpServletRequest request,Model uiModel) {
         //登录限制
@@ -163,8 +165,13 @@ public class LoginController extends SimpleController {
             }
         }
 
+        String _password = password;
+        if(!encrypt){
+            _password = Encrypt.e(password);
+        }
+
         // 获取用户信息
-        User user = userService.getUserByLP(loginName, Encrypt.e(password));
+        User user = userService.getUserByLP(loginName, _password);
         if (user == null) {
             msg = "用户名或密码不正确!";
         } else if (user.getStatus().equals(StatusState.LOCK.getValue())) {

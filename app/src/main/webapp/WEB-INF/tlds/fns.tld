@@ -83,6 +83,28 @@
         <example>${fns:getAppFullName(key)}</example>
     </function>
 
+    <function>
+        <description>厂商</description>
+        <name>getAppProductName</name>
+        <function-class>com.eryansky.utils.AppConstants</function-class>
+        <function-signature>java.lang.String getAppProductName()</function-signature>
+        <example>${fns:getAppProductName(key)}</example>
+    </function>
+    <function>
+        <description>厂商 网址</description>
+        <name>getAppProductURL</name>
+        <function-class>com.eryansky.utils.AppConstants</function-class>
+        <function-signature>java.lang.String getAppProductURL()</function-signature>
+        <example>${fns:getAppProductURL(key)}</example>
+    </function>
+    <function>
+        <description>客服信息</description>
+        <name>getAppProductContact</name>
+        <function-class>com.eryansky.utils.AppConstants</function-class>
+        <function-signature>java.lang.String getAppProductContact()</function-signature>
+        <example>${fns:getAppProductContact(key)}</example>
+    </function>
+
     <!-- UserUtils -->
     <function>
         <description>获取当前用户对象</description>

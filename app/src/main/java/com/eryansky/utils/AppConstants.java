@@ -390,4 +390,49 @@ public class AppConstants extends SysConstants {
         return getConfigValue(code);
     }
 
+    /**
+     * 系统登录后跳转主页
+     * @return
+     */
+    public static String getAppHomePage() {
+        String code = "app.homePage";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 软件版本
+     * @return
+     */
+    public static String getAppVersion() {
+        String code = "app.version";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 厂商
+     * @return
+     */
+    public static String getAppProductName() {
+        String code = "app.productName";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 厂商 网址
+     * @return
+     */
+    public static String getAppProductURL() {
+        String code = "app.productURL";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 客服信息
+     * @return
+     */
+    public static String getAppProductContact() {
+        String code = "app.productContact";
+        return getConfig(code);
+    }
+
 }

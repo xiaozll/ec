@@ -120,7 +120,7 @@
     </div>
 </div>
 <footer class="white navbar-fixed-bottom">
-    版权所有 &copy; 2013-${fns:getDate('yyyy')} <a target="_blank" href="#">XXX件科技有限公司</a>
+    版权所有 &copy; 2013-${fns:getDate('yyyy')} <a target="_blank" href="${fns:getAppProductURL()()}">${fns:getAppProductName()}</a> ${fns:getAppProductContact()}
 </footer>
 </body>
 </html>

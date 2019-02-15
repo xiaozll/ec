@@ -11,6 +11,7 @@ import java.util.Properties;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -62,12 +63,21 @@ public class J2CacheSpringRedisAutoConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(J2CacheSpringRedisAutoConfiguration.class);
 
+    @Autowired(required = false)
+    private JedisConnectionFactory jedisConnectionFactory;
+
+    @Autowired(required = false)
+    private LettuceConnectionFactory lettuceConnectionFactory;
+
 	@SuppressWarnings("deprecation")
 	@Bean("j2CahceRedisConnectionFactory")
 	@ConditionalOnMissingBean(name = "j2CahceRedisConnectionFactory")
 	@ConditionalOnProperty(name = "j2cache.redis-client", havingValue = "jedis", matchIfMissing = true)
 	public JedisConnectionFactory jedisConnectionFactory(com.eryansky.j2cache.J2CacheConfig j2CacheConfig) {
-		Properties l2CacheProperties = j2CacheConfig.getL2CacheProperties();
+        if (null != this.jedisConnectionFactory) {
+            return this.jedisConnectionFactory;
+        }
+	    Properties l2CacheProperties = j2CacheConfig.getL2CacheProperties();
 		String hosts = l2CacheProperties.getProperty("hosts");
 		String mode = l2CacheProperties.getProperty("mode") == null ? "null" : l2CacheProperties.getProperty("mode");
 		String clusterName = l2CacheProperties.getProperty("cluster_name");
@@ -148,6 +158,9 @@ public class J2CacheSpringRedisAutoConfiguration {
 	@ConditionalOnMissingBean(name = "j2CahceRedisConnectionFactory")
 	@ConditionalOnProperty(name = "j2cache.redis-client", havingValue = "lettuce")
 	public LettuceConnectionFactory lettuceConnectionFactory(com.eryansky.j2cache.J2CacheConfig j2CacheConfig) {
+		if (null != this.lettuceConnectionFactory) {
+			return this.lettuceConnectionFactory;
+		}
 		Properties l2CacheProperties = j2CacheConfig.getL2CacheProperties();
 		String hosts = l2CacheProperties.getProperty("hosts");
 		String mode = l2CacheProperties.getProperty("mode") == null ? "null" : l2CacheProperties.getProperty("mode");

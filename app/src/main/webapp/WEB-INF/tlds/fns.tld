@@ -288,4 +288,34 @@
         <function-signature>long pastDays(java.util.Date)</function-signature>
         <example>${fns:pastDays(date)}</example>
     </function>
+
+    <function>
+        <description>获得系统中使用长整形表示的日期加星期</description>
+        <name>getStringCalendarAndWeek</name>
+        <function-class>com.eryansky.common.utils.DateUtils</function-class>
+        <function-signature>java.lang.String getStringCalendarAndWeek()</function-signature>
+        <example>${fns:getStringCalendarAndWeek()}</example>
+    </function>
+
+    <function>
+        <description>状态</description>
+        <name>getStatusStates</name>
+        <function-class>com.eryansky.utils.AppUtils</function-class>
+        <function-signature>java.util.List getStatusStates()</function-signature>
+        <example>${fns:getStatusStates()}</example>
+    </function>
+    <function>
+        <description>基本状态</description>
+        <name>getSimpleStatusStates</name>
+        <function-class>com.eryansky.utils.AppUtils</function-class>
+        <function-signature>java.util.List getSimpleStatusStates()</function-signature>
+        <example>${fns:getSimpleStatusStates()}</example>
+    </function>
+    <function>
+        <description>是否</description>
+        <name>getYesOrNo</name>
+        <function-class>com.eryansky.utils.AppUtils</function-class>
+        <function-signature>com.eryansky.modules.sys._enum.YesOrNo[] getYesOrNo()</function-signature>
+        <example>${fns:getYesOrNo()}</example>
+    </function>
 </taglib>

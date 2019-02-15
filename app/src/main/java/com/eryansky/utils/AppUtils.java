@@ -6,9 +6,11 @@
 package com.eryansky.utils;
 
 import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.orm._enum.StatusState;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.modules.sys._enum.YesOrNo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -384,5 +386,36 @@ public class AppUtils {
         }else{
             return source;
         }
+    }
+
+    /**
+     * 基本状态
+     * @return
+     */
+    public static List<StatusState> getStatusStates(){
+        List<StatusState> list = new ArrayList<StatusState>(3);
+        list.add(StatusState.AUDIT);
+        list.add(StatusState.NORMAL);
+        list.add(StatusState.DELETE);
+        return list;
+    }
+
+    /**
+     * 基本状态
+     * @return
+     */
+    public static List<StatusState> getSimpleStatusStates(){
+        List<StatusState> list = new ArrayList<StatusState>(3);
+        list.add(StatusState.NORMAL);
+        list.add(StatusState.LOCK);
+        return list;
+    }
+
+    /**
+     * 是否
+     * @return
+     */
+    public static YesOrNo[] getYesOrNo(){
+        return YesOrNo.values();
     }
 }

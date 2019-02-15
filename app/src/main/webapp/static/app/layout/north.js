@@ -5,7 +5,7 @@ function showAbout(){
     //弹出对话窗口
     login_about_dialog = $('<div/>').dialog({
         title:'关于我们',
-        iconCls: 'eu-icon-jfit',
+        iconCls: 'eu-icon-essh',
         top: 100,
         width: 436,
         height : 400,

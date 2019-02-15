@@ -5,6 +5,8 @@
  */
 package com.eryansky.common.utils.encode;
 
+import com.eryansky.common.utils.StringUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +21,11 @@ import java.security.NoSuchAlgorithmException;
 public class Encrypt {
 
 	/**
+	 * MD5加密随机值
+	 */
+	public static final String SALT = "{1#2$3%4(5)6@7!poeeww$3%4(5)djjkkldss}";
+
+	/**
 	 * 测试
 	 * 
 	 * @param args
@@ -30,6 +37,8 @@ public class Encrypt {
 		// sha加密测试
 		String sha_1 = sha("123456");
 		System.out.println(sha_1);
+		System.out.println(e("1"));
+		System.out.println(md5("1"));
 
 	}
 
@@ -40,7 +49,18 @@ public class Encrypt {
 	 * @return
 	 */
 	public static String e(String inputText) {
-		return md5(inputText);
+		return e(inputText,SALT);
+	}
+
+	/**
+	 * 加密
+	 *
+	 * @param inputText
+	 * @param salt
+	 * @return
+	 */
+	public static String e(String inputText,String salt) {
+		return md5(inputText + (salt != null ? salt: StringUtils.EMPTY));
 	}
 
 	/**

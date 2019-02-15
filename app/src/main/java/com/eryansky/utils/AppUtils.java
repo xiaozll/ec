@@ -405,7 +405,7 @@ public class AppUtils {
      * @return
      */
     public static List<StatusState> getSimpleStatusStates(){
-        List<StatusState> list = new ArrayList<StatusState>(3);
+        List<StatusState> list = new ArrayList<StatusState>(2);
         list.add(StatusState.NORMAL);
         list.add(StatusState.LOCK);
         return list;

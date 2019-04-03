@@ -7,7 +7,7 @@
     <!--<logger name="com.eryansky.modules.sys.dao" level="debug"/>-->
     <contextName>ec</contextName>
     <!-- 记录文件到特定目录 -->
-    <property name="log.path" value="logs/ec_system.log" />
+    <property name="log.path" value="logs" />
 
     <!--<appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
         <!--<destination>192.168.220.83:9601</destination>-->
@@ -26,9 +26,9 @@
 
     <!--输出到文件-->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>app_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/dcf_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>

@@ -182,6 +182,12 @@
             <artifactId>xstream</artifactId>
             <version>1.4.10</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

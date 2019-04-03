@@ -63,7 +63,11 @@ $(function() {
 		}, {
             iconCls : 'eu-icon-more',
             handler : function() {
-                eu.addTab(window.parent.layout_center_tabs,"在线用户",ctxAdmin +'/sys/session',true);
+                try {
+					parent.addTabs({id:'session',title: '在线用户',close: true,url: ctxAdmin +'/sys/session',urlType: 'relative'});
+				} catch(e) {
+					eu.addTab(window.parent.layout_center_tabs,"在线用户",ctxAdmin +'/sys/session',true);
+				}
             }
         } ]
 	});

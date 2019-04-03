@@ -1,5 +1,6 @@
 package com.eryansky;
 
+import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.modules.sys.service.ConfigService;
 import com.eryansky.modules.sys.service.UserService;
 import org.junit.Test;
@@ -25,5 +26,10 @@ public class ApplicationTests {
 		userService.aop();
 	}
 
+
+	@Test
+	public void e() {
+		System.out.println(Encrypt.e("1"));
+	}
 
 }

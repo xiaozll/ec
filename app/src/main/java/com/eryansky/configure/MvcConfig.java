@@ -1,6 +1,7 @@
 package com.eryansky.configure;
 
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
 import com.eryansky.core.web.interceptor.LogInterceptor;
 import com.eryansky.core.web.interceptor.MobileInterceptor;
@@ -92,6 +93,17 @@ public class MvcConfig implements WebMvcConfigurer {
    public IFileManager getFileManager() {
       final IFileManager iFileManager = new DISKManager();
       return iFileManager;
+   }
+
+//
+//   @Bean
+//   public LayoutDialect layoutDialect() {
+//      return new LayoutDialect();
+//   }
+
+   @Bean
+   public ShiroDialect shiroDialect() {
+      return new ShiroDialect();
    }
 
 }

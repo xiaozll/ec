@@ -470,4 +470,11 @@ public class SessionInfo implements Serializable {
         return ToStringBuilder.reflectionToString(this);
     }
 
+    public boolean isAuthenticated() {
+        return true;
+    }
+    public String getPrincipal() {
+        return name;
+    }
+
 }

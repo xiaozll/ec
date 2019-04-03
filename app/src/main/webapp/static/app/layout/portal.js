@@ -13,7 +13,13 @@ $(function() {
             iconCls:'eu-icon-more',
             handler:function(){
                 var url =ctxAdmin+'/notice';
-                eu.addTab(window.parent.layout_center_tabs,"我的通知",url,true,"eu-icon-notice_user_comment");
+                try {
+                    parent.addTabs({id:'notice',title: '我的通知',close: true,url: url,urlType: 'relative'});
+                } catch(e) {
+                    eu.addTab(window.parent.layout_center_tabs,"我的通知",url,true,"eu-icon-notice_user_comment");
+                }
+
+
             }
         }]
     }];

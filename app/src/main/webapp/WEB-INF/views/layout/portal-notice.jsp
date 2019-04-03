@@ -5,7 +5,12 @@
         $("#notice_icon_" + id).removeClass('tree-icon tree-file eu-icon-star_yellow').addClass("tree-icon tree-file eu-icon-star_gray")
                 .attr("title", "已读");
         $("#notice_label_" + id).removeClass("tip_unread").html("[已读]");
-        eu.addTab(window.parent.layout_center_tabs, "我的通知", '${ctxAdmin}/notice?noticeId=' + id, true, "eu-icon-notice_user_comment", "", true);
+
+        try {
+            parent.addTabs({id:'notice',title: '我的通知',close: true,url: '${ctxAdmin}/notice?noticeId=' + id,urlType: 'relative'});
+        } catch(e) {
+            eu.addTab(window.parent.layout_center_tabs, "我的通知", '${ctxAdmin}/notice?noticeId=' + id, true, "eu-icon-notice_user_comment", "", true);
+        }
     }
 </script>
 <div class="portal-div">

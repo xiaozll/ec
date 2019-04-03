@@ -16,7 +16,11 @@
     <div data-options="region:'west',title:'我的云盘',split:true,collapsed:false,border:false"
          style="width:180px; text-align: left;padding:5px;">
            <div style="padding: 5px;">
-            <a onclick="javascript:eu.addTab(window.parent.layout_center_tabs, '文件检索','${ctxAdmin}/disk/search', true,'eu-icon-disk_search','',false);" class="easyui-linkbutton"
+            <a onclick="javascript:try {
+                        parent.addTabs({id:'diskSearch',title: '文件检索',close: true,url: '${ctxAdmin}/disk/search',urlType: 'relative'});
+                    } catch(e) {
+                        eu.addTab(window.parent.layout_center_tabs, '文件检索','${ctxAdmin}/disk/search', true,'eu-icon-disk_search','',false);
+                    }" class="easyui-linkbutton"
                data-options="iconCls:'eu-icon-disk_search'" style="width: 152px;">文件检索</a>
            </div>
       <hr>

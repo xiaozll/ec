@@ -6,14 +6,12 @@
 package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.exception.SystemException;
-import com.eryansky.common.model.Datagrid;
-import com.eryansky.common.model.Menu;
-import com.eryansky.common.model.Result;
-import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.model.*;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm._enum.StatusState;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.web.servlet.ValidateCodeServlet;
 import com.eryansky.common.web.springmvc.SimpleController;
@@ -35,6 +33,7 @@ import com.eryansky.utils.CacheUtils;
 import com.eryansky.modules.sys.mapper.Resource;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,8 +46,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户登录/注销等前端交互入口
@@ -277,6 +275,134 @@ public class LoginController extends SimpleController {
             treeNodes = resourceService.findNavTreeNodeWithPermissions(sessionInfo.getUserId());
         }
         return treeNodes;
+    }
+
+
+    /**
+     * 导航菜单.
+     */
+    @ResponseBody
+    @RequestMapping(value = {"navTree2"})
+    public List<SiderbarMenu> navTree2(HttpServletResponse response) {
+        WebUtils.setNoCacheHeader(response);
+        List<SiderbarMenu> treeNodes = Lists.newArrayList();
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if (sessionInfo != null) {
+            treeNodes = resourcesToSiderbarMenu(resourceService.findAppAndMenuWithPermissions(sessionInfo.getUserId()));
+        }
+        return treeNodes;
+    }
+
+
+    /**
+     * @param resources
+     * @return
+     */
+    private List<SiderbarMenu> resourcesToSiderbarMenu(Collection<Resource> resources) {
+        List<SiderbarMenu> tempMenus = Lists.newArrayList();
+        if (Collections3.isEmpty(resources)) {
+            return tempMenus;
+        }
+        for(Resource r:resources){
+            tempMenus.add(resourceToSiderbarMenu(r));
+        }
+
+        List<SiderbarMenu> tempTreeNodes = Lists.newArrayList();
+        Map<String,SiderbarMenu> tempMap = Maps.newLinkedHashMap();
+
+        for(SiderbarMenu treeNode:tempMenus){
+            tempMap.put(treeNode.getId(),treeNode);
+            tempTreeNodes.add(treeNode);
+        }
+
+
+        Set<String> keyIds = tempMap.keySet();
+        Set<String> removeKeyIds = Sets.newHashSet();
+        Iterator<String> iteratorKey = keyIds.iterator();
+        while (iteratorKey.hasNext()){
+            String key = iteratorKey.next();
+            SiderbarMenu treeNode = null;
+            for(SiderbarMenu treeNode1:tempTreeNodes){
+                if(treeNode1.getId().equals(key)){
+                    treeNode = treeNode1;
+                    break;
+                }
+            }
+
+            if(StringUtils.isNotBlank(treeNode.getpId())){
+                SiderbarMenu pTreeNode = getParentSiderbarMenu(treeNode.getpId(),tempTreeNodes);
+                if(pTreeNode != null){
+                    for(SiderbarMenu treeNode2:tempTreeNodes){
+                        if(treeNode2.getId().equals(pTreeNode.getId())){
+                            treeNode2.addChild(treeNode);
+                            removeKeyIds.add(treeNode.getId());
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        //remove
+        if(Collections3.isNotEmpty(removeKeyIds)){
+            keyIds.removeAll(removeKeyIds);
+        }
+
+        List<SiderbarMenu> result = Lists.newArrayList();
+        keyIds = tempMap.keySet();
+        iteratorKey = keyIds.iterator();
+        while (iteratorKey.hasNext()){
+            String _key = iteratorKey.next();
+            SiderbarMenu treeNode = null;
+            for(SiderbarMenu treeNode4:tempTreeNodes){
+                if(treeNode4.getId().equals(_key)){
+                    treeNode = treeNode4;
+                    result.add(treeNode);
+                    break;
+                }
+            }
+
+        }
+        return result;
+    }
+
+
+    /**
+     * 资源转Menu
+     *
+     * @param resource 资源
+     * @return
+     */
+    private SiderbarMenu resourceToSiderbarMenu(Resource resource) {
+        Assert.notNull(resource, "参数resource不能为空");
+        SiderbarMenu menu = new SiderbarMenu(resource.getId(), resource.getName());
+        menu.setpId(resource.getParentId());
+        menu.setHeader(StringUtils.isBlank(menu.getpId()));
+        menu.setTargetType("iframe-tab");
+        String url = resource.getUrl();
+        menu.setUrl(url);
+        menu.addAttribute("type", resource.getType());
+        return menu;
+    }
+
+    /**
+     * 查找父级节点
+     *
+     * @param parentId
+     * @param menus
+     * @return
+     */
+    private SiderbarMenu getParentSiderbarMenu(String parentId, Collection<SiderbarMenu> menus) {
+        SiderbarMenu t = null;
+        for (SiderbarMenu menu : menus) {
+            if (parentId.equals(menu.getId())) {
+                t = menu;
+                break;
+            }
+        }
+        return t;
     }
 
     /**

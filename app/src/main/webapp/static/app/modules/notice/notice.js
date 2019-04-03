@@ -207,7 +207,13 @@ function initDatagrid(){
                 text: '我的联系人',
                 iconCls: 'eu-icon-user',
                 handler: function () {
-                    eu.addTab(window.parent.layout_center_tabs, '我的联系人',ctxAdmin + '/mail/contactGroup', true,'eu-icon-user','',false);
+                    try {
+                        parent.addTabs({id:'contactGroup',title: '我的联系人',close: true,url: ctxAdmin + '/mail/contactGroup',urlType: 'relative'});
+                    } catch(e) {
+                        eu.addTab(window.parent.layout_center_tabs, '我的联系人',ctxAdmin + '/mail/contactGroup', true,'eu-icon-user','',false);
+                    }
+
+
                 }
             }],
         onRowContextMenu : function(e, rowIndex, rowData) {

@@ -29,14 +29,24 @@ public class IndexController extends SimpleController {
     public ModelAndView welcome() {
         ModelAndView modelAnView = new ModelAndView("login");
         if(SecurityUtils.getCurrentSessionInfo() != null){
-            modelAnView = new ModelAndView("layout/index");
+            return index();
         }
         return modelAnView;
     }
 
     @RequestMapping(value = {"index"})
     public ModelAndView index() {
-        ModelAndView modelAnView = new ModelAndView("layout/index");
+        User sessionUser = SecurityUtils.getCurrentUser();
+        String userPhoto = null;
+        if(sessionUser != null && StringUtils.isNotBlank(sessionUser.getPhoto())){
+            userPhoto = sessionUser.getPhotoUrl();
+        }
+
+        if(StringUtils.isBlank(userPhoto)){
+            userPhoto = SpringMVCHolder.getRequest().getContextPath()+"/static/img/icon_boy.png";
+        }
+        ModelAndView modelAnView = new ModelAndView("layout/index.html");
+        modelAnView.addObject("userPhoto", userPhoto);
         return modelAnView;
     }
 

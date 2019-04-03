@@ -33,7 +33,7 @@
         <div id="password_div">
             <label>密码:</label>
             <input type="password" id="password"
-                   name="password" class="easyui-validatebox textbox" maxLength="36"
+                   name="password" class="easyui-validatebox textbox" maxLength="36" value="${model.password}"
                    data-options="required:true,missingMessage:'请输入密码.',validType:['minLength[1]']">
         </div>
         <div id="repassword_div">

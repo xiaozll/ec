@@ -57,7 +57,7 @@ public class MvcConfig implements WebMvcConfigurer {
       registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter)).addPathPatterns("/**").excludePathPatterns("/static/**");
       registry.addInterceptor(new AuthorityInterceptor().setRedirectURL("/jump.jsp")).addPathPatterns("/**")
               .excludePathPatterns(Arrays.asList(new String[]{"/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**","/fop/**"}));
-      registry.addInterceptor(new MobileInterceptor()).addPathPatterns(AppConstants.getMobilePath()+"/*");
+      registry.addInterceptor(new MobileInterceptor()).addPathPatterns(AppConstants.getMobilePath()+"/**");
    }
 
    /**

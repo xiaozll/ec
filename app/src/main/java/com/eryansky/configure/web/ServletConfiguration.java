@@ -37,6 +37,9 @@ public class ServletConfiguration {
         StaticContentServlet servlet = new StaticContentServlet();
         ServletRegistrationBean<StaticContentServlet> bean = new ServletRegistrationBean<>(servlet);
         bean.addUrlMappings("/servlet/StaticContentServlet");
+        bean.addInitParameter("cacheChannel","cacheChannel");
+        bean.addInitParameter("cacheKey","contentInfoCache");
+        bean.addInitParameter("cacheFileData","true");
         return bean;
     }
 }

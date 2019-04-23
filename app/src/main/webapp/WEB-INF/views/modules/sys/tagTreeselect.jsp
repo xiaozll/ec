@@ -29,9 +29,10 @@
 		$(document).ready(function(){
 			$.get("${url}${fn:indexOf(url,'?')==-1?'?':'&'}&extId=${extId}&module=${module}&t="+new Date().getTime(), function(zNodes){
 				// 初始化树结构
-				tree = $.fn.zTree.init($("#tree"), setting, $.parseJSON(zNodes));
-				
-				// 默认展开一级节点
+                var isString = Object.prototype.toString.call(zNodes) === "[object String]";
+                tree = $.fn.zTree.init($("#tree"), setting, isString ? $.parseJSON(zNodes):zNodes);
+
+                // 默认展开一级节点
 				var nodes = tree.getNodesByParam("level", 0);
 				for(var i=0; i<nodes.length; i++) {
 					tree.expandNode(nodes[i], true, false, false);

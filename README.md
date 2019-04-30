@@ -2,7 +2,7 @@
 
 ### 快速开始
 > 项目使用技术
-- Spring boot2
+- Spring Boot2
 > 依赖外部环境
 - redis (可选)
 - MariaDB/MySQL

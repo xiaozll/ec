@@ -10,7 +10,7 @@
 <html style="background-color: #e6e6e6;">
 <head>
     <title><sitemesh:title default="${fns:getAppName()}"/></title>
-    <%@ include file="/WEB-INF/views/modules/sys/include/head.jsp" %>
+    <%@ include file="/WEB-INF/views/modules/sys/include/head_mobile.jsp" %>
     <%@ include file="/WEB-INF/views/include/dialog.jsp" %>
     <script type="text/javascript" charset="utf-8" src="${ctxStatic}/mobile/map_module${yuicompressor}.js?_=${sysInitTime}"></script>
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/app/mobile/mobile${yuicompressor}.css?_=${sysInitTime}" />

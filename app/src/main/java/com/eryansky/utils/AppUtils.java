@@ -10,6 +10,8 @@ import com.eryansky.common.orm._enum.StatusState;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -417,5 +419,17 @@ public class AppUtils {
      */
     public static YesOrNo[] getYesOrNo(){
         return YesOrNo.values();
+    }
+
+    public static String getAppURL() {
+        String value = AppConstants.getAppURL();
+        if(StringUtils.isNotBlank(value)){
+            return value;
+        }
+        try {
+            return WebUtils.getAppURL(SpringMVCHolder.getRequest());
+        } catch (Exception e) {
+        }
+        return value;
     }
 }

@@ -42,12 +42,20 @@
                 <configSuffix></configSuffix>
                 <profileActive>dev</profileActive>
             </properties>
+            <dependencies>
+                <!-- JSP 渲染引擎 -->
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-jasper</artifactId>
+                    <version>${tomcat.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <project.packaging>war</project.packaging>
-                <configSuffix>-dev</configSuffix>
+                <configSuffix>-prod</configSuffix>
                 <profileActive>prod</profileActive>
             </properties>
             <dependencies>
@@ -61,6 +69,13 @@
                             <groupId>org.springframework.boot</groupId>
                         </exclusion>
                     </exclusions>
+                </dependency>
+                <!-- JSP 渲染引擎 -->
+                <dependency>
+                    <groupId>org.apache.tomcat.embed</groupId>
+                    <artifactId>tomcat-embed-jasper</artifactId>
+                    <version>${tomcat.version}</version>
+                    <scope>provided</scope>
                 </dependency>
             </dependencies>
         </profile>

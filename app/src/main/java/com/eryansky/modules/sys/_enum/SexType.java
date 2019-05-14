@@ -15,7 +15,7 @@ package com.eryansky.modules.sys._enum;
  */
 public enum SexType {
 	/** 女(0) */
-	girl("1", "女"),
+	girl("0", "女"),
 	/** 男(1) */
 	boy("1", "男"),
 	/** 保密(2) */

@@ -31,13 +31,13 @@
         <java.version>1.8</java.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
-        <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+        <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
         <logback.version>5.2</logback.version>
 
-        <tomcat.version>9.0.17</tomcat.version>
+        <tomcat.version>9.0.19</tomcat.version>
         <jstl.version>1.2</jstl.version>
 
-        <mybatis-spring-boot.version>2.0.0</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
         <commons-pool2.version>2.6.0</commons-pool2.version>
         <druid-version>1.1.14</druid-version>
         <mariadb.driver.version>2.4.1</mariadb.driver.version>

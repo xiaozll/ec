@@ -51,8 +51,8 @@ public class J2CacheAdapter implements Cache {
         if(null == Static.cache){
             return;
         }
-        String _key = encodeKey ? Encrypt.md5(key.toString()):key.toString();
-        Static.cache.set(this.id, _key, value);
+        String mKey = encodeKey ? Encrypt.md5(key.toString()):key.toString();
+        Static.cache.set(this.id, mKey, value);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class J2CacheAdapter implements Cache {
         if(null == Static.cache){
             return null;
         }
-        String _key = encodeKey ? Encrypt.md5(key.toString()):key.toString();
-        return Static.cache.get(this.id, _key).getValue();
+        String mKey = encodeKey ? Encrypt.md5(key.toString()):key.toString();
+        return Static.cache.get(this.id, mKey).getValue();
     }
 
     @Override
@@ -69,10 +69,10 @@ public class J2CacheAdapter implements Cache {
         if(null == Static.cache){
             return null;
         }
-        String _key = encodeKey ? Encrypt.md5(key.toString()):key.toString();
-        Object obj = Static.cache.get(this.id, _key).getValue();
+        String mKey = encodeKey ? Encrypt.md5(key.toString()):key.toString();
+        Object obj = Static.cache.get(this.id, mKey).getValue();
         if (obj != null)
-            Static.cache.evict(this.id, _key);
+            Static.cache.evict(this.id, mKey);
         return obj;
     }
 

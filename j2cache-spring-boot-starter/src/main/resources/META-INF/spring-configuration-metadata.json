@@ -34,6 +34,10 @@
       "type": "java.lang.Integer",
       "defaultValue": "1000"
     },{
+      "name": "j2cache.session.maxAge",
+      "type": "java.lang.Integer",
+      "defaultValue": "1800"
+    },{
       "name": "j2cache.session.filter.order",
       "type": "java.lang.Integer",
       "description": "SessionFilter Order."

@@ -16,7 +16,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class J2CacheSessionProperties {
 
     private final Filter filter = new Filter();
+    /**
+     * session数量
+     */
     private String maxSizeInMemory;
+    /**
+     * session有效时间 单位：秒
+     */
+    private String maxAge;
     private final Redis redis = new Redis();
 
 
@@ -31,6 +38,14 @@ public class J2CacheSessionProperties {
 
     public void setMaxSizeInMemory(String maxSizeInMemory) {
         this.maxSizeInMemory = maxSizeInMemory;
+    }
+
+    public String getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(String maxAge) {
+        this.maxAge = maxAge;
     }
 
     public Redis getRedis() {

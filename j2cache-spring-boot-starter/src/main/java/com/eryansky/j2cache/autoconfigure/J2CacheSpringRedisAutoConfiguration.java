@@ -63,20 +63,20 @@ public class J2CacheSpringRedisAutoConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(J2CacheSpringRedisAutoConfiguration.class);
 
-    @Autowired(required = false)
-    private JedisConnectionFactory jedisConnectionFactory;
+//    @Autowired(required = false)
+//    private JedisConnectionFactory jedisConnectionFactory;
 
-    @Autowired(required = false)
-    private LettuceConnectionFactory lettuceConnectionFactory;
+//    @Autowired(required = false)
+//    private LettuceConnectionFactory lettuceConnectionFactory;
 
 	@SuppressWarnings("deprecation")
 	@Bean("j2CahceRedisConnectionFactory")
 	@ConditionalOnMissingBean(name = "j2CahceRedisConnectionFactory")
 	@ConditionalOnProperty(name = "j2cache.redis-client", havingValue = "jedis", matchIfMissing = true)
 	public JedisConnectionFactory jedisConnectionFactory(com.eryansky.j2cache.J2CacheConfig j2CacheConfig) {
-        if (null != this.jedisConnectionFactory) {
-            return this.jedisConnectionFactory;
-        }
+//        if (null != this.jedisConnectionFactory) {
+//            return this.jedisConnectionFactory;
+//        }
 	    Properties l2CacheProperties = j2CacheConfig.getL2CacheProperties();
 		String hosts = l2CacheProperties.getProperty("hosts");
 		String mode = l2CacheProperties.getProperty("mode") == null ? "null" : l2CacheProperties.getProperty("mode");
@@ -158,9 +158,9 @@ public class J2CacheSpringRedisAutoConfiguration {
 	@ConditionalOnMissingBean(name = "j2CahceRedisConnectionFactory")
 	@ConditionalOnProperty(name = "j2cache.redis-client", havingValue = "lettuce")
 	public LettuceConnectionFactory lettuceConnectionFactory(com.eryansky.j2cache.J2CacheConfig j2CacheConfig) {
-		if (null != this.lettuceConnectionFactory) {
-			return this.lettuceConnectionFactory;
-		}
+//		if (null != this.lettuceConnectionFactory) {
+//			return this.lettuceConnectionFactory;
+//		}
 		Properties l2CacheProperties = j2CacheConfig.getL2CacheProperties();
 		String hosts = l2CacheProperties.getProperty("hosts");
 		String mode = l2CacheProperties.getProperty("mode") == null ? "null" : l2CacheProperties.getProperty("mode");

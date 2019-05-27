@@ -33,6 +33,7 @@ public class J2CacheSessionFilterConfiguration {
         map.put("cookieDomain",filterConfig.getCookieDomain());
         map.put("cookiePath",filterConfig.getCookiePath());
 
+        map.put("session.maxAge",sessionProperties.getMaxAge());
         map.put("session.maxSizeInMemory",sessionProperties.getMaxSizeInMemory());
 
         map.put("redis.enabled",redisConfig.isEnabled());

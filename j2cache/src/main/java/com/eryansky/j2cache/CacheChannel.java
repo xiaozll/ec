@@ -348,7 +348,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
     public <T extends Serializable> Map<String, T> get(final String region,final Collection<String> keys, final Class<T> dataClass,final Function<String, T> loader){
         return parse(get(region, keys, loader::apply), dataClass);
     }
-    
+
 	/**
 	 * 判断某个缓存键是否存在
 	 * @param region Cache region name
@@ -488,8 +488,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 
 		try {
 			if (cacheNullObject && elements.containsValue(null)) {
-				Map<String, Object> newElems = new HashMap<>();
-				newElems.putAll(elements);
+				Map<String, Object> newElems = new HashMap<>(elements);
 				newElems.forEach((k,v) -> {
 					if (v == null)
 						newElems.put(k, newNullObject());
@@ -548,8 +547,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 		else {
 			try {
 				if (cacheNullObject && elements.containsValue(null)) {
-					Map<String, Object> newElems = new HashMap<>();
-					newElems.putAll(elements);
+					Map<String, Object> newElems = new HashMap<>(elements);
 					newElems.forEach((k,v) -> {
 						if (v == null)
 							newElems.put(k, newNullObject());

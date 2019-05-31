@@ -18,7 +18,7 @@ import java.util.List;
 @SpringBootTest
 public class CacheTests {
 
-	@Autowired
+	@Autowired(required = false)
 	private RedisTemplate<String, Serializable> redisTemplate;
 
 	@Test

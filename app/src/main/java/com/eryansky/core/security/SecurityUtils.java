@@ -434,6 +434,9 @@ public class SecurityUtils {
      */
     public static SessionInfo reloadCurrentSessionPermission(){
         SessionInfo sessionInfo = getCurrentSessionInfo();
+        sessionInfo.getPermissons().clear();
+        sessionInfo.getPermissonRoles().clear();
+        sessionInfo.getPostCodes().clear();
         initPermission(sessionInfo);
         return sessionInfo;
     }
@@ -445,7 +448,12 @@ public class SecurityUtils {
      */
     public static void reloadSessionPermission(String userId){
         List<SessionInfo> sessionInfos = findSessionInfoByUserId(userId);
-        sessionInfos.forEach(SecurityUtils::initPermission);
+        sessionInfos.forEach(sessionInfo -> {
+            sessionInfo.getPermissons().clear();
+            sessionInfo.getPermissonRoles().clear();
+            sessionInfo.getPostCodes().clear();
+            initPermission(sessionInfo);
+        });
     }
 
     /**

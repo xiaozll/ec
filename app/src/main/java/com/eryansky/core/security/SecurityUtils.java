@@ -434,6 +434,9 @@ public class SecurityUtils {
      */
     public static SessionInfo reloadCurrentSessionPermission(){
         SessionInfo sessionInfo = getCurrentSessionInfo();
+        if(null == sessionInfo){
+            return null;
+        }
         sessionInfo.getPermissons().clear();
         sessionInfo.getPermissonRoles().clear();
         sessionInfo.getPostCodes().clear();

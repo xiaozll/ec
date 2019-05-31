@@ -38,6 +38,10 @@ public class SessionInfo implements Serializable {
      */
     private String sessionId;
     /**
+     * token
+     */
+    private String token;
+    /**
      * 服务主机
      */
     private String host;
@@ -140,6 +144,7 @@ public class SessionInfo implements Serializable {
      */
     private String deviceCode;
 
+
     public SessionInfo() {
     }
 
@@ -169,6 +174,14 @@ public class SessionInfo implements Serializable {
      */
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     /**

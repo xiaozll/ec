@@ -5,8 +5,10 @@
  */
 package com.eryansky.core.security.interceptor;
 
+import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.web.utils.WebUtils;
 import com.google.common.collect.Lists;
 import com.eryansky.core.security.SecurityConstants;
 import com.eryansky.core.security.SecurityUtils;
@@ -250,7 +252,20 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
         }else{
             logger.warn("[{}]未授权[{}]",new Object[]{request.getSession().getId(),requestUrl});
             //返回校验不通过页面
-            response.sendRedirect(request.getContextPath()+redirectURL);
+            try {
+                if(!response.isCommitted()){
+                    String authorization = request.getHeader("Authorization");
+                    if(WebUtils.isAjaxRequest(request) || StringUtils.startsWith(authorization,"Bearer ")){
+                        WebUtils.renderJson(response, new Result().setCode(401).setMsg("未授权"));
+                    }else{
+                        //返回校验不通过页面
+                        response.sendRedirect(request.getContextPath()+redirectURL);
+                    }
+
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
             return false; // 返回到登录页面
         }
     }

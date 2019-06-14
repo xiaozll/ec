@@ -653,6 +653,20 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 		return keys;
     }
 
+
+	/**
+	 * 获取key的ttl时间
+	 * @param region
+	 * @param key
+	 * @return
+	 */
+	public Long ttl(String region,String key)  {
+		if(closed)
+			throw new IllegalStateException("CacheChannel closed");
+		Long ttl =  holder.getLevel1Cache(region).ttl(key);
+		return null != ttl ? ttl:holder.getLevel2Cache(region).ttl(key);
+	}
+
 	/**
 	 * Close J2Cache
 	 */

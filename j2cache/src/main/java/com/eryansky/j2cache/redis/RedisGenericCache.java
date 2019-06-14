@@ -212,6 +212,10 @@ public class RedisGenericCache implements Level2Cache {
         }
     }
 
+    @Override
+    public Long ttl(String key) {
+        return client.get().ttl(key.getBytes());
+    }
 
     @Override
     public void queuePush(String... values) {

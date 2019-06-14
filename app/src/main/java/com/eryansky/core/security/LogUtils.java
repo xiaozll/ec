@@ -26,8 +26,8 @@ import java.util.Map;
  */
 public class LogUtils {
 
-    public static final Logger ERROR_LOG = LoggerFactory.getLogger("essm-error");
-    public static final Logger ACCESS_LOG = LoggerFactory.getLogger("essm-access");
+    public static final Logger ERROR_LOG = LoggerFactory.getLogger("ec-error");
+    public static final Logger ACCESS_LOG = LoggerFactory.getLogger("ec-access");
 
     /**
      * 记录访问日志

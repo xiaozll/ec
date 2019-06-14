@@ -91,6 +91,15 @@ public interface Cache {
 	void clear();
 
 	/**
+	 * 获取key的ttl时间
+	 * @param key
+	 * @return
+	 */
+	default Long ttl(String key){
+		return null;
+	};
+
+	/**
 	 * 在region里增加一个可选的层级,作为命名空间,使结构更加清晰
 	 * 同时满足小型应用,多个J2Cache共享一个redis database的场景
 	 * @param namespace

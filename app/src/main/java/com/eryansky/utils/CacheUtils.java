@@ -93,6 +93,12 @@ public class CacheUtils {
 		return Static.cacheChannel.regions();
 	}
 
+
+	public static CacheChannel.Region getRegion(String region) {
+		Collection<CacheChannel.Region> regions = regions();
+		return regions.stream().filter(r -> region.equals(r.getName())).findFirst().orElse(null);
+	}
+
 	public static CacheChannel getCacheChannel() {
 		return Static.cacheChannel;
 	}

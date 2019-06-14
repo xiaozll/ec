@@ -44,13 +44,15 @@
 			<thead>
 			<tr>
 				<th>KEY</th>
+				<th>TTL</th>
 				<th>操作</th>
 			</tr>
 			</thead>
 			<tbody>
 			{{#result}}
 			<tr>
-				<td>{{.}}</td>
+				<td>{{key}}</td>
+				<td>{{ttl}}</td>
 				<td>
 					<a href="${ctxAdmin}/sys/systemMonitor/cacheKeyDetail?region=${region}&key={{.}}">查看</a>&nbsp;
 					<e:hasPermission name="sys:systemMonitor:edit">

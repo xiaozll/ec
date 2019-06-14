@@ -102,4 +102,12 @@ public class LettuceHashCache extends LettuceCache {
             cmd.del(this.region);
         }
     }
+
+    @Override
+    public Long ttl(String key) {
+        try(StatefulConnection<String, byte[]> connection = super.connect()) {
+            RedisKeyCommands<String, byte[]> cmd = (RedisKeyCommands)super.sync(connection);
+            return cmd.ttl(key);
+        }
+    }
 }

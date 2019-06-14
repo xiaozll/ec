@@ -115,6 +115,10 @@ public class SessionInfo implements Serializable {
      */
     private Date loginTime = new Date();
     /**
+     * 最后访问时间
+     */
+    private Date updateTime = new Date();
+    /**
      * 经度
      */
     private BigDecimal longitude;
@@ -316,6 +320,13 @@ public class SessionInfo implements Serializable {
     }
 
     /**
+     * 设置登录时间
+     */
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    /**
      * 登录时间
      */
     // 设定JSON序列化时的日期格式
@@ -324,6 +335,14 @@ public class SessionInfo implements Serializable {
         return loginTime;
     }
 
+    @JsonFormat(pattern = AbstractBaseEntity.DATE_TIME_FORMAT, timezone = AbstractBaseEntity.TIMEZONE)
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public BigDecimal getLongitude() {
         return longitude;
@@ -349,12 +368,7 @@ public class SessionInfo implements Serializable {
         this.accuracy = accuracy;
     }
 
-    /**
-     * 设置登录时间
-     */
-    public void setLoginTime(Date loginTime) {
-        this.loginTime = loginTime;
-    }
+
 
     public String getLoginOrganId() {
         return loginOrganId;

@@ -33,6 +33,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -475,6 +476,11 @@ public class SecurityUtils {
             }
         } catch (Exception e) {
 //            logger.error(e.getMessage(),e);
+        }finally {
+            if(null != sessionInfo){
+                sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
+                Static.applicationSessionContext.addSession(sessionInfo);
+            }
         }
 
         return sessionInfo;
@@ -495,6 +501,11 @@ public class SecurityUtils {
             }
         } catch (Exception e) {
 //            logger.error(e.getMessage(),e);
+        }finally {
+            if(null != sessionInfo){
+                sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
+                Static.applicationSessionContext.addSession(sessionInfo);
+            }
         }
         return sessionInfo;
     }

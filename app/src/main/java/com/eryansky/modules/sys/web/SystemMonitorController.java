@@ -21,6 +21,7 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.ApplicationSessionContext;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.j2cache.CacheChannel;
+import com.eryansky.j2cache.CacheObject;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.utils.*;
 import com.google.common.collect.Lists;
@@ -107,11 +108,20 @@ public class SystemMonitorController extends SimpleController {
     @Logging(value = "系统监控-缓存管理",logType = LogType.access,logging = "!#isAjax")
     @RequestMapping("cacheDetail")
     public String cacheDetail(String region,Model uiModel,HttpServletRequest request, HttpServletResponse response){
-        Page<String> page = new Page<>(request,response);
+        Page<Map<String,Object>> page = new Page<>(request,response);
         if(WebUtils.isAjaxRequest(request)){
             Collection<String> keys = CacheUtils.keys(region);
             page.setTotalCount(keys.size());
-            page.setResult(AppUtils.getPagedList(Collections3.union(keys,Collections.emptyList()),page.getPageNo(),page.getPageSize()));
+            List<String> pKeys = AppUtils.getPagedList(Collections3.union(keys,Collections.emptyList()),page.getPageNo(),page.getPageSize());
+            List<Map<String,Object>> dataList = Lists.newArrayList();
+            CacheChannel cacheChannel = CacheUtils.getCacheChannel();
+            pKeys.forEach(key->{
+                Map<String,Object> map = Maps.newHashMap();
+                map.put("key",key);
+                map.put("ttl",cacheChannel.ttl(region,key));
+                dataList.add(map);
+            });
+            page.setResult(dataList);
             return renderString(response,page);
         }
         uiModel.addAttribute("region",region);

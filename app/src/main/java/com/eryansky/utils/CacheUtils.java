@@ -80,8 +80,22 @@ public class CacheUtils {
 		Static.cacheChannel.removeRegion(region);
 	}
 
+	/**
+	 * key
+	 * @param region
+	 * @return
+	 */
 	public static Collection<String> keys(String region) {
 		return Static.cacheChannel.keys(region);
+	}
+
+	/**
+	 * key大小
+	 * @param region
+	 * @return
+	 */
+	public static int keySize(String region) {
+		return Static.cacheChannel.keySize(region);
 	}
 
 	public static Collection<String> regionNames() {

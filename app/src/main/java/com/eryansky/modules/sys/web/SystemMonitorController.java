@@ -89,7 +89,7 @@ public class SystemMonitorController extends SimpleController {
                 map.put("name",r.getName());
                 map.put("size",r.getSize());
                 map.put("ttl",r.getTtl());
-                map.put("keys",CacheUtils.keys(r.getName()).size());
+                map.put("keys",CacheUtils.keySize(r.getName()));
                 dataList.add(map);
             }
             page.setTotalCount(regions.size());
@@ -117,6 +117,7 @@ public class SystemMonitorController extends SimpleController {
             CacheChannel cacheChannel = CacheUtils.getCacheChannel();
             pKeys.forEach(key->{
                 Map<String,Object> map = Maps.newHashMap();
+//                String mKey = StringUtils.substringAfterLast(key,":");
                 map.put("key",key);
                 map.put("ttl1",cacheChannel.ttl(region,key,1));
                 map.put("ttl2",cacheChannel.ttl(region,key,2));

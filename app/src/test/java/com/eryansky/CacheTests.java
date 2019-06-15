@@ -89,7 +89,9 @@ public class CacheTests {
 		String key = "key1";
 		CacheUtils.getCacheChannel().set(region,key,"1");
 		System.out.println(CacheUtils.getCacheChannel().get(region,key));
-		System.out.println(CacheUtils.getCacheChannel().ttl(region,key));;
+//		System.out.println(CacheUtils.getCacheChannel().ttl(region,key));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key,1));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key,2));
 	}
 
 

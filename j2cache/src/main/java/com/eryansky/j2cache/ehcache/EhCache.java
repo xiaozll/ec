@@ -161,4 +161,13 @@ public class EhCache implements Level1Cache, CacheEventListener {
 	@Override
 	public void dispose() {}
 
+	@Override
+	public Long ttl(String key) {
+		Element element = cache.get(key);
+		long lastAccessTime = element.getLastAccessTime();
+		long creationTime = element.getCreationTime();
+		int timeToLive = lastAccessTime == 0 ? element.getTimeToLive() : (int)
+				(element.getTimeToLive() - ((lastAccessTime - creationTime)/1000)) ;
+		return Long.valueOf(timeToLive);
+	}
 }

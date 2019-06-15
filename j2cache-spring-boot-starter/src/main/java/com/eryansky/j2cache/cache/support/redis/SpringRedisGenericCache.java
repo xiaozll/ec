@@ -2,12 +2,19 @@ package com.eryansky.j2cache.cache.support.redis;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
+import com.eryansky.j2cache.Cache;
+import com.eryansky.j2cache.lock.LockCallback;
+import com.eryansky.j2cache.lock.LockCantObtainException;
+import com.eryansky.j2cache.lock.LockInsideExecutedException;
+import com.eryansky.j2cache.lock.LockRetryFrequency;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.cluster.RedisClusterClient;
+import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisCallback;
@@ -66,12 +73,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 
 	@Override
 	public Collection<String> keys() {
-		Set<String> list = redisTemplate.keys(this.region + ":*");
-		List<String> keys = new ArrayList<>(list.size());
-		for (String s : list) {
-			keys.add(s);
-		}
-		return keys;
+		return redisTemplate.keys(this.region + ":*");
 	}
 
 	@Override
@@ -125,9 +127,80 @@ public class SpringRedisGenericCache implements Level2Cache {
 		try {
 			k = (this.region + ":" + key).getBytes("utf-8");
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(),e);
 			k = (this.region + ":" + key).getBytes();
 		}
 		return k;
+	}
+
+	@Override
+	public Long ttl(String key) {
+		return redisTemplate.execute((RedisCallback<Long>) redis -> redis.ttl(_key(key), TimeUnit.SECONDS));
+	}
+
+	@Override
+	public void queuePush(String... values) {
+		for(String value:values){
+			redisTemplate.execute((RedisCallback<Long>) redis -> redis.rPush(region.getBytes(), value.getBytes()));
+		}
+	}
+
+	@Override
+	public String queuePop() {
+		byte[] result = redisTemplate.execute((RedisCallback<byte[]>) redis -> redis.lPop(region.getBytes()));
+		return null == result ? null : new String(result);
+	}
+
+	@Override
+	public int queueSize() {
+		Long result = redisTemplate.execute((RedisCallback<Long>) redis -> redis.lLen(region.getBytes()));
+		return null != result ? result.intValue():0;
+	}
+
+	@Override
+	public Collection<String> queueList() {
+		Long length = redisTemplate.execute((RedisCallback<Long>) redis -> redis.lLen(region.getBytes()));
+		if(null == length || length == 0){
+			return Collections.emptyList();
+		}
+		List<byte[]> result = redisTemplate.execute((RedisCallback<List<byte[]>>) redis -> {
+			return redis.lRange(region.getBytes(),0,length-1);
+		});
+
+		return null == result ? Collections.emptyList() : result.stream().map(String::new).collect(Collectors.toList());
+	}
+
+	@Override
+	public void queueClear() {
+		clear();
+	}
+
+	@Override
+	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
+		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
+
+		for (int i = 0; i < retryCount; i++) {
+			Boolean flag = redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
+
+			if(null != flag && flag) {
+				try {
+					redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
+					return lockCallback.handleObtainLock();
+				} catch (Exception e) {
+					log.error(e.getMessage(),e);
+					LockInsideExecutedException ie = new LockInsideExecutedException(e);
+					return lockCallback.handleException(ie);
+				} finally {
+					redisTemplate.execute((RedisCallback<Long>) redis -> redis.del(region.getBytes()));
+				}
+			} else {
+				try {
+					Thread.sleep(frequency.getRetryInterval());
+				} catch (InterruptedException e) {
+					log.error(e.getMessage(),e);
+				}
+			}
+		}
+		return lockCallback.handleNotObtainLock();
 	}
 }

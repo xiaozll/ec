@@ -1,12 +1,16 @@
 package com.eryansky.j2cache.cache.support.redis;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
+import com.eryansky.j2cache.lock.LockCallback;
+import com.eryansky.j2cache.lock.LockCantObtainException;
+import com.eryansky.j2cache.lock.LockInsideExecutedException;
+import com.eryansky.j2cache.lock.LockRetryFrequency;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -19,6 +23,8 @@ import com.eryansky.j2cache.Level2Cache;
  *
  */
 public class SpringRedisCache implements Level2Cache {
+
+	private final static Logger log = LoggerFactory.getLogger(SpringRedisCache.class);
 
 	private String namespace;
 
@@ -117,5 +123,89 @@ public class SpringRedisCache implements Level2Cache {
 	private String _key(String key) {
 		return this.region + ":" + key;
 	}
-	
+
+	@Override
+	public Long ttl(String key) {
+		return redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> redis.ttl(key.getBytes(), TimeUnit.SECONDS));
+	}
+
+
+	@Override
+	public void queuePush(String... values) {
+		for(String value:values){
+			redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
+				return redis.rPush(region.getBytes(), value.getBytes());
+			});
+		}
+	}
+
+	@Override
+	public String queuePop() {
+		byte[] result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<byte[]>) redis -> {
+			return redis.lPop(region.getBytes());
+		});
+		return null == result ? null : new String(result);
+	}
+
+	@Override
+	public int queueSize() {
+		Long result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
+			return redis.lLen(region.getBytes());
+		});
+		return null != result ? result.intValue():0;
+	}
+
+	@Override
+	public Collection<String> queueList() {
+		Long length = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
+			return redis.lLen(region.getBytes());
+		});
+		if(null == length || length == 0){
+			return Collections.emptyList();
+		}
+		List<byte[]> result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<List<byte[]>>) redis -> {
+			return redis.lRange(region.getBytes(),0,length-1);
+		});
+
+		return null == result ? Collections.emptyList() : result.stream().map(String::new).collect(Collectors.toList());
+	}
+
+	@Override
+	public void queueClear() {
+		clear();
+	}
+
+	@Override
+	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
+		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
+
+		for (int i = 0; i < retryCount; i++) {
+			boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
+			if(flag) {
+				try {
+					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> {
+						return redis.expire(region.getBytes(),keyExpireSeconds);
+					});
+					return lockCallback.handleObtainLock();
+				} catch (Exception e) {
+					log.error(e.getMessage(),e);
+					LockInsideExecutedException ie = new LockInsideExecutedException(e);
+					return lockCallback.handleException(ie);
+				} finally {
+					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
+						return redis.del(region.getBytes());
+					});
+				}
+			} else {
+				try {
+					Thread.sleep(frequency.getRetryInterval());
+				} catch (InterruptedException e) {
+					log.error(e.getMessage(),e);
+				}
+			}
+		}
+		return lockCallback.handleNotObtainLock();
+	}
+
 }
+

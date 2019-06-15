@@ -30,8 +30,8 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>${ehcache.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
+            <!--<scope>compile</scope>-->
+            <!--<optional>true</optional>-->
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>

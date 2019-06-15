@@ -510,7 +510,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			}
 		} finally {
 			//广播
-			this.sendEvictCmd(region, elements.keySet().stream().toArray(String[]::new));
+			this.sendEvictCmd(region, elements.keySet().toArray(new String[0]));
 		}
 	}
 
@@ -567,7 +567,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 				}
 			} finally {
 				//广播
-				this.sendEvictCmd(region, elements.keySet().stream().toArray(String[]::new));
+				this.sendEvictCmd(region, elements.keySet().toArray(new String[0]));
 			}
 		}
 	}
@@ -761,9 +761,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			level2Cache.queuePush(values);
 		}else{
 			LinkedBlockingQueue<String> queue = mQueueMap.computeIfAbsent(region, k -> new LinkedBlockingQueue<>());
-			for(String value:values){
-				queue.add(value);
-			}
+			queue.addAll(Arrays.asList(values));
 		}
 	}
 
@@ -881,7 +879,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 						LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
 		Level2Cache level2Cache = holder.getLevel2Cache(region);
 		if(!(level2Cache instanceof NullCache)){
-			return level2Cache.lock(region,frequency,timeoutInSecond, keyExpireSeconds,lockCallback);
+			return level2Cache.lock(frequency,timeoutInSecond, keyExpireSeconds,lockCallback);
 		}else{
 			ReentrantLock lock  = mLockMap.computeIfAbsent(region, k -> {return new ReentrantLock();});
 			int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();

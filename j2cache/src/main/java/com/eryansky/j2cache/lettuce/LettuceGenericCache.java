@@ -140,7 +140,7 @@ public class LettuceGenericCache extends LettuceCache {
     public Long ttl(String key) {
         try(StatefulConnection<String, byte[]> connection = super.connect()) {
             RedisKeyCommands<String, byte[]> cmd = (RedisKeyCommands)super.sync(connection);
-            return cmd.ttl(key);
+            return cmd.ttl(_key(key));
         }
     }
 }

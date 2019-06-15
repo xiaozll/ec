@@ -67,7 +67,6 @@ public class LettuceHashCache extends LettuceCache {
     public void setBytes(String key, byte[] bytes) {
         try(StatefulConnection<String, byte[]> connection = super.connect()) {
             RedisHashCommands<String, byte[]> cmd = (RedisHashCommands)super.sync(connection);
-            cmd.hset(this.region, key, bytes);
         }
     }
 

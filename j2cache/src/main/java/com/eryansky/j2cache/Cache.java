@@ -97,7 +97,7 @@ public interface Cache {
 	 */
 	default Long ttl(String key){
 		return null;
-	};
+	}
 
 	/**
 	 * 在region里增加一个可选的层级,作为命名空间,使结构更加清晰
@@ -120,19 +120,19 @@ public interface Cache {
 	/**
 	 * 队列 获取
 	 */
-	default String queuePop(){return null;};
+	default String queuePop(){return null;}
 
     /**
      * 队列 储存元素长度
      * @return
      */
-	default int queueSize(){return 0;};
+	default int queueSize(){return 0;}
 
     /**
      * 队列 储存的全部元素
      * @return
      */
-	default Collection<String> queueList(){return Collections.emptyList();};
+	default Collection<String> queueList(){return Collections.emptyList();}
 
 	/**
 	 * 队列 清空
@@ -140,7 +140,6 @@ public interface Cache {
 	default void queueClear(){}
 
 	/**
-	 * @param lockKey
 	 * @param frequency
 	 * @param timeoutInSecond
 	 * @param keyExpireSeconds
@@ -150,10 +149,10 @@ public interface Cache {
 	 * @throws LockInsideExecutedException
 	 * @throws LockCantObtainException
 	 */
-	default <T> T lock(String lockKey, LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds,
+	default <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds,
 					   LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException{
 		return null;
-	};
+	}
 
 
 }

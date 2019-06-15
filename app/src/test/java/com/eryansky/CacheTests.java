@@ -5,9 +5,11 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.lock.DefaultLockCallback;
 import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,9 +27,12 @@ public class CacheTests {
 
 	@Autowired(required = false)
 	private RedisTemplate<String, Serializable> redisTemplate;
+	@Autowired()
+	private CacheChannel cacheChannel;
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 
@@ -49,6 +55,7 @@ public class CacheTests {
 		System.out.println(d3 - d2);
 	}
 
+
 	@Test
 	public void redis() {
 		Long d1  = System.currentTimeMillis();
@@ -59,10 +66,30 @@ public class CacheTests {
 	}
 
 	@Test
+	public void queue() {
+		String region = "QUEUE_01";
+		String region2 = "QUEUE_02";
+		cacheChannel.queuePush(region,"11");
+		cacheChannel.queuePush(region,"22");
+		cacheChannel.queuePush(region,"33");
+		cacheChannel.queuePush(region2,"123");
+		System.out.println(cacheChannel.queuePop(region));
+		System.out.println(cacheChannel.queueList(region));
+		System.out.println(cacheChannel.queuePop(region));
+//        cacheChannel.queueClear(region);
+		System.out.println(cacheChannel.queuePop(region));
+		System.out.println(cacheChannel.queuePop(region));
+		System.out.println(cacheChannel.queuePop(region2));
+		System.out.println(cacheChannel.queueList(region));
+	}
+
+	@Test
 	public void ttl(){
-		CacheUtils.getCacheChannel().set("default","key","1");
-		System.out.println(CacheUtils.getCacheChannel().get("default","key"));
-		System.out.println(CacheUtils.getCacheChannel().ttl("default","key"));;
+		String region = "default0";
+		String key = "key1";
+		CacheUtils.getCacheChannel().set(region,key,"1");
+		System.out.println(CacheUtils.getCacheChannel().get(region,key));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key));;
 	}
 
 

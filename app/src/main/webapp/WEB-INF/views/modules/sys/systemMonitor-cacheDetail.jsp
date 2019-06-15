@@ -44,7 +44,8 @@
 			<thead>
 			<tr>
 				<th>KEY</th>
-				<th>TTL</th>
+				<th>一级TTL</th>
+				<th>二级TTL</th>
 				<th>操作</th>
 			</tr>
 			</thead>
@@ -52,7 +53,8 @@
 			{{#result}}
 			<tr>
 				<td>{{key}}</td>
-				<td>{{ttl}}</td>
+				<td>{{ttl1}}</td>
+				<td>{{ttl2}}</td>
 				<td>
 					<a href="${ctxAdmin}/sys/systemMonitor/cacheKeyDetail?region=${region}&key={{.}}">查看</a>&nbsp;
 					<e:hasPermission name="sys:systemMonitor:edit">

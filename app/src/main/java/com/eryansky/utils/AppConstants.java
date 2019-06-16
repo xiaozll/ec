@@ -148,7 +148,7 @@ public class AppConstants extends SysConstants {
         }
         String configValue = Static.configService.getConfigValueByCode(code);
         if (StringUtils.isBlank(configValue)) {
-            return getConfig().getProperty(code, defaultValue);
+            return getConfig(code, defaultValue);
         }
         return configValue == null ? defaultValue : configValue;
     }

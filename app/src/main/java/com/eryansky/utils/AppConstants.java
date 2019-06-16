@@ -65,7 +65,7 @@ public class AppConstants extends SysConstants {
         private static PropertiesLoader config = getConfig();
         private static PropertiesLoader getConfig(){
             String activeProfile = getAppConfig().getActiveProfiles()[0];
-            return new PropertiesLoader("config-"+activeProfile+".properties");
+            return new PropertiesLoader("config" + (null == activeProfile ? "" : "-" + activeProfile) + ".properties");
         }
     }
 

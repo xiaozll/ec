@@ -14,8 +14,8 @@
     <packaging>jar</packaging>
     <properties>
         <ehcache.version>2.10.6</ehcache.version>
-        <caffeine.version>2.6.2</caffeine.version>
-        <redis.version>2.9.1</redis.version>
+        <caffeine.version>2.7.0</caffeine.version>
+        <redis.version>2.10.2</redis.version>
         <lettuce.version>5.1.6.RELEASE</lettuce.version>
         <fst.version>2.57</fst.version>
 
@@ -30,8 +30,8 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>${ehcache.version}</version>
-            <!--<scope>compile</scope>-->
-            <!--<optional>true</optional>-->
+            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>

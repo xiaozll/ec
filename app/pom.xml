@@ -239,8 +239,9 @@
                     <exclude>static/js/jquery-ztree/3.5.12/api/**</exclude>
                     <exclude>static/js/jquery-ztree/3.5.12/demo/**</exclude>
                     <exclude>static/js/My97DatePicker/docs/**</exclude>
-                    <exclude>static/js/jquery-validation/1.11.1/*/*.*</exclude>
                     <exclude>static/js/jquery-validation/1.11.1/test/**</exclude>
+                    <exclude>static/js/jquery-validation/1.11.1/lib/**</exclude>
+                    <exclude>static/js/jquery-validation/1.11.1/localization/**</exclude>
                     <exclude>static/js/fancyBox/lib/**</exclude>
                     <exclude>static/js/fancyBox/demo/**</exclude>
                     <exclude>static/js/jquery-jbox/2.3/docs/**</exclude>

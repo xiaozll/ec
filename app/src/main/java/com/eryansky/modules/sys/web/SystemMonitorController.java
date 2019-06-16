@@ -21,7 +21,7 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.ApplicationSessionContext;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.j2cache.CacheChannel;
-import com.eryansky.j2cache.CacheObject;
+import com.eryansky.j2cache.util.SerializationUtils;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.utils.*;
 import com.google.common.collect.Lists;
@@ -140,7 +140,17 @@ public class SystemMonitorController extends SimpleController {
     @RequestMapping("cacheKeyDetail")
     public String cacheKeyDetail(String region,String key,Model uiModel,HttpServletRequest request, HttpServletResponse response){
         Object object = CacheUtils.get(region,key);
-        uiModel.addAttribute("data", JsonMapper.toJsonString(object));
+        try {
+            uiModel.addAttribute("data", JsonMapper.getInstance().writeValueAsString(object));
+        } catch (IOException e) {
+            logger.error(e.getMessage(),e);
+            try {
+                uiModel.addAttribute("data", new String(SerializationUtils.serialize(object)));
+            } catch (IOException e1) {
+                logger.error(e1.getMessage(),e1);
+            }
+
+        }
         uiModel.addAttribute("object",object);
         uiModel.addAttribute("region",region);
         uiModel.addAttribute("key",key);

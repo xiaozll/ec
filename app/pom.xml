@@ -253,26 +253,6 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <tasks>
-                                <delete file="${project.build.outputDirectory}/config.properties"/>
-                                <copy file="src/main/resources/config${configSuffix}.properties"
-                                      tofile="${project.build.outputDirectory}/config.properties"/>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-
-            <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>

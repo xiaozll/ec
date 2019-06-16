@@ -62,7 +62,11 @@ public class AppConstants extends SysConstants {
      */
     private static final class Static {
         private static ConfigService configService = SpringContextHolder.getBean(ConfigService.class);
-        private static PropertiesLoader config = new PropertiesLoader(CONFIG_FILE_PATH);
+        private static PropertiesLoader config = getConfig();
+        private static PropertiesLoader getConfig(){
+            String activeProfile = getAppConfig().getActiveProfiles()[0];
+            return new PropertiesLoader("config-"+activeProfile+".properties");
+        }
     }
 
     /**

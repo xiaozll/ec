@@ -117,7 +117,6 @@ public class SystemMonitorController extends SimpleController {
             CacheChannel cacheChannel = CacheUtils.getCacheChannel();
             pKeys.forEach(key->{
                 Map<String,Object> map = Maps.newHashMap();
-//                String mKey = StringUtils.substringAfterLast(key,":");
                 map.put("key",key);
                 map.put("ttl1",cacheChannel.ttl(region,key,1));
                 map.put("ttl2",cacheChannel.ttl(region,key,2));

@@ -51,7 +51,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 	public void clear() {
 		Collection<String> keys = keys();
 		keys.stream().forEach(k -> {
-			redisTemplate.delete(k);
+			redisTemplate.delete(this.region + ":" + k);
 		});
 	}
 
@@ -73,7 +73,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 
 	@Override
 	public Collection<String> keys() {
-		return redisTemplate.keys(this.region + ":*");
+		return redisTemplate.keys(this.region + ":*").stream().map(k->k.substring(this.region.length()+1)).collect(Collectors.toSet());
 	}
 
 	@Override

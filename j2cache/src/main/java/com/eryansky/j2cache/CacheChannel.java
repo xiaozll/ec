@@ -647,7 +647,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			throw new IllegalStateException("CacheChannel closed");
 
 		Set<String> keys = new HashSet<>();
-//		keys.addAll(holder.getLevel1Cache(region).keys());
+		keys.addAll(holder.getLevel1Cache(region).keys());
 		keys.addAll(holder.getLevel2Cache(region).keys());
 		return keys;
     }
@@ -658,13 +658,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return
 	 */
 	public int keySize(String region)  {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
-
-		Set<String> keys = new HashSet<>();
-		keys.addAll(holder.getLevel1Cache(region).keys());
-		keys.addAll(holder.getLevel2Cache(region).keys());
-		return keys.size();
+		return keys(region).size();
 	}
 
 

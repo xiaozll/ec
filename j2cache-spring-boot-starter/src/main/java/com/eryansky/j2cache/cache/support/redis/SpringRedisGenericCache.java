@@ -117,7 +117,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 
 	@Override
 	public void setBytes(Map<String, byte[]> bytes) {
-		 bytes.forEach((k,v) -> setBytes(k, v));
+		 bytes.forEach(this::setBytes);
 	}
 
 	private byte[] _key(String key) {

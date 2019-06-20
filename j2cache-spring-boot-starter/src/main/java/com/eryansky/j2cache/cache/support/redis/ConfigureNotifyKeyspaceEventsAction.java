@@ -34,7 +34,7 @@ public class ConfigureNotifyKeyspaceEventsAction {
 	private String getNotifyOptions(RedisConnection connection) {
 		try {
 			Properties config = connection.getConfig(CONFIG_NOTIFY_KEYSPACE_EVENTS);
-			if (config.isEmpty()) {
+			if (null == config || config.isEmpty()) {
 				return "";
 			}
 			return config.getProperty(config.stringPropertyNames().iterator().next());

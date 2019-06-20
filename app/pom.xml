@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>ec-app</artifactId>
-    <version>1.0.0.20190616</version>
+    <version>1.0.0.20190620</version>
     <packaging>${project.packaging}</packaging>
     <name>ec-app</name>
     <description>web</description>

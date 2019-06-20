@@ -50,16 +50,14 @@ public class SpringRedisGenericCache implements Level2Cache {
 	@Override
 	public void clear() {
 		Collection<String> keys = keys();
-		keys.stream().forEach(k -> {
+		keys.forEach(k -> {
 			redisTemplate.delete(this.region + ":" + k);
 		});
 	}
 
 	@Override
 	public boolean exists(String key) {
-		return 	redisTemplate.execute((RedisCallback<Boolean>) redis -> {	
-			return redis.exists(_key(key));
-		});
+		return 	redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.exists(_key(key)));
 	}
 
 	@Override

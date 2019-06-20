@@ -86,7 +86,7 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public List<byte[]> getBytes(Collection<String> keys) {
 		return redisTemplate.opsForHash().getOperations().execute((RedisCallback<List<byte[]>>) redis -> {
-			byte[][] bytes = keys.stream().map(k -> k.getBytes()).toArray(byte[][]::new);
+			byte[][] bytes = keys.stream().map(String::getBytes).toArray(byte[][]::new);
 			return redis.hMGet(region.getBytes(), bytes);
 		});
 	}
@@ -115,9 +115,7 @@ public class SpringRedisCache implements Level2Cache {
 
 	@Override
 	public void setBytes(Map<String, byte[]> bytes) {
-		bytes.forEach((k, v) -> {
-			setBytes(k, v);
-		});
+		bytes.forEach(this::setBytes);
 	}
 	
 	private String _key(String key) {

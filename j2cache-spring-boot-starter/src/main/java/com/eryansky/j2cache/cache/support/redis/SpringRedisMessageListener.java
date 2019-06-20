@@ -17,20 +17,21 @@ import com.eryansky.j2cache.util.SerializationUtils;
 public class SpringRedisMessageListener implements MessageListener{
 
 	private static Logger logger = LoggerFactory.getLogger(SpringRedisMessageListener.class);
-//	private int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
-	private int LOCAL_COMMAND_ID = SpringRedisPubSubPolicy.LOCAL_COMMAND_ID; //命令源标识，随机生成，每个节点都有唯一标识
+
+	private int localCommandId;
 
 	private ClusterPolicy clusterPolicy;
 	
 	private String channel;
 	
-	SpringRedisMessageListener(ClusterPolicy clusterPolicy, String channel){
+	SpringRedisMessageListener(ClusterPolicy clusterPolicy, String channel,int localCommandId){
 		this.clusterPolicy = clusterPolicy;
 		this.channel = channel;
+		this.localCommandId = localCommandId;
 	}
 
 	private boolean isLocalCommand(Command cmd) {
-		return cmd.getSrc() == LOCAL_COMMAND_ID;
+		return cmd.getSrc() == localCommandId;
 	}
 
 	@Override

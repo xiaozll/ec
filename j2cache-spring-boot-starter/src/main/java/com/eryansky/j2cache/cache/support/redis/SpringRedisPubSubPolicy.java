@@ -22,7 +22,7 @@ import com.eryansky.j2cache.cache.support.util.SpringUtil;
  */
 public class SpringRedisPubSubPolicy implements ClusterPolicy {
 
-	public static int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
+	private int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
 
 	private RedisTemplate<String, Serializable> redisTemplate;
 
@@ -76,9 +76,9 @@ public class SpringRedisPubSubPolicy implements ClusterPolicy {
 			ConfigureNotifyKeyspaceEventsAction action = new ConfigureNotifyKeyspaceEventsAction();
 			action.config(listenerContainer.getConnectionFactory().getConnection());
 			listenerContainer.addMessageListener(new SpringRedisActiveMessageListener(this, namespace), topics);
-			listenerContainer.addMessageListener(new SpringRedisMessageListener(this, this.channel), new PatternTopic(this.channel));
+			listenerContainer.addMessageListener(new SpringRedisMessageListener(this, this.channel,LOCAL_COMMAND_ID), new PatternTopic(this.channel));
 		}else {
-			listenerContainer.addMessageListener(new SpringRedisMessageListener(this, this.channel), new PatternTopic(this.channel));
+			listenerContainer.addMessageListener(new SpringRedisMessageListener(this, this.channel,LOCAL_COMMAND_ID), new PatternTopic(this.channel));
 		}
 
 	}

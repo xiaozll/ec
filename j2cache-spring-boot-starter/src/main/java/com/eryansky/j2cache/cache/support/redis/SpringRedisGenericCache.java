@@ -63,9 +63,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 	@Override
 	public void evict(String... keys) {
 		for (String k : keys) {
-			redisTemplate.execute((RedisCallback<Long>) redis -> {	
-				return redis.del(_key(k));
-			});
+			redisTemplate.execute((RedisCallback<Long>) redis -> redis.del(_key(k)));
 		}
 	}
 

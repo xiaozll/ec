@@ -11,6 +11,7 @@ import com.eryansky.j2cache.lock.LockInsideExecutedException;
 import com.eryansky.j2cache.lock.LockRetryFrequency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -49,7 +50,8 @@ public class SpringRedisCache implements Level2Cache {
 
 	@Override
 	public void clear() {
-		redisTemplate.opsForHash().delete(region);
+		redisTemplate.delete(region);
+//		keys().forEach(k -> redisTemplate.opsForHash().delete(region,k));
 	}
 
 	@Override
@@ -59,12 +61,9 @@ public class SpringRedisCache implements Level2Cache {
 
 	@Override
 	public void evict(String... keys) {
+		HashOperations hashOperations = redisTemplate.opsForHash();
 		for (String k : keys) {
-			if (!k.equals("null")) {
-				redisTemplate.opsForHash().delete(region, k);		
-			} else {
-				redisTemplate.delete(region);
-			}
+			hashOperations.delete(region, k);
 		}
 	}
 
@@ -131,25 +130,19 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public void queuePush(String... values) {
 		for(String value:values){
-			redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
-				return redis.rPush(region.getBytes(), value.getBytes());
-			});
+			redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> redis.rPush(region.getBytes(), value.getBytes()));
 		}
 	}
 
 	@Override
 	public String queuePop() {
-		byte[] result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<byte[]>) redis -> {
-			return redis.lPop(region.getBytes());
-		});
+		byte[] result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<byte[]>) redis -> redis.lPop(region.getBytes()));
 		return null == result ? null : new String(result);
 	}
 
 	@Override
 	public int queueSize() {
-		Long result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
-			return redis.lLen(region.getBytes());
-		});
+		Long result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> redis.lLen(region.getBytes()));
 		return null != result ? result.intValue():0;
 	}
 
@@ -161,9 +154,7 @@ public class SpringRedisCache implements Level2Cache {
 		if(null == length || length == 0){
 			return Collections.emptyList();
 		}
-		List<byte[]> result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<List<byte[]>>) redis -> {
-			return redis.lRange(region.getBytes(),0,length-1);
-		});
+		List<byte[]> result = redisTemplate.opsForHash().getOperations().execute((RedisCallback<List<byte[]>>) redis -> redis.lRange(region.getBytes(),0,length-1));
 
 		return null == result ? Collections.emptyList() : result.stream().map(String::new).collect(Collectors.toList());
 	}
@@ -181,18 +172,14 @@ public class SpringRedisCache implements Level2Cache {
 			boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
 			if(flag) {
 				try {
-					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> {
-						return redis.expire(region.getBytes(),keyExpireSeconds);
-					});
+					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
 					return lockCallback.handleObtainLock();
 				} catch (Exception e) {
 					log.error(e.getMessage(),e);
 					LockInsideExecutedException ie = new LockInsideExecutedException(e);
 					return lockCallback.handleException(ie);
 				} finally {
-					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
-						return redis.del(region.getBytes());
-					});
+					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> redis.del(region.getBytes()));
 				}
 			} else {
 				try {

@@ -20,7 +20,6 @@ import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.RoleService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.OrganUtils;
-import com.google.common.collect.Lists;
 import com.eryansky.core.security._enum.DeviceType;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys.utils.UserUtils;
@@ -264,8 +263,7 @@ public class SecurityUtils {
                 dataScopeInteger = ds;
             }
         }
-        String dataScopeString = String.valueOf(dataScopeInteger);
-        return dataScopeString;
+        return String.valueOf(dataScopeInteger);
     }
 
     /**
@@ -386,6 +384,7 @@ public class SecurityUtils {
         try {
             sessionInfo.setHost(IpUtils.toIpString(InetAddress.getLocalHost()));
         } catch (UnknownHostException e) {
+            logger.error(e.getMessage());
         }
 
         String userAgent = UserAgentUtils.getHTTPUserAgent(request);
@@ -475,7 +474,7 @@ public class SecurityUtils {
                 }
             }
         } catch (Exception e) {
-//            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage());
         }finally {
             if(null != sessionInfo){
                 sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
@@ -500,7 +499,7 @@ public class SecurityUtils {
                 }
             }
         } catch (Exception e) {
-//            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage());
         }finally {
             if(null != sessionInfo){
                 sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
@@ -515,11 +514,7 @@ public class SecurityUtils {
      */
     public static User getCurrentUser() {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        User user = null;
-        if(sessionInfo != null){
-            user = Static.userService.get(sessionInfo.getUserId());
-        }
-        return user;
+        return null == sessionInfo ? null:Static.userService.get(sessionInfo.getUserId());
     }
 
     /**
@@ -527,10 +522,7 @@ public class SecurityUtils {
      */
     public static String getCurrentUserId() {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        if(sessionInfo != null){
-            return sessionInfo.getUserId();
-        }
-        return null;
+        return null == sessionInfo ? null:sessionInfo.getUserId();
     }
 
     /**
@@ -538,10 +530,7 @@ public class SecurityUtils {
      */
     public static String getCurrentUserLoginName() {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        if(sessionInfo != null){
-            return sessionInfo.getLoginName();
-        }
-        return null;
+        return null == sessionInfo ? null:sessionInfo.getLoginName();
     }
 
     /**
@@ -561,12 +550,7 @@ public class SecurityUtils {
      */
     public static boolean isUserAdmin(String userId) {
         User superUser = Static.userService.getSuperUser();
-        boolean flag = false;
-        if (userId != null && superUser != null
-                && userId.equals(superUser.getId())) {// 超级用户
-            flag = true;
-        }
-        return flag;
+        return userId != null && superUser != null && userId.equals(superUser.getId());
     }
 
     /**
@@ -592,9 +576,7 @@ public class SecurityUtils {
      */
     public static void offLine(List<String> sessionIds){
         if(Collections3.isNotEmpty(sessionIds)){
-            for(String sessionId:sessionIds){
-                removeSessionInfoFromSession(sessionId, SecurityType.offline);
-            }
+            sessionIds.forEach(sessionId -> removeSessionInfoFromSession(sessionId, SecurityType.offline));
         }
     }
 
@@ -603,9 +585,7 @@ public class SecurityUtils {
      */
     public static void offLineAll(){
         List<SessionInfo> sessionInfos = SecurityUtils.findSessionInfoListWithOrder();
-        for(SessionInfo sessionInfo:sessionInfos){
-            removeSessionInfoFromSession(sessionInfo.getId(), SecurityType.offline);
-        }
+        sessionInfos.forEach(sessionInfo -> removeSessionInfoFromSession(sessionInfo.getId(), SecurityType.offline));
     }
 
     /**
@@ -625,6 +605,7 @@ public class SecurityUtils {
                 httpSession.invalidate();
             }
         } catch (Exception e) {
+            logger.error(e.getMessage());
         }
 
     }
@@ -645,8 +626,7 @@ public class SecurityUtils {
      * @return
      */
     public static List<SessionInfo> findSessionInfoList() {
-        List<SessionInfo> sessionInfoData = Static.applicationSessionContext.findSessionInfoData();
-        return sessionInfoData;
+        return Static.applicationSessionContext.findSessionInfoData();
     }
 
 
@@ -773,10 +753,7 @@ public class SecurityUtils {
      * @return
      */
     public static String getNoSuffixSessionId(HttpSession session){
-        if(session == null){
-            return null;
-        }
-        return StringUtils.substringBefore(session.getId(),".");
+        return null == session ? null:StringUtils.substringBefore(session.getId(),".");
     }
 
 }

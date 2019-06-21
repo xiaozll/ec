@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -52,7 +53,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
     /**
      * 不需要拦截的资源
      */
-    private List<String> excludeUrls = Lists.newArrayList();
+    private List<String> excludeUrls = Collections.emptyList();
     /**
      * 验证数据库标记URL 默认值：false
      */

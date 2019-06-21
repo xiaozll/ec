@@ -2,7 +2,7 @@ package com.eryansky.codegen.generate;
 
 import com.eryansky.codegen.util.FileType;
 import com.eryansky.codegen.util.FileUtil;
-import com.eryansky.codegen.util.Resources;
+import com.eryansky.codegen.Resources;
 import com.eryansky.codegen.util.VelocityUtil;
 import com.eryansky.codegen.vo.Table;
 import org.apache.velocity.Template;

@@ -2,11 +2,9 @@ package com.eryansky.codegen;
 
 import com.eryansky.codegen.db.DataSource;
 import com.eryansky.codegen.db.DbFactory;
-import com.eryansky.codegen.util.Resources;
 import com.eryansky.codegen.vo.DbConfig;
 import com.eryansky.codegen.vo.Table;
 import com.eryansky.common.utils.mapper.JsonMapper;
-import com.eryansky.utils.AppConstants;
 
 import java.util.List;
 

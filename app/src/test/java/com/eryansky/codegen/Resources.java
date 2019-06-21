@@ -1,4 +1,6 @@
-package com.eryansky.codegen.util;
+package com.eryansky.codegen;
+
+import com.eryansky.codegen.util.FileType;
 
 /**
  * 各类资源配置

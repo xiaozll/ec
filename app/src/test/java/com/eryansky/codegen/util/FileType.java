@@ -1,6 +1,7 @@
 package com.eryansky.codegen.util;
 
 
+import com.eryansky.codegen.Resources;
 
 /**
  * 生成文件的文件类型.
@@ -9,7 +10,7 @@ package com.eryansky.codegen.util;
  * @version 1.0
  */
 public enum FileType {
-	ENTITY("entity", Resources.ENTITY_PACKAGE,Resources.ENTITY_TEMPLATE,".java"), 
+	ENTITY("entity", Resources.ENTITY_PACKAGE,Resources.ENTITY_TEMPLATE,".java"),
 	DAO("dao", Resources.DAO_PACKAGE,Resources.DAO_TEMPLATE,"Dao.java"),
 	DAO_XML("daoXML", Resources.DAO_PACKAGE,Resources.DAO_XML_TEMPLATE,"Dao.xml"),
 	SERVICE("service", Resources.SERVICE_PACKAGE,Resources.SERVICE_TEMPLATE,"Service.java"),

@@ -9,7 +9,6 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.persistence.AbstractBaseEntity;
 import com.eryansky.common.orm.persistence.IUser;
 import com.eryansky.common.utils.Identities;
-import com.eryansky.common.utils.io.PropertiesLoader;
 import com.eryansky.common.utils.reflection.ReflectionUtils;
 import com.eryansky.core.security.SecurityUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;

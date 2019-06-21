@@ -114,8 +114,7 @@ public class LogReportController {
             long timeStemp = date.getTime();
             map.put("loginDate", timeStemp);
         }
-        Result r = Result.successResult().setObj(list);
-        return r;
+        return Result.successResult().setObj(list);
     }
 
     /**

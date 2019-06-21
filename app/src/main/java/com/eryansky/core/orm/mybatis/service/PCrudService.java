@@ -87,6 +87,7 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 	 * @param entity
 	 */
 	public void delete(T entity) {
+		entity.preUpdate();
 		dao.delete(entity);
 	}
 
@@ -95,6 +96,7 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 	 * 删除数据（逻辑删除）
 	 * @param id
 	 */
+	@Deprecated
 	public void delete(PK id) {
 		dao.delete(id);
 	}

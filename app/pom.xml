@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>ec-app</artifactId>
-    <version>1.0.0.20190620</version>
+    <version>1.0.0.20190621</version>
     <packaging>${project.packaging}</packaging>
     <name>ec-app</name>
     <description>web</description>
@@ -277,20 +277,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- tomcat7插件 -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <configuration>
-                    <!--<url>http://10.36.10.54:8080/manager/text</url>-->
-                    <url>http://10.37.242.54:8080/manager/text</url>
-                    <server>tomcat7</server>
-                    <username>admin</username>
-                    <password>password</password>
-                    <path>/ec</path>
-                    <uriEncoding>${project.build.sourceEncoding}</uriEncoding>
-                </configuration>
             </plugin>
         </plugins>
     </build>

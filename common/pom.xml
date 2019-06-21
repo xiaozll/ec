@@ -23,6 +23,7 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <commons-net.version>3.6</commons-net.version>
         <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-codec.version>1.10</commons-codec.version>
 
         <commons-logging.version>1.2</commons-logging.version>
 
@@ -74,6 +75,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>${commons-pool2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
         </dependency>
 
 

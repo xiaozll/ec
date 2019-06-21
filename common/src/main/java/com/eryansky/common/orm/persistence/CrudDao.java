@@ -80,5 +80,22 @@ public interface CrudDao<T> extends BaseDao {
 	 * @return
 	 */
 	int delete(T entity);
-	
+
+	/**
+	 * 删除数据（物理删除）
+	 * @param id
+	 * @return
+	 */
+	int clear(String id);
+	/**
+	 * 删除数据（物理删除）
+	 * @param entity
+	 * @return
+	 */
+	int clear(T entity);
+    /**
+     * 清空数据（物理删除）
+     * @return
+     */
+    int clearAll();
 }

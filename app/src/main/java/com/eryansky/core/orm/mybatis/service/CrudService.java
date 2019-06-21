@@ -81,18 +81,20 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 	}
 
 	/**
-	 * 删除数据
+	 * 删除数据（逻辑删除）
 	 * @param entity
 	 */
 	public void delete(T entity) {
+		entity.preUpdate();
 		dao.delete(entity);
 	}
 
 
 	/**
-	 * 删除数据
+	 * 删除数据（逻辑删除）
 	 * @param id
 	 */
+	@Deprecated
 	public void delete(String id) {
 		dao.delete(id);
 	}
@@ -114,4 +116,26 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 		}
 	}
 
+	/**
+	 * 删除数据（物理删除）
+	 * @param entity
+	 */
+	public void clear(T entity) {
+		dao.clear(entity);
+	}
+
+	/**
+	 * 删除数据（物理删除）
+	 * @param id
+	 */
+	public void clear(String id) {
+		dao.clear(id);
+	}
+
+    /**
+     * 清空数据（物理删除）
+     */
+    public void clearAll() {
+        dao.clearAll();
+    }
 }

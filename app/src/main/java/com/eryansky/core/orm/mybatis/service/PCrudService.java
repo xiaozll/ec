@@ -83,7 +83,7 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 	}
 
 	/**
-	 * 删除数据
+	 * 删除数据（逻辑删除）
 	 * @param entity
 	 */
 	public void delete(T entity) {
@@ -92,7 +92,7 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 
 
 	/**
-	 * 删除数据
+	 * 删除数据（逻辑删除）
 	 * @param id
 	 */
 	public void delete(PK id) {
@@ -116,4 +116,26 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 		}
 	}
 
+	/**
+	 * 删除数据（物理删除）
+	 * @param entity
+	 */
+	public void clear(T entity) {
+		dao.clear(entity);
+	}
+
+	/**
+	 * 删除数据（物理删除）
+	 * @param id
+	 */
+	public void clear(PK id) {
+		dao.clear(id);
+	}
+
+	/**
+	 * 清空数据（物理删除）
+	 */
+	public void clearAll() {
+		dao.clearAll();
+	}
 }

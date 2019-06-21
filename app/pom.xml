@@ -20,7 +20,7 @@
         <poi.version>3.17</poi.version>
         <xwpf.version>2.0.1</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
-
+        <velocity.version>1.7</velocity.version>
 
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
@@ -207,6 +207,13 @@
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

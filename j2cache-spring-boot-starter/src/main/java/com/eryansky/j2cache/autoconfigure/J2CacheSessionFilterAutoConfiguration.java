@@ -13,11 +13,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * J2Cache Session配置
+ * J2Cache Session 自动注入配置
+ * @author 尔演@Eryan eryanwcp@gmail.com
+ * @date 2019-02-11
  */
 @ConditionalOnWebApplication
 @ConditionalOnProperty(name = "j2cache.session.filter.enabled", havingValue = "true")
-public class J2CacheSessionFilterConfiguration {
+public class J2CacheSessionFilterAutoConfiguration {
 
     @Bean
     public FilterRegistrationBean<J2CacheSessionFilter> j2CacheSessionFilter(J2CacheSessionProperties sessionProperties) {

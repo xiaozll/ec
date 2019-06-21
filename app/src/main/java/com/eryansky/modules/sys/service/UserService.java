@@ -213,9 +213,22 @@ public class UserService extends CrudService<UserDao, User> {
      */
     @SuppressWarnings("unchecked")
     public User getUserByLoginName(String loginName){
+        return getUserByLoginName(loginName, DataEntity.STATUS_NORMAL);
+    }
+
+
+    /**
+     * 根据登录名查找.
+     * <br>注：排除已删除的对象
+     * @param loginName 登录名
+     * @param status
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLoginName(String loginName, String status){
         Assert.notNull(loginName, "参数[loginName]为空!");
         Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
+        parameter.put(DataEntity.FIELD_STATUS,status);
         parameter.put("loginName",loginName);
         return dao.getUserByLoginName(parameter);
     }

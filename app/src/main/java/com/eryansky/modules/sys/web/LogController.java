@@ -145,7 +145,7 @@ public class LogController extends SimpleController {
      */
     @RequestMapping(value = {"detail"})
     @ResponseBody
-    public Result detail(@ModelAttribute("model") Log log) throws Exception {
+    public Result detail(@ModelAttribute("model") Log log) {
         Result result = Result.successResult().setObj(log);
         return result;
     }
@@ -161,7 +161,7 @@ public class LogController extends SimpleController {
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequestMapping(value = {"remove"})
     @ResponseBody
-    public Result remove(@RequestParam(value = "ids",required = false)List<String> ids) throws Exception {
+    public Result remove(@RequestParam(value = "ids",required = false)List<String> ids){
         logService.deleteByIds(ids);
         Result result = Result.successResult();
         return result;
@@ -177,10 +177,9 @@ public class LogController extends SimpleController {
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequestMapping(value = {"removeAll"})
     @ResponseBody
-    public Result removeAll() throws Exception {
-        logService.removeAll();
-        Result result = Result.successResult();
-        return result;
+    public Result removeAll() {
+        logService.clearAll();
+        return Result.successResult();
     }
 
     /**
@@ -188,7 +187,7 @@ public class LogController extends SimpleController {
      */
     @RequestMapping(value = {"logTypeCombobox"})
     @ResponseBody
-    public List<Combobox> logTypeCombobox(String selectType) throws Exception {
+    public List<Combobox> logTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
         Combobox selectCombobox = SelectType.combobox(selectType);
         if (selectCombobox != null) {
@@ -212,7 +211,7 @@ public class LogController extends SimpleController {
      */
     @RequestMapping(value = {"dataAutoFix"})
     @ResponseBody
-    public Result dataAutoFix() throws Exception {
+    public Result dataAutoFix() {
         logService.dataAutoFix();
         Result result = Result.successResult();
         return result;

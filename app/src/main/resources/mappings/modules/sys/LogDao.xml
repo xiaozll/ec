@@ -395,12 +395,12 @@
 		WHERE id = #{id}
 	</update>
 
-	<delete id="remove">
+	<delete id="clear">
 		DELETE FROM t_sys_log
 		WHERE id = #{id}
 	</delete>
 
-	<delete id="removeAll">
+	<delete id="clearAll">
 		DELETE FROM t_sys_log
 	</delete>
 

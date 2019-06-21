@@ -23,16 +23,7 @@ import java.util.Map;
  */
 @MyBatisDao
 public interface LogDao extends CrudDao<Log> {
-	/**
-	 * 清除
-	 * @return
-	 */
-	int remove(String id);
-	/**
-	 * 删除所有 清空
-	 * @return
-	 */
-	int removeAll();
+
 
 	/**
 	 * 插入到历史表

@@ -34,10 +34,6 @@ import java.util.*;
 @Service
 public class LogService extends CrudService<LogDao, Log> {
 
-    @Autowired
-    private LogDao dao;
-
-
     @Override
     public Page<Log> findPage(Page<Log> page, Log entity) {
         entity.setEntityPage(page);
@@ -66,19 +62,22 @@ public class LogService extends CrudService<LogDao, Log> {
         dao.delete(new Log(id));
     }
 
-
-    public int remove(String id){
-        int reslutCount = dao.remove(id);
+    /**
+     * 删除日志（物理删除）
+     * @return
+     */
+    public int clear(String id){
+        int reslutCount = super.clear(id);
         logger.debug("清除日志：{}",reslutCount);
         return reslutCount;
     }
 
     /**
-     * 清空所有日志
+     * 清空所有日志物理删除）
      * @return
      */
-    public int removeAll(){
-        int reslutCount = dao.removeAll();
+    public int clearAll(){
+        int reslutCount = super.clearAll();
         logger.debug("清空日志：{}",reslutCount);
         return reslutCount;
     }

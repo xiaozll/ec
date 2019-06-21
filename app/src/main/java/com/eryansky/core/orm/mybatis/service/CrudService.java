@@ -120,22 +120,22 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 	 * 删除数据（物理删除）
 	 * @param entity
 	 */
-	public void clear(T entity) {
-		dao.clear(entity);
+	public int clear(T entity) {
+		return dao.clear(entity);
 	}
 
 	/**
 	 * 删除数据（物理删除）
 	 * @param id
 	 */
-	public void clear(String id) {
-		dao.clear(id);
+	public int clear(String id) {
+		return dao.clear(id);
 	}
 
     /**
      * 清空数据（物理删除）
      */
-    public void clearAll() {
-        dao.clearAll();
+    public int clearAll() {
+        return dao.clearAll();
     }
 }

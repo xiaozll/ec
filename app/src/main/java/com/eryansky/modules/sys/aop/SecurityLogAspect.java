@@ -19,6 +19,7 @@ import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -26,6 +27,7 @@ import java.util.Date;
  * 使用AspectJ实现登录登出日志AOP
  * @author 尔演&Eryan
  */
+@Component
 @Aspect
 public class SecurityLogAspect {
 

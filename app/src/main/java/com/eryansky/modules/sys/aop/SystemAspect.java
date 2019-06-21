@@ -3,7 +3,7 @@
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.eryansky.modules.sys.service.aop;
+package com.eryansky.modules.sys.aop;
 
 import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.modules.sys.mapper.Organ;

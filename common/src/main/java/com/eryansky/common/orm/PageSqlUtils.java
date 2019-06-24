@@ -21,6 +21,7 @@ public class PageSqlUtils {
      * 数据库类型
      */
     public static final String DATABSE_TYPE_MYSQL ="mysql";
+    public static final String DATABSE_TYPE_MARIADB ="mariadb";
     public static final String DATABSE_TYPE_POSTGRE ="postgresql";
     public static final String DATABSE_TYPE_ORACLE ="oracle";
     public static final String DATABSE_TYPE_SQLSERVER ="sqlserver";
@@ -28,6 +29,7 @@ public class PageSqlUtils {
      * 分页SQL
      */
     public static final String MYSQL_SQL = "select * from ( {0}) sel_tab00 limit {1},{2}";         //mysql
+    public static final String MARIADB_SQL = "select * from ( {0}) sel_tab00 limit {1},{2}";         //mariadb
     public static final String POSTGRE_SQL = "select * from ( {0}) sel_tab00 limit {2} offset {1}";//postgresql
     public static final String ORACLE_SQL = "select * from (select row_.*,rownum rownum_ from ({0}) row_ where rownum <= {1}) where rownum_>{2}"; //oracle
     public static final String SQLSERVER_SQL = "select * from ( select row_number() over(order by tempColumn) tempRowNumber, * from (select top {1} tempColumn = 0, {0}) t ) tt where tempRowNumber > {2}"; //sqlserver
@@ -47,19 +49,20 @@ public class PageSqlUtils {
 		sqlParam[1] = beginNum + "";
 		sqlParam[2] = rows + "";
         String jdbcUrl = SysConstants.getJdbcUrl();
-		if (jdbcUrl.indexOf(PageSqlUtils.DATABSE_TYPE_MYSQL) != -1) {
+		if (jdbcUrl.contains(PageSqlUtils.DATABSE_TYPE_MYSQL)) {
 			sql = MessageFormat.format(PageSqlUtils.MYSQL_SQL, new Object[]{sqlParam});
-		} else if (jdbcUrl.indexOf(
-				PageSqlUtils.DATABSE_TYPE_POSTGRE) != -1) {
-			sql = MessageFormat.format(PageSqlUtils.POSTGRE_SQL, new Object[]{sqlParam});
-		} else {
+		} else if (jdbcUrl.contains(PageSqlUtils.DATABSE_TYPE_MARIADB)) {
+			sql = MessageFormat.format(PageSqlUtils.MARIADB_SQL, new Object[]{sqlParam});
+		}  else if (jdbcUrl.contains(PageSqlUtils.DATABSE_TYPE_POSTGRE)) {
+            sql = MessageFormat.format(PageSqlUtils.POSTGRE_SQL, new Object[]{sqlParam});
+        } else {
             int beginIndex = (page-1)*rows;
             int endIndex = beginIndex+rows;
             sqlParam[2] = Integer.toString(beginIndex);
             sqlParam[1] = Integer.toString(endIndex);
-            if(jdbcUrl.indexOf(DATABSE_TYPE_ORACLE)!=-1) {
+            if(jdbcUrl.contains(DATABSE_TYPE_ORACLE)) {
                 sql = MessageFormat.format(ORACLE_SQL, new Object[]{sqlParam});
-            } else if(jdbcUrl.indexOf(DATABSE_TYPE_SQLSERVER)!=-1) {
+            } else if(jdbcUrl.contains(DATABSE_TYPE_SQLSERVER)) {
                 sqlParam[0] = sql.substring(getAfterSelectInsertPoint(sql));
                 sql = MessageFormat.format(SQLSERVER_SQL, new Object[]{sqlParam});
             }

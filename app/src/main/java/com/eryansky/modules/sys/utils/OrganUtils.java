@@ -9,6 +9,7 @@ import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.modules.sys._enum.OrganType;
+import com.eryansky.modules.sys.mapper.Area;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.OrganExtend;
 import com.eryansky.modules.sys.service.OrganService;
@@ -38,6 +39,18 @@ public class OrganUtils {
             return null;
         }
         return Static.organService.get(organId);
+    }
+
+    /**
+     * 根据机构编码查找机构
+     * @param organCode 机构编码
+     * @return
+     */
+    public static Organ getByOrganCode(String organCode){
+        if(StringUtils.isBlank(organCode)){
+            return null;
+        }
+        return Static.organService.getByCode(organCode);
     }
 
 
@@ -146,6 +159,15 @@ public class OrganUtils {
         Organ organ = getOrgan(organId);
         if(organ != null){
             return organ.getAreaId();
+        }
+        return null;
+    }
+
+    public static String getAreaCode(String organCode){
+        Organ organ = getByOrganCode(organCode);
+        if(organ != null){
+            Area area = AreaUtils.get(organ.getAreaId());
+            return area == null ? null:area.getCode();
         }
         return null;
     }

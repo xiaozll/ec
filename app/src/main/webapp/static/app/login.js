@@ -110,7 +110,7 @@ function login() {
         dataType: 'json',
         success: function (data) {
             if (data.code == 1) {
-                window.location = data.obj;
+                window.location = data.obj.homeUrl;
                 //setTimeout(function(){//延时1秒 集群环境等待缓存同步
                 //    window.location = data.obj;
                 //},1000);

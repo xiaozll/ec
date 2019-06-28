@@ -55,6 +55,32 @@ public class UserUtils {
     }
 
     /**
+     * 根据手机号码查找用户
+     * @param mobile 手机号码
+     * @return
+     */
+    public static User getUserByMobile(String mobile){
+        if(StringUtils.isNotBlank(mobile)) {
+            return Static.userService.getUserByMobile(mobile);
+        }
+        return null;
+    }
+
+    /**
+     * 根据userId查找用户手机号
+     * @param userId 用户ID
+     * @return
+     */
+    public static String getUserMobile(String userId){
+        User user = getUser(userId);
+        if(user != null){
+            return user.getMobile();
+        }
+        return null;
+    }
+
+
+    /**
      * 根据userId查找用户姓名
      * @param userId 用户ID
      * @return

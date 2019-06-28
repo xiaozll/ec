@@ -41,9 +41,6 @@ import java.util.*;
 @Service
 public class UserService extends CrudService<UserDao, User> {
 
-    @Autowired
-    private UserDao dao;
-
 //    @Transactional
     public void aop(){
         boolean flag =true;
@@ -89,6 +86,33 @@ public class UserService extends CrudService<UserDao, User> {
             organIds.add(entity.getDefaultOrganId());
         }
         saveUserOrgans(entity.getId(),organIds);
+    }
+
+
+    /**
+     * 新增或修改角色.
+     * <br>修改角色的时候 会给角色重新授权菜单 更新导航菜单缓存.
+     */
+    @CacheEvict(value = {  CacheConstants.ROLE_ALL_CACHE,
+            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.ORGAN_USER_TREE_CACHE},allEntries = true)
+    public User saveOrUpdateToRecordUpdatePasswordLog(User entity, boolean updatePassword){
+        logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
+                +","+ CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                +","+ CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                +","+ CacheConstants.ORGAN_USER_TREE_CACHE);
+        super.save(entity);
+        Set<String> organIds = Sets.newHashSet();
+        if(StringUtils.isNotBlank(entity.getDefaultOrganId())){
+            organIds.add(entity.getDefaultOrganId());
+        }
+        saveUserOrgans(entity.getId(),organIds);
+        if(updatePassword){
+            UserUtils.addUserPasswordUpdate(entity);
+        }
+        return entity;
     }
 
     /**
@@ -216,7 +240,6 @@ public class UserService extends CrudService<UserDao, User> {
         return getUserByLoginName(loginName, DataEntity.STATUS_NORMAL);
     }
 
-
     /**
      * 根据登录名查找.
      * <br>注：排除已删除的对象
@@ -230,6 +253,34 @@ public class UserService extends CrudService<UserDao, User> {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS,status);
         parameter.put("loginName",loginName);
+        return dao.getUserByLoginName(parameter);
+    }
+
+
+    /**
+     * 根据手机号查找.
+     * <br>注：排除已删除的对象
+     * @param mobile 手机号
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByMobile(String mobile){
+        return getUserByMobile(mobile, DataEntity.STATUS_NORMAL);
+    }
+
+    /**
+     * 根据手机号查找.
+     * <br>注：排除已删除的对象
+     * @param mobile 手机号
+     * @param status
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByMobile(String mobile, String status){
+        Assert.notNull(mobile, "参数[mobile]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS,status);
+        parameter.put("mobile",mobile);
         return dao.getUserByLoginName(parameter);
     }
 

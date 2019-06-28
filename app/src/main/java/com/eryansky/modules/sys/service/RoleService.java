@@ -31,9 +31,6 @@ import java.util.List;
 @Service
 public class RoleService extends CrudService<RoleDao, Role> {
 
-    @Autowired
-    private RoleDao dao;
-
     /**
      * 删除角色.
      * <br>删除角色的时候 会给角色重新授权菜单 更新导航菜单缓存.

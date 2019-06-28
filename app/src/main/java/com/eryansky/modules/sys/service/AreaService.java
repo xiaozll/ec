@@ -24,12 +24,8 @@ import java.util.List;
 @Service
 public class AreaService extends TreeService<AreaDao, Area> {
 
-	@Autowired
-	private AreaDao areaDao;
-
 	public List<Area> findAll(){
-		List<Area> areaList = areaDao.findAllList(new Area());
-		return areaList;
+		return dao.findAllList(new Area());
 	}
 
 	public void save(Area area) {
@@ -49,7 +45,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 	 * @return
 	 */
 	public Area getByCode(String code){
-        return areaDao.getByCode(code);
+        return dao.getByCode(code);
     }
 
 	/**
@@ -58,7 +54,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 	 */
 	public List<Area> findAreaUp(){
 		Area entity = new Area();
-		return areaDao.findAreaUp(entity);
+		return dao.findAreaUp(entity);
 	}
 	/**
 	 * 查找区县及以下
@@ -68,7 +64,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		Parameter parameter = Parameter.newParameter();
 		parameter.put("areaId",parentId);
 		parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-		return areaDao.findAreaDown(parameter);
+		return dao.findAreaDown(parameter);
 	}
 
 	/**
@@ -80,7 +76,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		Parameter parameter = Parameter.newParameter();
 		parameter.put("parentId",parentId);
 		parameter.put(BaseInterceptor.DB_NAME,AppConstants.getJdbcType());
-		return areaDao.findOwnAndChild(parameter);
+		return dao.findOwnAndChild(parameter);
 	}
 
 	/**
@@ -92,7 +88,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		Parameter parameter = Parameter.newParameter();
 		parameter.put("parentId",parentId);
 		parameter.put(BaseInterceptor.DB_NAME,AppConstants.getJdbcType());
-		return areaDao.findByParentId(parameter);
+		return dao.findByParentId(parameter);
 	}
 
 

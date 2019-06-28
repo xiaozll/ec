@@ -191,7 +191,7 @@ public class LoginController extends SimpleController {
             }
 
             //将用户信息放入session中
-            SecurityUtils.putUserToSession(request, user);
+            SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
             logger.info("用户{}登录系统,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
 
             //设置调整URL 如果session中包含未被授权的URL 则跳转到该页面
@@ -204,7 +204,10 @@ public class LoginController extends SimpleController {
                 request.getSession().setAttribute(SecurityConstants.SESSION_UNAUTHORITY_URL, null);
             }
             //返回
-            result = new Result(Result.SUCCESS, "用户验证通过!", resultUrl);
+            Map<String,Object> data = Maps.newHashMap();
+            data.put("sessionInfo",sessionInfo);
+            data.put("homeUrl",resultUrl);
+            result = new Result(Result.SUCCESS, "用户验证通过!", data);
             isValidateCodeLogin(loginName, false, true);
         }
 

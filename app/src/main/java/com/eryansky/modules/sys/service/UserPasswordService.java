@@ -29,10 +29,6 @@ import java.util.List;
 @Service
 public class UserPasswordService extends CrudService<UserPasswordDao, UserPassword> {
 
-    @Autowired
-    private UserPasswordDao dao;
-
-
     public UserPassword getLatestUserPasswordByUserId(String userId){
         List<UserPassword> userPasswords = getUserPasswordsByUserId(userId,1);
         return Collections3.isEmpty(userPasswords) ? null:userPasswords.get(0);

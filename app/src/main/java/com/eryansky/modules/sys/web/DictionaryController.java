@@ -186,8 +186,7 @@ public class DictionaryController extends SimpleController {
     @ResponseBody
     public Result maxSort() throws Exception {
         Integer maxSort = dictionaryService.getMaxSort();
-        Result result = new Result(Result.SUCCESS, null, maxSort);
-        return result;
+        return new Result(Result.SUCCESS, null, maxSort);
     }
 
     /**
@@ -201,8 +200,7 @@ public class DictionaryController extends SimpleController {
     public Datagrid<Dictionary> treegrid(Dictionary Dictionary,HttpServletRequest request,HttpServletResponse response) throws Exception {
         Page<Dictionary> page = new Page<Dictionary>(request);
         page = dictionaryService.findPage(page,Dictionary);
-        Datagrid<Dictionary> dg = new Datagrid<Dictionary>(page.getTotalCount(), page.getResult());
-        return dg;
+        return new Datagrid<Dictionary>(page.getTotalCount(), page.getResult());
     }
 
     /**
@@ -238,10 +236,8 @@ public class DictionaryController extends SimpleController {
             titleList.add(selectCombobox);
         }
 
-        List<Combobox> cList = dictionaryItemService
-                .getByDictionaryCode(dictionaryCode);
-        List<Combobox> unionList = ListUtils.union(titleList, cList);
-        return unionList;
+        List<Combobox> cList = dictionaryItemService.getByDictionaryCode(dictionaryCode);
+        return ListUtils.union(titleList, cList);
     }
 
     /**
@@ -261,9 +257,7 @@ public class DictionaryController extends SimpleController {
             titleList.add(selectTreeNode);
         }
         List<TreeNode> treeNodes = dictionaryItemService.getByDictionaryCode(dictionaryCode, true);
-
-        List<TreeNode> unionList = ListUtils.union(titleList, treeNodes);
-        return unionList;
+        return ListUtils.union(titleList, treeNodes);
     }
 
     /*外部接口*/

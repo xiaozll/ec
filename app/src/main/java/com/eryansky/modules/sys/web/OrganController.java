@@ -161,8 +161,7 @@ public class OrganController extends SimpleController {
         if(parentTreeNode != null){
             treeNodes.add(parentTreeNode.setState(TreeNode.STATE_OPEN));
         }
-        List<TreeNode> unionList = ListUtils.union(titleList, treeNodes);
-        return unionList;
+        return ListUtils.union(titleList, treeNodes);
     }
 
     /**
@@ -280,8 +279,7 @@ public class OrganController extends SimpleController {
         }
 
         treeNodes = organService.findOrganTree(_parentId,true,cascade);
-        List<TreeNode> unionList = ListUtils.union(titleList, treeNodes);
-        return unionList;
+        return ListUtils.union(titleList, treeNodes);
     }
 
     /**
@@ -349,8 +347,7 @@ public class OrganController extends SimpleController {
                                    @RequestParam(required = false) Integer grade,
                                    HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
-        List<TreeNode> mapList = organService.findOrganTree(null, extId);
-        return mapList;
+        return organService.findOrganTree(null, extId);
     }
 
     /**
@@ -365,8 +362,7 @@ public class OrganController extends SimpleController {
     public List<TreeNode> treeCompanyData(
             HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
-        List<TreeNode> mapList = organService.findCompanysTree();
-        return mapList;
+        return organService.findCompanysTree();
     }
 
     /**
@@ -385,8 +381,7 @@ public class OrganController extends SimpleController {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null:sessionInfo.getLoginCompanyId();
         }
-        List<TreeNode> mapList = organService.findOwnerAndChildsCompanysTree(_parentId);
-        return mapList;
+        return organService.findOwnerAndChildsCompanysTree(_parentId);
     }
 
 
@@ -406,9 +401,7 @@ public class OrganController extends SimpleController {
             treeNode.setpId(e.getParentId());
             treeNodes.add(treeNode);
         }
-
-        List<TreeNode> result = AppUtils.toTreeTreeNodes(treeNodes);
-        return result;
+        return AppUtils.toTreeTreeNodes(treeNodes);
     }
 
     /**

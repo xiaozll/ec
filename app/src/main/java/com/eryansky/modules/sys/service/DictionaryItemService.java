@@ -224,8 +224,7 @@ public class DictionaryItemService extends CrudService<DictionaryItemDao,Diction
         Dictionary dictionary = new Dictionary();
         dictionary.setCode(dictionaryCode);
         dictionaryItem.setDictionary(dictionary);
-        List<DictionaryItem> list = dao.findByDictionary(dictionaryItem);
-        return list;
+        return dao.findByDictionary(dictionaryItem);
     }
 
     /**

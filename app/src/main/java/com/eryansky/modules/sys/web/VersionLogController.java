@@ -105,9 +105,7 @@ public class VersionLogController extends SimpleController {
         parameter.put("versionLogType", model.getVersionLogType());
 
         page = versionLogService.findPage(page, parameter);
-
-        Datagrid<VersionLog> datagrid = new Datagrid<VersionLog>(page.getTotalCount(), page.getResult());
-        return datagrid;
+        return new Datagrid<VersionLog>(page.getTotalCount(), page.getResult());
     }
 
     /**
@@ -241,9 +239,8 @@ public class VersionLogController extends SimpleController {
     @RequestMapping(value = {"removeAll"})
     @ResponseBody
     public Result removeAll() {
-        versionLogService.removeAll();
-        Result result = Result.successResult();
-        return result;
+        versionLogService.clearAll();
+        return Result.successResult();
     }
 
 

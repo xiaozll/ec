@@ -31,10 +31,6 @@ import java.util.Set;
 @Service
 public class PostService extends CrudService<PostDao, Post> {
 
-    @Autowired
-    private PostDao dao;
-
-
     /**
      * 根据ID删除
      * @param id

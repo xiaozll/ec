@@ -111,12 +111,11 @@ public class LogController extends SimpleController {
 //        page.setPageSize(Page.PAGESIZE_ALL);
         page = logService.findPage(page,log);
 
-        List<Object[]> list = new ArrayList<Object[]>();
-        Iterator<Log> iterator = page.getResult().iterator();
-        while (iterator.hasNext()){
-            Log _log = iterator.next();
-            list.add(new Object[]{_log.getTypeView(),_log.getTitle(),_log.getUserCompanyName(),_log.getUserOfficeName(),_log.getUserName(),_log.getIp(),_log.getModule(), DateUtils.formatDateTime(_log.getOperTime()),_log.getActionTime()});
-        }
+        List<Object[]> list = Lists.newArrayList();
+        page.getResult().forEach(l->{
+            list.add(new Object[]{l.getTypeView(),l.getTitle(),l.getUserCompanyName(),l.getUserOfficeName(),l.getUserName(),l.getIp(),l.getModule(), DateUtils.formatDateTime(l.getOperTime()),l.getActionTime()});
+        });
+
 
         List<TableData> tds = new ArrayList<TableData>();
 
@@ -146,8 +145,7 @@ public class LogController extends SimpleController {
     @RequestMapping(value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Log log) {
-        Result result = Result.successResult().setObj(log);
-        return result;
+        return Result.successResult().setObj(log);
     }
 
 
@@ -163,8 +161,7 @@ public class LogController extends SimpleController {
     @ResponseBody
     public Result remove(@RequestParam(value = "ids",required = false)List<String> ids){
         logService.deleteByIds(ids);
-        Result result = Result.successResult();
-        return result;
+        return Result.successResult();
     }
 
     /**
@@ -213,7 +210,6 @@ public class LogController extends SimpleController {
     @ResponseBody
     public Result dataAutoFix() {
         logService.dataAutoFix();
-        Result result = Result.successResult();
-        return result;
+        return Result.successResult();
     }
 }

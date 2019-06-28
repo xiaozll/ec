@@ -179,7 +179,7 @@ public class UserController extends SimpleController {
         } else {// 修改
             User superUser = userService.getSuperUser();
             User sessionUser = SecurityUtils.getCurrentUser();
-            if (superUser.getId().equals(user.getId()) && !sessionUser.getId().equals(superUser.getId())) {
+            if (superUser.getId().equals(user.getId()) && null != sessionUser && !sessionUser.getId().equals(superUser.getId())) {
                 result = new Result(Result.ERROR, "超级用户信息仅允许自己修改!", null);
                 logger.debug(result.toString());
                 return result;
@@ -635,8 +635,7 @@ public class UserController extends SimpleController {
                                         @RequestParam(value = "checkedUserIds", required = false) List<String> checkedUserIds,
                                         @RequestParam(value = "checkbox", defaultValue = "true") Boolean checkbox,
                                         @RequestParam(value = "cascade", defaultValue = "true") Boolean cascade) {
-        List<TreeNode> treeNodes = organService.findOrganUserTree(parentId, checkedUserIds, cascade);
-        return treeNodes;
+        return organService.findOrganUserTree(parentId, checkedUserIds, cascade);
     }
 
     /**

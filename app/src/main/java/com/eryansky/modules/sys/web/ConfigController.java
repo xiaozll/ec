@@ -64,8 +64,7 @@ public class ConfigController extends SimpleController {
                                      String query) {
         Page<Config> page = new Page<Config>(request);
         page = configService.findPage(page,query);
-        Datagrid datagrid = new Datagrid(page.getTotalCount(), page.getResult());
-        return datagrid;
+        return new Datagrid(page.getTotalCount(), page.getResult());
     }
 
     @RequiresPermissions("sys:config:edit")

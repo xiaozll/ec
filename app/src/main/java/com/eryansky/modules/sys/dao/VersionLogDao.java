@@ -20,11 +20,7 @@ import java.util.List;
  */
 @MyBatisDao
 public interface VersionLogDao extends CrudDao<VersionLog> {
-    /**
-     * 删除所有 清空
-     * @return
-     */
-    int removeAll();
+
 
     List<VersionLog> findQueryList(Parameter parameter);
 

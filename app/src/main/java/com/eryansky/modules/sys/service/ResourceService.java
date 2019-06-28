@@ -80,12 +80,10 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
             List<String> types = Lists.newArrayList();
             types.add(entity.getType());
             List<Resource> childs = this.findChilds(entity.getId(), types);
-            Iterator<Resource> iterator = childs.iterator();
-            while (iterator.hasNext()) {
-                Resource subResource = iterator.next();
+            childs.forEach(subResource->{
                 subResource.setType(ResourceType.function.getValue());
                 super.save(subResource);
-            }
+            });
         }
     }
 
@@ -333,9 +331,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAuthorityAppAndMenuResourcesByUserId(String userId) {
-        List<String> resourceTypes = Lists.newArrayList();
-        resourceTypes.add(ResourceType.app.getValue());
-        resourceTypes.add(ResourceType.menu.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue(),ResourceType.menu.getValue());
         return findAuthorityResourcesByUserId(userId, resourceTypes);
     }
 
@@ -346,8 +342,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAuthorityAppResourcesByUserId(String userId) {
-        List<String> resourceTypes = Lists.newArrayList();
-        resourceTypes.add(ResourceType.app.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue());
         return findAuthorityResourcesByUserId(userId, resourceTypes);
     }
 
@@ -358,8 +353,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAuthorityMenuResourcesByUserId(String userId) {
-        List<String> resourceTypes = Lists.newArrayList();
-        resourceTypes.add(ResourceType.menu.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.menu.getValue());
         return findAuthorityResourcesByUserId(userId, resourceTypes);
     }
 
@@ -415,7 +409,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     @Cacheable(value = {CacheConstants.RESOURCE_USER_MENU_TREE_CACHE})
     public List<TreeNode> findNavTreeNodeWithPermissions(String userId) {
-        logger.debug("缓存:{}", CacheConstants.RESOURCE_USER_MENU_TREE_CACHE + " 参数：userId=" + userId);
+        logger.debug("缓存:{},参数：userId={}", CacheConstants.RESOURCE_USER_MENU_TREE_CACHE ,userId);
         return resourcesToTreeNode(findAppAndMenuWithPermissions(userId));
     }
 
@@ -488,9 +482,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAppAndMenuResources() {
-        List<String> resourceTypes = Lists.newArrayList();
-        resourceTypes.add(ResourceType.app.getValue());
-        resourceTypes.add(ResourceType.menu.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue(),ResourceType.menu.getValue());
         return findResources(resourceTypes);
     }
 
@@ -500,8 +492,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAppResources() {
-        List<String> resourceTypes = Lists.newArrayList();
-        resourceTypes.add(ResourceType.app.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue());
         return findResources(resourceTypes);
     }
 
@@ -511,8 +502,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findMenuResources() {
-        List<String> resourceTypes = Lists.newArrayList();
-        resourceTypes.add(ResourceType.menu.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.menu.getValue());
         return findResources(resourceTypes);
     }
 
@@ -581,15 +571,13 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     private List<TreeNode> resourcesToTreeNode(Collection<Resource> resources){
         if(Collections3.isEmpty(resources)){
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         List<TreeNode> tempTreeNodes = Lists.newArrayList();
-        Iterator<Resource> iterator = resources.iterator();
-        while (iterator.hasNext()){
-            Resource resource = iterator.next();
+        resources.forEach(resource->{
             TreeNode treeNode = this.resourceToTreeNode(resource);
             tempTreeNodes.add(treeNode);
-        }
+        });
         return AppUtils.toTreeTreeNodes(tempTreeNodes);
     }
 
@@ -603,13 +591,11 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
             return tempMenus;
         }
         Map<String, Menu> tempMap = Maps.newHashMap();
-        Iterator<Resource> iterator = resources.iterator();
-        while (iterator.hasNext()) {
-            Resource resource = iterator.next();
+        resources.forEach(resource->{
             Menu menu = this.resourceToMenu(resource);
             tempMenus.add(menu);
             tempMap.put(resource.getId(), menu);
-        }
+        });
 
         Set<String> keyIds = tempMap.keySet();
         Iterator<String> iteratorKey = keyIds.iterator();
@@ -923,8 +909,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
     public List<Resource> iGetResources(String resourceType) {
         Parameter parameter = new Parameter();
         parameter.put("type", resourceType);
-        List<Resource> list = dao.findCustomQuery(parameter);
-        return list;
+        return dao.findCustomQuery(parameter);
     }
 
     /**    外部接口同步到资源  **/

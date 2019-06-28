@@ -563,14 +563,15 @@ public class UserService extends CrudService<UserDao, User> {
         if (upUser == null) {
             throw new ServiceException("用户[" + upUserId + "]不存在.");
         }
+        if (downUser == null) {
+            throw new ServiceException("用户[" + downUserId + "]不存在.");
+        }
         Integer upUserOrderNo = upUser.getSort();
         Integer downUserOrderNo = downUser.getSort();
         if (upUser.getSort() == null) {
             upUserOrderNo = 1;
         }
-        if (downUser == null) {
-            throw new ServiceException("用户[" + downUserId + "]不存在.");
-        }
+
         if (downUser.getSort() == null) {
             downUserOrderNo = 1;
         }

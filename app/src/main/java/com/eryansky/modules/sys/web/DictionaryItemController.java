@@ -127,9 +127,7 @@ public class DictionaryItemController extends SimpleController {
         }
         List<TreeNode> treeNodes = dictionaryItemService
                 .getByDictionaryId(dictionaryItem.getDictionaryId(), dictionaryItem.getId(), true);
-
-        List<TreeNode> unionList = ListUtils.union(titleList, treeNodes);
-        return unionList;
+        return ListUtils.union(titleList, treeNodes);
     }
 
 
@@ -140,8 +138,7 @@ public class DictionaryItemController extends SimpleController {
     @ResponseBody
     public Result maxSort() throws Exception {
         Integer maxSort = dictionaryItemService.getMaxSort();
-        Result result = new Result(Result.SUCCESS, null, maxSort);
-        return result;
+        return new Result(Result.SUCCESS, null, maxSort);
     }
 
 }

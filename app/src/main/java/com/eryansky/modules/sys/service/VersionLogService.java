@@ -41,13 +41,6 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
     }
 
     /**
-     * 清空所有更新日志数据
-     */
-    public void removeAll(){
-        int reslutCount = dao.removeAll();
-        logger.debug("清空版本更新日志：{}",reslutCount);
-    }
-    /**
      * 根据版本号查找
      * @param versionLogType {@link VersionLogType}
      * @param versionCode

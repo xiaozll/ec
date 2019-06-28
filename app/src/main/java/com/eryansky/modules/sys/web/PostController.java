@@ -83,8 +83,7 @@ public class PostController extends SimpleController{
 
         page = postService.findPage(page,model);
         Datagrid<Post> dg = new Datagrid<Post>(page.getTotalCount(),page.getResult());
-        String json = JsonMapper.getInstance().toJson(dg);
-        return json;
+        return JsonMapper.getInstance().toJson(dg);
     }
 
     /**

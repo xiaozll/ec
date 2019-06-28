@@ -67,8 +67,7 @@ public class ResourceController extends SimpleController {
     public Datagrid<Resource> treegrid(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Resource model = new Resource();
         List<Resource> list = resourceService.findList(model);
-        Datagrid<Resource> dg = new Datagrid<Resource>(list.size(), list);
-        return dg;
+        return new Datagrid<Resource>(list.size(), list);
     }
 
 
@@ -147,8 +146,7 @@ public class ResourceController extends SimpleController {
             titleList.add(selectTreeNode);
         }
         treeNodes = resourceService.findTreeNodeResources();
-        List<TreeNode> unionList = ListUtils.union(titleList, treeNodes);
-        return unionList;
+        return ListUtils.union(titleList, treeNodes);
     }
 
     /**
@@ -213,8 +211,7 @@ public class ResourceController extends SimpleController {
             titleList.add(selectTreeNode);
         }
         treeNodes = resourceService.findTreeNodeResourcesWithExclude(resource.getId());
-        List<TreeNode> unionList = ListUtils.union(titleList, treeNodes);
-        return unionList;
+        return ListUtils.union(titleList, treeNodes);
     }
 
     /**

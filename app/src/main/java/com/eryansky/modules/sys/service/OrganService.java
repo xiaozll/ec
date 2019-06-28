@@ -58,7 +58,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      */
     @CacheEvict(value = { CacheConstants.ORGAN_USER_TREE_CACHE},allEntries = true)
     public Organ saveOrgan(Organ entity) {
-        logger.debug("清空缓存:{}");
+        logger.debug("清空缓存:{}",CacheConstants.ORGAN_USER_TREE_CACHE);
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
         return entity;
@@ -175,8 +175,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<Organ> findAllNormal(){
-        List<Organ> list = dao.findAllList(new Organ());
-        return list;
+        return dao.findAllList(new Organ());
     }
 
     /**
@@ -186,8 +185,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     public List<Organ> findAllWithDelete(){
         Organ entity = new Organ();
         entity.setStatus(null);
-        List<Organ> list = dao.findAllList(entity);
-        return list;
+        return dao.findAllList(entity);
     }
 
     /**
@@ -213,8 +211,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<Organ> findDepartmensWithInclude(Collection<String> organIds, String query){
-        List<String> organTypes = new ArrayList<String>(1);
-        organTypes.add(OrganType.department.getValue());
+        List<String> organTypes = Lists.newArrayList(OrganType.department.getValue());
         return findWithInclude(organIds,query,organTypes);
     }
 
@@ -242,8 +239,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             TreeNode treeNode = this.organToTreeNode(organ,false,true);
             tempTreeNodes.add(treeNode);
         }
-        List<TreeNode> result = AppUtils.toTreeTreeNodes(tempTreeNodes);
-        return result;
+        return AppUtils.toTreeTreeNodes(tempTreeNodes);
     }
 
 
@@ -567,8 +563,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         if(status == null){
             status = StatusState.NORMAL.getValue();
         }
-        List<String> list = Lists.newArrayList();
-        list.add(status);
+        List<String> list = Lists.newArrayList(status);
         return findDataByParent(parentId,list);
     }
 
@@ -581,10 +576,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     public List<Organ> findDataByParent(String parentId, Collection<String> status){
         //默认值 正常
         if(Collections3.isEmpty(status)){
-            status = new ArrayList<String>(3);
-            status.add(StatusState.NORMAL.getValue());
-            status.add(StatusState.LOCK.getValue());
-            status.add(StatusState.AUDIT.getValue());
+            status = Lists.newArrayList(StatusState.NORMAL.getValue(),StatusState.LOCK.getValue(),StatusState.AUDIT.getValue());
         }
         return findChild(parentId,status,null);
     }
@@ -592,17 +584,14 @@ public class OrganService extends TreeService<OrganDao, Organ> {
 
     public List<Organ> findChild(String parentId){
         //默认值 正常
-        List<String> status = Lists.newArrayList();
-        status.add(StatusState.NORMAL.getValue());
+        List<String> status = Lists.newArrayList(StatusState.NORMAL.getValue());
         return findChild(parentId,status,null);
     }
 
     public List<Organ> findChildCompany(String parentId){
         //默认值 正常
-        List<String> status = Lists.newArrayList();
-        status.add(StatusState.NORMAL.getValue());
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.organ.getValue());
+        List<String> status = Lists.newArrayList(StatusState.NORMAL.getValue());
+        List<String> types = Lists.newArrayList(OrganType.organ.getValue());
         return findChild(parentId,status,types);
     }
 
@@ -610,8 +599,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
 
     public List<Organ> findChild(String parentId,Collection<String> types){
         //默认值 正常
-        List<String> list = Lists.newArrayList();
-        list.add(StatusState.NORMAL.getValue());
+        List<String> list = Lists.newArrayList(StatusState.NORMAL.getValue());
         return findChild(parentId,list,types);
     }
 
@@ -652,8 +640,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     public List<String> findChildIds(String parentId, Collection<String> status){
         //默认值 正常
         if(Collections3.isEmpty(status)){
-            status = new ArrayList<String>(1);
-            status.add(StatusState.NORMAL.getValue());
+            status = Lists.newArrayList(StatusState.NORMAL.getValue());
         }
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS,status);
@@ -777,8 +764,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<Organ> findChildsCompanys(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.organ.getValue());
+        List<String> types = Lists.newArrayList(OrganType.organ.getValue());
         return findChilds(id,types);
     }
 
@@ -788,8 +774,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<Organ> findChildsDepartments(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.department.getValue());
+        List<String> types = Lists.newArrayList(OrganType.department.getValue());
         return findChilds(id,types);
     }
 
@@ -824,8 +809,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<String> findChildsCompanyIds(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.organ.getValue());
+        List<String> types = Lists.newArrayList(OrganType.organ.getValue());
         return findChildsIds(id,types);
     }
 
@@ -835,8 +819,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<String> findChildsDepartmentIds(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.department.getValue());
+        List<String> types = Lists.newArrayList(OrganType.department.getValue());
         return findChildsIds(id,types);
     }
 
@@ -875,8 +858,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<Organ> findOwnerAndChildsCompanys(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.organ.getValue());
+        List<String> types = Lists.newArrayList(OrganType.organ.getValue());
         return findOwnerAndChilds(id,types);
     }
 
@@ -904,8 +886,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<Organ> findOwnerAndChildsDepartments(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.department.getValue());
+        List<String> types = Lists.newArrayList(OrganType.department.getValue());
         return findOwnerAndChilds(id,types);
     }
 
@@ -941,8 +922,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<String> findOwnerAndChildsCompanyIds(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.organ.getValue());
+        List<String> types = Lists.newArrayList(OrganType.organ.getValue());
         return findOwnerAndChildsIds(id,types);
     }
 
@@ -952,8 +932,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<String> findOwnerAndChildsDepartmentIds(String id){
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.department.getValue());
+        List<String> types = Lists.newArrayList(OrganType.department.getValue());
         return findOwnerAndChildsIds(id,types);
     }
 
@@ -1074,20 +1053,17 @@ public class OrganService extends TreeService<OrganDao, Organ> {
                 if (Collections3.isEmpty(_userList)) {
                     continue;
                 }
-                Collections.sort(_userList, new Comparator<User>() {
 
-                    @Override
-                    public int compare(User u1, User u2) {
-                        if (u1.getSort() > u2.getSort()) {
-                            return 1;
-                        } else if(u1.getSort() < u2.getSort()) {
-                            return -1;
-                        } else {
-                            return 0;
-                        }
+                _userList.sort((User u1, User u2) ->{
+                    if (u1.getSort() > u2.getSort()) {
+                        return 1;
+                    } else if(u1.getSort() < u2.getSort()) {
+                        return -1;
+                    } else {
+                        return 0;
                     }
-
                 });
+
                 for (User user : _userList) {
                     TreeNode userNode = new TreeNode(user.getId(), user.getName());
                     userNode.setpId(oe.getId());
@@ -1167,8 +1143,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     public List<OrganExtend> findCompanyOrganExtends(){
         Parameter parameter = Parameter.newParameter();
         parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        List<String> types = Lists.newArrayList();
-        types.add(OrganType.organ.getValue());
+        List<String> types = Lists.newArrayList(OrganType.organ.getValue());
         parameter.put("types",types);
         return dao.findOrganExtends(parameter);
     }

@@ -49,8 +49,7 @@ public class SessionController extends SimpleController {
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request,String query) throws Exception {
         Page<SessionInfo> page = new Page<SessionInfo>(request);
         page = SecurityUtils.findSessionInfoPage(page,query);
-        Datagrid<SessionInfo> dg = new Datagrid<SessionInfo>(page.getTotalCount(),page.getResult());
-        return dg;
+        return new Datagrid<SessionInfo>(page.getTotalCount(),page.getResult());
     }
 
 

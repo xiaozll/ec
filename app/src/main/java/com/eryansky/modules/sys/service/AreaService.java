@@ -58,8 +58,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 	 */
 	public List<Area> findAreaUp(){
 		Area entity = new Area();
-		List<Area> areaList = areaDao.findAreaUp(entity);
-		return areaList;
+		return areaDao.findAreaUp(entity);
 	}
 	/**
 	 * 查找区县及以下
@@ -69,8 +68,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		Parameter parameter = Parameter.newParameter();
 		parameter.put("areaId",parentId);
 		parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-		List<Area> areaList = areaDao.findAreaDown(parameter);
-		return areaList;
+		return areaDao.findAreaDown(parameter);
 	}
 
 	/**
@@ -82,8 +80,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		Parameter parameter = Parameter.newParameter();
 		parameter.put("parentId",parentId);
 		parameter.put(BaseInterceptor.DB_NAME,AppConstants.getJdbcType());
-		List<Area> areaList = areaDao.findOwnAndChild(parameter);
-		return areaList;
+		return areaDao.findOwnAndChild(parameter);
 	}
 
 	/**
@@ -95,8 +92,7 @@ public class AreaService extends TreeService<AreaDao, Area> {
 		Parameter parameter = Parameter.newParameter();
 		parameter.put("parentId",parentId);
 		parameter.put(BaseInterceptor.DB_NAME,AppConstants.getJdbcType());
-		List<Area> areaList = areaDao.findByParentId(parameter);
-		return areaList;
+		return areaDao.findByParentId(parameter);
 	}
 
 

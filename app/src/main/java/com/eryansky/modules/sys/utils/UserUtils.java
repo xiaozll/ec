@@ -227,8 +227,7 @@ public class UserUtils {
      * @return
      */
     public static User getSuperUser() {
-        User superUser = Static.userService.getSuperUser();
-        return superUser;
+        return Static.userService.getSuperUser();
     }
 
     /**

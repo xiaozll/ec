@@ -179,7 +179,7 @@ public class OrganUtils {
             return null;
         }
         Organ organ = getCompanyByRecursive(organId);
-        return organ.getId();
+        return null == organ ? null:organ.getId();
     }
 
     /**
@@ -192,7 +192,7 @@ public class OrganUtils {
             return null;
         }
         Organ organ = getCompanyByRecursive(organId);
-        return organ.getCode();
+        return null == organ ? null:organ.getCode();
     }
 
 
@@ -206,9 +206,8 @@ public class OrganUtils {
             return null;
         }
         Organ company = getCompanyByRecursive(organId);
-        if(StringUtils.isNotBlank(company.getParentIds()) && company.getParentIds().split(",").length >= 3){//区县
-            Organ homeCompanyOrgan = getCompanyByRecursive(company.getParentId());
-            return homeCompanyOrgan;
+        if(null != company && StringUtils.isNotBlank(company.getParentIds()) && company.getParentIds().split(",").length >= 3){//区县
+            return getCompanyByRecursive(company.getParentId());
         }
         return company;
     }
@@ -224,7 +223,7 @@ public class OrganUtils {
             return null;
         }
         Organ organ = getHomeCompanyByRecursive(organId);
-        return organ.getId();
+        return null == organ ? null:organ.getId();
     }
 
     /**
@@ -237,6 +236,6 @@ public class OrganUtils {
             return null;
         }
         Organ organ = getHomeCompanyByRecursive(organId);
-        return organ.getCode();
+        return null == organ ? null:organ.getCode();
     }
 }

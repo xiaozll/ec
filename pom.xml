@@ -64,6 +64,11 @@
             <!--<url>http://www.jfit.com.cn/nexus/content/groups/public</url>-->
         <!--</repository>-->
         <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
+        <repository>
             <!-- required for org.hyperic:sigar -->
             <id>mvnrepository-public-repository-group</id>
             <url>http://repo.spring.io/plugins-release/</url>

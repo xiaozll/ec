@@ -534,6 +534,14 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取当前登录用户名称信息.
+     */
+    public static String getCurrentUserName() {
+        SessionInfo sessionInfo = getCurrentSessionInfo();
+        return null == sessionInfo ? null:sessionInfo.getName();
+    }
+
+    /**
      * 判断当前用户登录用户 是否是超级管理员
      * @return
      */

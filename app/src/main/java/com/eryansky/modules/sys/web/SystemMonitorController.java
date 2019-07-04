@@ -13,6 +13,7 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.io.FileUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
@@ -118,6 +119,7 @@ public class SystemMonitorController extends SimpleController {
             pKeys.forEach(key->{
                 Map<String,Object> map = Maps.newHashMap();
                 map.put("key",key);
+                map.put("keyEncodeUrl", EncodeUtils.urlEncode(key));
                 map.put("ttl1",cacheChannel.ttl(region,key,1));
                 map.put("ttl2",cacheChannel.ttl(region,key,2));
                 dataList.add(map);

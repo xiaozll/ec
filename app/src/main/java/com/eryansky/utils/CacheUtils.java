@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 /**
@@ -104,9 +105,8 @@ public class CacheUtils {
 	}
 
 	public static Collection<CacheChannel.Region> regions() {
-		return Static.cacheChannel.regions();
+		return Static.cacheChannel.regions().stream().sorted(Comparator.comparing(CacheChannel.Region::getName)).collect(Collectors.toList());
 	}
-
 
 	public static CacheChannel.Region getRegion(String region) {
 		Collection<CacheChannel.Region> regions = regions();

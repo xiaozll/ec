@@ -56,9 +56,9 @@
 				<td>{{ttl1}}</td>
 				<td>{{ttl2}}</td>
 				<td>
-					<a href="${ctxAdmin}/sys/systemMonitor/cacheKeyDetail?region=${region}&key={{key}}">查看</a>&nbsp;
+					<a href="${ctxAdmin}/sys/systemMonitor/cacheKeyDetail?region=${region}&key={{keyEncodeUrl}}">查看</a>&nbsp;
 					<e:hasPermission name="sys:systemMonitor:edit">
-						<a href="${ctxAdmin}/sys/systemMonitor/clearCacheKey?region=${region}&key={{key}}"  onclick="return confirmx('确认要清除缓存KEY吗？', this.href)">删除</a>
+						<a href="${ctxAdmin}/sys/systemMonitor/clearCacheKey?region=${region}&key={{keyEncodeUrl}}"  onclick="return confirmx('确认要清除缓存KEY吗？', this.href)">删除</a>
 					</e:hasPermission>
 				</td>
 			</tr>

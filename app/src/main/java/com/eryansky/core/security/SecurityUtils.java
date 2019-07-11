@@ -441,6 +441,7 @@ public class SecurityUtils {
         sessionInfo.getPermissonRoles().clear();
         sessionInfo.getPostCodes().clear();
         initPermission(sessionInfo);
+        Static.applicationSessionContext.addSession(sessionInfo);
         return sessionInfo;
     }
 
@@ -456,6 +457,7 @@ public class SecurityUtils {
             sessionInfo.getPermissonRoles().clear();
             sessionInfo.getPostCodes().clear();
             initPermission(sessionInfo);
+            Static.applicationSessionContext.addSession(sessionInfo);
         });
     }
 

@@ -281,7 +281,7 @@ public class UserService extends CrudService<UserDao, User> {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS,status);
         parameter.put("mobile",mobile);
-        return dao.getUserByLoginName(parameter);
+        return dao.getUserByMobile(parameter);
     }
 
     /**

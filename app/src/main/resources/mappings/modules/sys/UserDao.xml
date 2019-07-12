@@ -50,6 +50,18 @@
         </where>
     </select>
 
+    <select id="getUserByMobile" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND a.mobile = #{mobile}
+        </where>
+    </select>
+
     <select id="findLoginUser" resultType="User">
         SELECT
         <include refid="userColumns"/>

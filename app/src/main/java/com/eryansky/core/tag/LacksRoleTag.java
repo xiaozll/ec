@@ -29,8 +29,8 @@ public class LacksRoleTag extends TagSupport {
     public int doStartTag() throws JspException {
         if (!"".equals(this.name)) {
             String[] permissonNames = name.split(";");
-            for (int i = 0; i < permissonNames.length; i++) {
-                if (!SecurityUtils.isPermittedRole(permissonNames[i])) {
+            for (String permissonName : permissonNames) {
+                if (!SecurityUtils.isPermittedRole(permissonName)) {
                     return TagSupport.EVAL_BODY_INCLUDE;
                 }
             }

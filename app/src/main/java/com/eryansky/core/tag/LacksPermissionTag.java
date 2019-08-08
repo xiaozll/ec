@@ -29,8 +29,8 @@ public class LacksPermissionTag extends TagSupport {
     public int doStartTag() throws JspException {
         if (!"".equals(this.name)) {
             String[] permissonNames = name.split(";");
-            for (int i = 0; i < permissonNames.length; i++) {
-                if (!SecurityUtils.isPermitted(permissonNames[i])) {
+            for (String permissonName : permissonNames) {
+                if (!SecurityUtils.isPermitted(permissonName)) {
                     return TagSupport.EVAL_BODY_INCLUDE;
                 }
             }

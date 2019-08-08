@@ -11,6 +11,7 @@
 <%@ attribute name="extId" type="java.lang.String" required="false" description="排除掉的编号（不能选择的编号）"%>
 <%@ attribute name="notAllowSelectRoot" type="java.lang.Boolean" required="false" description="不允许选择根节点"%>
 <%@ attribute name="notAllowSelectParent" type="java.lang.Boolean" required="false" description="不允许选择父节点"%>
+<%@ attribute name="allSelectNodeTypes" type="java.lang.String" required="false" description="允许选择的节点类型，多个之间以','分割,node.attributes.nodeType"%>
 <%@ attribute name="module" type="java.lang.String" required="false" description="过滤栏目模型（只显示指定模型，仅针对CMS的Category树）"%>
 <%@ attribute name="selectScopeModule" type="java.lang.Boolean" required="false" description="选择范围内的模型（控制不能选择公共模型，不能选择本栏目外的模型）（仅针对CMS的Category树）"%>
 <%@ attribute name="allowClear" type="java.lang.Boolean" required="false" description="是否允许清除"%>
@@ -24,33 +25,34 @@
 <div class="input-append">
 	<input id="${id}Id" name="${name}" class="${cssClass}" type="hidden" value="${value}"${disabled eq 'true' ? ' disabled=\'disabled\'' : ''}/>
 	<input id="${id}Name" name="${labelName}" readonly="readonly" type="text" value="${labelValue}"${disabled eq "true"? " disabled=\"disabled\"":""}"
-		class="${cssClass}" style="${cssStyle}"/><a id="${id}Button" href="javascript:" class="btn${disabled eq 'true' ? ' disabled' : ''} ${hideBtn ? 'hide' : ''}" style="${smallBtn?'padding:4px 2px;':''}">&nbsp;<i class="icon-search"></i></a>&nbsp;&nbsp;
+	class="${cssClass}" style="${cssStyle}"/><a id="${id}Button" href="javascript:" class="btn${disabled eq 'true' ? ' disabled' : ''} ${hideBtn ? 'hide' : ''}" style="${smallBtn?'padding:4px 2px;':''}">&nbsp;<i class="icon-search"></i></a>&nbsp;&nbsp;
 </div>
 <style type="text/css">
-    .jbox-title-panel,.jbox-button-panel{
-        box-sizing: content-box;
-    }
-    #jbox-state-state0 > div{overflow-y:scroll;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
-    #jbox-content{overflow-y:scroll;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
-    #jbox-iframe{overflow-y:auto;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
+	.jbox-title-panel,.jbox-button-panel{
+		box-sizing: content-box;
+	}
+	#jbox-state-state0 > div{overflow-y:scroll;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
+	#jbox-content{overflow-y:scroll;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
+	#jbox-iframe{overflow-y:auto;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
 </style>
 <script type="text/javascript">
-    var ${id}_ajax_url = "${url}";
-    function ${id}SetAjaxURL(url){
-        ${id}_ajax_url = url;
-    }
+	var ${id}_ajax_url = "${url}";
+	function ${id}SetAjaxURL(url){
+		${id}_ajax_url = url;
+	}
 
-    function ${id}GetAjaxURL(){
-        return ${id}_ajax_url;
-    }
+	function ${id}GetAjaxURL(){
+		return ${id}_ajax_url;
+	}
 	$("#${id}Button").click(function(){
 		// 是否限制选择，如果限制，设置为disabled
 		if ($("#${id}Id").attr("disabled")){
 			return true;
 		}
-        var nameLevel = ${nameLevel eq null ? "1" : nameLevel};
-		// 正常打开	
-		top.$.jBox.open("iframe:${ctxAdmin}/tag/treeselect?url="+encodeURIComponent(${id}GetAjaxURL())+"&module=${module}&checked=${checked}&extId=${extId}&nodesLevel=${nodesLevel}&selectIds="+$("#${id}Id").val(), "选择${title}", 300, 420, {
+		var nameLevel = ${nameLevel eq null ? "1" : nameLevel};
+		var allSelectNodeTypes = "${allSelectNodeTypes}";
+		// 正常打开
+		$.jBox.open("iframe:${ctxAdmin}/tag/treeselect?url="+encodeURIComponent(${id}GetAjaxURL())+"&module=${module}&checked=${checked}&extId=${extId}&nodesLevel=${nodesLevel}&selectIds="+$("#${id}Id").val(), "选择${title}", 300, 420, {
 			buttons:{"确定":"ok", ${allowClear?"\"清除\":\"clear\", ":""}"关闭":true}, submit:function(v, h, f){
 				if (v=="ok"){
 					var tree = h.find("iframe")[0].contentWindow.tree;//h.find("iframe").contents();
@@ -78,16 +80,20 @@
 						}else if (nodes[i]['attributes']['module'] != "${module}"){
 							top.$.jBox.tip("不能选择当前栏目以外的栏目模型，请重新选择。");
 							return false;
+						}//</c:if><c:if test="${not empty allSelectNodeTypes}">
+						if (allSelectNodeTypes.indexOf(nodes[i]['attributes']['nodeType']) < 0){
+							top.$.jBox.tip("不允许选择的节点类型（"+nodes[i]['text']+"）请重新选择。");
+							return false;
 						}//</c:if>
 						ids.push(nodes[i].id);
-                        var t_node = nodes[i];
-                        var t_name = "";
-                        var name_l = 0;
-                        do{
-                            name_l++;
-                            t_name = t_node['text'] + " " + t_name;
-                            t_node = t_node.getParentNode();
-                        }while(name_l < nameLevel);
+						var t_node = nodes[i];
+						var t_name = "";
+						var name_l = 0;
+						do{
+							name_l++;
+							t_name = t_node['text'] + " " + t_name;
+							t_node = t_node.getParentNode();
+						}while(name_l < nameLevel);
 						names.push(t_name);//<c:if test="${!checked}">
 						break; // 如果为非复选框选择，则返回第一个选择  </c:if>
 					}
@@ -101,9 +107,9 @@
 					$("#${id}Id").trigger("change");
 					$("#${id}Name").val("");
 					$("#${id}Name").trigger("change");
-                }//</c:if>
+				}//</c:if>
 			}, loaded:function(h){
-				$(".jbox-content", top.document).css("overflow","inherit");
+				$(".jbox-content", document).css("overflow","inherit");
 			}
 		});
 	});

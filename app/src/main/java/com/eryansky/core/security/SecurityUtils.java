@@ -179,7 +179,7 @@ public class SecurityUtils {
      */
     public static Boolean isPermittedRole(String roleCode) {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        return isPermittedRole(sessionInfo.getUserId(), roleCode);
+        return null != sessionInfo && isPermittedRole(sessionInfo.getUserId(), roleCode);
     }
 
     /**
@@ -322,6 +322,9 @@ public class SecurityUtils {
         List<String> roleIds = Static.roleService.findRoleIdsByUserId(user.getId());
         sessionInfo.setRoleIds(roleIds);
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(user.getId());
+        if(null == organExtend){
+            throw new SystemException("用户账号异常");
+        }
         sessionInfo.setLoginOrganId(organExtend.getId());
         sessionInfo.setLoginOrganSysCode(organExtend.getSysCode());
         sessionInfo.setLoginOrganName(organExtend.getName());
@@ -338,18 +341,11 @@ public class SecurityUtils {
      */
     private static void initPermission(SessionInfo sessionInfo){
         List<Resource> resources = Static.resourceService.findAuthorityResourcesByUserId(sessionInfo.getUserId());
-        resources.forEach(resource->{
-            sessionInfo.addPermissons(new Permisson(StringUtils.isNotBlank(resource.getCode()) ? resource.getCode():resource.getId(),resource.getMarkUrl()));
-        });
+        resources.forEach(resource->sessionInfo.addPermissons(new Permisson(StringUtils.isNotBlank(resource.getCode()) ? resource.getCode():resource.getId(),resource.getMarkUrl())));
         List<Role> roles = Static.roleService.findRolesByUserId(sessionInfo.getUserId());
-        roles.forEach(role -> {
-            sessionInfo.addPermissonRoles(new PermissonRole(StringUtils.isNotBlank(role.getCode()) ? role.getCode():role.getId()));
-        });
-
+        roles.forEach(role -> sessionInfo.addPermissonRoles(new PermissonRole(StringUtils.isNotBlank(role.getCode()) ? role.getCode():role.getId())));
         List<Post> posts = Static.postService.findPostsByUserId(sessionInfo.getUserId());
-        posts.forEach(post -> {
-            sessionInfo.getPostCodes().add(StringUtils.isNotBlank(post.getCode()) ? post.getCode():post.getId());
-        });
+        posts.forEach(post -> sessionInfo.getPostCodes().add(StringUtils.isNotBlank(post.getCode()) ? post.getCode():post.getId()));
     }
 
 
@@ -468,6 +464,9 @@ public class SecurityUtils {
         SessionInfo sessionInfo = null;
         try {
             HttpSession session = SpringMVCHolder.getSession();
+            if(null == session){
+                return null;
+            }
             sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session),session.getId());
             if(sessionInfo == null){
                 String token = SpringMVCHolder.getRequest().getHeader("Authorization");
@@ -493,7 +492,14 @@ public class SecurityUtils {
     public static SessionInfo getCurrentSessionInfo(HttpServletRequest request) {
         SessionInfo sessionInfo = null;
         try {
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(request.getSession()),request.getSession().getId());
+            if(null == request){
+                return null;
+            }
+            HttpSession session = request.getSession();
+            if(null == session){
+                return null;
+            }
+            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session),session.getId());
             if(sessionInfo == null){
                 String token = SpringMVCHolder.getRequest().getHeader("Authorization");
                 if(StringUtils.isNotBlank(token)){
@@ -549,7 +555,7 @@ public class SecurityUtils {
      */
     public static boolean isCurrentUserAdmin() {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        return isUserAdmin(sessionInfo.getUserId());
+        return null != sessionInfo && isUserAdmin(sessionInfo.getUserId());
     }
 
 

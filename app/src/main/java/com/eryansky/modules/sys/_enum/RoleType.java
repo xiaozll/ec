@@ -39,7 +39,7 @@ public enum RoleType {
         return description;
     }
 
-    public static RoleType getRoleTypeByValue(RoleType value) {
+    public static RoleType getByValue(String value) {
         if (null == value)
             return null;
         for (RoleType _enum : RoleType.values()) {
@@ -49,7 +49,7 @@ public enum RoleType {
         return null;
     }
 
-    public static RoleType getRoleTypeByDescription(String description) {
+    public static RoleType getByDescription(String description) {
         if (null == description)
             return null;
         for (RoleType _enum : RoleType.values()) {

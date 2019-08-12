@@ -678,22 +678,27 @@ public class ExcelUtils {
 		// String suffix =
 		// file.getName().substring(file.getName().lastIndexOf(".") + 1);
 
-		FileInputStream fis = new FileInputStream(file);
-		byte[] b = new byte[3];
+		FileInputStream fis = null;
 		try {
+			fis = new FileInputStream(file);
+			byte[] b = new byte[3];
 			fis.read(b, 0, b.length);
+			if ("d0cf11".equalsIgnoreCase(bytesToHexString(b))
+					|| "504b03".equalsIgnoreCase(bytesToHexString(b))) {
+				bool = true;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally {
+			if(null != fis){
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		if (bytesToHexString(b).equalsIgnoreCase("d0cf11")
-				|| bytesToHexString(b).equalsIgnoreCase("504b03")) {
-			bool = true;
-		}
-		try {
-			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 		return bool;
 	}
 

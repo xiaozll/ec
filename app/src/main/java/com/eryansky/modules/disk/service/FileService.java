@@ -47,8 +47,6 @@ import java.util.List;
 public class FileService extends CrudService<FileDao, File> {
 
     @Autowired
-    private FileDao dao;
-    @Autowired
     private FolderService folderService;
     @Autowired
     private IFileManager iFileManager;
@@ -60,7 +58,7 @@ public class FileService extends CrudService<FileDao, File> {
      */
     public List<File> findFilesByIds(Collection<String> fileIds){
         if(Collections3.isEmpty(fileIds)){
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         Parameter parameter = Parameter.newParameter();
         parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);

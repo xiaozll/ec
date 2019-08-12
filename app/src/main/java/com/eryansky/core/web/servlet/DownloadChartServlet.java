@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 用于下载highchart图表
@@ -77,7 +78,7 @@ public class DownloadChartServlet extends HttpServlet {
 			} else if (type.equals("image/jpeg")) {
 				ext = "jpg";
 				t = new JPEGTranscoder();
-				t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, new Float(.8));
+				t.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, (float) 0.8);
 			} else if (type.equals("application/pdf")) {
 				ext = "pdf";
 				t = (Transcoder) new PDFTranscoder();
@@ -95,9 +96,17 @@ public class DownloadChartServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			} else if (ext.equals("svg")) {
-				OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
-				writer.append(svg);
-				writer.close();
+				OutputStreamWriter writer= null;
+				try {
+					writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+					writer.append(svg);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if(null != writer){
+						writer.close();
+					}
+				}
 			} else
 				out.print("Invalid type: " + type);
 		} else {

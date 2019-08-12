@@ -294,10 +294,10 @@ public class JsGridReportBase {
 			row = sheet.createRow(rownum);
 
 			List<TableDataCell> dataCells = dataRow.getCells();
-			int size = headerMetaData.getColumns().size();
+			int size = headerMetaData.getLeafs().size();
 			index = -1;
 			for (int i = 0; i < size; i++) {
-				TableColumn tc = headerMetaData.getColumns().get(i);
+				TableColumn tc = headerMetaData.getLeafs().get(i);
 				if (!tc.isVisible())
 					continue;
 				index++;
@@ -358,10 +358,10 @@ public class JsGridReportBase {
 		stopGrouping(sheet, word, counter, 0, index, rownum, styles
 				.get("STRING"));
 		// 设置前两列根据数据自动列宽
-		for (int c = 0; c < headerMetaData.getColumns().size(); c++) {
+		for (int c = 0; c < headerMetaData.getLeafs().size(); c++) {
 //			sheet.autoSizeColumn((short) c,true);
 			sheet.autoSizeColumn((short) c);
-			String t = headerMetaData.getColumns().get(c).getDisplay();
+			String t = headerMetaData.getLeafs().get(c).getDisplay();
 			if(sheet.getColumnWidth(c)<t.length()*256*3)
 				sheet.setColumnWidth(c, t.length()*256*3);
 		}
@@ -450,10 +450,10 @@ public class JsGridReportBase {
 			row = sheet.createRow(rownum);
 
 			List<TableDataCell> dataCells = dataRow.getCells();
-			int size = headerMetaData.getColumns().size();
+			int size = headerMetaData.getLeafs().size();
 			index = -1;
 			for (int i = 0; i < size; i++) {
-				TableColumn tc = headerMetaData.getColumns().get(i);
+				TableColumn tc = headerMetaData.getLeafs().get(i);
 				if (!tc.isVisible())
 					continue;
 				index++;
@@ -514,10 +514,10 @@ public class JsGridReportBase {
 		stopGrouping(sheet, word, counter, 0, index, rownum, styles
 				.get("STRING"));
 		// 设置前两列根据数据自动列宽
-		for (int c = 0; c < headerMetaData.getColumns().size(); c++) {
+		for (int c = 0; c < headerMetaData.getLeafs().size(); c++) {
 //			sheet.autoSizeColumn((short) c,true);
 			sheet.autoSizeColumn((short) c);
-			String t = headerMetaData.getColumns().get(c).getDisplay();
+			String t = headerMetaData.getLeafs().get(c).getDisplay();
 			if(sheet.getColumnWidth(c)<t.length()*256*3)
 				sheet.setColumnWidth(c, t.length()*256*3);
 		}
@@ -609,10 +609,10 @@ public class JsGridReportBase {
 				row = sheet.createRow(rownum);
 
 				List<TableDataCell> dataCells = dataRow.getCells();
-				int size = headerMetaData.getColumns().size();
+				int size = headerMetaData.getLeafs().size();
 				index = -1;
 				for (int i = 0; i < size; i++) {
-					TableColumn tc = headerMetaData.getColumns().get(i);
+					TableColumn tc = headerMetaData.getLeafs().get(i);
 					if (!tc.isVisible())
 						continue;
 					index++;
@@ -622,9 +622,9 @@ public class JsGridReportBase {
 				rownum++;
 			}
 			// 设置前两列根据数据自动列宽
-			for (int c = 0; c < headerMetaData.getColumns().size(); c++) {
+			for (int c = 0; c < headerMetaData.getLeafs().size(); c++) {
 				sheet.autoSizeColumn((short) c);
-				String t = headerMetaData.getColumns().get(c).getDisplay();
+				String t = headerMetaData.getLeafs().get(c).getDisplay();
 				if(sheet.getColumnWidth(c)<t.length()*256*3)
 					sheet.setColumnWidth(c, t.length()*256*3);
 			}

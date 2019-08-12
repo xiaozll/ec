@@ -176,8 +176,8 @@ public class leoUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (bytesToHexString(b).equalsIgnoreCase("d0cf11")
-				|| bytesToHexString(b).equalsIgnoreCase("504b03")) {
+		if ("d0cf11".equalsIgnoreCase(bytesToHexString(b))
+				|| "504b03".equalsIgnoreCase(bytesToHexString(b))) {
 			bool = true;
 		}
 		try {
@@ -250,8 +250,7 @@ public class leoUtil {
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("javascript");
 		try {
-			Double d = (Double) engine.eval(ex);
-			return d;
+			return (Double) engine.eval(ex);
 		} catch (ScriptException e) {
 			return null;
 		}

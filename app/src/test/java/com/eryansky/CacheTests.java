@@ -94,6 +94,34 @@ public class CacheTests {
 		System.out.println(CacheUtils.getCacheChannel().ttl(region,key,2));
 	}
 
+	@Test
+	public void ttl2(){
+		String region = "default0";
+		String key = "key2";
+		CacheUtils.getCacheChannel().set(region,key,"2");
+		System.out.println(CacheUtils.getCacheChannel().get(region,key));
+//		System.out.println(CacheUtils.getCacheChannel().ttl(region,key));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key,1));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key,2));
+	}
+	@Test
+	public void ttl3(){
+		String region = "default0";
+		String key1 = "key1";
+		System.out.println(CacheUtils.getCacheChannel().get(region,key1));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key1,1));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key1,2));
+	}
+
+	@Test
+	public void ttl4(){
+		String region = "default0";
+		String key1 = "key1";
+		String key2 = "key2";
+//		System.out.println(CacheUtils.getCacheChannel().get(region,Lists.newArrayList(key1,key2)));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key1,1));
+		System.out.println(CacheUtils.getCacheChannel().ttl(region,key1,2));
+	}
 
 	@Test
 	public void cache13() throws Exception{

@@ -111,11 +111,11 @@ public class TableHeaderMetaData {
 		}
 	}
 
-	/**
-	 * 获取列表头集合
-	 * @return
-	 */
-	public List<TableColumn> getColumns() {
+	public LinkedList<TableColumn> getColumns() {
+		return columns;
+	}
+
+	public LinkedList<TableColumn> getLeafs() {
 		return leafs;
 	}
 

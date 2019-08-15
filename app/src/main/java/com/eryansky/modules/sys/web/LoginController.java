@@ -384,6 +384,7 @@ public class LoginController extends SimpleController {
         menu.setpId(resource.getParentId());
         menu.setHeader(StringUtils.isBlank(menu.getpId()));
         menu.setTargetType("iframe-tab");
+        menu.setIcon(resource.getIconCls());
         String url = resource.getUrl();
         menu.setUrl(url);
         menu.addAttribute("type", resource.getType());

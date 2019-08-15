@@ -14,9 +14,9 @@
     <packaging>jar</packaging>
     <properties>
         <ehcache.version>2.10.6</ehcache.version>
-        <caffeine.version>2.7.0</caffeine.version>
-        <redis.version>2.10.2</redis.version>
-        <lettuce.version>5.1.7.RELEASE</lettuce.version>
+        <caffeine.version>2.8.0</caffeine.version>
+        <jedis.version>2.10.2</jedis.version>
+        <lettuce.version>5.1.8.RELEASE</lettuce.version>
         <fst.version>2.57</fst.version>
         <snappy.version>1.1.7.3</snappy.version>
         <jline.version>2.14.6</jline.version>
@@ -43,12 +43,17 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>${redis.version}</version>
+            <version>${jedis.version}</version>
         </dependency>
         <dependency>
             <groupId>io.lettuce</groupId>
             <artifactId>lettuce-core</artifactId>
             <version>${lettuce.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.6</version>
         </dependency>
         <dependency>
             <groupId>de.ruedigermoeller</groupId>

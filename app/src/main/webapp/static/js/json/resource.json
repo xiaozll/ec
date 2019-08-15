@@ -1,199 +1,54 @@
 [
     {
-        "value": "",
-        "text": "默认"
-    },
-    {
-        "value": "eu-icon-application",
-        "text": "application"
-    },
-    {
-        "value": "eu-icon-user",
-        "text": "user"
-    },
-    {
-        "value": "eu-icon-group",
-        "text": "group"
-    },
-    {
-        "value": "eu-icon-vcard",
-        "text": "vcard"
-    },
-    {
-        "value": "eu-icon-chart_bar",
-        "text": "chart_bar"
-    },
-    {
-        "value": "eu-icon-chart_curve",
-        "text": "chart_curve"
-    },
-    {
-        "value": "eu-icon-chart_line",
-        "text": "chart_line"
-    },
-    {
-        "value": "eu-icon-chart_pie",
-        "text": "chart_pie"
-    },
-    {
-        "value": "eu-icon-book",
-        "text": "book"
-    },
-    {
-        "value": "eu-icon-email",
-        "text": "email"
-    },
-    {
-        "value": "eu-icon-bug",
-        "text": "bug"
-    },
-    {
-        "value": "eu-icon-folder",
-        "text": "folder"
-    },
-    {
-        "value": "eu-icon-computer",
-        "text": "computer"
-    },
-    {
-        "value": "eu-icon-monitor",
-        "text": "monitor"
-    },
-    {
-        "value": "eu-icon-database",
-        "text": "database"
-    },
-    {
-        "value": "eu-icon-disk",
-        "text": "disk"
-    },
-    {
-        "value": "eu-icon-link",
-        "text": "folder"
-    },
-    {
-        "value": "eu-icon-server",
-        "text": "server"
-    },
-    {
-        "value": "eu-icon-map",
-        "text": "map"
-    },
-    {
-        "value": "eu-icon-world",
-        "text": "world"
-    },
-
-    {
-        "value": "eu-icon-help",
-        "text": "help"
-    },
-    {
-        "value": "eu-icon-date",
-        "text": "date"
-    },
-    {
-        "value": "eu-icon-calendar",
-        "text": "calendar"
-    },
-    {
-        "value": "eu-icon-camera",
-        "text": "camera"
-    },
-    {
-        "value": "eu-icon-film",
-        "text": "film"
-    },
-    {
-        "value": "eu-icon-television",
+        "value": "fa fa-television",
         "text": "television"
     },
     {
-        "value": "eu-icon-ipod",
-        "text": "ipod"
+        "value": "fa fa-sticky-note-o",
+        "text": "sticky-note-o"
     },
     {
-        "value": "eu-icon-gears",
-        "text": "ipod"
+        "value": "fa fa-bell",
+        "text": "bell"
     },
     {
-        "value": "easyui-icon-add",
-        "text": "add"
+        "value": "fa fa-cloud",
+        "text": "cloud"
     },
     {
-        "value": "easyui-icon-edit",
-        "text": "edit"
+        "value": "fa fa-database",
+        "text": "database"
     },
     {
-        "value": "easyui-icon-remove",
-        "text": "remove"
+        "value": "fa fa-user",
+        "text": "user"
     },
     {
-        "value": "easyui-icon-search",
+        "value": "fa fa-users",
+        "text": "users"
+    },
+    {
+        "value": "fa fa-bullhorn",
+        "text": "bullhorn"
+    },
+    {
+        "value": "fa fa-bolt",
+        "text": "bolt"
+    },
+    {
+        "value": "fa fa-cog",
+        "text": "cog"
+    },
+    {
+        "value": "fa fa-legal",
+        "text": "legal"
+    },
+    {
+        "value": "fa fa-search",
         "text": "search"
     },
     {
-        "value": "easyui-icon-print",
-        "text": "print"
-    },
-    {
-        "value": "eu-icon-notice_user_comment",
-        "text": "notice_user_comment"
-    },
-    {
-        "value": "eu-icon-disk_yunpan",
-        "text": "disk_yunpan"
-    },
-    {
-        "value": "eu-icon-application_osx",
-        "text": "application_osx"
-    },
-    {
-        "value": "eu-icon-sitemap_color",
-        "text": "sitemap_color"
-    },
-    {
-        "value": "eu-icon-page_white_swoosh",
-        "text": "page_white_swoosh"
-    },
-    {
-        "value": "eu-icon-page_white_code",
-        "text": "page_white_code"
-    },
-    {
-        "value": "eu-icon-folder_page_white",
-        "text": "folder_page_white"
-    },
-    {
-        "value": "eu-icon-comment",
-        "text": "comment"
-    },
-    {
-        "value": "eu-icon-comments",
-        "text": "comments"
-    },
-    {
-        "value": "eu-icon-application_put",
-        "text": "application_put"
-    },
-    {
-        "value": "easyui-icon-large-picture",
-        "text": "l-picture"
-    },
-    {
-        "value": "easyui-icon-large-clipart",
-        "text": "l-clipart"
-    },
-    {
-        "value": "easyui-icon-large-shapes",
-        "text": "l-shapes"
-    },
-    {
-        "value": "easyui-icon-large-smartart",
-        "text": "l-smartart"
-    },
-    {
-        "value": "easyui-icon-large-chart",
-        "text": "l-chart"
+        "value": "fa fa-trophy",
+        "text": "trophy"
     }
 ]

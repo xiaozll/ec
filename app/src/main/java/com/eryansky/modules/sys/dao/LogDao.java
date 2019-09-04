@@ -24,6 +24,7 @@ import java.util.Map;
 @MyBatisDao
 public interface LogDao extends CrudDao<Log> {
 
+	List<Log> findQueryList(Parameter parameter);
 
 	/**
 	 * 插入到历史表
@@ -44,11 +45,13 @@ public interface LogDao extends CrudDao<Log> {
 	 */
 	Long getUserLoginCount(Map<String,Object> parameter);
 
+
 	/**
 	 * 查询标题为null的数据
 	 * @return
 	 */
 	List<Log> findNullData();
+
 
 	/**
 	 * 根据“module”查询标题不为null的数据

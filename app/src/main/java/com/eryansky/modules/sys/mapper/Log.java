@@ -89,16 +89,15 @@ public class Log extends DataEntity<Log> {
      * 纬度
      */
     private BigDecimal latitude;
-    /**
-     * 精度
-     */
-    private BigDecimal accuracy;
 
 
     /**
      * 查询条件
      */
     private String query;
+    private String userName;
+    private String userOrganName;
+    private String userCompanyName;
 
     public Log() {
         super();
@@ -233,13 +232,6 @@ public class Log extends DataEntity<Log> {
         this.latitude = latitude;
     }
 
-    public BigDecimal getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(BigDecimal accuracy) {
-        this.accuracy = accuracy;
-    }
 
     /**
      * 设置请求参数
@@ -264,28 +256,9 @@ public class Log extends DataEntity<Log> {
         }
     }
 
-    private String userName;
-    /**
-     * 用户姓名
-     *
-     * @return
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
 
-    public String getUserOfficeName(){
-        return UserUtils.getDefaultOrganName(userId);
-    }
 
-    public String getUserCompanyName(){
-        return UserUtils.getCompanyName(userId);
-    }
 
     /**
      * 日志类类型 View
@@ -305,5 +278,29 @@ public class Log extends DataEntity<Log> {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserOrganName() {
+        return userOrganName;
+    }
+
+    public void setUserOrganName(String userOrganName) {
+        this.userOrganName = userOrganName;
+    }
+
+    public String getUserCompanyName() {
+        return userCompanyName;
+    }
+
+    public void setUserCompanyName(String userCompanyName) {
+        this.userCompanyName = userCompanyName;
     }
 }

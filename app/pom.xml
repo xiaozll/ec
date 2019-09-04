@@ -21,6 +21,7 @@
         <xwpf.version>2.0.1</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
         <velocity.version>1.7</velocity.version>
+        <commons-csv.version>1.6</commons-csv.version>
 
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
@@ -215,7 +216,11 @@
             <version>${velocity.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${commons-csv.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>

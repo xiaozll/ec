@@ -18,11 +18,14 @@ import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.excelTools.CsvUtils;
 import com.eryansky.core.excelTools.ExcelUtils;
 import com.eryansky.core.excelTools.JsGridReportBase;
 import com.eryansky.core.excelTools.TableData;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.sys._enum.LogType;
@@ -41,9 +44,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 日志
@@ -58,13 +60,6 @@ public class LogController extends SimpleController {
     @Autowired
     private LogService logService;
 
-    @Logging(value = "日志管理",logType = LogType.access)
-    @RequestMapping(value = {""})
-    public String list() {
-        return "modules/sys/log";
-    }
-
-
     @ModelAttribute("model")
     public Log get(@RequestParam(required=false) String id) {
         if (StringUtils.isNotBlank(id)){
@@ -75,65 +70,76 @@ public class LogController extends SimpleController {
     }
 
     /**
-     *
-     * @param log
-     * @param name 姓名或登录名
+     * 日志管理
+     * @param type {@link LogType}
+     * @param userInfo
+     * @param query
+     * @param startTime
+     * @param endTime
+     * @param export
+     * @param uiModel
      * @param request
      * @param response
-     * @param uiModel
      * @return
      */
-    @RequestMapping(value = {"datagrid"})
-    @ResponseBody
-    public String datagrid(Log log,String name,HttpServletRequest request,HttpServletResponse response,Model uiModel) {
-        Page<Log> page = new Page<Log>(request);
-        log.setUserId(name);
-        page = logService.findPage(page,log);
-        Datagrid<Log> dg = new Datagrid<Log>(page.getTotalCount(),page.getResult());
-        String json = JsonMapper.getInstance().toJsonWithExcludeProperties(dg,Log.class,new String[]{"exception"});
-        return json;
-    }
-
-
-    /**
-     *
-     * @param log
-     * @param request
-     * @param response
-     * @param uiModel
-     * @return
-     */
+    @Logging(value = "日志管理",logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(value = {"export"})
-    public void export(Log log,HttpServletRequest request,HttpServletResponse response,Model uiModel) {
-        response.setContentType("application/msexcel;charset=UTF-8");
-        Page<Log> page = new Page<Log>(request);
-//        page.setPageSize(Page.PAGESIZE_ALL);
-        page = logService.findPage(page,log);
+    @RequestMapping(value = {""})
+    public String list(String type,
+                       String userInfo,
+                       String query,
+                       Date startTime,
+                       Date endTime,
+                       @RequestParam(value = "export",defaultValue = "false") Boolean export,
+                       Model uiModel, HttpServletRequest request, HttpServletResponse response) {
+        Page<Log> page = new Page<>(request);
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        Date _startTime = null != startTime ? startTime: Calendar.getInstance().getTime();
+        if(WebUtils.isAjaxRequest(request) || export){
+            if(export){
+                page.setPageSize(Page.PAGESIZE_ALL);
+            }
+            page = logService.findQueryPage(page,type,userInfo,query,_startTime,endTime);
+            if(export) {
+                List<Object[]> data = Lists.newArrayList();
+                page.getResult().forEach(o -> {
+                    data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(), o.getIp(),o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()});
+                });
 
-        List<Object[]> list = Lists.newArrayList();
-        page.getResult().forEach(l->{
-            list.add(new Object[]{l.getTypeView(),l.getTitle(),l.getUserCompanyName(),l.getUserOfficeName(),l.getUserName(),l.getIp(),l.getModule(), DateUtils.formatDateTime(l.getOperTime()),l.getActionTime()});
-        });
 
+                String title = "审计日志-" + DateUtils.getCurrentDate();
+                //Sheet2
+                String[] hearders = new String[]{"日志类型", "标题", "单位", "部门", "姓名", "IP地址","设备", "模块", "操作时间", "操作耗时(ms)"};//表头数组
 
-        List<TableData> tds = new ArrayList<TableData>();
+                if (page.getResult().size() < 65531) {
+                    //导出Excel
+                    try {
+                        TableData td = ExcelUtils.createTableData(data, ExcelUtils.createTableHeader(hearders, 0), null);
+                        td.setSheetTitle(title);
+                        JsGridReportBase report = new JsGridReportBase(request, response);
+                        report.exportToExcel(title, sessionInfo.getName(), td);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                } else {
+                    //导出CSV
+                    try {
+                        CsvUtils.exportToExcel(title, hearders, data, request, response);
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+                return null;
+            }
 
-        String title = "审计日志-"+DateUtils.getCurrentDate();
-        //Sheet2
-        String[] hearders = new String[] {"日志类型","标题","单位","部门", "姓名", "IP地址", "模块","操作时间","操作耗时(ms)"};//表头数组
-        TableData td = ExcelUtils.createTableData(list, ExcelUtils.createTableHeader(hearders,0),null);
-        td.setSheetTitle(title);
-        tds.add(td);
-
-        try {
-            JsGridReportBase report = new JsGridReportBase(request, response);
-            report.exportToExcel(title, SecurityUtils.getCurrentSessionInfo().getName(), tds);
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            Datagrid<Log> dg = new Datagrid<>(page.getTotalCount(),page.getResult());
+            String json = JsonMapper.getInstance().toJsonWithExcludeProperties(dg,Log.class,new String[]{"exception"});
+            return renderString(response,json,WebUtils.JSON_TYPE);
         }
-
+        uiModel.addAttribute("startTime",DateUtils.formatDate(_startTime));
+        return "modules/sys/log";
     }
+
 
 
     /**

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eryansky.modules.sys.dao.LogDao">
 
-	<sql id="sysLogColumns">
+    <sql id="sysLogColumns">
 		a.id AS "id",
 		a.status AS "status",
 		a.version AS "version",
@@ -25,296 +25,349 @@
 		a.exception AS "exception",
 		u.name AS "userName",
 		a.longitude AS "longitude",
-		a.latitude AS "latitude",
-		a.accuracy AS "accuracy"
+		a.latitude AS "latitude"
 	</sql>
 
-	<sql id="sysLogJoins">
+    <sql id="sysLogJoins">
 		LEFT JOIN t_sys_user u ON u.id = a.user_id
 	</sql>
 
-	<select id="get" resultType="Log">
-		SELECT
-		<include refid="sysLogColumns"/>
-		FROM t_sys_log a
-		<include refid="sysLogJoins"/>
-		WHERE a.id = #{id}
-	</select>
+    <select id="get" resultType="Log">
+        SELECT
+        <include refid="sysLogColumns"/>,
+        o.name AS "userOrganName",
+        c.name AS "userCompanyName"
+        FROM t_sys_log a
+        LEFT JOIN t_sys_user u ON u.id = a.user_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        LEFT JOIN t_sys_organ_extend c ON c.id = o.company_id
+        WHERE a.id = #{id}
+    </select>
 
-	<select id="findList" resultType="Log">
-		SELECT
-		<include refid="sysLogColumns"/>
-		FROM t_sys_log a
-		<include refid="sysLogJoins"/>
-		<where>
-			a.status = #{STATUS_NORMAL}
-			<if test="query != null and query != ''">
-				AND (
-				a.title LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
-				OR a.ip LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
-				OR a.remark LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
-				)
-			</if>
-			<if test="type != null and type != ''">
-				AND a.type = #{type}
-			</if>
-			<if test="userId != null and userId != ''">
-				AND ( u.name LIKE
-				<if test="dbName == 'db2'">'%'||#{userId}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{userId}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{userId}||'%'</if>
-				OR u.login_name LIKE
-				<if test="dbName == 'db2'">'%'||#{userId}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{userId}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{userId}||'%'</if>
-				)
-			</if>
-		</where>
-		<choose>
-			<when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
-				ORDER BY ${entityPage.orderBy} ${entityPage.order}
-			</when>
-			<otherwise>
-				ORDER BY a.create_time DESC
-			</otherwise>
-		</choose>
-	</select>
+    <select id="findList" resultType="Log">
+        SELECT
+        <include refid="sysLogColumns"/>,
+        o.name AS "userOrganName",
+        c.name AS "userCompanyName"
+        FROM t_sys_log a
+        LEFT JOIN t_sys_user u ON u.id = a.user_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        LEFT JOIN t_sys_organ_extend c ON c.id = o.company_id
+        <where>
+            a.status = #{STATUS_NORMAL}
+            <if test="query != null and query != ''">
+                AND (
+                a.title LIKE
+                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                OR a.ip LIKE
+                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                OR a.remark LIKE
+                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                )
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+        </where>
+        <choose>
+            <when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
+                ORDER BY ${entityPage.orderBy} ${entityPage.order}
+            </when>
+            <otherwise>
+                ORDER BY a.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
 
-	<select id="findAllList" resultType="Log">
-		SELECT
-		<include refid="sysLogColumns"/>
-		FROM t_sys_log a
-		<include refid="sysLogJoins"/>
-		<where>
-			a.status = #{STATUS_NORMAL}
-		</where>
-		<choose>
-			<when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
-				ORDER BY ${entityPage.orderBy} ${entityPage.order}
-			</when>
-			<otherwise>
-				ORDER BY a.create_time DESC
-			</otherwise>
-		</choose>
-	</select>
 
-	<!--查询用户登录次数-->
-	<select id="getUserLoginCount" resultType="java.lang.Long">
-		SELECT
-		count(*)
-		FROM
-		t_sys_log a
-		WHERE
-		t.status = '0'
-		AND t.title LIKE
-		<if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
-		<if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
-		<if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
-		AND a.user_id = #{userId}
-		<choose>
-			<when test="startTime != null and endTime != null">
-				AND a.create_time BETWEEN #{startTime} AND #{endTime}
-			</when>
-			<when test="startTime != null and endTime == null">
-				AND a.create_time <![CDATA[>=]]> #{startTime}
-			</when>
-			<when test="startTime == null and endTime != null">
-				AND a.create_time <![CDATA[<=]]> #{endTime}
-			</when>
-		</choose>
-	</select>
+    <select id="findQueryList" resultType="Log">
+        SELECT
+        <include refid="sysLogColumns"/>,
+        o.name AS "userOrganName",
+        c.name AS "userCompanyName"
+        FROM t_sys_log a
+        LEFT JOIN t_sys_user u ON u.id = a.user_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        LEFT JOIN t_sys_organ_extend c ON c.id = o.company_id
+        <where>
+            a.status = '0'
+            <if test="query != null and query != ''">
+                AND (
+                a.title LIKE
+                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                OR a.ip LIKE
+                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                OR a.remark LIKE
+                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                )
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="userInfo != null and userInfo != ''">
+                AND ( u.name LIKE
+                <if test="dbName == 'db2'">'%'||#{userInfo}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{userInfo}, '%')</if>
+                OR u.login_name LIKE
+                <if test="dbName == 'db2'">'%'||#{userInfo}||'%'</if>
+                <if test="dbName == 'mysql'">CONCAT('%', #{userInfo}, '%')</if>
+                )
+            </if>
+            <choose>
+                <when test="startTime != null and endTime != null">
+                    AND a.create_time BETWEEN #{startTime} AND #{endTime}
+                </when>
+                <when test="startTime != null and endTime == null">
+                    AND a.create_time <![CDATA[>=]]> #{startTime}
+                </when>
+                <when test="startTime == null and endTime != null">
+                    AND a.create_time <![CDATA[<=]]> #{endTime}
+                </when>
+            </choose>
 
-	<!--查询每日登陆次数-->
-	<select id="getDayLoginStatistics" resultType="java.util.Map">
-		SELECT
-		<choose>
-			<when test="dbName != null and dbName == 'oracle'.toString()">
-				to_char(a.create_time, 'yyyy-MM-dd') as "loginDate",
-			</when>
-			<when test="dbName != null and dbName == 'mysql'.toString()">
-				DATE_FORMAT(a.create_time, '%Y-%m-%d') as "loginDate",
-			</when>
-			<otherwise>
-				DATE_FORMAT(a.create_time, '%Y-%m-%d') as "loginDate",
-			</otherwise>
-		</choose>
-		count(*) AS "count"
-		FROM
-		t_sys_log a
-		WHERE
-		a.status = '0'
-		AND a.title LIKE
-		<if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
-		<if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
-		<if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
-		<choose>
-			<when test="startTime != null and endTime != null">
-				AND a.create_time BETWEEN #{startTime} AND #{endTime}
-			</when>
-			<when test="startTime != null and endTime == null">
-				AND a.create_time <![CDATA[>=]]> #{startTime}
-			</when>
-			<when test="startTime == null and endTime != null">
-				AND a.create_time <![CDATA[<=]]> #{endTime}
-			</when>
-		</choose>
-		GROUP BY
-		<choose>
-			<when test="dbName != null and dbName == 'oracle'.toString()">
-				to_char(a.create_time, 'yyyy-MM-dd')
-			</when>
-			<when test="dbName != null and dbName == 'mysql'.toString()">
-				DATE_FORMAT(a.create_time, '%Y-%m-%d')
-			</when>
-			<otherwise>
-				DATE_FORMAT(a.create_time, '%Y-%m-%d')
-			</otherwise>
-		</choose>
-		ORDER BY
-		2 ASC
-	</select>
+        </where>
+        <choose>
+            <when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
+                ORDER BY ${entityPage.orderBy} ${entityPage.order}
+            </when>
+            <otherwise>
+                ORDER BY a.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
 
-	<!--查询员工登录统计信息-->
-	<select id="getLoginStatistics" resultType="java.util.Map">
-		SELECT
-		o.id AS "organId",
-		o.name AS "department",
-		u.name AS "name",
-		u.login_name AS "userName",
-		count(*) AS "count"
-		FROM
-		t_sys_log t
-		LEFT JOIN t_sys_user u ON u.id = t.user_id
-		LEFT JOIN t_sys_organ o ON o.id = u.default_organ_id
-		WHERE
-		t.status = '0'
-		AND t.title LIKE
-		<if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
-		<if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
-		<if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
+    <select id="findAllList" resultType="Log">
+        SELECT
+        <include refid="sysLogColumns"/>,
+        o.name AS "userOrganName",
+        c.name AS "userCompanyName"
+        FROM t_sys_log a
+        LEFT JOIN t_sys_user u ON u.id = a.user_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        LEFT JOIN t_sys_organ_extend c ON c.id = o.company_id
+        <where>
+            a.status = #{STATUS_NORMAL}
+        </where>
+        <choose>
+            <when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
+                ORDER BY ${entityPage.orderBy} ${entityPage.order}
+            </when>
+            <otherwise>
+                ORDER BY a.create_time DESC
+            </otherwise>
+        </choose>
+    </select>
 
-		<if test="name != null and name !=''">
-			AND (u.login_name LIKE
-			<if test="dbName == 'db2'">'%'||#{name}||'%'</if>
-			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
-			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-			OR u.name LIKE
-			<if test="dbName == 'db2'">'%'||#{name}||'%'</if>
-			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
-			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>)
-		</if>
-		<choose>
-			<when test="startTime != null and endTime != null">
-				AND t.create_time BETWEEN #{startTime} AND #{endTime}
-			</when>
-			<when test="startTime != null and endTime == null">
-				AND t.create_time <![CDATA[>=]]> #{startTime}
-			</when>
-			<when test="startTime == null and endTime != null">
-				AND t.create_time <![CDATA[<=]]> #{endTime}
-			</when>
-		</choose>
-		GROUP BY
-		o.id,o.name,u.name,u.login_name
-		ORDER BY
-		5 DESC
-	</select>
+    <!--查询用户登录次数-->
+    <select id="getUserLoginCount" resultType="java.lang.Long">
+        SELECT
+        count(*)
+        FROM
+        t_sys_log a
+        WHERE
+        t.status = '0'
+        AND a.title LIKE  CONCAT('%', '用户登录', '%')
+        AND a.user_id = #{userId}
+        <choose>
+            <when test="startTime != null and endTime != null">
+                AND a.create_time BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <when test="startTime != null and endTime == null">
+                AND a.create_time <![CDATA[>=]]> #{startTime}
+            </when>
+            <when test="startTime == null and endTime != null">
+                AND a.create_time <![CDATA[<=]]> #{endTime}
+            </when>
+        </choose>
+    </select>
 
-	<!--查询模块访问统计-->
-	<select id="getModuleStatistics" resultType="java.util.Map">
-		SELECT
-		t.TITLE AS "module",
-		count(*) AS "moduleCount"
-		FROM
-		t_sys_log t
-		LEFT JOIN t_sys_user u ON u.id = t.user_id
-		LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
-		<if test="postCode != null and postCode !=''">
-			LEFT JOIN t_sys_user_post up ON up.user_id = u.id
-			LEFT JOIN t_sys_post p ON p.id = up.post_id
-		</if>
-		WHERE
-		t.status = '0'
-		<choose>
-			<when test="objectIds != null and objectIds !=''">
-				AND u.id in
-				<foreach item="objectIds" index="index" collection="objectIds" open="("
-						 separator="," close=")">
-					#{objectIds, jdbcType=VARCHAR}
-				</foreach>
-			</when>
-			<otherwise>
-				<if test="organId != null and organId != ''">
-					<choose>
-						<when test="onlyCompany != null and onlyCompany">
-							AND o.company_id = #{organId}
-						</when>
-						<otherwise>
-							AND (o.id = #{organId} OR o.parent_ids LIKE
-							<if test="dbName == 'db2'">'%'||#{organId}||'%'</if>
-							<if test="dbName == 'mysql'">CONCAT('%', #{organId}, '%')</if>
-							<if test="dbName == 'oracle'">'%'||#{organId}||'%'</if>
-							)
-						</otherwise>
-					</choose>
-				</if>
+    <!--查询每日登陆次数-->
+    <select id="getDayLoginStatistics" resultType="java.util.Map">
+        SELECT
+        <choose>
+            <when test="dbName != null and dbName == 'oracle'.toString()">
+                to_char(a.create_time, 'yyyy-MM-dd') as "loginDate",
+            </when>
+            <when test="dbName != null and dbName == 'mysql'.toString()">
+                DATE_FORMAT(a.create_time, '%Y-%m-%d') as "loginDate",
+            </when>
+            <otherwise>
+                DATE_FORMAT(a.create_time, '%Y-%m-%d') as "loginDate",
+            </otherwise>
+        </choose>
+        count(*) AS "count"
+        FROM
+        t_sys_log a
+        WHERE
+        a.status = '0'
+        AND a.title LIKE
+        <if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
+        <if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
+        <if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
+        <choose>
+            <when test="startTime != null and endTime != null">
+                AND a.create_time BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <when test="startTime != null and endTime == null">
+                AND a.create_time <![CDATA[>=]]> #{startTime}
+            </when>
+            <when test="startTime == null and endTime != null">
+                AND a.create_time <![CDATA[<=]]> #{endTime}
+            </when>
+        </choose>
+        GROUP BY
+        <choose>
+            <when test="dbName != null and dbName == 'oracle'.toString()">
+                to_char(a.create_time, 'yyyy-MM-dd')
+            </when>
+            <when test="dbName != null and dbName == 'mysql'.toString()">
+                DATE_FORMAT(a.create_time, '%Y-%m-%d')
+            </when>
+            <otherwise>
+                DATE_FORMAT(a.create_time, '%Y-%m-%d')
+            </otherwise>
+        </choose>
+        ORDER BY
+        2 ASC
+    </select>
 
-			</otherwise>
-		</choose>
+    <!--查询员工登录统计信息-->
+    <select id="getLoginStatistics" resultType="java.util.Map">
+        SELECT
+        o.id AS 'organId',
+        o.name AS 'department',
+        u.name AS 'name',
+        u.login_name AS 'userName',
+        count(*) AS 'count'
+        FROM
+        t_sys_log a
+        LEFT JOIN t_sys_user u ON u.id = t.user_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        WHERE
+        a.status = '0'
+        AND a.title LIKE
+        <if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
+        <if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
+        <if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
+        <if test="name != null and name !=''">
+            AND (u.login_name LIKE
+            <if test="dbName == 'db2'">'%'||#{name}||'%'</if>
+            <if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+            <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+            OR u.name LIKE
+            <if test="dbName == 'db2'">'%'||#{name}||'%'</if>
+            <if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+            <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>)
+        </if>
+        <choose>
+            <when test="startTime != null and endTime != null">
+                AND a.create_time BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <when test="startTime != null and endTime == null">
+                AND a.create_time <![CDATA[>=]]> #{startTime}
+            </when>
+            <when test="startTime == null and endTime != null">
+                AND a.create_time <![CDATA[<=]]> #{endTime}
+            </when>
+        </choose>
+        GROUP BY
+        a.user_id
+        ORDER BY
+        5 DESC
+    </select>
 
-		<choose>
-			<when test="startTime != null and endTime != null">
-				AND t.create_time BETWEEN #{startTime} AND #{endTime}
-			</when>
-			<when test="startTime != null and endTime == null">
-				AND t.create_time <![CDATA[>=]]> #{startTime}
-			</when>
-			<when test="startTime == null and endTime != null">
-				AND t.create_time <![CDATA[<=]]> #{endTime}
-			</when>
-		</choose>
+    <!--查询模块访问统计-->
+    <select id="getModuleStatistics" resultType="java.util.Map">
+        SELECT
+        a.title AS 'module',
+        count(*) AS 'moduleCount'
+        FROM
+        t_sys_log a
+        LEFT JOIN t_sys_user u ON u.id = t.user_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        <if test="postCode != null and postCode !=''">
+            LEFT JOIN t_sys_user_post up ON up.user_id = u.id
+            LEFT JOIN t_sys_post p ON p.id = up.post_id
+        </if>
+        WHERE
+        a.status = '0'
+        <choose>
+            <when test="objectIds != null and objectIds !=''">
+                AND u.id in
+                <foreach item="objectIds" index="index" collection="objectIds" open="("
+                         separator="," close=")">
+                    #{objectIds, jdbcType=VARCHAR}
+                </foreach>
+            </when>
+            <otherwise>
+                <if test="organId != null and organId != ''">
+                    <choose>
+                        <when test="onlyCompany != null and onlyCompany">
+                            AND o.company_id = #{organId}
+                        </when>
+                        <otherwise>
+                            AND (o.id = #{organId} OR o.parent_ids LIKE
+                            <if test="dbName == 'db2'">'%'||#{organId}||'%'</if>
+                            <if test="dbName == 'mysql'">CONCAT('%', #{organId}, '%')</if>
+                            <if test="dbName == 'oracle'">'%'||#{organId}||'%'</if>
+                            )
+                        </otherwise>
+                    </choose>
+                </if>
 
-		<if test="postCode != null and postCode !=''">
-			AND p.code = #{postCode}
-		</if>
-		GROUP BY
-		t.TITLE
-		ORDER BY
-		2 DESC
-	</select>
+            </otherwise>
+        </choose>
 
-	<!--查询标题为null的数据-->
-	<select id="findNullData" resultType="Log">
-		SELECT
-		<include refid="sysLogColumns"/>
-		FROM t_sys_log a
-		<include refid="sysLogJoins"/>
-		WHERE
-		a.title IS NULL
-	</select>
+        <choose>
+            <when test="startTime != null and endTime != null">
+                AND a.create_time BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <when test="startTime != null and endTime == null">
+                AND a.create_time <![CDATA[>=]]> #{startTime}
+            </when>
+            <when test="startTime == null and endTime != null">
+                AND a.create_time <![CDATA[<=]]> #{endTime}
+            </when>
+        </choose>
 
-	<!--根据“module”查询标题不为null的数据-->
-	<select id="getNotNullData" resultType="Log">
-		SELECT
-		<include refid="sysLogColumns"/>
-		FROM t_sys_log a
-		<include refid="sysLogJoins"/>
-		WHERE
-		a.title IS NOT NULL
-		AND
-		a.module = #{module} LIMIT 1;
-	</select>
+        <if test="postCode != null and postCode !=''">
+            AND p.code = #{postCode}
+        </if>
+        GROUP BY
+        a.title
+        ORDER BY
+        2 DESC
+    </select>
 
-	<insert id="insert">
+    <!--查询标题为null的数据-->
+    <select id="findNullData" resultType="Log">
+        SELECT
+        <include refid="sysLogColumns"/>
+        FROM t_sys_log a
+        <include refid="sysLogJoins"/>
+        WHERE
+        a.title IS NULL
+    </select>
+
+    <!--根据“module”查询标题不为null的数据-->
+    <select id="getNotNullData" resultType="Log">
+        SELECT
+        <include refid="sysLogColumns"/>
+        FROM t_sys_log a
+        <include refid="sysLogJoins"/>
+        WHERE
+        a.title IS NOT NULL
+        AND
+        a.module = #{module} LIMIT 1;
+    </select>
+
+    <insert id="insert">
 		INSERT INTO t_sys_log(
 		id,
 		status,
@@ -337,8 +390,7 @@
 		remark,
 		exception,
 		longitude,
-		latitude,
-		accuracy
+		latitude
 		) VALUES (
 		#{id},
 		#{status},
@@ -361,12 +413,11 @@
 		#{remark},
 		#{exception},
 		#{longitude},
-		#{latitude},
-		#{accuracy}
+		#{latitude}
 		)
 	</insert>
 
-	<update id="update">
+    <update id="update">
 		UPDATE t_sys_log SET
 		status = #{status},
 		version = version +1,
@@ -384,12 +435,11 @@
 		remark = #{remark},
 		exception = #{exception},
 		longitude = #{longitude},
-		latitude = #{latitude},
-		accuracy = #{accuracy}
+		latitude = #{latitude}
 		WHERE id = #{id}
 	</update>
 
-	<update id="delete">
+    <update id="delete">
 		UPDATE t_sys_log SET
 		status = #{STATUS_DELETE}
 		WHERE id = #{id}
@@ -404,14 +454,14 @@
 		DELETE FROM t_sys_log
 	</delete>
 
-	<delete id="clearInvalidLog" >
-		DELETE FROM t_sys_log
-		<where>
-			<if test="createTime != null ">
-				create_time <![CDATA[<]]> #{createTime}
-			</if>
-		</where>
-	</delete>
+    <delete id="clearInvalidLog" >
+        DELETE FROM t_sys_log
+        <where>
+            <if test="createTime != null ">
+                create_time <![CDATA[<]]> #{createTime}
+            </if>
+        </where>
+    </delete>
 
 
 	<insert id="insertToHistory">
@@ -437,8 +487,7 @@
 		remark,
 		exception,
 		longitude,
-		latitude,
-		accuracy
+		latitude
 		) SELECT id,
 		status,
 		version,
@@ -460,8 +509,7 @@
 		remark,
 		exception,
 		longitude,
-		latitude,
-		accuracy
+		latitude
 		FROM t_sys_log
 		<where>
 			<if test="createTime != null ">

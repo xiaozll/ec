@@ -4,7 +4,7 @@ $(function () {
     $log_search_form = $('#log_search_form').form();
     //数据列表
     $log_datagrid = $('#log_datagrid').datagrid({
-        url: ctxAdmin+'/sys/log/datagrid',
+        url: ctxAdmin+'/sys/log',
         fit:true,
         pagination: true,//底部分页
         rownumbers: true,//显示行数
@@ -16,6 +16,9 @@ $(function () {
         checkbox: true,
         nowrap: true,
         border: false,
+        remoteSort: true,//是否通过远程服务器对数据排序
+        //sortName: 'operTime',//默认排序字段
+        //sortOrder: 'desc',//默认排序方式 'desc' 'asc'
         idField: 'id',
         frozenColumns:[[
             {field: 'ck',checkbox: true,width: 60},
@@ -24,10 +27,10 @@ $(function () {
         columns: [ [
             {field: 'id',title: '主键',hidden: true,sortable: true,align: 'right', width: 100} ,
             {field: 'title',title: '标题',width: 200,hidden:false,formatter: function (value, rowData, rowIndex) {
-                return "<a target='_blank' href='"+ctxAdmin+"/sys/log/detail?id="+rowData['id']+"'>"+rowData['title']+"</a>";
-            } },
+                    return "<a target='_blank' href='"+ctxAdmin+"/sys/log/detail?id="+rowData['id']+"'>"+rowData['title']+"</a>";
+                } },
             {field: 'userCompanyName', title: '单位', width: 200, hidden: false},
-            {field: 'userOfficeName', title: '部门', width: 150, hidden: false},
+            {field: 'userOrganName', title: '部门', width: 150, hidden: false},
             {field: 'userName',title: '姓名',width: 80},
             {field: 'userId',title: '用户ID',width: 60,hidden:true},
             {field: 'ip', title: 'IP地址', width: 100} ,
@@ -42,23 +45,28 @@ $(function () {
             {field: 'latitude',title: '纬度',width: 100,hidden:true},
             {field: 'remark',title: '备注',width: 260 ,hidden:true}
         ]],
-        toolbar:[{
-            text:'导出Excel',
-            iconCls:'easyui-icon-search',
-            handler:function(){
-                exportQuery();
+        toolbar:[
+            {
+                text:'导出Excel',
+                iconCls:'easyui-icon-search',
+                handler:function(){
+                    exportQuery();
+                }
             }
+            //     {
+            //     text:'删除',
+            //     iconCls:'easyui-icon-remove',
+            //     handler:function(){del()}
+            // },'-',{
+            //     text:'清空所有',
+            //     iconCls:'easyui-icon-no',
+            //     handler:function(){delAll()}
+            // }
+        ],
+        onBeforeLoad:function(param){
+            param = $.serializeObject($log_search_form);
+            return true;
         }
-        // ,{
-        //     text:'删除',
-        //     iconCls:'easyui-icon-remove',
-        //     handler:function(){del()}
-        // },'-',{
-        //     text:'清空所有',
-        //     iconCls:'easyui-icon-no',
-        //     handler:function(){delAll()}
-        // }
-        ]
     }).datagrid("showTooltip");
 
     //日志类型 搜索选项
@@ -71,7 +79,7 @@ $(function () {
 });
 
 function exportQuery(){
-    $('#annexFrame').attr('src', ctxAdmin + '/sys/log/export?'+$.param($.serializeObject($("#log_search_form"))));
+    $('#annexFrame').attr('src', ctxAdmin + '/sys/log?export=true&'+$.param($.serializeObject($("#log_search_form"))));
 }
 
 //删除

@@ -41,6 +41,24 @@ public class LogService extends CrudService<LogDao, Log> {
         return page;
     }
 
+    public Page<Log> findQueryPage(Page<Log> page, Log entity) {
+        Parameter parameter = Parameter.newPageParameter(page,AppConstants.getJdbcType());
+        page.setResult(dao.findQueryList(parameter));
+        return page;
+    }
+
+
+    public Page<Log> findQueryPage(Page<Log> page,String type,String query,String userInfo,Date startTime,Date endTime) {
+        Parameter parameter = Parameter.newPageParameter(page,AppConstants.getJdbcType());
+        parameter.put("type",type);
+        parameter.put("userInfo",userInfo);
+        parameter.put("query",query);
+        parameter.put("startTime",null != startTime ? DateUtils.formatDate(startTime):null);
+        parameter.put("endTime",null != endTime ? DateUtils.formatDate(endTime):null);
+        page.setResult(dao.findQueryList(parameter));
+        return page;
+    }
+
     /**
      * 删除
      * @param ids

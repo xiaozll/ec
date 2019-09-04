@@ -171,7 +171,7 @@
         FROM
         t_sys_log a
         WHERE
-        t.status = '0'
+        a.status = '0'
         AND a.title LIKE  CONCAT('%', '用户登录', '%')
         AND a.user_id = #{userId}
         <choose>
@@ -247,7 +247,7 @@
         count(*) AS 'count'
         FROM
         t_sys_log a
-        LEFT JOIN t_sys_user u ON u.id = t.user_id
+        LEFT JOIN t_sys_user u ON u.id = a.user_id
         LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
         WHERE
         a.status = '0'
@@ -289,7 +289,7 @@
         count(*) AS 'moduleCount'
         FROM
         t_sys_log a
-        LEFT JOIN t_sys_user u ON u.id = t.user_id
+        LEFT JOIN t_sys_user u ON u.id = a.user_id
         LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
         <if test="postCode != null and postCode !=''">
             LEFT JOIN t_sys_user_post up ON up.user_id = u.id

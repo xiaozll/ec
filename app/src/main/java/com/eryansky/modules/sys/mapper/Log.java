@@ -95,8 +95,17 @@ public class Log extends DataEntity<Log> {
      * 查询条件
      */
     private String query;
+    /**
+     * 操作人姓名
+     */
     private String userName;
+    /**
+     * 操作人部门名称
+     */
     private String userOrganName;
+    /**
+     * 操作人单位名称
+     */
     private String userCompanyName;
 
     public Log() {

@@ -21,8 +21,8 @@
             border: false,
             //idField: 'id',
             columns: [ [
-                {field: 'company', title: '单位', width: 235, hidden: false},
-                {field: 'department', title: '部门', width: 235, hidden: false},
+                {field: 'companyName', title: '单位', width: 235, hidden: false},
+                {field: 'organName', title: '部门', width: 235, hidden: false},
                 {field: 'name', title: '姓名', width: 100},
                 {field: 'userName', title: '账号', width: 120, hidden: false},
                 {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false}

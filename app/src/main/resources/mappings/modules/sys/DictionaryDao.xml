@@ -95,9 +95,12 @@
 			a.status = #{STATUS_NORMAL}
 			<if test="name != null and name != ''">
 				AND a.name LIKE
-					<if test="dbName == 'db2'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{name}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{name}||'%'</when>
+					<otherwise>'%'+#{name}+'%'</otherwise>
+				</choose>
 			</if>
 		</where>
 		<choose>

@@ -57,21 +57,33 @@
 			<if test="query != null and query != ''">
 				AND (
 				a.title LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
 				OR a.url LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
 				OR a.content LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
 				OR a.app_id LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
 				)
 			</if>
 			${sqlMap.dsf}

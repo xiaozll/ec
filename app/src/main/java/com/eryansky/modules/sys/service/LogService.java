@@ -169,6 +169,7 @@ public class LogService extends CrudService<LogDao, Log> {
     public Long getUserLoginCount(String userId,Date startTime,Date endTime){
         Parameter parameter = new Parameter();
         parameter.put("userId", userId);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         if(startTime != null){
             parameter.put("startTime",DateUtils.format(startTime, DateUtils.DATE_TIME_FORMAT));
         }
@@ -211,12 +212,6 @@ public class LogService extends CrudService<LogDao, Log> {
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(Log.FIELD_STATUS, Log.STATUS_NORMAL);
         List<Map<String,Object>> mapList= dao.getLoginStatistics(parameter);
-        if(Collections3.isNotEmpty(mapList)){
-            for(Map<String,Object> map:mapList){
-                OrganExtend organ = OrganUtils.getOrganCompany((String) map.get("organId"));
-                map.put("company", organ != null ? organ.getName():(String) map.get("name"));
-            }
-        }
         pg.setResult(mapList);
         return pg;
     }

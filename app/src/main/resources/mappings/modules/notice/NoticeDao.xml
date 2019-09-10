@@ -48,13 +48,20 @@
 			a.status = #{STATUS_NORMAL}
 			<if test="query != null and query != ''">
 				AND (a.title LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
 				OR a.content LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{query}||'%'</if>)
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
+				)
 			</if>
 			<if test="type != null and type != ''">
 				AND a.type = #{type}
@@ -105,15 +112,21 @@
 			</if>
 			<if test="title != null and title != ''">
 				AND a.title LIKE
-				<if test="dbName == 'db2'">'%'||#{title}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{title}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{title}||'%'</when>
+					<otherwise>'%'+#{title}+'%'</otherwise>
+				</choose>
 			</if>
 			<if test="content != null and content != ''">
 				AND a.content LIKE
-				<if test="dbName == 'db2'">'%'||#{content}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{content}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{content}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{content}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{content}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{content}||'%'</when>
+					<otherwise>'%'+#{content}+'%'</otherwise>
+				</choose>
 			</if>
 			<if test="isTop != null">
 				AND a.is_top = #{isTop}

@@ -124,15 +124,21 @@
 			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE
-				<if test="dbName == 'db2'">'%'||#{name}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{name}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{name}||'%'</when>
+					<otherwise>'%'+#{name}+'%'</otherwise>
+				</choose>
 			</if>
 			<if test="code != null and code != ''">
 				AND a.name LIKE
-				<if test="dbName == 'db2'">'%'||#{code}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{code}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
+					<otherwise>'%'+#{code}+'%'</otherwise>
+				</choose>
 			</if>
 		</where>
 		<choose>

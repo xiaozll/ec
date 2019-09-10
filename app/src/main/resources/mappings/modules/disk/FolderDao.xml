@@ -115,9 +115,13 @@
             </if>
             <if test="id != null and id !=''">
                 AND (a.parent_id = #{id} OR a.parent_ids LIKE
-                <if test="dbName == 'db2'">'%,'||#{id}||',%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
-                <if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>)
+                <choose>
+                    <when test="dbName == 'db2'">'%,'||#{id}||',%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</when>
+                    <when test="dbName == 'oracle'">'%,'||#{id}||',%'</when>
+                    <otherwise>'%,'+#{id}+',%'</otherwise>
+                </choose>
+                )
             </if>
         </where>
         ORDER BY a.sort ASC
@@ -134,9 +138,13 @@
             </if>
             <if test="id != null and id !=''">
                 AND (a.parent_id = #{id} OR a.parent_ids LIKE
-                <if test="dbName == 'db2'">'%,'||#{id}||',%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
-                <if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>)
+                <choose>
+                    <when test="dbName == 'db2'">'%,'||#{id}||',%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</when>
+                    <when test="dbName == 'oracle'">'%,'||#{id}||',%'</when>
+                    <otherwise>'%,'+#{id}+',%'</otherwise>
+                </choose>
+                )
             </if>
         </where>
         ORDER BY a.sort ASC
@@ -166,9 +174,13 @@
             </if>
             <if test="excludeFolderId != null and excludeFolderId !=''">
                 AND a.id <![CDATA[ <> ]]> #{excludeFolderId} AND a.parent_ids NOT LIKE
-                <if test="dbName == 'db2'">'%,'||#{excludeFolderId}||',%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%,', #{excludeFolderId}, ',%'
-                <if test="dbName == 'oracle'">'%,'||#{excludeFolderId}||',%'</if>)</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%,'||#{excludeFolderId}||',%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%,', #{excludeFolderId}, ',%')</when>
+                    <when test="dbName == 'oracle'">'%,'||#{excludeFolderId}||',%'</when>
+                    <otherwise>'%,'+#{excludeFolderId}+',%'</otherwise>
+                </choose>
+                )
             </if>
 
         </where>
@@ -278,9 +290,13 @@
         update_user = #{updateUser},
         update_time = #{updateTime}
         WHERE (id = #{id} OR parent_ids LIKE
-        <if test="dbName == 'db2'">'%,'||#{id}||',%'</if>
-        <if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
-        <if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>)
+        <choose>
+            <when test="dbName == 'db2'">'%,'||#{id}||',%'</when>
+            <when test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</when>
+            <when test="dbName == 'oracle'">'%,'||#{id}||',%'</when>
+            <otherwise>'%,'+#{id}+',%'</otherwise>
+        </choose>
+        )
     </delete>
 
 </mapper>

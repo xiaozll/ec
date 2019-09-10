@@ -112,8 +112,8 @@ public class SQLHelper {
     public static int getCount(final String sql, final Connection connection,
                                final MappedStatement mappedStatement, final Object parameterObject,
                                final BoundSql boundSql, Log log) throws SQLException {
-        String dbName = BaseInterceptor.convertDbNameParameter(parameterObject);
         final String countSql = Static.countSqlParser.getSmartCountSql(sql,"1");
+//        String dbName = BaseInterceptor.convertDbNameParameter(parameterObject);
 //        if("oracle".equals(dbName)){
 //            countSql = "select count(1) from (" + sql + ") tmp_count";
 //        }else{

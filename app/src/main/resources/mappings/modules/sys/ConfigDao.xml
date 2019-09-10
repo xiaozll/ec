@@ -33,8 +33,12 @@
 		<where>
 			<if test="code != null and code != ''">
 				AND a.code LIKE
-				<if test="dbName == 'db2'">'%'||#{code}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
+					<otherwise>'%'+#{code}+'%'</otherwise>
+				</choose>
 			</if>
 		</where>
 		<choose>
@@ -54,11 +58,19 @@
 		<where>
 			<if test="query != null and query != ''">
 				AND (a.code LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
+					<otherwise>'%'+#{code}+'%'</otherwise>
+				</choose>
 				OR a.value LIKE
-				<if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
+					<otherwise>'%'+#{code}+'%'</otherwise>
+				</choose>
 				)
 			</if>
 		</where>

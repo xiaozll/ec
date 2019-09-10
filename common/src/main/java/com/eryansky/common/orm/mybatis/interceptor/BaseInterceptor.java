@@ -133,6 +133,8 @@ public abstract class BaseInterceptor implements Interceptor, Serializable {
             dialect = new SQLServer2005Dialect();
         }else if("sybase".equalsIgnoreCase(dbType)){
             dialect = new SybaseDialect();
+        }else if("oscar".equalsIgnoreCase(dbType)){
+            dialect = new OscarDialect();
         }
         if (dialect == null) {
             throw new RuntimeException("mybatis dialect error.");

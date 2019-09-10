@@ -58,14 +58,26 @@
             <if test="query != null and query != ''">
                 AND (
                 a.title LIKE
-                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
                 OR a.ip LIKE
-                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
                 OR a.remark LIKE
-                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
                 )
             </if>
             <if test="type != null and type != ''">
@@ -97,14 +109,26 @@
             <if test="query != null and query != ''">
                 AND (
                 a.title LIKE
-                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
                 OR a.ip LIKE
-                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
                 OR a.remark LIKE
-                <if test="dbName == 'db2'">'%'||#{query}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
                 )
             </if>
             <if test="type != null and type != ''">
@@ -112,11 +136,19 @@
             </if>
             <if test="userInfo != null and userInfo != ''">
                 AND ( u.name LIKE
-                <if test="dbName == 'db2'">'%'||#{userInfo}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{userInfo}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{userInfo}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{userInfo}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{userInfo}||'%'</when>
+                    <otherwise>'%'+#{userInfo}+'%'</otherwise>
+                </choose>
                 OR u.login_name LIKE
-                <if test="dbName == 'db2'">'%'||#{userInfo}||'%'</if>
-                <if test="dbName == 'mysql'">CONCAT('%', #{userInfo}, '%')</if>
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{userInfo}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{userInfo}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{userInfo}||'%'</when>
+                    <otherwise>'%'+#{userInfo}+'%'</otherwise>
+                </choose>
                 )
             </if>
             <choose>
@@ -165,14 +197,20 @@
     </select>
 
     <!--查询用户登录次数-->
-    <select id="getUserLoginCount" resultType="java.lang.Long">
+    <select id="getuserlogincount" resultType="java.lang.Long">
         SELECT
         count(*)
         FROM
         t_sys_log a
         WHERE
         a.status = '0'
-        AND a.title LIKE  CONCAT('%', '用户登录', '%')
+        AND a.title LIKE
+        <choose>
+            <when test="dbName == 'db2'">'%'||'用户登录'||'%'</when>
+            <when test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</when>
+            <when test="dbName == 'oracle'">'%'||'用户登录'||'%'</when>
+            <otherwise>'%用户登录%'</otherwise>
+        </choose>
         AND a.user_id = #{userId}
         <choose>
             <when test="startTime != null and endTime != null">
@@ -192,13 +230,16 @@
         SELECT
         <choose>
             <when test="dbName != null and dbName == 'oracle'.toString()">
-                to_char(a.create_time, 'yyyy-MM-dd') as "loginDate",
+                to_char(a.create_time, 'yyyy-MM-dd') AS "loginDate",
+            </when>
+            <when test="dbName != null and dbName == 'oscar'.toString()">
+                to_char(a.create_time, 'yyyy-MM-dd') AS "loginDate",
             </when>
             <when test="dbName != null and dbName == 'mysql'.toString()">
-                DATE_FORMAT(a.create_time, '%Y-%m-%d') as "loginDate",
+                DATE_FORMAT(a.create_time, '%Y-%m-%d') AS "loginDate",
             </when>
             <otherwise>
-                DATE_FORMAT(a.create_time, '%Y-%m-%d') as "loginDate",
+                DATE_FORMAT(a.create_time, '%Y-%m-%d') AS "loginDate",
             </otherwise>
         </choose>
         count(*) AS "count"
@@ -207,9 +248,12 @@
         WHERE
         a.status = '0'
         AND a.title LIKE
-        <if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
-        <if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
-        <if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
+        <choose>
+            <when test="dbName == 'db2'">'%'||'用户登录'||'%'</when>
+            <when test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</when>
+            <when test="dbName == 'oracle'">'%'||'用户登录'||'%'</when>
+            <otherwise>'%用户登录%'</otherwise>
+        </choose>
         <choose>
             <when test="startTime != null and endTime != null">
                 AND a.create_time BETWEEN #{startTime} AND #{endTime}
@@ -226,6 +270,9 @@
             <when test="dbName != null and dbName == 'oracle'.toString()">
                 to_char(a.create_time, 'yyyy-MM-dd')
             </when>
+            <when test="dbName != null and dbName == 'oscar'.toString()">
+                to_char(a.create_time, 'yyyy-MM-dd')
+            </when>
             <when test="dbName != null and dbName == 'mysql'.toString()">
                 DATE_FORMAT(a.create_time, '%Y-%m-%d')
             </when>
@@ -240,30 +287,43 @@
     <!--查询员工登录统计信息-->
     <select id="getLoginStatistics" resultType="java.util.Map">
         SELECT
-        o.id AS 'organId',
-        o.name AS 'department',
-        u.name AS 'name',
-        u.login_name AS 'userName',
-        count(*) AS 'count'
+        a.user_id AS "userId",
+        u.login_name AS "userName",
+        u.name AS "name",
+        o.id AS "organId",
+        o.name AS "organName",
+        c.id AS "companyId",
+        c.name AS "companyName",
+        count(*) AS "count"
         FROM
         t_sys_log a
         LEFT JOIN t_sys_user u ON u.id = a.user_id
         LEFT JOIN t_sys_organ_extend o ON o.id = u.default_organ_id
+        LEFT JOIN t_sys_organ_extend c ON c.id = o.company_id
         WHERE
         a.status = '0'
         AND a.title LIKE
-        <if test="dbName == 'db2'">'%'||'用户登录'||'%'</if>
-        <if test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</if>
-        <if test="dbName == 'oracle'">'%'||'用户登录'||'%'</if>
+        <choose>
+            <when test="dbName == 'db2'">'%'||'用户登录'||'%'</when>
+            <when test="dbName == 'mysql'">CONCAT('%', '用户登录', '%')</when>
+            <when test="dbName == 'oracle'">'%'||'用户登录'||'%'</when>
+            <otherwise>'%用户登录%'</otherwise>
+        </choose>
         <if test="name != null and name !=''">
             AND (u.login_name LIKE
-            <if test="dbName == 'db2'">'%'||#{name}||'%'</if>
-            <if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
-            <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+            <choose>
+                <when test="dbName == 'db2'">'%'||#{name}||'%'</when>
+                <when test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</when>
+                <when test="dbName == 'oracle'">'%'||#{name}||'%'</when>
+                <otherwise>'%'+#{name}+'%'</otherwise>
+            </choose>
             OR u.name LIKE
-            <if test="dbName == 'db2'">'%'||#{name}||'%'</if>
-            <if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
-            <if test="dbName == 'oracle'">'%'||#{name}||'%'</if>)
+            <choose>
+                <when test="dbName == 'db2'">'%'||#{name}||'%'</when>
+                <when test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</when>
+                <when test="dbName == 'oracle'">'%'||#{name}||'%'</when>
+                <otherwise>'%'+#{name}+'%'</otherwise>
+            </choose>)
         </if>
         <choose>
             <when test="startTime != null and endTime != null">
@@ -277,7 +337,7 @@
             </when>
         </choose>
         GROUP BY
-        a.user_id
+        a.user_id,u.login_name,u.name,o.id,o.name,c.id,c.name
         ORDER BY
         5 DESC
     </select>
@@ -285,8 +345,8 @@
     <!--查询模块访问统计-->
     <select id="getModuleStatistics" resultType="java.util.Map">
         SELECT
-        a.title AS 'module',
-        count(*) AS 'moduleCount'
+        a.title AS "module",
+        count(*) AS "moduleCount"
         FROM
         t_sys_log a
         LEFT JOIN t_sys_user u ON u.id = a.user_id
@@ -313,9 +373,12 @@
                         </when>
                         <otherwise>
                             AND (o.id = #{organId} OR o.parent_ids LIKE
-                            <if test="dbName == 'db2'">'%'||#{organId}||'%'</if>
-                            <if test="dbName == 'mysql'">CONCAT('%', #{organId}, '%')</if>
-                            <if test="dbName == 'oracle'">'%'||#{organId}||'%'</if>
+                            <choose>
+                                <when test="dbName == 'db2'">'%'||#{organId}||'%'</when>
+                                <when test="dbName == 'mysql'">CONCAT('%', #{organId}, '%')</when>
+                                <when test="dbName == 'oracle'">'%'||#{organId}||'%'</when>
+                                <otherwise>'%'+#{organId}+'%'</otherwise>
+                            </choose>
                             )
                         </otherwise>
                     </choose>

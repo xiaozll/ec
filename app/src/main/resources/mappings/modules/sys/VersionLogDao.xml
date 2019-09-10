@@ -101,20 +101,30 @@
 			</if>
 			<if test="versionName != null and versionName != ''">
 				AND (a.version_name LIKE
-				<if test="dbName == 'db2'">'%'||#{versionName}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{versionName}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{versionName}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{versionName}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{versionName}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{versionName}||'%'</when>
+					<otherwise>'%'+#{versionName}+'%'</otherwise>
+				</choose>
 				OR a.version_code LIKE
-				<if test="dbName == 'db2'">'%'||#{versionName}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{versionName}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{versionName}||'%'</if>)
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{versionName}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{versionName}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{versionName}||'%'</when>
+					<otherwise>'%'+#{versionName}+'%'</otherwise>
+				</choose>
+				)
 			</if>
 
 			<if test="remark != null and remark != ''">
 				AND a.remark LIKE
-				<if test="dbName == 'db2'">'%'||#{remark}||'%'</if>
-				<if test="dbName == 'mysql'">CONCAT('%', #{remark}, '%')</if>
-				<if test="dbName == 'oracle'">'%'||#{remark}||'%'</if>
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{remark}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{remark}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{remark}||'%'</when>
+					<otherwise>'%'+#{remark}+'%'</otherwise>
+				</choose>
 			</if>
 
 			<choose>

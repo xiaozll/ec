@@ -6,8 +6,12 @@
 package com.eryansky.modules.sys.aop;
 
 import com.eryansky.common.orm.model.Parameter;
+import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.service.SystemService;
+import com.eryansky.modules.sys.utils.OrganUtils;
+import com.eryansky.utils.AppConstants;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -45,15 +49,42 @@ public class SystemAspect implements InitializingBean, DisposableBean {
             if(returnObj instanceof String){
                 String id = (String) returnObj;
                 parameter.put("id", id);
+                Organ organ = OrganUtils.getOrgan(id);
+                parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+                parameter.put("companyId", OrganUtils.getCompanyIdByRecursive(organ.getId()));
+                parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
+                parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
+                parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
+                Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length:null;
+                parameter.put("level", level);
+
                 systemService.syncOrganToExtend(parameter);
             }else if(returnObj instanceof Organ){
                 Organ organ = (Organ) returnObj;
                 parameter.put("id", organ.getId());
+                parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+                parameter.put("companyId", OrganUtils.getCompanyIdByRecursive(organ.getId()));
+                parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
+                parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
+                parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
+                Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length:null;
+                parameter.put("level", level);
                 systemService.syncOrganToExtend(parameter);
             }
         }else{
             systemService.syncOrganToExtend();
         }
+
+    }
+
+
+    /**
+     * 同步到扩展机构表
+     * @param joinPoint 切入点
+     */
+    @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.OrganService.deleteOwnerAndChilds(..))")
+    public void afterSyncOrganToExtend(JoinPoint joinPoint) {
+        systemService.syncOrganToExtend();
 
     }
 

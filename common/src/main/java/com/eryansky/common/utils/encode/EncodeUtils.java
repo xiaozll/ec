@@ -84,6 +84,9 @@ public class EncodeUtils {
 	 * URL 编码, Encode默认为UTF-8. 
 	 */
 	public static String urlEncode(String input) {
+		if(null == input){
+			return null;
+		}
 		try {
 			return URLEncoder.encode(input, DEFAULT_URL_ENCODING);
 		} catch (UnsupportedEncodingException e) {
@@ -95,6 +98,9 @@ public class EncodeUtils {
 	 * URL 解码, Encode默认为UTF-8. 
 	 */
 	public static String urlDecode(String input) {
+		if(null == input){
+			return null;
+		}
 		try {
 			return URLDecoder.decode(input, DEFAULT_URL_ENCODING);
 		} catch (UnsupportedEncodingException e) {

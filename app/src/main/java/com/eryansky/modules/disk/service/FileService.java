@@ -24,6 +24,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.eryansky.modules.disk.mapper.File;
@@ -47,6 +48,7 @@ import java.util.List;
 public class FileService extends CrudService<FileDao, File> {
 
     @Autowired
+    @Lazy
     private FolderService folderService;
     @Autowired
     private IFileManager iFileManager;

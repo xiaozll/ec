@@ -42,7 +42,7 @@ public class MariaDBDialect implements Dialect {
      */
     public String getLimitString(String sql, int offset, String offsetPlaceholder, String limitPlaceholder) {
         StringBuilder stringBuilder = new StringBuilder(sql);
-        stringBuilder.append(" limit ");
+        stringBuilder.append(" LIMIT ");
         if (offset > 0) {
             stringBuilder.append(offsetPlaceholder).append(",").append(limitPlaceholder);
         } else {

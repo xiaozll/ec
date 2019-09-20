@@ -281,7 +281,7 @@
             </otherwise>
         </choose>
         ORDER BY
-        2 ASC
+        1 ASC
     </select>
 
     <!--查询员工登录统计信息-->

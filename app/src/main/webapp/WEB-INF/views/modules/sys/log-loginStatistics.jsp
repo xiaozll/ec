@@ -26,8 +26,7 @@
                 {field: 'name', title: '姓名', width: 100},
                 {field: 'userName', title: '账号', width: 120, hidden: false},
                 {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false}
-            ]],
-
+            ]]
         }).datagrid("showTooltip");
 
     });

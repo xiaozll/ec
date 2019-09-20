@@ -102,14 +102,14 @@ public class SecurityLogAspect {
             log.setUserAgent(sessionInfo.getUserAgent());
             log.setDeviceType(sessionInfo.getDeviceType());
             log.setBrowserType(sessionInfo.getBrowserType());
-            if(logger.isDebugEnabled()){
-                logger.debug("用户:{},操作类：{},操作方法：{},耗时：{}ms.",new Object[]{user,className,methodName,end - start});
-            }
             log.setOperTime(new Date());
             end = System.currentTimeMillis();
             long opTime = end - start;
             log.setActionTime(String.valueOf(opTime));
             logService.save(log);
+            if(logger.isDebugEnabled()){
+                logger.debug("用户:{},操作类：{},操作方法：{},耗时：{}ms.",new Object[]{user,className,methodName,end - start});
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

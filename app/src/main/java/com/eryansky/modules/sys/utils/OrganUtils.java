@@ -67,6 +67,32 @@ public class OrganUtils {
     }
 
     /**
+     * 根据机构编码查找
+     * @param organCode 机构编码
+     * @return
+     */
+    public static OrganExtend getOrganExtendByCode(String organCode){
+        if(StringUtils.isBlank(organCode)){
+            return null;
+        }
+        return Static.organService.getOrganExtendByCode(organCode);
+    }
+
+    /**
+     * 根据机构编码查找
+     * @param organCode 机构编码
+     * @return
+     */
+    public static Integer getOrganLevelByOrganCode(String organCode){
+        if(StringUtils.isBlank(organCode)){
+            return null;
+        }
+        OrganExtend organExtend = getOrganExtendByCode(organCode);
+
+        return null == organExtend ? null:organExtend.getTreeLevel();
+    }
+
+    /**
      * 根据机构ID查找
      * @param organId 机构ID
      * @return

@@ -65,17 +65,11 @@ public class LoginController extends SimpleController {
     /**
      * 欢迎页面
      * @return
-     * @throws Exception
      */
     @Mobile(value = MobileValue.ALL)
     @RequiresUser(required = false)
     @RequestMapping(value = {"welcome", ""})
-    public ModelAndView welcome() throws Exception {
-//        try {
-//            userService.aop();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public ModelAndView welcome() {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
@@ -93,7 +87,7 @@ public class LoginController extends SimpleController {
      */
     @SuppressWarnings("unchecked")
     public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean){
-        Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheUtils.get("loginFailMap");
+        Map<String, Integer> loginFailMap = CacheUtils.get("loginFailMap");
         if (loginFailMap==null){
             loginFailMap = Maps.newHashMap();
             CacheUtils.put("loginFailMap", loginFailMap);

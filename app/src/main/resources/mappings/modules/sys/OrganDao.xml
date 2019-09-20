@@ -642,6 +642,13 @@
         WHERE a.id = #{id}
     </select>
 
+    <select id="getOrganExtendByCode" resultType="OrganExtend">
+        SELECT
+        <include refid="organExtendColumns"/>
+        FROM t_sys_organ_extend a
+        WHERE a.code = #{code} AND a.status = #{status}
+    </select>
+
     <select id="getOrganCompany" resultType="OrganExtend">
         SELECT
         <include refid="organExtendColumns"/>

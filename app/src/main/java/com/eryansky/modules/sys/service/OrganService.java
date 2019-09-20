@@ -1097,6 +1097,22 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         parameter.put("id",organId);
         return dao.getOrganExtend(parameter);
     }
+
+    /**
+     * 根据机构编码查找
+     * @param organCode 机构编码
+     * @return
+     */
+    public OrganExtend getOrganExtendByCode(String organCode){
+        if(StringUtils.isBlank(organCode)){
+            return null;
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
+        parameter.put("code",organCode);
+        return dao.getOrganExtendByCode(parameter);
+    }
+
     /**
      * 根据机构ID查找
      * @param organId

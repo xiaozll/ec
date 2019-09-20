@@ -7,6 +7,7 @@ package com.eryansky.core.aop.interceptor;
 
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.google.common.collect.Lists;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
@@ -89,7 +90,7 @@ public class LogMethodInterceptor implements MethodInterceptor, InitializingBean
                 ip = sessionInfo.getIp();
             } else {
                 userId = "1";
-                ip = "127.0.0.1";
+                ip = SpringMVCHolder.getIp();
 //                logger.warn("sessionInfo为空.");
             }
         } catch (Throwable e) {

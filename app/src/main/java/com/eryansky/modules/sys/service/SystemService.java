@@ -86,7 +86,7 @@ public class SystemService extends BaseService {
                 parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
                 parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
                 Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length:null;
-                parameter.put("level", level);
+                parameter.put("treeLevel", level);
                 syncOrganToExtend(parameter);
             }
         }

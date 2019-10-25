@@ -6,6 +6,7 @@
 package com.eryansky.common.orm.mybatis.interceptor;
 
 import com.alibaba.druid.sql.PagerUtils;
+import com.alibaba.druid.util.JdbcConstants;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.mybatis.utils.CountSqlParser;
 import com.eryansky.common.utils.StringUtils;
@@ -114,9 +115,10 @@ public class SQLHelper {
                                final MappedStatement mappedStatement, final Object parameterObject,
                                final BoundSql boundSql, Log log) throws SQLException {
         String convertCountTypeParameter = BaseInterceptor.convertCountTypeParameter(parameterObject);
+        String dbName = BaseInterceptor.convertDbNameParameter(parameterObject);
         String countSql = null;
         if(BaseInterceptor.PARAM_COUNT_TYPE_DRUID.equals(convertCountTypeParameter)){
-            countSql = PagerUtils.count(sql,null);
+            countSql = PagerUtils.count(sql,dbName);//dbName 与JdbcConstants.*(MYSQL) 对应
         }else if(BaseInterceptor.PARAM_COUNT_TYPE_NORMAL.equals(convertCountTypeParameter)){
             countSql = Static.countSqlParser.getSimpleCountSql(sql,"1");
         }else{

@@ -19,7 +19,7 @@ public interface Dialect {
      *
      * @return true：支持当前的分页查询方式
      */
-    public boolean supportsLimit();
+    boolean supportsLimit();
 
     /**
      * 将sql转换为分页SQL，分别调用分页sql
@@ -29,6 +29,6 @@ public interface Dialect {
      * @param limit  每页显示多少纪录条数
      * @return 分页查询的sql
      */
-    public String getLimitString(String sql, int offset, int limit);
+    String getLimitString(String sql, int offset, int limit);
 
 }

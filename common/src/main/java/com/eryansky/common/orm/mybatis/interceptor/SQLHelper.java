@@ -5,6 +5,7 @@
  */
 package com.eryansky.common.orm.mybatis.interceptor;
 
+import com.alibaba.druid.sql.PagerUtils;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.mybatis.utils.CountSqlParser;
 import com.eryansky.common.utils.StringUtils;
@@ -112,7 +113,15 @@ public class SQLHelper {
     public static int getCount(final String sql, final Connection connection,
                                final MappedStatement mappedStatement, final Object parameterObject,
                                final BoundSql boundSql, Log log) throws SQLException {
-        final String countSql = Static.countSqlParser.getSmartCountSql(sql,"1");
+        String convertCountTypeParameter = BaseInterceptor.convertCountTypeParameter(parameterObject);
+        String countSql = null;
+        if(BaseInterceptor.PARAM_COUNT_TYPE_DRUID.equals(convertCountTypeParameter)){
+            countSql = PagerUtils.count(sql,null);
+        }else if(BaseInterceptor.PARAM_COUNT_TYPE_NORMAL.equals(convertCountTypeParameter)){
+            countSql = Static.countSqlParser.getSimpleCountSql(sql,"1");
+        }else{
+            countSql = Static.countSqlParser.getSmartCountSql(sql,"1");
+        }
 //        String dbName = BaseInterceptor.convertDbNameParameter(parameterObject);
 //        if("oracle".equals(dbName)){
 //            countSql = "select count(1) from (" + sql + ") tmp_count";

@@ -31,6 +31,11 @@ public abstract class BaseInterceptor implements Interceptor, Serializable {
     public static final String PAGE = "entityPage";
     public static final String DB_NAME = "dbName";
 
+    public static final String PARAM_COUNT_TYPE = "countType";
+    public static final String PARAM_COUNT_TYPE_NORMAL = "normal";
+    public static final String PARAM_COUNT_TYPE_SMART = "smart";
+    public static final String PARAM_COUNT_TYPE_DRUID = "druid";
+
     protected static final String DELEGATE = "delegate";
 
     protected static final String MAPPED_STATEMENT = "mappedStatement";
@@ -69,7 +74,7 @@ public abstract class BaseInterceptor implements Interceptor, Serializable {
     /**
      * 对参数进行转换和检查
      * @param parameterObject 参数对象
-     * @return 分页对象
+     * @return DB类型
      * @throws NoSuchFieldException 无法找到参数
      */
     @SuppressWarnings("unchecked")
@@ -79,6 +84,25 @@ public abstract class BaseInterceptor implements Interceptor, Serializable {
                 return (String) ((Map)parameterObject).get(DB_NAME);
             }else {
                 return ReflectionUtils.invokeGetter(parameterObject, DB_NAME);
+            }
+        }catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * 对参数进行转换和检查
+     * @param parameterObject 参数对象
+     * @return 分页类型
+     * @throws NoSuchFieldException 无法找到参数
+     */
+    @SuppressWarnings("unchecked")
+    public static String convertCountTypeParameter(Object parameterObject) {
+        try{
+            if(parameterObject instanceof Map) {
+                return (String) ((Map)parameterObject).get(PARAM_COUNT_TYPE);
+            }else {
+                return ReflectionUtils.invokeGetter(parameterObject, PARAM_COUNT_TYPE);
             }
         }catch (Exception e) {
             return null;

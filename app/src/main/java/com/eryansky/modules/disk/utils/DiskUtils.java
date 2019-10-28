@@ -252,7 +252,10 @@ public class DiskUtils {
      * @return
      */
     public static String getFileLocationName(String folderId) {
-        StringBuffer location = new StringBuffer("");
+        if(StringUtils.isBlank(folderId)){
+            return null;
+        }
+        StringBuilder location = new StringBuilder();
         Folder folder = Static.folderService.get(folderId);
         if (folder != null) {
             String type = folder.getType();// 文件夹类型

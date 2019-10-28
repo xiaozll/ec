@@ -196,6 +196,9 @@ public class File extends DataEntity<File> implements Serializable {
 	}
 
 	public String getPrettyFileSize() {
+		if(null == fileSize){
+			return null;
+		}
 		return PrettyMemoryUtils.prettyByteSize(fileSize);
 	}
 

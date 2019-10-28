@@ -58,7 +58,7 @@ public class NoticeUtils {
      */
     public static boolean isRead(String noticeId) {
         NoticeReceiveInfo noticeReceiveInfo = Static.noticeReceiveInfoService.getUserNotice(SecurityUtils.getCurrentUserId(), noticeId);
-        return noticeReceiveInfo != null && noticeReceiveInfo.isRead();
+        return noticeReceiveInfo != null && NoticeReadMode.readed.getValue().equals(noticeReceiveInfo.getIsRead());
     }
 
 

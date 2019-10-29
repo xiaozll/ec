@@ -81,7 +81,7 @@ public class SysConstants {
      * @return
      */
     public static String getJdbcPassword(){
-        return SysConstants.getAppConfig().getProperty("jdbc.password","");
+        return SysConstants.getAppConfig().getProperty("spring.datasource.password","");
     }
 
 

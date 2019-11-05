@@ -99,7 +99,7 @@ public class LogController extends SimpleController {
             if(export){
                 page.setPageSize(Page.PAGESIZE_ALL);
             }
-            page = logService.findQueryPage(page,type,userInfo,query,_startTime,endTime);
+            page = logService.findQueryPage(page,type,userInfo,query,_startTime,endTime,true);
             if(export) {
                 List<Object[]> data = Lists.newArrayList();
                 page.getResult().forEach(o -> {

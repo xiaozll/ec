@@ -14,6 +14,7 @@ import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.service.CrudService;
+import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.dao.LogDao;
 import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.utils.AppConstants;
@@ -43,14 +44,41 @@ public class LogService extends CrudService<LogDao, Log> {
         return page;
     }
 
-
+    /**
+     * 自定义查询（分页）
+     * @param page 分页对象
+     * @param type 日志类型{@link com.eryansky.modules.sys._enum.LogType}
+     * @param query 关键字
+     * @param userInfo 用户信息
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return
+     */
     public Page<Log> findQueryPage(Page<Log> page,String type,String query,String userInfo,Date startTime,Date endTime) {
+        return findQueryPage(page, type, query, userInfo, startTime, endTime);
+    }
+
+    /**
+     * 自定义查询（分页）
+     * @param page 分页对象
+     * @param type 日志类型{@link com.eryansky.modules.sys._enum.LogType}
+     * @param query 关键字
+     * @param userInfo 用户信息
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @param isDataScopeFilter 分级数据权限
+     * @return
+     */
+    public Page<Log> findQueryPage(Page<Log> page,String type,String query,String userInfo,Date startTime,Date endTime, boolean isDataScopeFilter) {
         Parameter parameter = Parameter.newPageParameter(page,AppConstants.getJdbcType());
         parameter.put("type",type);
         parameter.put("userInfo",userInfo);
         parameter.put("query",query);
         parameter.put("startTime",null != startTime ? DateUtils.formatDate(startTime):null);
         parameter.put("endTime",null != endTime ? DateUtils.formatDate(endTime):null);
+        if(isDataScopeFilter){
+            parameter.put("dsf",dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
+        }
         page.setResult(dao.findQueryList(parameter));
         return page;
     }

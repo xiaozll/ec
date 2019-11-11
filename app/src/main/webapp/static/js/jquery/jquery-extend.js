@@ -737,8 +737,11 @@ $.copyToClipboard = function(elem,text,success,error) {
     return succeed;
 };
 
-
-$.hasUsableFlash = function(elem,text,success,error){
+/**
+ * 检测是否允许运行Flash
+ * @returns {boolean}
+ */
+$.hasUsableFlash = function(){
 	var flashObj;
 	if(typeof window.ActiveXObject != "undefined"){
 		flashObj= new  ActiveXObject("ShockwaveFlash.ShockwaveFlash");

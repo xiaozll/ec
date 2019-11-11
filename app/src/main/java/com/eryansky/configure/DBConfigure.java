@@ -6,6 +6,8 @@
 package com.eryansky.configure;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import com.eryansky.common.orm.mybatis.MyBatisDao;
+import com.eryansky.common.utils.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
@@ -14,10 +16,13 @@ import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -32,10 +37,12 @@ import java.util.Map;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2019-01-23 
+ * @date 2019-01-23
  */
 @Configuration
 public class DBConfigure {
+
+
     // 数据源
     @Bean(name = "dataSource")
     @ConfigurationProperties("spring.datasource.druid")
@@ -45,22 +52,35 @@ public class DBConfigure {
     }
 
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactoryBean(@Qualifier("dataSource") DataSource dataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactoryBean(@Qualifier("dataSource") DataSource dataSource,
+                                                   @Value("${spring.dataSource.mybatis.typeAliasesPackage}")String typeAliasesPackage) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
-        sqlSessionFactoryBean.setTypeAliasesPackage("com.eryansky.modules.sys.mapper,com.eryansky.modules.disk.mapper,com.eryansky.modules.notice.mapper");
+        StringBuilder sb = new StringBuilder();
+        sb.append("com.eryansky.modules.sys.mapper,com.eryansky.modules.disk.mapper,com.eryansky.modules.notice.mapper");
+        if(StringUtils.isNotBlank(typeAliasesPackage)){
+            sb.append(StringUtils.startsWith(typeAliasesPackage,",") ? typeAliasesPackage :","+ typeAliasesPackage);
+        }
+        sqlSessionFactoryBean.setTypeAliasesPackage(sb.toString());
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappings/modules/**/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
     @Bean
-    public static MapperScannerConfigurer mapperScannerConfigurer() {
+    public MapperScannerConfigurer mapperScannerConfigurer(Environment environment) {
         MapperScannerConfigurer cfg = new MapperScannerConfigurer();
-        cfg.setBasePackage("com.eryansky.modules.sys.dao,com.eryansky.modules.disk.dao,com.eryansky.modules.notice.dao");
+        String basePackage = environment.getProperty("spring.dataSource.mybatis.basePackage");
+        StringBuilder sb = new StringBuilder();
+        sb.append("com.eryansky.modules.sys.dao,com.eryansky.modules.disk.dao,com.eryansky.modules.notice.dao");
+        if(StringUtils.isNotBlank(basePackage)){
+            sb.append(StringUtils.startsWith(basePackage,",") ? basePackage :","+ basePackage);
+        }
+        cfg.setBasePackage(sb.toString());
         cfg.setSqlSessionFactoryBeanName("sqlSessionFactory");
+        cfg.setAnnotationClass(MyBatisDao.class);
         return cfg;
     }
 
@@ -68,7 +88,6 @@ public class DBConfigure {
     public PlatformTransactionManager annotationDrivenTransactionManager(@Qualifier("dataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
-
 
     private static final int TX_METHOD_TIMEOUT = 60000;
     private static final String AOP_POINTCUT_EXPRESSION = "execution(* com.eryansky.modules..*.service..*Service.*(..))";
@@ -100,6 +119,7 @@ public class DBConfigure {
 
     // 切面的定义,pointcut及advice
     @Bean
+    @Order(1)
     public Advisor txAdviceAdvisor(@Qualifier("txAdvice") TransactionInterceptor txAdvice) {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression(AOP_POINTCUT_EXPRESSION);

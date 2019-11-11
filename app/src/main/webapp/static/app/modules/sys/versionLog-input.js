@@ -19,6 +19,11 @@ $(function () {
         $('input[name=isPub][value='+modelIsPub+']').prop("checked",'checked');
         $('input[name=isTip][value='+modelIsTip+']').prop("checked",'checked');
     }
+
+    var result= $.hasUsableFlash();
+    if(!result) {
+        eu.showTopCenterMsg("您未安装flash插件，或您浏览未启用flash插件！")
+    }
 });
 
 function uploadify() {

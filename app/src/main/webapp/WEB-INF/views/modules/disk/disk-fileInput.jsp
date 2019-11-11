@@ -6,6 +6,10 @@
     var categorys_combotree;
     var fileSizeLimit = '<%=AppConstants.getPrettyDiskMaxUploadSize()%>';//附件上传大小限制
     $(function(){
+        var result= $.hasUsableFlash();
+        if(!result) {
+            eu.showTopCenterMsg("您未安装flash插件，或您浏览未启用flash插件！")
+        }
         uploadify();
         $(".uploadify").css({'display': 'inline-block', 'height': '24px', 'padding-right': '18px', 'outline': 'none'});
 

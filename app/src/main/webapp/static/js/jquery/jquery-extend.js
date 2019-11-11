@@ -736,3 +736,14 @@ $.copyToClipboard = function(elem,text,success,error) {
     }
     return succeed;
 };
+
+
+$.hasUsableFlash = function(elem,text,success,error){
+	var flashObj;
+	if(typeof window.ActiveXObject != "undefined"){
+		flashObj= new  ActiveXObject("ShockwaveFlash.ShockwaveFlash");
+	}else{
+		flashObj= navigator.plugins['Shockwave Flash'];
+	}
+	return !!flashObj;
+};

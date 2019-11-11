@@ -21,7 +21,7 @@ $(function () {
 
     var result= $.hasUsableFlash();
     if(!result) {
-        eu.showTopCenterMsg("您未安装flash插件，或您浏览未启用flash插件！")
+        eu.showMsg("您未安装Flash插件，或您的浏览未启用Flash插件！")
     }
 
     uploadify();

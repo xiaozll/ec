@@ -6,6 +6,10 @@ var organs_combotree;
 $(function() {
     loadOrgan();
     loadSex();
+    var result= $.hasUsableFlash();
+    if(!result) {
+        eu.showTopCenterMsg("您未安装flash插件，或您浏览未启用flash插件！")
+    }
     uploadify();
     $(".uploadify").css({'display': 'inline-block', 'height': '24px', 'padding-right': '18px', 'outline': 'none'});
     if(modelId == ""){  //新增

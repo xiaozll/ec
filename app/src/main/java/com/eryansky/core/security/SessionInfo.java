@@ -70,7 +70,7 @@ public class SessionInfo implements Serializable {
      */
     private String sysTemDeviceType;
     /**
-     * 设备类型 {@link eu.bitwalker.useragentutils.DeviceType}
+     * 设备类型 {@link DeviceType}
      */
     private String deviceType;
     /**
@@ -101,6 +101,14 @@ public class SessionInfo implements Serializable {
      * 登录所在机构
      */
     private String loginCompanyCode;
+    /**
+     * 上级机构ID
+     */
+    private String loginHomeCompanyId;
+    /**
+     * 上级机构编码
+     */
+    private String loginHomeCompanyCode;
     /**
      * 系统登录部门名称
      */
@@ -426,6 +434,22 @@ public class SessionInfo implements Serializable {
     }
 
 
+    public String getLoginHomeCompanyId() {
+        return loginHomeCompanyId;
+    }
+
+    public void setLoginHomeCompanyId(String loginHomeCompanyId) {
+        this.loginHomeCompanyId = loginHomeCompanyId;
+    }
+
+    public String getLoginHomeCompanyCode() {
+        return loginHomeCompanyCode;
+    }
+
+    public void setLoginHomeCompanyCode(String loginHomeCompanyCode) {
+        this.loginHomeCompanyCode = loginHomeCompanyCode;
+    }
+
     /**
      * 默认登录组织机构名称
      *
@@ -525,6 +549,8 @@ public class SessionInfo implements Serializable {
     public String getPrincipal() {
         return name;
     }
+
+
 
 
     public String getAreaCode() {

@@ -65,7 +65,7 @@ public class DBConfigure {
             sb.append(StringUtils.startsWith(typeAliasesPackage,",") ? typeAliasesPackage :","+ typeAliasesPackage);
         }
         sqlSessionFactoryBean.setTypeAliasesPackage(sb.toString());
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mappings/modules/**/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mappings/modules/**/*Dao.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
@@ -91,6 +91,7 @@ public class DBConfigure {
 
     private static final int TX_METHOD_TIMEOUT = 60000;
     private static final String AOP_POINTCUT_EXPRESSION = "execution(* com.eryansky.modules..*.service..*Service.*(..))";
+//    private static final String AOP_POINTCUT_EXPRESSION = "execution(* com.eryansky.modules..*.service..*Service.*(..))";
 
     // 事务的实现Advice
     @Bean
@@ -120,9 +121,15 @@ public class DBConfigure {
     // 切面的定义,pointcut及advice
     @Bean
     @Order(1)
-    public Advisor txAdviceAdvisor(@Qualifier("txAdvice") TransactionInterceptor txAdvice) {
+    public Advisor txAdviceAdvisor(@Qualifier("txAdvice") TransactionInterceptor txAdvice,
+                                   @Value("${spring.dataSource.aopPointcutExpression}")String aopPointcutExpression) {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression(AOP_POINTCUT_EXPRESSION);
+        StringBuilder sb = new StringBuilder(AOP_POINTCUT_EXPRESSION);
+        if(StringUtils.isNotBlank(aopPointcutExpression)){
+            sb.append(StringUtils.startsWith(aopPointcutExpression,"||") ? aopPointcutExpression :"||"+ aopPointcutExpression);
+        }
+
+        pointcut.setExpression(sb.toString());
         return new DefaultPointcutAdvisor(pointcut, txAdvice);
     }
 }

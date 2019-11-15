@@ -330,6 +330,8 @@ public class SecurityUtils {
         sessionInfo.setLoginOrganName(organExtend.getName());
         sessionInfo.setLoginCompanyId(organExtend.getCompanyId());
         sessionInfo.setLoginCompanyCode(organExtend.getCompanyCode());
+        sessionInfo.setLoginHomeCompanyId(organExtend.getHomeCompanyId());
+        sessionInfo.setLoginHomeCompanyCode(organExtend.getHomeCompanyCode());
         return sessionInfo;
     }
 

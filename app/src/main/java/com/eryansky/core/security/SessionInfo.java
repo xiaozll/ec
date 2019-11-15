@@ -102,6 +102,10 @@ public class SessionInfo implements Serializable {
      */
     private String loginCompanyCode;
     /**
+     * 所在公司机构层级
+     */
+    private Integer loginCompanyLevel;
+    /**
      * 上级机构ID
      */
     private String loginHomeCompanyId;
@@ -433,6 +437,13 @@ public class SessionInfo implements Serializable {
         this.loginCompanyCode = loginCompanyCode;
     }
 
+    public Integer getLoginCompanyLevel() {
+        return loginCompanyLevel;
+    }
+
+    public void setLoginCompanyLevel(Integer loginCompanyLevel) {
+        this.loginCompanyLevel = loginCompanyLevel;
+    }
 
     public String getLoginHomeCompanyId() {
         return loginHomeCompanyId;

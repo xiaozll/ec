@@ -8,20 +8,20 @@ package com.eryansky.core.security;
 import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.spring.SpringContextHolder;
-import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security._enum.DeviceType;
+import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.PostService;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.RoleService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.OrganUtils;
-import com.eryansky.core.security._enum.DeviceType;
-import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
 import org.slf4j.Logger;
@@ -332,6 +332,8 @@ public class SecurityUtils {
         sessionInfo.setLoginCompanyCode(organExtend.getCompanyCode());
         sessionInfo.setLoginHomeCompanyId(organExtend.getHomeCompanyId());
         sessionInfo.setLoginHomeCompanyCode(organExtend.getHomeCompanyCode());
+        OrganExtend companyOrganExtend = OrganUtils.getOrganExtendByUserId(organExtend.getCompanyId());
+        sessionInfo.setLoginCompanyLevel(companyOrganExtend.getTreeLevel());
         return sessionInfo;
     }
 
@@ -410,7 +412,7 @@ public class SecurityUtils {
      * @param sessionId
      * @param user
      */
-    public static SessionInfo putUserToSession(String sessionId,User user) {
+    public static SessionInfo putUserToSession(String sessionId, User user) {
         if(logger.isDebugEnabled()){
             logger.debug("putUserToSession:{}", sessionId);
         }
@@ -524,7 +526,7 @@ public class SecurityUtils {
      */
     public static User getCurrentUser() {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        return null == sessionInfo ? null:Static.userService.get(sessionInfo.getUserId());
+        return null == sessionInfo ? null: Static.userService.get(sessionInfo.getUserId());
     }
 
     /**
@@ -771,7 +773,7 @@ public class SecurityUtils {
      * @return
      */
     public static String getNoSuffixSessionId(HttpSession session){
-        return null == session ? null:StringUtils.substringBefore(session.getId(),".");
+        return null == session ? null: StringUtils.substringBefore(session.getId(),".");
     }
 
 }

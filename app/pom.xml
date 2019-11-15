@@ -148,6 +148,11 @@
             <artifactId>ec-j2cache-spring-boot-starter</artifactId>
             <version>${ec-j2cache-spring-boot-starter.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.eryansky</groupId>
+            <artifactId>ec-app-common</artifactId>
+            <version>${ec-app-common.version}</version>
+        </dependency>
 
 
         <dependency>

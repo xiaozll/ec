@@ -1,5 +1,7 @@
 package com.eryansky.configure.web;
 
+import com.eryansky.core.cms.CKFinderConnectorServlet;
+import com.eryansky.core.cms.CKFinderFilesServlet;
 import com.eryansky.core.web.servlet.DownloadChartServlet;
 import com.eryansky.core.web.servlet.StaticContentServlet;
 import com.eryansky.common.web.servlet.ValidateCodeServlet;
@@ -54,6 +56,34 @@ public class ServletConfiguration {
         DownloadChartServlet servlet = new DownloadChartServlet();
         ServletRegistrationBean<DownloadChartServlet> bean = new ServletRegistrationBean<>(servlet);
         bean.addUrlMappings("/servlet/DownloadChartServlet");
+        return bean;
+    }
+
+
+    /**
+     * CKFinder Connector
+     * @return
+     */
+    @Bean
+    public ServletRegistrationBean<CKFinderConnectorServlet> getCKFinderConnectorServlet() {
+        CKFinderConnectorServlet servlet = new CKFinderConnectorServlet();
+        ServletRegistrationBean<CKFinderConnectorServlet> bean = new ServletRegistrationBean<>(servlet);
+        bean.addUrlMappings("/servlet/CKFinderConnectorServlet");
+        bean.addInitParameter("XMLConfig","/WEB-INF/ckfinder.xml");
+        bean.addInitParameter("configuration","com.eryansky.core.cms.CKFinderConfig");
+        bean.addInitParameter("debug","true");
+        return bean;
+    }
+
+    /**
+     * CKFinder Files
+     * @return
+     */
+    @Bean
+    public ServletRegistrationBean<CKFinderFilesServlet> getCKFinderFilesServlet() {
+        CKFinderFilesServlet servlet = new CKFinderFilesServlet();
+        ServletRegistrationBean<CKFinderFilesServlet> bean = new ServletRegistrationBean<>(servlet);
+        bean.addUrlMappings("/userfiles/*");
         return bean;
     }
 }

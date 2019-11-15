@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -40,6 +41,7 @@ public class LogMethodInterceptor implements MethodInterceptor, InitializingBean
     private static Logger logger = LoggerFactory.getLogger(LogMethodInterceptor.class);
 
     @Autowired
+    @Lazy
     private LogService logService;
     /**
      * 默认方法

@@ -79,6 +79,14 @@ public class MvcConfig implements WebMvcConfigurer {
       //设置日期格式
       JsonMapper objectMapper = new JsonMapper();
       mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+      /**
+       * 序列换成json时,将所有的long变成string
+       * 因为js中得数字类型不能包含所有的java long值
+       */
+//      SimpleModule simpleModule = new SimpleModule();
+//      simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+//      simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+//      objectMapper.registerModule(simpleModule);
       //设置中文编码格式
       List<MediaType> list = new ArrayList<MediaType>();
       list.add(MediaType.APPLICATION_JSON_UTF8);

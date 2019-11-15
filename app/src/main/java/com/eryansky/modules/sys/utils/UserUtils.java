@@ -233,6 +233,23 @@ public class UserUtils {
     }
 
     /**
+     * 根据userId查找用户所属机构ID
+     * @param userId 用户ID
+     * @return
+     */
+    public static String getDefaultOrganCode(String userId){
+        if(StringUtils.isBlank(userId)){
+            return null;
+        }
+        OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
+        if(organExtend != null){
+            return organExtend.getCode();
+        }
+        return null;
+    }
+
+
+    /**
      * 根据userId查找用户所属机构名称
      *
      * @param userId 用户ID

@@ -38,10 +38,6 @@ public class SessionInfo implements Serializable {
      */
     private String sessionId;
     /**
-     * token
-     */
-    private String token;
-    /**
      * 服务主机
      */
     private String host;
@@ -53,6 +49,10 @@ public class SessionInfo implements Serializable {
      * 登录名
      */
     private String loginName;
+    /**
+     * 可选登录账号
+     */
+    private List<String> loginNames = new ArrayList<String>(0);
     /**
      * 登录姓名
      */
@@ -147,7 +147,17 @@ public class SessionInfo implements Serializable {
      * 登录的设备编号
      */
     private String deviceCode;
-
+    /**
+     * 所属区域
+     */
+    private String areaCode;
+    private String openId;
+    /**
+     * token
+     */
+    private String token;
+    private String avatar;
+    private String gender;
 
     public SessionInfo() {
     }
@@ -178,14 +188,6 @@ public class SessionInfo implements Serializable {
      */
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     /**
@@ -229,6 +231,26 @@ public class SessionInfo implements Serializable {
      */
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+
+    public List<String> getLoginNames() {
+        return loginNames;
+    }
+
+    public void setLoginNames(List<String> loginNames) {
+        this.loginNames = loginNames;
+    }
+
+
+    public synchronized SessionInfo addIfNotExistLoginName(String loginName) {
+        if(StringUtils.isBlank(loginName)){
+            return this;
+        }
+        if(!this.loginNames.contains(loginName)){
+            this.loginNames.add(loginName);
+        }
+        return this;
     }
 
     /**
@@ -504,4 +526,44 @@ public class SessionInfo implements Serializable {
         return name;
     }
 
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 }

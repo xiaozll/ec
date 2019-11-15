@@ -334,6 +334,11 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
         return this;
     }
 
+    public AuthorityInterceptor addExcludeUrl(String excludeUrl) {
+        this.excludeUrls.add(excludeUrl);
+        return this;
+    }
+
     public Boolean getAuthorMarkUrl() {
         return authorMarkUrl;
     }

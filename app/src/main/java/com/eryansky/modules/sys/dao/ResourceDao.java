@@ -49,4 +49,17 @@ public interface ResourceDao extends TreeDao<Resource> {
     List<Resource> findAuthorityResourcesByUserId(Parameter parameter);
 
     int deleteOwnerAndChilds(Resource entity);
+
+    /**
+     * 自定义SQL查询
+     * @param parameter
+     * @return
+     */
+    List<Resource> findByWhereSQL(Parameter parameter);
+    /**
+     * 自定义SQL查询
+     * @param parameter
+     * @return
+     */
+    List<Resource> findBySql(Parameter parameter);
 }

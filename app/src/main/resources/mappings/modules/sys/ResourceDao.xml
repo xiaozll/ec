@@ -324,7 +324,23 @@
         ORDER BY a.sort ASC
     </select>
 
+    <select id="findByWhereSQL" resultType="Resource">
+        SELECT
+        <include refid="resourceColumns"/>
+        FROM t_sys_resource a
+        <where>
+            ${whereSQL}
+        </where>
+        ORDER BY a.sort ASC
+    </select>
 
+
+    <select id="findBySql" resultType="Resource">
+        SELECT
+        <include refid="resourceColumns"/>
+        FROM t_sys_resource a
+        ${sql}
+    </select>
 
     <insert id="insert">
         INSERT INTO t_sys_resource(

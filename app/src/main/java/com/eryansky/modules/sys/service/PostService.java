@@ -147,6 +147,28 @@ public class PostService extends CrudService<PostDao, Post> {
 
 
     /**
+     * 自定义SQL查询
+     * @param whereSQL
+     * @return
+     */
+    public List<Post> findByWhereSQL(String whereSQL){
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("whereSQL",whereSQL);
+        return dao.findByWhereSQL(parameter);
+    }
+
+    /**
+     * 自定义SQL查询
+     * @param sql
+     * @return
+     */
+    public List<Post> findBySql(String sql) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("sql", sql);
+        return dao.findBySql(parameter);
+    }
+
+    /**
      * 保存岗位机构关联信息
      * 保存之前先删除原有
      * @param id 岗位ID

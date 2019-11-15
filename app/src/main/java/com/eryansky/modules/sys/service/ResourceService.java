@@ -827,6 +827,29 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
     }
 
 
+    /**
+     * 自定义SQL查询
+     * @param whereSQL
+     * @return
+     */
+    public List<Resource> findByWhereSQL(String whereSQL){
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("whereSQL",whereSQL);
+        return dao.findByWhereSQL(parameter);
+    }
+
+    /**
+     * 自定义SQL查询
+     * @param sql
+     * @return
+     */
+    public List<Resource> findBySql(String sql){
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("sql",sql);
+        return dao.findBySql(parameter);
+    }
+
+
     /**    外部接口同步到资源  **/
 
     /**

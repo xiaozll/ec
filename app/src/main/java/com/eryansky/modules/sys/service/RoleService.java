@@ -196,6 +196,27 @@ public class RoleService extends CrudService<RoleDao, Role> {
         return dao.findRoleOrganIds(parameter);
     }
 
+    /**
+     * 自定义SQL查询
+     * @param whereSQL
+     * @return
+     */
+    public List<Role> findByWhereSQL(String whereSQL){
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("whereSQL",whereSQL);
+        return dao.findByWhereSQL(parameter);
+    }
+
+    /**
+     * 自定义SQL查询
+     * @param sql
+     * @return
+     */
+    public List<Role> findBySql(String sql){
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("sql",sql);
+        return dao.findBySql(parameter);
+    }
 
 
 

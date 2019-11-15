@@ -136,6 +136,23 @@
         </where>
     </select>
 
+    <select id="findByWhereSQL" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM t_sys_role a
+        <where>
+            ${whereSQL}
+        </where>
+    </select>
+
+
+    <select id="findBySql" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM t_sys_role a
+        ${sql}
+    </select>
+
     <insert id="insert">
         INSERT INTO t_sys_role(
         id,

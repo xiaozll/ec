@@ -161,6 +161,25 @@
         </where>
     </select>
 
+
+    <select id="findByWhereSQL" resultType="Post">
+        SELECT
+        <include refid="postColumns"/>
+        FROM t_sys_post a
+        <where>
+            ${whereSQL}
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+
+    <select id="findBySql" resultType="Post">
+        SELECT
+        <include refid="postColumns"/>
+        FROM t_sys_post a
+        ${sql}
+    </select>
+
     <insert id="insert">
         INSERT INTO t_sys_post(
         id,

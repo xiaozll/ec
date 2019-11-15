@@ -34,6 +34,19 @@ public interface PostDao extends CrudDao<Post> {
     List<String> findPostIdsByUserId(Parameter parameter);
 
     /**
+     * 自定义SQL查询
+     * @param parameter
+     * @return
+     */
+    List<Post> findByWhereSQL(Parameter parameter);
+    /**
+     * 自定义SQL查询
+     * @param parameter
+     * @return
+     */
+    List<Post> findBySql(Parameter parameter);
+
+    /**
      * 删除岗位机构关联信息
      * @param parameter id:岗位ID
      */

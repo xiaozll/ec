@@ -30,7 +30,22 @@ public interface RoleDao extends CrudDao<Role> {
     List<Role> findRolesByOrganId(Parameter parameter);
 
     List<Role> findRolesByUserId(Parameter parameter);
+
     List<String> findRoleIdsByUserId(Parameter parameter);
+
+
+    /**
+     * 自定义SQL查询
+     * @param parameter
+     * @return
+     */
+    List<Role> findByWhereSQL(Parameter parameter);
+    /**
+     * 自定义SQL查询
+     * @param parameter
+     * @return
+     */
+    List<Role> findBySql(Parameter parameter);
 
     /**
      * 删除角色机构关联信息

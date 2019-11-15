@@ -36,8 +36,9 @@ public class CKFinderConfig extends Configuration {
     protected Configuration createConfigurationInstance() {
 		SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
 		if(sessionInfo == null){
-			String _sessionId = SpringMVCHolder.getRequest().getRequestedSessionId() == null ? CookieUtils.getCookie(SpringMVCHolder.getRequest(),SESSION_ID): SpringMVCHolder.getRequest().getRequestedSessionId();
-			sessionInfo = SecurityUtils.getSessionInfo(StringUtils.substringBefore(_sessionId,"."), SpringMVCHolder.getRequest().getRequestedSessionId());
+//			String _sessionId = SpringMVCHolder.getRequest().getRequestedSessionId() == null ? CookieUtils.getCookie(SpringMVCHolder.getRequest(),SESSION_ID): SpringMVCHolder.getRequest().getRequestedSessionId();
+			String _sessionId = CookieUtils.getCookie(SpringMVCHolder.getRequest(),SESSION_ID);
+			sessionInfo = SecurityUtils.getSessionInfo(StringUtils.substringBefore(_sessionId,"."), _sessionId);
 		}
 
 		boolean isView = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:view");

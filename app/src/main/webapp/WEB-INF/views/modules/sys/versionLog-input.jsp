@@ -7,6 +7,7 @@
     var modelId = '${model.id}';
     var modelIsPub = '${model.isPub}';
     var modelIsTip = '${model.isTip}';
+    var modelIsShelf = '${model.isShelf}';
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/versionLog-input${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <div>

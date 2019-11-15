@@ -31,6 +31,8 @@ public interface VersionLogDao extends CrudDao<VersionLog> {
      */
     VersionLog getByVersionCode(VersionLog versionLog);
 
+    VersionLog getByVersionName(VersionLog versionLog);
+
     /**
      * 获取当前最新版本
      * @param entity

@@ -2,6 +2,7 @@ var jsessionid = jsessionid;
 var modelId = modelId;
 var modelIsPub = modelIsPub;
 var modelIsTip = modelIsTip;
+var modelIsShelf = modelIsShelf;
 
 $(function () {
     //日志类型 搜索选项
@@ -10,19 +11,20 @@ $(function () {
         editable:false,//是否可编辑
         width:120
     });
+    var result= $.hasUsableFlash();
+    if(!result) {
+        eu.showMsg("您未安装Flash插件，或您浏览未启用Flash插件！")
+    }
     uploadify();
 
     if(modelId == ""){  //新增
         $("input[name=isPub]:eq(0)").prop("checked",'checked');//状态 初始化值
         $("input[name=isTip]:eq(0)").prop("checked",'checked');//状态 初始化值
+        $("input[name=isShelf]:eq(1)").prop("checked",'checked');//状态 初始化值
     }else{
         $('input[name=isPub][value='+modelIsPub+']').prop("checked",'checked');
         $('input[name=isTip][value='+modelIsTip+']').prop("checked",'checked');
-    }
-
-    var result= $.hasUsableFlash();
-    if(!result) {
-        eu.showMsg("您未安装flash插件，或您浏览未启用flash插件！")
+        $('input[name=isShelf][value='+modelIsShelf+']').prop("checked",'checked');
     }
 });
 

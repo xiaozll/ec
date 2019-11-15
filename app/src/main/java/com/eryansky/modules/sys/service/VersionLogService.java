@@ -54,6 +54,19 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
     }
 
     /**
+     * 根据版本号查找
+     * @param versionLogType {@link VersionLogType}
+     * @param versionName
+     * @return
+     */
+    public VersionLog getByVersionName(String versionLogType,String versionName) {
+        VersionLog versionLog = new VersionLog();
+        versionLog.setVersionLogType(versionLogType);
+        versionLog.setVersionName(versionName);
+        return dao.getByVersionName(versionLog);
+    }
+
+    /**
      * 获取当前最新版本
      * @param versionLogType
      * @return

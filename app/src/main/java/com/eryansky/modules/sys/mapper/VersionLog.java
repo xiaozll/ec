@@ -45,13 +45,17 @@ public class VersionLog extends DataEntity<VersionLog> {
      */
     private String versionLogType;
     /**
-     * 是否发布
+     * 是否发布 {@link YesOrNo}
      */
     private String isPub;
     /**
-     * 是否提示
+     * 是否提示 {@link YesOrNo}
      */
     private String isTip;
+    /**
+     * 是否下架 {@link YesOrNo}
+     */
+    private String isShelf;
     /**
      * 发布时间
      */
@@ -163,6 +167,24 @@ public class VersionLog extends DataEntity<VersionLog> {
         }
         return str;
     }
+
+    public String getIsShelf() {
+        return isShelf;
+    }
+
+    public void setIsShelf(String isShelf) {
+        this.isShelf = isShelf;
+    }
+
+    public String getIsShelfView() {
+        YesOrNo s = YesOrNo.getByValue(isShelf);
+        String str = "";
+        if (s != null) {
+            str = s.getDescription();
+        }
+        return str;
+    }
+
 
     public String getRemark() {
         return remark;

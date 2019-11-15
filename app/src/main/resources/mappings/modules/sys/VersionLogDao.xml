@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eryansky.modules.sys.dao.VersionLogDao">
 
+	<cache type="com.eryansky.j2cache.mybatis.J2CacheAdapter">
+		<property name="encodeKey" value="true"/>
+	</cache>
+
 	<sql id="sysVersionLogColumns">
 		a.id AS "id",
 		a.status AS "status",
@@ -16,6 +20,7 @@
 		a.version_code AS "versionCode",
 		a.is_pub AS "isPub",
 		a.is_tip AS "isTip",
+		a.is_shelf AS "isShelf",
 		a.pub_time AS "pubTime",
 		a.remark AS "remark",
 		a.file_id AS "fileId"
@@ -42,6 +47,22 @@
 		WHERE
 		a.status = #{status}
 		AND a.version_code = #{versionCode}
+		<if test="versionLogType != null and versionLogType != ''">
+			AND a.version_log_type = #{versionLogType}
+		</if>
+		<if test="isPub != null and isPub != ''">
+			AND a.is_pub = #{isPub}
+		</if>
+	</select>
+
+	<select id="getByVersionName" resultType="VersionLog">
+		SELECT
+		<include refid="sysVersionLogColumns"/>
+		FROM t_sys_version_log a
+		<include refid="sysVersionLogJoins"/>
+		WHERE
+		a.status = #{status}
+		AND a.version_name = #{versionName}
 		<if test="versionLogType != null and versionLogType != ''">
 			AND a.version_log_type = #{versionLogType}
 		</if>
@@ -169,58 +190,61 @@
 
 	<insert id="insert">
 		INSERT INTO t_sys_version_log(
-		id,
-		status,
-		version,
-		create_user,
-		create_time,
-		update_user,
-		update_time,
-		APP,
-		VERSION_LOG_TYPE,
-		VERSION_CODE,
-		VERSION_NAME,
-		IS_PUB,
-		is_tip,
-		PUB_TIME,
-		REMARK,
-		FILE_ID
-		) VALUES (
-		#{id},
-		#{status},
-		1,
-		#{createUser},
-		#{createTime},
-		#{updateUser},
-		#{updateTime},
-		#{app},
-		#{versionLogType},
-		#{versionCode},
-		#{versionName},
-		#{isPub},
-		#{isTip},
-		#{pubTime},
-		#{remark},
-		#{fileId}
-		)
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        APP,
+        VERSION_LOG_TYPE,
+        VERSION_CODE,
+        VERSION_NAME,
+        IS_PUB,
+        is_tip,
+        is_shelf,
+        PUB_TIME,
+        REMARK,
+        FILE_ID
+        ) VALUES (
+        #{id},
+        #{status},
+        1,
+        #{createUser},
+        #{createTime},
+        #{updateUser},
+        #{updateTime},
+        #{app},
+        #{versionLogType},
+        #{versionCode},
+        #{versionName},
+        #{isPub},
+        #{isTip},
+        #{isShelf},
+        #{pubTime},
+        #{remark},
+        #{fileId}
+        )
 	</insert>
 
 	<update id="update">
 		UPDATE t_sys_version_log SET
-		status = #{status},
-		version = version +1,
-		update_user = #{updateUser},
-		update_time = #{updateTime},
-		APP = #{app},
-		VERSION_LOG_TYPE = #{versionLogType},
-		VERSION_CODE = #{versionCode},
-		VERSION_NAME = #{versionName},
-		IS_PUB = #{isPub},
-		is_tip = #{isTip},
-		PUB_TIME = #{pubTime},
-		REMARK = #{remark},
-		FILE_ID = #{fileId}
-		WHERE id = #{id}
+        status = #{status},
+        version = version +1,
+        update_user = #{updateUser},
+        update_time = #{updateTime},
+        APP = #{app},
+        VERSION_LOG_TYPE = #{versionLogType},
+        VERSION_CODE = #{versionCode},
+        VERSION_NAME = #{versionName},
+        IS_PUB = #{isPub},
+        is_tip = #{isTip},
+        is_shelf = #{isShelf},
+        PUB_TIME = #{pubTime},
+        REMARK = #{remark},
+        FILE_ID = #{fileId}
+         WHERE id = #{id}
 	</update>
 
 	<update id="delete">

@@ -39,6 +39,7 @@ function initDatagrid(){
             {field: 'remark',title: '更新说明',width: 360 },
             {field: 'isPubView',title: '是否发布',width: 120},
             {field: 'pubTime', title: '发布时间', width: 146,sortable: true} ,
+            {field: 'isShelfView',title: '是否下架',width: 120},
             {field: 'operate', title: '操作', formatter:function(value,rowData,rowIndex){
                     var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit' onclick='edit(" + rowIndex + ");' >编辑</a>";
                     operaterHtml += "<a class='easyui-linkbutton' iconCls='easyui-icon-remove' onclick='del(" + rowIndex + ");' >删除</a>";

@@ -65,7 +65,7 @@ public class DBConfigure {
             sb.append(StringUtils.startsWith(typeAliasesPackage,",") ? typeAliasesPackage :","+ typeAliasesPackage);
         }
         sqlSessionFactoryBean.setTypeAliasesPackage(sb.toString());
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mappings/modules/**/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mappings/modules/**/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 

@@ -37,6 +37,7 @@
         <label class="control-label">APP标识:</label>
         <div class="controls">
             <form:input path="app" htmlEscape="false" maxlength="36" class="input-xxlarge"/>
+            <span class="help-inline">默认值：“1”</span>
         </div>
     </div>
     <div class="control-group">

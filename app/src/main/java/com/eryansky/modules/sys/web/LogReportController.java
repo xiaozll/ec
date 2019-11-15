@@ -95,7 +95,7 @@ public class LogReportController extends SimpleController {
                 page.getResult().forEach(o -> {
                     data.add(new Object[]{o.get(fields[0]), o.get(fields[1]), o.get(fields[2]), o.get(fields[3]), o.get(fields[4])});
                 });
-                CsvUtils.exportToExcel(fileName, hearders, data, request, response);
+                CsvUtils.exportToCsv(fileName, hearders, data, request, response);
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
@@ -210,7 +210,7 @@ public class LogReportController extends SimpleController {
                 page.getResult().forEach(o -> {
                     data.add(new Object[]{o.get(fields[0]), o.get(fields[1])});
                 });
-                CsvUtils.exportToExcel(fileName, hearders, data, request, response);
+                CsvUtils.exportToCsv(fileName, hearders, data, request, response);
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }

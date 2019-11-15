@@ -757,6 +757,7 @@ CREATE TABLE SYSDBA.T_SYS_SERIAL_NUMBER
     CREATE_TIME timestamp without time zone ,
     UPDATE_USER character varying(36) ,
     UPDATE_TIME timestamp without time zone ,
+    APP character varying(36) ,
     MODULE_NAME character varying(255) ,
     MODULE_CODE character varying(64) ,
     CONFIG_TEMPLATE character varying(128) ,
@@ -882,7 +883,8 @@ CREATE TABLE SYSDBA.T_SYS_VERSION_LOG
     REMARK clob ,
     FILE_ID character varying(36) ,
     IS_TIP character(1) ,
-    ID character varying(36) NOT NULL, 
+    IS_SHELF character(1) ,
+    ID character varying(36) NOT NULL,
     CONSTRAINT T_SYS_VERSION_LOG_PK PRIMARY KEY (ID)
 )  
  BINLOG ON ;

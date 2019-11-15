@@ -32,7 +32,7 @@
     <script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.method.min.js" type="text/javascript"></script>
     <script src="${ctxStatic}/js/jquery/qrcode/jquery.qrcode.min.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="${ctxStatic}/js/common/typica-login.css">
+    <link rel="stylesheet" href="${ctxStatic}/js/common/typica-login.css?_=${sysInitTime}">
     <script src="${ctxStatic}/js/common/backstretch.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/js/bootstrap/2.3.2/css/bootstrap.css" />

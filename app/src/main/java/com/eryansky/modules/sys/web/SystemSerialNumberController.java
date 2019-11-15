@@ -6,13 +6,21 @@
 package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.excelTools.CsvUtils;
+import com.eryansky.core.excelTools.ExcelUtils;
+import com.eryansky.core.excelTools.JsGridReportBase;
+import com.eryansky.core.excelTools.TableData;
+import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
 import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +31,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
@@ -46,9 +56,49 @@ public class SystemSerialNumberController extends SimpleController {
 
     @RequiresPermissions("sys:systemSerialNumber:view")
     @RequestMapping(value = {"list", ""})
-    public String list(SystemSerialNumber model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+    public String list(SystemSerialNumber model,
+                       @RequestParam(value = "export", defaultValue = "false") Boolean export,
+                       @RequestParam(value = "exportType", defaultValue = "xls") String exportType,
+                       HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<SystemSerialNumber> page = new Page<SystemSerialNumber>(request, response);
         page = systemSerialNumberService.findPage(page, model);
+        if (WebUtils.isAjaxRequest(request) || export) {
+            if (export) {
+                page.setPageSize(Page.PAGESIZE_ALL);
+            }
+            page = systemSerialNumberService.findPage(page, model);
+
+            if (export) {
+                String title = "序列号_" + DateUtils.getCurrentDate();
+                String[] hearders = new String[]{"APP标识", "模块名称", "模块编码", "配置模板", "最大值", "重置类型", "是否自动增长", "预生成流水号数量", "备注", "时间"};//表头数组
+                String[] fields = new String[]{"app", "modlueName", "modlueCode", "configTemplate", "remark", "updateTime"};
+                TableData td = ExcelUtils.createTableData(page.getResult(), ExcelUtils.createTableHeader(hearders, 0), fields);
+
+                if (page.getResult().size() < 65531) {
+                    //导出Excel
+                    try {
+                        JsGridReportBase report = new JsGridReportBase(request, response);
+                        report.exportToExcel(title, SecurityUtils.getCurrentUserName(), td);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                } else {
+                    //导出CSV
+                    try {
+                        List<Object[]> data = Lists.newArrayList();
+                        page.getResult().forEach(o -> {
+                            data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(),o.getMaxSerial(),o.getResetType(),o.getIsAutoIncrement(),o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())});
+                        });
+                        CsvUtils.exportToCsv(title, hearders, data, request, response);
+                    } catch (IOException e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+                return null;
+            }
+
+            return renderString(response, page);
+        }
         uiModel.addAttribute("page", page);
         return "modules/sys/systemSerialNumberList";
     }

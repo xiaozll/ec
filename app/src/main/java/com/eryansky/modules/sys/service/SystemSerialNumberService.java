@@ -50,7 +50,6 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         }
     }
 
-
     /**
      * 根据模块编码查找
      *
@@ -58,7 +57,20 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @return
      */
     public SystemSerialNumber getByCode(String moduleCode) {
+        return getByCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+    }
+
+
+    /**
+     * 根据模块编码查找
+     *
+     * @param app APP标识
+     * @param moduleCode
+     * @return
+     */
+    public SystemSerialNumber getByCode(String app,String moduleCode) {
         SystemSerialNumber entity = new SystemSerialNumber();
+        entity.setApp(app);
         entity.setModuleCode(moduleCode);
         return dao.getByCode(entity);
     }
@@ -77,8 +89,8 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @param moduleCode 模块code
      * @return
      */
-    public List<String> generatePrepareSerialNumbers(String moduleCode) {
-        SystemSerialNumber entity = getByCode(moduleCode);
+    public List<String> generatePrepareSerialNumbers(String app,String moduleCode) {
+        SystemSerialNumber entity = getByCode(app,moduleCode);
         int version = entity.getVersion();
         /** 预生成数量 */
         int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;

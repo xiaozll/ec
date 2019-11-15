@@ -5,8 +5,10 @@
  */
 package com.eryansky.modules.sys.mapper;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys._enum.ResetType;
+import com.eryansky.modules.sys._enum.YesOrNo;
 
 /**
  * 序列号生成器
@@ -16,7 +18,12 @@ import com.eryansky.modules.sys._enum.ResetType;
  */
 public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
+    public static final String DEFAULT_ID = "1";
     public static final String QUEUE_SYS_SERIAL = "queue_system_serial";
+    /**
+     * APP标识
+     */
+    private String app;
     /**
      * 模块名称
      */
@@ -38,7 +45,7 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
      */
     private String resetType;
     /**
-     * 是否自动增长标识
+     * 是否自动增长标识 {@link YesOrNo}
      */
     private String isAutoIncrement;
     /**
@@ -56,8 +63,24 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
         this.preMaxNum = "1";
     }
 
+    @Override
+    public void prePersist() {
+        super.prePersist();
+        if(StringUtils.isBlank(app)){
+            this.app = DEFAULT_ID;
+        }
+    }
+
     public SystemSerialNumber(String id) {
         super(id);
+    }
+
+    public String getApp() {
+        return app;
+    }
+
+    public void setApp(String app) {
+        this.app = app;
     }
 
     public String getModuleName() {
@@ -100,6 +123,12 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
         this.isAutoIncrement = isAutoIncrement;
     }
 
+
+    public String getIsAutoIncrementView() {
+        YesOrNo e = YesOrNo.getByValue(isAutoIncrement);
+        return null != e ? e.getDescription():isAutoIncrement;
+    }
+
     public String getResetType() {
         return resetType;
     }
@@ -107,6 +136,12 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
     public void setResetType(String resetType) {
         this.resetType = resetType;
     }
+
+    public String getResetTypeView() {
+        ResetType e = ResetType.getByValue(resetType);
+        return null != e ? e.getDescription():resetType;
+    }
+
 
     public String getPreMaxNum() {
         return preMaxNum;

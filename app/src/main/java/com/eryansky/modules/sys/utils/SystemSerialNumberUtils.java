@@ -45,11 +45,21 @@ public class SystemSerialNumberUtils {
      * @return
      */
     public static SystemSerialNumber getByModuleCode(String moduleCode) {
+        return getByModuleCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+    }
+
+    /**
+     * @param app
+     * @param moduleCode
+     * @return
+     */
+    public static SystemSerialNumber getByModuleCode(String app,String moduleCode) {
         if (StringUtils.isNotBlank(moduleCode)) {
-            return Static.systemSerialNumberService.getByCode(moduleCode);
+            return Static.systemSerialNumberService.getByCode(app,moduleCode);
         }
         return null;
     }
+
 
     /**
      * 获得当前最大值
@@ -58,7 +68,18 @@ public class SystemSerialNumberUtils {
      * @return
      */
     public static String getMaxSerialByModuleCode(String moduleCode) {
-        SystemSerialNumber systemSerialNumber = getByModuleCode(moduleCode);
+        return getMaxSerialByModuleCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+    }
+
+    /**
+     * 获得当前最大值
+     *
+     * @param app
+     * @param moduleCode
+     * @return
+     */
+    public static String getMaxSerialByModuleCode(String app,String moduleCode) {
+        SystemSerialNumber systemSerialNumber = getByModuleCode(app,moduleCode);
         if (systemSerialNumber != null) {
             return systemSerialNumber.getMaxSerial();
         }
@@ -72,16 +93,29 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String moduleCode) {
-        String region = SystemSerialNumber.QUEUE_SYS_SERIAL + ":" + moduleCode;
+        return getMaxSerialByModuleCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+    }
+
+    /**
+     * 根据模块code生成序列号
+     *
+     * @param app APP标识
+     * @param moduleCode 模块code
+     * @return 序列号
+     */
+    public static String generateSerialNumberByModelCode(String app,String moduleCode) {
+        app = null == app ? SystemSerialNumber.DEFAULT_ID:app;
+        String region = SystemSerialNumber.QUEUE_SYS_SERIAL +"_" + app + ":" + moduleCode;
         String value = CacheUtils.getCacheChannel().queuePop(region);
         if (value != null) {
             return value;
         }
-        String lockKey = "SystemSerialNumber:lock:" + moduleCode;
+        String lockKey = "SystemSerialNumber_lock_"+app+"_"+":" + moduleCode;
+        String finalApp = app;
         boolean flag = CacheUtils.getCacheChannel().lock(lockKey, 20, 60, new DefaultLockCallback<Boolean>(false, false) {
             @Override
             public Boolean handleObtainLock() {
-                List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(moduleCode);
+                List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp,moduleCode);
                 for (String serial : list) {
                     CacheUtils.getCacheChannel().queuePush(region, serial);
                 }

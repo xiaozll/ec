@@ -34,7 +34,6 @@ import com.eryansky.core.excelTools.JsGridReportBase;
 import com.eryansky.core.excelTools.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
-import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Log;
@@ -132,7 +131,7 @@ public class LogController extends SimpleController {
                 } else {
                     //导出CSV
                     try {
-                        CsvUtils.exportToExcel(title, hearders, data, request, response);
+                        CsvUtils.exportToCsv(title, hearders, data, request, response);
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
                     }

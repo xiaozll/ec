@@ -75,7 +75,7 @@ public class CsvUtils {
      * @param request
      * @param response
      **/
-    public static void exportToExcel(String title, String[] headers, List<Object[]> data, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public static void exportToCsv(String title, String[] headers, List<Object[]> data, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String sFileName = title + ".csv";
         WebUtils.setDownloadableHeader(request, response, sFileName);
         response.setHeader("Connection", "close");

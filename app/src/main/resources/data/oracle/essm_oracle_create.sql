@@ -1466,6 +1466,7 @@ create table T_SYS_SERIAL_NUMBER  (
    CREATE_TIME          DATE,
    UPDATE_USER          VARCHAR2(36),
    UPDATE_TIME          DATE,
+   APP          VARCHAR2(36),
    MODULE_NAME          VARCHAR2(255),
    MODULE_CODE          VARCHAR2(64),
    CONFIG_TEMPLATE      VARCHAR2(128),
@@ -1500,6 +1501,9 @@ comment on column T_SYS_SERIAL_NUMBER.UPDATE_USER is
 
 comment on column T_SYS_SERIAL_NUMBER.UPDATE_TIME is
 '更新时间';
+
+comment on column T_SYS_SERIAL_NUMBER.APP is
+'APP标识';
 
 comment on column T_SYS_SERIAL_NUMBER.MODULE_NAME is
 '模块名称';
@@ -1790,6 +1794,7 @@ create table T_SYS_VERSION_LOG  (
    APP                  VARCHAR2(36),
    IS_PUB               CHAR(1),
    IS_TIP               CHAR(1),
+   IS_SHELF             CHAR(1),
    REMARK               VARCHAR2(4000),
    PUB_TIME             DATE,
    constraint PK_T_SYS_VERSION_LOG primary key (ID)
@@ -1839,6 +1844,9 @@ comment on column T_SYS_VERSION_LOG.IS_PUB is
 
 comment on column T_SYS_VERSION_LOG.IS_TIP is
 '是否提示  1：是； 0：否';
+
+comment on column T_SYS_VERSION_LOG.IS_SHELF is
+'是否下架  1：是； 0：否';
 
 comment on column T_SYS_VERSION_LOG.REMARK is
 '更新说明';

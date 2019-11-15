@@ -10,6 +10,7 @@
 		a.create_time AS "createTime",
 		a.update_user AS "updateUser",
 		a.update_time AS "updateTime",
+		a.app AS "app",
 		a.module_name AS "moduleName",
 		a.module_code AS "moduleCode",
 		a.config_template AS "configTemplate",
@@ -32,8 +33,13 @@
 		SELECT
 		<include refid="systemSerialNumberColumns"/>
 		FROM t_sys_serial_number a
-		WHERE a.status = #{STATUS_NORMAL}
-		AND a.module_code = #{moduleCode}
+		<where>
+			a.status = #{STATUS_NORMAL}
+			AND a.module_code = #{moduleCode}
+			<if test="app != null and app !=''">
+				AND a.app = #{app}
+			</if>
+		</where>
 	</select>
 
 	<select id="findList" resultType="SystemSerialNumber">
@@ -60,6 +66,7 @@
 		create_time,
 		update_user,
 		update_time,
+		app,
 		module_name,
 		module_code,
 		config_template,
@@ -76,6 +83,7 @@
 		#{createTime},
 		#{updateUser},
 		#{updateTime},
+		#{app},
 		#{moduleName},
 		#{moduleCode},
 		#{configTemplate},
@@ -93,6 +101,7 @@
 		version = version +1,
 		update_user = #{updateUser},
 		update_time = #{updateTime},
+		app = #{app},
 		module_name = #{moduleName},
 		module_code = #{moduleCode},
 		config_template = #{configTemplate},
@@ -110,6 +119,7 @@
 		version = version +1,
 		update_user = #{updateUser},
 		update_time = #{updateTime},
+		app = #{app},
 		module_name = #{moduleName},
 		module_code = #{moduleCode},
 		config_template = #{configTemplate},
@@ -126,5 +136,14 @@
 		status = #{STATUS_DELETE}
 		WHERE id = #{id}
 	</update>
+
+	<delete id="clear">
+		DELETE FROM t_sys_serial_number
+		WHERE id = #{id}
+	</delete>
+
+	<delete id="clearAll">
+		DELETE FROM t_sys_serial_number
+	</delete>
 
 </mapper>

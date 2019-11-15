@@ -57,6 +57,11 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
      */
     private String remark;
 
+    /**
+     * 关键字
+     */
+    private String query;
+
     public SystemSerialNumber() {
         this.isAutoIncrement = YES;
         this.maxSerial = "0";
@@ -157,5 +162,13 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 }

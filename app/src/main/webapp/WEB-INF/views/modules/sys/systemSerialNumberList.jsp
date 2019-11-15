@@ -90,12 +90,13 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-	<li class="active"><a href="${ctxAdmin}/sys/systemSerialNumber/">序列号列表</a></li>
+	<li class="active"><a href="${ctxAdmin}/sys/systemSerialNumber">序列号列表</a></li>
 	<e:hasPermission name="sys:systemSerialNumber:edit"><li><a href="${ctxAdmin}/sys/systemSerialNumber/form">序列号添加</a></li></e:hasPermission>
 </ul>
 <form:form id="searchForm" modelAttribute="model" action="${ctxAdmin}/sys/systemSerialNumber" method="post" class="breadcrumb form-search">
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+	<label>关键字：</label><input name="query" type="text" maxlength="50" class="input-large" placeholder="关键字"/>&nbsp;&nbsp;
 	&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="button" value="查 询"/>&nbsp;
 	<input id="btnReset" class="btn btn-warning" type="reset" value="重 置"/>&nbsp;&nbsp;&nbsp;
 	<button id="btnExport" type="button" class="btn btn-primary" >导出</button>

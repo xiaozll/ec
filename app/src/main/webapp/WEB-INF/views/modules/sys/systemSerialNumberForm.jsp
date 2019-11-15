@@ -36,7 +36,7 @@
     <div class="control-group">
         <label class="control-label">APP标识:</label>
         <div class="controls">
-            <form:input path="app" htmlEscape="false" maxlength="64" class="input-xxlarge"/>
+            <form:input path="app" htmlEscape="false" maxlength="36" class="input-xxlarge"/>
         </div>
     </div>
     <div class="control-group">

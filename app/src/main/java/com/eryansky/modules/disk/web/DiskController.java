@@ -101,8 +101,8 @@ public class DiskController extends SimpleController {
      * 我的云盘
      */
     @RequiresPermissions("disk:disk:view")
-    @Logging(logType = LogType.access,value = "我的云盘")
-    @RequestMapping(value = { "" })
+    @Logging(logType = LogType.access, value = "我的云盘")
+    @RequestMapping(value = {""})
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk");
         return modelAndView;
@@ -111,21 +111,22 @@ public class DiskController extends SimpleController {
 
     /**
      * 文件夹树
+     *
      * @param folderAuthorize {@link FolderAuthorize}
      * @param excludeFolderId
      * @param selectType
      * @return
      */
-    @RequestMapping(value = { "folderTree" })
+    @RequestMapping(value = {"folderTree"})
     @ResponseBody
-    public List<TreeNode> folderTree(String folderAuthorize,String excludeFolderId, String selectType) {
+    public List<TreeNode> folderTree(String folderAuthorize, String excludeFolderId, String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
-        if(selectTreeNode != null){
+        if (selectTreeNode != null) {
             treeNodes.add(selectTreeNode);
         }
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        List<TreeNode> folderTreeNodes = folderService.findNormalTypeFolderTreeNodes(folderAuthorize,sessionInfo.getUserId(),  excludeFolderId);
+        List<TreeNode> folderTreeNodes = folderService.findNormalTypeFolderTreeNodes(folderAuthorize, sessionInfo.getUserId(), excludeFolderId);
         treeNodes.addAll(folderTreeNodes);
         return treeNodes;
     }
@@ -135,14 +136,14 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = { "folderAuthorizeCombobox" })
+    @RequestMapping(value = {"folderAuthorizeCombobox"})
     @ResponseBody
     public List<Combobox> folderAuthorizeCombobox(String selectType,
                                                   String requestType) {
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox selectCombobox = SelectType.combobox(selectType);
-        if(selectCombobox != null){
+        if (selectCombobox != null) {
             cList.add(selectCombobox);
         }
 
@@ -163,13 +164,13 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = { "fileSizeTypeCombobox" })
+    @RequestMapping(value = {"fileSizeTypeCombobox"})
     @ResponseBody
     public List<Combobox> fileSizeTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox selectCombobox = SelectType.combobox(selectType);
-        if(selectCombobox != null){
+        if (selectCombobox != null) {
             cList.add(selectCombobox);
         }
         FileSizeType[] _enums = FileSizeType.values();
@@ -187,8 +188,8 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @Logging(logType = LogType.access,value = "我的云盘-文件夹保存")
-    @RequestMapping(value = { "saveFolder" })
+    @Logging(logType = LogType.access, value = "我的云盘-文件夹保存")
+    @RequestMapping(value = {"saveFolder"})
     @ResponseBody
     public Result saveFolder(@ModelAttribute("model") Folder folder) {
         if (StringUtils.isBlank(folder.getUserId())) {
@@ -201,12 +202,11 @@ public class DiskController extends SimpleController {
     /**
      * 删除文件夹
      *
-     * @param folderId
-     *            文件夹ID
+     * @param folderId 文件夹ID
      * @return
      */
-    @Logging(logType = LogType.access,value = "我的云盘-文件夹删除")
-    @RequestMapping(value = { "folderRemove/{folderId}" })
+    @Logging(logType = LogType.access, value = "我的云盘-文件夹删除")
+    @RequestMapping(value = {"folderRemove/{folderId}"})
     @ResponseBody
     public Result folderRemove(@PathVariable String folderId) {
         folderService.deleteFolderAndFiles(folderId);
@@ -219,8 +219,8 @@ public class DiskController extends SimpleController {
      * @param folder
      */
     public TreeNode folderToTreeNode(Folder folder) {
-        TreeNode treeNode = new TreeNode(folder.getId(),folder.getName());
-        treeNode.getAttributes().put(DiskController.NODE_TYPE,DiskController.NType.Folder.toString());
+        TreeNode treeNode = new TreeNode(folder.getId(), folder.getName());
+        treeNode.getAttributes().put(DiskController.NODE_TYPE, DiskController.NType.Folder.toString());
         treeNode.getAttributes().put(DiskController.NODE_OPERATE, true);
         treeNode.setIconCls(ICON_FOLDER);
         treeNode.setpId(folder.getParentId());
@@ -228,13 +228,12 @@ public class DiskController extends SimpleController {
     }
 
 
-
     /**
      * 磁盘树
      *
      * @return
      */
-    @RequestMapping(value = { "diskTree" })
+    @RequestMapping(value = {"diskTree"})
     @ResponseBody
     public List<TreeNode> diskTree() {
         List<TreeNode> treeNodes = Lists.newArrayList(); // 返回的树节点
@@ -242,7 +241,7 @@ public class DiskController extends SimpleController {
         String loginUserId = sessionInfo.getUserId(); // 登录人Id
 
         TreeNode userOwnerTreeNode = new TreeNode(FolderAuthorize.User.getValue(), FolderAuthorize.User.getDescription());
-        userOwnerTreeNode.getAttributes().put(NODE_TYPE,NType.FolderAuthorize.toString());
+        userOwnerTreeNode.getAttributes().put(NODE_TYPE, NType.FolderAuthorize.toString());
         userOwnerTreeNode.setIconCls(ICON_DISK);
         treeNodes.add(userOwnerTreeNode);
 
@@ -258,23 +257,21 @@ public class DiskController extends SimpleController {
     /**
      * 文件列表
      *
-     * @param folderId
-     *            文件夹Id
-     * @param folderAuthorize
-     *            文件夹隶属云盘类型
+     * @param folderId        文件夹Id
+     * @param folderAuthorize 文件夹隶属云盘类型
      * @param fileName
      * @return
      */
-    @RequestMapping(value = { "folderFileDatagrid" })
+    @RequestMapping(value = {"folderFileDatagrid"})
     @ResponseBody
-    public String folderFileDatagrid(String folderId, String folderAuthorize,String fileName) {
+    public String folderFileDatagrid(String folderId, String folderAuthorize, String fileName) {
         String json = null;
         long totalSize = 0L; // 分页总大小
         List<Map<String, Object>> footer = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String loginUserId = sessionInfo.getUserId(); // 登录人Id
 
-        if (folderId == null && folderAuthorize == null ) {
+        if (folderId == null && folderAuthorize == null) {
             json = JsonMapper.getInstance().toJson(new Datagrid());
         } else {
             Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
@@ -293,13 +290,13 @@ public class DiskController extends SimpleController {
             }
             Map<String, Object> map = Maps.newHashMap();
             map.put("name", "总大小");
-            map.put("prettyFileSize",PrettyMemoryUtils.prettyByteSize(totalSize));
+            map.put("prettyFileSize", PrettyMemoryUtils.prettyByteSize(totalSize));
             footer.add(map);
             dg.setFooter(footer);
             json = JsonMapper.getInstance().toJson(
                     dg,
                     File.class,
-                    new String[] { "id", "fileId", "name", "prettyFileSize","createTime", "userName"});
+                    new String[]{"id", "fileId", "name", "prettyFileSize", "createTime", "userName"});
         }
 
         return json;
@@ -309,12 +306,11 @@ public class DiskController extends SimpleController {
      * 文件夹编辑页面
      *
      * @param folderId
-     * @param folderAuthorize
-     *            {@link FolderAuthorize}
+     * @param folderAuthorize {@link FolderAuthorize}
      * @param parentFolderId
      * @return
      */
-    @RequestMapping(value = { "folderInput" })
+    @RequestMapping(value = {"folderInput"})
     public ModelAndView folderInput(String folderId, Integer folderAuthorize,
                                     String parentFolderId) {
         ModelAndView modelAndView = new ModelAndView(
@@ -340,24 +336,22 @@ public class DiskController extends SimpleController {
     /**
      * 文件上传页面
      *
-     * @param folderId
-     *            文件夹Id
-     * @param folderAuthorize
-     *            云盘类型Id
+     * @param folderId        文件夹Id
+     * @param folderAuthorize 云盘类型Id
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = { "fileInput" })
+    @RequestMapping(value = {"fileInput"})
     public ModelAndView fileInput(String folderId, String folderAuthorize) throws Exception {
         ModelAndView modelAndView = new ModelAndView(
                 "modules/disk/disk-fileInput");
         Folder model = null;
-        if(FolderAuthorize.User.getValue().equals(folderId) || FolderAuthorize.User.getValue().equals(folderAuthorize)){
+        if (FolderAuthorize.User.getValue().equals(folderId) || FolderAuthorize.User.getValue().equals(folderAuthorize)) {
             String loginUserId = SecurityUtils.getCurrentUserId();
             model = folderService.initHideFolderAndSaveForUser(loginUserId);
-        }else if (StringUtils.isNotBlank(folderId)) { // 选中文件夹
+        } else if (StringUtils.isNotBlank(folderId)) { // 选中文件夹
             model = folderService.get(folderId);
-        }else {
+        } else {
             Exception e = new ActionException("上传文件异常！请联系管理员。");
             throw e;
         }
@@ -371,8 +365,8 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @Logging(logType = LogType.access,value = "我的云盘-文件修改")
-    @RequestMapping(value = { "fileSave" })
+    @Logging(logType = LogType.access, value = "我的云盘-文件修改")
+    @RequestMapping(value = {"fileSave"})
     @ResponseBody
     public Result fileSave(@ModelAttribute("model") File file) {
         fileService.save(file);
@@ -382,12 +376,11 @@ public class DiskController extends SimpleController {
     /**
      * 文件删除
      *
-     * @param fileIds
-     *            文件Id集合
+     * @param fileIds 文件Id集合
      * @return
      */
-    @Logging(logType = LogType.access,value = "我的云盘-文件删除")
-    @RequestMapping(value = { "delFolderFile" })
+    @Logging(logType = LogType.access, value = "我的云盘-文件删除")
+    @RequestMapping(value = {"delFolderFile"})
     @ResponseBody
     public Result delFolderFile(@RequestParam(value = "fileIds", required = false) List<String> fileIds) {
         fileService.deleteFileByFileIds(fileIds);
@@ -397,14 +390,13 @@ public class DiskController extends SimpleController {
     /**
      * 文件级联删除
      *
-     * @param fileCodes
-     *            文件code集合
+     * @param fileCodes 文件code集合
      * @throws Exception
      */
-    @Logging(logType = LogType.access,value = "我的云盘-文件级联删除")
-    @RequestMapping(value = { "cascadeDelFile" })
+    @Logging(logType = LogType.access, value = "我的云盘-文件级联删除")
+    @RequestMapping(value = {"cascadeDelFile"})
     @ResponseBody
-    public Result cascadeDelFile(@RequestParam(value = "fileCodes", required = false) List<String> fileCodes){
+    public Result cascadeDelFile(@RequestParam(value = "fileCodes", required = false) List<String> fileCodes) {
         fileService.deleteFileByFolderCode(fileCodes);
         return Result.successResult();
     }
@@ -413,13 +405,11 @@ public class DiskController extends SimpleController {
     /**
      * 文件上传
      *
-     * @param folderId
-     *            文件夹
-     * @param uploadFile
-     *            上传文件
+     * @param folderId   文件夹
+     * @param uploadFile 上传文件
      * @return
      */
-    @RequestMapping(value = { "fileUpload" })
+    @RequestMapping(value = {"fileUpload"})
     @ResponseBody
     public Result fileUpload(
             @RequestParam(value = "folderId", required = false) String folderId,
@@ -434,7 +424,7 @@ public class DiskController extends SimpleController {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             Folder folder = folderService.get(folderId);
             if (folder != null) {
-                File file = fileService.fileUpload(sessionInfo, folder,uploadFile);
+                File file = fileService.fileUpload(sessionInfo, folder, uploadFile);
                 String obj = null;
                 if (file != null) {
                     obj = file.getId();
@@ -451,8 +441,8 @@ public class DiskController extends SimpleController {
      * 文件检索
      */
     @RequiresPermissions("disk:disk:search")
-    @Logging(logType = LogType.access,value = "我的云盘-文件检索")
-    @RequestMapping(value = { "search" })
+    @Logging(logType = LogType.access, value = "我的云盘-文件检索")
+    @RequestMapping(value = {"search"})
     public ModelAndView searchList() {
         boolean isAdmin = DiskUtils.isDiskAdmin(SecurityUtils.getCurrentUserId());
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk-search");
@@ -464,20 +454,15 @@ public class DiskController extends SimpleController {
     /**
      * 文件检索
      *
-     * @param fileName
-     *            文件名
-     * @param folderAuthorize
-     *            云盘类型
-     * @param startTime
-     *            开始时间
-     * @param endTime
-     *            结束时间
-     * @param personIds
-     *            上传人Id集合
+     * @param fileName        文件名
+     * @param folderAuthorize 云盘类型
+     * @param startTime       开始时间
+     * @param endTime         结束时间
+     * @param personIds       上传人Id集合
      * @return
      */
 
-    @RequestMapping(value = { "fileSearchDatagrid" })
+    @RequestMapping(value = {"fileSearchDatagrid"})
     @ResponseBody
     public String fileSearchDatagrid(
             String fileName,
@@ -492,7 +477,7 @@ public class DiskController extends SimpleController {
         if (isAdmin) {
             userId = null;
         }
-        userId = Collections3.isNotEmpty(personIds) ? personIds.get(0):userId;
+        userId = Collections3.isNotEmpty(personIds) ? personIds.get(0) : userId;
         Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
         page = fileService.searchFilePage(page, userId, fileName,
                 folderAuthorize, sizeType, startTime, endTime);
@@ -502,12 +487,11 @@ public class DiskController extends SimpleController {
             json = JsonMapper.getInstance().toJson(
                     dg,
                     File.class,
-                    new String[] { "id", "name", "code", "prettyFileSize","location", "createTime", "userName" });
+                    new String[]{"id", "name", "code", "prettyFileSize", "location", "createTime", "userName"});
         }
         return json;
 
     }
-
 
 
     /**
@@ -515,22 +499,21 @@ public class DiskController extends SimpleController {
      *
      * @param response
      * @param request
-     * @param fileId 文件ID
+     * @param fileId   文件ID
      */
-    @Logging(logType = LogType.access,value = "下载文件")
+    @Logging(logType = LogType.access, value = "下载文件")
     @RequiresUser(required = false)
-    @RequestMapping(value = { "fileDownload/{fileId}" })
+    @RequestMapping(value = {"fileDownload/{fileId}"})
     public ModelAndView fileDownload(HttpServletResponse response,
-                             HttpServletRequest request, @PathVariable String fileId) {
+                                     HttpServletRequest request, @PathVariable String fileId) {
         File file = fileService.get(fileId);
         return downloadSingleFileUtil(response, request, file);
 
     }
 
 
-
     private ModelAndView downloadSingleFileUtil(HttpServletResponse response,
-                                        HttpServletRequest request, File file) {
+                                                HttpServletRequest request, File file) {
         ActionException fileNotFoldException = new ActionException("文件不存在，已被删除或移除。");
         if (file == null) {
             throw fileNotFoldException;
@@ -549,13 +532,13 @@ public class DiskController extends SimpleController {
 
         // ETag header
         // The ETag is contentLength + lastModified
-        response.setHeader("ETag","W/\"" + fileLength + "-" + diskFile.lastModified() + "\"");
+        response.setHeader("ETag", "W/\"" + fileLength + "-" + diskFile.lastModified() + "\"");
         // Last-Modified header
-        response.setHeader("Last-Modified",new Date(diskFile.lastModified()).toString());
+        response.setHeader("Last-Modified", new Date(diskFile.lastModified()).toString());
 
         if (request.getHeader("Range") != null) {// 客户端请求的下载的文件块的开始字节
             response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-            logger.debug("request.getHeader(\"Range\")="+ request.getHeader("Range"));
+            logger.debug("request.getHeader(\"Range\")=" + request.getHeader("Range"));
             rangeBytes = request.getHeader("Range").replaceAll("bytes=", "");
             if (rangeBytes.indexOf('-') == rangeBytes.length() - 1) {// bytes=969998336-
                 rangeBytes = rangeBytes.substring(0, rangeBytes.indexOf('-'));
@@ -584,7 +567,7 @@ public class DiskController extends SimpleController {
         String contentType = AppUtils.getServletContext().getMimeType(filename);
         if (null != contentType) {
             response.setContentType(contentType);
-        }else{
+        } else {
             response.setContentType("application/x-download");
         }
 
@@ -598,7 +581,7 @@ public class DiskController extends SimpleController {
         InputStream istream = null;
         OutputStream os = null;
         try {
-            WebUtils.setDownloadableHeader(request,response,filename);
+            WebUtils.setDownloadableHeader(request, response, filename);
             os = response.getOutputStream();
             istream = new BufferedInputStream(new FileInputStream(diskFile), bufferSize);
             try {
@@ -628,8 +611,8 @@ public class DiskController extends SimpleController {
      * @param fileIds 入参Ids拼接字符串
      * @throws Exception
      */
-    @Logging(logType = LogType.access,value = "下载文件")
-    @RequestMapping(value = { "downloadDiskFile" })
+    @Logging(logType = LogType.access, value = "下载文件")
+    @RequestMapping(value = {"downloadDiskFile"})
     public ModelAndView downloadDiskFile(
             HttpServletResponse response,
             HttpServletRequest request,
@@ -658,20 +641,20 @@ public class DiskController extends SimpleController {
      * @throws Exception
      */
     private ModelAndView downloadMultiFileUtil(HttpServletResponse response,
-                                       HttpServletRequest request, List<File> fileList) throws Exception {
+                                               HttpServletRequest request, List<File> fileList) throws Exception {
         if (Collections3.isNotEmpty(fileList)) {
             java.io.File tempZipFile = null;
             try {
                 // 创建一个临时压缩文件， 文件流全部注入到这个文件中
-                tempZipFile = new java.io.File(Identities.uuid()+"_temp.zip");
+                tempZipFile = new java.io.File(Identities.uuid() + "_temp.zip");
                 DiskUtils.makeZip(fileList, tempZipFile.getAbsolutePath());
                 String dName = "【批量下载】" + fileList.get(0).getName() + ".zip";
                 DownloadUtils.download(request, response, new FileInputStream(
                         tempZipFile), dName);
             } catch (Exception e) {
                 throw e;
-            }finally {
-                if(tempZipFile != null && tempZipFile.isFile()){
+            } finally {
+                if (tempZipFile != null && tempZipFile.isFile()) {
                     tempZipFile.delete();//删除临时Zip文件
                 }
             }
@@ -680,15 +663,15 @@ public class DiskController extends SimpleController {
     }
 
 
-
     /**
      * 清空缓存目录 正在运行时 慎用
+     *
      * @return
      */
-    @Logging(logType = LogType.access,value = "我的云盘-清空缓存目录")
-    @RequestMapping(value = { "clearTempDir" })
+    @Logging(logType = LogType.access, value = "我的云盘-清空缓存目录")
+    @RequestMapping(value = {"clearTempDir"})
     @ResponseBody
-    public Result clearTempDir(){
+    public Result clearTempDir() {
         logger.info("清空缓存目录...");
         DiskUtils.clearTempDir();
         logger.info("清空缓存目录完毕");

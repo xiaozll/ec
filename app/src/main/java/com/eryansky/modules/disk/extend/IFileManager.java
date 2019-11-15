@@ -42,17 +42,17 @@ public interface IFileManager {
     /**
      * 保存文件
      *
-     * @param path          存储文件路径
+     * @param path      存储文件路径
      * @param localPath 本地文件路径
-     * @param coverFile     是否覆盖
+     * @param coverFile 是否覆盖
      * @return
      */
     UploadStatus saveFile(String path, String localPath, boolean coverFile) throws IOException;
 
     /**
-     * @param path      存储文件路径
-     * @param inputStream     本地文件路径输入流
-     * @param coverFile 是否覆盖
+     * @param path        存储文件路径
+     * @param inputStream 本地文件路径输入流
+     * @param coverFile   是否覆盖
      * @return
      */
     UploadStatus saveFile(String path, InputStream inputStream, boolean coverFile) throws IOException;
@@ -69,9 +69,9 @@ public interface IFileManager {
     /**
      * 删除文件
      *
-     * @param path     存储文件路径
+     * @param path 存储文件路径
      */
     UploadStatus deleteFile(String path) throws IOException;
 
-    String getStorePath(Folder folder,String userId,String fileName);
+    String getStorePath(Folder folder, String userId, String fileName);
 }

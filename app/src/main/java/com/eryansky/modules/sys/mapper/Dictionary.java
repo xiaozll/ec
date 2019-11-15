@@ -53,12 +53,9 @@ public class Dictionary extends DataEntity<Dictionary> {
     /**
      * 系统数据字典类型构造函数.
      *
-     * @param name
-     *            类型名称
-     * @param code
-     *            类型编码
-     * @param orderNo
-     *            排序
+     * @param name    类型名称
+     * @param code    类型编码
+     * @param orderNo 排序
      */
     public Dictionary(String name, String code, Integer orderNo) {
         this();
@@ -91,7 +88,6 @@ public class Dictionary extends DataEntity<Dictionary> {
     public void setGroup(Dictionary group) {
         this.group = group;
     }
-
 
 
     public Integer getOrderNo() {

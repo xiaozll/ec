@@ -18,27 +18,29 @@ import java.util.List;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-10-16 
+ * @date 2015-10-16
  */
 @Service
-public class NoticeSendInfoService extends CrudService<NoticeSendInfoDao,NoticeSendInfo> {
+public class NoticeSendInfoService extends CrudService<NoticeSendInfoDao, NoticeSendInfo> {
 
     /**
      * 通知发送配置信息
+     *
      * @param noticeId 通知ID
      * @return
      */
-    public List<NoticeSendInfo> findNoticeSendInfos(String noticeId){
+    public List<NoticeSendInfo> findNoticeSendInfos(String noticeId) {
         return findNoticeSendInfos(noticeId, null);
     }
 
     /**
      * 通知发送配置信息
-     * @param noticeId 通知ID
+     *
+     * @param noticeId          通知ID
      * @param receiveObjectType {@link ReceiveObjectType}
      * @return
      */
-    public List<NoticeSendInfo> findNoticeSendInfos(String noticeId,String receiveObjectType){
+    public List<NoticeSendInfo> findNoticeSendInfos(String noticeId, String receiveObjectType) {
         NoticeSendInfo noticeSendInfo = new NoticeSendInfo();
         Notice notice = new Notice(noticeId);
         notice.setStatus(StatusState.NORMAL.getValue());
@@ -49,29 +51,32 @@ public class NoticeSendInfoService extends CrudService<NoticeSendInfoDao,NoticeS
 
     /**
      * 查找接收用户IDS
+     *
      * @param noticeId 通知ID
      * @return
      */
-    public List<String> findUserIdsByNoticeId(String noticeId){
-        return findObjectIdsByNoticeId(noticeId,ReceiveObjectType.User.getValue());
+    public List<String> findUserIdsByNoticeId(String noticeId) {
+        return findObjectIdsByNoticeId(noticeId, ReceiveObjectType.User.getValue());
     }
 
     /**
      * 查找接收机构IDS
+     *
      * @param noticeId 通知ID
      * @return
      */
-    public List<String> findOrganIdsByNoticeId(String noticeId){
-        return findObjectIdsByNoticeId(noticeId,ReceiveObjectType.Organ.getValue());
+    public List<String> findOrganIdsByNoticeId(String noticeId) {
+        return findObjectIdsByNoticeId(noticeId, ReceiveObjectType.Organ.getValue());
     }
 
     /**
      * 查找接收对象IDS
-     * @param noticeId 通知ID
+     *
+     * @param noticeId          通知ID
      * @param receiveObjectType {@link ReceiveObjectType}
      * @return
      */
-    public List<String> findObjectIdsByNoticeId(String noticeId,String receiveObjectType){
+    public List<String> findObjectIdsByNoticeId(String noticeId, String receiveObjectType) {
         NoticeSendInfo entity = new NoticeSendInfo();
         entity.setNoticeId(noticeId);
         entity.setReceiveObjectType(receiveObjectType);
@@ -81,12 +86,13 @@ public class NoticeSendInfoService extends CrudService<NoticeSendInfoDao,NoticeS
 
     /**
      * 根据通知ID删除
+     *
      * @param noticeId
      * @return
      */
-    public int deleteByNoticeId(String noticeId){
+    public int deleteByNoticeId(String noticeId) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("noticeId",noticeId);
+        parameter.put("noticeId", noticeId);
         return dao.deleteByNoticeId(parameter);
     }
 }

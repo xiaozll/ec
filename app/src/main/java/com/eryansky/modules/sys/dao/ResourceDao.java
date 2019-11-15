@@ -1,8 +1,8 @@
 /**
-*  Copyright (c) 2012-2018 http://www.eryansky.com
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*/
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.eryansky.modules.sys.dao;
 
 import com.eryansky.common.orm.model.Parameter;
@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * 资源表
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-05-08
  */
@@ -52,12 +53,15 @@ public interface ResourceDao extends TreeDao<Resource> {
 
     /**
      * 自定义SQL查询
+     *
      * @param parameter
      * @return
      */
     List<Resource> findByWhereSQL(Parameter parameter);
+
     /**
      * 自定义SQL查询
+     *
      * @param parameter
      * @return
      */

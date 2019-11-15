@@ -38,36 +38,36 @@ import java.util.*;
  * 通知管理
  */
 @Service
-public class NoticeService extends CrudService<NoticeDao,Notice> {
+public class NoticeService extends CrudService<NoticeDao, Notice> {
 
-	@Autowired
-	private NoticeSendInfoService noticeSendInfoService;
     @Autowired
-	private NoticeReceiveInfoService noticeReceiveInfoService;
+    private NoticeSendInfoService noticeSendInfoService;
     @Autowired
-	private UserService userService;
-
+    private NoticeReceiveInfoService noticeReceiveInfoService;
+    @Autowired
+    private UserService userService;
 
 
     /**
      * 保存通知和文件
+     *
      * @param entity
      * @param isPub
      * @param userIds
      * @param organIds
      * @param fileIds
      */
-    public void saveNoticeAndFiles(Notice entity,Boolean isPub,Collection<String> userIds,Collection<String> organIds,List<String> fileIds) {
+    public void saveNoticeAndFiles(Notice entity, Boolean isPub, Collection<String> userIds, Collection<String> organIds, List<String> fileIds) {
         List<String> oldFileIds = Collections.EMPTY_LIST;
-        if(!entity.getIsNewRecord()){
+        if (!entity.getIsNewRecord()) {
             oldFileIds = findFileIdsByNoticeId(entity.getId());
         }
         super.save(entity);
-        saveNoticeFiles(entity.getId(),fileIds);
+        saveNoticeFiles(entity.getId(), fileIds);
 
-        List<String> removeFileIds = Collections3.subtract(oldFileIds,fileIds);
-        if(Collections3.isNotEmpty(removeFileIds)){
-            deleteNoticeFiles(entity.getId(),removeFileIds);
+        List<String> removeFileIds = Collections3.subtract(oldFileIds, fileIds);
+        if (Collections3.isNotEmpty(removeFileIds)) {
+            deleteNoticeFiles(entity.getId(), removeFileIds);
             DiskUtils.deleteFolderFiles(removeFileIds);
         }
 
@@ -76,16 +76,16 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
         noticeSendInfoService.deleteByNoticeId(entity.getId());
 
         saveNoticeSendInfos(userIds, entity.getId(), ReceiveObjectType.User.getValue());
-        saveNoticeSendInfos(organIds, entity.getId(),ReceiveObjectType.Organ.getValue());
+        saveNoticeSendInfos(organIds, entity.getId(), ReceiveObjectType.Organ.getValue());
 
-        if(isPub != null && isPub) {
+        if (isPub != null && isPub) {
             publish(entity);
         }
     }
 
-    private void saveNoticeSendInfos(Collection<String> ids, String noticeId,String receieveObjectType){
-        if(Collections3.isNotEmpty(ids)) {
-            for(String id : ids){
+    private void saveNoticeSendInfos(Collection<String> ids, String noticeId, String receieveObjectType) {
+        if (Collections3.isNotEmpty(ids)) {
+            for (String id : ids) {
                 NoticeSendInfo noticeSendInfo = new NoticeSendInfo();
                 noticeSendInfo.setReceiveObjectType(receieveObjectType);
                 noticeSendInfo.setNoticeId(noticeId);
@@ -98,11 +98,12 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
 
     /**
      * 删除通知
+     *
      * @param ids
      */
-    public void deleteByIds(List<String> ids){
-        if(Collections3.isNotEmpty(ids)){
-            for(String id:ids){
+    public void deleteByIds(List<String> ids) {
+        if (Collections3.isNotEmpty(ids)) {
+            for (String id : ids) {
                 this.delete(new Notice(id));
             }
         }
@@ -111,24 +112,24 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
     /**
      * 属性过滤器查找得到分页数据.
      *
-     * @param page 分页对象
-     * @param userId 发布人 查询所有则传null
+     * @param page          分页对象
+     * @param userId        发布人 查询所有则传null
      * @param noticeQueryVo 标查询条件
      * @return
      */
-	public Page<Notice> findPage(Page<Notice> page,Notice notice, String userId, NoticeQueryVo noticeQueryVo){
+    public Page<Notice> findPage(Page<Notice> page, Notice notice, String userId, NoticeQueryVo noticeQueryVo) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
 
-        if(noticeQueryVo != null && Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())){
-            parameter.put("userId",noticeQueryVo.getPublishUserIds().get(0));
-        }else{
-            parameter.put("userId",userId);
+        if (noticeQueryVo != null && Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())) {
+            parameter.put("userId", noticeQueryVo.getPublishUserIds().get(0));
+        } else {
+            parameter.put("userId", userId);
         }
 
-        if(noticeQueryVo != null){
+        if (noticeQueryVo != null) {
             parameter.put("isTop", noticeQueryVo.getIsTop());
-            parameter.put("query",noticeQueryVo.getQuery());
+            parameter.put("query", noticeQueryVo.getQuery());
 
             if (noticeQueryVo.getStartTime() != null) {
                 parameter.put("startTime", DateUtils.format(noticeQueryVo.getStartTime(), DateUtils.DATE_TIME_FORMAT));
@@ -139,24 +140,22 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
         }
 
         notice.setEntityPage(page);
-        parameter.put(BaseInterceptor.PAGE,page);
-        parameter.put("dbName",notice.getDbName());
-        Map<String,String> sqlMap = Maps.newHashMap();
-        sqlMap.put("dsf",super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
-        parameter.put("sqlMap",sqlMap);
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put("dbName", notice.getDbName());
+        Map<String, String> sqlMap = Maps.newHashMap();
+        sqlMap.put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
+        parameter.put("sqlMap", sqlMap);
         page.setResult(dao.findQueryList(parameter));
 
         return page;
 
-	}
-
+    }
 
 
     /**
      * 发布公告
      *
-     * @param noticeId
-     *            公告ID
+     * @param noticeId 公告ID
      */
     public void publish(String noticeId) {
         Notice notice = this.get(noticeId);
@@ -175,61 +174,62 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
         publish(notice);
     }
 
-	/**
-	 * 发布公告
-	 * 
-	 * @param notice 通知
-	 */
-	public void publish(Notice notice) {
+    /**
+     * 发布公告
+     *
+     * @param notice 通知
+     */
+    public void publish(Notice notice) {
         notice.setBizMode(NoticeMode.Effective.getValue());
-        if(notice.getPublishTime() == null) {
+        if (notice.getPublishTime() == null) {
             Date nowTime = Calendar.getInstance().getTime();
             notice.setPublishTime(nowTime);
         }
-		this.save(notice);
-        List<NoticeReceiveInfo>  receiveInfos = Lists.newArrayList();
+        this.save(notice);
+        List<NoticeReceiveInfo> receiveInfos = Lists.newArrayList();
         List<String> receiveUserIds = Lists.newArrayList();
 
-        if(NoticeReceiveScope.CUSTOM.getValue().equals(notice.getReceiveScope())){
+        if (NoticeReceiveScope.CUSTOM.getValue().equals(notice.getReceiveScope())) {
             List<String> _receiveUserIds = notice.getNoticeReceiveUserIds();
             List<String> receiveOrganIds = notice.getNoticeReceiveOrganIds();
             List<String> userIds = userService.findUserIdsByOrganIds(receiveOrganIds);
-            if(Collections3.isNotEmpty(_receiveUserIds)){
+            if (Collections3.isNotEmpty(_receiveUserIds)) {
                 receiveUserIds.addAll(_receiveUserIds);
             }
-            if(Collections3.isNotEmpty(userIds)){
+            if (Collections3.isNotEmpty(userIds)) {
                 receiveUserIds.addAll(userIds);
             }
-        }else if(NoticeReceiveScope.ALL.getValue().equals(notice.getReceiveScope())){
+        } else if (NoticeReceiveScope.ALL.getValue().equals(notice.getReceiveScope())) {
             receiveUserIds = userService.findAllNormalUserIds();
-        }else if(NoticeReceiveScope.COMPANY_AND_CHILD.getValue().equals(notice.getReceiveScope())){
+        } else if (NoticeReceiveScope.COMPANY_AND_CHILD.getValue().equals(notice.getReceiveScope())) {
             receiveUserIds = userService.findOwnerAndChildsUserIds(UserUtils.getCompanyId(notice.getUserId()));
-        }else if(NoticeReceiveScope.COMPANY.getValue().equals(notice.getReceiveScope())){
+        } else if (NoticeReceiveScope.COMPANY.getValue().equals(notice.getReceiveScope())) {
             receiveUserIds = userService.findUserIdsByCompanyId(UserUtils.getCompanyId(notice.getUserId()));
-        }else if(NoticeReceiveScope.OFFICE_AND_CHILD.getValue().equals(notice.getReceiveScope())){
+        } else if (NoticeReceiveScope.OFFICE_AND_CHILD.getValue().equals(notice.getReceiveScope())) {
             receiveUserIds = userService.findOwnerAndChildsUserIds(notice.getUserId());
-        }else if(NoticeReceiveScope.OFFICE.getValue().equals(notice.getReceiveScope())){
+        } else if (NoticeReceiveScope.OFFICE.getValue().equals(notice.getReceiveScope())) {
             receiveUserIds = userService.findUserIdsByOrganId(UserUtils.getDefaultOrganId(notice.getUserId()));
         }
-        if(Collections3.isNotEmpty(receiveUserIds)){
-            for(String userId:receiveUserIds){
-                NoticeReceiveInfo receiveInfo = new NoticeReceiveInfo(userId,notice.getId());
+        if (Collections3.isNotEmpty(receiveUserIds)) {
+            for (String userId : receiveUserIds) {
+                NoticeReceiveInfo receiveInfo = new NoticeReceiveInfo(userId, notice.getId());
                 checkReceiveInfoAdd(receiveInfos, receiveInfo);
             }
         }
 
-        if(Collections3.isNotEmpty(receiveInfos)){
-            for(NoticeReceiveInfo noticeReceiveInfo:receiveInfos){
+        if (Collections3.isNotEmpty(receiveInfos)) {
+            for (NoticeReceiveInfo noticeReceiveInfo : receiveInfos) {
                 noticeReceiveInfoService.save(noticeReceiveInfo);
             }
 
         }
 
 
-	}
+    }
 
     /**
      * 发布公告
+     *
      * @param type
      * @param title
      * @param content
@@ -238,7 +238,7 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
      * @param organId
      * @param organIds
      */
-    public void sendToOrganNotice(String appId,String type,String title,String content,Date sendTime,String userId,String organId,List<String> organIds) {
+    public void sendToOrganNotice(String appId, String type, String title, String content, Date sendTime, String userId, String organId, List<String> organIds) {
         //保存到notice表
         Notice notice = new Notice();
         notice.setId(Identities.uuid2());
@@ -268,24 +268,24 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
         }
 
     }
-    
 
 
     /**
      * 去除重复
+     *
      * @param receiveInfos
      * @param receiveInfo
      */
-    private void checkReceiveInfoAdd(List<NoticeReceiveInfo> receiveInfos,NoticeReceiveInfo receiveInfo){
+    private void checkReceiveInfoAdd(List<NoticeReceiveInfo> receiveInfos, NoticeReceiveInfo receiveInfo) {
         boolean flag = false;
-        for(NoticeReceiveInfo r:receiveInfos){
-            if(r.getUserId().equals(receiveInfo.getUserId())){
+        for (NoticeReceiveInfo r : receiveInfos) {
+            if (r.getUserId().equals(receiveInfo.getUserId())) {
                 flag = true;
                 break;
             }
 
         }
-        if(!flag){
+        if (!flag) {
             receiveInfos.add(receiveInfo);
         }
 
@@ -294,10 +294,11 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
 
     /**
      * 标记为已读
-     * @param userId 所属用户ID
+     *
+     * @param userId    所属用户ID
      * @param noticeIds 通知ID集合
      */
-    public void markReaded(String userId,List<String> noticeIds){
+    public void markReaded(String userId, List<String> noticeIds) {
         if (Collections3.isNotEmpty(noticeIds)) {
             for (String id : noticeIds) {
                 NoticeReceiveInfo noticeReceiveInfo = noticeReceiveInfoService.getUserNotice(userId, id);
@@ -312,27 +313,29 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
 
     /**
      * 插入通知附件关联信息
-     * @param id 通知ID
+     *
+     * @param id  通知ID
      * @param ids 文件IDS
      */
-    public void insertNoticeFiles(String id, Collection<String> ids){
+    public void insertNoticeFiles(String id, Collection<String> ids) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("id",id);
-        parameter.put("ids",ids);
-        if(Collections3.isNotEmpty(ids)){
+        parameter.put("id", id);
+        parameter.put("ids", ids);
+        if (Collections3.isNotEmpty(ids)) {
             dao.insertNoticeFiles(parameter);
         }
     }
 
     /**
      * 刪除通知附件关联信息
-     * @param id 通知ID
+     *
+     * @param id  通知ID
      * @param ids 文件IDS
      */
-    public void deleteNoticeFiles(String id, Collection<String> ids){
+    public void deleteNoticeFiles(String id, Collection<String> ids) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("id",id);
-        parameter.put("ids",ids);
+        parameter.put("id", id);
+        parameter.put("ids", ids);
         dao.deleteNoticeFiles(parameter);
     }
 
@@ -340,15 +343,16 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
     /**
      * 保存通知附件关联信息
      * 保存之前先删除原有
-     * @param id 通知ID
+     *
+     * @param id  通知ID
      * @param ids 文件IDS
      */
-    public void saveNoticeFiles(String id, Collection<String> ids){
+    public void saveNoticeFiles(String id, Collection<String> ids) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("id",id);
-        parameter.put("ids",ids);
+        parameter.put("id", id);
+        parameter.put("ids", ids);
         dao.deleteNoticeFiles(parameter);
-        if(Collections3.isNotEmpty(ids)){
+        if (Collections3.isNotEmpty(ids)) {
             dao.insertNoticeFiles(parameter);
         }
     }
@@ -356,13 +360,13 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
 
     /**
      * 查找通知附件ID
+     *
      * @param noticeId
      * @return
      */
-    public List<String> findFileIdsByNoticeId(String noticeId){
+    public List<String> findFileIdsByNoticeId(String noticeId) {
         return dao.findFileIdsByNoticeId(noticeId);
     }
-
 
 
     /**
@@ -381,16 +385,16 @@ public class NoticeService extends CrudService<NoticeDao,Notice> {
                         && n.getEffectTime() != null
                         && nowTime.compareTo(n.getEffectTime()) != -1) {//定时发布
                     this.publish(n);
-                }else if (NoticeMode.Effective.getValue().equals(n.getBizMode())
+                } else if (NoticeMode.Effective.getValue().equals(n.getBizMode())
                         && n.getInvalidTime() != null
                         && nowTime.compareTo(n.getInvalidTime()) != -1) {//到时失效
                     n.setBizMode(NoticeMode.Invalidated.getValue());
-                   this.save(n);
+                    this.save(n);
                 }
                 //取消置顶
                 if (IsTop.Yes.getValue().equals(n.getIsTop())
-                        && n.getEndTopDay() != null && n.getEndTopDay() >0) {
-                    Date publishTime = (n.getPublishTime() == null) ? nowTime: n.getPublishTime();
+                        && n.getEndTopDay() != null && n.getEndTopDay() > 0) {
+                    Date publishTime = (n.getPublishTime() == null) ? nowTime : n.getPublishTime();
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(publishTime);
                     cal.add(Calendar.DATE, n.getEndTopDay());

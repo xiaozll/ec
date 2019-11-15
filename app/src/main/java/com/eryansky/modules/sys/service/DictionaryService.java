@@ -17,11 +17,12 @@ import java.util.List;
 
 /**
  * 数据字典管理
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-09-27 
+ * @date 2015-09-27
  */
 @Service
-public class DictionaryService extends CrudService<DictionaryDao,Dictionary> {
+public class DictionaryService extends CrudService<DictionaryDao, Dictionary> {
 
     @Override
     public void save(Dictionary entity) {
@@ -34,8 +35,8 @@ public class DictionaryService extends CrudService<DictionaryDao,Dictionary> {
     }
 
     public void deleteByIds(List<String> ids) {
-        if(Collections3.isNotEmpty(ids)){
-            for(String id:ids){
+        if (Collections3.isNotEmpty(ids)) {
+            for (String id : ids) {
                 delete(new Dictionary(id));
             }
         }
@@ -50,6 +51,7 @@ public class DictionaryService extends CrudService<DictionaryDao,Dictionary> {
 
     /**
      * 根据编码查找
+     *
      * @param code
      * @return
      */
@@ -66,11 +68,12 @@ public class DictionaryService extends CrudService<DictionaryDao,Dictionary> {
 
     /**
      * 检查分组下是否有数据
+     *
      * @param groupId
      * @param name
      * @return
      */
-    public Dictionary getByGroupCode_Name(String groupId,String name) {
+    public Dictionary getByGroupCode_Name(String groupId, String name) {
         Dictionary group = new Dictionary();
         group.setId(groupId);
         Dictionary dictionary = new Dictionary();
@@ -81,19 +84,21 @@ public class DictionaryService extends CrudService<DictionaryDao,Dictionary> {
 
     /**
      * 查找第一级所属有数据
+     *
      * @return
      */
-    public List<Dictionary> findParents(){
+    public List<Dictionary> findParents() {
         return dao.findParents(new Dictionary());
     }
 
 
     /**
      * 根据编码查找子级数据
+     *
      * @param groupId
      * @return
      */
-    public List<Dictionary> findChilds(String groupId){
+    public List<Dictionary> findChilds(String groupId) {
         Dictionary dictionary = new Dictionary(groupId);
         return dao.findChilds(dictionary);
     }
@@ -101,6 +106,7 @@ public class DictionaryService extends CrudService<DictionaryDao,Dictionary> {
 
     /**
      * 查找排序最大值
+     *
      * @return
      */
     public Integer getMaxSort() {

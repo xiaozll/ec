@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -52,30 +52,31 @@ public class DictionaryController extends SimpleController {
     private DictionaryItemService dictionaryItemService;
 
     @RequiresPermissions("sys:dictionary:view")
-    @Logging(value = "字典管理",logType = LogType.access)
+    @Logging(value = "字典管理", logType = LogType.access)
     @RequestMapping(value = {""})
     public String list() {
         return "modules/sys/dictionary";
     }
 
     @ModelAttribute
-    public Dictionary get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public Dictionary get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return dictionaryService.get(id);
-        }else{
+        } else {
             return new Dictionary();
         }
     }
+
     @RequestMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute Dictionary model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/dictionary-input");
-        modelAndView.addObject("model",model);
+        modelAndView.addObject("model", model);
         return modelAndView;
     }
 
     @RequiresPermissions("sys:dictionary:edit")
-    @Logging(value = "字典管理-保存字典",logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "字典管理-保存字典", logType = LogType.access)
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Dictionary dictionary) {
         Result result = null;
@@ -115,7 +116,7 @@ public class DictionaryController extends SimpleController {
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox selectCombobox = SelectType.combobox(selectType);
-        if(selectCombobox != null){
+        if (selectCombobox != null) {
             cList.add(selectCombobox);
         }
         for (Dictionary d : list) {
@@ -141,7 +142,7 @@ public class DictionaryController extends SimpleController {
         List<TreeNode> tList = Lists.newArrayList();
 
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
-        if(selectTreeNode != null){
+        if (selectTreeNode != null) {
             tList.add(selectTreeNode);
         }
         for (Dictionary d : list) {
@@ -150,7 +151,7 @@ public class DictionaryController extends SimpleController {
             List<Dictionary> childDictionaries = dictionaryService.findChilds(d.getId());
             for (Dictionary childDictionarie : childDictionaries) {
                 TreeNode childTreeNode = new TreeNode(childDictionarie.getId(), childDictionarie.getName(), null);
-                childTreeNode.getAttributes().put("groupId",childDictionarie.getGroupId());
+                childTreeNode.getAttributes().put("groupId", childDictionarie.getGroupId());
                 treeNode.addChild(childTreeNode);
             }
 
@@ -168,7 +169,7 @@ public class DictionaryController extends SimpleController {
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox selectCombobox = SelectType.combobox(selectType);
-        if(selectCombobox != null){
+        if (selectCombobox != null) {
             cList.add(selectCombobox);
         }
         for (Dictionary d : list) {
@@ -197,31 +198,33 @@ public class DictionaryController extends SimpleController {
      */
     @RequestMapping(value = {"treegrid"})
     @ResponseBody
-    public Datagrid<Dictionary> treegrid(Dictionary Dictionary,HttpServletRequest request,HttpServletResponse response) throws Exception {
+    public Datagrid<Dictionary> treegrid(Dictionary Dictionary, HttpServletRequest request, HttpServletResponse response) throws Exception {
         Page<Dictionary> page = new Page<Dictionary>(request);
-        page = dictionaryService.findPage(page,Dictionary);
+        page = dictionaryService.findPage(page, Dictionary);
         return new Datagrid<Dictionary>(page.getTotalCount(), page.getResult());
     }
 
     /**
      * 删除
+     *
      * @param ids
      * @return
      */
     @RequiresPermissions("sys:dictionary:edit")
-    @Logging(value = "字典管理-删除字典",logType = LogType.access)
+    @Logging(value = "字典管理-删除字典", logType = LogType.access)
     @RequestMapping(value = {"remove"})
     @ResponseBody
-    public Result remove(@RequestParam(value = "ids", required = false)List<String> ids){
+    public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         dictionaryService.deleteByIds(ids);
         return Result.successResult();
     }
 
-   /* 外部接口*/
+    /* 外部接口*/
+
     /**
      * combobox下拉列表框数据
      *
-     * @param selectType {@link SelectType}
+     * @param selectType     {@link SelectType}
      * @param dictionaryCode 数据字典编码
      * @return
      * @throws Exception
@@ -242,7 +245,8 @@ public class DictionaryController extends SimpleController {
 
     /**
      * combotree下拉列表数据
-     * @param selectType {@link SelectType}
+     *
+     * @param selectType     {@link SelectType}
      * @param dictionaryCode 数据字典编码
      * @return
      * @throws Exception

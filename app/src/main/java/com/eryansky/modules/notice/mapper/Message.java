@@ -15,8 +15,9 @@ import java.util.Date;
 
 /**
  * 消息表
+ *
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 public class Message extends DataEntity<Message> {
     /**
@@ -41,6 +42,7 @@ public class Message extends DataEntity<Message> {
     private String image;
     /**
      * 图片地址
+     *
      * @Transient
      */
     private String imageUrl;
@@ -71,7 +73,6 @@ public class Message extends DataEntity<Message> {
     private String tipMessage;
 
     private MessageSender messageSender;
-
 
 
     /**
@@ -201,7 +202,7 @@ public class Message extends DataEntity<Message> {
         this.query = query;
     }
 
-    public String getOrganName(){
+    public String getOrganName() {
         return OrganUtils.getOrganName(organId);
     }
 

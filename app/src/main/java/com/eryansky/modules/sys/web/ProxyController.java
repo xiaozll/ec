@@ -31,6 +31,7 @@ import java.io.OutputStream;
 
 /**
  * 代理访问服务
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-12-14
  */
@@ -41,19 +42,20 @@ public class ProxyController extends SimpleController {
 
     /**
      * 代理访问
+     *
      * @param nativeWebRequest
-     * @param contentUrl 远程URL
+     * @param contentUrl       远程URL
      * @throws IOException
      */
     @RequestMapping(value = {""})
-    public void getProxy(NativeWebRequest nativeWebRequest,String contentUrl) throws Exception {
+    public void getProxy(NativeWebRequest nativeWebRequest, String contentUrl) throws Exception {
 
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
         HttpCompoents httpCompoents = HttpCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
         String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request, null));//请求参数
         String url = contentUrl + "?" + param;
-        logger.debug("proxy url：{}",url);
+        logger.debug("proxy url：{}", url);
         Response remoteResponse = httpCompoents.getResponse(url);
         try {
             // 判断返回值
@@ -73,8 +75,8 @@ public class ProxyController extends SimpleController {
             if (httpResponse.getStatusLine().getStatusCode() >= 400) {
                 String errorMsg = "代理访问异常：" + contentUrl;
                 logger.error(errorMsg);
-                logger.error(httpResponse.getStatusLine().getStatusCode()+"");
-                logger.error(EntityUtils.toString(entity,"utf-8"));
+                logger.error(httpResponse.getStatusLine().getStatusCode() + "");
+                logger.error(EntityUtils.toString(entity, "utf-8"));
                 if (WebUtils.isAjaxRequest(request)) {
                     WebUtils.renderJson(response, Result.errorResult().setObj(errorMsg));
                 } else {
@@ -102,6 +104,7 @@ public class ProxyController extends SimpleController {
 
     /**
      * 代理访问
+     *
      * @param nativeWebRequest
      * @throws IOException
      */
@@ -111,7 +114,7 @@ public class ProxyController extends SimpleController {
         String requestUrl = request.getRequestURI();
 
         String contentUrl = StringUtils.substringAfterLast(requestUrl, AppConstants.getAdminPath() + "/proxy/");
-        String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request,null));//请求参数
+        String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request, null));//请求参数
         String url = contentUrl + "?" + param;
         logger.debug("proxy url：{}", url);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
@@ -135,8 +138,8 @@ public class ProxyController extends SimpleController {
             if (httpResponse.getStatusLine().getStatusCode() >= 400) {
                 String errorMsg = "代理访问异常：" + contentUrl;
                 logger.error(errorMsg);
-                logger.error(httpResponse.getStatusLine().getStatusCode()+"");
-                logger.error(EntityUtils.toString(entity,"utf-8"));
+                logger.error(httpResponse.getStatusLine().getStatusCode() + "");
+                logger.error(EntityUtils.toString(entity, "utf-8"));
                 if (WebUtils.isAjaxRequest(request)) {
                     WebUtils.renderJson(response, Result.errorResult().setObj(errorMsg));
                 } else {
@@ -157,9 +160,9 @@ public class ProxyController extends SimpleController {
             // 基于byte数组读取InputStream并直接写入OutputStream, 数组默认大小为4k.
             IOUtils.copy(input, output);
             output.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
         }
         return null;
     }

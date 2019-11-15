@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 区域DAO接口
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2016-05-12
  */
@@ -30,6 +31,7 @@ public interface AreaDao extends TreeDao<Area> {
 
     /**
      * 查找自己以及子区域
+     *
      * @param parameter
      * @return
      */

@@ -1,8 +1,8 @@
 /**
-*  Copyright (c) 2012-2018 http://www.eryansky.com
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*/
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.eryansky.modules.disk.dao;
 
 import com.eryansky.common.orm.model.Parameter;
@@ -14,7 +14,7 @@ import com.eryansky.modules.disk.mapper.Folder;
 import java.util.List;
 
 /**
- * 
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-05-04
  */

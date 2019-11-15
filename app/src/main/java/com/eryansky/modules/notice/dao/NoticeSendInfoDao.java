@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-10-15 
+ * @date 2015-10-15
  */
 @MyBatisDao
 public interface NoticeSendInfoDao extends CrudDao<NoticeSendInfo> {

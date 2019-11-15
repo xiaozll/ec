@@ -18,12 +18,13 @@ import java.util.Map;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 @MyBatisDao
 public interface MessageReceiveDao extends CrudDao<MessageReceive> {
     /**
      * 用户消息
+     *
      * @param parameter status {@link StatusState}
      *                  mode {@link MessageMode}
      *                  userId 用户ID
@@ -32,7 +33,7 @@ public interface MessageReceiveDao extends CrudDao<MessageReceive> {
     List<MessageReceive> findUserList(Parameter parameter);
 
     int setUserMessageRead(MessageReceive messageReceive);
-    
+
     int deleteByMessageId(Parameter parameter);
 }
 

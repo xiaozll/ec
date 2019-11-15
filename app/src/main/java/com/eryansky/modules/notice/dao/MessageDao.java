@@ -12,8 +12,9 @@ import com.eryansky.modules.notice.mapper.Message;
 
 /**
  * 消息DAO接口
+ *
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 @MyBatisDao
 public interface MessageDao extends CrudDao<Message> {

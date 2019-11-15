@@ -7,14 +7,14 @@ package com.eryansky.modules.sys.sn;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2016-07-14 
+ * @date 2016-07-14
  */
 public class GeneratorConstants {
     public static final String STRING = "Str";
     public static final String DATE_TIME = "DateTime";
     public static final String CHARATER_SEQUENCE = "Charater";
     public static final String NUMBER_SEQUENCE = "NumSeq";
-    
+
     public static final String PARAM_MODULE_CODE = "moduleCode";
-    public static final String PARAM_MAX_SERIAL= "maxSerial";
+    public static final String PARAM_MAX_SERIAL = "maxSerial";
 }

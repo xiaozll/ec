@@ -86,23 +86,24 @@ public enum FileType {
 
     /**
      * 根据文件后缀名返回文件分类
+     *
      * @param fileSuffix
      * @return
      */
     public static FileType getByFileSuffix(String fileSuffix) {
         FileType fileType = FileType.Other;
-        if(StringUtils.isBlank(fileSuffix)){
+        if (StringUtils.isBlank(fileSuffix)) {
             return fileType;
         }
-        if (StringUtils.containsAny(fileSuffix,"txt","wps","doc","docx","pdf","ppt","pptx","xls","xlsx")){
+        if (StringUtils.containsAny(fileSuffix, "txt", "wps", "doc", "docx", "pdf", "ppt", "pptx", "xls", "xlsx")) {
             return Document;
-        }else if (StringUtils.containsAny(fileSuffix,"jpg","jpeg","png","gif","bmp","psd")){
+        } else if (StringUtils.containsAny(fileSuffix, "jpg", "jpeg", "png", "gif", "bmp", "psd")) {
             return Image;
-        }else if (StringUtils.containsAny(fileSuffix,"mp3","wma")){
+        } else if (StringUtils.containsAny(fileSuffix, "mp3", "wma")) {
             return Music;
-        }else if (StringUtils.containsAny(fileSuffix,"avi","rmvb","mp4","swf","fla")){
+        } else if (StringUtils.containsAny(fileSuffix, "avi", "rmvb", "mp4", "swf", "fla")) {
             return Video;
-        }else if (StringUtils.containsAny(fileSuffix,"exe","apk")){
+        } else if (StringUtils.containsAny(fileSuffix, "exe", "apk")) {
             return Soft;
         }
         return fileType;

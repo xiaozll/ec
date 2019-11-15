@@ -12,8 +12,9 @@ import com.eryansky.modules.notice.utils.MessageUtils;
 
 /**
  * 消息发送表
+ *
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 public class MessageSender extends DataEntity<MessageSender> {
     /**

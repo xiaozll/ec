@@ -19,8 +19,9 @@ import java.util.List;
 
 /**
  * 消息发送异步任务
+ *
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-15 
+ * @date 2016-03-15
  */
 @Component
 public class MessageTask {
@@ -34,80 +35,84 @@ public class MessageTask {
 
     /**
      * 发送消息
+     *
      * @param message
      * @param receiveObjectType
      * @param receiveObjectIds
      */
     @Async
-    public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds){
-        saveAndSend(message,receiveObjectType, receiveObjectIds,true);
+    public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds) {
+        saveAndSend(message, receiveObjectType, receiveObjectIds, true);
     }
+
     /**
      * 发送消息
+     *
      * @param message
      * @param receiveObjectType
      * @param receiveObjectIds
-     * @param sendWeixin 是否通过微信发送消息
+     * @param sendWeixin        是否通过微信发送消息
      */
     @Async
-    public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds,Boolean sendWeixin){
+    public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds, Boolean sendWeixin) {
         MessageReceiveObjectType messageReceiveObjectType = MessageReceiveObjectType.getByValue(receiveObjectType);
-        if(StringUtils.isNotBlank(receiveObjectType) && messageReceiveObjectType != null){
-            if(MessageReceiveObjectType.User.equals(messageReceiveObjectType)){
-                saveAndSend(message, messageReceiveObjectType, receiveObjectIds,sendWeixin);
-            }else if(MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)){
-                saveAndSend(message, messageReceiveObjectType, receiveObjectIds,sendWeixin);
+        if (StringUtils.isNotBlank(receiveObjectType) && messageReceiveObjectType != null) {
+            if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
+                saveAndSend(message, messageReceiveObjectType, receiveObjectIds, sendWeixin);
+            } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
+                saveAndSend(message, messageReceiveObjectType, receiveObjectIds, sendWeixin);
             }
         }
     }
 
     /**
-     *
      * @param message
      * @param messageReceiveObjectType
      * @param receiveObjectIds
      */
     @Async
-    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds){
-        saveAndSend(message,messageReceiveObjectType, receiveObjectIds,true);
+    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
+        saveAndSend(message, messageReceiveObjectType, receiveObjectIds, true);
     }
 
     /**
-     *
      * @param message
      * @param messageReceiveObjectType
      * @param receiveObjectIds
-     * @param sendWeixin 是否通过微信发送消息
+     * @param sendWeixin               是否通过微信发送消息
      */
     @Async
-    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds,Boolean sendWeixin){
-        messageService.saveAndSend(message,messageReceiveObjectType,receiveObjectIds,sendWeixin);
+    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Boolean sendWeixin) {
+        messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds, sendWeixin);
     }
 
     /**
      * 设置通知已读状态
+     *
      * @param receive
      */
     @Async
-    public void setRead(MessageReceive receive){
+    public void setRead(MessageReceive receive) {
         messageReceiveService.setRead(receive);
     }
 
     /**
      * 设置通知已读状态
+     *
      * @param userId
      */
     @Async
-    public void setReadAll(String userId){
+    public void setReadAll(String userId) {
         messageReceiveService.setReadAll(userId, null);
     }
 
     /**
      * 重新推送用户消息到微信端
+     *
      * @param userId
      */
     @Async
-    public void reSendToWeixinByUserId(String userId){
+    public void reSendToWeixinByUserId(String userId) {
         messageReceiveService.reSendByUserId(userId);
     }
 }

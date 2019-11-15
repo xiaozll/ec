@@ -10,7 +10,7 @@ package com.eryansky.modules.notice._enum;
  */
 public enum NoticeReceiveScope {
 
-    COMPANY_AND_CHILD ("2", "所在单位及以下"),
+    COMPANY_AND_CHILD("2", "所在单位及以下"),
     COMPANY("3", "所在单位"),
     OFFICE_AND_CHILD("4", "所在部门及以下"),
     OFFICE("5", "所在部门"),

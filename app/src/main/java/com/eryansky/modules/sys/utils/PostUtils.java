@@ -26,6 +26,7 @@ public class PostUtils {
 
     /**
      * 根据ID查找
+     *
      * @param postId 岗位ID
      * @return
      */
@@ -38,6 +39,7 @@ public class PostUtils {
 
     /**
      * 根据ID查找名称
+     *
      * @param postId
      * @return
      */

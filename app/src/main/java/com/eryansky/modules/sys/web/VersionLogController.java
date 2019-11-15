@@ -81,9 +81,10 @@ public class VersionLogController extends SimpleController {
 
     /**
      * 数据列表
+     *
      * @param request
      * @param startTIme 更新时间 - 起始时间
-     * @param endTime 更新时间 - 截止时间
+     * @param endTime   更新时间 - 截止时间
      * @return
      */
     @RequestMapping(value = {"datagrid"})
@@ -156,10 +157,10 @@ public class VersionLogController extends SimpleController {
     @RequiresUser(required = false)
     @RequestMapping(value = {"upload"})
     @ResponseBody
-    public static Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile,String jsessionid) {
+    public static Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile, String jsessionid) {
         SessionInfo sessionInfo = SecurityUtils.getSessionInfo(jsessionid);
-        sessionInfo = null != sessionInfo ? sessionInfo:SecurityUtils.getCurrentSessionInfo();
-        if(null == sessionInfo){
+        sessionInfo = null != sessionInfo ? sessionInfo : SecurityUtils.getCurrentSessionInfo();
+        if (null == sessionInfo) {
             return Result.errorResult().setMsg("未授权！");
         }
         Result result = null;
@@ -196,12 +197,13 @@ public class VersionLogController extends SimpleController {
 
     /**
      * 保存
+     *
      * @param model
      * @return
      */
     @RequiresPermissions("sys:model:edit")
     @Logging(value = "版本更新-保存版本", logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") VersionLog model) {
         Result result;
@@ -219,6 +221,7 @@ public class VersionLogController extends SimpleController {
 
     /**
      * 清空数据
+     *
      * @return
      */
     @RequiresPermissions("sys:model:edit")
@@ -238,6 +241,7 @@ public class VersionLogController extends SimpleController {
 
     /**
      * 清空所有数据
+     *
      * @return
      */
     @Logging(value = "版本管理-清空所有数据", logType = LogType.access)
@@ -251,6 +255,7 @@ public class VersionLogController extends SimpleController {
 
     /**
      * 查看通知
+     *
      * @param id 通知ID
      * @return
      * @throws Exception
@@ -272,6 +277,7 @@ public class VersionLogController extends SimpleController {
 
     /**
      * 附件下载
+     *
      * @param request
      * @param response
      * @return

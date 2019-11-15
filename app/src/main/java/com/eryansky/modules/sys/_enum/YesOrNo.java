@@ -6,7 +6,7 @@ package com.eryansky.modules.sys._enum;
 public enum YesOrNo {
 
     YES("1", "是"),
-    NO ("0", "否");
+    NO("0", "否");
 
     /**
      * 值 Integer型
@@ -24,6 +24,7 @@ public enum YesOrNo {
 
     /**
      * 获取值
+     *
      * @return value
      */
     public String getValue() {
@@ -32,6 +33,7 @@ public enum YesOrNo {
 
     /**
      * 获取描述信息
+     *
      * @return description
      */
     public String getDescription() {

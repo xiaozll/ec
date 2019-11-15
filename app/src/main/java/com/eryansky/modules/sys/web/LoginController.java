@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -50,6 +50,7 @@ import java.util.*;
 
 /**
  * 用户登录/注销等前端交互入口
+ *
  * @author : 尔演&Eryan eryanwcp@gmail.com
  * @date : 2014-05-02 19:50
  */
@@ -64,6 +65,7 @@ public class LoginController extends SimpleController {
 
     /**
      * 欢迎页面
+     *
      * @return
      */
     @Mobile(value = MobileValue.ALL)
@@ -73,34 +75,35 @@ public class LoginController extends SimpleController {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
-        modelAndView.addObject("isValidateCodeLogin",isValidateCodeLogin);
+        modelAndView.addObject("isValidateCodeLogin", isValidateCodeLogin);
         return modelAndView;
     }
 
 
     /**
      * 是否是验证码登录
+     *
      * @param useruame 用户名
-     * @param isFail 计数加1
-     * @param clean 计数清零
+     * @param isFail   计数加1
+     * @param clean    计数清零
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean){
+    public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean) {
         Map<String, Integer> loginFailMap = CacheUtils.get("loginFailMap");
-        if (loginFailMap==null){
+        if (loginFailMap == null) {
             loginFailMap = Maps.newHashMap();
             CacheUtils.put("loginFailMap", loginFailMap);
         }
         Integer loginFailNum = loginFailMap.get(useruame);
-        if (loginFailNum==null){
+        if (loginFailNum == null) {
             loginFailNum = 0;
         }
-        if (isFail){
+        if (isFail) {
             loginFailNum++;
             loginFailMap.put(useruame, loginFailNum);
         }
-        if (clean){
+        if (clean) {
             loginFailMap.remove(useruame);
         }
         return loginFailNum >= 3;
@@ -109,13 +112,13 @@ public class LoginController extends SimpleController {
     /**
      * 登录用户数校验
      */
-    private void checkLoginLimit(){
+    private void checkLoginLimit() {
         int maxSize = AppConstants.getSessionUserMaxSize();
-        if(maxSize < 0){//系统维护
+        if (maxSize < 0) {//系统维护
             throw new SystemException("系统正在维护，请稍后再试！");
-        }else if(maxSize != 0){//0 为不限制
+        } else if (maxSize != 0) {//0 为不限制
             int sessionUser = SecurityUtils.getSessionInfoSize();
-            if(sessionUser >= maxSize){
+            if (sessionUser >= maxSize) {
                 throw new SystemException("系统当前登录用户数量过多，请稍后再试！");
             }
         }
@@ -124,11 +127,11 @@ public class LoginController extends SimpleController {
     /**
      * 登录验证
      *
-     * @param loginName 用户名
-     * @param password  密码
-     * @param encrypt 加密
+     * @param loginName    用户名
+     * @param password     密码
+     * @param encrypt      加密
      * @param validateCode 验证码
-     * @param theme     主题
+     * @param theme        主题
      * @param request
      * @return
      */
@@ -139,26 +142,26 @@ public class LoginController extends SimpleController {
                         @RequestParam(required = true) String password,
                         @RequestParam(defaultValue = "false") Boolean encrypt,
                         String validateCode,
-                        String theme, HttpServletRequest request,Model uiModel) {
+                        String theme, HttpServletRequest request, Model uiModel) {
         //登录限制
         checkLoginLimit();
 
         Result result = null;
         String msg = null;
-        final String VALIDATECODE_TIP= "密码输入错误超过3次，请输入验证码!";
+        final String VALIDATECODE_TIP = "密码输入错误超过3次，请输入验证码!";
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         if (isValidateCodeLogin && UserAgentUtils.isComputer(request)) {
-            if(StringUtils.isBlank(validateCode)){
+            if (StringUtils.isBlank(validateCode)) {
                 return Result.errorResult().setMsg("密码输入错误超过3次，请输入验证码!").setObj(isValidateCodeLogin);
             }
-            if(!ValidateCodeServlet.validate(request, validateCode)){
+            if (!ValidateCodeServlet.validate(request, validateCode)) {
                 msg = "验证码不正确或验证码已过期!";
                 return Result.errorResult().setMsg(msg).setObj(isValidateCodeLogin);
             }
         }
 
         String _password = password;
-        if(!encrypt){
+        if (!encrypt) {
             _password = Encrypt.e(password);
         }
 
@@ -171,15 +174,15 @@ public class LoginController extends SimpleController {
         }
         if (msg != null) {
             isValidateCodeLogin = isValidateCodeLogin(loginName, true, false);
-            if(isValidateCodeLogin){
+            if (isValidateCodeLogin) {
                 msg += VALIDATECODE_TIP;
             }
             result = new Result(Result.ERROR, msg, isValidateCodeLogin);
         } else {
-            if(AppConstants.getIsSecurityOn()){
+            if (AppConstants.getIsSecurityOn()) {
                 List<SessionInfo> userSessionInfos = SecurityUtils.findSessionInfoByLoginName(loginName);
-                if(AppConstants.getUserSessionSize() > 0 &&  userSessionInfos.size() >= AppConstants.getUserSessionSize() ){
-                    result = new Result(Result.ERROR, "已达到用户最大会话登录限制["+AppConstants.getUserSessionSize()+"，请注销其它登录信息后再试！]", AppConstants.getUserSessionSize());
+                if (AppConstants.getUserSessionSize() > 0 && userSessionInfos.size() >= AppConstants.getUserSessionSize()) {
+                    result = new Result(Result.ERROR, "已达到用户最大会话登录限制[" + AppConstants.getUserSessionSize() + "，请注销其它登录信息后再试！]", AppConstants.getUserSessionSize());
                     return result;
                 }
             }
@@ -191,7 +194,7 @@ public class LoginController extends SimpleController {
 
             //设置调整URL 如果session中包含未被授权的URL 则跳转到该页面
 //            String resultUrl = request.getContextPath()+ AppConstants.getAdminPath()  + "/login/index?theme=" + theme;
-            String resultUrl = request.getContextPath()+ AppConstants.getAdminPath();
+            String resultUrl = request.getContextPath() + AppConstants.getAdminPath();
             Object unAuthorityUrl = request.getSession().getAttribute(SecurityConstants.SESSION_UNAUTHORITY_URL);
             if (unAuthorityUrl != null) {
                 resultUrl = unAuthorityUrl.toString();
@@ -199,9 +202,9 @@ public class LoginController extends SimpleController {
                 request.getSession().setAttribute(SecurityConstants.SESSION_UNAUTHORITY_URL, null);
             }
             //返回
-            Map<String,Object> data = Maps.newHashMap();
-            data.put("sessionInfo",sessionInfo);
-            data.put("homeUrl",resultUrl);
+            Map<String, Object> data = Maps.newHashMap();
+            data.put("sessionInfo", sessionInfo);
+            data.put("homeUrl", resultUrl);
             result = new Result(Result.SUCCESS, "用户验证通过!", data);
             isValidateCodeLogin(loginName, false, true);
         }
@@ -210,13 +213,13 @@ public class LoginController extends SimpleController {
     }
 
 
-
     /**
      * 用户注销
+     *
      * @param request
      * @return
      */
-    @RequestMapping(value = {"logout"},method = RequestMethod.POST)
+    @RequestMapping(value = {"logout"}, method = RequestMethod.POST)
     @ResponseBody
     public Result postlogout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -233,10 +236,11 @@ public class LoginController extends SimpleController {
 
     /**
      * 用户注销
+     *
      * @param request
      * @return
      */
-    @RequestMapping(value = {"logout"},method = RequestMethod.GET)
+    @RequestMapping(value = {"logout"}, method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
@@ -301,15 +305,15 @@ public class LoginController extends SimpleController {
         if (Collections3.isEmpty(resources)) {
             return tempMenus;
         }
-        for(Resource r:resources){
+        for (Resource r : resources) {
             tempMenus.add(resourceToSiderbarMenu(r));
         }
 
         List<SiderbarMenu> tempTreeNodes = Lists.newArrayList();
-        Map<String,SiderbarMenu> tempMap = Maps.newLinkedHashMap();
+        Map<String, SiderbarMenu> tempMap = Maps.newLinkedHashMap();
 
-        for(SiderbarMenu treeNode:tempMenus){
-            tempMap.put(treeNode.getId(),treeNode);
+        for (SiderbarMenu treeNode : tempMenus) {
+            tempMap.put(treeNode.getId(), treeNode);
             tempTreeNodes.add(treeNode);
         }
 
@@ -317,21 +321,21 @@ public class LoginController extends SimpleController {
         Set<String> keyIds = tempMap.keySet();
         Set<String> removeKeyIds = Sets.newHashSet();
         Iterator<String> iteratorKey = keyIds.iterator();
-        while (iteratorKey.hasNext()){
+        while (iteratorKey.hasNext()) {
             String key = iteratorKey.next();
             SiderbarMenu treeNode = null;
-            for(SiderbarMenu treeNode1:tempTreeNodes){
-                if(treeNode1.getId().equals(key)){
+            for (SiderbarMenu treeNode1 : tempTreeNodes) {
+                if (treeNode1.getId().equals(key)) {
                     treeNode = treeNode1;
                     break;
                 }
             }
 
-            if(StringUtils.isNotBlank(treeNode.getpId())){
-                SiderbarMenu pTreeNode = getParentSiderbarMenu(treeNode.getpId(),tempTreeNodes);
-                if(pTreeNode != null){
-                    for(SiderbarMenu treeNode2:tempTreeNodes){
-                        if(treeNode2.getId().equals(pTreeNode.getId())){
+            if (StringUtils.isNotBlank(treeNode.getpId())) {
+                SiderbarMenu pTreeNode = getParentSiderbarMenu(treeNode.getpId(), tempTreeNodes);
+                if (pTreeNode != null) {
+                    for (SiderbarMenu treeNode2 : tempTreeNodes) {
+                        if (treeNode2.getId().equals(pTreeNode.getId())) {
                             treeNode2.addChild(treeNode);
                             removeKeyIds.add(treeNode.getId());
                             break;
@@ -344,18 +348,18 @@ public class LoginController extends SimpleController {
         }
 
         //remove
-        if(Collections3.isNotEmpty(removeKeyIds)){
+        if (Collections3.isNotEmpty(removeKeyIds)) {
             keyIds.removeAll(removeKeyIds);
         }
 
         List<SiderbarMenu> result = Lists.newArrayList();
         keyIds = tempMap.keySet();
         iteratorKey = keyIds.iterator();
-        while (iteratorKey.hasNext()){
+        while (iteratorKey.hasNext()) {
             String _key = iteratorKey.next();
             SiderbarMenu treeNode = null;
-            for(SiderbarMenu treeNode4:tempTreeNodes){
-                if(treeNode4.getId().equals(_key)){
+            for (SiderbarMenu treeNode4 : tempTreeNodes) {
+                if (treeNode4.getId().equals(_key)) {
                     treeNode = treeNode4;
                     result.add(treeNode);
                     break;
@@ -415,7 +419,7 @@ public class LoginController extends SimpleController {
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request) throws Exception {
         Page<SessionInfo> page = new Page<SessionInfo>(request);
         page = SecurityUtils.findSessionInfoPage(page);
-        Datagrid<SessionInfo> dg = new Datagrid<SessionInfo>(page.getTotalCount(),page.getResult());
+        Datagrid<SessionInfo> dg = new Datagrid<SessionInfo>(page.getTotalCount(), page.getResult());
         return dg;
     }
 
@@ -457,21 +461,21 @@ public class LoginController extends SimpleController {
     /**
      * 资源转M
      *
-     * @param resource  资源
+     * @param resource 资源
      * @return
      */
     private Menu resourceToMenu(Resource resource) {
         HttpServletRequest request = SpringMVCHolder.getRequest();
         Assert.notNull(resource, "参数resource不能为空");
         String head = this.getHeadFromUrl(request.getRequestURL().toString());
-        Menu menu = new Menu(resource.getId(),resource.getName());
+        Menu menu = new Menu(resource.getId(), resource.getName());
         String url = resource.getUrl();
         if (url.startsWith("http")) {
-            url =  resource.getUrl();
+            url = resource.getUrl();
         } else if (url.startsWith("/")) {
-            url = head + request.getContextPath()  + url;
+            url = head + request.getContextPath() + url;
         } else {
-            url = head + request.getContextPath() + AppConstants.getAdminPath()+ "/" + url;
+            url = head + request.getContextPath() + AppConstants.getAdminPath() + "/" + url;
         }
         menu.setHref(url);
         return menu;
@@ -514,8 +518,6 @@ public class LoginController extends SimpleController {
         }
         return result;
     }
-
-
 
 
 }

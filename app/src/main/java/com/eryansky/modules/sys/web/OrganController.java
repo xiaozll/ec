@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -64,16 +64,16 @@ public class OrganController extends SimpleController {
     private SystemService systemService;
 
     @ModelAttribute("model")
-    public Organ get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public Organ get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return organService.get(id);
-        }else{
+        } else {
             return new Organ();
         }
     }
 
     @RequiresPermissions("sys:organ:view")
-    @Logging(value = "机构管理",logType = LogType.access)
+    @Logging(value = "机构管理", logType = LogType.access)
     @RequestMapping(value = {""})
     public String list() {
         return "modules/sys/organ";
@@ -85,17 +85,17 @@ public class OrganController extends SimpleController {
     public String treegrid(String parentId) throws Exception {
         List<Organ> list = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if(StringUtils.isBlank(parentId)){
-            if(SecurityUtils.isCurrentUserAdmin()){
+        if (StringUtils.isBlank(parentId)) {
+            if (SecurityUtils.isCurrentUserAdmin()) {
                 list = organService.findDataByParent(null, null);
-            }else{
+            } else {
                 String organId = sessionInfo.getLoginCompanyId();
                 list = new ArrayList<Organ>(1);
                 list.add(organService.get(organId));
             }
 
-        }else{
-            list = organService.findDataByParent(parentId,null);
+        } else {
+            list = organService.findDataByParent(parentId, null);
         }
 
         String json = JsonMapper.getInstance().toJson(list);
@@ -110,9 +110,9 @@ public class OrganController extends SimpleController {
     @RequestMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Organ model, String parentId, Model uiModel) throws Exception {
         ModelAndView modelAndView = new ModelAndView("modules/sys/organ-input");
-        modelAndView.addObject("parentId",parentId);
+        modelAndView.addObject("parentId", parentId);
         modelAndView.addObject("model", model);
-        return  modelAndView;
+        return modelAndView;
     }
 
 
@@ -140,25 +140,25 @@ public class OrganController extends SimpleController {
         List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
-        if(selectTreeNode != null){
+        if (selectTreeNode != null) {
             titleList.add(selectTreeNode);
         }
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String excludeOrganId = organ.getId();
         String organId = null;
         TreeNode parentTreeNode = null;
-        if(SecurityUtils.isCurrentUserAdmin()){
+        if (SecurityUtils.isCurrentUserAdmin()) {
             organId = null;
-        }else{
+        } else {
             OrganExtend o = OrganUtils.getOrganExtendByUserId(sessionInfo.getUserId());
             OrganExtend organExtend = OrganUtils.getOrganExtend(organ.getId());
-            if(o.getTreeLevel() >= organExtend.getTreeLevel()){
+            if (o.getTreeLevel() >= organExtend.getTreeLevel()) {
                 parentTreeNode = organService.organToTreeNode(organ.getParent());
                 excludeOrganId = null;
             }
         }
-        treeNodes = organService.findOrganTree(organId,excludeOrganId);
-        if(parentTreeNode != null){
+        treeNodes = organService.findOrganTree(organId, excludeOrganId);
+        if (parentTreeNode != null) {
             treeNodes.add(parentTreeNode.setState(TreeNode.STATE_OPEN));
         }
         return ListUtils.union(titleList, treeNodes);
@@ -168,10 +168,10 @@ public class OrganController extends SimpleController {
      * 保存.
      */
     @RequiresPermissions("sys:organ:edit")
-    @Logging(value = "机构管理-保存机构",logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "机构管理-保存机构", logType = LogType.access)
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result save(@ModelAttribute("model") Organ organ,String _parentId) {
+    public Result save(@ModelAttribute("model") Organ organ, String _parentId) {
         Result result = null;
         organ.setParent(null);
         // 设置上级节点
@@ -199,7 +199,7 @@ public class OrganController extends SimpleController {
      * @return
      */
     @RequiresPermissions("sys:organ:edit")
-    @Logging(value = "机构管理-删除机构",logType = LogType.access)
+    @Logging(value = "机构管理-删除机构", logType = LogType.access)
     @RequestMapping(value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
@@ -207,7 +207,6 @@ public class OrganController extends SimpleController {
         organService.deleteOwnerAndChilds(id);
         return Result.successResult();
     }
-
 
 
     /**
@@ -219,8 +218,8 @@ public class OrganController extends SimpleController {
     @RequestMapping(value = {"user"})
     public String user(@ModelAttribute("model") Organ model, Model uiModel) throws Exception {
         List<User> organUsers = userService.findOrganUsers(model.getId());
-        String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers,User.class,
-                new String[]{"id","name","sexView","defaultOrganName"});
+        String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers, User.class,
+                new String[]{"id", "name", "sexView", "defaultOrganName"});
         logger.debug(organUserCombogridData);
         uiModel.addAttribute("organUserCombogridData", organUserCombogridData);
         uiModel.addAttribute("model", model);
@@ -235,8 +234,8 @@ public class OrganController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions("sys:organ:edit")
-    @Logging(value = "机构管理-机构用户",logType = LogType.access)
-    @RequestMapping(value = {"updateOrganUser"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "机构管理-机构用户", logType = LogType.access)
+    @RequestMapping(value = {"updateOrganUser"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateOrganUser(@ModelAttribute("model") Organ organ) throws Exception {
         Result result;
@@ -247,57 +246,57 @@ public class OrganController extends SimpleController {
     }
 
     /**
-     *
      * @param selectType
-     * @param dataScope {@link DataScope}
+     * @param dataScope  {@link DataScope}
      * @return
      * @throws Exception
      */
     @RequestMapping(value = {"tree"})
     @ResponseBody
-    public List<TreeNode> tree(String parentId,String selectType,String dataScope,
-                               @RequestParam(value = "cascade",required = false,defaultValue = "false")Boolean cascade) throws Exception {
+    public List<TreeNode> tree(String parentId, String selectType, String dataScope,
+                               @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) throws Exception {
         List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
-        if(selectTreeNode != null){
+        if (selectTreeNode != null) {
             titleList.add(selectTreeNode);
         }
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String _parentId = parentId;
-        if(StringUtils.isBlank(parentId)){
-            String organId = sessionInfo != null ? sessionInfo.getLoginOrganId():null;
-            if(SecurityUtils.isCurrentUserAdmin() || (StringUtils.isNotBlank(dataScope)  && dataScope.equals(DataScope.ALL.getValue()))){
+        if (StringUtils.isBlank(parentId)) {
+            String organId = sessionInfo != null ? sessionInfo.getLoginOrganId() : null;
+            if (SecurityUtils.isCurrentUserAdmin() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
                 organId = null;
-            }else if((StringUtils.isNotBlank(dataScope)  && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) && sessionInfo != null){
+            } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) && sessionInfo != null) {
                 organId = UserUtils.getCompanyId(sessionInfo.getUserId());
 
-            }else if((StringUtils.isNotBlank(dataScope)  && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) && sessionInfo != null){
+            } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) && sessionInfo != null) {
                 organId = UserUtils.getDefaultOrganId(sessionInfo.getUserId());
             }
             _parentId = organId;
         }
 
-        treeNodes = organService.findOrganTree(_parentId,true,cascade);
+        treeNodes = organService.findOrganTree(_parentId, true, cascade);
         return ListUtils.union(titleList, treeNodes);
     }
 
     /**
      * 机构类型下拉列表.
-     * @param  parentId 父级机构ID
+     *
+     * @param parentId 父级机构ID
      */
     @RequestMapping(value = {"organTypeCombobox"})
     @ResponseBody
     public List<Combobox> organTypeCombobox(String selectType, String parentId) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);
-        if(titleCombobox != null){
+        if (titleCombobox != null) {
             cList.add(titleCombobox);
         }
         String parentType = null;
-        if(StringUtils.isNotBlank(parentId)){
+        if (StringUtils.isNotBlank(parentId)) {
             Organ organ = organService.get(parentId);
-            if(organ != null){
+            if (organ != null) {
                 parentType = organ.getType();
             }
         }
@@ -327,7 +326,6 @@ public class OrganController extends SimpleController {
         }
         return cList;
     }
-
 
 
     /**
@@ -367,6 +365,7 @@ public class OrganController extends SimpleController {
 
     /**
      * 查找自己和子机构机构类型机构 {@link OrganType#organ}
+     *
      * @param parentId
      * @param response
      * @return
@@ -377,9 +376,9 @@ public class OrganController extends SimpleController {
     public List<TreeNode> ownerAndChildsCompanysData(String parentId, HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
         String _parentId = parentId;
-        if(StringUtils.isBlank(_parentId)){
+        if (StringUtils.isBlank(_parentId)) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-            _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null:sessionInfo.getLoginCompanyId();
+            _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null : sessionInfo.getLoginCompanyId();
         }
         return organService.findOwnerAndChildsCompanysTree(_parentId);
     }
@@ -387,17 +386,18 @@ public class OrganController extends SimpleController {
 
     /**
      * 省市县区域数据
+     *
      * @param response
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "provinceCityAreaData")
     public List<TreeNode> provinceCityAreaData(HttpServletResponse response) {
-        List<TreeNode> treeNodes=Lists.newArrayList();
+        List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
-        for (int i=0; i<list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             Area e = list.get(i);
-            TreeNode treeNode = new TreeNode(e.getId(),e.getName());
+            TreeNode treeNode = new TreeNode(e.getId(), e.getName());
             treeNode.setpId(e.getParentId());
             treeNodes.add(treeNode);
         }
@@ -406,30 +406,32 @@ public class OrganController extends SimpleController {
 
     /**
      * 同步机构所有父级ID
+     *
      * @return
      */
     @RequiresPermissions("sys:organ:sync")
-    @Logging(value = "机构管理-同步机构所有父级ID",logType = LogType.access)
+    @Logging(value = "机构管理-同步机构所有父级ID", logType = LogType.access)
     @ResponseBody
     @RequestMapping(value = "syncAllParentIds")
-    public Result syncAllParentIds(){
+    public Result syncAllParentIds() {
         organService.syncAllParentIds();
         return Result.successResult();
     }
 
     /**
      * 重新初始化机构系统编码
+     *
      * @return
      */
     @RequiresPermissions("sys:organ:sync")
-    @Logging(value = "机构管理-重新初始化机构系统编码",logType = LogType.access)
+    @Logging(value = "机构管理-重新初始化机构系统编码", logType = LogType.access)
     @ResponseBody
     @RequestMapping(value = "initSysCode")
-    public Result initSysCode(){
+    public Result initSysCode() {
         List<Organ> roots = organService.findRoots();
-        for(int i=0;i<roots.size();i++){
+        for (int i = 0; i < roots.size(); i++) {
             Organ organ = roots.get(i);
-            rOrgan(organ, "360"+i, 0);
+            rOrgan(organ, "360" + i, 0);
         }
         return Result.successResult();
     }
@@ -450,13 +452,14 @@ public class OrganController extends SimpleController {
 
     /**
      * 同步到扩展表
+     *
      * @return
      */
     @RequiresPermissions("sys:organ:sync")
-    @Logging(value = "机构管理-同步到扩展表",logType = LogType.access)
+    @Logging(value = "机构管理-同步到扩展表", logType = LogType.access)
     @ResponseBody
     @RequestMapping(value = "syncToExtend")
-    public Result syncToExtend(){
+    public Result syncToExtend() {
         logger.info("定时任务...开始：同步organ扩展表");
         systemService.syncOrganToExtend();
         logger.info("定时任务...结束：同步organ扩展表");

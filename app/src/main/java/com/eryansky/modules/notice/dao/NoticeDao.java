@@ -15,15 +15,16 @@ import java.util.Map;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-10-15 
+ * @date 2015-10-15
  */
 @MyBatisDao
 public interface NoticeDao extends CrudDao<Notice> {
 
-    List<Notice> findQueryList(Map<String,Object> parameter);
+    List<Notice> findQueryList(Map<String, Object> parameter);
 
     /**
      * 通知附件
+     *
      * @param noticeId
      * @return
      */

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2016-07-18 
+ * @date 2016-07-18
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/systemSerialNumber")
@@ -46,10 +46,10 @@ public class SystemSerialNumberController extends SimpleController {
 
     @RequiresPermissions("sys:systemSerialNumber:view")
     @RequestMapping(value = {"list", ""})
-    public String list(SystemSerialNumber model, HttpServletRequest request,HttpServletResponse response,Model uiModel) {
-        Page<SystemSerialNumber> page = new Page<SystemSerialNumber>(request,response);
-        page = systemSerialNumberService.findPage(page,model);
-        uiModel.addAttribute("page",page);
+    public String list(SystemSerialNumber model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+        Page<SystemSerialNumber> page = new Page<SystemSerialNumber>(request, response);
+        page = systemSerialNumberService.findPage(page, model);
+        uiModel.addAttribute("page", page);
         return "modules/sys/systemSerialNumberList";
     }
 
@@ -65,7 +65,7 @@ public class SystemSerialNumberController extends SimpleController {
     @RequiresPermissions("sys:systemSerialNumber:edit")
     @RequestMapping(value = "save")
     public String save(SystemSerialNumber model, Model uiModel, RedirectAttributes redirectAttributes) {
-        if (!beanValidator(uiModel, model)){
+        if (!beanValidator(uiModel, model)) {
             return form(model, uiModel);
         }
         systemSerialNumberService.save(model);

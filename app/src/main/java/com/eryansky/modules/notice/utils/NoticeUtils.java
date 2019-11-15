@@ -39,12 +39,13 @@ public class NoticeUtils {
 
     }
 
-    private NoticeUtils(){
+    private NoticeUtils() {
 
     }
 
     /**
      * 根据ID查找
+     *
      * @param noticeId
      * @return
      */
@@ -54,6 +55,7 @@ public class NoticeUtils {
 
     /**
      * 判断当前登录用户是否读取通知
+     *
      * @param noticeId 通知ID
      * @return
      */
@@ -64,36 +66,36 @@ public class NoticeUtils {
 
 
     public static List<String> findFileIdsByNoticeId(String noticeId) {
-        if(StringUtils.isBlank(noticeId)){
+        if (StringUtils.isBlank(noticeId)) {
             return Collections.emptyList();
         }
         return Static.noticeService.findFileIdsByNoticeId(noticeId);
     }
 
     public static List<String> findNoticeReceiveUserIds(String noticeId) {
-        if(StringUtils.isBlank(noticeId)){
+        if (StringUtils.isBlank(noticeId)) {
             return Collections.emptyList();
         }
         return Static.noticeSendInfoService.findUserIdsByNoticeId(noticeId);
     }
 
     public static List<String> findNoticeReceiveOrganIds(String noticeId) {
-        if(StringUtils.isBlank(noticeId)){
+        if (StringUtils.isBlank(noticeId)) {
             return Collections.emptyList();
         }
         return Static.noticeSendInfoService.findOrganIdsByNoticeId(noticeId);
     }
 
 
-
     /**
      * 通知管理员 超级管理 + 系统管理员 + 通知管理员
+     *
      * @param userId 用户ID 如果为null,则为当前登录用户ID
      * @return
      */
-    public static boolean isNoticeAdmin(String userId){
+    public static boolean isNoticeAdmin(String userId) {
         String _userId = userId;
-        if(_userId == null){
+        if (_userId == null) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             _userId = sessionInfo.getUserId();
         }

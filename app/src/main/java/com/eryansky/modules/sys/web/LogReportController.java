@@ -50,7 +50,7 @@ public class LogReportController extends SimpleController {
      *
      * @return
      */
-    @Logging(value = "日志统计-登录统计",logType = LogType.access)
+    @Logging(value = "日志统计-登录统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:loginStatistics")
     @RequestMapping(value = {"loginStatistics"})
     public String loginStatistics() {
@@ -108,7 +108,7 @@ public class LogReportController extends SimpleController {
      *
      * @return
      */
-    @Logging(value = "日志统计-每日登陆次数分析",logType = LogType.access)
+    @Logging(value = "日志统计-每日登陆次数分析", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:dayLoginStatistics")
     @RequestMapping(value = {"dayLoginStatistics"})
     public String dayLoginStatistics() {
@@ -150,7 +150,7 @@ public class LogReportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @Logging(value = "日志统计-模块访问统计",logType = LogType.access)
+    @Logging(value = "日志统计-模块访问统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:moduleStatistics")
     @RequestMapping(value = {"moduleStatistics"})
     public String moduleStatistics(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,

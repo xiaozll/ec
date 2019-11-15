@@ -10,8 +10,9 @@ import com.eryansky.modules.sys._enum.ResetType;
 
 /**
  * 序列号生成器
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2016-07-14 
+ * @date 2016-07-14
  */
 public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 

@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.notice.mapper;
 
@@ -242,7 +242,7 @@ public class Notice extends DataEntity<Notice> {
 
     @JsonIgnore
     public List<String> getFileIds() {
-        if(Collections3.isEmpty(fileIds)){
+        if (Collections3.isEmpty(fileIds)) {
             this.fileIds = NoticeUtils.findFileIdsByNoticeId(this.id);
         }
         return fileIds;
@@ -304,11 +304,11 @@ public class Notice extends DataEntity<Notice> {
         return this.id;
     }
 
-    public List<String> getNoticeReceiveUserIds(){
+    public List<String> getNoticeReceiveUserIds() {
         return NoticeUtils.findNoticeReceiveUserIds(this.id);
     }
 
-    public List<String> getNoticeReceiveOrganIds(){
+    public List<String> getNoticeReceiveOrganIds() {
         return NoticeUtils.findNoticeReceiveOrganIds(this.id);
     }
 

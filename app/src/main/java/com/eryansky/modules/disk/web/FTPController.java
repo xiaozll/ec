@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-06-26 
+ * @date 2015-06-26
  */
 @Controller
 @RequestMapping(value = "${adminPath}/disk/ftp")
@@ -27,21 +27,22 @@ public class FTPController extends SimpleController {
 
     /**
      * 启动FTP客户端管理工具
+     *
      * @return
      */
     @RequestMapping(value = {"init"})
     @ResponseBody
-    public Result init(Boolean reconnect,Long connectTime) {
-        if(iFileManager instanceof FTPManager) {
+    public Result init(Boolean reconnect, Long connectTime) {
+        if (iFileManager instanceof FTPManager) {
             FTPManager ftpManager = (FTPManager) iFileManager;
-            if(reconnect != null){
+            if (reconnect != null) {
                 ftpManager.setReconnect(reconnect);
-                if(connectTime != null){
+                if (connectTime != null) {
                     ftpManager.setConnectTime(connectTime);
                 }
             }
             ftpManager.init();
-        }else{
+        } else {
             Result.successResult().setMsg(iFileManager.getClass().getName());
         }
 

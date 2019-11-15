@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.utils;
 
@@ -33,8 +33,8 @@ public class SystemSerialNumberUtils {
      * @param id
      * @return
      */
-    public static SystemSerialNumber get(String id){
-        if(StringUtils.isNotBlank(id)){
+    public static SystemSerialNumber get(String id) {
+        if (StringUtils.isNotBlank(id)) {
             return Static.systemSerialNumberService.get(id);
         }
         return null;
@@ -44,8 +44,8 @@ public class SystemSerialNumberUtils {
      * @param moduleCode
      * @return
      */
-    public static SystemSerialNumber getByModuleCode(String moduleCode){
-        if(StringUtils.isNotBlank(moduleCode)){
+    public static SystemSerialNumber getByModuleCode(String moduleCode) {
+        if (StringUtils.isNotBlank(moduleCode)) {
             return Static.systemSerialNumberService.getByCode(moduleCode);
         }
         return null;
@@ -53,12 +53,13 @@ public class SystemSerialNumberUtils {
 
     /**
      * 获得当前最大值
+     *
      * @param moduleCode
      * @return
      */
-    public static String getMaxSerialByModuleCode(String moduleCode){
+    public static String getMaxSerialByModuleCode(String moduleCode) {
         SystemSerialNumber systemSerialNumber = getByModuleCode(moduleCode);
-        if(systemSerialNumber != null){
+        if (systemSerialNumber != null) {
             return systemSerialNumber.getMaxSerial();
         }
         return null;
@@ -66,27 +67,28 @@ public class SystemSerialNumberUtils {
 
     /**
      * 根据模块code生成序列号
-     * @param moduleCode  模块code
-     * @return  序列号
+     *
+     * @param moduleCode 模块code
+     * @return 序列号
      */
-    public static String generateSerialNumberByModelCode(String moduleCode){
-        String region = SystemSerialNumber.QUEUE_SYS_SERIAL+":"+moduleCode;
+    public static String generateSerialNumberByModelCode(String moduleCode) {
+        String region = SystemSerialNumber.QUEUE_SYS_SERIAL + ":" + moduleCode;
         String value = CacheUtils.getCacheChannel().queuePop(region);
-        if(value != null){
+        if (value != null) {
             return value;
         }
-        String lockKey = "SystemSerialNumber:lock:"+moduleCode;
-        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, 20, 60, new DefaultLockCallback<Boolean>(false,false) {
+        String lockKey = "SystemSerialNumber:lock:" + moduleCode;
+        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, 20, 60, new DefaultLockCallback<Boolean>(false, false) {
             @Override
             public Boolean handleObtainLock() {
                 List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(moduleCode);
-                for(String serial:list){
-                    CacheUtils.getCacheChannel().queuePush(region,serial);
+                for (String serial : list) {
+                    CacheUtils.getCacheChannel().queuePush(region, serial);
                 }
                 return true;
             }
         });
-        if(!flag){
+        if (!flag) {
             return null;
         }
         value = CacheUtils.getCacheChannel().queuePop(region);

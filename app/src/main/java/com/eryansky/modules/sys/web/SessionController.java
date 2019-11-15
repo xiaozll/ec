@@ -26,42 +26,45 @@ import java.util.List;
 
 /**
  * 在线用户管理
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-05-18 
+ * @date 2015-05-18
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/session")
 public class SessionController extends SimpleController {
 
     @RequiresPermissions("sys:session:view")
-    @Logging(value = "在线用户",logType = LogType.access)
+    @Logging(value = "在线用户", logType = LogType.access)
     @RequestMapping(value = {""})
-    public ModelAndView list(){
+    public ModelAndView list() {
         return new ModelAndView("modules/sys/session");
     }
 
     /**
      * 在线用户
+     *
      * @return
      */
     @RequestMapping(value = {"onLineSessions"})
     @ResponseBody
-    public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request,String query) throws Exception {
+    public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) throws Exception {
         Page<SessionInfo> page = new Page<SessionInfo>(request);
-        page = SecurityUtils.findSessionInfoPage(page,query);
-        return new Datagrid<SessionInfo>(page.getTotalCount(),page.getResult());
+        page = SecurityUtils.findSessionInfoPage(page, query);
+        return new Datagrid<SessionInfo>(page.getTotalCount(), page.getResult());
     }
 
 
     /**
      * 强制用户下线
+     *
      * @param sessionIds sessionID集合
      * @return
      */
     @RequiresPermissions("sys:session:edit")
     @RequestMapping(value = {"offline"})
     @ResponseBody
-    public Result offline(@RequestParam(value = "sessionIds")List<String> sessionIds){
+    public Result offline(@RequestParam(value = "sessionIds") List<String> sessionIds) {
         SecurityUtils.offLine(sessionIds);
         return Result.successResult();
     }
@@ -69,10 +72,10 @@ public class SessionController extends SimpleController {
     @RequiresPermissions("sys:session:edit")
     @RequestMapping(value = {"offlineAll"})
     @ResponseBody
-    public Result offlineAll(){
-        if(SecurityUtils.isCurrentUserAdmin()){
+    public Result offlineAll() {
+        if (SecurityUtils.isCurrentUserAdmin()) {
             SecurityUtils.offLineAll();
-        }else{
+        } else {
             throw new ActionException("未授权.");
         }
 
@@ -82,12 +85,13 @@ public class SessionController extends SimpleController {
 
     /**
      * 详细信息
+     *
      * @param id
      * @return
      */
     @RequestMapping(value = {"detail"})
     @ResponseBody
-    public Result detail(String id){
+    public Result detail(String id) {
         SessionInfo sessionInfo = SecurityUtils.getSessionInfo(id);
         return Result.successResult().setObj(sessionInfo);
     }

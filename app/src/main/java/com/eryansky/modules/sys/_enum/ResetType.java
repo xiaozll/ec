@@ -7,7 +7,7 @@ public enum ResetType {
 
     Day("D", "每天重置"),
     Month("M", "月度重置"),
-//    Quarter("Q", "季度重置"),
+    //    Quarter("Q", "季度重置"),
     Year("Y", "年度重置");
 
     /**
@@ -26,6 +26,7 @@ public enum ResetType {
 
     /**
      * 获取值
+     *
      * @return value
      */
     public String getValue() {
@@ -34,6 +35,7 @@ public enum ResetType {
 
     /**
      * 获取描述信息
+     *
      * @return description
      */
     public String getDescription() {

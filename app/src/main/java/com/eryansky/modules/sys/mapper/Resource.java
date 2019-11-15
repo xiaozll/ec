@@ -124,8 +124,8 @@ public class Resource extends TreeEntity<Resource> {
     @JsonProperty(value = "_parentId")
     public String get_parentId() {
         String id = null;
-        if (parent != null){
-            id = parent.getId().equals("0") ? null:parent.getId();
+        if (parent != null) {
+            id = parent.getId().equals("0") ? null : parent.getId();
         }
         return id;
     }

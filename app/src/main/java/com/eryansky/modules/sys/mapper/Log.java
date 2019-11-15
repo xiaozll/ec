@@ -258,15 +258,12 @@ public class Log extends DataEntity<Log> {
             String paramValue = (param.getValue() != null && param.getValue().length > 0 ? param.getValue()[0] : "");
             params.append(StringUtils.abbr(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue, 100));
         }
-        if(StringUtils.isNotBlank(this.remark)){
-            this.remark = params.insert(0,this.remark).toString();
-        }else{
+        if (StringUtils.isNotBlank(this.remark)) {
+            this.remark = params.insert(0, this.remark).toString();
+        } else {
             this.remark = params.toString();
         }
     }
-
-
-
 
 
     /**

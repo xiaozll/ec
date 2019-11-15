@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.notice.mapper;
 
@@ -82,7 +82,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
      * 接收人姓名
      * @return
      */
-    public String getUserName(){
+    public String getUserName() {
         return UserUtils.getUserName(this.userId);
     }
 
@@ -90,11 +90,11 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
      * 是否读取
      * @return
      */
-    public String getIsReadView(){
+    public String getIsReadView() {
         NoticeReadMode s = NoticeReadMode.getByValue(isRead);
         String str = "";
-        if(s != null){
-            str =  s.getDescription();
+        if (s != null) {
+            str = s.getDescription();
         }
         return str;
     }
@@ -117,7 +117,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
     }
 
     private Notice getNotice() {
-        if(this.notice == null){
+        if (this.notice == null) {
             return NoticeUtils.getNotice(this.noticeId);
         }
         return this.notice;
@@ -159,7 +159,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
      * 接收人部门
      * @return
      */
-    public String  getOrganName(){
+    public String getOrganName() {
         return UserUtils.getDefaultOrganName(userId);
     }
 
@@ -167,7 +167,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
      * 判断当前登录用户是否读取
      * @return
      */
-    public boolean isRead(){
+    public boolean isRead() {
         return NoticeUtils.isRead(this.noticeId);
     }
 
@@ -175,7 +175,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
      * 判断当前登录用户是否读取
      * @return
      */
-    public String isReadView(){
-        return this.isRead() ? NoticeReadMode.readed.getDescription():NoticeReadMode.unreaded.getDescription();
+    public String isReadView() {
+        return this.isRead() ? NoticeReadMode.readed.getDescription() : NoticeReadMode.unreaded.getDescription();
     }
 }

@@ -1,7 +1,15 @@
 /**
- *  Copyright (c) 2012-2013 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Copyright (c) 2012-2013 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * <p>
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * <p>
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 /**
  *  Copyright (c) 2012-2018 http://www.eryansky.com
@@ -61,10 +69,10 @@ public class LogController extends SimpleController {
     private LogService logService;
 
     @ModelAttribute("model")
-    public Log get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public Log get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return logService.get(id);
-        }else{
+        } else {
             return new Log();
         }
     }
@@ -82,7 +90,7 @@ public class LogController extends SimpleController {
      * @param response
      * @return
      */
-    @Logging(value = "日志管理",logType = LogType.access)
+    @Logging(value = "日志管理", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequestMapping(value = {""})
     public String list(String type,
@@ -90,26 +98,26 @@ public class LogController extends SimpleController {
                        String query,
                        Date startTime,
                        Date endTime,
-                       @RequestParam(value = "export",defaultValue = "false") Boolean export,
+                       @RequestParam(value = "export", defaultValue = "false") Boolean export,
                        Model uiModel, HttpServletRequest request, HttpServletResponse response) {
         Page<Log> page = new Page<>(request);
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        Date _startTime = null != startTime ? startTime: Calendar.getInstance().getTime();
-        if(WebUtils.isAjaxRequest(request) || export){
-            if(export){
+        Date _startTime = null != startTime ? startTime : Calendar.getInstance().getTime();
+        if (WebUtils.isAjaxRequest(request) || export) {
+            if (export) {
                 page.setPageSize(Page.PAGESIZE_ALL);
             }
-            page = logService.findQueryPage(page,type,userInfo,query,_startTime,endTime,true);
-            if(export) {
+            page = logService.findQueryPage(page, type, userInfo, query, _startTime, endTime, true);
+            if (export) {
                 List<Object[]> data = Lists.newArrayList();
                 page.getResult().forEach(o -> {
-                    data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(), o.getIp(),o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()});
+                    data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(), o.getIp(), o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()});
                 });
 
 
                 String title = "审计日志-" + DateUtils.getCurrentDate();
                 //Sheet2
-                String[] hearders = new String[]{"日志类型", "标题", "单位", "部门", "姓名", "IP地址","设备", "模块", "操作时间", "操作耗时(ms)"};//表头数组
+                String[] hearders = new String[]{"日志类型", "标题", "单位", "部门", "姓名", "IP地址", "设备", "模块", "操作时间", "操作耗时(ms)"};//表头数组
 
                 if (page.getResult().size() < 65531) {
                     //导出Excel
@@ -132,14 +140,13 @@ public class LogController extends SimpleController {
                 return null;
             }
 
-            Datagrid<Log> dg = new Datagrid<>(page.getTotalCount(),page.getResult());
-            String json = JsonMapper.getInstance().toJsonWithExcludeProperties(dg,Log.class,new String[]{"exception"});
-            return renderString(response,json,WebUtils.JSON_TYPE);
+            Datagrid<Log> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
+            String json = JsonMapper.getInstance().toJsonWithExcludeProperties(dg, Log.class, new String[]{"exception"});
+            return renderString(response, json, WebUtils.JSON_TYPE);
         }
-        uiModel.addAttribute("startTime",DateUtils.formatDate(_startTime));
+        uiModel.addAttribute("startTime", DateUtils.formatDate(_startTime));
         return "modules/sys/log";
     }
-
 
 
     /**
@@ -161,11 +168,11 @@ public class LogController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @Logging(value = "日志管理-删除日志",logType = LogType.access)
+    @Logging(value = "日志管理-删除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequestMapping(value = {"remove"})
     @ResponseBody
-    public Result remove(@RequestParam(value = "ids",required = false)List<String> ids){
+    public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         logService.deleteByIds(ids);
         return Result.successResult();
     }
@@ -176,7 +183,7 @@ public class LogController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @Logging(value = "日志管理-清除日志",logType = LogType.access)
+    @Logging(value = "日志管理-清除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequestMapping(value = {"removeAll"})
     @ResponseBody

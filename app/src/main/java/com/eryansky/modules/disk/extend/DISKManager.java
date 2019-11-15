@@ -17,7 +17,7 @@ import java.io.InputStream;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-06-24 
+ * @date 2015-06-24
  */
 public class DISKManager implements IFileManager {
 
@@ -45,25 +45,25 @@ public class DISKManager implements IFileManager {
 
     @Override
     public DownloadStatus loadFile(String path, String localPath) throws IOException {
-        File srcFile = new File(AppConstants.getDiskBasePath()+File.separator+path);
+        File srcFile = new File(AppConstants.getDiskBasePath() + File.separator + path);
         DownloadStatus downloadStatus = DownloadStatus.Download_New_Failed;
-        if(srcFile.exists()){
-            FileUtils.copyFile(srcFile,new File(localPath));
+        if (srcFile.exists()) {
+            FileUtils.copyFile(srcFile, new File(localPath));
             downloadStatus = DownloadStatus.Download_New_Success;
         }
         return downloadStatus;
     }
 
     @Override
-    public UploadStatus deleteFile(String path) throws IOException{
-        FileUtils.deleteFile(new File(AppConstants.getDiskBasePath()+File.separator+path));
+    public UploadStatus deleteFile(String path) throws IOException {
+        FileUtils.deleteFile(new File(AppConstants.getDiskBasePath() + File.separator + path));
         return UploadStatus.Delete_Remote_Faild;
     }
 
     @Override
-    public String getStorePath(Folder folder, String userId,String fileName) {
+    public String getStorePath(Folder folder, String userId, String fileName) {
         String path = DiskUtils.getDISKStoreDir(folder, userId);
-        String code = FileUploadUtils.encodingFilenamePrefix(userId,fileName);
+        String code = FileUploadUtils.encodingFilenamePrefix(userId, fileName);
         path += java.io.File.separator + code + "_" + fileName;
         return path;
     }

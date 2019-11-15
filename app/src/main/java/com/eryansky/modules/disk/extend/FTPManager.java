@@ -63,7 +63,6 @@ public class FTPManager implements IFileManager {
     String baseWorkDirectory = "";// 基本工作目录
 
 
-
     public FTPManager() {
         //设置将过程中使用到的命令输出到控制台
         this.ftpClient.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
@@ -117,7 +116,7 @@ public class FTPManager implements IFileManager {
         ftpClient.changeWorkingDirectory(remote.substring(0, remote.lastIndexOf("/") + 1));
         DownloadStatus result;
         //检查远程文件是否存在
-        FTPFile[] files = ftpClient.listFiles(new String(StringUtils.substringAfterLast(remote,"/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
+        FTPFile[] files = ftpClient.listFiles(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
         if (files.length != 1) {
             logger.error("远程文件不存在");
             return DownloadStatus.Remote_File_Noexist;
@@ -137,8 +136,8 @@ public class FTPManager implements IFileManager {
             //进行断点续传，并记录状态 
             FileOutputStream out = new FileOutputStream(f, true);
             ftpClient.setRestartOffset(localSize);
-            InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote,"/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
-            StreamUtils.copy(in,out);
+            InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
+            StreamUtils.copy(in, out);
 
 //            byte[] bytes = new byte[1024];
 //            long step = lRemoteSize / 100;
@@ -165,7 +164,7 @@ public class FTPManager implements IFileManager {
             }
         } else {
             OutputStream out = new FileOutputStream(f);
-            InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote,"/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
+            InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
 //            StreamUtils.copy(in,out);
 
             byte[] bytes = new byte[1024];
@@ -313,13 +312,13 @@ public class FTPManager implements IFileManager {
         ftpClient.changeWorkingDirectory(remote.substring(0, remote.lastIndexOf("/") + 1));
         DownloadStatus result;
         //检查远程文件是否存在
-        FTPFile[] files = ftpClient.listFiles(new String(StringUtils.substringAfterLast(remote,"/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
+        FTPFile[] files = ftpClient.listFiles(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
         if (files.length != 1) {
             logger.error("远程文件不存在");
             return UploadStatus.Delete_Remote_Faild;
         }
 
-        if (files.length >0 && files[0].isFile()){
+        if (files.length > 0 && files[0].isFile()) {
             ftpClient.deleteFile(new String(files[0].getName().getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
         }
 
@@ -388,9 +387,9 @@ public class FTPManager implements IFileManager {
     /**
      * 上传文件到服务器,新上传和断点续传
      *
-     * @param remoteFile  远程文件名，在上传之前已经将服务器工作目录做了改变
-     * @param localFile   本地文件File句柄，绝对路径
-     * @param ftpClient   FTPClient引用
+     * @param remoteFile 远程文件名，在上传之前已经将服务器工作目录做了改变
+     * @param localFile  本地文件File句柄，绝对路径
+     * @param ftpClient  FTPClient引用
      * @param remoteSize 远端文件大小
      * @return
      * @throws IOException
@@ -438,9 +437,9 @@ public class FTPManager implements IFileManager {
      * 上传文件到服务器,新上传和断点续传
      *
      * @param remoteFile  远程文件名，在上传之前已经将服务器工作目录做了改变
-     * @param inputStream   inputStream
+     * @param inputStream inputStream
      * @param ftpClient   FTPClient引用
-     * @param remoteSize 远端文件大小
+     * @param remoteSize  远端文件大小
      * @return
      * @throws IOException
      */
@@ -448,7 +447,7 @@ public class FTPManager implements IFileManager {
         UploadStatus status;
         //显示进度的上传
         OutputStream out = ftpClient.appendFileStream(new String(remoteFile.getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
-        FileCopyUtils.copy(inputStream,out);
+        FileCopyUtils.copy(inputStream, out);
         boolean result = ftpClient.completePendingCommand();
         if (remoteSize > 0) {
             status = result ? UploadStatus.Upload_From_Break_Success : UploadStatus.Upload_From_Break_Failed;
@@ -517,7 +516,7 @@ public class FTPManager implements IFileManager {
             public void run() {
                 boolean init = false;
                 isconnect = false;
-                while (!init || (!isconnect && reconnect)){
+                while (!init || (!isconnect && reconnect)) {
                     init = true;
                     try {
                         logger.info("连接FTP服务器");
@@ -539,33 +538,32 @@ public class FTPManager implements IFileManager {
     }
 
 
-
-
-    public void destroy(){
+    public void destroy() {
         try {
             disconnect();
         } catch (IOException e) {
             logger.error("断开FTP服务器失败.");
         }
     }
+
     @Override
     public UploadStatus saveFile(String path, String inputFilename, boolean coverFile) throws IOException {
-        return upload(inputFilename,path);
+        return upload(inputFilename, path);
     }
 
     @Override
     public UploadStatus saveFile(String path, InputStream input, boolean coverFile) throws IOException {
-        return upload(input,path);
+        return upload(input, path);
     }
 
 
     @Override
-    public DownloadStatus loadFile(String path,String localPath) throws IOException {
-        return download(path,localPath);
+    public DownloadStatus loadFile(String path, String localPath) throws IOException {
+        return download(path, localPath);
     }
 
     @Override
-    public UploadStatus deleteFile(String path) throws IOException{
+    public UploadStatus deleteFile(String path) throws IOException {
         delete(path);
         return UploadStatus.Delete_Remote_Faild;
     }
@@ -575,6 +573,6 @@ public class FTPManager implements IFileManager {
         String path = DiskUtils.getFTPStoreDir(folder, userId);
         String code = FileUploadUtils.encodingFilenamePrefix(userId.toString(),
                 fileName);
-        return path + "/" + code+"_"+ fileName;
+        return path + "/" + code + "_" + fileName;
     }
 }

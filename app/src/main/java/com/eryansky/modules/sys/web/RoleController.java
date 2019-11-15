@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -61,16 +61,16 @@ public class RoleController extends SimpleController {
     private UserService userService;
 
     @ModelAttribute("model")
-    public Role get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public Role get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return roleService.get(id);
-        }else{
+        } else {
             return new Role();
         }
     }
 
     @RequiresPermissions("sys:role:view")
-    @Logging(value = "角色管理",logType = LogType.access)
+    @Logging(value = "角色管理", logType = LogType.access)
     @RequestMapping(value = {""})
     public String list() {
         return "modules/sys/role";
@@ -88,10 +88,10 @@ public class RoleController extends SimpleController {
         if (!SecurityUtils.isCurrentUserAdmin()) {
             model.setOrganId(organId);
         }
-        p = roleService.findPage(p,model);
+        p = roleService.findPage(p, model);
         Datagrid<Role> datagrid = new Datagrid<Role>(p.getTotalCount(), p.getResult());
-        String json = JsonMapper.getInstance().toJson(datagrid,Role.class,
-                new String[]{"id","name","code","isSystemView","organName","dataScopeView","resourceNames","dataScope","remark"});
+        String json = JsonMapper.getInstance().toJson(datagrid, Role.class,
+                new String[]{"id", "name", "code", "isSystemView", "organName", "dataScopeView", "resourceNames", "dataScope", "remark"});
         return json;
     }
 
@@ -102,7 +102,7 @@ public class RoleController extends SimpleController {
      */
     @RequestMapping(value = {"input"})
     public String input(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
-        if(StringUtils.isBlank(model.getId()) && !SecurityUtils.isCurrentUserAdmin()){
+        if (StringUtils.isBlank(model.getId()) && !SecurityUtils.isCurrentUserAdmin()) {
             model.setIsSystem(YesOrNo.NO.getValue());
         }
         uiModel.addAttribute("organIds", roleService.findRoleOrganIds(model.getId()));
@@ -115,8 +115,8 @@ public class RoleController extends SimpleController {
      * 保存.
      */
     @RequiresPermissions("sys:role:edit")
-    @Logging(value = "角色管理-保存角色",logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "角色管理-保存角色", logType = LogType.access)
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody()
     public Result save(@ModelAttribute("model") Role role) {
         Result result;
@@ -139,7 +139,7 @@ public class RoleController extends SimpleController {
      * 删除.
      */
     @RequiresPermissions("sys:role:edit")
-    @Logging(value = "角色管理-删除角色",logType = LogType.access)
+    @Logging(value = "角色管理-删除角色", logType = LogType.access)
     @RequestMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
@@ -151,7 +151,6 @@ public class RoleController extends SimpleController {
     }
 
 
-
     /**
      * 设置资源 页面
      *
@@ -159,7 +158,7 @@ public class RoleController extends SimpleController {
      * @throws Exception
      */
     @RequestMapping(value = {"resource"})
-    public String resource(@ModelAttribute("model") Role model,Model uiModel) throws Exception {
+    public String resource(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
         List<TreeNode> treeNodes = resourceService.findTreeNodeResourcesWithPermissions(SecurityUtils.getCurrentUserId());
         String resourceComboboxData = JsonMapper.getInstance().toJson(treeNodes);
         logger.debug(resourceComboboxData);
@@ -176,12 +175,12 @@ public class RoleController extends SimpleController {
      * @return
      */
     @RequiresPermissions("sys:role:edit")
-    @Logging(value = "角色管理-角色资源",logType = LogType.access)
-    @RequestMapping(value = {"updateRoleResource"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "角色管理-角色资源", logType = LogType.access)
+    @RequestMapping(value = {"updateRoleResource"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateRoleResource(@RequestParam(value = "resourceIds", required = false) Set<String> resourceIds,
                                      @ModelAttribute("model") Role role) {
-        roleService.saveRoleResources(role.getId(),resourceIds);
+        roleService.saveRoleResources(role.getId(), resourceIds);
         return Result.successResult();
     }
 
@@ -192,33 +191,33 @@ public class RoleController extends SimpleController {
      * @throws Exception
      */
     @RequestMapping(value = {"user"})
-    public String user(@ModelAttribute("model")Role model, Model uiModel) throws Exception {
+    public String user(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
         List<String> userIds = userService.findUserIdsByRoleId(model.getId());
-        uiModel.addAttribute("userIds",userIds);
+        uiModel.addAttribute("userIds", userIds);
         return "modules/sys/role-user";
     }
 
     /**
      * 角色用户数据
+     *
      * @param roleId 角色ID
-     * @param name 角色ID
+     * @param name   角色ID
      * @return
      */
     @RequestMapping(value = {"userDatagrid"})
     @ResponseBody
-    public String userDatagrid(@RequestParam(value = "roleId", required = true)String roleId,
-                               String name){
+    public String userDatagrid(@RequestParam(value = "roleId", required = true) String roleId,
+                               String name) {
         Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
-        page = userService.findPageRoleUsers(page,roleId,name);
-        Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(),page.getResult());
-        String json = JsonMapper.getInstance().toJson(dg,User.class,
-                new String[]{"id","name","sexView","sort","defaultOrganName"});
+        page = userService.findPageRoleUsers(page, roleId, name);
+        Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
+        String json = JsonMapper.getInstance().toJson(dg, User.class,
+                new String[]{"id", "name", "sexView", "sort", "defaultOrganName"});
 
         return json;
     }
 
     /**
-     *
      * @param roleId 角色ID
      * @return
      */
@@ -230,46 +229,48 @@ public class RoleController extends SimpleController {
         List<String> excludeUserIds = userService.findUserIdsByRoleId(roleId);
         modelAndView.addObject("users", users);
         modelAndView.addObject("excludeUserIds", excludeUserIds);
-        if(Collections3.isNotEmpty(excludeUserIds)){
-            modelAndView.addObject("excludeUserIdStrs", Collections3.convertToString(excludeUserIds,","));
+        if (Collections3.isNotEmpty(excludeUserIds)) {
+            modelAndView.addObject("excludeUserIdStrs", Collections3.convertToString(excludeUserIds, ","));
         }
         modelAndView.addObject("dataScope", "2");//不分级授权
         modelAndView.addObject("cascade", "true");//不分级授权
         modelAndView.addObject("multiple", "");
-        modelAndView.addObject("userDatagridData",JsonMapper.getInstance().toJson(new Datagrid()));
+        modelAndView.addObject("userDatagridData", JsonMapper.getInstance().toJson(new Datagrid()));
         return modelAndView;
     }
 
     /**
      * 添加角色关联用户
-     * @param model 角色
+     *
+     * @param model   角色
      * @param userIds 用户ID
      * @return
      */
     @RequiresPermissions("sys:role:edit")
-    @Logging(value = "角色管理-添加关联用户",logType = LogType.access)
+    @Logging(value = "角色管理-添加关联用户", logType = LogType.access)
     @RequestMapping(value = {"addRoleUser"})
     @ResponseBody
     public Result addRoleUser(@ModelAttribute("model") Role model,
-                              @RequestParam(value = "userIds", required = true)Set<String> userIds){
-        roleService.insertRoleUsers(model.getId(),userIds);
+                              @RequestParam(value = "userIds", required = true) Set<String> userIds) {
+        roleService.insertRoleUsers(model.getId(), userIds);
         return Result.successResult();
     }
 
 
     /**
      * 移除角色关联用户
-     * @param model 角色
+     *
+     * @param model   角色
      * @param userIds 用户IDS
      * @return
      */
     @RequiresPermissions("sys:role:edit")
-    @Logging(value = "角色管理-移除关联用户",logType = LogType.access)
+    @Logging(value = "角色管理-移除关联用户", logType = LogType.access)
     @RequestMapping(value = {"removeRoleUser"})
     @ResponseBody
     public Result removeRoleUser(@ModelAttribute("model") Role model,
-                                 @RequestParam(value = "userIds", required = true)Set<String> userIds){
-        roleService.deleteRoleUsersByRoleIdANDUserIds(model.getId(),userIds);
+                                 @RequestParam(value = "userIds", required = true) Set<String> userIds) {
+        roleService.deleteRoleUsersByRoleIdANDUserIds(model.getId(), userIds);
         return Result.successResult();
     }
 
@@ -281,28 +282,29 @@ public class RoleController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions("sys:role:edit")
-    @Logging(value = "角色管理-保存角色用户",logType = LogType.access)
+    @Logging(value = "角色管理-保存角色用户", logType = LogType.access)
     @RequestMapping(value = {"updateRoleUser"})
     @ResponseBody
     public Result updateRoleUser(@ModelAttribute("model") Role model,
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) throws Exception {
-        roleService.saveRoleUsers(model.getId(),userIds);
+        roleService.saveRoleUsers(model.getId(), userIds);
         return Result.successResult();
     }
 
     /**
      * 数据范围下拉列表
+     *
      * @param selectType {@link SelectType}
      * @return
      */
     @RequestMapping(value = {"dataScope"})
     @ResponseBody
-    public List<Combobox> dataScope(String selectType){
+    public List<Combobox> dataScope(String selectType) {
         DataScope[] list = DataScope.values();
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox titleCombobox = SelectType.combobox(selectType);
-        if(titleCombobox != null){
+        if (titleCombobox != null) {
             cList.add(titleCombobox);
         }
         for (DataScope r : list) {
@@ -321,7 +323,7 @@ public class RoleController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String organId = sessionInfo.getLoginCompanyId();
 
-        List<Role> list = SecurityUtils.isCurrentUserAdmin() ? roleService.findAll():roleService.findOrganRolesAndSystemRoles(organId);
+        List<Role> list = SecurityUtils.isCurrentUserAdmin() ? roleService.findAll() : roleService.findOrganRolesAndSystemRoles(organId);
 
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);
@@ -336,7 +338,6 @@ public class RoleController extends SimpleController {
     }
 
 
-
     /**
      * 机构树.
      */
@@ -346,13 +347,13 @@ public class RoleController extends SimpleController {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Role> list = roleService.findAll();
 
-        TreeNode titleTreeNode =SelectType.treeNode(selectType);
-        if(titleTreeNode != null){
+        TreeNode titleTreeNode = SelectType.treeNode(selectType);
+        if (titleTreeNode != null) {
             treeNodes.add(titleTreeNode);
         }
 
-        for(Role r:list){
-            TreeNode treeNode = new TreeNode(r.getId(),r.getName());
+        for (Role r : list) {
+            TreeNode treeNode = new TreeNode(r.getId(), r.getName());
             treeNodes.add(treeNode);
         }
         return treeNodes;

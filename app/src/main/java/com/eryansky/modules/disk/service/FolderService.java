@@ -1,8 +1,8 @@
 /**
-*  Copyright (c) 2012-2018 http://www.eryansky.com
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*/
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.eryansky.modules.disk.service;
 
 import com.eryansky.common.model.TreeNode;
@@ -43,8 +43,8 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param code 系统文件夹编码
      * @return
      */
-    public Folder checkAndSaveSystemFolderByCode(String code){
-        return checkAndSaveSystemFolderByCode(code,null);
+    public Folder checkAndSaveSystemFolderByCode(String code) {
+        return checkAndSaveSystemFolderByCode(code, null);
     }
 
 
@@ -55,14 +55,14 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param userId 用户ID
      * @return
      */
-    public Folder checkAndSaveSystemFolderByCode(String code, String userId){
+    public Folder checkAndSaveSystemFolderByCode(String code, String userId) {
         Validate.notBlank(code, "参数[code]不能为null.");
-        List<Folder> list =  findFoldersByUserId(userId,null,FolderAuthorize.SysTem.getValue(),code);
-        Folder folder =  list.isEmpty() ? null:list.get(0);
-        if(folder == null){
+        List<Folder> list = findFoldersByUserId(userId, null, FolderAuthorize.SysTem.getValue(), code);
+        Folder folder = list.isEmpty() ? null : list.get(0);
+        if (folder == null) {
             folder = new Folder();
             folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
-            folder.setName(code+"["+FolderType.HIDE.getDescription()+"]");
+            folder.setName(code + "[" + FolderType.HIDE.getDescription() + "]");
             folder.setCode(code);
             folder.setType(FolderType.HIDE.getValue());
             folder.setUserId(userId);
@@ -80,8 +80,8 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * 判断和创建个人云盘的默认文件夹
      */
     public Folder initHideFolderAndSaveForUser(String userId) {
-        List<Folder> list = findFoldersByUserId(userId,FolderType.HIDE.getValue(),FolderAuthorize.User.getValue(),null);
-        Folder folder = Collections3.isEmpty(list) ? null:list.get(0);
+        List<Folder> list = findFoldersByUserId(userId, FolderType.HIDE.getValue(), FolderAuthorize.User.getValue(), null);
+        Folder folder = Collections3.isEmpty(list) ? null : list.get(0);
         if (folder == null) {
             folder = new Folder();// 创建默认文件夹
             folder.setUserId(userId);
@@ -99,18 +99,17 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param folderId
      */
     public void deleteFolderAndFiles(String folderId) {
-        Validate.notNull(folderId,"参数[folderId]不能为null.");
+        Validate.notNull(folderId, "参数[folderId]不能为null.");
         dao.deleteCascadeByFolderId(new Folder(folderId));
         fileService.deleteCascadeByFolderId(folderId);
     }
 
 
-
     public TreeNode folderToTreeNode(Folder folder) {
-        TreeNode treeNode = new TreeNode(folder.getId(),folder.getName());
+        TreeNode treeNode = new TreeNode(folder.getId(), folder.getName());
         treeNode.getAttributes().put(DiskController.NODE_TYPE,
                 DiskController.NType.Folder.toString());
-        treeNode.getAttributes().put(DiskController.NODE_USERNAME,folder.getUserName());
+        treeNode.getAttributes().put(DiskController.NODE_USERNAME, folder.getUserName());
         treeNode.setIconCls("icon-folder");
         treeNode.setpId(folder.getParentId());
         return treeNode;
@@ -124,26 +123,26 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param excludeFolderId 排除的文件夹ID
      * @return
      */
-    public List<TreeNode> findNormalTypeFolderTreeNodes(String folderAuthorize, String userId, String excludeFolderId){
-        Validate.notNull(folderAuthorize,"参数[folderAuthorize]不能为null.");
-        List<Folder>  list = findFolders(folderAuthorize,userId,FolderType.NORMAL.getValue(),null,null,excludeFolderId);
+    public List<TreeNode> findNormalTypeFolderTreeNodes(String folderAuthorize, String userId, String excludeFolderId) {
+        Validate.notNull(folderAuthorize, "参数[folderAuthorize]不能为null.");
+        List<Folder> list = findFolders(folderAuthorize, userId, FolderType.NORMAL.getValue(), null, null, excludeFolderId);
         List<TreeNode> treeNodes = Lists.newArrayList();
-        for(Folder folder:list){
+        for (Folder folder : list) {
             treeNodes.add(folderToTreeNode(folder));
         }
         return AppUtils.toTreeTreeNodes(treeNodes);
     }
 
-    public List<Folder> findFolders(String folderAuthorize, String userId,String type,String code,String parentId, String excludeFolderId){
+    public List<Folder> findFolders(String folderAuthorize, String userId, String type, String code, String parentId, String excludeFolderId) {
         Parameter parameter = Parameter.newParameter();
-        parameter.addParameter(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
+        parameter.addParameter(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.addParameter(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-        parameter.addParameter("folderAuthorize",folderAuthorize);
-        parameter.addParameter("userId",userId);
-        parameter.addParameter("type",type);
-        parameter.addParameter("code",code);
-        parameter.addParameter("parentId",parentId);
-        parameter.addParameter("excludeFolderId",excludeFolderId);
+        parameter.addParameter("folderAuthorize", folderAuthorize);
+        parameter.addParameter("userId", userId);
+        parameter.addParameter("type", type);
+        parameter.addParameter("code", code);
+        parameter.addParameter("parentId", parentId);
+        parameter.addParameter("excludeFolderId", excludeFolderId);
         return dao.findFolders(parameter);
     }
 
@@ -153,21 +152,21 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param userId 用户ID
      * @return
      */
-    public List<Folder> findFoldersByUserId(String userId){
-        return findFoldersByUserId(userId,null,null,null);
+    public List<Folder> findFoldersByUserId(String userId) {
+        return findFoldersByUserId(userId, null, null, null);
     }
 
-    public List<Folder> findNormalTypeFoldersByUserId(String userId){
-        return findFoldersByUserId(userId,FolderType.NORMAL.getValue(),null,null);
+    public List<Folder> findNormalTypeFoldersByUserId(String userId) {
+        return findFoldersByUserId(userId, FolderType.NORMAL.getValue(), null, null);
     }
 
-    public List<Folder> findFoldersByUserId(String userId,String type,String folderAuthorize,String code){
+    public List<Folder> findFoldersByUserId(String userId, String type, String folderAuthorize, String code) {
         Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("type",type);
-        parameter.put("userId",userId);
-        parameter.put("folderAuthorize",folderAuthorize);
-        parameter.put("code",code);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("type", type);
+        parameter.put("userId", userId);
+        parameter.put("folderAuthorize", folderAuthorize);
+        parameter.put("code", code);
         return dao.findFoldersByUserId(parameter);
     }
 
@@ -176,16 +175,17 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param parentId 父级文件夹ID null:查询顶级文件夹 不为null:查询该级下一级文件夹
      * @return
      */
-    public List<Folder> findNormalTypeChild(String parentId){
-        return findChild(parentId,FolderType.NORMAL.getValue());
+    public List<Folder> findNormalTypeChild(String parentId) {
+        return findChild(parentId, FolderType.NORMAL.getValue());
     }
+
     /**
      * 根据父级ID查找子级文件夹
      * @param parentId 父级文件夹ID null:查询顶级文件夹 不为null:查询该级下一级文件夹
      * @return
      */
-    public List<Folder> findChild(String parentId){
-        return findChild(parentId,null);
+    public List<Folder> findChild(String parentId) {
+        return findChild(parentId, null);
     }
 
     /**
@@ -194,28 +194,30 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param type {@link FolderType}
      * @return
      */
-    public List<Folder> findChild(String parentId, String type){
+    public List<Folder> findChild(String parentId, String type) {
         Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("type",type);
-        parameter.put("id",parentId);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("type", type);
+        parameter.put("id", parentId);
         return dao.findChild(parameter);
     }
+
     /**
      * 根据父级ID查找子级文件夹(包含下级)
      * @param parentId 父级文件夹ID null:查询顶级文件夹 不为null:查询该级下一级文件夹
      * @return
      */
-    public List<Folder> findNormalTypeChilds(String parentId){
-        return findChilds(parentId,FolderType.NORMAL.getValue());
+    public List<Folder> findNormalTypeChilds(String parentId) {
+        return findChilds(parentId, FolderType.NORMAL.getValue());
     }
+
     /**
      * 根据父级ID查找子级文件夹(包含下级)
      * @param parentId 父级文件夹ID null:查询顶级文件夹 不为null:查询该级下一级文件夹
      * @return
      */
-    public List<Folder> findChilds(String parentId){
-        return findChilds(parentId,null);
+    public List<Folder> findChilds(String parentId) {
+        return findChilds(parentId, null);
     }
 
 
@@ -225,19 +227,19 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @param type {@link FolderType}
      * @return
      */
-    public List<Folder> findChilds(String parentId, String type){
+    public List<Folder> findChilds(String parentId, String type) {
         Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("type",type);
-        parameter.put("id",parentId);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("type", type);
+        parameter.put("id", parentId);
         return dao.findChilds(parameter);
     }
 
 
-    public List<String> findChildsIds(String parentId){
+    public List<String> findChildsIds(String parentId) {
         Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("id",parentId);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("id", parentId);
         return dao.findChildsIds(parameter);
     }
 

@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.utils;
 
@@ -30,11 +30,12 @@ public class RoleUtils {
 
     /**
      * 根据角色ID查找角色
+     *
      * @param roleId 角色ID
      * @return
      */
-    public static Role getRole(String roleId){
-        if(StringUtils.isBlank(roleId)){
+    public static Role getRole(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
             return null;
         }
         return Static.roleService.get(roleId);
@@ -43,13 +44,14 @@ public class RoleUtils {
 
     /**
      * 根据角色ID查找角色名称
+     *
      * @param roleId 角色ID
      * @return
      */
-    public static String getRoleName(String roleId){
-        if(StringUtils.isNotBlank(roleId)){
+    public static String getRoleName(String roleId) {
+        if (StringUtils.isNotBlank(roleId)) {
             Role role = Static.roleService.get(roleId);
-            if(role != null){
+            if (role != null) {
                 return role.getName();
             }
         }
@@ -60,18 +62,19 @@ public class RoleUtils {
      * @param userId 用户ID
      * @return
      */
-    public static List<Role> findRolesByUserId(String userId){
+    public static List<Role> findRolesByUserId(String userId) {
         return Static.roleService.findRolesByUserId(userId);
     }
 
 
     /**
      * 根据角色ID查找角色名称集合
+     *
      * @param roleIds 角色ID集合
      * @return
      */
-    public static String getRoleNames(List<String> roleIds){
-        if(Collections3.isNotEmpty(roleIds)){
+    public static String getRoleNames(List<String> roleIds) {
+        if (Collections3.isNotEmpty(roleIds)) {
             List<Role> list = Static.roleService.findRolesByIds(roleIds);
             return ConvertUtils.convertElementPropertyToString(list, "name", ", ");
         }

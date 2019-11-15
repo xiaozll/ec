@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-05-14 
+ * @date 2015-05-14
  */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/config")
@@ -39,20 +39,21 @@ public class ConfigController extends SimpleController {
 
 
     @RequiresPermissions("sys:config:view")
-    @Logging(value = "属性配置",logType = LogType.access)
+    @Logging(value = "属性配置", logType = LogType.access)
     @RequestMapping(value = {""})
     public String list() {
         return "modules/sys/config";
     }
 
     @ModelAttribute
-    public Config get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public Config get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return configService.get(id);
-        }else{
+        } else {
             return new Config();
         }
     }
+
     @RequestMapping(value = {"input"})
     public String input() {
         return "modules/sys/config-input";
@@ -63,13 +64,13 @@ public class ConfigController extends SimpleController {
     public Datagrid<Config> datagrid(Config model, HttpServletRequest request, HttpServletResponse response,
                                      String query) {
         Page<Config> page = new Page<Config>(request);
-        page = configService.findPage(page,query);
+        page = configService.findPage(page, query);
         return new Datagrid(page.getTotalCount(), page.getResult());
     }
 
     @RequiresPermissions("sys:config:edit")
-    @Logging(value = "属性配置-保存配置",logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "属性配置-保存配置", logType = LogType.access)
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute Config model) {
         Result result;
@@ -88,14 +89,15 @@ public class ConfigController extends SimpleController {
 
     /**
      * 从配置文件同步
+     *
      * @param overrideFromProperties
      * @return
      */
     @RequiresPermissions("sys:config:edit")
-    @Logging(value = "属性配置-配置文件同步",logType = LogType.access)
+    @Logging(value = "属性配置-配置文件同步", logType = LogType.access)
     @RequestMapping(value = {"syncFromProperties"})
     @ResponseBody
-    public Result syncFromProperties(Boolean overrideFromProperties){
+    public Result syncFromProperties(Boolean overrideFromProperties) {
         Result result;
         configService.syncFromProperties(overrideFromProperties);
         result = Result.successResult();
@@ -104,14 +106,15 @@ public class ConfigController extends SimpleController {
 
     /**
      * 删除
+     *
      * @param ids
      * @return
      */
     @RequiresPermissions("sys:config:edit")
-    @Logging(value = "属性配置-删除配置",logType = LogType.access)
+    @Logging(value = "属性配置-删除配置", logType = LogType.access)
     @RequestMapping(value = {"remove"})
     @ResponseBody
-    public Result remove(@RequestParam(value = "ids", required = false)List<String> ids){
+    public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         configService.deleteByIds(ids);
         return Result.successResult();
     }

@@ -50,10 +50,10 @@ public class DictionaryItemController extends SimpleController {
     private DictionaryService dictionaryService;
 
     @ModelAttribute
-    public DictionaryItem get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public DictionaryItem get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return dictionaryItemService.get(id);
-        }else{
+        } else {
             return new DictionaryItem();
         }
     }
@@ -76,14 +76,14 @@ public class DictionaryItemController extends SimpleController {
      * @return
      */
     @RequiresPermissions("sys:dictionary:edit")
-    @Logging(value = "字典管理-保存字典项",logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "字典管理-保存字典项", logType = LogType.access)
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute DictionaryItem dictionaryItem, String dictionaryId, String parentId) {
         Result result = null;
 
         // 编码是否重复校验
-        DictionaryItem checkCodeDictionaryItem = dictionaryItemService.getByCode(dictionaryId,dictionaryItem.getCode());
+        DictionaryItem checkCodeDictionaryItem = dictionaryItemService.getByCode(dictionaryId, dictionaryItem.getCode());
         if (checkCodeDictionaryItem != null
                 && !checkCodeDictionaryItem.getId().equals(dictionaryItem.getId())) {
             result = new Result(Result.WARN, "编码为[" + dictionaryItem.getCode()
@@ -105,7 +105,7 @@ public class DictionaryItemController extends SimpleController {
     }
 
     @RequiresPermissions("sys:dictionary:edit")
-    @Logging(value = "字典管理-删除字典项",logType = LogType.access)
+    @Logging(value = "字典管理-删除字典项", logType = LogType.access)
     @RequestMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {

@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.disk.utils;
 
@@ -78,7 +78,7 @@ public class DiskUtils {
      * @param userId 用户ID
      * @return
      */
-    public static String getRelativePath(String folderCode,String userId) {
+    public static String getRelativePath(String folderCode, String userId) {
         Folder folder = new Folder();
         folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
         folder.setCode(folderCode);
@@ -104,7 +104,7 @@ public class DiskUtils {
                 .append(folderAuthorize).append(java.io.File.separator);
         if (FolderAuthorize.User.getValue().equals(folder.getFolderAuthorize())) {
             path.append(folder.getId());
-        } else if(FolderAuthorize.SysTem.getValue().equals(
+        } else if (FolderAuthorize.SysTem.getValue().equals(
                 folder.getFolderAuthorize())) {
             path.append(folder.getCode());
         }
@@ -129,11 +129,11 @@ public class DiskUtils {
      * @param userId
      * @return
      */
-    public static String getDISKStoreDir(String  folderCode, String userId) {
+    public static String getDISKStoreDir(String folderCode, String userId) {
         Folder folder = new Folder();
         folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
         folder.setCode(folderCode);
-        return getDISKStoreDir(folder,userId);
+        return getDISKStoreDir(folder, userId);
     }
 
     /**
@@ -173,6 +173,7 @@ public class DiskUtils {
     public static Folder checkAndSaveSystemFolderByCode(String code) {
         return Static.folderService.checkAndSaveSystemFolderByCode(code);
     }
+
     /**
      * 根据编码获取 获取系统文件夹 <br/>
      * 如果不存在则自动创建
@@ -182,7 +183,7 @@ public class DiskUtils {
      * @return
      */
     public static Folder checkAndSaveSystemFolderByCode(String code, String userId) {
-        return Static.folderService.checkAndSaveSystemFolderByCode(code,userId);
+        return Static.folderService.checkAndSaveSystemFolderByCode(code, userId);
     }
 
 
@@ -204,7 +205,7 @@ public class DiskUtils {
                                       MultipartFile multipartFile) throws InvalidExtensionException,
             FileUploadBase.FileSizeLimitExceededException,
             FileNameLengthLimitExceededException, IOException {
-        return saveSystemFile(folderCode,userId,multipartFile.getInputStream(),multipartFile.getOriginalFilename());
+        return saveSystemFile(folderCode, userId, multipartFile.getInputStream(), multipartFile.getOriginalFilename());
     }
 
     /**
@@ -223,13 +224,13 @@ public class DiskUtils {
      * @throws IOException
      */
     public static File saveSystemFile(String folderCode, String userId,
-                                      InputStream inputStream,String fileName) throws InvalidExtensionException,
+                                      InputStream inputStream, String fileName) throws InvalidExtensionException,
             FileUploadBase.FileSizeLimitExceededException,
             FileNameLengthLimitExceededException, IOException {
-        String _userId = StringUtils.isBlank(userId) ? User.SUPERUSER_ID:userId;
-        String code = FileUploadUtils.encodingFilenamePrefix(_userId + "",fileName);
+        String _userId = StringUtils.isBlank(userId) ? User.SUPERUSER_ID : userId;
+        String code = FileUploadUtils.encodingFilenamePrefix(_userId + "", fileName);
         Folder folder = checkAndSaveSystemFolderByCode(folderCode, _userId);
-        String storeFilePath = Static.iFileManager.getStorePath(folder,_userId,fileName);
+        String storeFilePath = Static.iFileManager.getStorePath(folder, _userId, fileName);
         File file = new File();
         file.setFolderId(folder.getId());
         file.setCode(code);
@@ -238,7 +239,7 @@ public class DiskUtils {
         file.setFilePath(storeFilePath);
         file.setFileSize(Long.valueOf(inputStream.available()));
         file.setFileSuffix(FilenameUtils.getExtension(fileName));
-        Static.iFileManager.saveFile(file.getFilePath(),inputStream, true);
+        Static.iFileManager.saveFile(file.getFilePath(), inputStream, true);
         Static.fileService.save(file);
         return file;
     }
@@ -252,7 +253,7 @@ public class DiskUtils {
      * @return
      */
     public static String getFileLocationName(String folderId) {
-        if(StringUtils.isBlank(folderId)){
+        if (StringUtils.isBlank(folderId)) {
             return null;
         }
         StringBuilder location = new StringBuilder();
@@ -281,7 +282,7 @@ public class DiskUtils {
      * @return
      */
     public static List<File> findFolderFiles(String folderId) {
-        return findFolderFiles(folderId,null);
+        return findFolderFiles(folderId, null);
     }
 
 
@@ -291,7 +292,7 @@ public class DiskUtils {
      * @return
      */
     public static List<File> findFolderFiles(String folderId, Collection<String> fileSuffixs) {
-        return Static.fileService.findFolderFiles(folderId,fileSuffixs);
+        return Static.fileService.findFolderFiles(folderId, fileSuffixs);
     }
 
     /**
@@ -299,7 +300,7 @@ public class DiskUtils {
      * @param fildIds 文件IDS
      * @return
      */
-    public static void deleteFolderFiles(Collection<String> fildIds){
+    public static void deleteFolderFiles(Collection<String> fildIds) {
         Static.fileService.deleteFileByFileIds(fildIds);
     }
 
@@ -320,15 +321,15 @@ public class DiskUtils {
      * @param fildIds 文件IDS
      * @return
      */
-    public static List<File> copyFiles(String userId,String folderCode,Collection<String> fildIds) {
+    public static List<File> copyFiles(String userId, String folderCode, Collection<String> fildIds) {
         List<File> sourceFiles = findFilesByIds(fildIds);
-        if(Collections3.isEmpty(sourceFiles)){
+        if (Collections3.isEmpty(sourceFiles)) {
             return Collections.emptyList();
         }
         List<File> newFiles = new ArrayList<File>(sourceFiles.size());
         for (File sourceFile : sourceFiles) {
             File file = sourceFile.copy();
-            file.setFolderId(DiskUtils.checkAndSaveSystemFolderByCode(folderCode,userId).getId());
+            file.setFolderId(DiskUtils.checkAndSaveSystemFolderByCode(folderCode, userId).getId());
             file.setUserId(userId);
             DiskUtils.saveFile(file);
             newFiles.add(file);
@@ -342,7 +343,7 @@ public class DiskUtils {
      * @return
      */
     public static List<String> toFileIds(Collection<File> files) {
-        if(Collections3.isEmpty(files)){
+        if (Collections3.isEmpty(files)) {
             return Collections.emptyList();
         }
         List<String> newFileIds = Lists.newArrayList();
@@ -358,8 +359,8 @@ public class DiskUtils {
      * @param fileIds 文件ID集合
      * @return
      */
-    public static long countFileSize(Collection<String> fileIds){
-        if(Collections3.isNotEmpty(fileIds)){
+    public static long countFileSize(Collection<String> fileIds) {
+        if (Collections3.isNotEmpty(fileIds)) {
             return Static.fileService.countFileSize(fileIds);
         }
         return 0L;
@@ -370,7 +371,7 @@ public class DiskUtils {
      * @param fileId
      * @return
      */
-    public static File getFile(String fileId){
+    public static File getFile(String fileId) {
         return Static.fileService.get(fileId);
     }
 
@@ -379,7 +380,7 @@ public class DiskUtils {
      * @param file 文件
      * @return
      */
-    public static void saveFile(File file){
+    public static void saveFile(File file) {
         Static.fileService.save(file);
     }
 
@@ -389,16 +390,17 @@ public class DiskUtils {
      * @param fileId 文件ID
      * @return
      */
-    public static void deleteFile(String fileId){
+    public static void deleteFile(String fileId) {
         Validate.notNull(fileId, "参数[fileId]不能为null.");
         Static.fileService.deleteByFileId(fileId);
     }
+
     /**
      * 删除文件
      * @param file
      * @return
      */
-    public static void deleteFile(File file){
+    public static void deleteFile(File file) {
         Validate.notNull(file, "参数[file]不能为null.");
         Static.fileService.deleteByFileId(file.getId());
     }
@@ -409,9 +411,9 @@ public class DiskUtils {
      * @param file
      * @return
      */
-    public static String getVirtualFilePath(File file){
+    public static String getVirtualFilePath(File file) {
 //        return AppConstants.getAdminPath() + "/" + FILE_VIRTUAL_PATH + file.getId();
-        return AppConstants.getAdminPath() + "/" + FILE_VIRTUAL_PATH + file.getId()+ "."+file.getFileSuffix();
+        return AppConstants.getAdminPath() + "/" + FILE_VIRTUAL_PATH + file.getId() + "." + file.getFileSuffix();
     }
 
     /**
@@ -419,25 +421,24 @@ public class DiskUtils {
      * @param fileId
      * @return
      */
-    public static String getFileUrl(String fileId){
+    public static String getFileUrl(String fileId) {
         File file = getFile(fileId);
-        if(file != null){
+        if (file != null) {
             return file.getUrl();
         }
         return null;
     }
 
 
-
-    public static java.io.File getDiskFile(String fileId){
-        if(fileId == null){
+    public static java.io.File getDiskFile(String fileId) {
+        if (fileId == null) {
             return null;
         }
         File file = Static.fileService.get(fileId);
         return getDiskFile(file);
     }
 
-    public static java.io.File getDiskFile(File file){
+    public static java.io.File getDiskFile(File file) {
         if (file == null || file.getId() == null) {
             return null;
         }
@@ -446,7 +447,7 @@ public class DiskUtils {
         java.io.File tempFile = new java.io.File(tempPath);
         try {
             if (file != null) {
-                if(!tempFile.exists()){
+                if (!tempFile.exists()) {
                     Static.iFileManager.loadFile(file.getFilePath(), tempPath);
                 }
                 return tempFile;
@@ -531,7 +532,7 @@ public class DiskUtils {
     /**
      * 清空缓存目录
      */
-    public static void clearTempDir(){
+    public static void clearTempDir() {
         String tempDir = AppConstants.getDiskTempDir();
         java.io.File file = new java.io.File(tempDir);
         FileUtils.deleteFile(file.listFiles());
@@ -543,9 +544,9 @@ public class DiskUtils {
      * @param userId 用户ID 如果为null,则为当前登录用户ID
      * @return
      */
-    public static boolean isDiskAdmin(String userId){
+    public static boolean isDiskAdmin(String userId) {
         String _userId = userId;
-        if(_userId == null){
+        if (_userId == null) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             _userId = sessionInfo.getUserId();
         }
@@ -570,34 +571,34 @@ public class DiskUtils {
         response.reset();
         WebUtils.setNoCacheHeader(response);
         String contentType = "application/x-download";
-        if(StringUtils.isNotBlank(displayName)){
-            if(displayName.endsWith(".doc")){
+        if (StringUtils.isNotBlank(displayName)) {
+            if (displayName.endsWith(".doc")) {
                 contentType = "application/msword";
-            }else if (displayName.endsWith(".docx")){
+            } else if (displayName.endsWith(".docx")) {
                 contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            }else if(displayName.endsWith(".xls")){
+            } else if (displayName.endsWith(".xls")) {
                 contentType = "application/vnd.ms-excel";
-            }else if(displayName.endsWith(".xlsx")){
+            } else if (displayName.endsWith(".xlsx")) {
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            }else if(displayName.endsWith(".ppt")){
+            } else if (displayName.endsWith(".ppt")) {
                 contentType = "application/vnd.ms-powerpoint";
-            }else if(displayName.endsWith(".pptx")){
+            } else if (displayName.endsWith(".pptx")) {
                 contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-            }else if(displayName.endsWith(".pdf")){
+            } else if (displayName.endsWith(".pdf")) {
                 contentType = "application/pdf";
-            }else if(displayName.endsWith(".jpg") || displayName.endsWith(".jpeg")){
+            } else if (displayName.endsWith(".jpg") || displayName.endsWith(".jpeg")) {
                 contentType = "image/jpeg";
-            }else if(displayName.endsWith(".gif")){
+            } else if (displayName.endsWith(".gif")) {
                 contentType = "image/gif";
-            }else if(displayName.endsWith(".bmp")){
+            } else if (displayName.endsWith(".bmp")) {
                 contentType = "image/bmp";
-            }else if(displayName.endsWith(".mp4")){
+            } else if (displayName.endsWith(".mp4")) {
                 contentType = "video/mp4";
-            }else if(displayName.endsWith(".m4v")){
+            } else if (displayName.endsWith(".m4v")) {
                 contentType = "video/m4v";
-            }else if(displayName.endsWith(".webm")){
+            } else if (displayName.endsWith(".webm")) {
                 contentType = "video/webm";
-            }else if(displayName.endsWith(".ogg")){
+            } else if (displayName.endsWith(".ogg")) {
                 contentType = "video/ogg";
             }
         }
@@ -608,7 +609,7 @@ public class DiskUtils {
 
 //        String displayFilename = displayName.substring(displayName.lastIndexOf("_") + 1);
 //        displayFilename = displayFilename.replace(" ", "_");
-        WebUtils.setDownloadableHeader(request,response,displayName);
+        WebUtils.setDownloadableHeader(request, response, displayName);
         BufferedInputStream is = null;
         OutputStream os = null;
         try {

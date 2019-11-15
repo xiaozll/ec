@@ -16,8 +16,9 @@ import java.util.Date;
 
 /**
  * 消息接收表
+ *
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 public class MessageReceive extends BaseEntity<MessageReceive> {
     /**
@@ -102,27 +103,28 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
     }
 
 
-    public String getOrganName(){
+    public String getOrganName() {
         User user = UserUtils.getUser(userId);
-        if(user != null){
+        if (user != null) {
             return user.getDefaultOrganName();
         }
         return null;
     }
-    public String getCompanyName(){
+
+    public String getCompanyName() {
         User user = UserUtils.getUser(userId);
-        if(user != null){
+        if (user != null) {
             return user.getCompanyName();
         }
         return null;
     }
 
-    public String getUserName(){
+    public String getUserName() {
         return UserUtils.getUserName(userId);
     }
 
     public String getIsReadView() {
-        if(YesOrNo.YES.getValue().equals(isRead)){
+        if (YesOrNo.YES.getValue().equals(isRead)) {
             return "已阅";
         }
         return "未阅";

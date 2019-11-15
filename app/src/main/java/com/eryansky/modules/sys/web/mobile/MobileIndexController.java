@@ -56,55 +56,54 @@ public class MobileIndexController extends SimpleController {
     @Autowired
     private VersionLogService versionLogService;
 
-    @Logging(logType = LogType.access,value = "移动门户（网页版）")
+    @Logging(logType = LogType.access, value = "移动门户（网页版）")
     @RequestMapping("")
-    public ModelAndView index(){
+    public ModelAndView index() {
         return new ModelAndView("layout/index");
     }
 
-    @Logging(logType = LogType.access,value = "移动门户（APP版）")
+    @Logging(logType = LogType.access, value = "移动门户（APP版）")
     @RequestMapping(value = {"content"})
     public ModelAndView content() {
         return new ModelAndView("layout/index_content");
     }
 
 
-
-
     /**
      * 下载页面
+     *
      * @return
      */
     @Mobile(value = MobileValue.PC)
     @RequiresUser(required = false)
     @RequestMapping("download")
-    public ModelAndView download(String versionLogType,String versionCode){
+    public ModelAndView download(String versionLogType, String versionCode) {
         ModelAndView modelAndView = new ModelAndView("mobile/download");
         VersionLog versionLog = null;
         boolean likeIOS = AppUtils.likeIOS(UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest()));
         boolean likeAndroid = AppUtils.likeAndroid(UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest()));
-        if(versionLogType == null){
-            if(likeIOS){
+        if (versionLogType == null) {
+            if (likeIOS) {
                 versionLogType = VersionLogType.iPhoneAPP.getValue();
-            }else{
+            } else {
                 versionLogType = VersionLogType.Android.getValue();
             }
-        }else{
-            if(VersionLogType.iPhoneAPP.getValue().equals(versionLogType)){
+        } else {
+            if (VersionLogType.iPhoneAPP.getValue().equals(versionLogType)) {
                 likeIOS = true;
                 likeAndroid = false;
             }
         }
-        if(StringUtils.isNotBlank(versionCode)){
-            versionLog = versionLogService.getByVersionCode(versionLogType,versionCode);
-        }else{
+        if (StringUtils.isNotBlank(versionCode)) {
+            versionLog = versionLogService.getByVersionCode(versionLogType, versionCode);
+        } else {
             versionLog = versionLogService.getLatestVersionLog(versionLogType);
         }
-        modelAndView.addObject("versionLogType",versionLogType);
-        modelAndView.addObject("versionCode",versionCode);
-        modelAndView.addObject("model",versionLog);
-        modelAndView.addObject("likeAndroid",likeAndroid);
-        modelAndView.addObject("likeIOS",likeIOS);
+        modelAndView.addObject("versionLogType", versionLogType);
+        modelAndView.addObject("versionCode", versionCode);
+        modelAndView.addObject("model", versionLog);
+        modelAndView.addObject("likeAndroid", likeAndroid);
+        modelAndView.addObject("likeIOS", likeIOS);
         return modelAndView;
     }
 
@@ -115,7 +114,7 @@ public class MobileIndexController extends SimpleController {
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = {"getNewVersion/{versionLogType}"})
-    public Result getNewVersion(@PathVariable String versionLogType){
+    public Result getNewVersion(@PathVariable String versionLogType) {
         Result result = null;
         VersionLog max = versionLogService.getLatestVersionLog(versionLogType);
         result = Result.successResult().setObj(max);
@@ -123,33 +122,34 @@ public class MobileIndexController extends SimpleController {
     }
 
     private static final String MIME_ANDROID_TYPE = "application/vnd.android.package-archive";
+
     /**
      * APP下载
      *
      * @param response
      * @param request
-     * @param versionCode 版本号
+     * @param versionCode    版本号
      * @param versionLogType {@link com.eryansky.modules.sys._enum.VersionLogType}
-     *            文件ID
+     *                       文件ID
      */
     @Mobile(value = MobileValue.PC)
-    @Logging(logType = LogType.access,value = "APP[#versionCode]下载")
+    @Logging(logType = LogType.access, value = "APP[#versionCode]下载")
     @RequiresUser(required = false)
-    @RequestMapping(value = { "downloadApp/{versionLogType}" })
+    @RequestMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView fileDownload(HttpServletResponse response,
                                      HttpServletRequest request,
                                      String versionCode,
                                      @PathVariable String versionLogType) {
         VersionLog versionLog = null;
-        if(StringUtils.isNotBlank(versionCode)){
-            versionLog = versionLogService.getByVersionCode(versionLogType,versionCode);
-        }else{
+        if (StringUtils.isNotBlank(versionCode)) {
+            versionLog = versionLogService.getByVersionCode(versionLogType, versionCode);
+        } else {
             versionLog = versionLogService.getLatestVersionLog(versionLogType);
         }
-        if(versionLog != null && versionLog.getFileId() != null){
+        if (versionLog != null && versionLog.getFileId() != null) {
             try {
                 File file = DiskUtils.getFile(versionLog.getFileId());
-                if(VersionLogType.Android.getValue().equals(versionLogType)) {
+                if (VersionLogType.Android.getValue().equals(versionLogType)) {
                     response.setContentType(MIME_ANDROID_TYPE);
                 }
 
@@ -157,10 +157,10 @@ public class MobileIndexController extends SimpleController {
                 file.getDiskFile();
                 java.io.File tempFile = file.getDiskFile();
                 FileCopyUtils.copy(new FileInputStream(tempFile), response.getOutputStream());
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new ActionException(e);
             }
-        }else {
+        } else {
             throw new ActionException("下载文件不存在！");
         }
         return null;
@@ -168,22 +168,23 @@ public class MobileIndexController extends SimpleController {
 
     /**
      * 文件删除
+     *
      * @param fileId
      * @return
      */
-    @RequestMapping(value = { "deleteFile" })
+    @RequestMapping(value = {"deleteFile"})
     @ResponseBody
     public Result deleteFile(@RequestParam(value = "fileId") String fileId) {
         DiskUtils.deleteFile(fileId);
-        return  Result.successResult();
+        return Result.successResult();
     }
 
     /**
      * 图片文件上传
      */
-    @RequestMapping(value = { "base64ImageUpLoad" })
+    @RequestMapping(value = {"base64ImageUpLoad"})
     @ResponseBody
-    public Result base64ImageUpLoad(@RequestParam(value = "base64Data",required = false) String base64Data) {
+    public Result base64ImageUpLoad(@RequestParam(value = "base64Data", required = false) String base64Data) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Exception exception = null;
@@ -193,28 +194,28 @@ public class MobileIndexController extends SimpleController {
             String dataPrix = "";
             String data = "";
 
-            if(base64Data == null || "".equals(base64Data)){
+            if (base64Data == null || "".equals(base64Data)) {
                 return Result.errorResult().setMsg("上传失败，上传图片数据为空");
-            }else{
-                String [] d = base64Data.split("base64,");
-                if(d != null && d.length == 2){
+            } else {
+                String[] d = base64Data.split("base64,");
+                if (d != null && d.length == 2) {
                     dataPrix = d[0];
                     data = d[1];
-                }else{
+                } else {
                     return Result.errorResult().setMsg("上传失败，数据不合法");
                 }
             }
 
             String suffix = "";
-            if("data:image/jpeg;".equalsIgnoreCase(dataPrix)){//data:image/jpeg;base64,base64编码的jpeg图片数据
+            if ("data:image/jpeg;".equalsIgnoreCase(dataPrix)) {//data:image/jpeg;base64,base64编码的jpeg图片数据
                 suffix = ".jpg";
-            } else if("data:image/x-icon;".equalsIgnoreCase(dataPrix)){//data:image/x-icon;base64,base64编码的icon图片数据
+            } else if ("data:image/x-icon;".equalsIgnoreCase(dataPrix)) {//data:image/x-icon;base64,base64编码的icon图片数据
                 suffix = ".ico";
-            } else if("data:image/gif;".equalsIgnoreCase(dataPrix)){//data:image/gif;base64,base64编码的gif图片数据
+            } else if ("data:image/gif;".equalsIgnoreCase(dataPrix)) {//data:image/gif;base64,base64编码的gif图片数据
                 suffix = ".gif";
-            } else if("data:image/png;".equalsIgnoreCase(dataPrix)){//data:image/png;base64,base64编码的png图片数据
+            } else if ("data:image/png;".equalsIgnoreCase(dataPrix)) {//data:image/png;base64,base64编码的png图片数据
                 suffix = ".png";
-            }else{
+            } else {
                 return Result.errorResult().setMsg("上传图片格式不合法");
             }
             String tempFileName = Identities.uuid() + suffix;
@@ -223,7 +224,7 @@ public class MobileIndexController extends SimpleController {
 //            byte[] bs = EncodeUtils.base64Decode(data);
             byte[] bs = Base64Utils.decodeFromString(data);
 
-            file = DiskUtils.saveSystemFile("IMAGE",sessionInfo.getUserId(),new ByteArrayInputStream(bs), tempFileName);
+            file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), new ByteArrayInputStream(bs), tempFileName);
             file.setStatus(StatusState.LOCK.getValue());
             DiskUtils.saveFile(file);
             result = Result.successResult().setObj(file).setMsg("文件上传成功！");
@@ -244,7 +245,7 @@ public class MobileIndexController extends SimpleController {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         } finally {
             if (exception != null) {
-                if(file != null){
+                if (file != null) {
                     DiskUtils.deleteFile(file.getId());
                 }
             }
@@ -256,22 +257,22 @@ public class MobileIndexController extends SimpleController {
     /**
      * 图片文件上传
      */
-    @RequestMapping(value = { "imageUpLoad" })
+    @RequestMapping(value = {"imageUpLoad"})
     @ResponseBody
-    public Result imageUpLoad(@RequestParam(value = "uploadFile",required = false) MultipartFile multipartFile) {
+    public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Exception exception = null;
         File file = null;
         try {
-            file = DiskUtils.saveSystemFile("IMAGE",sessionInfo.getUserId(), multipartFile);
+            file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), multipartFile);
             file.setStatus(StatusState.LOCK.getValue());
             DiskUtils.saveFile(file);
-            Map<String,Object> _data = Maps.newHashMap();
+            Map<String, Object> _data = Maps.newHashMap();
             String data = "data:image/jpeg;base64," + Base64Utils.encodeToString(FileCopyUtils.copyToByteArray(new FileInputStream(file.getDiskFile())));
-            _data.put("file",file);
-            _data.put("data",data);
-            _data.put("url",AppConstants.getAdminPath()+ "/disk/fileDownload/"+file.getId());
+            _data.put("file", file);
+            _data.put("data", data);
+            _data.put("url", AppConstants.getAdminPath() + "/disk/fileDownload/" + file.getId());
             result = Result.successResult().setObj(_data).setMsg("文件上传成功！");
         } catch (InvalidExtensionException e) {
             exception = e;
@@ -290,7 +291,7 @@ public class MobileIndexController extends SimpleController {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         } finally {
             if (exception != null) {
-                if(file != null){
+                if (file != null) {
                     DiskUtils.deleteFile(file.getId());
                 }
             }

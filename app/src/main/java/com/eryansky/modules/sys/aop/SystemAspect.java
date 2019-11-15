@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 切面
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-05-10
  */
@@ -38,15 +39,16 @@ public class SystemAspect implements InitializingBean, DisposableBean {
 
     /**
      * 同步到扩展机构表
+     *
      * @param joinPoint 切入点
      * @param returnObj 返回值
      */
     @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.OrganService.saveOrgan(..)) || " +
-            "execution(* com.eryansky.modules.sys.service.OrganService.deleteById(..))",returning = "returnObj")
-    public void afterSyncOrganToExtend(JoinPoint joinPoint,Object returnObj) {
-        if(returnObj != null){
+            "execution(* com.eryansky.modules.sys.service.OrganService.deleteById(..))", returning = "returnObj")
+    public void afterSyncOrganToExtend(JoinPoint joinPoint, Object returnObj) {
+        if (returnObj != null) {
             Parameter parameter = Parameter.newParameter();
-            if(returnObj instanceof String){
+            if (returnObj instanceof String) {
                 String id = (String) returnObj;
                 parameter.put("id", id);
                 Organ organ = OrganUtils.getOrgan(id);
@@ -55,11 +57,11 @@ public class SystemAspect implements InitializingBean, DisposableBean {
                 parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
                 parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
                 parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
-                Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length:null;
+                Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length : null;
                 parameter.put("treeLevel", level);
 
                 systemService.syncOrganToExtend(parameter);
-            }else if(returnObj instanceof Organ){
+            } else if (returnObj instanceof Organ) {
                 Organ organ = (Organ) returnObj;
                 parameter.put("id", organ.getId());
                 parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
@@ -67,11 +69,11 @@ public class SystemAspect implements InitializingBean, DisposableBean {
                 parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
                 parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
                 parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
-                Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length:null;
+                Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length : null;
                 parameter.put("treeLevel", level);
                 systemService.syncOrganToExtend(parameter);
             }
-        }else{
+        } else {
             systemService.syncOrganToExtend();
         }
 
@@ -80,6 +82,7 @@ public class SystemAspect implements InitializingBean, DisposableBean {
 
     /**
      * 同步到扩展机构表
+     *
      * @param joinPoint 切入点
      */
     @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.OrganService.deleteOwnerAndChilds(..))")

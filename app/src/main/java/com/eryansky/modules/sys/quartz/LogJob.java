@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.quartz;
 
@@ -17,6 +17,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * 日志管理任务调度
+ *
  * @author : 尔演&Eryan eryanwcp@gmail.com
  * @date: 13-12-28 下午6:06
  */
@@ -31,7 +32,7 @@ public class LogJob extends QuartzJobBean {
     /**
      * 清理过期日志
      */
-    public void execute(){
+    public void execute() {
         logger.info("定时任务...开始：备份并清理过期日志");
         int logKeepTime = AppConstants.getLogKeepTime();
         logService.insertToHistoryAndClear(logKeepTime);

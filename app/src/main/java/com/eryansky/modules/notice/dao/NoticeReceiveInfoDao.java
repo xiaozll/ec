@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-10-15 
+ * @date 2015-10-15
  */
 @MyBatisDao
 public interface NoticeReceiveInfoDao extends CrudDao<NoticeReceiveInfo> {
@@ -30,6 +30,7 @@ public interface NoticeReceiveInfoDao extends CrudDao<NoticeReceiveInfo> {
 
     /**
      * 更新用户阅读状态
+     *
      * @param parameter
      * @return
      */

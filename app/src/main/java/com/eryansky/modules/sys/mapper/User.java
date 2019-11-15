@@ -290,23 +290,25 @@ public class User extends DataEntity<User> implements IUser {
     public String getCompanyName() {
         return UserUtils.getCompanyName(this.id);
     }
+
     public String getDefaultOrganName() {
         return UserUtils.getDefaultOrganName(this.id);
     }
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return SecurityUtils.isUserAdmin(this.id);
     }
 
     /**
      * 拼音首字母
+     *
      * @return
      */
     public String getNamePinyinHeadChar() {
-        if(StringUtils.isNotBlank(name)){
+        if (StringUtils.isNotBlank(name)) {
             String str = Pinyin4js.getPinYinHeadChar(name);
-            if(str!= null){
-                return str.substring(0,1).toUpperCase();
+            if (str != null) {
+                return str.substring(0, 1).toUpperCase();
             }
         }
         return name;

@@ -30,38 +30,40 @@ import java.util.List;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-10-15 
+ * @date 2015-10-15
  */
 @Service
-public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao,NoticeReceiveInfo> {
+public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, NoticeReceiveInfo> {
 
-    public NoticeReceiveInfo getUserNotice(String userId,String noticeId){
+    public NoticeReceiveInfo getUserNotice(String userId, String noticeId) {
         NoticeReceiveInfo receiveInfo = new NoticeReceiveInfo();
         receiveInfo.setUserId(userId);
         receiveInfo.setNoticeId(noticeId);
         return dao.getUserNotice(receiveInfo);
     }
+
     /**
      * 我的邮件 分页查询.
+     *
      * @param page
-     * @param userId 用户ID
+     * @param userId        用户ID
      * @param noticeQueryVo 查询条件
      * @return
      * @throws SystemException
      * @throws ServiceException
      * @throws DaoException
      */
-    public Page<NoticeReceiveInfo> findReadNoticePage(Page<NoticeReceiveInfo> page,NoticeReceiveInfo entity, String userId, NoticeQueryVo noticeQueryVo) throws SystemException,
+    public Page<NoticeReceiveInfo> findReadNoticePage(Page<NoticeReceiveInfo> page, NoticeReceiveInfo entity, String userId, NoticeQueryVo noticeQueryVo) throws SystemException,
             ServiceException, DaoException {
         Assert.notNull(userId, "参数[userId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("bizMode", NoticeMode.Effective.getValue());
-        if(noticeQueryVo != null && Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())){
-            parameter.put("publishUserId",noticeQueryVo.getPublishUserIds().get(0));
+        if (noticeQueryVo != null && Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())) {
+            parameter.put("publishUserId", noticeQueryVo.getPublishUserIds().get(0));
         }
-        parameter.put("userId",userId);
-        if(noticeQueryVo != null){
+        parameter.put("userId", userId);
+        if (noticeQueryVo != null) {
             if (noticeQueryVo.getIsTop() != null) {
                 parameter.put("isTop", noticeQueryVo.getIsTop());
             }
@@ -70,10 +72,10 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao,N
             }
 
             if (StringUtils.isNotBlank(noticeQueryVo.getTitle())) {
-                parameter.put("title","%" + noticeQueryVo.getTitle() + "%");
+                parameter.put("title", "%" + noticeQueryVo.getTitle() + "%");
             }
             if (StringUtils.isNotBlank(noticeQueryVo.getContent())) {
-                parameter.put("content","%" + noticeQueryVo.getContent() + "%");
+                parameter.put("content", "%" + noticeQueryVo.getContent() + "%");
             }
 //            if (Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())) {
 //                parameter.put("publishUserIds", noticeQueryVo.getPublishUserIds());
@@ -88,14 +90,14 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao,N
         }
 
         entity.setEntityPage(page);
-        parameter.put(BaseInterceptor.PAGE,page);
-        parameter.put("dbName",entity.getDbName());
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put("dbName", entity.getDbName());
         page.setResult(dao.findQueryList(parameter));
 
         return page;
     }
 
-    public Page<NoticeReceiveInfo> findUserUnreadNotices(Page<NoticeReceiveInfo> page,String userId) {
+    public Page<NoticeReceiveInfo> findUserUnreadNotices(Page<NoticeReceiveInfo> page, String userId) {
         NoticeReceiveInfo noticeReceiveInfo = new NoticeReceiveInfo();
         noticeReceiveInfo.setUserId(userId);
         noticeReceiveInfo.setIsRead(NoticeReadMode.unreaded.getValue());
@@ -109,33 +111,35 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao,N
 
     /**
      * 设置用户通知为已读状态
-     * @param userId 用户ID
+     *
+     * @param userId    用户ID
      * @param noticeIds 通知IDS
      * @return
      */
-    public int markUserNoticeReaded(String userId, Collection<String> noticeIds){
-       return updateUserNotices(userId,noticeIds,NoticeReadMode.readed.getValue());
+    public int markUserNoticeReaded(String userId, Collection<String> noticeIds) {
+        return updateUserNotices(userId, noticeIds, NoticeReadMode.readed.getValue());
     }
 
     /**
      * 设置用户通知为已读状态
-     * @param userId 用户ID
+     *
+     * @param userId    用户ID
      * @param noticeIds 通知IDS
      * @return
      */
-    public int updateUserNotices(String userId,Collection<String> noticeIds,String isRead){
+    public int updateUserNotices(String userId, Collection<String> noticeIds, String isRead) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("userId",userId);
-        parameter.put("noticeIds",noticeIds);
-        parameter.put("isRead",isRead);
+        parameter.put("userId", userId);
+        parameter.put("noticeIds", noticeIds);
+        parameter.put("isRead", isRead);
         return dao.updateUserNotices(parameter);
     }
 
-    public Page<NoticeReceiveInfo> findNoticeReceiveInfos(Page<NoticeReceiveInfo> page,NoticeReceiveInfo entity) {
+    public Page<NoticeReceiveInfo> findNoticeReceiveInfos(Page<NoticeReceiveInfo> page, NoticeReceiveInfo entity) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
-        parameter.put("noticeId",entity.getNoticeId());
-        parameter.put(BaseInterceptor.PAGE,page);
+        parameter.put("noticeId", entity.getNoticeId());
+        parameter.put(BaseInterceptor.PAGE, page);
         List<NoticeReceiveInfo> list = dao.findQueryList(parameter);
         page.setResult(list);
         return page;
@@ -143,12 +147,13 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao,N
 
     /**
      * 根据通知ID删除
+     *
      * @param noticeId
      * @return
      */
-    public int deleteByNoticeId(String noticeId){
+    public int deleteByNoticeId(String noticeId) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("noticeId",noticeId);
+        parameter.put("noticeId", noticeId);
         return dao.deleteByNoticeId(parameter);
     }
 }

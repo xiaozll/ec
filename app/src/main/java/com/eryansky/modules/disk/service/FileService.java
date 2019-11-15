@@ -1,8 +1,8 @@
 /**
-*  Copyright (c) 2012-2018 http://www.eryansky.com
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*/
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.eryansky.modules.disk.service;
 
 import com.eryansky.common.exception.ServiceException;
@@ -58,13 +58,13 @@ public class FileService extends CrudService<FileDao, File> {
      * @param fileIds
      * @return
      */
-    public List<File> findFilesByIds(Collection<String> fileIds){
-        if(Collections3.isEmpty(fileIds)){
+    public List<File> findFilesByIds(Collection<String> fileIds) {
+        if (Collections3.isEmpty(fileIds)) {
             return Collections.emptyList();
         }
         Parameter parameter = Parameter.newParameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("fileIds",fileIds);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("fileIds", fileIds);
         return dao.findFilesByIds(parameter);
     }
 
@@ -72,7 +72,6 @@ public class FileService extends CrudService<FileDao, File> {
     public Page<File> findPage(Page<File> page, File entity) {
         return super.findPage(page, entity);
     }
-
 
 
     /**
@@ -91,16 +90,16 @@ public class FileService extends CrudService<FileDao, File> {
                                      String fileName, String folderAuthorize, String fileSizeType,
                                      Date startTime, Date endTime) {
         Parameter patameter = new Parameter();
-        patameter.put(BaseInterceptor.PAGE,page);
-        patameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
+        patameter.put(BaseInterceptor.PAGE, page);
+        patameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         patameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
 
         patameter.put("folderAuthorize", folderAuthorize);
         patameter.put("userId", userId);
         patameter.put("query", fileName);
         patameter.put("fileSizeType", fileSizeType);
-        patameter.put("startTime", startTime == null ? null:DateUtils.formatDateTime(startTime));
-        patameter.put("endTime", endTime == null ? null:DateUtils.formatDateTime(endTime));
+        patameter.put("startTime", startTime == null ? null : DateUtils.formatDateTime(startTime));
+        patameter.put("endTime", endTime == null ? null : DateUtils.formatDateTime(endTime));
         if (fileSizeType != null) {
             Long minSize = 10 * 1024 * 1024L;
             Long maxSize = 100 * 1024 * 1024L;
@@ -123,7 +122,7 @@ public class FileService extends CrudService<FileDao, File> {
      * @param file
      * @return
      */
-    public File saveSystemFile(String folderCode,File file){
+    public File saveSystemFile(String folderCode, File file) {
         Validate.notBlank(folderCode, "参数[folderCode]不能为null.");
         Validate.notNull(file, "参数[file]不能为null.");
         Folder folder = folderService.checkAndSaveSystemFolderByCode(folderCode);
@@ -143,13 +142,13 @@ public class FileService extends CrudService<FileDao, File> {
     public File fileUpload(SessionInfo sessionInfo, Folder folder,
                            MultipartFile uploadFile) {
         File file = null;
-/*		Exception exception = null;
-*/
+        /*		Exception exception = null;
+         */
         java.io.File tempFile = null;
         try {
             String fullName = uploadFile.getOriginalFilename();
-            String code = FileUploadUtils.encodingFilenamePrefix(sessionInfo.getUserId(),fullName);
-            String storePath = iFileManager.getStorePath(folder,sessionInfo.getUserId(),uploadFile.getOriginalFilename());
+            String code = FileUploadUtils.encodingFilenamePrefix(sessionInfo.getUserId(), fullName);
+            String storePath = iFileManager.getStorePath(folder, sessionInfo.getUserId(), uploadFile.getOriginalFilename());
 
 
             String fileTemp = AppConstants.getDiskTempDir() + java.io.File.separator + code;
@@ -157,7 +156,7 @@ public class FileService extends CrudService<FileDao, File> {
             FileOutputStream fos = FileUtils.openOutputStream(tempFile);
             IOUtils.copy(uploadFile.getInputStream(), fos);
 
-            iFileManager.saveFile(storePath,fileTemp,false);
+            iFileManager.saveFile(storePath, fileTemp, false);
             file = new File();
             file.setFolderId(folder.getId());
             file.setCode(code);
@@ -167,14 +166,14 @@ public class FileService extends CrudService<FileDao, File> {
             file.setFileSize(uploadFile.getSize());
             file.setFileSuffix(FilenameUtils.getExtension(fullName));
             save(file);
-        }catch (Exception e) {
+        } catch (Exception e) {
             // exception = e;
             throw new ServiceException(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage(), e);
         } finally {
 //			if (exception != null && file != null) {
 //				DiskUtils.deleteByFileId(null, file.getId());
 //			}
-            if(tempFile != null && tempFile.exists()){
+            if (tempFile != null && tempFile.exists()) {
                 tempFile.delete();
             }
 
@@ -189,8 +188,8 @@ public class FileService extends CrudService<FileDao, File> {
      * 删除磁盘文件
      * @param fileId 文件ID
      */
-    public void deleteByFileId(String fileId){
-        deleteByFileId(fileId,false);
+    public void deleteByFileId(String fileId) {
+        deleteByFileId(fileId, false);
     }
 
     /**
@@ -199,19 +198,19 @@ public class FileService extends CrudService<FileDao, File> {
      * @param fileId 文件ID
      * @param deleteDiskFile 删除磁盘文件
      */
-    public void deleteByFileId(String fileId, boolean deleteDiskFile){
+    public void deleteByFileId(String fileId, boolean deleteDiskFile) {
         File file = dao.get(fileId);
         try {
             //检查文件是否被引用
-            List<File> files = this.findByCode(file.getCode(),fileId);
-            if(deleteDiskFile && Collections3.isEmpty(files)){
+            List<File> files = this.findByCode(file.getCode(), fileId);
+            if (deleteDiskFile && Collections3.isEmpty(files)) {
                 iFileManager.deleteFile(file.getFilePath());
                 logger.debug("删除文件：{}", new Object[]{file.getFilePath()});
             }
             dao.delete(file);
         } catch (IOException e) {
-            logger.error("删除文件[{}]失败,{}",new Object[]{file.getFilePath(),e.getMessage()});
-        }catch (Exception e) {
+            logger.error("删除文件[{}]失败,{}", new Object[]{file.getFilePath(), e.getMessage()});
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
     }
@@ -221,8 +220,8 @@ public class FileService extends CrudService<FileDao, File> {
      * @param fileId 文件ID
      * @return
      */
-    public void deleteCascadeByFolderId(String fileId){
-        deleteCascadeByFolderId(fileId,false);
+    public void deleteCascadeByFolderId(String fileId) {
+        deleteCascadeByFolderId(fileId, false);
     }
 
     /**
@@ -231,24 +230,22 @@ public class FileService extends CrudService<FileDao, File> {
      * @param deleteDiskFile 删除磁盘文件
      * @return
      */
-    public void deleteCascadeByFolderId(String fileId,boolean deleteDiskFile){
+    public void deleteCascadeByFolderId(String fileId, boolean deleteDiskFile) {
         File file = dao.get(fileId);
         try {
             //检查文件是否被引用
-            List<File> files = this.findByCode(file.getCode(),fileId);
-            if(deleteDiskFile && Collections3.isEmpty(files)){
+            List<File> files = this.findByCode(file.getCode(), fileId);
+            if (deleteDiskFile && Collections3.isEmpty(files)) {
                 iFileManager.deleteFile(file.getFilePath());
                 logger.debug("删除文件：{}", new Object[]{file.getFilePath()});
             }
             dao.deleteCascadeByFolderId(file);
         } catch (IOException e) {
-            logger.error("删除文件[{}]失败,{}",new Object[]{file.getFilePath(),e.getMessage()});
-        }catch (Exception e) {
+            logger.error("删除文件[{}]失败,{}", new Object[]{file.getFilePath(), e.getMessage()});
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
     }
-
-
 
 
     /**
@@ -273,13 +270,13 @@ public class FileService extends CrudService<FileDao, File> {
      *
      * @param fileCodes 文件编码集合
      */
-    public void deleteFileByFolderCode(Collection<String> fileCodes){
+    public void deleteFileByFolderCode(Collection<String> fileCodes) {
         if (Collections3.isNotEmpty(fileCodes)) {
             for (String code : fileCodes) {
                 List<File> fileList = findByCode(code, null);
                 if (Collections3.isNotEmpty(fileList)) {
                     for (File file : fileList) {
-                        deleteByFileId(file.getId(),true);
+                        deleteByFileId(file.getId(), true);
                     }
                 }
             }
@@ -309,8 +306,8 @@ public class FileService extends CrudService<FileDao, File> {
         Parameter parameter = Parameter.newParameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-        parameter.put("folderId",folderId);
-        parameter.put("fileSuffixs",fileSuffixs);
+        parameter.put("folderId", folderId);
+        parameter.put("fileSuffixs", fileSuffixs);
         return dao.findFolderFiles(parameter);
     }
 
@@ -318,7 +315,7 @@ public class FileService extends CrudService<FileDao, File> {
         Parameter parameter = Parameter.newParameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-        parameter.put("folderId",folderId);
+        parameter.put("folderId", folderId);
         return dao.findOwnerAndChildsFolderFiles(parameter);
     }
 
@@ -326,7 +323,7 @@ public class FileService extends CrudService<FileDao, File> {
         Parameter parameter = Parameter.newParameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-        parameter.put("folderId",folderId);
+        parameter.put("folderId", folderId);
         return dao.findOwnerAndChildsIdsFolderFiles(parameter);
     }
 
@@ -336,11 +333,11 @@ public class FileService extends CrudService<FileDao, File> {
      * @param excludeFileId 排除的文件ID  可为null
      * @return
      */
-    private List<File> findByCode(String code, String excludeFileId){
+    private List<File> findByCode(String code, String excludeFileId) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("code",code);
-        parameter.put("excludeFileId",excludeFileId);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("code", code);
+        parameter.put("excludeFileId", excludeFileId);
         return dao.findByCode(parameter);
     }
 
@@ -350,10 +347,10 @@ public class FileService extends CrudService<FileDao, File> {
      * @param fileIds 文件ID集合
      * @return
      */
-    public long countFileSize(Collection<String> fileIds){
+    public long countFileSize(Collection<String> fileIds) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put(DataEntity.FIELD_STATUS,DataEntity.STATUS_NORMAL);
-        parameter.put("fileIds",fileIds);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("fileIds", fileIds);
         return dao.countFileSize(parameter);
     }
 

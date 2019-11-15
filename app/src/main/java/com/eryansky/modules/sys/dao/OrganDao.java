@@ -1,8 +1,8 @@
 /**
-*  Copyright (c) 2012-2018 http://www.eryansky.com
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*/
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.eryansky.modules.sys.dao;
 
 import com.eryansky.common.orm.model.Parameter;
@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * 机构表
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-05-08
  */
@@ -52,6 +53,7 @@ public interface OrganDao extends TreeDao<Organ> {
 
     /**
      * 查找用户所属机构
+     *
      * @param parameter userId：用户ID
      * @return
      */
@@ -59,6 +61,7 @@ public interface OrganDao extends TreeDao<Organ> {
 
     /**
      * 查找用户所属机构IDS
+     *
      * @param parameter userId：用户ID
      * @return
      */
@@ -97,24 +100,31 @@ public interface OrganDao extends TreeDao<Organ> {
 
     /**
      * 查找机构下直属部门
+     *
      * @param parameter
      * @return
      */
     List<OrganExtend> findDepartmentOrganExtendsByCompanyId(Parameter parameter);
+
     /**
      * 查找机构下直属部门ID
+     *
      * @param parameter
      * @return
      */
     List<String> findDepartmentOrganIdsByCompanyId(Parameter parameter);
+
     /**
      * 查找机构下直属部门以及小组
+     *
      * @param parameter
      * @return
      */
     List<OrganExtend> findDepartmentAndGroupOrganExtendsByCompanyId(Parameter parameter);
+
     /**
      * 查找机构下直属部门以及小组IDS
+     *
      * @param parameter
      * @return
      */
@@ -122,12 +132,15 @@ public interface OrganDao extends TreeDao<Organ> {
 
     /**
      * 自定义SQL查询
+     *
      * @param parameter
      * @return
      */
     List<Organ> findByWhereSQL(Parameter parameter);
+
     /**
      * 自定义SQL查询
+     *
      * @param parameter
      * @return
      */

@@ -20,7 +20,7 @@ public class NumberSequenceGenerator implements IGenerator {
 //        String seqId = (String) paraMap.get(GeneratorConstants.PARAM_MODULE_CODE);
         //从数据库中获取当前数值，并自动加 1
 //        String maxSerial = SystemSerialNumberUtils.getMaxSerialByModuleCode(seqId);
-        String maxSerial = (String)paraMap.get(GeneratorConstants.PARAM_MAX_SERIAL);
+        String maxSerial = (String) paraMap.get(GeneratorConstants.PARAM_MAX_SERIAL);
         int seqNum = StringUtils.isBlank(maxSerial) ? 0 : Integer.parseInt(maxSerial);
         seqNum++;
         String[] charArray = formatStr.split(splitC);

@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2017 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2017 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.quartz;
 
@@ -16,6 +16,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * 同步organ扩展表
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2017-09-19
  */
@@ -30,7 +31,7 @@ public class SyncOrganToExtend extends QuartzJobBean {
     /**
      * 执行任务
      */
-    public void execute(){
+    public void execute() {
         logger.info("定时任务...开始：同步organ扩展表");
         systemService.syncOrganToExtend();
         logger.info("定时任务...结束：同步organ扩展表");

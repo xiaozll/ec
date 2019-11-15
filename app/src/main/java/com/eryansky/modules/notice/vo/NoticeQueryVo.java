@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.notice.vo;
 
@@ -120,8 +120,8 @@ public class NoticeQueryVo implements Serializable {
     /**
      * 将截止时间设置到当天最后1秒钟 23h 59m 59s
      */
-    public void syncEndTime(){
-        if(this.endTime != null){
+    public void syncEndTime() {
+        if (this.endTime != null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(this.endTime);
             calendar.set(Calendar.HOUR, 23);

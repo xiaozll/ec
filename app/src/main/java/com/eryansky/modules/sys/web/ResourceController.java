@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -47,16 +47,16 @@ public class ResourceController extends SimpleController {
     private ResourceService resourceService;
 
     @ModelAttribute("model")
-    public Resource get(@RequestParam(required=false) String id) {
-        if (StringUtils.isNotBlank(id)){
+    public Resource get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
             return resourceService.get(id);
-        }else{
+        } else {
             return new Resource();
         }
     }
 
     @RequiresPermissions("sys:resource:view")
-    @Logging(value = "资源管理",logType = LogType.access)
+    @Logging(value = "资源管理", logType = LogType.access)
     @RequestMapping(value = {""})
     public String list() {
         return "modules/sys/resource";
@@ -88,10 +88,10 @@ public class ResourceController extends SimpleController {
      * 保存.
      */
     @RequiresPermissions("sys:resource:edit")
-    @Logging(value = "资源管理-保存资源",logType = LogType.access)
-    @RequestMapping(value = {"save"},produces= {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Logging(value = "资源管理-保存资源", logType = LogType.access)
+    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result save(@ModelAttribute("model") Resource resource,String _parentId)  {
+    public Result save(@ModelAttribute("model") Resource resource, String _parentId) {
         Result result = null;
         resource.setParent(null);
 
@@ -123,7 +123,7 @@ public class ResourceController extends SimpleController {
      * 删除.
      */
     @RequiresPermissions("sys:resource:edit")
-    @Logging(value = "资源管理-删除资源",logType = LogType.access)
+    @Logging(value = "资源管理-删除资源", logType = LogType.access)
     @RequestMapping(value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
@@ -142,7 +142,7 @@ public class ResourceController extends SimpleController {
         List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
-        if(selectTreeNode != null){
+        if (selectTreeNode != null) {
             titleList.add(selectTreeNode);
         }
         treeNodes = resourceService.findTreeNodeResources();
@@ -157,12 +157,12 @@ public class ResourceController extends SimpleController {
     public List<Combobox> resourceTypeCombobox(String selectType, String parentId) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
         Combobox selectCombobox = SelectType.combobox(selectType);
-        if(selectCombobox != null){
+        if (selectCombobox != null) {
             cList.add(selectCombobox);
         }
 
         String parentType = null;
-        if(StringUtils.isNotBlank(parentId)){
+        if (StringUtils.isNotBlank(parentId)) {
             Resource resource = resourceService.get(parentId);
             parentType = resource.getType();
         }
@@ -170,27 +170,27 @@ public class ResourceController extends SimpleController {
         ResourceType parentResourceType = ResourceType.getByValue(parentType);
         if (parentResourceType != null) {
             if (parentResourceType.equals(ResourceType.app)) {
-                Combobox combobox = new Combobox(ResourceType.app.getValue(),ResourceType.app.getDescription());
+                Combobox combobox = new Combobox(ResourceType.app.getValue(), ResourceType.app.getDescription());
                 cList.add(combobox);
-                combobox = new Combobox(ResourceType.menu.getValue(),ResourceType.menu.getDescription());
+                combobox = new Combobox(ResourceType.menu.getValue(), ResourceType.menu.getDescription());
                 cList.add(combobox);
-                combobox = new Combobox(ResourceType.function.getValue(),ResourceType.function.getDescription());
+                combobox = new Combobox(ResourceType.function.getValue(), ResourceType.function.getDescription());
                 cList.add(combobox);
-            }else if (parentResourceType.equals(ResourceType.menu)) {
-                Combobox combobox = new Combobox(ResourceType.menu.getValue(),ResourceType.menu.getDescription());
+            } else if (parentResourceType.equals(ResourceType.menu)) {
+                Combobox combobox = new Combobox(ResourceType.menu.getValue(), ResourceType.menu.getDescription());
                 cList.add(combobox);
-                combobox = new Combobox(ResourceType.function.getValue(),ResourceType.function.getDescription());
+                combobox = new Combobox(ResourceType.function.getValue(), ResourceType.function.getDescription());
                 cList.add(combobox);
             } else if (parentResourceType.equals(ResourceType.function)) {
-                Combobox combobox = new Combobox(ResourceType.function.getValue(),ResourceType.function.getDescription());
+                Combobox combobox = new Combobox(ResourceType.function.getValue(), ResourceType.function.getDescription());
                 cList.add(combobox);
             }
         } else {
-            Combobox combobox = new Combobox(ResourceType.app.getValue(),ResourceType.app.getDescription());
+            Combobox combobox = new Combobox(ResourceType.app.getValue(), ResourceType.app.getDescription());
             cList.add(combobox);
-            combobox = new Combobox(ResourceType.menu.getValue(),ResourceType.menu.getDescription());
+            combobox = new Combobox(ResourceType.menu.getValue(), ResourceType.menu.getDescription());
             cList.add(combobox);
-            combobox = new Combobox(ResourceType.function.getValue(),ResourceType.function.getDescription());
+            combobox = new Combobox(ResourceType.function.getValue(), ResourceType.function.getDescription());
             cList.add(combobox);
         }
 
@@ -207,7 +207,7 @@ public class ResourceController extends SimpleController {
         List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
-        if(selectTreeNode != null){
+        if (selectTreeNode != null) {
             titleList.add(selectTreeNode);
         }
         treeNodes = resourceService.findTreeNodeResourcesWithExclude(resource.getId());

@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.utils;
 
@@ -31,11 +31,12 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找机构
+     *
      * @param organId 机构ID
      * @return
      */
-    public static Organ getOrgan(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static Organ getOrgan(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         return Static.organService.get(organId);
@@ -43,11 +44,12 @@ public class OrganUtils {
 
     /**
      * 根据机构编码查找机构
+     *
      * @param organCode 机构编码
      * @return
      */
-    public static Organ getByOrganCode(String organCode){
-        if(StringUtils.isBlank(organCode)){
+    public static Organ getByOrganCode(String organCode) {
+        if (StringUtils.isBlank(organCode)) {
             return null;
         }
         return Static.organService.getByCode(organCode);
@@ -56,11 +58,12 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找
+     *
      * @param organId 机构ID
      * @return
      */
-    public static OrganExtend getOrganExtend(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static OrganExtend getOrganExtend(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         return Static.organService.getOrganExtend(organId);
@@ -68,11 +71,12 @@ public class OrganUtils {
 
     /**
      * 根据机构编码查找
+     *
      * @param organCode 机构编码
      * @return
      */
-    public static OrganExtend getOrganExtendByCode(String organCode){
-        if(StringUtils.isBlank(organCode)){
+    public static OrganExtend getOrganExtendByCode(String organCode) {
+        if (StringUtils.isBlank(organCode)) {
             return null;
         }
         return Static.organService.getOrganExtendByCode(organCode);
@@ -80,25 +84,27 @@ public class OrganUtils {
 
     /**
      * 根据机构编码查找
+     *
      * @param organCode 机构编码
      * @return
      */
-    public static Integer getOrganLevelByOrganCode(String organCode){
-        if(StringUtils.isBlank(organCode)){
+    public static Integer getOrganLevelByOrganCode(String organCode) {
+        if (StringUtils.isBlank(organCode)) {
             return null;
         }
         OrganExtend organExtend = getOrganExtendByCode(organCode);
 
-        return null == organExtend ? null:organExtend.getTreeLevel();
+        return null == organExtend ? null : organExtend.getTreeLevel();
     }
 
     /**
      * 根据机构ID查找
+     *
      * @param organId 机构ID
      * @return
      */
-    public static OrganExtend getOrganCompany(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static OrganExtend getOrganCompany(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         return Static.organService.getOrganCompany(organId);
@@ -106,11 +112,12 @@ public class OrganUtils {
 
     /**
      * 根据用户ID查找
+     *
      * @param userId 用户ID
      * @return
      */
-    public static OrganExtend getOrganExtendByUserId(String userId){
-        if(StringUtils.isBlank(userId)){
+    public static OrganExtend getOrganExtendByUserId(String userId) {
+        if (StringUtils.isBlank(userId)) {
             return null;
         }
         return Static.organService.getOrganExtendByUserId(userId);
@@ -118,11 +125,12 @@ public class OrganUtils {
 
     /**
      * 根据用户ID查找
+     *
      * @param userId 用户ID
      * @return
      */
-    public static OrganExtend getCompanyByUserId(String userId){
-        if(StringUtils.isBlank(userId)){
+    public static OrganExtend getCompanyByUserId(String userId) {
+        if (StringUtils.isBlank(userId)) {
             return null;
         }
         return Static.organService.getCompanyByUserId(userId);
@@ -131,15 +139,16 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找单位ID
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getOrganCompanyId(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static String getOrganCompanyId(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if(organExtend != null){
+        if (organExtend != null) {
             return organExtend.getId();
         }
         return null;
@@ -147,15 +156,16 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找单位名称
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getOrganCompanyName(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static String getOrganCompanyName(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if(organExtend != null){
+        if (organExtend != null) {
             return organExtend.getName();
         }
         return null;
@@ -164,36 +174,37 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找机构名称
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getOrganName(String organId){
+    public static String getOrganName(String organId) {
         Organ organ = getOrgan(organId);
-        if(organ != null){
+        if (organ != null) {
             return organ.getName();
         }
         return null;
     }
 
-    public static boolean hasChild(String organId){
+    public static boolean hasChild(String organId) {
         List<Organ> list = Static.organService.findByParent(organId);
-        return  Collections3.isNotEmpty(list);
+        return Collections3.isNotEmpty(list);
     }
 
 
-    public static String getAreaId(String organId){
+    public static String getAreaId(String organId) {
         Organ organ = getOrgan(organId);
-        if(organ != null){
+        if (organ != null) {
             return organ.getAreaId();
         }
         return null;
     }
 
-    public static String getAreaCode(String organCode){
+    public static String getAreaCode(String organCode) {
         Organ organ = getByOrganCode(organCode);
-        if(organ != null){
+        if (organ != null) {
             Area area = AreaUtils.get(organ.getAreaId());
-            return area == null ? null:area.getCode();
+            return area == null ? null : area.getCode();
         }
         return null;
     }
@@ -202,11 +213,12 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找单位 (递归)
+     *
      * @param organId 机构ID
      * @return
      */
-    public static Organ getCompanyByRecursive(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static Organ getCompanyByRecursive(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         Organ currentOrgan = getOrgan(organId);
@@ -219,42 +231,45 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找单位ID (递归)
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getCompanyIdByRecursive(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static String getCompanyIdByRecursive(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         Organ organ = getCompanyByRecursive(organId);
-        return null == organ ? null:organ.getId();
+        return null == organ ? null : organ.getId();
     }
 
     /**
      * 根据机构ID查找单位CODE (递归)
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getCompanyCodeByRecursive(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static String getCompanyCodeByRecursive(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         Organ organ = getCompanyByRecursive(organId);
-        return null == organ ? null:organ.getCode();
+        return null == organ ? null : organ.getCode();
     }
 
 
     /**
      * 根据机构ID查找上级单位(递归)
+     *
      * @param organId 机构ID
      * @return
      */
-    public static Organ getHomeCompanyByRecursive(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static Organ getHomeCompanyByRecursive(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         Organ company = getCompanyByRecursive(organId);
-        if(null != company && StringUtils.isNotBlank(company.getParentIds()) && company.getParentIds().split(",").length >= 3){//区县
+        if (null != company && StringUtils.isNotBlank(company.getParentIds()) && company.getParentIds().split(",").length >= 3) {//区县
             return getCompanyByRecursive(company.getParentId());
         }
         return company;
@@ -263,27 +278,29 @@ public class OrganUtils {
 
     /**
      * 根据机构ID查找上级单位ID (递归)
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getHomeCompanyIdByRecursive(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static String getHomeCompanyIdByRecursive(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         Organ organ = getHomeCompanyByRecursive(organId);
-        return null == organ ? null:organ.getId();
+        return null == organ ? null : organ.getId();
     }
 
     /**
      * 根据机构ID查找上级单位CODE (递归)
+     *
      * @param organId 机构ID
      * @return
      */
-    public static String getHomeCompanyCodeByRecursive(String organId){
-        if(StringUtils.isBlank(organId)){
+    public static String getHomeCompanyCodeByRecursive(String organId) {
+        if (StringUtils.isBlank(organId)) {
             return null;
         }
         Organ organ = getHomeCompanyByRecursive(organId);
-        return null == organ ? null:organ.getCode();
+        return null == organ ? null : organ.getCode();
     }
 }

@@ -216,8 +216,8 @@ public class Organ extends TreeEntity<Organ> {
     @JsonProperty(value = "_parentId")
     public String get_parentId() {
         String id = null;
-        if (parent != null){
-            id = parent.getId().equals("0") ? null:parent.getId();
+        if (parent != null) {
+            id = parent.getId().equals("0") ? null : parent.getId();
         }
         return id;
     }
@@ -248,7 +248,7 @@ public class Organ extends TreeEntity<Organ> {
      * @return
      */
     public String getState() {
-        return OrganUtils.hasChild(id) ? TreeNode.STATE_CLOASED:TreeNode.STATE_OPEN;
+        return OrganUtils.hasChild(id) ? TreeNode.STATE_CLOASED : TreeNode.STATE_OPEN;
     }
 
 

@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 @Service
 public class MessageReceiveService extends CrudService<MessageReceiveDao, MessageReceive> {

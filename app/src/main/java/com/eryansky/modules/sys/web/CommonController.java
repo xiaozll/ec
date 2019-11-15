@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -31,6 +31,7 @@ public class CommonController extends SimpleController {
 
     @Autowired
     private SystemService systemService;
+
     /**
      * 字段校验 TODO
      *
@@ -43,7 +44,7 @@ public class CommonController extends SimpleController {
     @RequestMapping("fieldCheck")
     @ResponseBody
     public Result fieldCheck(String entityName, String fieldName, String fieldValue, String rowId) {
-        String entityId =  null;
+        String entityId = null;
         boolean isCheck = true;// 是否通过检查
         if (entityId != null) {
             if (rowId != null) {
@@ -60,6 +61,7 @@ public class CommonController extends SimpleController {
 
     /**
      * JsonP跨域输出示例
+     *
      * @param callbackName 回调方法
      * @return
      */

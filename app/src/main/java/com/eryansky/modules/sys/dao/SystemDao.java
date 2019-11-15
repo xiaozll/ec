@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * 系统DAO接口
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2017-09-19
  */
@@ -20,6 +21,7 @@ public interface SystemDao extends BaseDao {
 
     /**
      * organ表同步到扩展表
+     *
      * @param parameter 参数
      * @return
      */
@@ -27,6 +29,7 @@ public interface SystemDao extends BaseDao {
 
     /**
      * 删除organ扩展表数据
+     *
      * @param parameter 参数
      * @return
      */

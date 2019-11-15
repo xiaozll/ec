@@ -18,14 +18,16 @@ import org.springframework.stereotype.Service;
 
 /**
  * 版本更新日志
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-09-29
  */
 @Service
-public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
+public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
 
     /**
      * 删除
+     *
      * @param id
      */
     public void delete(String id) {
@@ -33,8 +35,8 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
     }
 
     public Page<VersionLog> findPage(Page<VersionLog> page, Parameter parameter) {
-        parameter.put(BaseInterceptor.PAGE,page);
-        parameter.put(VersionLog.FIELD_STATUS,VersionLog.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(VersionLog.FIELD_STATUS, VersionLog.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         page.setResult(dao.findQueryList(parameter));
         return page;
@@ -42,11 +44,12 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
 
     /**
      * 根据版本号查找
+     *
      * @param versionLogType {@link VersionLogType}
      * @param versionCode
      * @return
      */
-    public VersionLog getByVersionCode(String versionLogType,String versionCode) {
+    public VersionLog getByVersionCode(String versionLogType, String versionCode) {
         VersionLog versionLog = new VersionLog();
         versionLog.setVersionLogType(versionLogType);
         versionLog.setVersionCode(versionCode);
@@ -55,11 +58,12 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
 
     /**
      * 根据版本号查找
+     *
      * @param versionLogType {@link VersionLogType}
      * @param versionName
      * @return
      */
-    public VersionLog getByVersionName(String versionLogType,String versionName) {
+    public VersionLog getByVersionName(String versionLogType, String versionName) {
         VersionLog versionLog = new VersionLog();
         versionLog.setVersionLogType(versionLogType);
         versionLog.setVersionName(versionName);
@@ -68,6 +72,7 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
 
     /**
      * 获取当前最新版本
+     *
      * @param versionLogType
      * @return
      */
@@ -77,11 +82,12 @@ public class VersionLogService extends CrudService<VersionLogDao,VersionLog>{
 
     /**
      * 获取当前最新版本
+     *
      * @param versionLogType
      * @param isPub
      * @return
      */
-    public VersionLog getLatestVersionLog(String versionLogType,String isPub) {
+    public VersionLog getLatestVersionLog(String versionLogType, String isPub) {
         VersionLog entity = new VersionLog();
         entity.setVersionLogType(versionLogType);
         entity.setIsPub(isPub);

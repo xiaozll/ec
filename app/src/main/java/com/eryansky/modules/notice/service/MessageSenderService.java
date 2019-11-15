@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 @Service
 public class MessageSenderService extends CrudService<MessageSenderDao, MessageSender> {
@@ -22,12 +22,13 @@ public class MessageSenderService extends CrudService<MessageSenderDao, MessageS
 
     /**
      * 根据消息ID删除
+     *
      * @param messageId
      * @return
      */
-    public int deleteByMessageId(String messageId){
+    public int deleteByMessageId(String messageId) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("messageId",messageId);
+        parameter.put("messageId", messageId);
         return dao.deleteByMessageId(parameter);
     }
 

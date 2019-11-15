@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-09-01 
+ * @date 2015-09-01
  */
 @Mobile
 @Controller
@@ -33,7 +33,7 @@ public class NoticeMobileController extends SimpleController {
     @Autowired
     private NoticeReceiveInfoService noticeReceiveInfoService;
 
-    @Logging(logType = LogType.access,value = "我的通知")
+    @Logging(logType = LogType.access, value = "我的通知")
     @RequestMapping(value = {""})
     public String list() {
         return "modules/notice/notice";
@@ -41,7 +41,6 @@ public class NoticeMobileController extends SimpleController {
 
 
     /**
-     *
      * @return
      */
     @RequestMapping("noticePage")
@@ -50,12 +49,12 @@ public class NoticeMobileController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
         if (sessionInfo != null) {
-            page = noticeReceiveInfoService.findReadNoticePage(page,new NoticeReceiveInfo(), sessionInfo.getUserId(),null);
+            page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), null);
         }
-        Datagrid dg = new Datagrid(page.getTotalCount(),page.getResult());
-        String json = JsonMapper.getInstance().toJson(dg,NoticeReceiveInfo.class,
-                new String[]{"id","title","isRead","isTop","title","noticeId","typeView",
-                        "isReadView","publishTime"});
+        Datagrid dg = new Datagrid(page.getTotalCount(), page.getResult());
+        String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
+                new String[]{"id", "title", "isRead", "isTop", "title", "noticeId", "typeView",
+                        "isReadView", "publishTime"});
         return json;
     }
 }

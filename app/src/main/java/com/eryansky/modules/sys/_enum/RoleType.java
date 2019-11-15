@@ -25,6 +25,7 @@ public enum RoleType {
 
     /**
      * 获取值
+     *
      * @return value
      */
     public String getValue() {
@@ -33,6 +34,7 @@ public enum RoleType {
 
     /**
      * 获取描述信息
+     *
      * @return description
      */
     public String getDescription() {

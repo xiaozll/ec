@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.notice.quartz;
 
@@ -19,18 +19,18 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-2-4 上午09:08:18
  */
-@QuartzJob(name = "NoticeJob",cronExp = "0 0/10 * * * ?")
+@QuartzJob(name = "NoticeJob", cronExp = "0 0/10 * * * ?")
 public class NoticeJob extends QuartzJobBean {
 
-	private static final Logger logger = LoggerFactory.getLogger(NoticeJob.class);
+    private static final Logger logger = LoggerFactory.getLogger(NoticeJob.class);
 
-	@Autowired
+    @Autowired
     private NoticeService noticeService;
 
     /**
      * 轮询通知
      */
-    public void execute(){
+    public void execute() {
         logger.debug("轮询任务开始...");
         noticeService.pollNotice();
         logger.debug("轮询任务开始...");

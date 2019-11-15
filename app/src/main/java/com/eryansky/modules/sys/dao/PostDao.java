@@ -1,8 +1,8 @@
 /**
-*  Copyright (c) 2012-2018 http://www.eryansky.com
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*/
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.eryansky.modules.sys.dao;
 
 import com.eryansky.common.orm.model.Parameter;
@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * 岗位表
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-05-08
  */
@@ -35,12 +36,15 @@ public interface PostDao extends CrudDao<Post> {
 
     /**
      * 自定义SQL查询
+     *
      * @param parameter
      * @return
      */
     List<Post> findByWhereSQL(Parameter parameter);
+
     /**
      * 自定义SQL查询
+     *
      * @param parameter
      * @return
      */
@@ -48,12 +52,14 @@ public interface PostDao extends CrudDao<Post> {
 
     /**
      * 删除岗位机构关联信息
+     *
      * @param parameter id:岗位ID
      */
     int deletePostOrgansByPostId(Parameter parameter);
 
     /**
      * 插入岗位机构关联信息
+     *
      * @param parameter id:岗位ID ids:机构IDS
      */
     int insertPostOrgans(Parameter parameter);
@@ -61,18 +67,21 @@ public interface PostDao extends CrudDao<Post> {
 
     /**
      * 删除岗位用户关联信息
+     *
      * @param parameter id:岗位ID
      */
     int deletePostUsersByPostId(Parameter parameter);
 
     /**
      * 删除岗位用户关联信息(指定机构)
+     *
      * @param parameter id:岗位ID organId:机构ID
      */
     int deletePostUsersByPostIdAndOrganId(Parameter parameter);
 
     /**
      * 插入岗位用户关联信息
+     *
      * @param parameter id:岗位ID ids:用户IDS
      */
     int insertPostUsers(Parameter parameter);

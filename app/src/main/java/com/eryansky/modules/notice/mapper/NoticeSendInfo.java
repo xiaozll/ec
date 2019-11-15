@@ -11,7 +11,7 @@ import com.eryansky.modules.notice.utils.NoticeUtils;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2015-10-15 
+ * @date 2015-10-15
  */
 public class NoticeSendInfo extends BaseEntity<NoticeSendInfo> {
 
@@ -50,7 +50,7 @@ public class NoticeSendInfo extends BaseEntity<NoticeSendInfo> {
     }
 
     private Notice getNotice() {
-        if(this.notice == null){
+        if (this.notice == null) {
             return NoticeUtils.getNotice(this.noticeId);
         }
         return this.notice;

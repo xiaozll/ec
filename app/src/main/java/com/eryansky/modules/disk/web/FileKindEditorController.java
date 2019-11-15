@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2005-2012 https://github.com/zhangkaitao
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.disk.web;
@@ -40,7 +40,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/disk/filekindeditor")
-public class FileKindEditorController extends SimpleController{
+public class FileKindEditorController extends SimpleController {
 
     private static final String FOLDER_KINDEDITOR = "kindeditor";
     //图片mime类型
@@ -91,7 +91,7 @@ public class FileKindEditorController extends SimpleController{
      */
     @RequestMapping(value = "upload", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> upload(
+    public Map<String, Object> upload(
             HttpServletResponse response,
             HttpServletRequest request,
             @RequestParam(value = "dir", required = false) String dir,
@@ -107,24 +107,24 @@ public class FileKindEditorController extends SimpleController{
 //            String url = FileUploadUtils.upload(request, AppConstants.getDiskBaseDir() + File.separator + basePath, multipartFile, allowedExtension, maxSize, false, null);
 
             File file = DiskUtils.saveSystemFile(FOLDER_KINDEDITOR, sessionInfo.getUserId(), multipartFile);
-            String filename =  DiskUtils.getVirtualFilePath(file);
+            String filename = DiskUtils.getVirtualFilePath(file);
 
             return successResponse(request, file.getName(), filename);
         } catch (IOException e) {
             LogUtils.logError("file upload error", e);
             return errorResponse("服务器故障，请稍后重试！");
         } catch (InvalidExtensionException.InvalidImageExtensionException e) {
-            return errorResponse("上传的图片类型不允许！<br/>允许的图片类型包括：图片("+ JsonMapper.getInstance().toJson(IMAGE_EXTENSION)+")格式。");
+            return errorResponse("上传的图片类型不允许！<br/>允许的图片类型包括：图片(" + JsonMapper.getInstance().toJson(IMAGE_EXTENSION) + ")格式。");
         } catch (InvalidExtensionException.InvalidFlashExtensionException e) {
-            return errorResponse("上传的flash类型不允许！<br/>允许的flash类型包括："+JsonMapper.getInstance().toJson(FLASH_EXTENSION)+"格式。");
+            return errorResponse("上传的flash类型不允许！<br/>允许的flash类型包括：" + JsonMapper.getInstance().toJson(FLASH_EXTENSION) + "格式。");
         } catch (InvalidExtensionException.InvalidMediaExtensionException e) {
-            return errorResponse("上传的媒体类型不允许！<br/>允许的媒体类型包括："+JsonMapper.getInstance().toJson(MEDIA_EXTENSION)+"格式。");
+            return errorResponse("上传的媒体类型不允许！<br/>允许的媒体类型包括：" + JsonMapper.getInstance().toJson(MEDIA_EXTENSION) + "格式。");
         } catch (InvalidExtensionException e) {
             return errorResponse("上传的文件类型不允许！允许的类型，请参考页面提示。");
         } catch (FileUploadBase.FileSizeLimitExceededException e) {
-            return errorResponse("上传的文件大小超出限制的文件大小！<br/>允许的文件最大大小是："+e.getPermittedSize()+"！");
+            return errorResponse("上传的文件大小超出限制的文件大小！<br/>允许的文件最大大小是：" + e.getPermittedSize() + "！");
         } catch (FileNameLengthLimitExceededException e) {
-            return errorResponse("上传的文件名最长"+e.getLength()+"个字符");
+            return errorResponse("上传的文件名最长" + e.getLength() + "个字符");
         }
 
     }
@@ -160,13 +160,13 @@ public class FileKindEditorController extends SimpleController{
             @RequestParam(value = "dir", required = false, defaultValue = "file") String dir,
             @RequestParam(value = "order", required = false, defaultValue = "NAME") String order) {
         List<String> fileSuffixs = Lists.newArrayList();
-        if("image".equalsIgnoreCase(dir)){
+        if ("image".equalsIgnoreCase(dir)) {
             fileSuffixs = Arrays.<String>asList(FileUploadUtils.IMAGE_EXTENSION);
-        }else if("media".equalsIgnoreCase(dir)){
+        } else if ("media".equalsIgnoreCase(dir)) {
             fileSuffixs = Arrays.<String>asList(FileUploadUtils.MEDIA_EXTENSION);
-        }else if("flash".equalsIgnoreCase(dir)){
+        } else if ("flash".equalsIgnoreCase(dir)) {
             fileSuffixs = Arrays.<String>asList(FileUploadUtils.FLASH_EXTENSION);
-        }else{
+        } else {
             fileSuffixs = Arrays.<String>asList(FileUploadUtils.DEFAULT_ALLOWED_EXTENSION);
         }
 
@@ -182,8 +182,8 @@ public class FileKindEditorController extends SimpleController{
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        Folder folder = DiskUtils.checkAndSaveSystemFolderByCode(FOLDER_KINDEDITOR);
-        Folder folder = DiskUtils.checkAndSaveSystemFolderByCode(FOLDER_KINDEDITOR,sessionInfo.getUserId());
-        List<File> files = DiskUtils.findFolderFiles(folder.getId(),fileSuffixs);
+        Folder folder = DiskUtils.checkAndSaveSystemFolderByCode(FOLDER_KINDEDITOR, sessionInfo.getUserId());
+        List<File> files = DiskUtils.findFolderFiles(folder.getId(), fileSuffixs);
         for (File file : files) {
 
             Map<String, Object> fileMetaInfo = Maps.newHashMap();
@@ -221,23 +221,23 @@ public class FileKindEditorController extends SimpleController{
     }
 
 
-    private Map<String,Object> successResponse(HttpServletRequest request, String filename, String url) {
-        Map<String,Object> map = Maps.newHashMap();
-        map.put("error",0);
-        map.put("url",request.getContextPath() + "/" + url);
+    private Map<String, Object> successResponse(HttpServletRequest request, String filename, String url) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("error", 0);
+        map.put("url", request.getContextPath() + "/" + url);
         map.put("title", filename);
         return map;
     }
 
-    private Map<String,Object> errorResponse(String errorCode) {
+    private Map<String, Object> errorResponse(String errorCode) {
 //        String message = messageSource.getMessage(errorCode, null, null);
         String message = errorCode;
         if (message.contains("<br/>")) {
             message = message.replace("<br/>", "\\n");
         }
-        Map<String,Object> map = Maps.newHashMap();
-        map.put("error",1);
-        map.put("message",message);
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("error", 1);
+        map.put("message", message);
         System.out.println(map);
         return map;
     }

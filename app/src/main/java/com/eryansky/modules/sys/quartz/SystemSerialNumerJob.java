@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.quartz;
 
@@ -26,7 +26,7 @@ public class SystemSerialNumerJob extends QuartzJobBean {
     @Autowired
     private SystemSerialNumberService systemSerialNumberService;
 
-    public void execute(){
+    public void execute() {
         logger.debug("定时任务...开始：序列号管理 定时任务");
         systemSerialNumberService.resetSerialNumber();
         logger.debug("定时任务...结束：序列号管理 定时任务");

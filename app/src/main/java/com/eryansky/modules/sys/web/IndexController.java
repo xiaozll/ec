@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 主页管理
  *
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date   2014-09-16 10:30
+ * @date 2014-09-16 10:30
  */
 @Controller
 @RequestMapping(value = "${adminPath}")
@@ -28,7 +28,7 @@ public class IndexController extends SimpleController {
     @RequestMapping(value = {""})
     public ModelAndView welcome() {
         ModelAndView modelAnView = new ModelAndView("login");
-        if(SecurityUtils.getCurrentSessionInfo() != null){
+        if (SecurityUtils.getCurrentSessionInfo() != null) {
             return index();
         }
         return modelAnView;
@@ -38,12 +38,12 @@ public class IndexController extends SimpleController {
     public ModelAndView index() {
         User sessionUser = SecurityUtils.getCurrentUser();
         String userPhoto = null;
-        if(sessionUser != null && StringUtils.isNotBlank(sessionUser.getPhoto())){
+        if (sessionUser != null && StringUtils.isNotBlank(sessionUser.getPhoto())) {
             userPhoto = sessionUser.getPhotoUrl();
         }
 
-        if(StringUtils.isBlank(userPhoto)){
-            userPhoto = SpringMVCHolder.getRequest().getContextPath()+"/static/img/icon_boy.png";
+        if (StringUtils.isBlank(userPhoto)) {
+            userPhoto = SpringMVCHolder.getRequest().getContextPath() + "/static/img/icon_boy.png";
         }
         ModelAndView modelAnView = new ModelAndView("layout/index.html");
         modelAnView.addObject("userPhoto", userPhoto);
@@ -56,10 +56,10 @@ public class IndexController extends SimpleController {
         User sessionUser = SecurityUtils.getCurrentUser();
         modelAnView.addObject("user", sessionUser);
         String userPhoto = null;
-        if(null != sessionUser && StringUtils.isNotBlank(sessionUser.getPhoto())){
+        if (null != sessionUser && StringUtils.isNotBlank(sessionUser.getPhoto())) {
             userPhoto = sessionUser.getPhotoUrl();
-        }else{
-            userPhoto = SpringMVCHolder.getRequest().getContextPath()+"/static/img/icon_boy.png";
+        } else {
+            userPhoto = SpringMVCHolder.getRequest().getContextPath() + "/static/img/icon_boy.png";
         }
         modelAnView.addObject("userPhoto", userPhoto);
         return modelAnView;

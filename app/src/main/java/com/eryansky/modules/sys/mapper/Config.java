@@ -10,6 +10,7 @@ import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 
 /**
  * 系统配置参数
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2014-12-18
  */

@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * 版本更新日志
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @version 2015-9-26
  */
@@ -26,6 +27,7 @@ public interface VersionLogDao extends CrudDao<VersionLog> {
 
     /**
      * 根据版本号查找
+     *
      * @param versionLog
      * @return
      */
@@ -35,6 +37,7 @@ public interface VersionLogDao extends CrudDao<VersionLog> {
 
     /**
      * 获取当前最新版本
+     *
      * @param entity
      * @return
      */

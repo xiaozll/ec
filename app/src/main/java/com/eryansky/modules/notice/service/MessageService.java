@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
- * @date 2016-03-14 
+ * @date 2016-03-14
  */
 @Service
 public class MessageService extends CrudService<MessageDao, Message> {
@@ -43,7 +43,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
 
     @Override
     public Page<Message> findPage(Page<Message> page, Message entity) {
-        entity.getSqlMap().put("dsf",super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
+        entity.getSqlMap().put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
         entity.setEntityPage(page);
         page.setResult(dao.findList(entity));
         return page;
@@ -52,46 +52,48 @@ public class MessageService extends CrudService<MessageDao, Message> {
 
     /**
      * 删除
+     *
      * @param entity
-     * @param isRe 是否恢复删除
+     * @param isRe   是否恢复删除
      */
     public void delete(Message entity, Boolean isRe) {
-        if(isRe != null && isRe){
+        if (isRe != null && isRe) {
             entity.setStatus(Message.STATUS_NORMAL);
             super.save(entity);
-        }else{
+        } else {
             super.delete(entity);
         }
     }
 
     /**
      * 保存并发送
+     *
      * @param message
      * @param messageReceiveObjectType
      * @param receiveObjectIds
      * @param sendWeixin
      */
-    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds,Boolean sendWeixin){
-        if(Collections3.isNotEmpty(receiveObjectIds)){
+    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Boolean sendWeixin) {
+        if (Collections3.isNotEmpty(receiveObjectIds)) {
             message.setBizMode(MessageMode.Publishing.getValue());
             message.setSendTime(Calendar.getInstance().getTime());
             this.save(message);
-            for(String objectId: receiveObjectIds){
+            for (String objectId : receiveObjectIds) {
                 MessageSender messageSender = new MessageSender(message.getId());
                 messageSender.setObjectType(messageReceiveObjectType.getValue());
                 messageSender.setObjectId(objectId);
                 messageSenderService.save(messageSender);
 
                 List<String> targetIds = Lists.newArrayList();
-                if(MessageReceiveObjectType.User.equals(messageReceiveObjectType)){
+                if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
                     targetIds.add(UserUtils.getLoginName(objectId));
-                }else if(MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)){
+                } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
                     targetIds = userService.findUsersLoginNamesByOrganId(objectId);
-                }else if(MessageReceiveObjectType.Member.equals(messageReceiveObjectType)){
+                } else if (MessageReceiveObjectType.Member.equals(messageReceiveObjectType)) {
                     String openid = objectId;//TODO 获取openid
                     targetIds.add(openid);
                 }
-                for(String targetId:targetIds){
+                for (String targetId : targetIds) {
                     MessageReceive messageReceive = new MessageReceive(message.getId());
                     messageReceive.setUserId(targetId);
                     messageReceive.setIsRead(YesOrNo.NO.getValue());

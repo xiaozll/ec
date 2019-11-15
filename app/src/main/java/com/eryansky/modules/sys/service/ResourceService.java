@@ -80,7 +80,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
             List<String> types = Lists.newArrayList();
             types.add(entity.getType());
             List<Resource> childs = this.findChilds(entity.getId(), types);
-            childs.forEach(subResource->{
+            childs.forEach(subResource -> {
                 subResource.setType(ResourceType.function.getValue());
                 super.save(subResource);
             });
@@ -120,10 +120,10 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
     /**
      * 自定义删除方法.
      */
-    @CacheEvict(value = { CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+    @CacheEvict(value = {CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE},allEntries = true)
-    public void deleteOwnerAndChilds(String id){
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE}, allEntries = true)
+    public void deleteOwnerAndChilds(String id) {
         dao.deleteOwnerAndChilds(new Resource(id));
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
@@ -331,7 +331,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAuthorityAppAndMenuResourcesByUserId(String userId) {
-        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue(),ResourceType.menu.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue(), ResourceType.menu.getValue());
         return findAuthorityResourcesByUserId(userId, resourceTypes);
     }
 
@@ -409,7 +409,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     @Cacheable(value = {CacheConstants.RESOURCE_USER_MENU_TREE_CACHE})
     public List<TreeNode> findNavTreeNodeWithPermissions(String userId) {
-        logger.debug("缓存:{},参数：userId={}", CacheConstants.RESOURCE_USER_MENU_TREE_CACHE ,userId);
+        logger.debug("缓存:{},参数：userId={}", CacheConstants.RESOURCE_USER_MENU_TREE_CACHE, userId);
         return resourcesToTreeNode(findAppAndMenuWithPermissions(userId));
     }
 
@@ -482,7 +482,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @return
      */
     public List<Resource> findAppAndMenuResources() {
-        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue(),ResourceType.menu.getValue());
+        List<String> resourceTypes = Lists.newArrayList(ResourceType.app.getValue(), ResourceType.menu.getValue());
         return findResources(resourceTypes);
     }
 
@@ -569,12 +569,12 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @param resources
      * @return
      */
-    private List<TreeNode> resourcesToTreeNode(Collection<Resource> resources){
-        if(Collections3.isEmpty(resources)){
+    private List<TreeNode> resourcesToTreeNode(Collection<Resource> resources) {
+        if (Collections3.isEmpty(resources)) {
             return Collections.emptyList();
         }
         List<TreeNode> tempTreeNodes = Lists.newArrayList();
-        resources.forEach(resource->{
+        resources.forEach(resource -> {
             TreeNode treeNode = this.resourceToTreeNode(resource);
             tempTreeNodes.add(treeNode);
         });
@@ -591,7 +591,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
             return tempMenus;
         }
         Map<String, Menu> tempMap = Maps.newHashMap();
-        resources.forEach(resource->{
+        resources.forEach(resource -> {
             Menu menu = this.resourceToMenu(resource);
             tempMenus.add(menu);
             tempMap.put(resource.getId(), menu);
@@ -829,23 +829,25 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
 
     /**
      * 自定义SQL查询
+     *
      * @param whereSQL
      * @return
      */
-    public List<Resource> findByWhereSQL(String whereSQL){
+    public List<Resource> findByWhereSQL(String whereSQL) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("whereSQL",whereSQL);
+        parameter.put("whereSQL", whereSQL);
         return dao.findByWhereSQL(parameter);
     }
 
     /**
      * 自定义SQL查询
+     *
      * @param sql
      * @return
      */
-    public List<Resource> findBySql(String sql){
+    public List<Resource> findBySql(String sql) {
         Parameter parameter = Parameter.newParameter();
-        parameter.put("sql",sql);
+        parameter.put("sql", sql);
         return dao.findBySql(parameter);
     }
 

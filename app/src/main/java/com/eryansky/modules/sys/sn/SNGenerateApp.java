@@ -48,9 +48,9 @@ public class SNGenerateApp {
         String snFormatStr = "Str@ 国办发〔#DateTime@yyyy#Str@〕#NumSeq@0C0#Str@ 号";
         Map parameterMap1 = new HashMap(); //设定参数
         parameterMap1.put(GeneratorConstants.PARAM_MODULE_CODE, "1"); //使用 sequence id 1 进行流水自增
-        for(int i=1;i<=5;i++)//生成 5 个流水号
+        for (int i = 1; i <= 5; i++)//生成 5 个流水号
         {
-            System.out.println("流水号"+i+":"+snGenerateApp.generateSN(snFormatStr,parameterMap1));
+            System.out.println("流水号" + i + ":" + snGenerateApp.generateSN(snFormatStr, parameterMap1));
         }
     }
 }

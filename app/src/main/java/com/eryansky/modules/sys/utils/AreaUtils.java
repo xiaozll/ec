@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.utils;
 
@@ -27,8 +27,8 @@ public class AreaUtils {
      * @param areaId 区域ID
      * @return
      */
-    public static Area get(String areaId){
-        if(StringUtils.isNotBlank(areaId)){
+    public static Area get(String areaId) {
+        if (StringUtils.isNotBlank(areaId)) {
             return Static.areaService.get(areaId);
         }
         return null;
@@ -39,8 +39,8 @@ public class AreaUtils {
      * @param code 区域编码
      * @return
      */
-    public static Area getByCode(String code){
-        if(StringUtils.isNotBlank(code)){
+    public static Area getByCode(String code) {
+        if (StringUtils.isNotBlank(code)) {
             return Static.areaService.getByCode(code);
         }
         return null;
@@ -49,12 +49,13 @@ public class AreaUtils {
 
     /**
      * 查找名称
+     *
      * @param areaId 区域编码
      * @return
      */
-    public static String getAreaName(String areaId){
+    public static String getAreaName(String areaId) {
         Area area = get(areaId);
-        if(area != null){
+        if (area != null) {
             return area.getName();
         }
         return null;

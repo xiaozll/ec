@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.aop;
 
@@ -25,6 +25,7 @@ import java.util.Date;
 
 /**
  * 使用AspectJ实现登录登出日志AOP
+ *
  * @author 尔演&Eryan
  */
 @Component
@@ -38,29 +39,31 @@ public class SecurityLogAspect {
 
     /**
      * 登录增强
+     *
      * @param joinPoint 切入点
      */
     @After("execution(* com.eryansky.modules.sys.service.UserService.login(..))")
-    public void afterLoginLog(JoinPoint joinPoint){
+    public void afterLoginLog(JoinPoint joinPoint) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if(sessionInfo != null){
+        if (sessionInfo != null) {
             saveLog(sessionInfo, joinPoint, SecurityType.login); //保存日志
         }
     }
 
     /**
      * 登出增强
+     *
      * @param joinPoint 切入点
      */
     @Before("execution(* com.eryansky.modules.sys.service.UserService.*logout(..))")
-    public void beforeLogoutLog(JoinPoint joinPoint){
+    public void beforeLogoutLog(JoinPoint joinPoint) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if(sessionInfo != null){
+        if (sessionInfo != null) {
             Object[] args = joinPoint.getArgs();
             SecurityType securityType = SecurityType.logout;
-            if(args != null && args.length >= 2){
-                if(args[1] instanceof SecurityType){
-                    securityType = (SecurityType)args[1];
+            if (args != null && args.length >= 2) {
+                if (args[1] instanceof SecurityType) {
+                    securityType = (SecurityType) args[1];
                 }
             }
 
@@ -70,21 +73,22 @@ public class SecurityLogAspect {
 
     /**
      * 保存日志
-     * @param sessionInfo 登录用户session信息
-     * @param joinPoint 切入点
+     *
+     * @param sessionInfo  登录用户session信息
+     * @param joinPoint    切入点
      * @param securityType 是否是登录操作
-     *                     @see SecurityType
+     * @see SecurityType
      */
-    public void saveLog(SessionInfo sessionInfo, JoinPoint joinPoint,SecurityType securityType){
+    public void saveLog(SessionInfo sessionInfo, JoinPoint joinPoint, SecurityType securityType) {
         Long start = System.currentTimeMillis();
         Long end = 0L;
         // 执行方法名
         String methodName = null;
         String className = null;
-        if(joinPoint != null){
+        if (joinPoint != null) {
             methodName = joinPoint.getSignature().getName();
             className = joinPoint.getTarget().getClass().getSimpleName();
-        }else{
+        } else {
             className = UserService.class.getSimpleName();
             methodName = "logout";
         }
@@ -107,8 +111,8 @@ public class SecurityLogAspect {
             long opTime = end - start;
             log.setActionTime(String.valueOf(opTime));
             logService.save(log);
-            if(logger.isDebugEnabled()){
-                logger.debug("用户:{},操作类：{},操作方法：{},耗时：{}ms.",new Object[]{user,className,methodName,end - start});
+            if (logger.isDebugEnabled()) {
+                logger.debug("用户:{},操作类：{},操作方法：{},耗时：{}ms.", new Object[]{user, className, methodName, end - start});
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

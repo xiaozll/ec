@@ -40,7 +40,7 @@ public class SecurityLogAspect {
      * 登录增强
      * @param joinPoint 切入点
      */
-    @After("execution(* com.eryansky.modules.sys.web.LoginController.login(..))")
+    @After("execution(* com.eryansky.modules.sys.service.UserService.login(..))")
     public void afterLoginLog(JoinPoint joinPoint){
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if(sessionInfo != null){

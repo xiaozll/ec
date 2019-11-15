@@ -16,6 +16,7 @@ import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityType;
+import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.CacheConstants;
@@ -41,7 +42,7 @@ import java.util.*;
 @Service
 public class UserService extends CrudService<UserDao, User> {
 
-//    @Transactional
+    //    @Transactional
     public void aop(){
         boolean flag =true;
         if(flag){
@@ -282,6 +283,23 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put(DataEntity.FIELD_STATUS,status);
         parameter.put("mobile",mobile);
         return dao.getUserByMobile(parameter);
+    }
+
+
+    /**
+     * 获得所有集成用户（包括已删除）
+     * @return
+     */
+    public List<User> findAllPlatform(){
+        return findAll(null, UserType.Platform.getValue());
+    }
+
+    /**
+     * 获得所有集成用户（正常）
+     * @return
+     */
+    public List<User> findAllNormalPlatform(){
+        return findAll(DataEntity.STATUS_NORMAL, UserType.Platform.getValue());
     }
 
     /**
@@ -859,6 +877,15 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("postId",postId);
         parameter.put("organId",organId);
         return dao.findUserIdsByPostIdAndOrganId(parameter);
+    }
+
+
+    /**
+     * 登录
+     */
+    public void login(String userId){
+        logger.debug("login {}",new Object[]{userId});
+
     }
 
 

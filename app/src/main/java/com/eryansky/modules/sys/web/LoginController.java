@@ -186,6 +186,7 @@ public class LoginController extends SimpleController {
 
             //将用户信息放入session中
             SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
+            userService.login(sessionInfo.getUserId());
             logger.info("用户{}登录系统,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
 
             //设置调整URL 如果session中包含未被授权的URL 则跳转到该页面

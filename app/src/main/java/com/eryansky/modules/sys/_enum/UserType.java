@@ -11,7 +11,8 @@ package com.eryansky.modules.sys._enum;
 public enum UserType {
 
     System("0", "系统"),
-	User("1", "员工");
+	User("1", "员工"),
+	Platform("2", "统一平台");
 
 	/**
 	 * 值 String型

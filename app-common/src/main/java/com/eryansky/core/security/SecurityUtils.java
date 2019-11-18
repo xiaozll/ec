@@ -332,7 +332,7 @@ public class SecurityUtils {
         sessionInfo.setLoginCompanyCode(organExtend.getCompanyCode());
         sessionInfo.setLoginHomeCompanyId(organExtend.getHomeCompanyId());
         sessionInfo.setLoginHomeCompanyCode(organExtend.getHomeCompanyCode());
-        OrganExtend companyOrganExtend = OrganUtils.getOrganExtendByUserId(organExtend.getCompanyId());
+        OrganExtend companyOrganExtend = OrganUtils.getOrganExtend(organExtend.getCompanyId());
         sessionInfo.setLoginCompanyLevel(null != companyOrganExtend ? companyOrganExtend.getTreeLevel():null);
         return sessionInfo;
     }

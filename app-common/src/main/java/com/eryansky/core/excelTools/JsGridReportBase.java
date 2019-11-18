@@ -171,7 +171,7 @@ public class JsGridReportBase {
         } else {
             int lastRow = rownum + maxlevel - tc.level;
             if (rownum != lastRow) {
-                CellRangeAddress address = new CellRangeAddress(rownum, rownum + maxlevel - tc.level, colnum, colnum);
+                CellRangeAddress address = new CellRangeAddress(rownum, lastRow, colnum, colnum);
                 sheet.addMergedRegion(address);
                 fillMergedRegion(sheet, address, headerstyle);
             }
@@ -472,7 +472,7 @@ public class JsGridReportBase {
             if (null != freezePaness) {
                 freezePanes = freezePaness.get(x);
             }
-            writeSheet(wb, tableData.getSheetTitle(), styles, creator, tableData, freezePanes);//写入工作表
+            writeSheet(wb, sheetTitle, styles, creator, tableData, freezePanes);//写入工作表
             i++;
         }
 

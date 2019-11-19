@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>404 - 页面不存在</title>
+    <script type="text/javascript">
+        var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
+        function toIndex(){
+            window.location.href = ctx;
+        }
+    </script>
+</head>
+<body>
+<div>
+    <div><h1>页面不存在.</h1></div>
+    <div><a  onclick="toIndex()" >返回首页</a></div>
+</div>
+</body>
+</html>

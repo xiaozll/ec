@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>页面访问出错</title>
+    <script src="/static/js/jquery/jquery-1.10.2.min.js" th:src="@{/static/js/jquery/jquery-1.10.2.min.js}" ></script>
+    <script src="/static/js/jquery/jquery-migrate-1.2.1.min.js" th:src="@{/static/js/jquery/jquery-migrate-1.2.1.min.js}" ></script>
+    <script type="text/javascript">
+        var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
+        function toIndex(){
+            window.location.href = ctx;
+        }
+    </script>
+</head>
+<body>
+<div>
+    <div><h1>页面访问出错.</h1></div>
+    <div><a  onclick="toIndex()" >返回首页</a></div>
+    <div><a  onclick="history.back();" >返回</a></div>
+</div>
+</body>
+</html>

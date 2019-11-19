@@ -633,9 +633,22 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public Integer findChildCount(String parentId) {
+        return findChildCount(parentId,null);
+    }
+
+
+    /**
+     * 查找子节点数量
+     *
+     * @param parentId
+     * @param types
+     * @return
+     */
+    public Integer findChildCount(String parentId, Collection<String> types) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("parentId", parentId);
+        parameter.put("types", types);
         return dao.findChildCount(parameter);
     }
 

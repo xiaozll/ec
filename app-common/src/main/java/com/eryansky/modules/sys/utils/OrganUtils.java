@@ -187,8 +187,8 @@ public class OrganUtils {
     }
 
     public static boolean hasChild(String organId) {
-        List<Organ> list = Static.organService.findByParent(organId);
-        return Collections3.isNotEmpty(list);
+        Integer childCount = Static.organService.findChildCount(organId);
+        return null != childCount && childCount != 0;
     }
 
 

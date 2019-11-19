@@ -66,19 +66,19 @@ function windowOpen(url, name, width, height){
 
 // 恢复提示框显示
 function resetTip(){
-	top.$.jBox.tip.mess = null;
+	$.jBox.tip.mess = null;
 }
 
 // 关闭提示框
 function closeTip(){
-	top.$.jBox.closeTip();
+	$.jBox.closeTip();
 }
 
 //显示提示框
 function showTip(mess, type, timeout, lazytime){
 	resetTip();
 	setTimeout(function(){
-		top.$.jBox.tip(mess, (type == undefined || type == '' ? 'info' : type), {opacity:0,
+		$.jBox.tip(mess, (type == undefined || type == '' ? 'info' : type), {opacity:0,
 			timeout:  timeout == undefined ? 2000 : timeout});
 	}, lazytime == undefined ? 500 : lazytime);
 }
@@ -89,17 +89,17 @@ function loading(mess){
 		mess = "正在提交，请稍等...";
 	}
 	resetTip();
-	top.$.jBox.tip(mess,'loading',{opacity:0});
+	$.jBox.tip(mess,'loading',{opacity:0});
 }
 
 // 警告对话框
 function alertx(mess, closed){
-	top.$.jBox.info(mess, '提示', {closed:function(){
+	$.jBox.info(mess, '提示', {closed:function(){
 		if (typeof closed == 'function') {
 			closed();
 		}
 	}});
-	top.$('.jbox-body .jbox-icon').css('top','55px');
+	$('.jbox-body .jbox-icon').css('top','55px');
 }
 
 // 确认对话框

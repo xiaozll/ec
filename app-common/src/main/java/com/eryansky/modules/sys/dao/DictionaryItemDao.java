@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.sys.dao;
 
+import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.MyBatisDao;
 import com.eryansky.common.orm.persistence.CrudDao;
 import com.eryansky.modules.sys.mapper.DictionaryItem;
@@ -66,4 +67,21 @@ public interface DictionaryItemDao extends CrudDao<DictionaryItem> {
      * @return
      */
     List<DictionaryItem> findChilds(DictionaryItem dictionaryItem);
+
+
+    /**
+     * 自定义SQL查询
+     *
+     * @param parameter
+     * @return
+     */
+    List<DictionaryItem> findByWhereSQL(Parameter parameter);
+
+    /**
+     * 自定义SQL查询
+     *
+     * @param parameter
+     * @return
+     */
+    List<DictionaryItem> findBySql(Parameter parameter);
 }

@@ -130,6 +130,25 @@
 			</otherwise>
 		</choose>
 	</select>
+
+
+	<select id="findByWhereSQL" resultType="Dictionary">
+		SELECT
+		<include refid="sysDictionaryColumns"/>
+		FROM t_sys_dictionary a
+		<where>
+			${whereSQL}
+		</where>
+		ORDER BY a.order_no ASC
+	</select>
+
+
+	<select id="findBySql" resultType="Dictionary">
+		SELECT
+		<include refid="sysDictionaryColumns"/>
+		FROM t_sys_dictionary a
+		${sql}
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO t_sys_dictionary(

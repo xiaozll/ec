@@ -7,6 +7,7 @@ package com.eryansky.modules.sys.service;
 
 import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.service.CrudService;
@@ -305,5 +306,28 @@ public class DictionaryItemService extends CrudService<DictionaryItemDao, Dictio
         return node;
     }
 
+    /**
+     * 自定义SQL查询
+     *
+     * @param whereSQL
+     * @return
+     */
+    public List<DictionaryItem> findByWhereSQL(String whereSQL) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("whereSQL", whereSQL);
+        return dao.findByWhereSQL(parameter);
+    }
+
+    /**
+     * 自定义SQL查询
+     *
+     * @param sql
+     * @return
+     */
+    public List<DictionaryItem> findBySql(String sql) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("sql", sql);
+        return dao.findBySql(parameter);
+    }
 
 }

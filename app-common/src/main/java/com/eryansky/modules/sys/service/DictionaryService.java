@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.service;
 
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.service.CrudService;
@@ -115,5 +116,30 @@ public class DictionaryService extends CrudService<DictionaryDao, Dictionary> {
             max = 0;
         }
         return max;
+    }
+
+
+    /**
+     * 自定义SQL查询
+     *
+     * @param whereSQL
+     * @return
+     */
+    public List<Dictionary> findByWhereSQL(String whereSQL) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("whereSQL", whereSQL);
+        return dao.findByWhereSQL(parameter);
+    }
+
+    /**
+     * 自定义SQL查询
+     *
+     * @param sql
+     * @return
+     */
+    public List<Dictionary> findBySql(String sql) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("sql", sql);
+        return dao.findBySql(parameter);
     }
 }

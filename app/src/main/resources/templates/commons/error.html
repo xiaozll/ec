@@ -2,8 +2,6 @@
 <html lang="zh-cmn-Hans" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>页面访问出错</title>
-    <script src="/static/js/jquery/jquery-1.10.2.min.js" th:src="@{/static/js/jquery/jquery-1.10.2.min.js}" ></script>
-    <script src="/static/js/jquery/jquery-migrate-1.2.1.min.js" th:src="@{/static/js/jquery/jquery-migrate-1.2.1.min.js}" ></script>
     <script type="text/javascript">
         var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
         function toIndex(){
@@ -11,11 +9,17 @@
         }
     </script>
 </head>
-<body>
+<body style="margin-left: 40px;">
 <div>
     <div><h1>页面访问出错.</h1></div>
-    <div><a  onclick="toIndex()" >返回首页</a></div>
+    <div><a href="#" onclick="toIndex()" >返回首页</a></div>
     <div><a  onclick="history.back();" >返回</a></div>
+    <br>
+    <div>路  径:[[${errorData.path}]]</div>
+    <div>状态码:[[${errorData.status}]]</div>
+    <div>时  间:[[${errorData.timestamp}]]</div>
+    <div>详细信息:[[${errorData.message}]]</div>
+    <div>错误信息:[[${errorData.error}]]</div>
 </div>
 </body>
 </html>

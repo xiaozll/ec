@@ -527,7 +527,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         TreeNode t = null;
         for (TreeNode treeNode : treeNodes) {
             String _type = (String) treeNode.getAttributes().get("nType");
-            if (parentId.equals(treeNode.getId()) && _type != null && type != null && _type.equals(type)) {
+            if (parentId.equals(treeNode.getId()) && _type != null && _type.equals(type)) {
                 t = treeNode;
                 break;
             }

@@ -98,7 +98,7 @@ public class DictionaryItemService extends CrudService<DictionaryItemDao, Dictio
      * @return List<TreeNode> 映射关系： TreeNode.text-->Dicitonary.name;TreeNode.id-->Dicitonary.id;
      */
     @SuppressWarnings("unchecked")
-    public List<TreeNode> getByDictionaryId(String dictionaryId, String excludeDictionaryItemId, boolean isCascade) {
+    public List<TreeNode> findTreeNodeByDictionaryId(String dictionaryId, String excludeDictionaryItemId, boolean isCascade) {
         List<DictionaryItem> list = null;
         List<TreeNode> treeNodes = Lists.newArrayList();
         if (StringUtils.isBlank(dictionaryId)) {
@@ -213,7 +213,7 @@ public class DictionaryItemService extends CrudService<DictionaryItemDao, Dictio
      */
     @Cacheable(value = {CacheConstants.DICTIONARYITEM_BY_DICTIONARYCODE_CACHE})
     @SuppressWarnings("unchecked")
-    public List<DictionaryItem> findDictionaryItemsByDictionaryCode(
+    public List<DictionaryItem> findListByDictionaryCode(
             String dictionaryCode) {
         Assert.notNull(dictionaryCode, "参数[dictionaryCode]为空!");
         DictionaryItem dictionaryItem = new DictionaryItem();
@@ -230,12 +230,12 @@ public class DictionaryItemService extends CrudService<DictionaryItemDao, Dictio
      * @return
      */
     @Cacheable(value = {CacheConstants.DICTIONARYITEM_CONBOBOX_CACHE})
-    public List<Combobox> getByDictionaryCode(String dictionaryCode) {
+    public List<Combobox> findTreeNodeByDictionaryCode(String dictionaryCode) {
         DictionaryItem dictionaryItem = new DictionaryItem();
         Dictionary dictionary = new Dictionary();
         dictionary.setCode(dictionaryCode);
         dictionaryItem.setDictionary(dictionary);
-        List<DictionaryItem> list = findDictionaryItemsByDictionaryCode(dictionaryCode);
+        List<DictionaryItem> list = findListByDictionaryCode(dictionaryCode);
         List<Combobox> cList = Lists.newArrayList();
         for (DictionaryItem d : list) {
             Combobox c = new Combobox(d.getValue(), d.getName());
@@ -255,7 +255,7 @@ public class DictionaryItemService extends CrudService<DictionaryItemDao, Dictio
      */
     @Cacheable(value = {CacheConstants.DICTIONARYITEM_CONBOTREE_CACHE})
     @SuppressWarnings("unchecked")
-    public List<TreeNode> getByDictionaryCode(String dictionaryCode, boolean isCascade) {
+    public List<TreeNode> findTreeNodeByDictionaryCode(String dictionaryCode, boolean isCascade) {
         logger.debug("缓存:{}", CacheConstants.DICTIONARYITEM_CONBOTREE_CACHE);
         List<DictionaryItem> list = null;
         List<TreeNode> treeNodes = Lists.newArrayList();

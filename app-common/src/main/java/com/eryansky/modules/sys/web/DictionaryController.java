@@ -239,7 +239,7 @@ public class DictionaryController extends SimpleController {
             titleList.add(selectCombobox);
         }
 
-        List<Combobox> cList = dictionaryItemService.getByDictionaryCode(dictionaryCode);
+        List<Combobox> cList = dictionaryItemService.findTreeNodeByDictionaryCode(dictionaryCode);
         return ListUtils.union(titleList, cList);
     }
 
@@ -260,7 +260,7 @@ public class DictionaryController extends SimpleController {
         if (selectTreeNode != null) {
             titleList.add(selectTreeNode);
         }
-        List<TreeNode> treeNodes = dictionaryItemService.getByDictionaryCode(dictionaryCode, true);
+        List<TreeNode> treeNodes = dictionaryItemService.findTreeNodeByDictionaryCode(dictionaryCode, true);
         return ListUtils.union(titleList, treeNodes);
     }
 

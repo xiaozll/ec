@@ -65,7 +65,7 @@ public class DictionaryUtils {
      * @return
      */
     public static List<DictionaryItem> getDictList(String dictionaryCode) {
-        return Static.dictionaryItemService.findDictionaryItemsByDictionaryCode(dictionaryCode);
+        return Static.dictionaryItemService.findListByDictionaryCode(dictionaryCode);
     }
 
 

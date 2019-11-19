@@ -126,7 +126,7 @@ public class DictionaryItemController extends SimpleController {
             titleList.add(selectTreeNode);
         }
         List<TreeNode> treeNodes = dictionaryItemService
-                .getByDictionaryId(dictionaryItem.getDictionaryId(), dictionaryItem.getId(), true);
+                .findTreeNodeByDictionaryId(dictionaryItem.getDictionaryId(), dictionaryItem.getId(), true);
         return ListUtils.union(titleList, treeNodes);
     }
 

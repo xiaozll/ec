@@ -10,7 +10,7 @@ public enum RoleType {
     ASSIGNMENT("assignment", "任务分配");
 
     /**
-     * 值 Integer型
+     * 值 String型
      */
     private final String value;
     /**

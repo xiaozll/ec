@@ -14,7 +14,7 @@ public enum DataScope {
     CUSTOM("9", "按明细设置");
 
     /**
-     * 值 Integer型
+     * 值 String型
      */
     private final String value;
     /**

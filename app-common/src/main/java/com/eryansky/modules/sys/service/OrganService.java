@@ -447,12 +447,13 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             treeNode.setIconCls(ICON_GROUP);
         }
         if (addUser != null && addUser) {
-            List<Organ> childOrgans = findChild(organ.getId());
-            List<User> childUsers = userService.findOrganUsers(organ.getId());
-            treeNode.setState((Collections3.isNotEmpty(childOrgans) || Collections3.isNotEmpty(childUsers)) ? TreeNode.STATE_CLOASED : TreeNode.STATE_OPEN);
+            Integer childOrganCount = findChildCount(organ.getId());
+            Integer childUserCount = userService.findOrganUserCount(organ.getId());
+            treeNode.setState(((null != childOrganCount && 0 != childOrganCount) || (null != childUserCount && 0 != childUserCount)) ? TreeNode.STATE_CLOASED : TreeNode.STATE_OPEN);
         } else if (onlyCompany != null && onlyCompany) {
-            List<Organ> childCompanys = findChildCompany(organ.getId());
-            treeNode.setState(Collections3.isNotEmpty(childCompanys) ? TreeNode.STATE_CLOASED : TreeNode.STATE_OPEN);
+            Collection<String> types = Lists.newArrayList(OrganType.organ.getValue());
+            Integer childCompanyCount = findChildCount(organ.getId(),types);
+            treeNode.setState((null != childCompanyCount && 0 != childCompanyCount) ? TreeNode.STATE_CLOASED : TreeNode.STATE_OPEN);
         } else {
             treeNode.setState(organ.getState());
         }
@@ -635,7 +636,6 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     public Integer findChildCount(String parentId) {
         return findChildCount(parentId,null);
     }
-
 
     /**
      * 查找子节点数量

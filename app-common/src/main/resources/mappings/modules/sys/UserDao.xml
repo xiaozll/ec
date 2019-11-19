@@ -406,6 +406,17 @@
         ORDER BY a.sort ASC
     </select>
 
+
+    <select id="findOrganUserCount" resultType="java.lang.Integer">
+        SELECT
+        count(*)
+        FROM t_sys_user a
+        <where>
+            AND a.status = '0'
+            AND a.default_organ_id = #{organId}
+        </where>
+    </select>
+
     <select id="findOrganUserIds" resultType="java.lang.String">
         SELECT
         a.id

@@ -432,6 +432,20 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
+     * 获取机构用户数
+     *
+     * @param organId
+     * @return
+     */
+    public Integer findOrganUserCount(String organId) {
+        Assert.notNull(organId, "参数[organId]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("organId", organId);
+        return dao.findOrganUserCount(parameter);
+    }
+
+    /**
      * 获取机构用户IDS
      *
      * @param organId

@@ -98,12 +98,8 @@ public abstract class PDataEntity<T, PK extends Serializable> extends PBaseEntit
 
 	@Override
 	public String getStatusView() {
-		StatusState s = StatusState.getByValue(status);
-		String str = "";
-		if (s != null) {
-			str = s.getDescription();
-		}
-		return str;
+		StatusState e = StatusState.getByValue(status);
+		return null != e ? e.getDescription():status;
 	}
 
 	public void setStatus(String status) {

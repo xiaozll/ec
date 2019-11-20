@@ -45,7 +45,7 @@ public class ConfigController extends SimpleController {
         return "modules/sys/config";
     }
 
-    @ModelAttribute
+    @ModelAttribute("model")
     public Config get(@RequestParam(required = false) String id) {
         if (StringUtils.isNotBlank(id)) {
             return configService.get(id);
@@ -72,7 +72,7 @@ public class ConfigController extends SimpleController {
     @Logging(value = "属性配置-保存配置", logType = LogType.access)
     @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result save(@ModelAttribute Config model) {
+    public Result save(@ModelAttribute("model") Config model) {
         Result result;
         // 属性名重复校验
         Config checkConfig = configService.getConfigByCode(model.getCode());
@@ -118,5 +118,6 @@ public class ConfigController extends SimpleController {
         configService.deleteByIds(ids);
         return Result.successResult();
     }
+
 
 }

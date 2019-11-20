@@ -50,7 +50,6 @@ import java.util.*;
 @RequestMapping(value = "${adminPath}/sys/systemMonitor")
 public class SystemMonitorController extends SimpleController {
 
-
     /**
      * 系统信息
      *

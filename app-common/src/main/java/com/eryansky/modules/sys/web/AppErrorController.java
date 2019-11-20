@@ -31,7 +31,7 @@ public class AppErrorController implements ErrorController {
 //        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         Map<String, Object> errorData = errorAttributes.getErrorAttributes(webRequest, true);
         Integer status = (Integer) errorData.get("status");        //请求路径
-        uiModel.addAttribute("errorData",errorData);
+        uiModel.addAttribute("errorData", errorData);
         if (status != null) {
             int statusCode = status;
             if (statusCode == HttpStatus.NOT_FOUND.value()) {

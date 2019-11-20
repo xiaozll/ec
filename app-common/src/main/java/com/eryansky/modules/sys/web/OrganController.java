@@ -466,4 +466,18 @@ public class OrganController extends SimpleController {
         return Result.successResult();
     }
 
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Organ model) {
+        return Result.successResult().setObj(model);
+    }
+
 }

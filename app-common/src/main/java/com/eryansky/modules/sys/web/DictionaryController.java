@@ -111,7 +111,7 @@ public class DictionaryController extends SimpleController {
      */
     @RequestMapping(value = {"comboboxGroup"})
     @ResponseBody
-    public List<Combobox> combobox(String selectType) throws Exception {
+    public List<Combobox> combobox(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
         List<Combobox> cList = Lists.newArrayList();
 
@@ -137,7 +137,7 @@ public class DictionaryController extends SimpleController {
      */
     @RequestMapping(value = {"tree"})
     @ResponseBody
-    public List<TreeNode> tree(String selectType) throws Exception {
+    public List<TreeNode> tree(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
         List<TreeNode> tList = Lists.newArrayList();
 
@@ -164,7 +164,7 @@ public class DictionaryController extends SimpleController {
      */
     @RequestMapping(value = {"groupCombobox"})
     @ResponseBody
-    public List<Combobox> groupCombobox(String selectType) throws Exception {
+    public List<Combobox> groupCombobox(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
         List<Combobox> cList = Lists.newArrayList();
 
@@ -185,7 +185,7 @@ public class DictionaryController extends SimpleController {
      */
     @RequestMapping(value = {"maxSort"})
     @ResponseBody
-    public Result maxSort() throws Exception {
+    public Result maxSort() {
         Integer maxSort = dictionaryService.getMaxSort();
         return new Result(Result.SUCCESS, null, maxSort);
     }
@@ -194,11 +194,10 @@ public class DictionaryController extends SimpleController {
      * 数据列表. 无分页.
      *
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"treegrid"})
     @ResponseBody
-    public Datagrid<Dictionary> treegrid(Dictionary Dictionary, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public Datagrid<Dictionary> treegrid(Dictionary Dictionary, HttpServletRequest request, HttpServletResponse response) {
         Page<Dictionary> page = new Page<Dictionary>(request);
         page = dictionaryService.findPage(page, Dictionary);
         return new Datagrid<Dictionary>(page.getTotalCount(), page.getResult());
@@ -227,12 +226,11 @@ public class DictionaryController extends SimpleController {
      * @param selectType     {@link SelectType}
      * @param dictionaryCode 数据字典编码
      * @return
-     * @throws Exception
      */
     @SuppressWarnings("unchecked")
     @RequestMapping(value = {"combobox"})
     @ResponseBody
-    public List<Combobox> combobox(String selectType, String dictionaryCode) throws Exception {
+    public List<Combobox> combobox(String selectType, String dictionaryCode) {
         List<Combobox> titleList = Lists.newArrayList();
         Combobox selectCombobox = SelectType.combobox(selectType);
         if (selectCombobox != null) {
@@ -249,12 +247,11 @@ public class DictionaryController extends SimpleController {
      * @param selectType     {@link SelectType}
      * @param dictionaryCode 数据字典编码
      * @return
-     * @throws Exception
      */
     @SuppressWarnings("unchecked")
     @RequestMapping(value = {"combotree"})
     @ResponseBody
-    public List<TreeNode> combotree(String selectType, String dictionaryCode) throws Exception {
+    public List<TreeNode> combotree(String selectType, String dictionaryCode) {
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
         if (selectTreeNode != null) {

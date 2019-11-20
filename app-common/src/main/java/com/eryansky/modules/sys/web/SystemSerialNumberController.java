@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.sys.web;
 
+import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
@@ -27,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +47,7 @@ public class SystemSerialNumberController extends SimpleController {
     @Autowired
     private SystemSerialNumberService systemSerialNumberService;
 
-    @ModelAttribute
+    @ModelAttribute("model")
     public SystemSerialNumber get(@RequestParam(required = false) String id) {
         if (StringUtils.isNotBlank(id)) {
             return systemSerialNumberService.get(id);
@@ -87,7 +89,7 @@ public class SystemSerialNumberController extends SimpleController {
                     try {
                         List<Object[]> data = Lists.newArrayList();
                         page.getResult().forEach(o -> {
-                            data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(),o.getMaxSerial(),o.getResetType(),o.getIsAutoIncrement(),o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())});
+                            data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(), o.getMaxSerial(), o.getResetType(), o.getIsAutoIncrement(), o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())});
                         });
                         CsvUtils.exportToCsv(title, hearders, data, request, response);
                     } catch (IOException e) {
@@ -106,7 +108,7 @@ public class SystemSerialNumberController extends SimpleController {
 
     @RequiresPermissions("sys:systemSerialNumber:view")
     @RequestMapping(value = "form")
-    public String form(SystemSerialNumber model, Model uiModel) {
+    public String form(@ModelAttribute("model") SystemSerialNumber model, Model uiModel) {
         uiModel.addAttribute("model", model);
         uiModel.addAttribute("resetTypes", ResetType.values());
         return "modules/sys/systemSerialNumberForm";
@@ -114,7 +116,7 @@ public class SystemSerialNumberController extends SimpleController {
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
     @RequestMapping(value = "save")
-    public String save(SystemSerialNumber model, Model uiModel, RedirectAttributes redirectAttributes) {
+    public String save(@ModelAttribute("model") SystemSerialNumber model, Model uiModel, RedirectAttributes redirectAttributes) {
         if (!beanValidator(uiModel, model)) {
             return form(model, uiModel);
         }
@@ -125,10 +127,24 @@ public class SystemSerialNumberController extends SimpleController {
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
     @RequestMapping(value = "delete")
-    public String delete(SystemSerialNumber model, RedirectAttributes redirectAttributes) {
+    public String delete(@ModelAttribute("model") SystemSerialNumber model, RedirectAttributes redirectAttributes) {
         systemSerialNumberService.delete(model);
         addMessage(redirectAttributes, "删除成功");
         return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";
+    }
+
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") SystemSerialNumber model) {
+        return Result.successResult().setObj(model);
     }
 
 }

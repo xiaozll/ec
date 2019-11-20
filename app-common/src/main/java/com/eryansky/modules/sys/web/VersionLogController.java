@@ -298,4 +298,18 @@ public class VersionLogController extends SimpleController {
         }
         return null;
     }
+
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") VersionLog model) {
+        return Result.successResult().setObj(model);
+    }
 }

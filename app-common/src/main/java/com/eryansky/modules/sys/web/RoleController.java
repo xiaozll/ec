@@ -98,10 +98,9 @@ public class RoleController extends SimpleController {
     /**
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"input"})
-    public String input(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
+    public String input(@ModelAttribute("model") Role model, Model uiModel) {
         if (StringUtils.isBlank(model.getId()) && !SecurityUtils.isCurrentUserAdmin()) {
             model.setIsSystem(YesOrNo.NO.getValue());
         }
@@ -279,14 +278,13 @@ public class RoleController extends SimpleController {
      * 设置角色用户
      *
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-保存角色用户", logType = LogType.access)
     @RequestMapping(value = {"updateRoleUser"})
     @ResponseBody
     public Result updateRoleUser(@ModelAttribute("model") Role model,
-                                 @RequestParam(value = "userIds", required = false) Set<String> userIds) throws Exception {
+                                 @RequestParam(value = "userIds", required = false) Set<String> userIds) {
         roleService.saveRoleUsers(model.getId(), userIds);
         return Result.successResult();
     }
@@ -319,7 +317,7 @@ public class RoleController extends SimpleController {
      */
     @RequestMapping(value = {"combobox"})
     @ResponseBody
-    public List<Combobox> combobox(String selectType) throws Exception {
+    public List<Combobox> combobox(String selectType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String organId = sessionInfo.getLoginCompanyId();
 
@@ -343,7 +341,7 @@ public class RoleController extends SimpleController {
      */
     @RequestMapping(value = {"tree"})
     @ResponseBody
-    public List<TreeNode> tree(String selectType) throws Exception {
+    public List<TreeNode> tree(String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Role> list = roleService.findAll();
 
@@ -357,5 +355,19 @@ public class RoleController extends SimpleController {
             treeNodes.add(treeNode);
         }
         return treeNodes;
+    }
+
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Role model) {
+        return Result.successResult().setObj(model);
     }
 }

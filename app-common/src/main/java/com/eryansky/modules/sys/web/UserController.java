@@ -23,6 +23,7 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.disk.mapper.File;
+import com.eryansky.modules.sys.mapper.Role;
 import com.google.common.collect.Lists;
 import com.eryansky.core.excelTools.ExcelUtils;
 import com.eryansky.core.excelTools.JsGridReportBase;
@@ -781,5 +782,18 @@ public class UserController extends SimpleController {
         JsGridReportBase report = new JsGridReportBase(request, response);
         report.exportToExcel(title, SecurityUtils.getCurrentSessionInfo().getName(), tds);
 
+    }
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") User model) {
+        return Result.successResult().setObj(model);
     }
 }

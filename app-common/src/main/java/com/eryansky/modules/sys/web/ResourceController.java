@@ -227,5 +227,17 @@ public class ResourceController extends SimpleController {
         return result;
     }
 
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Resource model) {
+        return Result.successResult().setObj(model);
+    }
 
 }

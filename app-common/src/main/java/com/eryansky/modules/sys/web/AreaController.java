@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.sys.web;
 
+import com.eryansky.common.model.Result;
 import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
@@ -208,5 +209,19 @@ public class AreaController extends SimpleController {
             treeNodes.add(treeNode);
         }
         return treeNodes;
+    }
+
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Area model) {
+        return Result.successResult().setObj(model);
     }
 }

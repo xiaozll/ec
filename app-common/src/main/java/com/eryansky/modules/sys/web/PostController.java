@@ -206,4 +206,18 @@ public class PostController extends SimpleController {
         }
         return cList;
     }
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Post model) {
+        return Result.successResult().setObj(model);
+    }
+
 }

@@ -136,7 +136,7 @@ public class DictionaryItemController extends SimpleController {
      */
     @RequestMapping(value = {"maxSort"})
     @ResponseBody
-    public Result maxSort() throws Exception {
+    public Result maxSort() {
         Integer maxSort = dictionaryItemService.getMaxSort();
         return new Result(Result.SUCCESS, null, maxSort);
     }

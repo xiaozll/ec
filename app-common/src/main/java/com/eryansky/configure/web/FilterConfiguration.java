@@ -1,6 +1,7 @@
 package com.eryansky.configure.web;
 
 import com.eryansky.core.web.filter.MySiteMeshFilter;
+import com.eryansky.core.web.interceptor.ExceptionInterceptor;
 import com.eryansky.filters.ChinesePathFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -43,4 +44,15 @@ public class FilterConfiguration {
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE+200);
         return bean;
     }
+
+    /**
+     * 自定义异常处理
+     * @return
+     */
+    @Bean
+    public ExceptionInterceptor exceptionInterceptor() {
+        ExceptionInterceptor bean = new ExceptionInterceptor();
+        return bean;
+    }
+
 }

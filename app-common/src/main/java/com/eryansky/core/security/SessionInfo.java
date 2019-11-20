@@ -1,15 +1,17 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.core.security;
 
+import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.orm.persistence.AbstractBaseEntity;
 import com.eryansky.common.utils.StringUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Maps;
 import eu.bitwalker.useragentutils.DeviceType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -18,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * session登录用户对象.
@@ -171,7 +174,14 @@ public class SessionInfo implements Serializable {
     private String avatar;
     private String gender;
 
+    /**
+     * 自定义属性
+     */
+    private Map<String, Object> attributes;
+
+
     public SessionInfo() {
+        this.attributes = Maps.newHashMap();
     }
 
     /**
@@ -184,8 +194,9 @@ public class SessionInfo implements Serializable {
     /**
      * 设置ID
      */
-    public void setId(String id) {
+    public SessionInfo setId(String id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -198,8 +209,9 @@ public class SessionInfo implements Serializable {
     /**
      * 设置 sessionID
      */
-    public void setSessionId(String sessionId) {
+    public SessionInfo setSessionId(String sessionId) {
         this.sessionId = sessionId;
+        return this;
     }
 
     /**
@@ -213,8 +225,9 @@ public class SessionInfo implements Serializable {
      * 设置 服务主机
      * @param host
      */
-    public void setHost(String host) {
+    public SessionInfo setHost(String host) {
         this.host = host;
+        return this;
     }
 
     /**
@@ -227,8 +240,9 @@ public class SessionInfo implements Serializable {
     /**
      * 设置用户ID
      */
-    public void setUserId(String userId) {
+    public SessionInfo setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     /**
@@ -241,8 +255,9 @@ public class SessionInfo implements Serializable {
     /**
      * 设置 登录名
      */
-    public void setLoginName(String loginName) {
+    public SessionInfo setLoginName(String loginName) {
         this.loginName = loginName;
+        return this;
     }
 
 
@@ -250,16 +265,17 @@ public class SessionInfo implements Serializable {
         return loginNames;
     }
 
-    public void setLoginNames(List<String> loginNames) {
+    public SessionInfo setLoginNames(List<String> loginNames) {
         this.loginNames = loginNames;
+        return this;
     }
 
 
     public synchronized SessionInfo addIfNotExistLoginName(String loginName) {
-        if(StringUtils.isBlank(loginName)){
+        if (StringUtils.isBlank(loginName)) {
             return this;
         }
-        if(!this.loginNames.contains(loginName)){
+        if (!this.loginNames.contains(loginName)) {
             this.loginNames.add(loginName);
         }
         return this;
@@ -275,8 +291,9 @@ public class SessionInfo implements Serializable {
     /**
      * 设置 登录姓名
      */
-    public void setName(String name) {
+    public SessionInfo setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -289,8 +306,9 @@ public class SessionInfo implements Serializable {
     /**
      * 设置 用户类型
      */
-    public void setUserType(String userType) {
+    public SessionInfo setUserType(String userType) {
         this.userType = userType;
+        return this;
     }
 
     /**
@@ -303,40 +321,45 @@ public class SessionInfo implements Serializable {
     /**
      * 设置 客户端IP
      */
-    public void setIp(String ip) {
+    public SessionInfo setIp(String ip) {
         this.ip = ip;
+        return this;
     }
 
     public String getBrowserType() {
         return browserType;
     }
 
-    public void setBrowserType(String browserType) {
+    public SessionInfo setBrowserType(String browserType) {
         this.browserType = browserType;
+        return this;
     }
 
     public String getSysTemDeviceType() {
         return sysTemDeviceType;
     }
 
-    public void setSysTemDeviceType(String sysTemDeviceType) {
+    public SessionInfo setSysTemDeviceType(String sysTemDeviceType) {
         this.sysTemDeviceType = sysTemDeviceType;
+        return this;
     }
 
     public String getDeviceType() {
         return deviceType;
     }
 
-    public void setDeviceType(String deviceType) {
+    public SessionInfo setDeviceType(String deviceType) {
         this.deviceType = deviceType;
+        return this;
     }
 
     public String getUserAgent() {
         return userAgent;
     }
 
-    public void setUserAgent(String userAgent) {
+    public SessionInfo setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        return this;
     }
 
     /**
@@ -349,15 +372,17 @@ public class SessionInfo implements Serializable {
     /**
      * 设置 角色ID集合
      */
-    public void setRoleIds(List<String> roleIds) {
+    public SessionInfo setRoleIds(List<String> roleIds) {
         this.roleIds = roleIds;
+        return this;
     }
 
     /**
      * 设置登录时间
      */
-    public void setLoginTime(Date loginTime) {
+    public SessionInfo setLoginTime(Date loginTime) {
         this.loginTime = loginTime;
+        return this;
     }
 
     /**
@@ -374,42 +399,46 @@ public class SessionInfo implements Serializable {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public SessionInfo setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public BigDecimal getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
+    public SessionInfo setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
+        return this;
     }
 
     public BigDecimal getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
+    public SessionInfo setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
+        return this;
     }
 
     public BigDecimal getAccuracy() {
         return accuracy;
     }
 
-    public void setAccuracy(BigDecimal accuracy) {
+    public SessionInfo setAccuracy(BigDecimal accuracy) {
         this.accuracy = accuracy;
+        return this;
     }
-
 
 
     public String getLoginOrganId() {
         return loginOrganId;
     }
 
-    public void setLoginOrganId(String loginOrganId) {
+    public SessionInfo setLoginOrganId(String loginOrganId) {
         this.loginOrganId = loginOrganId;
+        return this;
     }
 
 
@@ -417,48 +446,54 @@ public class SessionInfo implements Serializable {
         return loginOrganSysCode;
     }
 
-    public void setLoginOrganSysCode(String loginOrganSysCode) {
+    public SessionInfo setLoginOrganSysCode(String loginOrganSysCode) {
         this.loginOrganSysCode = loginOrganSysCode;
+        return this;
     }
 
     public String getLoginCompanyId() {
         return loginCompanyId;
     }
 
-    public void setLoginCompanyId(String loginCompanyId) {
+    public SessionInfo setLoginCompanyId(String loginCompanyId) {
         this.loginCompanyId = loginCompanyId;
+        return this;
     }
 
     public String getLoginCompanyCode() {
         return loginCompanyCode;
     }
 
-    public void setLoginCompanyCode(String loginCompanyCode) {
+    public SessionInfo setLoginCompanyCode(String loginCompanyCode) {
         this.loginCompanyCode = loginCompanyCode;
+        return this;
     }
 
     public Integer getLoginCompanyLevel() {
         return loginCompanyLevel;
     }
 
-    public void setLoginCompanyLevel(Integer loginCompanyLevel) {
+    public SessionInfo setLoginCompanyLevel(Integer loginCompanyLevel) {
         this.loginCompanyLevel = loginCompanyLevel;
+        return this;
     }
 
     public String getLoginHomeCompanyId() {
         return loginHomeCompanyId;
     }
 
-    public void setLoginHomeCompanyId(String loginHomeCompanyId) {
+    public SessionInfo setLoginHomeCompanyId(String loginHomeCompanyId) {
         this.loginHomeCompanyId = loginHomeCompanyId;
+        return this;
     }
 
     public String getLoginHomeCompanyCode() {
         return loginHomeCompanyCode;
     }
 
-    public void setLoginHomeCompanyCode(String loginHomeCompanyCode) {
+    public SessionInfo setLoginHomeCompanyCode(String loginHomeCompanyCode) {
         this.loginHomeCompanyCode = loginHomeCompanyCode;
+        return this;
     }
 
     /**
@@ -473,16 +508,18 @@ public class SessionInfo implements Serializable {
     /**
      * 设置默认登录组织机构名称
      */
-    public void setLoginOrganName(String loginOrganName) {
+    public SessionInfo setLoginOrganName(String loginOrganName) {
         this.loginOrganName = loginOrganName;
+        return this;
     }
 
     public List<String> getPostCodes() {
         return postCodes;
     }
 
-    public void setPostCodes(List<String> postCodes) {
+    public SessionInfo setPostCodes(List<String> postCodes) {
         this.postCodes = postCodes;
+        return this;
     }
 
     /**
@@ -509,6 +546,7 @@ public class SessionInfo implements Serializable {
         this.permissonRoles.add(permissonRole);
         return this;
     }
+
     @JsonIgnore
     public List<Permisson> getPermissons() {
         return permissons;
@@ -524,8 +562,8 @@ public class SessionInfo implements Serializable {
         return this;
     }
 
-    public boolean isMobileLogin(){
-        if(StringUtils.isBlank(deviceType)){
+    public boolean isMobileLogin() {
+        if (StringUtils.isBlank(deviceType)) {
             return false;
         }
         DeviceType _deviceType = DeviceType.valueOf(deviceType);
@@ -536,8 +574,9 @@ public class SessionInfo implements Serializable {
         return appVersion;
     }
 
-    public void setAppVersion(String appVersion) {
+    public SessionInfo setAppVersion(String appVersion) {
         this.appVersion = appVersion;
+        return this;
     }
 
 
@@ -545,8 +584,9 @@ public class SessionInfo implements Serializable {
         return deviceCode;
     }
 
-    public void setDeviceCode(String deviceCode) {
+    public SessionInfo setDeviceCode(String deviceCode) {
         this.deviceCode = deviceCode;
+        return this;
     }
 
     @Override
@@ -557,50 +597,75 @@ public class SessionInfo implements Serializable {
     public boolean isAuthenticated() {
         return true;
     }
+
     public String getPrincipal() {
         return name;
     }
 
+    /**
+     * 添加自定义属性
+     * @param key key
+     * @param object 值
+     * @return
+     */
+    public SessionInfo addAttribute(String key, Object object) {
+        this.attributes.put(key, object);
+        return this;
+    }
 
+    /**
+     * 返回自定义属性
+     * @param key
+     * @param <T>
+     * @return
+     */
+    public <T> T getAttribute(String key) {
+        return (T) attributes.get(key);
+    }
 
 
     public String getAreaCode() {
         return areaCode;
     }
 
-    public void setAreaCode(String areaCode) {
+    public SessionInfo setAreaCode(String areaCode) {
         this.areaCode = areaCode;
+        return this;
     }
 
     public String getOpenId() {
         return openId;
     }
 
-    public void setOpenId(String openId) {
+    public SessionInfo setOpenId(String openId) {
         this.openId = openId;
+        return this;
     }
 
     public String getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public SessionInfo setToken(String token) {
         this.token = token;
+        return this;
     }
 
     public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public SessionInfo setAvatar(String avatar) {
         this.avatar = avatar;
+        return this;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public SessionInfo setGender(String gender) {
         this.gender = gender;
+        return this;
     }
 }

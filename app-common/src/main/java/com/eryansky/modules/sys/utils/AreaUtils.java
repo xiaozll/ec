@@ -50,7 +50,7 @@ public class AreaUtils {
     /**
      * 查找名称
      *
-     * @param areaId 区域编码
+     * @param areaId 区域ID
      * @return
      */
     public static String getAreaName(String areaId) {
@@ -61,4 +61,17 @@ public class AreaUtils {
         return null;
     }
 
+    /**
+     * 查找名称
+     *
+     * @param areaCode 区域编码
+     * @return
+     */
+    public static String getAreaNameByAreaCode(String areaCode) {
+        Area area = getByCode(areaCode);
+        if (area != null) {
+            return area.getName();
+        }
+        return null;
+    }
 }

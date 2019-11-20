@@ -14,6 +14,7 @@ import com.eryansky.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -71,6 +72,65 @@ public class AreaService extends TreeService<AreaDao, Area> {
         parameter.put("areaId", parentId);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         return dao.findAreaDown(parameter);
+    }
+
+    /**
+     * 查找本机以及以下
+     *
+     * @param areaId
+     * @return
+     */
+    public List<Area> findChildById(String areaId) {
+        return findChildById(areaId,null);
+    }
+
+    /**
+     * 查找本机以及以下
+     *
+     * @param areaId
+     * @param types
+     * @return
+     */
+    public List<Area> findChildById(String areaId, Collection<String> types) {
+        return findChild(areaId,null,types);
+    }
+
+    /**
+     * 查找本机以及以下
+     *
+     * @param areaCode
+     * @return
+     */
+    public List<Area> findChildByCode(String areaCode) {
+        return findChildByCode(areaCode,null);
+    }
+
+    /**
+     * 查找本机以及以下
+     *
+     * @param areaCode
+     * @param types
+     * @return
+     */
+    public List<Area> findChildByCode(String areaCode, Collection<String> types) {
+        return findChild(null,areaCode,types);
+    }
+
+    /**
+     * 查找本机以及以下
+     *
+     * @param parentId
+     * @param parentCode
+     * @param types
+     * @return
+     */
+    public List<Area> findChild(String parentId, String parentCode, Collection<String> types) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("parentId", parentId);
+        parameter.put("parentCode", parentCode);
+        parameter.put("types", types);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        return dao.findOwnAndChild(parameter);
     }
 
     /**

@@ -623,6 +623,17 @@ public class SessionInfo implements Serializable {
         return (T) attributes.get(key);
     }
 
+    /**
+     * 自定义属性
+     */
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public SessionInfo setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
+        return this;
+    }
 
     public String getAreaCode() {
         return areaCode;

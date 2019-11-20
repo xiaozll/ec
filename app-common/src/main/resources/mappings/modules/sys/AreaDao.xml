@@ -121,6 +121,34 @@
 	</select>
 
 
+	<select id="findChild" resultType="Area">
+		SELECT
+		<include refid="areaColumns"/>
+		FROM t_sys_organ a
+		<include refid="areaJoins"/>
+		<where>
+			<if test="types != null and types.size() !=0">
+				AND a.type IN
+				<foreach collection="types" open="(" separator="," close=")" item="item">
+					#{item}
+				</foreach>
+			</if>
+			<choose>
+				<when test="parentId != null and parentId !=''">
+					AND a.parent_id = #{parentId}
+				</when>
+				<when test="parentCode != null and parentCode !=''">
+					AND p.code = #{parentCode}
+				</when>
+				<otherwise>
+					AND (a.parent_id IS NULL OR a.parent_id = '' OR a.parent_id = '0')
+				</otherwise>
+			</choose>
+		</where>
+		ORDER BY a.sort ASC
+	</select>
+
+
 	<select id="findAreaUp" resultType="Area">
 		SELECT
 		<include refid="areaColumns"/>

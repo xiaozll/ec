@@ -37,6 +37,8 @@ public interface AreaDao extends TreeDao<Area> {
      */
     List<Area> findOwnAndChild(Parameter parameter);
 
+    List<Area> findChild(Parameter parameter);
+
     List<Area> findByParentId(Parameter parameter);
 
 }

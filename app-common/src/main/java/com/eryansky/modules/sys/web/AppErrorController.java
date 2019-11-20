@@ -33,7 +33,7 @@ public class AppErrorController implements ErrorController {
         Integer status = (Integer) errorData.get("status");        //请求路径
         uiModel.addAttribute("errorData",errorData);
         if (status != null) {
-            int statusCode = status.intValue();
+            int statusCode = status;
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "commons/404.html";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {

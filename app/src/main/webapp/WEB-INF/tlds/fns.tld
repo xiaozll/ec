@@ -175,6 +175,22 @@
         <example>${fns:getDictList(type)}</example>
     </function>
 
+
+    <function>
+        <description>获取当前版本的更新说明</description>
+        <name>getLatestVersionLog</name>
+        <function-class>com.eryansky.modules.sys.utils.VersionLogUtils</function-class>
+        <function-signature>com.eryansky.modules.sys.mapper.VersionLog getLatestVersionLog(java.lang.String)</function-signature>
+        <example>${fns:getLatestVersionLog(versionLogType)}</example>
+    </function>
+    <function>
+        <description>获取版本的更新说明</description>
+        <name>getVersionLog</name>
+        <function-class>com.eryansky.modules.sys.utils.VersionLogUtils</function-class>
+        <function-signature>com.eryansky.modules.sys.mapper.VersionLog getLatestVersionLog()</function-signature>
+        <example>${fns:getVersionLog()}</example>
+    </function>
+
     <!-- Encodes -->
     <function>
         <description>URL编码</description>

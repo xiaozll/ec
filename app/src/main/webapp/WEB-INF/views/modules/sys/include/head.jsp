@@ -26,6 +26,7 @@
 <link href="${ctxStatic}/js/common/common.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/common/common.js" type="text/javascript"></script>
 <script src="${ctxStatic}/js/common/mustache.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctxStatic}/js/vue/dist/vue.min.js" charset="utf-8"></script>
 <script src="${ctxStatic}/js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/fancyBox/source/jquery.fancybox.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/fancyBox/source/jquery.fancybox.js" type="text/javascript"></script>

@@ -565,7 +565,7 @@
     </select>
 
 
-    <select id="findUsersByPostId" resultType="User">
+    <select id="findUsersByPost" resultType="User">
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
@@ -573,12 +573,17 @@
         LEFT JOIN t_sys_post p ON p.id = up.post_id
         <where>
             a.status = #{status}
-            AND p.id = #{postId}
+            <if test="postId != null and postId !=''">
+                AND p.id = #{postId}
+            </if>
+            <if test="postCode != null and postCode !=''">
+                AND p.code = #{postCode}
+            </if>
         </where>
         ORDER BY a.sort ASC
     </select>
 
-    <select id="findUserIdsByPostId" resultType="java.lang.String">
+    <select id="findUserIdsByPost" resultType="java.lang.String">
         SELECT
         a.id
         FROM t_sys_user a
@@ -586,7 +591,12 @@
         LEFT JOIN t_sys_post p ON p.id = up.post_id
         <where>
             a.status = #{status}
-            AND p.id = #{postId}
+            <if test="postId != null and postId !=''">
+                AND p.id = #{postId}
+            </if>
+            <if test="postCode != null and postCode !=''">
+                AND p.code = #{postCode}
+            </if>
         </where>
         ORDER BY a.sort ASC
     </select>

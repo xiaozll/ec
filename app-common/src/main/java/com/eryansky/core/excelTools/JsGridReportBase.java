@@ -411,7 +411,7 @@ public class JsGridReportBase {
      * bgcolor:#FFFFFF; </style> <style name="row1"> import(parent);
      * bgcolor:#CAEAFE; </style>
      */
-    private void exportToExcel(String title, String creator, TableData tableData, Integer[] freezePanes)
+    public void exportToExcel(String title, String creator, TableData tableData, Integer[] freezePanes)
             throws Exception {
 
         HSSFWorkbook wb = new HSSFWorkbook();// 创建新的Excel 工作簿

@@ -76,9 +76,9 @@ public interface UserDao extends CrudDao<User> {
 
     List<String> findUserIdsByRoleId(Parameter parameter);
 
-    List<User> findUsersByPostId(Parameter parameter);
+    List<User> findUsersByPost(Parameter parameter);
 
-    List<String> findUserIdsByPostId(Parameter parameter);
+    List<String> findUserIdsByPost(Parameter parameter);
 
 
     List<User> findListByPostAndOrgan(Parameter parameter);

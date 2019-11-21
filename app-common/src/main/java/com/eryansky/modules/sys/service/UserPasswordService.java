@@ -73,7 +73,11 @@ public class UserPasswordService extends CrudService<UserPasswordDao, UserPasswo
         return userPassword;
     }
 
-
+    /**
+     * 检查密码策略
+     * @param userId
+     * @return
+     */
     public PasswordTip checkPassword(String userId) {
         UserPassword userPassword = getLatestUserPasswordByUserId(userId);
         Calendar calendar = Calendar.getInstance();

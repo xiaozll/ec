@@ -11,6 +11,8 @@ import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys.mapper.User;
+import com.eryansky.modules.sys.utils.UserUtils;
+import com.eryansky.modules.sys.vo.PasswordTip;
 import com.eryansky.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import com.eryansky.modules.sys.mapper.UserPassword;
 import com.eryansky.modules.sys.dao.UserPasswordDao;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,5 +71,24 @@ public class UserPasswordService extends CrudService<UserPasswordDao, UserPasswo
         userPassword.setOriginalPassword(user.getOriginalPassword());
         this.save(userPassword);
         return userPassword;
+    }
+
+
+    public PasswordTip checkPassword(String userId) {
+        UserPassword userPassword = getLatestUserPasswordByUserId(userId);
+        Calendar calendar = Calendar.getInstance();
+        int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
+        calendar.add(Calendar.DATE, -userPasswordUpdateCycle);
+        Date time = calendar.getTime();
+
+        PasswordTip tip = new PasswordTip();
+        if (userPassword == null) {
+            tip.setMsg("您从未修改过登录秘密，请修改登录密码！");
+            tip.setCode(PasswordTip.CODE_YES);
+        } else if (time.compareTo(userPassword.getModifyTime()) > 0) {
+            tip.setMsg("您已超过" + userPasswordUpdateCycle + "天没有修改登录密码，请修改登录密码！");
+            tip.setCode(PasswordTip.CODE_YES);
+        }
+        return tip;
     }
 }

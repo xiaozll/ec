@@ -1,33 +1,53 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.collections;
 
 import com.eryansky.common.utils.ObjectUtils;
 
+import java.util.Arrays;
+
 /**
  * array工具类
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date   2012-1-9下午2:55:08
+ * @date 2012-1-9下午2:55:08
  */
-public class ArrayUtils {
+public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
     /**
-     * 判断array是否为空或大小为0
-     * 
-     * @param sourceArray
-     * @return 若array为null或长度为0, 返回true; 否则返回false.
-     * 
-     * <pre>
-     *      isEmpty(null)   =   true;
-     *      isEmpty({})     =   true;
-     *      isEmpty({1})    =   false;
-     * </pre>
+     * 合并数组
+     * @param first
+     * @param second
+     * @param <T>
+     * @return
      */
-    public static <V> boolean isEmpty(V[] sourceArray) {
-        return (sourceArray == null || sourceArray.length == 0);
+    public static <T> T[] concat(T[] first, T[] second) {
+        T[] result = Arrays.copyOf(first, first.length + second.length);
+        System.arraycopy(second, 0, result, first.length, second.length);
+        return result;
+    }
+
+    /**
+     * 合并数组（多个）
+     * @param first
+     * @param rest
+     * @param <T>
+     * @return
+     */
+    public static <T> T[] concatAll(T[] first, T[]... rest) {
+        int totalLength = first.length;
+        for (T[] array : rest) {
+            totalLength += array.length;
+        }
+        T[] result = Arrays.copyOf(first, totalLength);
+        int offset = first.length;
+        for (T[] array : rest) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
+        }
+        return result;
     }
 
     /**
@@ -38,7 +58,7 @@ public class ArrayUtils {
      * <li>若找到了value并且不为第一个元素，返回该元素的前一个元素</li>
      * <li>若找到了value并且为第一个元素，isCircle为true时，返回数组最后一个元素；isCircle为false时，返回defaultValue</li>
      * </ul>
-     * 
+     *
      * @param <V>
      * @param sourceArray 源array
      * @param value 待查找值，若value为null同样适用，会查找第一个为null的值
@@ -76,7 +96,7 @@ public class ArrayUtils {
      * <li>若找到了value并且不为最后一个元素，返回该元素的下一个元素</li>
      * <li>若找到了value并且为最后一个元素，isCircle为true时，返回数组第一个元素；isCircle为false时，返回defaultValue</li>
      * </ul>
-     * 
+     *
      * @param <V>
      * @param sourceArray 源array
      * @param value 待查找值，若value为null同样适用，会查找第一个为null的值

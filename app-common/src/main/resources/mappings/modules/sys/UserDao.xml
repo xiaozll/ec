@@ -579,30 +579,87 @@
         ORDER BY a.sort ASC
     </select>
 
-    <select id="findUsersByPostIdAndOrganId" resultType="User">
+    <select id="findListByPostAndOrgan" resultType="User">
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
+        <if test="organCode != null and organCode !=''">
+            LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+            LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        </if>
         <where>
             a.status = #{status}
-            AND p.id = #{postId}
-            AND up.organ_id = #{organId}
+            <if test="postId != null and postId !=''">
+                AND p.id = #{postId}
+            </if>
+            <if test="postCode != null and postCode !=''">
+                AND p.code = #{postCode}
+            </if>
+            <if test="organId != null and organId !=''">
+                AND up.organ_id = #{organId}
+            </if>
+            <if test="organCode != null and organCode !=''">
+                AND o.code = #{organCode}
+            </if>
         </where>
         ORDER BY a.sort ASC
     </select>
 
-    <select id="findUserIdsByPostIdAndOrganId" resultType="java.lang.String">
+    <select id="findUserIdsByPostAndOrgan" resultType="java.lang.String">
         SELECT
         a.id
         FROM t_sys_user a
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
+        <if test="organCode != null and organCode !=''">
+            LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+            LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        </if>
         <where>
             a.status = #{status}
-            AND p.id = #{postId}
-            AND up.organ_id = #{organId}
+            <if test="postId != null and postId !=''">
+                AND p.id = #{postId}
+            </if>
+            <if test="postCode != null and postCode !=''">
+                AND p.code = #{postCode}
+            </if>
+            <if test="organId != null and organId !=''">
+                AND up.organ_id = #{organId}
+            </if>
+            <if test="organCode != null and organCode !=''">
+                AND o.code = #{organCode}
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+
+    <select id="findUserLoginNamesByPostAndOrgan" resultType="java.lang.String">
+        SELECT
+        a.login_name
+        FROM t_sys_user a
+        LEFT JOIN t_sys_user_post up ON up.user_id = a.id
+        LEFT JOIN t_sys_post p ON p.id = up.post_id
+        <if test="organCode != null and organCode !=''">
+            LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+            LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        </if>
+        <where>
+            a.status = #{status}
+            <if test="postId != null and postId !=''">
+                AND p.id = #{postId}
+            </if>
+            <if test="postCode != null and postCode !=''">
+                AND p.code = #{postCode}
+            </if>
+            <if test="organId != null and organId !=''">
+                AND up.organ_id = #{organId}
+            </if>
+            <if test="organCode != null and organCode !=''">
+                AND o.code = #{organCode}
+            </if>
         </where>
         ORDER BY a.sort ASC
     </select>

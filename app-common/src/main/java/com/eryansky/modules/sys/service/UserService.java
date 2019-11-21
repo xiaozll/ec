@@ -910,27 +910,80 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organId 机构ID
      * @return
      */
-    public List<User> findUsersByPostIdAndOrganId(String postId, String organId) {
-        Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
-        parameter.put("postId", postId);
-        parameter.put("organId", organId);
-        return dao.findUsersByPostIdAndOrganId(parameter);
+    public List<User> findListByPostIdAndOrganId(String postId, String organId) {
+        return findListByPostAndOrgan(postId,null,organId,null);
     }
 
     /**
      * 根据岗位查询
      *
-     * @param postId  岗位
-     * @param organId 机构ID
+     * @param postCode  岗位编码
+     * @param organCode 机构编码
      * @return
      */
-    public List<String> findUserIdsByPostIdAndOrganId(String postId, String organId) {
+    public List<User> findListByPostCodeAndOrganCode(String postCode, String organCode) {
+        return findListByPostAndOrgan(null,postCode,null,organCode);
+    }
+
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @param organCode 机构编码
+     * @return
+     */
+    public List<User> findListByPostAndOrgan(String postId,String postCode, String organId, String organCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("postId", postId);
+        parameter.put("postCode", postCode);
         parameter.put("organId", organId);
-        return dao.findUserIdsByPostIdAndOrganId(parameter);
+        parameter.put("organCode", organCode);
+        return dao.findListByPostAndOrgan(parameter);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param organId 机构ID
+     * @return
+     */
+    public List<String> findUserIdsByPostIdAndOrganId(String postId,String organId){
+        return findUserIdsByPostAndOrgan(postId,null,organId,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postCode  岗位编码
+     * @param organCode 机构编码
+     * @return
+     */
+    public List<String> findUserIdsByPostCodeAndOrganCode(String postCode,String organCode){
+        return findUserIdsByPostAndOrgan(null,postCode,null,organCode);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @param organCode 机构编码
+     * @return
+     */
+    public List<String> findUserIdsByPostAndOrgan(String postId,String postCode, String organId, String organCode) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("postId", postId);
+        parameter.put("postCode", postCode);
+        parameter.put("organId", organId);
+        parameter.put("organCode", organCode);
+        return dao.findUserIdsByPostAndOrgan(parameter);
     }
 
 

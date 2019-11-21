@@ -492,15 +492,15 @@ public class UserController extends SimpleController {
             list = userService.findAllNormalWithExclude(excludeUserIds);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue()))) {
             String organId = sessionInfo.getLoginCompanyId();
-            list = userService.findOwnerAndChildsUsers(organId, excludeUserIds);
+            list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY.getValue()))) {
             list = userService.findUsersByCompanyId(sessionInfo.getLoginCompanyId(), excludeUserIds);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue()))) {
             String organId = sessionInfo.getLoginOrganId();
-            list = userService.findOwnerAndChildsUsers(organId, excludeUserIds);
+            list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);
         } else {
             String organId = sessionInfo.getLoginOrganId();
-            list = userService.findOwnerAndChildsUsers(organId, excludeUserIds);
+            list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);
         }
 
 

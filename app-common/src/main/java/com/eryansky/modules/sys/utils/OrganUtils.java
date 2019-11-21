@@ -85,6 +85,21 @@ public class OrganUtils {
     /**
      * 根据机构编码查找
      *
+     * @param organId 机构ID
+     * @return
+     */
+    public static Integer getOrganLevelByOrganId(String organId) {
+        if (StringUtils.isBlank(organId)) {
+            return null;
+        }
+        OrganExtend organExtend = getOrganExtend(organId);
+
+        return null == organExtend ? null : organExtend.getTreeLevel();
+    }
+
+    /**
+     * 根据机构编码查找
+     *
      * @param organCode 机构编码
      * @return
      */

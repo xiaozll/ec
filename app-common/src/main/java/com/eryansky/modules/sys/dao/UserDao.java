@@ -86,7 +86,8 @@ public interface UserDao extends CrudDao<User> {
     List<String> findUserIdsByPostAndOrgan(Parameter parameter);
 
     List<String> findUserLoginNamesByPostAndOrgan(Parameter parameter);
-    
+
+    List<User> findOwnerAndChildsByPostAndOrgan(Parameter parameter);
 
     /**
      * 删除用户机构关联信息

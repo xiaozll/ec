@@ -57,6 +57,22 @@ public class UserUtils {
     }
 
     /**
+     * 根据loginName查找用户
+     *
+     * @param loginName 用户账号
+     * @return
+     */
+    public static String getUserNameByLoginName(String loginName) {
+        User user = getUserByLoginName(loginName);
+        if (null != user) {
+            return user.getName();
+        }
+        return null;
+    }
+
+
+
+    /**
      * 根据手机号码查找用户
      *
      * @param mobile 手机号码

@@ -17,6 +17,8 @@ import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityType;
 import com.eryansky.modules.sys._enum.UserType;
+import com.eryansky.modules.sys.mapper.Organ;
+import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.CacheConstants;
@@ -804,14 +806,29 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organId 机构ID
      * @return
      */
-    public List<User> findOwnerAndChildsUsers(String organId, Collection<String> excludeUserIds) {
+    public List<User> findOwnerAndChildsUsers(String organId) {
+        return findOwnerAndChildsUsers(organId, null,null);
+    }
+
+
+    /**
+     * 查询指定机构以及子机构
+     *
+     * @param organId 机构ID
+     * @param organTypes 机构类型 {@link com.eryansky.modules.sys._enum.OrganType}
+     * @param excludeUserIds 排除的用户ID
+     * @return
+     */
+    public List<User> findOwnerAndChildsUsers(String organId, Collection<String> organTypes, Collection<String> excludeUserIds) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
+        parameter.put("organTypes", organTypes);
         parameter.put("excludeUserIds", excludeUserIds);
         return dao.findOwnerAndChildsUsers(parameter);
     }
+
 
     /**
      * 查询指定机构以及子机构
@@ -819,15 +836,23 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organId 机构ID
      * @return
      */
-    public List<User> findOwnerAndChildsUsers(String organId) {
-        return findOwnerAndChildsUsers(organId, null);
+    public List<String> findOwnerAndChildsUserIds(String organId) {
+        return findOwnerAndChildsUserIds(organId,null);
     }
 
-    public List<String> findOwnerAndChildsUserIds(String organId) {
+    /**
+     * 查询指定机构以及子机构
+     *
+     * @param organId 机构ID
+     * @param organTypes 机构类型 {@link com.eryansky.modules.sys._enum.OrganType}
+     * @return
+     */
+    public List<String> findOwnerAndChildsUserIds(String organId, Collection<String> organTypes) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
+        parameter.put("organTypes", organTypes);
         return dao.findOwnerAndChildsUsersIds(parameter);
     }
 
@@ -985,6 +1010,51 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("organCode", organCode);
         return dao.findUserIdsByPostAndOrgan(parameter);
     }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param organId 机构ID
+     * @return
+     */
+    public List<User> findOwnerAndChildsByPostIdAndOrganId(String postId, String organId) {
+        return findOwnerAndChildsByPostAndOrgan(postId,null,organId);
+    }
+
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postCode  岗位编码
+     * @param organCode 机构编码
+     * @return
+     */
+    public List<User> findOwnerAndChildsByPostCodeAndOrganCode(String postCode, String organCode) {
+        Organ organ = OrganUtils.getByOrganCode(organCode);
+        if(null == organ){
+            throw new SystemException("机构编码["+organCode+"]对应机构部存在!");
+        }
+        return findOwnerAndChildsByPostAndOrgan(null,postCode,organCode);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @return
+     */
+    public List<User> findOwnerAndChildsByPostAndOrgan(String postId,String postCode, String organId) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("postId", postId);
+        parameter.put("postCode", postCode);
+        parameter.put("organId", organId);
+        return dao.findOwnerAndChildsByPostAndOrgan(parameter);
+    }
+
 
 
     /**

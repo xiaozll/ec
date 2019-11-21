@@ -38,6 +38,19 @@ public class PostUtils {
     }
 
     /**
+     * 根据编码查找
+     *
+     * @param postCode 岗位编码
+     * @return
+     */
+    public static Post getByCode(String postCode) {
+        if (StringUtils.isBlank(postCode)) {
+            return null;
+        }
+        return Static.postService.getByCode(postCode);
+    }
+
+    /**
      * 根据ID查找名称
      *
      * @param postId

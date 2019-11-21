@@ -79,7 +79,7 @@ public class PostService extends CrudService<PostDao, Post> {
      * @param postCode
      * @return
      */
-    public Post getPostByCode(String postCode) {
+    public Post getByCode(String postCode) {
         Validate.notNull(postCode, "参数[postCode]不能为null或空");
         Parameter parameter = new Parameter();
         parameter.put("code", postCode);

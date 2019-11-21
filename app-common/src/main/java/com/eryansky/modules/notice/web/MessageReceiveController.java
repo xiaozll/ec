@@ -48,7 +48,7 @@ public class MessageReceiveController extends SimpleController {
     @Autowired
     private MessageTask messageTask;
 
-    @ModelAttribute
+    @ModelAttribute("model")
     public MessageReceive get(@RequestParam(required = false) String id) {
         if (StringUtils.isNotBlank(id)) {
             return messageReceiveService.get(id);
@@ -68,7 +68,7 @@ public class MessageReceiveController extends SimpleController {
     @Mobile(value = MobileValue.ALL)
     @Logging(logType = LogType.access, value = "消息中心")
     @RequestMapping(value = {"", "list"})
-    public String list(@ModelAttribute MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+    public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<MessageReceive> page = new Page<MessageReceive>(request, response);
         if (StringUtils.isBlank(model.getIsRead())) {
             model.setIsRead(YesOrNo.NO.getValue());
@@ -94,7 +94,7 @@ public class MessageReceiveController extends SimpleController {
      * @return
      */
     @RequestMapping(value = "info")
-    public ModelAndView info(@ModelAttribute MessageReceive model, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView info(@ModelAttribute("model")  MessageReceive model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageReceiveInfo");
         messageReceiveService.setRead(model);
 //        messageTask.setRead(model);
@@ -110,7 +110,7 @@ public class MessageReceiveController extends SimpleController {
      */
     @RequestMapping(value = "setRead")
     @ResponseBody
-    public Result setRead(@ModelAttribute MessageReceive model) {
+    public Result setRead(@ModelAttribute("model")  MessageReceive model) {
         messageTask.setRead(model);
         return Result.successResult();
     }

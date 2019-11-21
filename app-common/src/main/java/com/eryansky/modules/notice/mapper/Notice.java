@@ -304,14 +304,6 @@ public class Notice extends DataEntity<Notice> {
         return this.id;
     }
 
-    public List<String> getNoticeReceiveUserIds() {
-        return NoticeUtils.findNoticeReceiveUserIds(this.id);
-    }
-
-    public List<String> getNoticeReceiveOrganIds() {
-        return NoticeUtils.findNoticeReceiveOrganIds(this.id);
-    }
-
     public String getQuery() {
         return query;
     }

@@ -462,6 +462,15 @@ public class SecurityUtils {
     }
 
     /**
+     * 刷新用户信息
+     * @param sessionInfo sessionInfo
+     * @return
+     */
+    public static void refreshSessionInfo(SessionInfo sessionInfo){
+        Static.applicationSessionContext.addSession(sessionInfo);
+    }
+
+    /**
      * 获取当前用户session信息.
      */
     public static SessionInfo getCurrentSessionInfo() {

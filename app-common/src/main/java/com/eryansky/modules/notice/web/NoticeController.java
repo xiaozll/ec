@@ -146,9 +146,7 @@ public class NoticeController extends SimpleController {
     @ResponseBody
     public String readInfoDatagrid(@PathVariable String id) {
         Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
-        NoticeReceiveInfo entity = new NoticeReceiveInfo();
-        entity.setNoticeId(id);
-        page = noticeReceiveInfoService.findNoticeReceiveInfos(page, entity);
+        page = noticeReceiveInfoService.findNoticeReceiveInfosByNoticeId(page, id);
         Datagrid<NoticeReceiveInfo> dg = new Datagrid<NoticeReceiveInfo>(page.getTotalCount(), page.getResult());
         String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
                 new String[]{"id", "userName", "organName", "isReadView"});

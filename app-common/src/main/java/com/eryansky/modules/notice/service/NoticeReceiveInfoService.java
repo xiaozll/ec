@@ -135,10 +135,16 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
         return dao.updateUserNotices(parameter);
     }
 
-    public Page<NoticeReceiveInfo> findNoticeReceiveInfos(Page<NoticeReceiveInfo> page, NoticeReceiveInfo entity) {
+    /**
+     * 根据通知ID查看
+     * @param page
+     * @param noticeId
+     * @return
+     */
+    public Page<NoticeReceiveInfo> findNoticeReceiveInfosByNoticeId(Page<NoticeReceiveInfo> page, String noticeId) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
-        parameter.put("noticeId", entity.getNoticeId());
+        parameter.put("noticeId", noticeId);
         parameter.put(BaseInterceptor.PAGE, page);
         List<NoticeReceiveInfo> list = dao.findQueryList(parameter);
         page.setResult(list);

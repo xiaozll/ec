@@ -267,7 +267,11 @@ public class NoticeController extends SimpleController {
             model.setUserId(sessionInfo.getUserId());
             model.setOrganId(sessionInfo.getLoginOrganId());
         }
-        noticeService.saveNoticeAndFiles(model, OperateType.Publish.equals(operateType), noticeUserIds, noticeOrganIds, fileIds);
+        boolean isPub = OperateType.Publish.equals(operateType);
+        noticeService.saveNoticeAndFiles(model, null, noticeUserIds, noticeOrganIds, fileIds);
+        if(isPub){
+            noticeService.publish(model);
+        }
         result = Result.successResult();
         return result;
     }

@@ -81,7 +81,7 @@
 		a.receive_object_id
 		FROM t_notice_send_info a
 		<where>
-			AND a.notice_id  = #{noticeId}
+			a.notice_id  = #{noticeId}
 			<if test="receiveObjectType != null and receiveObjectType != ''">
 				AND a.receive_object_type = #{receiveObjectType}
 			</if>

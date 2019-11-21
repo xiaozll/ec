@@ -173,12 +173,12 @@ function initDatagrid(){
                 formatter: function (value, rowData, rowIndex) {
                     var operateHtml = "";
                     var editHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='edit(\"" + rowData["id"] + "\");' >编辑</a>";
-                    if (rowData["mode"] == 0) {//未发布
+                    if (rowData["bizMode"] === '0') {//未发布
                         operateHtml = editHtml+"&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
-                    } else if (rowData["mode"] == 1) {//已发布
+                    } else if (rowData["bizMode"] == 1) {//已发布
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
                     }
-                    if(rowData["isRecordRead"] == 1 && rowData["mode"] != 0 && rowData["mode"] != 3){//记录查看情况
+                    if(rowData["isRecordRead"] == 1 && rowData["bizMode"] != 0 && rowData["bizMode"] != 3){//记录查看情况
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_find\"'  onclick='readInfo(\"" + rowData["id"] + "\");' >查看阅读情况</a>";
                     }
 
@@ -394,12 +394,11 @@ function edit(noticeId,operateType) {
  */
 function publish(noticeId) {
     $.post(ctxAdmin + '/notice/publish/'+noticeId, {}, function (data) {
-        var json = $.parseJSON(data);
-        if (json.code == 1) {
+        if (data.code == 1) {
             $notice_datagrid.datagrid('reload');	// reload the user data
-            eu.showMsg(json.msg);//操作结果提示
+            eu.showMsg(data.msg);//操作结果提示
         } else {
-            eu.showAlertMsg(json.msg, 'error');
+            eu.showAlertMsg(data.msg, 'error');
         }
     });
 }

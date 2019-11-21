@@ -18,6 +18,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.notice._enum.*;
 import com.eryansky.modules.notice.mapper.NoticeSendInfo;
+import com.eryansky.modules.notice.utils.NoticeUtils;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
@@ -58,7 +59,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
      * @param fileIds
      */
     public void saveNoticeAndFiles(Notice entity, Boolean isPub, Collection<String> userIds, Collection<String> organIds, List<String> fileIds) {
-        List<String> oldFileIds = Collections.EMPTY_LIST;
+        List<String> oldFileIds = Collections.emptyList();
         if (!entity.getIsNewRecord()) {
             oldFileIds = findFileIdsByNoticeId(entity.getId());
         }
@@ -190,8 +191,8 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         List<String> receiveUserIds = Lists.newArrayList();
 
         if (NoticeReceiveScope.CUSTOM.getValue().equals(notice.getReceiveScope())) {
-            List<String> _receiveUserIds = notice.getNoticeReceiveUserIds();
-            List<String> receiveOrganIds = notice.getNoticeReceiveOrganIds();
+            List<String> _receiveUserIds = NoticeUtils.findNoticeReceiveUserIds(notice.getId());
+            List<String> receiveOrganIds = NoticeUtils.findNoticeReceiveOrganIds(notice.getId());;
             List<String> userIds = userService.findUserIdsByOrganIds(receiveOrganIds);
             if (Collections3.isNotEmpty(_receiveUserIds)) {
                 receiveUserIds.addAll(_receiveUserIds);

@@ -51,6 +51,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
     public NoticeReceiveInfo(String userId, String noticeId) {
         this.userId = userId;
         this.noticeId = noticeId;
+        this.isRead = NoticeReadMode.unreaded.getValue();
     }
 
     public String getUserId() {

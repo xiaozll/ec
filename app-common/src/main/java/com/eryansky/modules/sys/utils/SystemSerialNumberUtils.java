@@ -93,7 +93,7 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String moduleCode) {
-        return getMaxSerialByModuleCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+        return generateSerialNumberByModelCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
     }
 
     /**

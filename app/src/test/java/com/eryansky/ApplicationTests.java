@@ -3,6 +3,7 @@ package com.eryansky;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.modules.sys.service.ConfigService;
 import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +33,9 @@ public class ApplicationTests {
 		System.out.println(Encrypt.e("1"));
 	}
 
+
+	@Test
+	public void generateSerialNumberByModelCode() {
+		System.out.println(SystemSerialNumberUtils.generateSerialNumberByModelCode("A01"));
+	}
 }

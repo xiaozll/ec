@@ -655,6 +655,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param userIds  用户ID集合
      * @param password 密码(未加密)
      */
+    @Deprecated
     public void updateUserPassword(Collection<String> userIds, String password) throws ServiceException {
         if (Collections3.isNotEmpty(userIds)) {
             for (String userId : userIds) {

@@ -292,9 +292,18 @@ public class UserController extends SimpleController {
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
     @RequestMapping(value = {"_updateUserPassword"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result updateUserPassword(@RequestParam(value = "userIds", required = false) List<String> userIds,
-                                     @RequestParam(value = "newPassword", required = true) String newPassword) throws Exception {
-        userService.updateUserPassword(userIds, newPassword);
+    public Result updateUserPassword(@RequestParam(value = "userIds", required = true) List<String> userIds,
+                                     @RequestParam(value = "newPassword", required = true) String newPassword){
+//        userService.updateUserPassword(userIds, newPassword);
+        userIds.forEach(userId->{
+            try {
+                userService.updatePasswordByUserId(userId,Encrypt.e(newPassword),Encryption.encrypt(newPassword));
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+                throw new ActionException(e);
+            }
+        });
+
         return Result.successResult();
     }
 

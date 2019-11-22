@@ -8,7 +8,6 @@ package com.eryansky.common.orm.persistence;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.SysConstants;
-import com.eryansky.common.utils.io.PropertiesLoader;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.google.common.collect.Maps;
 

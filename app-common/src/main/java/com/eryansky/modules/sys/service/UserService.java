@@ -100,33 +100,6 @@ public class UserService extends CrudService<UserDao, User> {
 
 
     /**
-     * 新增或修改角色.
-     * <br>修改角色的时候 会给角色重新授权菜单 更新导航菜单缓存.
-     */
-    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
-            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
-            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
-            CacheConstants.ORGAN_USER_TREE_CACHE}, allEntries = true)
-    public User saveOrUpdateToRecordUpdatePasswordLog(User entity, boolean updatePassword) {
-        logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
-                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
-                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_CACHE);
-        super.save(entity);
-        Set<String> organIds = Sets.newHashSet();
-        if (StringUtils.isNotBlank(entity.getDefaultOrganId())) {
-            organIds.add(entity.getDefaultOrganId());
-        }
-        saveUserOrgans(entity.getId(), organIds);
-        if (updatePassword) {
-            UserUtils.addUserPasswordUpdate(entity);
-        }
-        return entity;
-    }
-
-
-    /**
      * 修改密码
      * @param id 用户ID
      * @param password 密码 {@link Encrypt#e(String)}
@@ -1123,7 +1096,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findOwnerAndChildsByPostCodeAndOrganCode(String postCode, String organCode) {
         Organ organ = OrganUtils.getByOrganCode(organCode);
         if(null == organ){
-            throw new SystemException("机构编码["+organCode+"]对应机构部存在!");
+            throw new SystemException("机构编码["+organCode+"]对应机构不存在!");
         }
         return findOwnerAndChildsByPostAndOrgan(null,postCode,organCode);
     }

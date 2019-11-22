@@ -837,7 +837,7 @@
         update_user = #{updateUser},
         update_time = #{updateTime},
         ORIGINAL_PASSWORD = #{originalPassword},
-        PASSWORD = #{password},
+        PASSWORD = #{password}
         <where>
             <choose>
                 <when test="loginName != null and loginName !=''">

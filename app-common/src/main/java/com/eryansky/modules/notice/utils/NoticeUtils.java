@@ -35,8 +35,6 @@ public class NoticeUtils {
         private static UserService userService = SpringContextHolder.getBean(UserService.class);
         private static NoticeService noticeService = SpringContextHolder.getBean(NoticeService.class);
         private static NoticeSendInfoService noticeSendInfoService = SpringContextHolder.getBean(NoticeSendInfoService.class);
-        private static NoticeReceiveInfoService noticeReceiveInfoService = SpringContextHolder.getBean(NoticeReceiveInfoService.class);
-
     }
 
     private NoticeUtils() {
@@ -52,18 +50,6 @@ public class NoticeUtils {
     public static Notice getNotice(String noticeId) {
         return Static.noticeService.get(noticeId);
     }
-
-    /**
-     * 判断当前登录用户是否读取通知
-     *
-     * @param noticeId 通知ID
-     * @return
-     */
-    public static boolean isRead(String noticeId) {
-        NoticeReceiveInfo noticeReceiveInfo = Static.noticeReceiveInfoService.getUserNotice(SecurityUtils.getCurrentUserId(), noticeId);
-        return noticeReceiveInfo != null && NoticeReadMode.readed.getValue().equals(noticeReceiveInfo.getIsRead());
-    }
-
 
     public static List<String> findFileIdsByNoticeId(String noticeId) {
         if (StringUtils.isBlank(noticeId)) {

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.modules.notice._enum.NoticeReadMode;
 import com.eryansky.modules.notice.utils.NoticeUtils;
-import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 
 import java.util.Date;
@@ -164,19 +163,5 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
         return UserUtils.getDefaultOrganName(userId);
     }
 
-    /**
-     * 判断当前登录用户是否读取
-     * @return
-     */
-    public boolean isRead() {
-        return NoticeUtils.isRead(this.noticeId);
-    }
 
-    /**
-     * 判断当前登录用户是否读取
-     * @return
-     */
-    public String isReadView() {
-        return this.isRead() ? NoticeReadMode.readed.getDescription() : NoticeReadMode.unreaded.getDescription();
-    }
 }

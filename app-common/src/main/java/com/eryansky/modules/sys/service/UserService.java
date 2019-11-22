@@ -125,6 +125,46 @@ public class UserService extends CrudService<UserDao, User> {
         return entity;
     }
 
+
+    /**
+     * 修改密码
+     * @param id 用户ID
+     * @param password 密码 {@link Encrypt#e(String)}
+     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @return
+     */
+    public User updatePasswordByUserId(String id, String password, String originalPassword){
+        return updatePassword(id,null,password,originalPassword);
+    }
+
+    /**
+     * 修改密码
+     * @param loginName 账号
+     * @param password 密码 {@link Encrypt#e(String)}
+     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @return
+     */
+    public User updatePasswordByLoginName(String loginName, String password, String originalPassword){
+        return updatePassword(null,loginName,password,originalPassword);
+    }
+
+    /**
+     * 修改密码
+     * @param id 用户ID
+     * @param loginName 账号
+     * @param password 密码 {@link Encrypt#e(String)}
+     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @return
+     */
+    public User updatePassword(String id,String loginName,String password,String originalPassword){
+        User entity = new User(id);
+        entity.setLoginName(loginName);
+        entity.setPassword(password);
+        entity.setOriginalPassword(originalPassword);
+        dao.updatePassword(entity);
+        return null != id ? get(id):getUserByLoginName(loginName);
+    }
+
     /**
      * 新增或修改角色.
      * <br>修改角色的时候 会给角色重新授权菜单 更新导航菜单缓存.
@@ -655,8 +695,7 @@ public class UserService extends CrudService<UserDao, User> {
                     throw new ServiceException(e);
                 }
                 model.setPassword(Encrypt.e(password));
-                this.save(model);
-                UserUtils.addUserPasswordUpdate(model);
+                this.updatePasswordByUserId(model.getId(),model.getPassword(),model.getOriginalPassword());
             }
         } else {
             logger.warn("参数[userIds]为空.");

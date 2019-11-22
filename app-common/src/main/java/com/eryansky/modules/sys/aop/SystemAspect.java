@@ -9,8 +9,11 @@ import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.modules.sys.mapper.Organ;
+import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.SystemService;
+import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.utils.OrganUtils;
+import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -36,6 +39,8 @@ public class SystemAspect implements InitializingBean, DisposableBean {
 
     @Autowired
     private SystemService systemService;
+    @Autowired
+    private UserPasswordService userPasswordService;
 
     /**
      * 同步到扩展机构表
@@ -88,6 +93,21 @@ public class SystemAspect implements InitializingBean, DisposableBean {
     @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.OrganService.deleteOwnerAndChilds(..))")
     public void afterSyncOrganToExtend(JoinPoint joinPoint) {
         systemService.syncOrganToExtend();
+
+    }
+
+    /**
+     * 同步到扩展机构表
+     *
+     * @param joinPoint 切入点
+     */
+    @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.UserService.updatePasswordByUserId(..)) " +
+            "|| execution(* com.eryansky.modules.sys.service.UserService.updatePasswordByLoginName(..))",returning = "returnObj")
+    public void afterUserPasswordUpdate(JoinPoint joinPoint, User returnObj) {
+       if(null == returnObj){
+           return;
+       }
+        UserUtils.addUserPasswordUpdate(returnObj);
 
     }
 

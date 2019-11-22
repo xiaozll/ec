@@ -164,6 +164,13 @@ public interface UserDao extends CrudDao<User> {
      */
     int insertUserResources(Parameter parameter);
 
+    /**
+     * 修改密码
+     * @param model
+     * @return
+     */
+    int updatePassword(User model);
+
 
     /**
      * 自定义SQL查询

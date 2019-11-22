@@ -23,7 +23,6 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.disk.mapper.File;
-import com.eryansky.modules.sys.mapper.Role;
 import com.google.common.collect.Lists;
 import com.eryansky.core.excelTools.ExcelUtils;
 import com.eryansky.core.excelTools.JsGridReportBase;
@@ -252,11 +251,9 @@ public class UserController extends SimpleController {
                 isCheck = true;
             }
             if (isCheck) {
-                u.setOriginalPassword(Encryption.encrypt(newPassword));
                 u.setPassword(Encrypt.e(newPassword));
-                userService.save(u);
-                UserUtils.addUserPasswordUpdate(u);
-
+                u.setOriginalPassword(Encryption.encrypt(newPassword));
+                userService.updatePasswordByUserId(id,u.getPassword(),u.getOriginalPassword());
                 result = Result.successResult();
             } else {
                 result = new Result(Result.WARN, "原始密码输入错误.", "password");

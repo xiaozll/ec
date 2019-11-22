@@ -829,6 +829,27 @@
          WHERE id = #{id}
     </update>
 
+
+    <update id="updatePassword">
+        UPDATE t_sys_user SET
+        status = #{status},
+        version = version +1,
+        update_user = #{updateUser},
+        update_time = #{updateTime},
+        ORIGINAL_PASSWORD = #{originalPassword},
+        PASSWORD = #{password},
+        <where>
+            <choose>
+                <when test="loginName != null and loginName !=''">
+                    login_name = #{loginName} AND status = #{status}
+                </when>
+                <otherwise>
+                    id = #{id}
+                </otherwise>
+            </choose>
+        </where>
+    </update>
+
     <delete id="delete">
         UPDATE t_sys_user SET
         status = #{STATUS_DELETE},

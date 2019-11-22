@@ -7,7 +7,6 @@ package com.eryansky.common.orm.persistence;
 
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
-import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.google.common.collect.Maps;
 
@@ -156,9 +155,6 @@ public abstract class AbstractBaseEntity<T, PK extends Serializable> implements 
      * 获取数据库名称
      */
     public String getDbName() {
-        if(StringUtils.isBlank(dbName)){
-            return SysConstants.getJdbcType();
-        }
         return dbName;
     }
 

@@ -16,6 +16,7 @@ import com.eryansky.modules.disk.extend.IFileManager;
 import com.eryansky.modules.disk.service.FileService;
 import com.eryansky.modules.disk.service.FolderService;
 import com.eryansky.modules.sys.mapper.User;
+import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SessionInfo;
@@ -437,7 +438,7 @@ public class DiskUtils {
         if(null == fileId){
             return null;
         }
-        return  AppConstants.getAppURL() + getFileUrl(fileId);
+        return  AppUtils.getAppURL() + getFileUrl(fileId);
     }
 
 

@@ -218,7 +218,7 @@ public class File extends DataEntity<File> implements Serializable {
      * 文件下载路径
      */
     public String getUrl() {
-        return DiskUtils.getFileUrl(id);
+        return DiskUtils.getFileSrc(id);
     }
 
     /**

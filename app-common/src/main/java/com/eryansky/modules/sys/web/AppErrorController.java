@@ -1,5 +1,7 @@
 package com.eryansky.modules.sys.web;
 
+import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.web.springmvc.SimpleController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -16,7 +18,7 @@ import java.util.Map;
  * Spring Boot 自定义错误页面
  */
 @Controller
-public class AppErrorController implements ErrorController {
+public class AppErrorController extends SimpleController implements ErrorController {
 
     @Autowired
     private ErrorAttributes errorAttributes;
@@ -32,6 +34,7 @@ public class AppErrorController implements ErrorController {
         Map<String, Object> errorData = errorAttributes.getErrorAttributes(webRequest, true);
         Integer status = (Integer) errorData.get("status");        //请求路径
         uiModel.addAttribute("errorData", errorData);
+        logger.error(JsonMapper.toJsonString(errorData));
         if (status != null) {
             int statusCode = status;
             if (statusCode == HttpStatus.NOT_FOUND.value()) {

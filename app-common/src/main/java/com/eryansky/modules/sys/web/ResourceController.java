@@ -13,6 +13,8 @@ import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.ResourceType;
@@ -148,6 +150,30 @@ public class ResourceController extends SimpleController {
         treeNodes = resourceService.findTreeNodeResources();
         return ListUtils.union(titleList, treeNodes);
     }
+
+
+    /**
+     * 资源树.
+     */
+    @RequiresPermissions("MANAGER")
+    @RequestMapping(value = {"resourceData"})
+    @ResponseBody
+    public List<TreeNode> resourceData(){
+        List<TreeNode>  treeNodes = resourceService.findTreeNodeResources();
+        return treeNodes;
+    }
+
+    /**
+     * 资源树-分级权限
+     */
+    @RequestMapping(value = {"resourceDataWithPermission"})
+    @ResponseBody
+    public List<TreeNode> resourceDataWithPermission(){
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        List<TreeNode>  treeNodes = resourceService.resourcesToTreeNode(resourceService.findResourcesWithPermissions(sessionInfo.getUserId()));
+        return treeNodes;
+    }
+
 
     /**
      * 资源类型下拉列表.

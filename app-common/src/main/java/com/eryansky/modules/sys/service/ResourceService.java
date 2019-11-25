@@ -569,7 +569,7 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      * @param resources
      * @return
      */
-    private List<TreeNode> resourcesToTreeNode(Collection<Resource> resources) {
+    public List<TreeNode> resourcesToTreeNode(Collection<Resource> resources) {
         if (Collections3.isEmpty(resources)) {
             return Collections.emptyList();
         }

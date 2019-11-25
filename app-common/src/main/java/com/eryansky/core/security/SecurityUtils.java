@@ -62,11 +62,11 @@ public class SecurityUtils {
     /**
      * 是否授权某个资源
      *
-     * @param resourceCode 资源编码
+     * @param resource 资源ID或编码
      * @return
      */
-    public static Boolean isPermitted(String resourceCode) {
-        return isPermitted(null,resourceCode);
+    public static Boolean isPermitted(String resource) {
+        return isPermitted(null,resource);
     }
 
 
@@ -74,10 +74,10 @@ public class SecurityUtils {
      * 是否授权某个资源
      *
      * @param userId 用户ID
-     * @param resourceCode 资源编码
+     * @param resource 资源ID或编码
      * @return
      */
-    public static Boolean isPermitted(String userId,String resourceCode) {
+    public static Boolean isPermitted(String userId,String resource) {
         try {
             SessionInfo sessionInfo = getCurrentSessionInfo();
             if (userId == null) {
@@ -95,9 +95,9 @@ public class SecurityUtils {
                 if (sessionInfo.isSuperUser()) {// 超级用户
                     return true;
                 }
-                return null != sessionInfo.getPermissons().stream().filter(permisson -> resourceCode.equalsIgnoreCase(permisson.getCode())).findFirst().orElse(null);
+                return null != sessionInfo.getPermissons().stream().filter(permisson -> resource.equals(permisson.getId()) || resource.equalsIgnoreCase(permisson.getCode())).findFirst().orElse(null);
             }else{
-                return Static.resourceService.isPermittedResourceCodeWithPermission(userId,resourceCode);
+                return Static.resourceService.isPermittedResourceCodeWithPermission(userId,resource);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
@@ -174,22 +174,22 @@ public class SecurityUtils {
     /**
      * 是否授权某个角色
      *
-     * @param roleCode 角色编码
+     * @param role 角色编码或ID
      * @return
      */
-    public static Boolean isPermittedRole(String roleCode) {
+    public static Boolean isPermittedRole(String role) {
         SessionInfo sessionInfo = getCurrentSessionInfo();
-        return null != sessionInfo && isPermittedRole(sessionInfo.getUserId(), roleCode);
+        return null != sessionInfo && isPermittedRole(sessionInfo.getUserId(), role);
     }
 
     /**
      * 判断某个用户是否授权某个角色
      *
      * @param userId   用户ID
-     * @param roleCode 角色编码
+     * @param role 角色编码或ID
      * @return
      */
-    public static Boolean isPermittedRole(String userId, String roleCode) {
+    public static Boolean isPermittedRole(String userId, String role) {
         try {
             SessionInfo sessionInfo = getCurrentSessionInfo();
             if (userId == null) {
@@ -205,10 +205,10 @@ public class SecurityUtils {
                 if (sessionInfo.isSuperUser()) {// 超级用户
                     return true;
                 }
-                return null != sessionInfo.getPermissonRoles().stream().filter(permissonRole -> roleCode.equalsIgnoreCase(permissonRole.getCode())).findFirst().orElse(null);
+                return null != sessionInfo.getPermissonRoles().stream().filter(permissonRole -> role.equals(permissonRole.getId()) || role.equalsIgnoreCase(permissonRole.getCode())).findFirst().orElse(null);
             }else{
                 List<Role> list = Static.roleService.findRolesByUserId(userId);
-                return null != list.stream().filter(role -> StringUtils.isNotBlank(role.getCode()) && roleCode.equalsIgnoreCase(role.getCode())).findFirst().orElse(null);
+                return null != list.stream().filter(r -> role.equals(r.getId()) || role.equalsIgnoreCase(r.getCode())).findFirst().orElse(null);
             }
         } catch (Exception e) {
             logger.error(e.getMessage());

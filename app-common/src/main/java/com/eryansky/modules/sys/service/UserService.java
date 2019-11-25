@@ -229,6 +229,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(password, "参数[password]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("loginName", loginName);
         parameter.put("password", password);
         List<User> list = dao.findLoginUser(parameter);
@@ -247,6 +248,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(password, "参数[password]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("loginName", mobile);
         parameter.put("password", password);
         List<User> list = dao.findLoginUser(parameter);
@@ -278,6 +280,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(loginName, "参数[loginName]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("loginName", loginName);
         return dao.getUserByLoginName(parameter);
     }
@@ -308,6 +311,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(mobile, "参数[mobile]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("mobile", mobile);
         return dao.getUserByMobile(parameter);
     }
@@ -377,6 +381,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findAllNormalWithExclude(List<String> userIds) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("userIds", userIds);
         return dao.findAllNormalWithExclude(parameter);
     }
@@ -448,6 +453,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
         return dao.findOrganUsers(parameter);
     }
@@ -462,6 +468,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
         return dao.findOrganUserCount(parameter);
     }
@@ -476,6 +483,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
         return dao.findOrganUserIds(parameter);
     }
@@ -491,6 +499,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
         return dao.findOrganDefaultUsers(parameter);
     }
@@ -506,6 +515,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
         return dao.findOrganDefaultUserIds(parameter);
     }
@@ -532,6 +542,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(companyId, "参数[companyId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("companyId", companyId);
         parameter.put("excludeUserIds", excludeUserIds);
         return dao.findUsersByCompanyId(parameter);
@@ -559,6 +570,7 @@ public class UserService extends CrudService<UserDao, User> {
         Assert.notNull(companyId, "参数[companyId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("companyId", companyId);
         parameter.put("excludeUserIds", excludeUserIds);
         return dao.findUserIdsByCompanyId(parameter);
@@ -744,6 +756,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findUsersByIds(Collection<String> userIds) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("ids", userIds);
         return dao.findUsersByIds(parameter);
     }
@@ -757,6 +770,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findUsersByOrganIds(Collection<String> organIds) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organIds", organIds);
         return dao.findUsersByOrganIds(parameter);
     }
@@ -785,6 +799,7 @@ public class UserService extends CrudService<UserDao, User> {
         }
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organIds", organIds);
         return dao.findUsersIdsByOrganIds(parameter);
     }
@@ -814,6 +829,7 @@ public class UserService extends CrudService<UserDao, User> {
         }
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organIds", organIds);
         return dao.findUsersLoginNamesByOrganIds(parameter);
     }
@@ -903,6 +919,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findUsersByRoleId(String roleId) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("roleId", roleId);
         return dao.findUsersByRoleId(parameter);
     }
@@ -916,6 +933,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<String> findUserIdsByRoleId(String roleId) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("roleId", roleId);
         return dao.findUserIdsByRoleId(parameter);
     }
@@ -951,6 +969,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findUsersByPost(String postId,String postCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("postId", postId);
         parameter.put("postCode", postCode);
         return dao.findUsersByPost(parameter);
@@ -986,6 +1005,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<String> findUserIdsByPost(String postId,String postCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("postId", postId);
         parameter.put("postCode", postCode);
         return dao.findUserIdsByPost(parameter);
@@ -1027,6 +1047,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findListByPostAndOrgan(String postId,String postCode, String organId, String organCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("postId", postId);
         parameter.put("postCode", postCode);
         parameter.put("organId", organId);
@@ -1068,6 +1089,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<String> findUserIdsByPostAndOrgan(String postId,String postCode, String organId, String organCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("postId", postId);
         parameter.put("postCode", postCode);
         parameter.put("organId", organId);
@@ -1113,6 +1135,7 @@ public class UserService extends CrudService<UserDao, User> {
     public List<User> findOwnerAndChildsByPostAndOrgan(String postId,String postCode, String organId) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("postId", postId);
         parameter.put("postCode", postCode);
         parameter.put("organId", organId);

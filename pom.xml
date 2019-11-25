@@ -36,7 +36,7 @@
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <logback.version>5.2</logback.version>
 
-        <tomcat.version>9.0.27</tomcat.version>
+        <tomcat.version>9.0.29</tomcat.version>
         <jstl.version>1.2</jstl.version>
 
         <mybatis-spring-boot.version>2.1.1</mybatis-spring-boot.version>

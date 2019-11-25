@@ -63,7 +63,6 @@ public class SystemSerialNumberController extends SimpleController {
                        @RequestParam(value = "exportType", defaultValue = "xls") String exportType,
                        HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<SystemSerialNumber> page = new Page<SystemSerialNumber>(request, response);
-        page = systemSerialNumberService.findPage(page, model);
         if (WebUtils.isAjaxRequest(request) || export) {
             if (export) {
                 page.setPageSize(Page.PAGESIZE_ALL);

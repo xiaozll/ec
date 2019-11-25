@@ -9,6 +9,7 @@ import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.io.FileUtils;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.disk._enum.FolderType;
@@ -426,7 +427,12 @@ public class DiskUtils {
         if(null == fileId){
             return null;
         }
-        return  AppConstants.getAdminPath() + "/disk/fileDownload/" + fileId;
+        String ctx = StringUtils.EMPTY;
+        try {
+            ctx = WebUtils.getAppURL(SpringMVCHolder.getRequest());
+        } catch (Exception e) {
+        }
+        return  ctx + AppConstants.getAdminPath() + "/disk/fileDownload/" + fileId;
     }
 
     /**

@@ -441,7 +441,7 @@ public class DiskUtils {
      * @return
      */
     public static String getFileSrc(String fileId) {
-        if(null == fileId){
+        if(StringUtils.isBlank(fileId)){
             return null;
         }
         return  AppUtils.getAppURL() + AppConstants.getAdminPath() + "/disk/fileDownload/" + fileId;
@@ -451,7 +451,7 @@ public class DiskUtils {
 
 
     public static java.io.File getDiskFile(String fileId) {
-        if (fileId == null) {
+        if(StringUtils.isBlank(fileId)){
             return null;
         }
         File file = Static.fileService.get(fileId);

@@ -444,7 +444,7 @@ public class DiskUtils {
         if(null == fileId){
             return null;
         }
-        return  AppUtils.getAppURL() + getFileUrl(fileId);
+        return  AppUtils.getAppURL() + AppConstants.getAdminPath() + "/disk/fileDownload/" + fileId;
     }
 
 

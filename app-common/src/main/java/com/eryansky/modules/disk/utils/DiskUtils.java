@@ -422,12 +422,25 @@ public class DiskUtils {
      * @return
      */
     public static String getFileUrl(String fileId) {
-        File file = getFile(fileId);
-        if (file != null) {
-            return file.getUrl();
+        if(null == fileId){
+            return null;
         }
-        return null;
+        return  AppConstants.getAdminPath() + "/disk/fileDownload/" + fileId;
     }
+
+    /**
+     * 获取文件路径
+     * @param fileId
+     * @return
+     */
+    public static String getFileSrc(String fileId) {
+        if(null == fileId){
+            return null;
+        }
+        return  AppConstants.getAppURL() + getFileUrl(fileId);
+    }
+
+
 
 
     public static java.io.File getDiskFile(String fileId) {

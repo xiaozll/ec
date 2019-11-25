@@ -218,10 +218,7 @@ public class File extends DataEntity<File> implements Serializable {
      * 文件下载路径
      */
     public String getUrl() {
-        if (StringUtils.isNotBlank(id)) {
-            return AppConstants.getAppURL() + AppConstants.getAdminPath() + "/disk/fileDownload/" + id;
-        }
-        return null;
+        return DiskUtils.getFileUrl(id);
     }
 
     /**

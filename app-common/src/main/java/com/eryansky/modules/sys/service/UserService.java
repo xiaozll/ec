@@ -1099,7 +1099,7 @@ public class UserService extends CrudService<UserDao, User> {
         if(null == organ){
             throw new SystemException("机构编码["+organCode+"]对应机构不存在!");
         }
-        return findOwnerAndChildsByPostAndOrgan(null,postCode,organCode);
+        return findOwnerAndChildsByPostAndOrgan(null,postCode,organ.getId());
     }
 
     /**

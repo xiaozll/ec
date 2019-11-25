@@ -345,9 +345,9 @@ public class SecurityUtils {
      */
     private static void initPermission(SessionInfo sessionInfo){
         List<Resource> resources = Static.resourceService.findAuthorityResourcesByUserId(sessionInfo.getUserId());
-        resources.forEach(resource->sessionInfo.addPermissons(new Permisson(StringUtils.isNotBlank(resource.getCode()) ? resource.getCode():resource.getId(),resource.getMarkUrl())));
+        resources.forEach(resource->sessionInfo.addPermissons(new Permisson(resource.getId(),resource.getCode(),resource.getMarkUrl())));
         List<Role> roles = Static.roleService.findRolesByUserId(sessionInfo.getUserId());
-        roles.forEach(role -> sessionInfo.addPermissonRoles(new PermissonRole(StringUtils.isNotBlank(role.getCode()) ? role.getCode():role.getId())));
+        roles.forEach(role -> sessionInfo.addPermissonRoles(new PermissonRole(role.getId(),role.getCode())));
         List<Post> posts = Static.postService.findPostsByUserId(sessionInfo.getUserId());
         posts.forEach(post -> sessionInfo.getPostCodes().add(StringUtils.isNotBlank(post.getCode()) ? post.getCode():post.getId()));
     }

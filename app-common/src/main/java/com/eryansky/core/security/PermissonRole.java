@@ -14,12 +14,31 @@ import java.io.Serializable;
  */
 public class PermissonRole implements Serializable {
     /**
+     * ID
+     */
+    private String id;
+    /**
      * 编码
      */
     private String code;
 
+
     public PermissonRole(String code) {
         this.code = code;
+    }
+
+    public PermissonRole(String id, String code) {
+        this.id = id;
+        this.code = code;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public PermissonRole setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getCode() {

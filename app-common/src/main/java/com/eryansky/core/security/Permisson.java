@@ -14,6 +14,10 @@ import java.io.Serializable;
  */
 public class Permisson implements Serializable {
     /**
+     * ID
+     */
+    private String id;
+    /**
      * 编码
      */
     private String code;
@@ -22,9 +26,19 @@ public class Permisson implements Serializable {
      */
     private String markUrl;
 
-    public Permisson(String code, String markUrl) {
+    public Permisson(String id, String code, String markUrl) {
+        this.id = id;
         this.code = code;
         this.markUrl = markUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Permisson setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getCode() {

@@ -8,6 +8,7 @@ import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
 import com.eryansky.modules.notice._enum.ReceiveObjectType;
 import com.eryansky.modules.notice.service.NoticeService;
@@ -15,6 +16,7 @@ import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.service.OrganService;
 import com.eryansky.modules.sys.service.SystemService;
 import com.eryansky.server.IApiWebService;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +67,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             String receiveType = (String) map.get("receiveType");
             List<String> tipType = (List) map.get("tipType");
             String _receiveType = receiveType;
+            List<MessageChannel> messageChannels = Lists.newArrayList();
             try {
                 checkOptional(appId, "appId");
                 checkOptional(serviceId, "serviceId");
@@ -74,6 +77,15 @@ public class ApiWebServiceImpl implements IApiWebService {
                 }
                 if(StringUtils.isBlank(_receiveType) || !MessageReceiveObjectType.Organ.getValue().equals(_receiveType)){
                     _receiveType = MessageReceiveObjectType.User.getValue();
+                }
+
+                if(Collections3.isNotEmpty(tipType)){
+                    tipType.forEach(t->{
+                        MessageChannel messageChannel = MessageChannel.getByValue(t);
+                        if(null != messageChannel){
+                            messageChannels.add(messageChannel);
+                        }
+                    });
                 }
             } catch (Exception e) {//2.判断必填参数
                 logger.error(e.getMessage());
@@ -105,10 +117,10 @@ public class ApiWebServiceImpl implements IApiWebService {
                 receiveObjectIds.add(recevieUser.getId());
             }
 
-
             //微信发送消息
             try {
-                MessageUtils.sendMessage(appId, senderUser.getId(), content, linkUrl, _receiveType, receiveObjectIds,sendTime);
+
+                MessageUtils.sendMessage(appId, senderUser.getId(), content, linkUrl, _receiveType, receiveObjectIds,sendTime,messageChannels);
                 return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功");
             } catch (Exception e) {
                 return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息发送失败");

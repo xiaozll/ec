@@ -17,7 +17,7 @@ import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.notice.service.MessageReceiveService;
-import com.eryansky.modules.notice.service.MessageTask;
+import com.eryansky.modules.notice.task.MessageTask;
 import com.eryansky.modules.notice.utils.MessageUtils;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.YesOrNo;

@@ -10,7 +10,7 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
-import com.eryansky.modules.notice.service.MessageTask;
+import com.eryansky.modules.notice.task.MessageTask;
 import com.google.common.collect.Lists;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -18,7 +18,7 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.listener.SystemInitListener;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
-import com.eryansky.modules.notice._enum.TipMessage;
+import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.notice.service.MessageReceiveService;
@@ -184,7 +184,7 @@ public class MessageController extends SimpleController {
                               @RequestParam(value = "receiveObjectIds") List<String> receiveObjectIds) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        MessageUtils.sendMessage(null, sessionInfo.getUserId(), content, linkUrl, receiveObjectType, receiveObjectIds);
+        MessageUtils.sendMessage(null, sessionInfo.getUserId(), content, linkUrl, receiveObjectType, receiveObjectIds,null);
         result = Result.successResult().setMsg("消息正在发送...请稍候！");
         return result;
     }
@@ -206,7 +206,7 @@ public class MessageController extends SimpleController {
         User superUser = UserUtils.getSuperUser();
         List<String> receiveObjectIds = new ArrayList<String>(1);
         receiveObjectIds.add(superUser.getId());
-        MessageUtils.sendMessage(null, sessionInfo.getUserId(), content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds);
+        MessageUtils.sendMessage(null, sessionInfo.getUserId(), content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,null);
         result = Result.successResult().setMsg("消息正在发送...请稍候！");
         return result;
     }
@@ -220,14 +220,14 @@ public class MessageController extends SimpleController {
      */
     @RequestMapping(value = {"tipMessageCombobox"})
     @ResponseBody
-    public List<Combobox> tipMessageCombobox(String selectType) throws Exception {
+    public List<Combobox> tipMessageCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);
         if (titleCombobox != null) {
             cList.add(titleCombobox);
         }
-        TipMessage[] _emums = TipMessage.values();
-        for (TipMessage column : _emums) {
+        MessageChannel[] _emums = MessageChannel.values();
+        for (MessageChannel column : _emums) {
             Combobox combobox = new Combobox(column.getValue(), column.getDescription());
             cList.add(combobox);
         }

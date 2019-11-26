@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.notice.mapper;
 
+import com.eryansky.modules.notice._enum.MessageChannel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.notice._enum.MessageMode;
@@ -40,12 +41,7 @@ public class Message extends DataEntity<Message> {
      * 图片
      */
     private String image;
-    /**
-     * 图片地址
-     *
-     * @Transient
-     */
-    private String imageUrl;
+
     /**
      * 内容
      */
@@ -68,7 +64,7 @@ public class Message extends DataEntity<Message> {
      */
     private String organId;
     /**
-     * 消息提醒 {@link com.eryansky.modules.notice._enum.TipMessage}
+     * 消息提醒 多个之间以“,”分割 {@link MessageChannel}
      */
     private String tipMessage;
 
@@ -79,7 +75,15 @@ public class Message extends DataEntity<Message> {
      * 查询关键字
      */
     private String query;
+    /**
+     * 接收对象类型 {@link com.eryansky.modules.notice._enum.MessageReceiveObjectType}
+     */
     private String receiveObjectType;
+    /**
+     * 图片地址
+     *
+     */
+    private String imageUrl;
 
     public Message() {
         super();
@@ -181,12 +185,8 @@ public class Message extends DataEntity<Message> {
     }
 
     public String getModeView() {
-        MessageMode s = MessageMode.getByValue(bizMode);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        MessageMode e = MessageMode.getByValue(bizMode);
+        return null != e ? e.getDescription():bizMode;
     }
 
     public String getSenderName() {

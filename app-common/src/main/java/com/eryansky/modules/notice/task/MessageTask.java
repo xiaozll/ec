@@ -3,12 +3,14 @@
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.eryansky.modules.notice.service;
+package com.eryansky.modules.notice.task;
 
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
 import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.notice.mapper.MessageReceive;
+import com.eryansky.modules.notice.service.MessageReceiveService;
+import com.eryansky.modules.notice.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,30 +40,20 @@ public class MessageTask {
      *
      * @param message
      * @param receiveObjectType
-     * @param receiveObjectIds
      */
     @Async
     public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds) {
-        saveAndSend(message, receiveObjectType, receiveObjectIds, true);
-    }
-
-    /**
-     * 发送消息
-     *
-     * @param message
-     * @param receiveObjectType
-     * @param receiveObjectIds
-     * @param sendWeixin        是否通过微信发送消息
-     */
-    @Async
-    public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds, Boolean sendWeixin) {
         MessageReceiveObjectType messageReceiveObjectType = MessageReceiveObjectType.getByValue(receiveObjectType);
-        if (StringUtils.isNotBlank(receiveObjectType) && messageReceiveObjectType != null) {
-            if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
-                saveAndSend(message, messageReceiveObjectType, receiveObjectIds, sendWeixin);
-            } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
-                saveAndSend(message, messageReceiveObjectType, receiveObjectIds, sendWeixin);
-            }
+        if(null == messageReceiveObjectType){
+            logger.warn("参数[receiveObjectType]未定义对应类型，{}",receiveObjectType);
+            return;
+        }
+        if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
+            saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
+        } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
+            saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
+        }else{
+            logger.warn("[receiveObjectType]未实现的类型",receiveObjectType);
         }
     }
 
@@ -72,18 +64,7 @@ public class MessageTask {
      */
     @Async
     public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
-        saveAndSend(message, messageReceiveObjectType, receiveObjectIds, true);
-    }
-
-    /**
-     * @param message
-     * @param messageReceiveObjectType
-     * @param receiveObjectIds
-     * @param sendWeixin               是否通过微信发送消息
-     */
-    @Async
-    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Boolean sendWeixin) {
-        messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds, sendWeixin);
+        messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
     }
 
     /**

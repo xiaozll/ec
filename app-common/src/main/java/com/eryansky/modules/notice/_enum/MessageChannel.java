@@ -6,14 +6,17 @@
 package com.eryansky.modules.notice._enum;
 
 /**
- * 消息通道
+ * 消息提醒通道
  */
-public enum TipMessage {
+public enum MessageChannel {
 
-    Mail("mail", "邮件提醒"),
-    SMS("sms", "短信提醒"),
-    Weixin("weixin", "微信提醒"),
-    Message("message", "消息提醒");
+    Message("Message1", "系统提醒"),
+    Mail("Mail", "邮件提醒"),
+    SMS("SMS", "短信提醒"),
+    Weixin("Weixin", "微信提醒"),
+    QYWeixin("QYweixin", "微信提醒"),
+    Dingtalk("Dingtalk", "钉钉提醒"),
+    APP("APP", "APP提醒");
 
     /**
      * 值 String型
@@ -24,7 +27,7 @@ public enum TipMessage {
      */
     private final String description;
 
-    TipMessage(String value, String description) {
+    MessageChannel(String value, String description) {
         this.value = value;
         this.description = description;
     }
@@ -47,20 +50,20 @@ public enum TipMessage {
         return description;
     }
 
-    public static TipMessage getByValue(String value) {
+    public static MessageChannel getByValue(String value) {
         if (null == value)
             return null;
-        for (TipMessage _enum : TipMessage.values()) {
+        for (MessageChannel _enum : MessageChannel.values()) {
             if (value.equals(_enum.getValue()))
                 return _enum;
         }
         return null;
     }
 
-    public static TipMessage getByDescription(String description) {
+    public static MessageChannel getByDescription(String description) {
         if (null == description)
             return null;
-        for (TipMessage _enum : TipMessage.values()) {
+        for (MessageChannel _enum : MessageChannel.values()) {
             if (description.equals(_enum.getDescription()))
                 return _enum;
         }

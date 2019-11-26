@@ -9,18 +9,20 @@ import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
 import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.notice.service.MessageReceiveService;
 import com.eryansky.modules.notice.service.MessageService;
-import com.eryansky.modules.notice.service.MessageTask;
+import com.eryansky.modules.notice.task.MessageTask;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -85,10 +87,8 @@ public class MessageUtils {
      */
     public static void sendToUserMessage(String receiveUserId, String content,
                                          String linkUrl) {
-        List<String> receiveObjectIds = new ArrayList<String>(1);
-        receiveObjectIds.add(receiveUserId);
         User user = Static.userService.getSuperUser();
-        sendUserMessage(user.getId(), content, linkUrl, receiveUserId);
+        sendUserMessage(user.getId(), content, linkUrl, receiveUserId,null);
     }
 
     /**
@@ -98,12 +98,15 @@ public class MessageUtils {
      * @param content       必选 消息内容
      * @param linkUrl       消息URL链接地址
      * @param receiveUserId 必选 接收对象ID集合
+     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
-    public static void sendUserMessage(String sender, String content,
-                                       String linkUrl, String receiveUserId) {
-        List<String> receiveObjectIds = new ArrayList<String>(1);
-        receiveObjectIds.add(receiveUserId);
-        sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds);
+    public static void sendUserMessage(String sender,
+                                       String content,
+                                       String linkUrl,
+                                       String receiveUserId,
+                                       List<MessageChannel> messageChannels) {
+        List<String> receiveObjectIds = Lists.newArrayList(receiveUserId);
+        sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,messageChannels);
     }
 
 
@@ -115,11 +118,14 @@ public class MessageUtils {
      * @param linkUrl           消息URL链接地址
      * @param receiveObjectType 必选 接收类型 {@link MessageReceiveObjectType}
      * @param receiveObjectIds  必选 接收对象ID集合
+     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendMessage(String appId, String sender, String content,
                                    String linkUrl,
-                                   String receiveObjectType, List<String> receiveObjectIds) {
-        sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null);
+                                   String receiveObjectType,
+                                   List<String> receiveObjectIds,
+                                   List<MessageChannel> messageChannels) {
+        sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null,messageChannels);
     }
 
     /**
@@ -130,12 +136,13 @@ public class MessageUtils {
      * @param linkUrl           消息URL链接地址
      * @param receiveObjectType 必选 接收类型 {@link MessageReceiveObjectType}
      * @param receiveObjectIds  必选 接收对象ID集合
+     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendMessage(String appId, String sender, String content,
                                    String linkUrl,
-                                   String receiveObjectType, List<String> receiveObjectIds, Date date) {
+                                   String receiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         MessageReceiveObjectType m = MessageReceiveObjectType.getByValue(receiveObjectType);
-        sendMessage(appId, sender, null, content, linkUrl, m, receiveObjectIds, date);
+        sendMessage(appId, sender, null, content, linkUrl, m, receiveObjectIds, date,messageChannels);
     }
 
 
@@ -147,11 +154,12 @@ public class MessageUtils {
      * @param linkUrl                  消息URL链接地址
      * @param messageReceiveObjectType 必选 接收类型 {@link MessageReceiveObjectType}
      * @param receiveObjectIds         必选 接收对象ID集合
+     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendMessage(String sender, String content,
                                    String linkUrl,
-                                   MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
-        sendMessage(null, sender, null, content, linkUrl, messageReceiveObjectType, receiveObjectIds, null);
+                                   MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, List<MessageChannel> messageChannels) {
+        sendMessage(null, sender, null, content, linkUrl, messageReceiveObjectType, receiveObjectIds, null,messageChannels);
     }
 
     /**
@@ -164,23 +172,30 @@ public class MessageUtils {
      * @param linkUrl                  消息URL链接地址
      * @param messageReceiveObjectType 必选 接收类型 {@link MessageReceiveObjectType}
      * @param receiveObjectIds         必选 接收对象ID集合
+     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendMessage(String appId, String sender, String category, String content,
                                    String linkUrl,
-                                   MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Date date) {
+                                   MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         Message model = new Message();
         User user = UserUtils.getUser(sender);
         if (user == null) {
             throw new SystemException("[" + sender + "]用户不存在");
         }
+        if(Collections3.isEmpty(messageChannels)){
+            model.setTipMessage(MessageChannel.Message.getValue());
+        }else{
+            model.setTipMessage(Collections3.extractToString(messageChannels,"value",","));
+        }
 
+        model.setAppId(appId);
         model.setCategory(category);
         model.setOrganId(user.getCompanyId());
         model.setSender(user.getId());
         model.setContent(content);
         model.setUrl(linkUrl);
         model.setSendTime(date);
-//        messageService.save(model);
+        Static.messageService.save(model);
         Static.messageTask.saveAndSend(model, messageReceiveObjectType, receiveObjectIds);
     }
 
@@ -206,8 +221,7 @@ public class MessageUtils {
     public static Page<MessageReceive> findUserMessages(int pageNo, int pageSize, String userId, String isRead) {
         String _userId = userId;
         if (StringUtils.isBlank(_userId)) {
-//            _userId = SecurityUtils.getCurrentUserId();
-            _userId = SecurityUtils.getCurrentUserLoginName();
+            _userId = SecurityUtils.getCurrentUserId();
         }
         Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
         return Static.messageReceiveService.findUserPage(page, _userId, isRead);

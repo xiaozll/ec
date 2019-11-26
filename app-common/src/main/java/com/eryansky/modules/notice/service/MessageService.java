@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.notice.service;
 
+import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.modules.sys.utils.UserUtils;
@@ -69,50 +70,41 @@ public class MessageService extends CrudService<MessageDao, Message> {
      * 保存并发送
      *
      * @param message
-     * @param messageReceiveObjectType
+     * @param messageReceiveObjectType {@link MessageReceiveObjectType}
      * @param receiveObjectIds
-     * @param sendWeixin
      */
-    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Boolean sendWeixin) {
-        if (Collections3.isNotEmpty(receiveObjectIds)) {
-            message.setBizMode(MessageMode.Publishing.getValue());
-            message.setSendTime(Calendar.getInstance().getTime());
-            this.save(message);
-            for (String objectId : receiveObjectIds) {
-                MessageSender messageSender = new MessageSender(message.getId());
-                messageSender.setObjectType(messageReceiveObjectType.getValue());
-                messageSender.setObjectId(objectId);
-                messageSenderService.save(messageSender);
+    public Message saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
+        if (Collections3.isEmpty(receiveObjectIds)) {
+            throw new SystemException("未定义参数[messageReceiveObjectType]");
+        }
 
-                List<String> targetIds = Lists.newArrayList();
-                if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
-                    targetIds.add(UserUtils.getLoginName(objectId));
-                } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
-                    targetIds = userService.findUsersLoginNamesByOrganId(objectId);
-                } else if (MessageReceiveObjectType.Member.equals(messageReceiveObjectType)) {
-                    String openid = objectId;//TODO 获取openid
-                    targetIds.add(openid);
-                }
-                for (String targetId : targetIds) {
-                    MessageReceive messageReceive = new MessageReceive(message.getId());
-                    messageReceive.setUserId(targetId);
-                    messageReceive.setIsRead(YesOrNo.NO.getValue());
+        message.setBizMode(MessageMode.Publishing.getValue());
+        message.setSendTime(Calendar.getInstance().getTime());
+        this.save(message);
+        for (String objectId : receiveObjectIds) {
+            MessageSender messageSender = new MessageSender(message.getId());
+            messageSender.setObjectType(messageReceiveObjectType.getValue());
+            messageSender.setObjectId(objectId);
+            messageSenderService.save(messageSender);
 
-                    //通过微信发送消息
-//                    if(sendWeixin != null && sendWeixin){
-////                        QYWeixinUtils.sendTextMsg(null,targetId, message.getContent(), message.getUrl());
-//                        boolean flag = WeixinUtils.sendTextMsg(targetId,message.getContent(),message.getUrl());
-//                        if(!flag){
-//                            messageReceive.setIsSend(YesOrNo.NO.getValue());
-//                        }
-//                    }
-                    messageReceiveService.save(messageReceive);
-                }
-
+            List<String> targetIds = Lists.newArrayList();
+            if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
+                targetIds.add(UserUtils.getLoginName(objectId));
+            } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
+                targetIds = userService.findUsersLoginNamesByOrganId(objectId);
+            } else if (MessageReceiveObjectType.Member.equals(messageReceiveObjectType)) {
+                targetIds.add(objectId);
 
             }
-            message.setBizMode(MessageMode.Published.getValue());
-            this.save(message);
+            for (String targetId : targetIds) {
+                MessageReceive messageReceive = new MessageReceive(message.getId());
+                messageReceive.setUserId(targetId);
+                messageReceive.setIsRead(YesOrNo.NO.getValue());
+                messageReceiveService.save(messageReceive);
+            }
         }
+        message.setBizMode(MessageMode.Published.getValue());
+        this.save(message);
+        return message;
     }
 }

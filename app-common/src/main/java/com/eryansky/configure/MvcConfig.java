@@ -56,7 +56,6 @@ public class MvcConfig implements WebMvcConfigurer {
    public void addInterceptors(InterceptorRegistry registry) {
       registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter)).addPathPatterns("/**").excludePathPatterns("/static/**");
       AuthorityInterceptor authorityInterceptor = new AuthorityInterceptor();
-      authorityInterceptor.addExcludeUrl("/api/*");
       authorityInterceptor.setRedirectURL("/jump.jsp");
       registry.addInterceptor(authorityInterceptor).addPathPatterns("/**")
               .excludePathPatterns(Arrays.asList(new String[]{"/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**"}));

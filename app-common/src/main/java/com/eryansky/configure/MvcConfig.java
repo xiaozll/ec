@@ -8,14 +8,13 @@ import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
 import com.eryansky.modules.disk.extend.IFileManager;
 import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -54,12 +53,18 @@ public class MvcConfig implements WebMvcConfigurer {
     */
    @Override
    public void addInterceptors(InterceptorRegistry registry) {
-      registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter)).addPathPatterns("/**").excludePathPatterns("/static/**");
+      registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter))
+              .addPathPatterns("/**")
+              .excludePathPatterns("/static/**")
+              .order(Ordered.HIGHEST_PRECEDENCE + 100);
       AuthorityInterceptor authorityInterceptor = new AuthorityInterceptor();
       authorityInterceptor.setRedirectURL("/jump.jsp");
       registry.addInterceptor(authorityInterceptor).addPathPatterns("/**")
-              .excludePathPatterns(Arrays.asList(new String[]{"/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**"}));
-      registry.addInterceptor(new MobileInterceptor()).addPathPatterns(AppConstants.getMobilePath()+"/**");
+              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**"))
+              .order(Ordered.HIGHEST_PRECEDENCE + 200);
+      registry.addInterceptor(new MobileInterceptor())
+              .addPathPatterns(AppConstants.getMobilePath()+"/**")
+              .order(Ordered.HIGHEST_PRECEDENCE + 300);;
    }
 
    /**

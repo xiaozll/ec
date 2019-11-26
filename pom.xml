@@ -50,11 +50,11 @@
         <httpcomponents.version>4.5.9</httpcomponents.version>
         <commons-codec.version>1.12</commons-codec.version>
 
-        <ec-common.version>4.1.20191121.19</ec-common.version>
-        <ec-app-common.version>4.1.20191121.19</ec-app-common.version>
-        <ec-j2cache.version>2.8.20191121.19</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>2.8.20191121.19</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>1.4.20191121.19</ec-fastweixin.version>
+        <ec-common.version>4.1.20191121.20</ec-common.version>
+        <ec-app-common.version>4.1.20191121.20</ec-app-common.version>
+        <ec-j2cache.version>2.8.20191121.20</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>2.8.20191121.20</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>1.4.20191121.20</ec-fastweixin.version>
 
 
         <jackson.version>2.10.0</jackson.version>

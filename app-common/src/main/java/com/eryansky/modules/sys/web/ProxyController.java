@@ -37,7 +37,7 @@ import java.io.OutputStream;
  */
 @RequiresUser(required = false)
 @Controller
-@RequestMapping(value = "${adminPath}/proxy")
+@RequestMapping(value = "${adminPath}/sys/proxy")
 public class ProxyController extends SimpleController {
 
     /**
@@ -113,7 +113,7 @@ public class ProxyController extends SimpleController {
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         String requestUrl = request.getRequestURI();
 
-        String contentUrl = StringUtils.substringAfterLast(requestUrl, AppConstants.getAdminPath() + "/proxy/");
+        String contentUrl = StringUtils.substringAfterLast(requestUrl, AppConstants.getAdminPath() + "/sys/proxy/");
         String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request, null));//请求参数
         String url = contentUrl + "?" + param;
         logger.debug("proxy url：{}", url);

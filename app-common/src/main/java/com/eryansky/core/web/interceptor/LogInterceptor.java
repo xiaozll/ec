@@ -153,7 +153,7 @@ public class LogInterceptor implements HandlerInterceptor {
 						Object value = resolver.resolveArgument(parameter, mavContainer, webRequest, webDataBinderFactory);
 						parameterValues[i] = value;
 					} catch (Exception e) {
-						logger.error(e.getMessage() + "\n" + requestUrl);
+						logger.warn(e.getMessage() + "\n" + requestUrl);
 					}
 				}
 

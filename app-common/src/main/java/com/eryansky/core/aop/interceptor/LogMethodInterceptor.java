@@ -74,7 +74,6 @@ public class LogMethodInterceptor implements MethodInterceptor, InitializingBean
         // 执行方法名
         String methodName = method.getName();
         String className = methodInvocation.getThis().getClass().getSimpleName();
-        logger.info(methodInvocation.getThis().getClass().getName() + "."+ methodName);
         String userId = null;
 
         String ip = null;

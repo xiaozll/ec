@@ -180,7 +180,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
      *
      * @param notice 通知
      */
-    public void publish(Notice notice) {
+    public Notice publish(Notice notice) {
         notice.setBizMode(NoticeMode.Effective.getValue());
         if (notice.getPublishTime() == null) {
             Date nowTime = Calendar.getInstance().getTime();
@@ -218,14 +218,8 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
             }
         }
 
-        if (Collections3.isNotEmpty(receiveInfos)) {
-            for (NoticeReceiveInfo noticeReceiveInfo : receiveInfos) {
-                noticeReceiveInfoService.save(noticeReceiveInfo);
-            }
-
-        }
-
-
+        receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
+        return notice;
     }
 
     /**

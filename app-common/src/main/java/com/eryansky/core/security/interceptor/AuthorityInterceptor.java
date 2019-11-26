@@ -53,7 +53,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
     /**
      * 不需要拦截的资源
      */
-    private List<String> excludeUrls = Collections.emptyList();
+    private List<String> excludeUrls = Lists.newArrayList();
     /**
      * 验证数据库标记URL 默认值：false
      */
@@ -331,6 +331,11 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
 
     public AuthorityInterceptor setExcludeUrls(List<String> excludeUrls) {
         this.excludeUrls = excludeUrls;
+        return this;
+    }
+
+    public AuthorityInterceptor addExcludeUrl(String excludeUrl) {
+        this.excludeUrls.add(excludeUrl);
         return this;
     }
 

@@ -1911,6 +1911,9 @@ function canRemoveTab(pageId) {
 
 //添加tab
 var addTabs = function (options) {
+    if(!options.url){
+        return;
+    }
     var defaultTabOptions = {
         id: Math.random() * 200,
         urlType: "relative",
@@ -1919,7 +1922,7 @@ var addTabs = function (options) {
 
     options = $.extend(true, defaultTabOptions, options);
 
-    if (options.urlType === "relative") {
+    if (options.urlType === "relative" && (options.url.indexOf("http://") == -1 || options.url.indexOf("https://") == -1)) {
         // var url = window.location.protocol + '//' + window.location.host + "/";
         var basePath = window.location.pathname + "/../";
         options.url = basePath + options.url;

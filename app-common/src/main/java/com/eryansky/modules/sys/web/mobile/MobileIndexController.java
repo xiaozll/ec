@@ -56,13 +56,13 @@ public class MobileIndexController extends SimpleController {
     @Autowired
     private VersionLogService versionLogService;
 
-    @Logging(logType = LogType.access, value = "移动门户（网页版）")
+    @Logging(logType = LogType.access, value = "移动APP")
     @RequestMapping("")
     public ModelAndView index() {
         return new ModelAndView("layout/index");
     }
 
-    @Logging(logType = LogType.access, value = "移动门户（APP版）")
+    @Logging(logType = LogType.access, value = "移动APP")
     @RequestMapping(value = {"content"})
     public ModelAndView content() {
         return new ModelAndView("layout/index_content");

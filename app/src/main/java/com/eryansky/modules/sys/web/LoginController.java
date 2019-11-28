@@ -55,7 +55,7 @@ import java.util.*;
  * @date : 2014-05-02 19:50
  */
 @Controller
-@RequestMapping(value = "${adminPath}/login")
+@RequestMapping(value = {"${adminPath}/login","${mobilePath}/login"})
 public class LoginController extends SimpleController {
 
     @Autowired

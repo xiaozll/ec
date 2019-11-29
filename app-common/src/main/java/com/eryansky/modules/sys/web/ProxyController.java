@@ -14,6 +14,7 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
+import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -28,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * 代理访问服务
@@ -56,7 +59,13 @@ public class ProxyController extends SimpleController {
         String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request, null));//请求参数
         String url = contentUrl + "?" + param;
         logger.debug("proxy url：{}", url);
-        Response remoteResponse = httpCompoents.getResponse(url);
+        Map<String,String> headers = Maps.newHashMap();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()){
+            String header = enumeration.nextElement();
+            headers.put(header,request.getHeader(header));
+        }
+        Response remoteResponse = httpCompoents.getResponse(url,headers);
         try {
             // 判断返回值
             if (remoteResponse == null) {
@@ -119,7 +128,13 @@ public class ProxyController extends SimpleController {
         logger.debug("proxy url：{}", url);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
         HttpCompoents httpCompoents = HttpCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
-        Response remoteResponse = httpCompoents.getResponse(url);
+        Map<String,String> headers = Maps.newHashMap();
+        Enumeration<String> enumeration = request.getHeaderNames();
+        while (enumeration.hasMoreElements()){
+            String header = enumeration.nextElement();
+            headers.put(header,request.getHeader(header));
+        }
+        Response remoteResponse = httpCompoents.getResponse(url,headers);
         try {
             // 判断返回值
             if (remoteResponse == null) {

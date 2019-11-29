@@ -166,7 +166,7 @@ var App = function () {
                 resize = setTimeout(function () {
                     _runResizeHandlers();
                     handleIframeContent();
-                }, 50); // wait 50ms until window resize finishes.                
+                }, 50); // wait 50ms until window resize finishes.
                 currheight = document.documentElement.clientHeight; // store last body client height
             });
         } else {
@@ -330,7 +330,7 @@ var App = function () {
 
         if ($('body').hasClass('page-md')) {
             // Material design click effect
-            // credit where credit's due; http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design       
+            // credit where credit's due; http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design
             var element, circle, d, x, y;
             $('body').on('click', 'a.btn, button.btn, input.btn, label.btn', function (e) {
                 element = $(this);
@@ -454,7 +454,7 @@ var App = function () {
 
     // Handles Bootstrap Modals.
     var handleModals = function () {
-        // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
+        // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class.
         $('body').on('hide.bs.modal', function () {
             if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') === false) {
                 $('html').addClass('modal-open');
@@ -475,7 +475,7 @@ var App = function () {
             $('body').removeClass("modal-open-noscroll");
         });
 
-        // remove ajax content and remove cache on modal closed 
+        // remove ajax content and remove cache on modal closed
         $('body').on('hidden.bs.modal', '.modal:not(.modal-cached)', function () {
             $(this).removeData('bs.modal');
         });
@@ -545,7 +545,7 @@ var App = function () {
         });
     };
 
-    // Handle textarea autosize 
+    // Handle textarea autosize
     var handleTextareaAutosize = function () {
         if (typeof(autosize) == "function") {
             autosize(document.querySelector('textarea.autosizeme'));
@@ -694,14 +694,14 @@ var App = function () {
 
             //Core handlers
             handleInit(); // initialize core variables
-            handleOnResize(); // set and handle responsive    
+            handleOnResize(); // set and handle responsive
 
-            //UI Component handlers     
-            handleMaterialDesign(); // handle material design       
+            //UI Component handlers
+            handleMaterialDesign(); // handle material design
             handleUniform(); // hanfle custom radio & checkboxes
             handleiCheck(); // handles custom icheck radio and checkboxes
             handleBootstrapSwitch(); // handle bootstrap switch plugin
-            handleScrollers(); // handles slim scrolling contents 
+            handleScrollers(); // handles slim scrolling contents
             handleFancybox(); // handle fancy box
             handleSelect2(); // handle custom Select2 dropdowns
             handlePortletTools(); // handles portlet action bar functionality(refresh, configure, toggle, remove)
@@ -710,7 +710,7 @@ var App = function () {
             handleTabs(); // handle tabs
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
-            handleAccordions(); //handles accordions 
+            handleAccordions(); //handles accordions
             handleModals(); // handle modals
             handleBootstrapConfirmation(); // handle bootstrap confirmations
             handleTextareaAutosize(); // handle autosize textareas
@@ -726,17 +726,17 @@ var App = function () {
 
         //main function to initiate core javascript after ajax complete
         initAjax: function () {
-            handleUniform(); // handles custom radio & checkboxes     
+            handleUniform(); // handles custom radio & checkboxes
             handleiCheck(); // handles custom icheck radio and checkboxes
             handleBootstrapSwitch(); // handle bootstrap switch plugin
-            handleDropdownHover(); // handles dropdown hover       
-            handleScrollers(); // handles slim scrolling contents 
+            handleDropdownHover(); // handles dropdown hover
+            handleScrollers(); // handles slim scrolling contents
             handleSelect2(); // handle custom Select2 dropdowns
             handleFancybox(); // handle fancy box
             handleDropdowns(); // handle dropdowns
             handleTooltips(); // handle bootstrap tooltips
             handlePopovers(); // handles bootstrap popovers
-            handleAccordions(); //handles accordions 
+            handleAccordions(); //handles accordions
             handleBootstrapConfirmation(); // handle bootstrap confirmations
         },
         handleFullScreen: function () {
@@ -754,7 +754,7 @@ var App = function () {
         getIframeLayoutHeight: function () {
             return handleIframeLayoutHeight();
         },
-        //init main components 
+        //init main components
         initComponents: function () {
             this.initAjax();
         },
@@ -962,7 +962,7 @@ var App = function () {
 
             options = $.extend(true, {
                 container: "", // alerts parent container(by default placed after the page breadcrumbs)
-                place: "append", // "append" or "prepend" in container 
+                place: "append", // "append" or "prepend" in container
                 type: 'success', // alert's type
                 message: "", // alert's message
                 close: true, // make alert closable
@@ -1921,8 +1921,7 @@ var addTabs = function (options) {
     };
 
     options = $.extend(true, defaultTabOptions, options);
-
-    if (options.urlType === "relative" && (options.url.indexOf("http://") == -1 || options.url.indexOf("https://") == -1)) {
+    if (options.urlType === "relative" && !(options.url.match(new RegExp("^http://")) || options.url.match(new RegExp("^http://")))) {
         // var url = window.location.protocol + '//' + window.location.host + "/";
         var basePath = window.location.pathname + "/../";
         options.url = basePath + options.url;
@@ -1943,7 +1942,7 @@ var addTabs = function (options) {
 
         //是否允许关闭
         if (options.close) {
-            var $i = $("<i class='fa fa-remove page_tab_close' style='cursor: pointer' onclick='closeTab(this);'></i>").attr(pageIdField, pageId).appendTo($title);
+            var $i = $("<i class='fa fa-close page_tab_close' style='cursor: pointer' onclick='closeTab(this);'></i>").attr(pageIdField, pageId).appendTo($title);
             // title += ' <i class="fa fa-remove page_tab_close" style="cursor: pointer;" data-id="' + pageId + '" onclick="closeTab(this)"></i>';
         }
 
@@ -2348,7 +2347,8 @@ $(function () {
                 //a标签
                 var $a;
                 if (level > 0) {
-                    $a = $('<a style="padding-left:' + (level * 20) + 'px"></a>');
+                    // $a = $('<a style="padding-left:' + (level * 20) + 'px"></a>');
+                    $a = $('<a style="padding-left:' + (1 * 30) + 'px"></a>');
                 } else {
                     $a = $('<a></a>');
                 }
@@ -2408,7 +2408,7 @@ $(function () {
                         $a.attr("href", item.url);
                         $a.addClass("iframeOpen");
                         $("#iframe-main").addClass("tab_iframe");
-                    } else {
+                    }else {
                         $a.attr("href", item.url);
                         $a.addClass("iframeOpen");
                         $("#iframe-main").addClass("tab_iframe");

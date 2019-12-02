@@ -170,7 +170,7 @@ public class CaffeineProvider implements CacheProvider {
                         stream.close();
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                 }
             }
         }

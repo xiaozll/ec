@@ -105,9 +105,9 @@ public class MvcConfigure implements WebMvcConfigurer {
 
 
    @Bean
-   public IFileManager getFileManager() {
-      final IFileManager iFileManager = new DISKManager();
-      return iFileManager;
+   public IFileManager fileManager() {
+      final IFileManager bean = new DISKManager();
+      return bean;
    }
 
 //

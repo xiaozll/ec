@@ -19,6 +19,7 @@ import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.core.security.annotation.RequiresUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -257,6 +258,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
                 if(!response.isCommitted()){
                     String authorization = request.getHeader("Authorization");
                     if(WebUtils.isAjaxRequest(request) || StringUtils.startsWith(authorization,"Bearer ")){
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value());
                         WebUtils.renderJson(response, new Result().setCode(401).setMsg("未授权"));
                     }else{
                         //返回校验不通过页面

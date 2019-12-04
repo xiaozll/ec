@@ -78,6 +78,6 @@ public class VersionLogUtils {
         }else if(OperatingSystem.IOS.equals(operatingSystem)){
             return VersionLogType.iPhoneAPP;
         }
-        return null;
+        return VersionLogType.Server;
     }
 }

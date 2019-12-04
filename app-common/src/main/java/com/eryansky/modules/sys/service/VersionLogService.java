@@ -45,12 +45,14 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
     /**
      * 根据版本号查找
      *
+     * @param app
      * @param versionLogType {@link VersionLogType}
      * @param versionCode
      * @return
      */
-    public VersionLog getByVersionCode(String versionLogType, String versionCode) {
+    public VersionLog getByVersionCode(String app,String versionLogType, String versionCode) {
         VersionLog versionLog = new VersionLog();
+        versionLog.setApp(app);
         versionLog.setVersionLogType(versionLogType);
         versionLog.setVersionCode(versionCode);
         return dao.getByVersionCode(versionLog);
@@ -59,12 +61,14 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
     /**
      * 根据版本号查找
      *
+     * @param app
      * @param versionLogType {@link VersionLogType}
      * @param versionName
      * @return
      */
-    public VersionLog getByVersionName(String versionLogType, String versionName) {
+    public VersionLog getByVersionName(String app,String versionLogType, String versionName) {
         VersionLog versionLog = new VersionLog();
+        versionLog.setApp(app);
         versionLog.setVersionLogType(versionLogType);
         versionLog.setVersionName(versionName);
         return dao.getByVersionName(versionLog);
@@ -73,23 +77,27 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
     /**
      * 获取当前最新版本
      *
+     * @param app
      * @param versionLogType
      * @return
      */
-    public VersionLog getLatestVersionLog(String versionLogType) {
-        return getLatestVersionLog(versionLogType, YesOrNo.YES.getValue());
+    public VersionLog getLatestVersionLog(String app,String versionLogType) {
+        return getLatestVersionLog(app,versionLogType, YesOrNo.YES.getValue());
     }
 
     /**
      * 获取当前最新版本
      *
+     * @param app
      * @param versionLogType
      * @param isPub
      * @return
      */
-    public VersionLog getLatestVersionLog(String versionLogType, String isPub) {
+    public VersionLog getLatestVersionLog(String app,String versionLogType,String isPub) {
         VersionLog entity = new VersionLog();
+        entity.setApp(app);
         entity.setVersionLogType(versionLogType);
+        entity.setIsPub(isPub);
         entity.setIsPub(isPub);
         return dao.getLatestVersionLog(entity);
     }

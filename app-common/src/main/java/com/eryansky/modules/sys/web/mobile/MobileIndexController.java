@@ -23,6 +23,7 @@ import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.VersionLogType;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.service.VersionLogService;
+import com.eryansky.modules.sys.utils.VersionLogUtils;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Maps;
@@ -77,7 +78,7 @@ public class MobileIndexController extends SimpleController {
     @Mobile(value = MobileValue.PC)
     @RequiresUser(required = false)
     @RequestMapping("download")
-    public ModelAndView download(String versionLogType, String versionCode) {
+    public ModelAndView download(String app,String versionLogType, String versionCode) {
         ModelAndView modelAndView = new ModelAndView("mobile/download");
         VersionLog versionLog = null;
         boolean likeIOS = AppUtils.likeIOS(UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest()));
@@ -95,10 +96,11 @@ public class MobileIndexController extends SimpleController {
             }
         }
         if (StringUtils.isNotBlank(versionCode)) {
-            versionLog = versionLogService.getByVersionCode(versionLogType, versionCode);
+            versionLog = versionLogService.getByVersionCode(app,versionLogType, versionCode);
         } else {
-            versionLog = versionLogService.getLatestVersionLog(versionLogType);
+            versionLog = versionLogService.getLatestVersionLog(app,versionLogType);
         }
+        modelAndView.addObject("app", app);
         modelAndView.addObject("versionLogType", versionLogType);
         modelAndView.addObject("versionCode", versionCode);
         modelAndView.addObject("model", versionLog);
@@ -107,18 +109,41 @@ public class MobileIndexController extends SimpleController {
         return modelAndView;
     }
 
-
     /**
      * 查找更新
+     * @param versionLogType {@link VersionLogType}
+     * @param app 应用标识
+     * @return
      */
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = {"getNewVersion/{versionLogType}"})
-    public Result getNewVersion(@PathVariable String versionLogType) {
-        Result result = null;
-        VersionLog max = versionLogService.getLatestVersionLog(versionLogType);
-        result = Result.successResult().setObj(max);
-        return result;
+    public Result getNewVersion(@PathVariable String versionLogType,String app) {
+        return getNewVersion(SpringMVCHolder.getRequest(),versionLogType,app);
+    }
+
+
+    /**
+     * 查找更新
+     * @param request
+     * @param versionLogType {@link VersionLogType}
+     * @param app 应用标识
+     * @return
+     */
+    @RequiresUser(required = false)
+    @ResponseBody
+    @RequestMapping(value = {"getNewVersion"})
+    public Result getNewVersion(HttpServletRequest request,String versionLogType,String app) {
+        String _versionLogType = versionLogType;
+        if(StringUtils.isBlank(versionLogType)){
+            VersionLogType vt = VersionLogUtils.getLatestVersionLogType(request);
+            _versionLogType = null != vt ? vt.getValue():null;
+        }
+        if(StringUtils.isBlank(_versionLogType)){
+            throw new ActionException("未识别参数[versionLogType]");
+        }
+        VersionLog max = versionLogService.getLatestVersionLog(app,versionLogType);
+        return Result.successResult().setObj(max);
     }
 
     private static final String MIME_ANDROID_TYPE = "application/vnd.android.package-archive";
@@ -139,12 +164,13 @@ public class MobileIndexController extends SimpleController {
     public ModelAndView fileDownload(HttpServletResponse response,
                                      HttpServletRequest request,
                                      String versionCode,
+                                     String app,
                                      @PathVariable String versionLogType) {
         VersionLog versionLog = null;
         if (StringUtils.isNotBlank(versionCode)) {
-            versionLog = versionLogService.getByVersionCode(versionLogType, versionCode);
+            versionLog = versionLogService.getByVersionCode(app,versionLogType, versionCode);
         } else {
-            versionLog = versionLogService.getLatestVersionLog(versionLogType);
+            versionLog = versionLogService.getLatestVersionLog(app,versionLogType);
         }
         if (versionLog != null && versionLog.getFileId() != null) {
             try {

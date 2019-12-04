@@ -15,6 +15,7 @@ import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
@@ -29,6 +30,7 @@ import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.VersionLogType;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.service.VersionLogService;
+import com.eryansky.modules.sys.utils.VersionLogUtils;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.fileupload.FileUploadBase;
@@ -207,7 +209,7 @@ public class VersionLogController extends SimpleController {
     @ResponseBody
     public Result save(@ModelAttribute("model") VersionLog model) {
         Result result;
-        VersionLog checkEntity = versionLogService.getByVersionCode(model.getVersionLogType(), model.getVersionCode());
+        VersionLog checkEntity = versionLogService.getByVersionCode(model.getApp(),model.getVersionLogType(), model.getVersionCode());
         if (checkEntity != null && !checkEntity.getId().equals(model.getId())) {
             result = new Result(Result.WARN, "版本内部编号为[" + model.getVersionCode()
                     + "]已存在,请修正!", "versionCode");
@@ -276,23 +278,50 @@ public class VersionLogController extends SimpleController {
 
 
     /**
-     * 附件下载
-     *
-     * @param request
+     * APP下载
      * @param response
+     * @param app
+     * @param versionLogType
      * @return
      * @throws Exception
      */
     @RequiresUser(required = false)
     @RequestMapping(value = {"downloadApp/{versionLogType}"})
-    public ModelAndView downloadApp(HttpServletRequest request, HttpServletResponse response, @PathVariable String versionLogType) throws Exception {
-        VersionLog model = versionLogService.getLatestVersionLog(versionLogType);
+    public ModelAndView downloadApp(HttpServletResponse response,String app, @PathVariable String versionLogType) {
+        return downloadApp(SpringMVCHolder.getRequest(),response,app,versionLogType);
+    }
+
+
+    /**
+     * APP下载
+     * @param request
+     * @param response
+     * @param app
+     * @param versionLogType
+     * @return
+     * @throws Exception
+     */
+    @RequiresUser(required = false)
+    @RequestMapping(value = {"downloadApp"})
+    public ModelAndView downloadApp(HttpServletRequest request, HttpServletResponse response,String app, @PathVariable String versionLogType){
+        String _versionLogType = versionLogType;
+        if(StringUtils.isBlank(versionLogType)){
+            VersionLogType vt = VersionLogUtils.getLatestVersionLogType(request);
+            _versionLogType = null != vt ? vt.getValue():null;
+        }
+        if(StringUtils.isBlank(_versionLogType)){
+            throw new ActionException("未识别参数[versionLogType]");
+        }
+        VersionLog model = versionLogService.getLatestVersionLog(app,_versionLogType);
         if (model != null && model.getFileId() != null) {
             File file = DiskUtils.getFile(model.getFileId());
             WebUtils.setDownloadableHeader(request, response, file.getName());
-            file.getDiskFile();
             java.io.File tempFile = file.getDiskFile();
-            FileCopyUtils.copy(new FileInputStream(tempFile), response.getOutputStream());
+            try {
+                FileCopyUtils.copy(new FileInputStream(tempFile), response.getOutputStream());
+            } catch (IOException e) {
+                logger.error(e.getMessage(),e);
+            }
         } else {
             throw new ActionException("下载文件不存在！");
         }

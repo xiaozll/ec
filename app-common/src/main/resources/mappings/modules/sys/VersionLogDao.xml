@@ -47,6 +47,9 @@
 		WHERE
 		a.status = #{status}
 		AND a.version_code = #{versionCode}
+		<if test="app != null and app !=''">
+			AND a.app = #{app}
+		</if>
 		<if test="versionLogType != null and versionLogType != ''">
 			AND a.version_log_type = #{versionLogType}
 		</if>
@@ -63,6 +66,9 @@
 		WHERE
 		a.status = #{status}
 		AND a.version_name = #{versionName}
+		<if test="app != null and app !=''">
+			AND a.app = #{app}
+		</if>
 		<if test="versionLogType != null and versionLogType != ''">
 			AND a.version_log_type = #{versionLogType}
 		</if>
@@ -79,6 +85,9 @@
 		<where>
 			a.status = #{status}
 			AND a.version_log_type = #{versionLogType}
+			<if test="app != null and app !=''">
+				AND a.app = #{app}
+			</if>
 			<if test="isPub != null and isPub !=''">
 				AND a.is_pub = #{isPub}
 			</if>
@@ -99,6 +108,9 @@
 		<include refid="sysVersionLogJoins"/>
 		<where>
 			a.status = #{status}
+			<if test="app != null and app !=''">
+				AND a.app = #{app}
+			</if>
 		</where>
 		<choose>
 			<when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">

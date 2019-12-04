@@ -12,6 +12,10 @@ import com.eryansky.modules.sys._enum.VersionLogType;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.service.VersionLogService;
 import com.eryansky.utils.AppUtils;
+import eu.bitwalker.useragentutils.DeviceType;
+import eu.bitwalker.useragentutils.OperatingSystem;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.eryansky.utils.AppUtils.likeIOS;
 
@@ -27,21 +31,27 @@ public class VersionLogUtils {
     public static final class Static {
         private static VersionLogService versionLogService = SpringContextHolder.getBean(VersionLogService.class);
     }
-
     /**
      * 获取当前版本的更新说明
      *
      * @return
      */
     public static VersionLog getLatestVersionLog() {
+        return getLatestVersionLog(null);
+    }
+    /**
+     * 获取当前版本的更新说明
+     *
+     * @return
+     */
+    public static VersionLog getLatestVersionLog(String app) {
         String userAgent = UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest());
         if (AppUtils.likeAndroid(userAgent)) {
-            return Static.versionLogService.getLatestVersionLog(VersionLogType.Android.getValue());
+            return Static.versionLogService.getLatestVersionLog(app,VersionLogType.Android.getValue());
         } else if (likeIOS(userAgent)) {
-            return Static.versionLogService.getLatestVersionLog(VersionLogType.iPhone.getValue());
+            return Static.versionLogService.getLatestVersionLog(app,VersionLogType.iPhone.getValue());
         }
-        return Static.versionLogService.getLatestVersionLog(VersionLogType.Server.getValue());
-
+        return Static.versionLogService.getLatestVersionLog(app,VersionLogType.Server.getValue());
     }
 
     /**
@@ -50,7 +60,24 @@ public class VersionLogUtils {
      * @param versionLogType {@link com.eryansky.modules.sys._enum.VersionLogType}
      * @return
      */
-    public static VersionLog getLatestVersionLog(String versionLogType) {
-        return Static.versionLogService.getLatestVersionLog(versionLogType);
+    public static VersionLog getLatestVersionLog(String app,String versionLogType) {
+        return Static.versionLogService.getLatestVersionLog(app,versionLogType);
+    }
+
+
+    /**
+     * 获取当前版本的类型
+     *
+     * @param request
+     * @return
+     */
+    public static VersionLogType getLatestVersionLogType(HttpServletRequest request) {
+        OperatingSystem operatingSystem = UserAgentUtils.getUserAgent(request).getOperatingSystem();
+        if(OperatingSystem.ANDROID.equals(operatingSystem)){
+            return VersionLogType.Android;
+        }else if(OperatingSystem.IOS.equals(operatingSystem)){
+            return VersionLogType.iPhoneAPP;
+        }
+        return null;
     }
 }

@@ -65,7 +65,7 @@ public class VersionLogController extends SimpleController {
     private VersionLogService versionLogService;
 
 
-    @RequiresPermissions("sys:model:view")
+    @RequiresPermissions("sys:versionLog:view")
     @Logging(value = "版本更新", logType = LogType.access)
     @RequestMapping(value = {""})
     public String list() {
@@ -203,7 +203,7 @@ public class VersionLogController extends SimpleController {
      * @param model
      * @return
      */
-    @RequiresPermissions("sys:model:edit")
+    @RequiresPermissions("sys:versionLog:edit")
     @Logging(value = "版本更新-保存版本", logType = LogType.access)
     @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
@@ -226,7 +226,7 @@ public class VersionLogController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions("sys:model:edit")
+    @RequiresPermissions("sys:versionLog:edit")
     @Logging(value = "版本管理-删除版本", logType = LogType.access)
     @RequestMapping(value = {"remove"})
     @ResponseBody

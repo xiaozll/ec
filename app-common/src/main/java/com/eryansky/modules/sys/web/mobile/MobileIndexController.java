@@ -143,7 +143,10 @@ public class MobileIndexController extends SimpleController {
             throw new ActionException("未识别参数[versionLogType]");
         }
         VersionLog max = versionLogService.getLatestVersionLog(app,versionLogType);
-        return Result.successResult().setObj(max);
+        Map<String,Object> data = Maps.newHashMap();
+        data.put("versionLog",max);
+        data.put("downLoadUrl",AppUtils.getAppURL()+"/m/download");
+        return Result.successResult().setObj(data);
     }
 
     private static final String MIME_ANDROID_TYPE = "application/vnd.android.package-archive";

@@ -142,7 +142,7 @@ public class MobileIndexController extends SimpleController {
         if(StringUtils.isBlank(_versionLogType)){
             throw new ActionException("未识别参数[versionLogType]");
         }
-        VersionLog max = versionLogService.getLatestVersionLog(app,versionLogType);
+        VersionLog max = versionLogService.getLatestVersionLog(app,_versionLogType);
         Map<String,Object> data = Maps.newHashMap();
         data.put("versionLog",max);
         data.put("appDownLoadUrl",AppUtils.getAppURL()+"/m/download");

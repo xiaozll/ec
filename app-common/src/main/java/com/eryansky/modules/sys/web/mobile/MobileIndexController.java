@@ -145,7 +145,7 @@ public class MobileIndexController extends SimpleController {
         VersionLog max = versionLogService.getLatestVersionLog(app,versionLogType);
         Map<String,Object> data = Maps.newHashMap();
         data.put("versionLog",max);
-        data.put("downLoadUrl",AppUtils.getAppURL()+"/m/download");
+        data.put("appDownLoadUrl",AppUtils.getAppURL()+"/m/download");
         return Result.successResult().setObj(data);
     }
 

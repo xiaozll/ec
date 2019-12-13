@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ShopCodeSensitiveHandler implements SensitiveTypeHandler {
     @Override
     public SensitiveType getSensitiveType() {
-        return SensitiveType.MOBILE_PHONE;
+        return SensitiveType.SHOP_CODE;
     }
 
     @Override

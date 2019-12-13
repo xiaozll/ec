@@ -6,6 +6,11 @@
 package com.eryansky.modules.sys.mapper;
 
 
+import com.eryansky.common.orm.mybatis.sensitive.annotation.EncryptField;
+import com.eryansky.common.orm.mybatis.sensitive.annotation.SensitiveEncryptEnabled;
+import com.eryansky.common.orm.mybatis.sensitive.annotation.SensitiveField;
+import com.eryansky.common.orm.mybatis.sensitive.type.SensitiveType;
+import com.eryansky.common.orm.mybatis.sensitive.utils.SensitiveUtils;
 import com.eryansky.common.orm.persistence.IUser;
 import com.eryansky.common.utils.Pinyin4js;
 import com.eryansky.common.utils.StringUtils;
@@ -108,9 +113,29 @@ public class User extends DataEntity<User> implements IUser {
      */
     private String remark;
 
+    //扩展信息
+    /**
+     * 关键字
+     */
     private String query;
+    /**
+     * 脱毛后的手机号码
+     */
+    private String mobileSensitive;
+
+
 
     public User() {
+    }
+
+    @Override
+    public void prePersist() {
+        super.prePersist();
+    }
+
+    @Override
+    public void preUpdate() {
+        super.preUpdate();
     }
 
     public User(String id) {
@@ -327,4 +352,7 @@ public class User extends DataEntity<User> implements IUser {
         return str;
     }
 
+    public String getMobileSensitive() {
+        return SensitiveUtils.getSensitive(mobile,SensitiveType.MOBILE_PHONE);
+    }
 }

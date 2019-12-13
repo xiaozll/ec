@@ -925,8 +925,4 @@
         </foreach>
     </insert>
     <!--用户资源-->
-
-
-
-
 </mapper>

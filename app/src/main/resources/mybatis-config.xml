@@ -47,6 +47,8 @@
 	<!-- 插件配置 -->
 	<plugins>
 		<plugin interceptor="com.eryansky.common.orm.mybatis.interceptor.PaginationInterceptor" />
+<!--		<plugin interceptor="com.eryansky.common.orm.mybatis.sensitive.interceptor.DecryptReadInterceptor" />-->
+<!--		<plugin interceptor="com.eryansky.common.orm.mybatis.sensitive.interceptor.SensitiveAndEncryptWriteInterceptor" />-->
     </plugins>
 	
 </configuration>

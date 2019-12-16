@@ -68,8 +68,15 @@ public class File extends DataEntity<File> implements Serializable {
      */
     private String shareUserId;
 
-
+    //扩展字段
+    /**
+     * 关键字
+     */
     private String query;
+    /**
+     * 下载地址
+     */
+    private String url;
 
     /**
      * 构造方法
@@ -218,7 +225,14 @@ public class File extends DataEntity<File> implements Serializable {
      * 文件下载路径
      */
     public String getUrl() {
+        if(null != url){
+            return url;
+        }
         return DiskUtils.getFileUrl(id);
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**

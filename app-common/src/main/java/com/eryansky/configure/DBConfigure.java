@@ -8,6 +8,7 @@ package com.eryansky.configure;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.eryansky.common.orm.mybatis.MyBatisDao;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
@@ -34,6 +35,7 @@ import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
@@ -51,21 +53,47 @@ public class DBConfigure {
         return DruidDataSourceBuilder.create().build();
     }
 
+    /**
+     * 自定义mybatis参数转换
+     * @param mybatisProperties
+     * @return
+     */
+    private Properties mybatisProperties(Map<String, String> mybatisProperties) {
+        if(null == mybatisProperties){
+            return null;
+        }
+        Properties properties = new Properties();
+        mybatisProperties.forEach(properties::put);
+        return properties;
+    }
+
+    /**
+     * mybatis sqlSessionFactory
+     * @param dataSource 数据源
+     * @param environment spring上下文参数
+     * @return
+     * @throws Exception
+     */
     @Bean(name = "sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactoryBean(@Qualifier("dataSource") DataSource dataSource,
-                                                   @Value("${spring.dataSource.mybatis.typeAliasesPackage}")String typeAliasesPackage) throws Exception {
+                                                   Environment environment) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         StringBuilder sb = new StringBuilder();
+        String typeAliasesPackage = environment.getProperty("spring.dataSource.mybatis.typeAliasesPackage");
         sb.append("com.eryansky.modules.sys.mapper,com.eryansky.modules.disk.mapper,com.eryansky.modules.notice.mapper");
         if(StringUtils.isNotBlank(typeAliasesPackage)){
             sb.append(StringUtils.startsWith(typeAliasesPackage,",") ? typeAliasesPackage :","+ typeAliasesPackage);
         }
         sqlSessionFactoryBean.setTypeAliasesPackage(sb.toString());
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mappings/modules/**/*Dao.xml"));
+
+        String mybatisProperties = environment.getProperty("spring.dataSource.mybatis.properties");
+        Map<String,String> map = (Map<String, String>) JsonMapper.fromJsonString(mybatisProperties,HashMap.class);
+        sqlSessionFactoryBean.setConfigurationProperties(mybatisProperties(map));
         return sqlSessionFactoryBean.getObject();
     }
 

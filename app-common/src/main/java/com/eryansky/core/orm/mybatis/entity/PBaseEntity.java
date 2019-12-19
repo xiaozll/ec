@@ -11,6 +11,7 @@ import com.eryansky.common.orm.persistence.IUser;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.reflection.ReflectionUtils;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.utils.AppConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -83,6 +84,9 @@ public abstract class PBaseEntity<T, PK extends Serializable> extends AbstractBa
     @JsonIgnore
     @Override
     public String getDbName() {
+        if(null == this.dbName){
+            return AppConstants.getJdbcType();
+        }
         return super.getDbName();
     }
 }

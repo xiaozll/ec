@@ -10,6 +10,7 @@ import com.eryansky.common.orm.persistence.AbstractBaseEntity;
 import com.eryansky.common.orm.persistence.IUser;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.utils.AppConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -83,6 +84,9 @@ public abstract class BaseEntity<T> extends AbstractBaseEntity<T,String> {
     @JsonIgnore
     @Override
     public String getDbName() {
+        if(null == this.dbName){
+            return AppConstants.getJdbcType();
+        }
         return super.getDbName();
     }
 }

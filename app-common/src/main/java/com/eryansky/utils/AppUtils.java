@@ -432,4 +432,19 @@ public class AppUtils {
         }
         return value;
     }
+
+    /**
+     * Map转Properties
+     * @param map
+     * @return
+     */
+    public static Properties mapToProperties(Map<String, Object> map) {
+        if(null == map){
+            return null;
+        }
+        Properties properties = new Properties();
+        map.forEach(properties::put);
+        return properties;
+    }
+
 }

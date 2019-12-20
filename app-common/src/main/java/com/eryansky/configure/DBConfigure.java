@@ -9,6 +9,7 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.eryansky.common.orm.mybatis.MyBatisDao;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.utils.AppUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
@@ -92,8 +93,8 @@ public class DBConfigure {
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:mappings/modules/**/*Dao.xml"));
 
         String mybatisProperties = environment.getProperty("spring.dataSource.mybatis.properties");
-        Map<String,String> map = (Map<String, String>) JsonMapper.fromJsonString(mybatisProperties,HashMap.class);
-        sqlSessionFactoryBean.setConfigurationProperties(mybatisProperties(map));
+        Map<String,Object> map = (Map<String, Object>) JsonMapper.fromJsonString(mybatisProperties,HashMap.class);
+        sqlSessionFactoryBean.setConfigurationProperties(AppUtils.mapToProperties(map));
         return sqlSessionFactoryBean.getObject();
     }
 

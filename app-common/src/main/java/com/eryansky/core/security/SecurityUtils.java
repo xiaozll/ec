@@ -476,7 +476,11 @@ public class SecurityUtils {
     public static SessionInfo getCurrentSessionInfo() {
         SessionInfo sessionInfo = null;
         try {
-            HttpSession session = SpringMVCHolder.getSession();
+            HttpServletRequest request = SpringMVCHolder.getRequest();
+            if(null == request){
+                return null;
+            }
+            HttpSession session = request.getSession();
             if(null == session){
                 return null;
             }

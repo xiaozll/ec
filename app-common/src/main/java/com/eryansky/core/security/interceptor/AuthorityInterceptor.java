@@ -45,6 +45,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private static final String ATTR_SESSIONINFO = "sessionInfo";
+    private static final String ATTR_AUTHORIZATION = "Authorization";
 
 
     /**
@@ -65,8 +66,14 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
         //登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         request.setAttribute(ATTR_SESSIONINFO,sessionInfo);
+        if(null != sessionInfo){
+            response.setHeader(ATTR_AUTHORIZATION, sessionInfo.getToken());
+        }
         String requestUrl = request.getRequestURI();
         requestUrl = requestUrl.replaceAll("//","/");
+        if(logger.isDebugEnabled()){
+            logger.debug(requestUrl);
+        }
         //注解处理
         Boolean annotationHandler = this.annotationHandler(request,response,o,sessionInfo,requestUrl);
         if(annotationHandler != null){

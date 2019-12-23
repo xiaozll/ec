@@ -70,7 +70,19 @@ public class UserUtils {
         return null;
     }
 
-
+    /**
+     * 根据loginName查找用户
+     *
+     * @param loginName 用户账号
+     * @return
+     */
+    public static String getUserIdByLoginName(String loginName) {
+        User user = getUserByLoginName(loginName);
+        if (null != user) {
+            return user.getId();
+        }
+        return null;
+    }
 
     /**
      * 根据手机号码查找用户

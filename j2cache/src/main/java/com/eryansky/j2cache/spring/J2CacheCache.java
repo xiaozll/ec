@@ -48,6 +48,13 @@ public class J2CacheCache extends AbstractValueAdaptingCache {
 
 	@Override
 	public <T> T get(Object key, Callable<T> valueLoader) {
+		ValueWrapper val = get(key);
+		if (val != null) {
+			if (val.get() instanceof NullObject) {
+				return null;
+			}
+			return (T) val.get();
+		}
 		T value;
 		try {
 			value = valueLoader.call();

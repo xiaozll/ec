@@ -15,7 +15,9 @@ import java.io.*;
  */
 public class Yuicompressor {
 
-    private static final String[] DIRS = new String[]{"app/src/main/webapp/static/app"};
+    private static final String[] DIRS = new String[]{"app/src/main/webapp/static/app",
+            "app/src/main/webapp/static/js/adminlte/dist/"
+    };
 
     //    java -jar yuicompressor-2.4.7.jar --type js --charset utf-8 ../src/main/webapp/static/app/modules/disk/disk.js -o ../src/main/webapp/static/app/modules/disk/disk-min.js
     public static void main(String[] args) {
@@ -38,14 +40,14 @@ public class Yuicompressor {
                     cmd.append("js ")
                             .append(fileName)
                             .append(" -o ")
-                            .append(fileName.replaceAll(".js", ".min.js"))
+                            .append(fileName.replaceAll("\\.js", ".min.js"))
                     .append("\r\n");
 
                 }else if(fileName.endsWith(".css")){
                     cmd.append("css ")
                             .append(fileName)
                             .append(" -o ")
-                            .append(fileName.replaceAll(".css", ".min.css"))
+                            .append(fileName.replaceAll("\\.css", ".min.css"))
                             .append("\r\n");
                 }else{
                     System.out.println("error "+ fileName);

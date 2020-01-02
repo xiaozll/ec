@@ -1921,12 +1921,6 @@ var addTabs = function (options) {
     };
 
     options = $.extend(true, defaultTabOptions, options);
-    if (options.urlType === "relative" && !(options.url.match(new RegExp("^http://")) || options.url.match(new RegExp("^https://")))) {
-        // var url = window.location.protocol + '//' + window.location.host + "/";
-        var basePath = window.location.pathname + "/../";
-        options.url = basePath + options.url;
-    }
-
     var pageId = options.id;
 
     //判断这个id的tab是否已经存在,不存在就新建一个
@@ -1942,7 +1936,7 @@ var addTabs = function (options) {
 
         //是否允许关闭
         if (options.close) {
-            var $i = $("<i class='fa fa-close page_tab_close' style='cursor: pointer' onclick='closeTab(this);'></i>").attr(pageIdField, pageId).appendTo($title);
+            var $i = $("<i class='fa fa-remove page_tab_close' style='cursor: pointer' onclick='closeTab(this);'></i>").attr(pageIdField, pageId).appendTo($title);
             // title += ' <i class="fa fa-remove page_tab_close" style="cursor: pointer;" data-id="' + pageId + '" onclick="closeTab(this)"></i>';
         }
 

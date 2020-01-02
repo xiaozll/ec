@@ -2021,6 +2021,22 @@ function closeTabByPageId(pageId) {
 
     }
 
+    try{
+        var $iframe = $tabPanel.children("iframe");
+        $iframe[0].src = 'about:blank';
+        $iframe[0].contentWindow.document.write( '');//清空frame的内容
+        $iframe[0].contentWindow.document.clear();
+        $iframe[0].contentWindow.close(); //避免frame内存泄漏
+        $iframe.remove();
+    }catch(e){
+        console.error(e);
+    }
+    if($.support.leadingWhitespace){
+        try {
+            CollectGarbage();
+        } catch (e) {
+        }
+    }
     $title.remove();
     $tabPanel.remove();
     // scrollToTab($('.menu_tab.active')[0]);
@@ -2030,6 +2046,22 @@ function closeTabByPageId(pageId) {
 function closeTabOnly(pageId) {
     var $title = findTabTitle(pageId);//有tab的标题
     var $tabPanel = findTabPanel(pageId);//装有iframe
+    try{
+        var $iframe = $tabPanel.children("iframe");
+        $iframe[0].src = 'about:blank';
+        $iframe[0].contentWindow.document.write( '');//清空frame的内容
+        $iframe[0].contentWindow.document.clear();
+        $iframe[0].contentWindow.close(); //避免frame内存泄漏
+        $iframe.remove();
+    }catch(e){
+        console.error(e);
+    }
+    if($.support.leadingWhitespace){
+        try {
+            CollectGarbage();
+        } catch (e) {
+        }
+    }
     $title.remove();
     $tabPanel.remove();
 }

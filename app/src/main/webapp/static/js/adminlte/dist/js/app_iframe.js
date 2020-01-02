@@ -1921,7 +1921,7 @@ var addTabs = function (options) {
     };
 
     options = $.extend(true, defaultTabOptions, options);
-    if (options.urlType === "relative" && !(options.url.match(new RegExp("^http://")) || options.url.match(new RegExp("^http://")))) {
+    if (options.urlType === "relative" && !(options.url.match(new RegExp("^http://")) || options.url.match(new RegExp("^https://")))) {
         // var url = window.location.protocol + '//' + window.location.host + "/";
         var basePath = window.location.pathname + "/../";
         options.url = basePath + options.url;

@@ -1915,7 +1915,7 @@ var addTabs = function (options) {
         return;
     }
     var defaultTabOptions = {
-        id: Math.random() * 200,
+        id: Math.ranBdom() * 200,
         urlType: "relative",
         title: "新页面"
     };

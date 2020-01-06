@@ -11,17 +11,19 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.Exceptions;
 import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.SysUtils;
-import com.eryansky.common.web.utils.WebUtils;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -122,7 +124,16 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
 //        return  new ModelAndView("error-business", model);
 
         //异步方式返回异常信息
-        WebUtils.renderText(response, result);
-        return null;
+//        WebUtils.renderText(response, result);
+
+        ModelAndView modelAndView = new ModelAndView();
+        Map<String, Object> maps = Maps.newHashMap();
+        maps.put("code", result.getCode());
+        maps.put("msg", result.getMsg());
+        maps.put("obj", null);
+        MappingJackson2JsonView mappingJackson2JsonView = new MappingJackson2JsonView();
+        mappingJackson2JsonView.setAttributesMap(maps);
+        modelAndView.setView(mappingJackson2JsonView);
+        return modelAndView;
     }
 }

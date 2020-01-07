@@ -5,9 +5,8 @@
  */
 package com.eryansky.common.utils;
 
-import com.google.common.base.Optional;
-
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * 进行BigDecimal对象的加减乘除，四舍五入等运算的工具类
@@ -239,7 +238,7 @@ public class Arith {
 		Integer r = b1;
 		if (null != bn) {
 			for (Integer b : bn) {
-				r += Optional.fromNullable(b).or(0);
+				r += Optional.of(b).orElse((0));
 			}
 		}
 		return r > 0 ? r : 0;
@@ -300,7 +299,7 @@ public class Arith {
 		Integer r = b1;
 		if (null != bn) {
 			for (Integer b : bn) {
-				r -= Optional.fromNullable(b).or(0);
+				r -= Optional.of(b).orElse((0));
 			}
 		}
 		return null != r && r > 0 ? r : 0;

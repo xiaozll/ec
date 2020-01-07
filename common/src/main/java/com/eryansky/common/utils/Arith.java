@@ -301,7 +301,7 @@ public class Arith {
 	 * @return
 	 */
 	public static <T extends Number> BigDecimal safeDivide(T b1, T b2){
-		return safeDivide(b1, b2, BigDecimal.ZERO);
+		return safeDivide(b1, b2, null,BigDecimal.ZERO);
 	}
 
 	/**
@@ -309,15 +309,16 @@ public class Arith {
 	 * 默认返回小数位后2位，用于金额计算
 	 * @param b1
 	 * @param b2
+	 * @param scale 精度 默认值：2
 	 * @param defaultValue
 	 * @return
 	 */
-	public static <T extends Number> BigDecimal safeDivide(T b1, T b2, BigDecimal defaultValue) {
+	public static <T extends Number> BigDecimal safeDivide(T b1, T b2,Integer scale, BigDecimal defaultValue) {
 		if (null == b1 || null == b2) {
 			return defaultValue;
 		}
 		try {
-			return BigDecimal.valueOf(b1.doubleValue()).divide(BigDecimal.valueOf(b2.doubleValue()), 2, BigDecimal.ROUND_HALF_UP);
+			return BigDecimal.valueOf(b1.doubleValue()).divide(BigDecimal.valueOf(b2.doubleValue()), null == scale ? 2:scale, BigDecimal.ROUND_HALF_UP);
 		} catch (Exception e) {
 			return defaultValue;
 		}
@@ -330,10 +331,28 @@ public class Arith {
 	 * @return
 	 */
 	public static <T extends Number> BigDecimal safeMultiply(T b1, T b2) {
+		return safeMultiply(b1,b2,null);
+	}
+
+	/**
+	 * BigDecimal的乘法运算封装
+	 * @param b1
+	 * @param b2
+	 * @return
+	 */
+	public static <T extends Number> BigDecimal safeMultiply(T b1, T b2,Integer scale) {
 		if (null == b1 || null == b2) {
 			return BigDecimal.ZERO;
 		}
-		return BigDecimal.valueOf(b1.doubleValue()).multiply(BigDecimal.valueOf(b2.doubleValue())).setScale(2, BigDecimal.ROUND_HALF_UP);
+		return BigDecimal.valueOf(b1.doubleValue()).multiply(BigDecimal.valueOf(b2.doubleValue())).setScale( null == scale ? 2:scale, BigDecimal.ROUND_HALF_UP);
+	}
+
+	/**
+	 * 判断是否为空或0
+	 * @return
+	 */
+	public static boolean isNullOrZero(BigDecimal v) {
+		return null == v || BigDecimal.ZERO.compareTo(v) == 0;
 	}
 
 }

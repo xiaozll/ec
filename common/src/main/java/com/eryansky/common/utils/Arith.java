@@ -238,7 +238,7 @@ public class Arith {
 		Integer r = b1;
 		if (null != bn) {
 			for (Integer b : bn) {
-				r += Optional.of(b).orElse((0));
+				r += Optional.ofNullable(b).orElse((0));
 			}
 		}
 		return r > 0 ? r : 0;
@@ -299,7 +299,7 @@ public class Arith {
 		Integer r = b1;
 		if (null != bn) {
 			for (Integer b : bn) {
-				r -= Optional.of(b).orElse((0));
+				r -= Optional.ofNullable(b).orElse((0));
 			}
 		}
 		return null != r && r > 0 ? r : 0;

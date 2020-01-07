@@ -246,6 +246,18 @@ public class Arith {
 	}
 
 	/**
+	 * null转0
+	 * @param b1
+	 * @return
+	 */
+	public static BigDecimal nullToZero(BigDecimal b1) {
+		if (null == b1) {
+			b1 = BigDecimal.ZERO;
+		}
+		return b1;
+	}
+
+	/**
 	 * 计算金额方法
 	 * @param b1
 	 * @param bn

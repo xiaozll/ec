@@ -5,6 +5,7 @@
  */
 package com.eryansky.core.web.interceptor;
 
+import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.model.Result;
@@ -85,7 +86,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         //空指针异常
         else if(Exceptions.isCausedBy(ex, NullPointerException.class)){
-            sb.append("程序没写好,发生空指针异常！");
+            sb.append("空指针异常！");
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }
@@ -99,6 +100,11 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
 
         //系统异常
         else if(Exceptions.isCausedBy(ex, SystemException.class)){
+            sb.append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
+        }
+
+        //Action异常
+        else if(Exceptions.isCausedBy(ex, ActionException.class)){
             sb.append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
         }
 

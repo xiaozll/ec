@@ -161,7 +161,7 @@ public class MobileIndexController extends SimpleController {
      * @param versionLogType {@link com.eryansky.modules.sys._enum.VersionLogType}
      *                       文件ID
      */
-    @Logging(logType = LogType.access, value = "'APP[' + #versionLogType + ']下载'")
+    @Logging(logType = LogType.access, value = "'APP下载'")
     @RequiresUser(required = false)
     @RequestMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,

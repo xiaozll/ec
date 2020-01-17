@@ -161,8 +161,7 @@ public class MobileIndexController extends SimpleController {
      * @param versionLogType {@link com.eryansky.modules.sys._enum.VersionLogType}
      *                       文件ID
      */
-    @Mobile(value = MobileValue.PC)
-    @Logging(logType = LogType.access, value = "APP[#versionCode]下载")
+    @Logging(logType = LogType.access, value = "'APP[' + #versionCode + ']下载'")
     @RequiresUser(required = false)
     @RequestMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,
@@ -191,7 +190,7 @@ public class MobileIndexController extends SimpleController {
                 throw new ActionException(e);
             }
         } else {
-            throw new ActionException("下载文件不存在！");
+            throw new ActionException("下载的APP文件不存在！");
         }
         return null;
     }

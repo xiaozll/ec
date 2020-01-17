@@ -121,9 +121,9 @@
         <div class="panel active" id="loginpanel">
             <div class="title"><h2 style="color: #66d354;">${fns:getAppFullName()}APP下载</h2></div>
             <div id="qr" align="center" style="margin: 20px;"></div>
-            <div align="center">支持Android4.2+以及iOS8.0+</div>
+            <div align="center">支持Android5.0+以及iOS11.0+</div>
             <div align="center" style="color: red;">建议使用微信扫一扫
-                （<a href="${ctxStatic}/help/江西烟草商业系统一线员工移动工作平台用户手册.pdf" data-ignore="true">用户手册</a>）
+                （<a href="#" data-ignore="true">用户手册</a>）
             </div>
 
             <c:if test="${likeIOS == false}">

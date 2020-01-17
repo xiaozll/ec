@@ -146,6 +146,7 @@ public class MobileIndexController extends SimpleController {
         Map<String,Object> data = Maps.newHashMap();
         data.put("versionLog",max);
         data.put("appDownLoadUrl",AppUtils.getAppURL()+"/m/download");
+        data.put("apkDownLoadUrl",AppUtils.getAppURL()+"/m/downloadApp/"+VersionLogType.Android.getValue());
         return Result.successResult().setObj(data);
     }
 
@@ -164,7 +165,7 @@ public class MobileIndexController extends SimpleController {
     @Logging(logType = LogType.access, value = "APP[#versionCode]下载")
     @RequiresUser(required = false)
     @RequestMapping(value = {"downloadApp/{versionLogType}"})
-    public ModelAndView fileDownload(HttpServletResponse response,
+    public ModelAndView downloadApp(HttpServletResponse response,
                                      HttpServletRequest request,
                                      String versionCode,
                                      String app,

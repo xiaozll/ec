@@ -134,6 +134,7 @@ public class UserService extends CrudService<UserDao, User> {
         entity.setLoginName(loginName);
         entity.setPassword(password);
         entity.setOriginalPassword(originalPassword);
+        entity.preUpdate();
         dao.updatePassword(entity);
         return null != id ? get(id):getUserByLoginName(loginName);
     }

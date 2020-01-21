@@ -40,7 +40,7 @@
         <jstl.version>1.2</jstl.version>
 
         <mybatis-spring-boot.version>2.1.1</mybatis-spring-boot.version>
-        <commons-pool2.version>2.6.0</commons-pool2.version>
+        <commons-pool2.version>2.6.2</commons-pool2.version>
         <druid-version>1.1.21</druid-version>
         <mariadb.driver.version>2.3.0</mariadb.driver.version>
         <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>

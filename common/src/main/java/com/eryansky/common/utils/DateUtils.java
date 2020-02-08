@@ -22,11 +22,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String TIME_FORMAT = "HH:mm:ss";
 
+    public static final String TIME_FORMAT_SHORT = "HHmmss";
+
     public static final String TIME_SHORT_FORMAT = "HH:mm";
+
+    public static final String TIME_SHORT_FORMAT_SHORT = "HHmm";
 
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    public static final String DATE_TIME_FORMAT_SHORT = "yyyyMMddHHmmss";
+
     public static final String DATE_TIME_SHORT_FORMAT = "yyyy-MM-dd HH:mm";
+
+    public static final String DATE_TIME_SHORT_FORMAT_SHORT = "yyyyMMddHHmm";
 
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
 

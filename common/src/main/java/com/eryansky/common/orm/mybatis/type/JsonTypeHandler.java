@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * json类型数据处理
  * @param <T>
  */
-public abstract class JsonTypeHandler<T> extends BaseTypeHandler<T> {
+public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
 
     private static Logger logger = LoggerFactory.getLogger(JsonTypeHandler.class);
 

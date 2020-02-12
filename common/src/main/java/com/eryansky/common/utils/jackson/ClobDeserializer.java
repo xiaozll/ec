@@ -32,7 +32,7 @@ public class ClobDeserializer extends JsonDeserializer<Clob> {
 		try {
 			return value == null ? null : ClobUtil.getClob(value);
 		} catch (NumberFormatException e) {
-			logger.error("解析长整形错误", e);
+			logger.error("解析Clob错误", e);
 			return null;
 		}
 	}

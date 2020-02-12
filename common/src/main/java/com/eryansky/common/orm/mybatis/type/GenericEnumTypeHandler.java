@@ -13,22 +13,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * IKVEnum类型数据处理
+ * 泛型美剧类型数据处理
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @version 2020-02-12
  */
-public class KVEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends BaseTypeHandler<T> {
+public class GenericEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends BaseTypeHandler<T> {
 
     private final Class<T> type;
 
-    public KVEnumTypeHandler(Class<T> type) {
+    public GenericEnumTypeHandler(Class<T> type) {
         if (type == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
         }
         this.type = type;
     }
 
-    private static Logger logger = LoggerFactory.getLogger(KVEnumTypeHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(GenericEnumTypeHandler.class);
 
 
     @Override

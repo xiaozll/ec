@@ -13,7 +13,8 @@ package com.eryansky.common.orm._enum;
  * @date 2012-8-11 下午10:48:23
  *
  */
-public enum StatusState {
+public enum StatusState implements IGenericEnum<StatusState> {
+
 	/** 正常(0) */
 	NORMAL("0", "正常"),
 	/** 已删除(1) */
@@ -26,7 +27,7 @@ public enum StatusState {
 	DRAFT("4", "草稿");
 
 	/**
-	 * 值 Integer型
+	 * 值 String型
 	 */
 	private final String value;
 	/**
@@ -56,23 +57,11 @@ public enum StatusState {
 	}
 
 	public static StatusState getByValue(String value) {
-		if (null == value)
-			return null;
-		for (StatusState _enum : StatusState.values()) {
-			if (value.equals(_enum.getValue()))
-				return _enum;
-		}
-		return null;
+		return GenericEnumUtils.getByValue(StatusState.class,value);
 	}
 
 	public static StatusState getByDescription(String description) {
-		if (null == description)
-			return null;
-		for (StatusState _enum : StatusState.values()) {
-			if (description.equals(_enum.getDescription()))
-				return _enum;
-		}
-		return null;
+		return GenericEnumUtils.getByDescription(StatusState.class,description);
 	}
 
 }

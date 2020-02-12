@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * json类型数据处理
+ * @author 尔演&Eryan eryanwcp@gmail.com
+ * @version 2020-02-12
  * @param <T>
  */
 public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
@@ -37,6 +39,10 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
             throw new IllegalArgumentException("Type argument cannot be null");
         }
         this.type = type;
+    }
+
+    public JsonTypeHandler() {
+
     }
 
     private T parse(String json) {

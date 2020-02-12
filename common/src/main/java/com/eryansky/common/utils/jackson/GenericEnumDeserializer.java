@@ -21,20 +21,20 @@ public class GenericEnumDeserializer<T extends Enum<T> & IGenericEnum<T>> extend
 
     private static final Logger logger = LoggerFactory.getLogger(GenericEnumDeserializer.class);
 
-    private JavaType javaType;
+    private JavaType type;
 
     public GenericEnumDeserializer() {
     }
 
-    public GenericEnumDeserializer(JavaType javaType) {
-        this.javaType = javaType;
+    public GenericEnumDeserializer(final JavaType type) {
+        this.type = type;
     }
 
     @Override
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         String value = p.getText();
         try {
-            return value == null ? null : GenericEnumUtils.getByValue((Class<T>) javaType.getRawClass(), value);
+            return value == null ? null : GenericEnumUtils.getByValue((Class<T>) type.getRawClass(), value);
         } catch (Exception e) {
             logger.error("解析IGenericEnum错误", e);
             return null;

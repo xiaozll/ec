@@ -34,7 +34,7 @@ public class GenericEnumDeserializer<T extends Enum<T> & IGenericEnum<T>> extend
     public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         String value = p.getText();
         try {
-            return value == null ? null : GenericEnumUtils.getByValue((Class<T>) type.getRawClass(), value);
+            return GenericEnumUtils.getByValue((Class<T>) type.getRawClass(), value);
         } catch (Exception e) {
             logger.error("解析IGenericEnum错误", e);
             return null;

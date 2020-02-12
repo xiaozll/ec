@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
 /**
- * IGenericEnum 类型枚举类转换String value
+ * IGenericEnum 类型枚举类序列化String value
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2020-02-12
  *

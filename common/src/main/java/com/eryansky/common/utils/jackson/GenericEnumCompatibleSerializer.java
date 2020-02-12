@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
 /**
- * IGenericEnum 类型枚举类转换（兼容旧程序）
+ * IGenericEnum 类型枚举类序列化（兼容旧程序）
  * 增加 属性名称+View字段 例如：enumName + enumNameView
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2020-02-12

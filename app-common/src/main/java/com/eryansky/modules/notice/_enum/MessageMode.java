@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 消息状态
  */
-public enum MessageMode {
+public enum MessageMode implements IGenericEnum<MessageMode> {
 
     Draft("draft", "草稿"),
     Publishing("Publishing", "正在发布"),
@@ -47,22 +50,10 @@ public enum MessageMode {
     }
 
     public static MessageMode getByValue(String value) {
-        if (null == value)
-            return null;
-        for (MessageMode _enum : MessageMode.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(MessageMode.class,value);
     }
 
     public static MessageMode getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (MessageMode _enum : MessageMode.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(MessageMode.class,description);
     }
 }

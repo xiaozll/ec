@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 接收对象类型
  */
-public enum ReceiveObjectType {
+public enum ReceiveObjectType implements IGenericEnum<ReceiveObjectType> {
     /**
      * 用户(0)
      */
@@ -63,22 +66,10 @@ public enum ReceiveObjectType {
     }
 
     public static ReceiveObjectType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (ReceiveObjectType _enum : ReceiveObjectType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(ReceiveObjectType.class,value);
     }
 
     public static ReceiveObjectType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (ReceiveObjectType _enum : ReceiveObjectType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(ReceiveObjectType.class,description);
     }
 }

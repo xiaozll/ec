@@ -5,6 +5,8 @@
  */
 package com.eryansky.modules.sys.mapper;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.modules.sys._enum.LogType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.eryansky.core.orm.mybatis.entity.TreeEntity;
 import com.eryansky.modules.sys._enum.AreaType;
@@ -73,12 +75,7 @@ public class Area extends TreeEntity<Area> {
     }
 
     public String getTypeView() {
-        AreaType s = AreaType.getByValue(type);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(AreaType.class,type,type);
     }
 
     public void setType(String type) {

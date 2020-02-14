@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 用户类型
  */
-public enum UserType {
+public enum UserType implements IGenericEnum<UserType> {
 
     System("0", "系统"),
     User("1", "员工"),
@@ -47,23 +50,11 @@ public enum UserType {
     }
 
     public static UserType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (UserType _enum : UserType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(UserType.class,value);
     }
 
     public static UserType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (UserType _enum : UserType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(UserType.class,description);
     }
 
 }

@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 邮件状态
  */
-public enum NoticeMode {
+public enum NoticeMode implements IGenericEnum<NoticeMode> {
     /**
      * 未发布(0)
      */
@@ -58,22 +61,10 @@ public enum NoticeMode {
     }
 
     public static NoticeMode getByValue(String value) {
-        if (null == value)
-            return null;
-        for (NoticeMode _enum : NoticeMode.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(NoticeMode.class,value);
     }
 
     public static NoticeMode getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (NoticeMode _enum : NoticeMode.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(NoticeMode.class,description);
     }
 }

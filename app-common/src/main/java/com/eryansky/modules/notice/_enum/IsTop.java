@@ -5,10 +5,14 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+import com.eryansky.modules.sys._enum.AreaType;
+
 /**
  * 是否置顶
  */
-public enum IsTop {
+public enum IsTop implements IGenericEnum<IsTop> {
     /**
      * 不置顶(0)
      */
@@ -51,22 +55,10 @@ public enum IsTop {
     }
 
     public static IsTop getByValue(String value) {
-        if (null == value)
-            return null;
-        for (IsTop _enum : IsTop.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(IsTop.class,value);
     }
 
     public static IsTop getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (IsTop _enum : IsTop.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(IsTop.class,description);
     }
 }

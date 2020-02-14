@@ -1,9 +1,12 @@
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 序列号重置类型
  */
-public enum ResetType {
+public enum ResetType implements IGenericEnum<ResetType> {
 
     Day("D", "每天重置"),
     Month("M", "月度重置"),
@@ -43,22 +46,10 @@ public enum ResetType {
     }
 
     public static ResetType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (ResetType _enum : ResetType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(ResetType.class,value);
     }
 
     public static ResetType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (ResetType _enum : ResetType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(ResetType.class,description);
     }
 }

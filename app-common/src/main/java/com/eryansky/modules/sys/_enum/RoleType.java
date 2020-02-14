@@ -1,9 +1,12 @@
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 角色权限类型
  */
-public enum RoleType {
+public enum RoleType implements IGenericEnum<RoleType> {
 
     USER("user", "普通角色"),
     SECURITY_ROLE("security-role", "管理角色"),
@@ -42,22 +45,10 @@ public enum RoleType {
     }
 
     public static RoleType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (RoleType _enum : RoleType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(RoleType.class,value);
     }
 
     public static RoleType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (RoleType _enum : RoleType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(RoleType.class,description);
     }
 }

@@ -1,9 +1,13 @@
 package com.eryansky.modules.disk._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+import com.eryansky.modules.notice._enum.ReceiveObjectType;
+
 /**
  * 文件夹授权
  */
-public enum FolderAuthorize {
+public enum FolderAuthorize implements IGenericEnum<FolderAuthorize> {
     /**
      * 个人(0)
      */
@@ -46,22 +50,10 @@ public enum FolderAuthorize {
     }
 
     public static FolderAuthorize getByValue(String value) {
-        if (null == value)
-            return null;
-        for (FolderAuthorize _enum : FolderAuthorize.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(FolderAuthorize.class,value);
     }
 
     public static FolderAuthorize getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (FolderAuthorize _enum : FolderAuthorize.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(FolderAuthorize.class,description);
     }
 }

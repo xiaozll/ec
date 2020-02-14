@@ -105,4 +105,24 @@ public class GenericEnumUtils {
         }
         return null;
     }
+
+
+    /**
+     * 根据value转换为description
+     * @param enumType
+     * @param value
+     * @param defaultDescription
+     * @param <T>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Enum<T> & IGenericEnum<T>> String getDescriptionByValue(Class<T> enumType, String value,String defaultDescription) {
+        if (null == value)
+            return defaultDescription;
+        for (IGenericEnum<T> _enum : enumType.getEnumConstants()) {
+            if (value.equals(_enum.getValue()))
+                return _enum.getDescription();
+        }
+        return defaultDescription;
+    }
 }

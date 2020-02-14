@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.mapper;
 
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.orm.mybatis.sensitive.annotation.EncryptField;
 import com.eryansky.common.orm.mybatis.sensitive.annotation.SensitiveEncryptEnabled;
 import com.eryansky.common.orm.mybatis.sensitive.annotation.SensitiveField;
@@ -17,6 +18,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.disk.utils.DiskUtils;
+import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.SexType;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -344,12 +346,7 @@ public class User extends DataEntity<User> implements IUser {
      * 性别描述.
      */
     public String getSexView() {
-        SexType ss = SexType.getByValue(sex);
-        String str = "";
-        if (ss != null) {
-            str = ss.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(SexType.class,sex,sex);
     }
 
     public String getMobileSensitive() {

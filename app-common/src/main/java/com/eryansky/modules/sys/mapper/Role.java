@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.mapper;
 
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.RoleType;
@@ -148,21 +149,11 @@ public class Role extends DataEntity<Role> {
     }
 
     public String getDataScopeView() {
-        DataScope s = DataScope.getDataScopeByValue(dataScope);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(DataScope.class,dataScope,dataScope);
     }
 
     public String getIsSystemView() {
-        YesOrNo s = YesOrNo.getByValue(isSystem);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(YesOrNo.class,isSystem,isSystem);
     }
 
     public Set<String> getOrganIds() {

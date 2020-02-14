@@ -1,9 +1,12 @@
 package com.eryansky.modules.disk._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 文件夹类型
  */
-public enum FolderType {
+public enum FolderType implements IGenericEnum<FolderType> {
 
     NORMAL("0", "正常"),
     HIDE("1", "隐藏");
@@ -42,22 +45,10 @@ public enum FolderType {
 
 
     public static FolderType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (FolderType _enum : FolderType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(FolderType.class,value);
     }
 
     public static FolderType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (FolderType _enum : FolderType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(FolderType.class,description);
     }
 }

@@ -1,9 +1,12 @@
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 区域类型
  */
-public enum AreaType {
+public enum AreaType implements IGenericEnum<AreaType> {
 
     COUNTRY("1", "国家"),
     PROVINCE("2", "省份、直辖市"),
@@ -46,22 +49,10 @@ public enum AreaType {
     }
 
     public static AreaType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (AreaType _enum : AreaType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(AreaType.class,value);
     }
 
     public static AreaType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (AreaType _enum : AreaType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(AreaType.class,description);
     }
 }

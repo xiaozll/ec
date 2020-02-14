@@ -5,6 +5,9 @@
  */
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 机构类型
  *
@@ -12,7 +15,7 @@ package com.eryansky.modules.sys._enum;
  * @version 1.0
  * @date 2013-9-9 下午8:09:38
  */
-public enum OrganType {
+public enum OrganType implements IGenericEnum<OrganType> {
     /**
      * 机构(0)
      */
@@ -59,23 +62,11 @@ public enum OrganType {
     }
 
     public static OrganType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (OrganType _enum : OrganType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(OrganType.class,value);
     }
 
     public static OrganType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (OrganType _enum : OrganType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(OrganType.class,description);
     }
 
 }

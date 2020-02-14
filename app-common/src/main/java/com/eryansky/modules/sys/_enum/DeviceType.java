@@ -1,9 +1,12 @@
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 设备类型
  */
-public enum DeviceType {
+public enum DeviceType implements IGenericEnum<DeviceType> {
 
     UNKNOWN("0", "UNKNOWN"),
     iPhone("1", "iPhone"),
@@ -45,23 +48,11 @@ public enum DeviceType {
     }
 
     public static DeviceType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (DeviceType _enum : DeviceType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(DeviceType.class,value);
     }
 
     public static DeviceType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (DeviceType _enum : DeviceType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(DeviceType.class,description);
     }
 
 }

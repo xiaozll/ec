@@ -1,12 +1,15 @@
 package com.eryansky.modules.disk._enum;
 
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.modules.notice._enum.ReceiveObjectType;
 
 /**
  * 文件类型
  */
-public enum FileType {
+public enum FileType implements IGenericEnum<FileType> {
     /**
      * 文档
      */
@@ -65,23 +68,11 @@ public enum FileType {
     }
 
     public static FileType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (FileType _enum : FileType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(FileType.class,value);
     }
 
     public static FileType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (FileType _enum : FileType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(FileType.class,description);
     }
 
     /**

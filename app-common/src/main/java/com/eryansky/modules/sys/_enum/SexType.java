@@ -5,13 +5,16 @@
  */
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 性别标识 枚举类型.
  *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2012-8-11 下午10:48:23
  */
-public enum SexType {
+public enum SexType implements IGenericEnum<SexType> {
     /**
      * 女(0)
      */
@@ -58,23 +61,11 @@ public enum SexType {
     }
 
     public static SexType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (SexType _enum : SexType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(SexType.class,value);
     }
 
     public static SexType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (SexType _enum : SexType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(SexType.class,description);
     }
 
 }

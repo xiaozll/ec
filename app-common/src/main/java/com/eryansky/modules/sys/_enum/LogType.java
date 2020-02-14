@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 日志类型
  */
-public enum LogType {
+public enum LogType implements IGenericEnum<LogType> {
     /**
      * 安全日志(0)
      */
@@ -60,23 +63,11 @@ public enum LogType {
     }
 
     public static LogType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (LogType _enum : LogType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(LogType.class,value);
     }
 
     public static LogType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (LogType _enum : LogType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(LogType.class,description);
     }
 
 }

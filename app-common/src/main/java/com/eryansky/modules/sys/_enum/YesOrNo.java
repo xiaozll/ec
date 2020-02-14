@@ -1,9 +1,12 @@
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 是否 枚举类型
  */
-public enum YesOrNo {
+public enum YesOrNo implements IGenericEnum<YesOrNo> {
 
     YES("1", "是"),
     NO("0", "否");
@@ -41,22 +44,10 @@ public enum YesOrNo {
     }
 
     public static YesOrNo getByValue(String value) {
-        if (null == value)
-            return null;
-        for (YesOrNo _enum : YesOrNo.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(YesOrNo.class,value);
     }
 
     public static YesOrNo getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (YesOrNo _enum : YesOrNo.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(YesOrNo.class,description);
     }
 }

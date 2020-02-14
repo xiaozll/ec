@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 通知接收范围
  */
-public enum NoticeReceiveScope {
+public enum NoticeReceiveScope implements IGenericEnum<NoticeReceiveScope> {
 
     COMPANY_AND_CHILD("2", "所在单位及以下"),
     COMPANY("3", "所在单位"),
@@ -49,22 +52,10 @@ public enum NoticeReceiveScope {
     }
 
     public static NoticeReceiveScope getByValue(String value) {
-        if (null == value)
-            return null;
-        for (NoticeReceiveScope _enum : NoticeReceiveScope.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(NoticeReceiveScope.class,value);
     }
 
     public static NoticeReceiveScope getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (NoticeReceiveScope _enum : NoticeReceiveScope.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(NoticeReceiveScope.class,description);
     }
 }

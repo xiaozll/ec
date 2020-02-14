@@ -5,9 +5,11 @@
  */
 package com.eryansky.modules.sys.mapper;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys._enum.VersionLogType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.eryansky.modules.sys._enum.YesOrNo;
@@ -140,12 +142,7 @@ public class VersionLog extends DataEntity<VersionLog> {
     }
 
     public String getIsPubView() {
-        YesOrNo s = YesOrNo.getByValue(isPub);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(YesOrNo.class,isPub,isPub);
     }
 
     public void setIsPub(String isPub) {
@@ -161,12 +158,7 @@ public class VersionLog extends DataEntity<VersionLog> {
     }
 
     public String getIsTipView() {
-        YesOrNo s = YesOrNo.getByValue(isTip);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(YesOrNo.class,isTip,isTip);
     }
 
     public String getIsShelf() {
@@ -178,12 +170,7 @@ public class VersionLog extends DataEntity<VersionLog> {
     }
 
     public String getIsShelfView() {
-        YesOrNo s = YesOrNo.getByValue(isShelf);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(YesOrNo.class,isShelf,isShelf);
     }
 
 
@@ -199,12 +186,7 @@ public class VersionLog extends DataEntity<VersionLog> {
      * 系统类型描述.
      */
     public String getVersionLogTypeView() {
-        VersionLogType ss = VersionLogType.getByValue(versionLogType);
-        String str = "";
-        if (ss != null) {
-            str = ss.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(VersionLogType.class,versionLogType,versionLogType);
     }
 
     @Override

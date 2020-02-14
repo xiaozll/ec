@@ -7,6 +7,10 @@ package com.eryansky.utils;
 
 import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+import com.eryansky.modules.disk._enum.FolderType;
+import com.eryansky.modules.notice._enum.IsTop;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -17,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2013-01-28 上午10:48:23
  * 
  */
-public enum SelectType {
+public enum SelectType implements IGenericEnum<SelectType> {
 	/** 全部("all") */
 	all("all", "全部"),
 	/** 请选择("select") */
@@ -54,23 +58,11 @@ public enum SelectType {
 	}
 
 	public static SelectType getByValue(String value) {
-		if (null == value)
-			return null;
-		for (SelectType _enum : SelectType.values()) {
-			if (value.equals(_enum.getValue()))
-				return _enum;
-		}
-		return null;
+		return GenericEnumUtils.getByValue(SelectType.class,value);
 	}
 	
 	public static SelectType getDescription(String description) {
-		if (null == description)
-			return null;
-		for (SelectType _enum : SelectType.values()) {
-			if (description.equals(_enum.getDescription()))
-				return _enum;
-		}
-		return null;
+		return GenericEnumUtils.getByDescription(SelectType.class,description);
 	}
 
     /**

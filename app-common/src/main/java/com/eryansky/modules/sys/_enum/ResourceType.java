@@ -5,6 +5,9 @@
  */
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 资源类型标识 枚举类型.
  * <br>菜单(0) 功能(1)
@@ -12,7 +15,7 @@ package com.eryansky.modules.sys._enum;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2013-01-28 上午10:48:23
  */
-public enum ResourceType {
+public enum ResourceType implements IGenericEnum<ResourceType> {
     /**
      * 应用(10)
      */
@@ -63,23 +66,11 @@ public enum ResourceType {
     }
 
     public static ResourceType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (ResourceType _enum : ResourceType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(ResourceType.class,value);
     }
 
     public static ResourceType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (ResourceType _enum : ResourceType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(ResourceType.class,description);
     }
 
 }

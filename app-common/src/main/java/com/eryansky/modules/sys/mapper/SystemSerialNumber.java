@@ -5,9 +5,11 @@
  */
 package com.eryansky.modules.sys.mapper;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys._enum.ResetType;
+import com.eryansky.modules.sys._enum.SexType;
 import com.eryansky.modules.sys._enum.YesOrNo;
 
 /**
@@ -130,8 +132,7 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
 
     public String getIsAutoIncrementView() {
-        YesOrNo e = YesOrNo.getByValue(isAutoIncrement);
-        return null != e ? e.getDescription():isAutoIncrement;
+        return GenericEnumUtils.getDescriptionByValue(YesOrNo.class,isAutoIncrement,isAutoIncrement);
     }
 
     public String getResetType() {
@@ -143,8 +144,7 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
     }
 
     public String getResetTypeView() {
-        ResetType e = ResetType.getByValue(resetType);
-        return null != e ? e.getDescription():resetType;
+        return GenericEnumUtils.getDescriptionByValue(ResetType.class,resetType,resetType);
     }
 
 

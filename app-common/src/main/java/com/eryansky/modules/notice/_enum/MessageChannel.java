@@ -5,10 +5,14 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+import com.eryansky.modules.sys._enum.AreaType;
+
 /**
  * 消息提醒通道
  */
-public enum MessageChannel {
+public enum MessageChannel implements IGenericEnum<MessageChannel> {
 
     Message("Message1", "系统提醒"),
     Mail("Mail", "邮件提醒"),
@@ -51,22 +55,10 @@ public enum MessageChannel {
     }
 
     public static MessageChannel getByValue(String value) {
-        if (null == value)
-            return null;
-        for (MessageChannel _enum : MessageChannel.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(MessageChannel.class,value);
     }
 
     public static MessageChannel getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (MessageChannel _enum : MessageChannel.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(MessageChannel.class,description);
     }
 }

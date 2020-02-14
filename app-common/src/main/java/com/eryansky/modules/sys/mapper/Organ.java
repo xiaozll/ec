@@ -7,9 +7,11 @@ package com.eryansky.modules.sys.mapper;
 
 
 import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.TreeEntity;
 import com.eryansky.modules.sys._enum.OrganType;
+import com.eryansky.modules.sys._enum.ResourceType;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -256,10 +258,6 @@ public class Organ extends TreeEntity<Organ> {
      * 机构类新显示.
      */
     public String getTypeView() {
-        OrganType ss = OrganType.getByValue(type);
-        if (ss != null) {
-            return ss.getDescription();
-        }
-        return type;
+        return GenericEnumUtils.getDescriptionByValue(OrganType.class,type,type);
     }
 }

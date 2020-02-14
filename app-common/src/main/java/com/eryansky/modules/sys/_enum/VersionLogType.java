@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 日志类型
  */
-public enum VersionLogType {
+public enum VersionLogType implements IGenericEnum<VersionLogType> {
     /**
      * Server(0)
      */
@@ -58,23 +61,11 @@ public enum VersionLogType {
     }
 
     public static VersionLogType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (VersionLogType _enum : VersionLogType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(VersionLogType.class,value);
     }
 
     public static VersionLogType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (VersionLogType _enum : VersionLogType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(VersionLogType.class,description);
     }
 
 }

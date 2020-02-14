@@ -1,6 +1,12 @@
 package com.eryansky.modules.disk._enum;
 
-public enum FileSizeType {
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+import com.eryansky.modules.notice._enum.NoticeReadMode;
+import com.eryansky.modules.notice._enum.ReceiveObjectType;
+
+public enum FileSizeType implements IGenericEnum<FileSizeType> {
+
     MIN("0", "10M以下"),
     MIDDEN("1", "10M~100M"),
     MAX("3", "100M以上");
@@ -19,5 +25,13 @@ public enum FileSizeType {
 
     public String getDescription() {
         return description;
+    }
+
+    public static FileSizeType getByValue(String value) {
+        return GenericEnumUtils.getByValue(FileSizeType.class,value);
+    }
+
+    public static FileSizeType getByDescription(String description) {
+        return GenericEnumUtils.getByDescription(FileSizeType.class,description);
     }
 }

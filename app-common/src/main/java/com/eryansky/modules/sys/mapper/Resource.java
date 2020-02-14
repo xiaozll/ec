@@ -6,10 +6,12 @@
 package com.eryansky.modules.sys.mapper;
 
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.reflection.ReflectionUtils;
 import com.eryansky.core.orm.mybatis.entity.TreeEntity;
 import com.eryansky.modules.sys._enum.ResourceType;
+import com.eryansky.modules.sys._enum.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -134,11 +136,6 @@ public class Resource extends TreeEntity<Resource> {
      * 资源类型描述
      */
     public String getTypeView() {
-        ResourceType r = ResourceType.getByValue(type);
-        String str = "";
-        if (r != null) {
-            str = r.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(ResourceType.class,type,type);
     }
 }

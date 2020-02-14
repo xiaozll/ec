@@ -5,7 +5,9 @@
  */
 package com.eryansky.modules.sys.mapper;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.modules.sys._enum.OrganType;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys._enum.LogType;
@@ -270,12 +272,7 @@ public class Log extends DataEntity<Log> {
      * 日志类类型 View
      */
     public String getTypeView() {
-        LogType s = LogType.getByValue(type);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        return GenericEnumUtils.getDescriptionByValue(LogType.class,type,type);
     }
 
     public String getQuery() {

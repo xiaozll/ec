@@ -5,10 +5,13 @@
  */
 package com.eryansky.modules.notice._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  * 消息接收对象类型
  */
-public enum MessageReceiveObjectType {
+public enum MessageReceiveObjectType implements IGenericEnum<MessageReceiveObjectType> {
 
     Organ("organ", "机构"),
     Member("member", "会员"),
@@ -47,22 +50,10 @@ public enum MessageReceiveObjectType {
     }
 
     public static MessageReceiveObjectType getByValue(String value) {
-        if (null == value)
-            return null;
-        for (MessageReceiveObjectType _enum : MessageReceiveObjectType.values()) {
-            if (value.equals(_enum.getValue()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByValue(MessageReceiveObjectType.class,value);
     }
 
     public static MessageReceiveObjectType getByDescription(String description) {
-        if (null == description)
-            return null;
-        for (MessageReceiveObjectType _enum : MessageReceiveObjectType.values()) {
-            if (description.equals(_enum.getDescription()))
-                return _enum;
-        }
-        return null;
+        return GenericEnumUtils.getByDescription(MessageReceiveObjectType.class,description);
     }
 }

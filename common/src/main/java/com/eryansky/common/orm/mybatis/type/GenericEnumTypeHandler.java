@@ -19,6 +19,8 @@ import java.sql.SQLException;
  */
 public class GenericEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends BaseTypeHandler<T> {
 
+    private static final Logger logger = LoggerFactory.getLogger(GenericEnumTypeHandler.class);
+
     private final Class<T> type;
 
     public GenericEnumTypeHandler(Class<T> type) {
@@ -27,8 +29,6 @@ public class GenericEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends
         }
         this.type = type;
     }
-
-    private static Logger logger = LoggerFactory.getLogger(GenericEnumTypeHandler.class);
 
 
     @Override

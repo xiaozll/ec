@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
 
-    private static Logger logger = LoggerFactory.getLogger(JsonTypeHandler.class);
+    private static  final Logger logger = LoggerFactory.getLogger(JsonTypeHandler.class);
 
     private static JsonMapper jsonMapper;
     private Class<T> type;

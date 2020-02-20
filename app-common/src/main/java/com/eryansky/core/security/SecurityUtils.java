@@ -476,17 +476,27 @@ public class SecurityUtils {
     public static SessionInfo getCurrentSessionInfo() {
         SessionInfo sessionInfo = null;
         try {
-            HttpServletRequest request = SpringMVCHolder.getRequest();
+            HttpServletRequest request = null;
+            try {
+                request = SpringMVCHolder.getRequest();
+            } catch (Exception e) {
+//                logger.error(e.getMessage());
+            }
             if(null == request){
                 return null;
             }
-            HttpSession session = request.getSession();
+            HttpSession session = null;
+            try {
+                session = request.getSession();
+            } catch (Exception e) {
+//                logger.error(e.getMessage());
+            }
             if(null == session){
                 return null;
             }
             sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session),session.getId());
             if(sessionInfo == null){
-                String token = SpringMVCHolder.getRequest().getHeader("Authorization");
+                String token = request.getHeader("Authorization");
                 if(StringUtils.isNotBlank(token)){
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token,"Bearer ",""));
                 }

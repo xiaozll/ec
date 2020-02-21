@@ -181,6 +181,7 @@
             <groupId>com.oscar.jdbc</groupId>
             <artifactId>oscar-java-client</artifactId>
             <version>${oscar.driver.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- JUnit test dependency -->

@@ -21,7 +21,6 @@
         <xwpf.version>2.0.1</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
         <velocity.version>1.7</velocity.version>
-        <commons-csv.version>1.7</commons-csv.version>
         <ckfinder.version>2.3</ckfinder.version>
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
@@ -208,11 +207,6 @@
             <artifactId>commons-cli</artifactId>
             <version>1.4</version>
         </dependency>
-        <dependency>
-            <groupId>com.thoughtworks.xstream</groupId>
-            <artifactId>xstream</artifactId>
-            <version>1.4.10</version>
-        </dependency>
 
         <dependency>
             <groupId>com.belerweb</groupId>
@@ -256,14 +250,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>${commons-csv.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>3.8.0</version>
+            <version>3.8.6</version>
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.yaml</groupId>-->
+<!--                    <artifactId>snakeyaml</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
     </dependencies>
     <build>

@@ -23,6 +23,7 @@
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
         <commons-csv.version>1.8</commons-csv.version>
+        <commons-dbutils.version>1.7</commons-dbutils.version>
 
         <ckfinder.version>2.3</ckfinder.version>
 
@@ -203,7 +204,7 @@
         <dependency>
             <groupId>commons-dbutils</groupId>
             <artifactId>commons-dbutils</artifactId>
-            <version>1.5</version>
+            <version>${commons-dbutils.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

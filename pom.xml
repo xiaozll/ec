@@ -47,7 +47,7 @@
         <db2.driver.version>10.1</db2.driver.version>
         <oscar.driver.version>4.0.2</oscar.driver.version>
 
-        <httpcomponents.version>4.5.9</httpcomponents.version>
+        <httpcomponents.version>4.5.11</httpcomponents.version>
         <commons-codec.version>1.12</commons-codec.version>
 
         <ec-common.version>4.1.20200214</ec-common.version>

@@ -335,7 +335,7 @@ public class MobileIndexController extends SimpleController {
             } catch (Exception e) {
                 logger.info("{},{}",new Object[]{sessionInfo.getLoginName(),base64Data});
                 logger.error("图片上传失败,"+e.getMessage(),e);
-                return Result.errorResult().setMsg("图片上传失败！");
+                return Result.errorResult().setMsg("图片上传失败,解析异常！");
             }
 
             file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), new ByteArrayInputStream(bs), tempFileName);

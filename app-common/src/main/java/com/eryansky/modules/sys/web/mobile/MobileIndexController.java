@@ -6,6 +6,7 @@ import com.eryansky.common.orm._enum.StatusState;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.io.IoUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
@@ -327,9 +328,14 @@ public class MobileIndexController extends SimpleController {
             }
             String tempFileName = Identities.uuid() + suffix;
 
-            //因为BASE64Decoder的jar问题，此处使用spring框架提供的工具包
-//            byte[] bs = EncodeUtils.base64Decode(data);
-            byte[] bs = Base64Utils.decodeFromString(data);
+            byte[] bs = new byte[0];
+            try {
+                bs = EncodeUtils.base64Decode(data);
+//                bs = Base64Utils.decodeFromString(data);
+            } catch (Exception e) {
+                logger.info("{},{}",new Object[]{base64Data,data});
+                logger.error("图片上传失败,"+e.getMessage(),e);
+            }
 
             file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), new ByteArrayInputStream(bs), tempFileName);
             file.setStatus(StatusState.LOCK.getValue());

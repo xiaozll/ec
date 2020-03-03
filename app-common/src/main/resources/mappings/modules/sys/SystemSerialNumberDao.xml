@@ -78,6 +78,14 @@
 		WHERE a.status = #{STATUS_NORMAL}
 	</select>
 
+	<select id="selectMany" resultType="SystemSerialNumber">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="SystemSerialNumber">
+		${selectStatement}
+	</select>
+
 	<insert id="insert">
 		INSERT INTO t_sys_serial_number(
 		id,

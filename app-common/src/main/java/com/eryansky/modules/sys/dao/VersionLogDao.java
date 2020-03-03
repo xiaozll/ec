@@ -9,6 +9,10 @@ import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.MyBatisDao;
 import com.eryansky.common.orm.persistence.CrudDao;
 import com.eryansky.modules.sys.mapper.VersionLog;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 
 import java.util.List;
 
@@ -42,4 +46,5 @@ public interface VersionLogDao extends CrudDao<VersionLog> {
      * @return
      */
     VersionLog getLatestVersionLog(VersionLog entity);
+
 }

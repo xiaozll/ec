@@ -103,6 +103,14 @@
 		</choose>
 	</select>
 
+	<select id="selectMany" resultType="NoticeSendInfo">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="NoticeSendInfo">
+		${selectStatement}
+	</select>
+
 	<insert id="insert">
 		INSERT INTO t_notice_send_info(
 		id,

@@ -200,6 +200,14 @@
 		</choose>
 	</select>
 
+	<select id="selectMany" resultType="VersionLog">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="VersionLog">
+		${selectStatement}
+	</select>
+
 	<insert id="insert">
 		INSERT INTO t_sys_version_log(
         id,

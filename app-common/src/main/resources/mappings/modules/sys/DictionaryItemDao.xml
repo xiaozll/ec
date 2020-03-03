@@ -169,6 +169,14 @@
 		</choose>
 	</select>
 
+	<select id="selectMany" resultType="DictionaryItem">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="DictionaryItem">
+		${selectStatement}
+	</select>
+
 
 	<select id="findByWhereSQL" resultType="DictionaryItem">
 		SELECT

@@ -83,6 +83,13 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="Post">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="Post">
+		${selectStatement}
+	</select>
 
     <select id="findQuery" resultType="Post">
         SELECT DISTINCT

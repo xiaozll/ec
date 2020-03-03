@@ -72,6 +72,14 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="Folder">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="Folder">
+		${selectStatement}
+	</select>
+
     <select id="findByParentIdsLike" resultType="Folder">
         SELECT
         a.id,

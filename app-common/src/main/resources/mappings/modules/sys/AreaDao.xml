@@ -66,6 +66,15 @@
 		ORDER BY a.code
 	</select>
 
+
+	<select id="selectMany" resultType="Post">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="Post">
+		${selectStatement}
+	</select>
+
 	<select id="findByParentIdsLike" resultType="Area">
 		SELECT
 		a.id,
@@ -76,7 +85,6 @@
 		AND a.parent_ids LIKE #{parentIds}
 		ORDER BY a.code
 	</select>
-
 
 
 	<select id="findByParentId" resultType="Area">

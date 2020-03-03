@@ -9,6 +9,7 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.persistence.CrudDao;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -65,6 +66,25 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 		page.setResult(dao.findList(entity));
 		return page;
 	}
+
+
+	/**
+	 * 动态查询（多个对象）
+	 * @param selectStatement
+	 * @return
+	 */
+	public List<T> selectMany(SelectStatementProvider selectStatement){
+		return dao.selectMany(selectStatement);
+	}
+
+	/**
+	 * 动态查询（单个对象）
+	 * @return
+	 */
+	public T selectOne(SelectStatementProvider selectStatement){
+		return dao.selectOne(selectStatement);
+	}
+
 
 	/**
 	 * 保存数据（插入或更新）

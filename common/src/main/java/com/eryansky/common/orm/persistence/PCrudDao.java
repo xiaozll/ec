@@ -5,6 +5,8 @@
  */
 package com.eryansky.common.orm.persistence;
 
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -51,6 +53,19 @@ public interface PCrudDao<T,PK extends Serializable> extends BaseDao {
 	 */
 	@Deprecated
 	List<T> findAllList();
+
+	/**
+	 * 动态查询（多个对象）
+	 * @param selectStatement
+	 * @return
+	 */
+	List<T> selectMany(SelectStatementProvider selectStatement);
+
+	/**
+	 * 动态查询（单个对象）
+	 * @return
+	 */
+	T selectOne(SelectStatementProvider selectStatement);
 	
 	/**
 	 * 插入数据

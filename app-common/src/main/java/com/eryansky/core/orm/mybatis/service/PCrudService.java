@@ -10,6 +10,7 @@ import com.eryansky.common.orm.persistence.PCrudDao;
 import com.eryansky.core.orm.mybatis.entity.PBaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.orm.mybatis.entity.PDataEntity;
+import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -66,6 +67,23 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 		entity.setEntityPage(page);
 		page.setResult(dao.findList(entity));
 		return page;
+	}
+
+	/**
+	 * 动态查询（多个对象）
+	 * @param selectStatement
+	 * @return
+	 */
+	public List<T> selectMany(SelectStatementProvider selectStatement){
+		return dao.selectMany(selectStatement);
+	}
+
+	/**
+	 * 动态查询（单个对象）
+	 * @return
+	 */
+	public T selectOne(SelectStatementProvider selectStatement){
+		return dao.selectOne(selectStatement);
 	}
 
 	/**

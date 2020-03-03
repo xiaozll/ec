@@ -44,6 +44,14 @@
 			</when>
 		</choose>
 	</select>
+
+	<select id="selectMany" resultType="MessageSender">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="MessageSender">
+		${selectStatement}
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO t_notice_message_sender(

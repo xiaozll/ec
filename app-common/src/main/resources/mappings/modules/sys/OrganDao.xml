@@ -115,6 +115,13 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="Organ">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="Organ">
+		${selectStatement}
+	</select>
 
     <select id="findOwnerAndChild" resultType="Organ">
         SELECT

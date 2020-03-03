@@ -76,7 +76,6 @@
 	</select>
 
 
-
 	<select id="getMaxSort" resultType="int">
 		SELECT
 		 MAX(a.order_no)
@@ -131,6 +130,14 @@
 		</choose>
 	</select>
 
+
+	<select id="selectMany" resultType="Dictionary">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="Dictionary">
+		${selectStatement}
+	</select>
 
 	<select id="findByWhereSQL" resultType="Dictionary">
 		SELECT

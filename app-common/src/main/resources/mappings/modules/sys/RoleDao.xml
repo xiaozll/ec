@@ -81,6 +81,14 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="Role">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="Role">
+		${selectStatement}
+	</select>
+
     <select id="findRolesByIds" resultType="Role">
         SELECT
         <include refid="roleColumns"/>

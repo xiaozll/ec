@@ -51,6 +51,14 @@
 		</choose>
 	</select>
 
+	<select id="selectMany" resultType="MessageReceive">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="MessageReceive">
+		${selectStatement}
+	</select>
+
 	<!--用户消息-->
 	<select id="findUserList" resultType="MessageReceive">
 		SELECT

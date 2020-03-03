@@ -94,6 +94,13 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="Log">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="Log">
+		${selectStatement}
+	</select>
 
     <select id="findQueryList" resultType="Log">
         SELECT

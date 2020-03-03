@@ -127,6 +127,13 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="User">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="User">
+		${selectStatement}
+	</select>
 
     <select id="findQuery" resultType="User">
         SELECT

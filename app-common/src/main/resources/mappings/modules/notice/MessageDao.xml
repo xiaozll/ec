@@ -99,8 +99,6 @@
 	</select>
 	
 
-	
-	
 	<select id="findAllList" resultType="Message">
 		SELECT 
 			<include refid="noticeMessageColumns"/>
@@ -120,6 +118,15 @@
 				ORDER BY a.update_time DESC
 			</otherwise>
 		</choose>
+	</select>
+
+
+	<select id="selectMany" resultType="Message">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="Message">
+		${selectStatement}
 	</select>
 	
 	<insert id="insert">

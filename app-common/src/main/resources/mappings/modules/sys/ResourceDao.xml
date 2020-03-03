@@ -80,6 +80,14 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="Resource">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="Resource">
+		${selectStatement}
+	</select>
+
     <select id="findByParentIdsLike" resultType="Resource">
         SELECT
         a.id,

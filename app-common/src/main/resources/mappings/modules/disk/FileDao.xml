@@ -252,6 +252,14 @@
         </choose>
     </select>
 
+    <select id="selectMany" resultType="File">
+		${selectStatement}
+	</select>
+
+    <select id="selectOne" resultType="File">
+		${selectStatement}
+	</select>
+
     <insert id="insert">
         INSERT INTO t_disk_file(
         id,

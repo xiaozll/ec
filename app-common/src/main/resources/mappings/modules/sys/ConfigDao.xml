@@ -100,6 +100,14 @@
 		</choose>
 	</select>
 
+	<select id="selectMany" resultType="Config">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="Config">
+		${selectStatement}
+	</select>
+
 	<insert id="insert">
 		INSERT INTO t_sys_config(
 			id,

@@ -143,6 +143,14 @@
 		</choose>
 	</select>
 
+	<select id="selectMany" resultType="NoticeReceiveInfo">
+		${selectStatement}
+	</select>
+
+	<select id="selectOne" resultType="NoticeReceiveInfo">
+		${selectStatement}
+	</select>
+
 	<select id="findUserUnreadNotices" resultType="NoticeReceiveInfo">
 		SELECT
 		<include refid="noticeReceiveInfoColumns"/>

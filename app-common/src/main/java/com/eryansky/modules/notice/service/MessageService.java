@@ -75,7 +75,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
      */
     public Message saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
         if (Collections3.isEmpty(receiveObjectIds)) {
-            throw new SystemException("未定义参数[messageReceiveObjectType]");
+            throw new SystemException("未定义参数[receiveObjectIds]");
         }
 
         message.setBizMode(MessageMode.Publishing.getValue());

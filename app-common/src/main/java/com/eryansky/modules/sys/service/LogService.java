@@ -64,14 +64,14 @@ public class LogService extends CrudService<LogDao, Log> {
      *
      * @param page              分页对象
      * @param type              日志类型{@link com.eryansky.modules.sys._enum.LogType}
-     * @param query             关键字
      * @param userInfo          用户信息
+     * @param query             关键字
      * @param startTime         开始时间
      * @param endTime           结束时间
      * @param isDataScopeFilter 分级数据权限
      * @return
      */
-    public Page<Log> findQueryPage(Page<Log> page, String type, String query, String userInfo, Date startTime, Date endTime, boolean isDataScopeFilter) {
+    public Page<Log> findQueryPage(Page<Log> page, String type, String userInfo, String query, Date startTime, Date endTime, boolean isDataScopeFilter) {
         Parameter parameter = Parameter.newPageParameter(page, AppConstants.getJdbcType());
         parameter.put("type", type);
         parameter.put("userInfo", userInfo);

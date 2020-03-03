@@ -34,7 +34,7 @@
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-        <logback.version>5.2</logback.version>
+        <logback.version>6.3</logback.version>
 
         <tomcat.version>9.0.31</tomcat.version>
         <jstl.version>1.2</jstl.version>
@@ -222,6 +222,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${swagger2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

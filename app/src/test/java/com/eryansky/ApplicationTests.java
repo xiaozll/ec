@@ -54,7 +54,7 @@ public class ApplicationTests {
 	@Test
 	public void testSelectByExample() {
 		SelectStatementProvider selectStatement = select(data.allColumns())
-				.from(data)
+				.from(data,"a")
 				.where(app,isEqualTo("1"))
 				.build()
 				.render(RenderingStrategies.MYBATIS3);

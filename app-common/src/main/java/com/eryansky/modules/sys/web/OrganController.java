@@ -372,6 +372,26 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
+    @RequestMapping(value = "ownerAndChildsHomeCompanysData")
+    public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId, HttpServletResponse response) {
+        response.setContentType("application/json; charset=UTF-8");
+        String _parentId = parentId;
+        if (StringUtils.isBlank(_parentId)) {
+            SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+            _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null : sessionInfo.getLoginHomeCompanyId();
+        }
+        return organService.findOwnerAndChildsCompanysTree(_parentId);
+    }
+
+    /**
+     * 查找自己和子机构机构类型机构 {@link OrganType#organ}
+     *
+     * @param parentId
+     * @param response
+     * @return
+     */
+    @RequiresUser(required = false)
+    @ResponseBody
     @RequestMapping(value = "ownerAndChildsCompanysData")
     public List<TreeNode> ownerAndChildsCompanysData(String parentId, HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");

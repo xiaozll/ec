@@ -14,7 +14,7 @@ import com.eryansky.modules.sys._enum.AreaType;
  */
 public enum MessageChannel implements IGenericEnum<MessageChannel> {
 
-    Message("Message1", "系统提醒"),
+    Message("Message", "系统提醒"),
     Mail("Mail", "邮件提醒"),
     SMS("SMS", "短信提醒"),
     Weixin("Weixin", "微信提醒"),

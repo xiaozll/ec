@@ -13,9 +13,9 @@ import com.eryansky.common.orm._enum.IGenericEnum;
  */
 public enum MessageMode implements IGenericEnum<MessageMode> {
 
-    Draft("draft", "草稿"),
-    Publishing("Publishing", "正在发布"),
-    Published("Published", "已发布");
+    Draft("00", "草稿"),
+    Publishing("02", "正在发布"),
+    Published("01", "已发布");
 
     /**
      * 值 String型

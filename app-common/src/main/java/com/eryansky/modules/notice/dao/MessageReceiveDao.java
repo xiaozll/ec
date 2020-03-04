@@ -34,6 +34,8 @@ public interface MessageReceiveDao extends CrudDao<MessageReceive> {
 
     MessageReceive getUserMessageReceiveByMessageId(Parameter parameter);
 
+    int updateByUserIdAndMessageId(MessageReceive messageReceive);
+
     int setUserMessageRead(MessageReceive messageReceive);
 
     int deleteByMessageId(Parameter parameter);

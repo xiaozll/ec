@@ -109,6 +109,24 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
         return dao.getUserMessageReceiveByMessageId(parameter);
     }
 
+
+    /**
+     * 根据用户ID以及消息ID设置未发送成功
+     * @param userId
+     * @param messageId
+     * @return
+     */
+    public int updateByUserIdAndMessageId(String userId,String messageId,String isSend,String isRead){
+        MessageReceive messageReceive = new MessageReceive();
+        messageReceive.setUserId(userId);
+        messageReceive.setMessageId(messageId);
+        messageReceive.setIsSend(YesOrNo.YES.getValue().equals(isSend) ? YesOrNo.YES.getValue():YesOrNo.NO.getValue());
+        messageReceive.setIsRead(YesOrNo.YES.getValue().equals(isRead) ? YesOrNo.YES.getValue():YesOrNo.NO.getValue());
+        return dao.updateByUserIdAndMessageId(messageReceive);
+    }
+
+
+
     /**
      * 设置通知已读状态
      *

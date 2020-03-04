@@ -105,7 +105,7 @@
 			<if test="isRead != null and isRead !=''">
 				is_read = #{isRead},
 			</if>
-			<if test="readTime != null and readTime !=''">
+			<if test="readTime != null">
 				read_time = #{readTime},
 			</if>
 		</set>

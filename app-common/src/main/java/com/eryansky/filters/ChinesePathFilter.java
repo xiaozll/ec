@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * @author yudian-it
- * @date 2017/11/30
+ * @author 尔演&Eryan eryanwcp@gmail.com
+ * @date 2019-12-11
  */
 public class ChinesePathFilter implements Filter {
 

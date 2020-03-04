@@ -96,6 +96,20 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
     }
 
     /**
+     * 根据用户ID以及消息ID查找
+     * @param userId
+     * @param messageId
+     * @return
+     */
+    public MessageReceive getUserMessageReceiveByMessageId(String userId,String messageId){
+        Parameter parameter = new Parameter();
+        parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
+        parameter.put("userId", userId);
+        parameter.put("messageId", messageId);
+        return dao.getUserMessageReceiveByMessageId(parameter);
+    }
+
+    /**
      * 设置通知已读状态
      *
      * @param receive

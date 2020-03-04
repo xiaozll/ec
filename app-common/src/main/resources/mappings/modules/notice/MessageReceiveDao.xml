@@ -82,6 +82,19 @@
 		ORDER BY m.update_time DESC
 	</select>
 
+
+	<select id="getUserMessageReceiveByMessageId" resultType="MessageReceive">
+		SELECT
+		<include refid="messageReceiveColumns"/>
+		FROM t_notice_message_receive a
+		<include refid="messageReceiveJoins"/>
+		<where>
+			m.status = #{status}
+			AND a.user_id = #{userId}
+			AND a.message_id = #{messageId}
+		</where>
+	</select>
+
 	<insert id="insert">
 		INSERT INTO t_notice_message_receive(
 		id,

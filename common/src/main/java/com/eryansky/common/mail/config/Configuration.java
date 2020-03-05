@@ -19,5 +19,5 @@ public interface Configuration {
 	 * 工厂方法，创建属性集实体
 	 * @return 属性集实体类，存储属性键值对
 	 */
-	public Properties makeProperties();
+	Properties makeProperties();
 }

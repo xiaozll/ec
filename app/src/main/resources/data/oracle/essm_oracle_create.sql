@@ -357,7 +357,7 @@ comment on column T_NOTICE_MESSAGE.ORGAN_ID is
 '发布部门';
 
 comment on column T_NOTICE_MESSAGE.BIZ_MODE is
-'状态（业务） 草稿:draft 正在发布:Publishing 已发布:Published';
+'状态（业务） 草稿:00 正在发布:02 已发布:01';
 
 comment on column T_NOTICE_MESSAGE.TIP_MESSAGE is
 '提醒 通过微信发送或者短信发送 果个之间以“,”分割 微信：weixin 短信 sms';

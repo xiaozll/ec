@@ -76,7 +76,7 @@ public class MyBatisSuportDao extends SqlSessionDaoSupport {
 	 * @return
 	 * @date 2012-7-28 下午7:41:01
 	 */
-	public <T> List<T> getList(String key) {
+	public <T> List<T> findList(String key) {
 		return getSqlSession().selectList(key);
 	}
 
@@ -89,7 +89,7 @@ public class MyBatisSuportDao extends SqlSessionDaoSupport {
 	 * @return
 	 * @date 2012-7-28 下午7:43:02
 	 */
-	public <T> List<T> getList(String key, Object params) {
+	public <T> List<T> findList(String key, Object params) {
 		return getSqlSession().selectList(key, params);
 	}
 
@@ -106,7 +106,7 @@ public class MyBatisSuportDao extends SqlSessionDaoSupport {
 	 * @return List<T>
 	 * @date 2012-7-29 上午1:35:32
 	 */
-	public <T> List<T> getList(String key, int offset, int limit, Object params) {
+	public <T> List<T> findList(String key, int offset, int limit, Object params) {
 		return getSqlSession().selectList(key, params,
 				new RowBounds(offset, limit));
 	}
@@ -121,11 +121,11 @@ public class MyBatisSuportDao extends SqlSessionDaoSupport {
 	 * @return Page<T>
 	 * @date 2012-7-29 上午3:50:26
 	 */
-	public <T> Page<T> getPage(String key, Page<T> page, Object params) {
+	public <T> Page<T> findPage(String key, Page<T> page, Object params) {
 
 		int offset = Page.countOffset(page.getPageSize(), page.getPageNo());
 
-		List<T> list = getList(key, params);
+		List<T> list = findList(key, params);
 		if (!list.isEmpty() && list.size() > 0) {
 			page.setTotalCount(list.size());
 		}

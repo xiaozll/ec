@@ -37,20 +37,20 @@ public class GenericEnumUtils {
      * @return
      */
     public static <T extends Enum<T> & IGenericEnum<T>> String getValueStrings(Class<T> enumType, String delimiter) {
-        String ret = "";
+        StringBuilder ret = new StringBuilder();
         delimiter = delimiter == null ? " " : delimiter;
 
         int i = 0;
         for (IGenericEnum<T> enumOption : enumType.getEnumConstants()) {
             if (i == 0) {
-                ret = enumOption.getValue();
+                ret = new StringBuilder(enumOption.getValue());
             } else {
-                ret += delimiter + enumOption.getValue();
+                ret.append(delimiter).append(enumOption.getValue());
             }
             i++;
         }
 
-        return ret;
+        return ret.toString();
     }
 
     /**

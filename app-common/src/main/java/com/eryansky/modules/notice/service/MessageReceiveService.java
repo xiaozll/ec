@@ -161,10 +161,10 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @param userId
      */
     public void reSendByUserId(String userId) {
-//        List<MessageReceive> list = findUnSendByUserId(userId);
-//        for (MessageReceive messageReceive : list) {
-//            reSendByMessageReceive(messageReceive);
-//        }
+        List<MessageReceive> list = findUnSendByUserId(userId);
+        for (MessageReceive messageReceive : list) {
+            reSendByMessageReceive(messageReceive);
+        }
     }
 
     /**

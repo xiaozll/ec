@@ -4,7 +4,6 @@ package com.eryansky.modules.disk._enum;
 import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.orm._enum.IGenericEnum;
 import com.eryansky.common.utils.StringUtils;
-import com.eryansky.modules.notice._enum.ReceiveObjectType;
 
 /**
  * 文件类型

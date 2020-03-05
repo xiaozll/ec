@@ -88,12 +88,12 @@ public class MessageTask {
     }
 
     /**
-     * 重新推送用户消息到微信端
+     * 重新推送用户消息
      *
      * @param userId
      */
     @Async
-    public void reSendToWeixinByUserId(String userId) {
+    public void reSendByUserId(String userId) {
         messageReceiveService.reSendByUserId(userId);
     }
 }

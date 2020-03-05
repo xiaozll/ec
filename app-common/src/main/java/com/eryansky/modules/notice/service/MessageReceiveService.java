@@ -156,7 +156,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
 
 
     /**
-     * 重新推送微信端
+     * 重新推送
      *
      * @param userId
      */
@@ -168,7 +168,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
     }
 
     /**
-     * 重新推送微信端
+     * 重新推送
      *
      * @param messageReceive
      */
@@ -181,7 +181,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
 
 
     /**
-     * 重新推送微信端
+     * 重新推送
      *
      * @param messageReceiveId
      */

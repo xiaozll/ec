@@ -7,7 +7,6 @@ package com.eryansky.modules.notice._enum;
 
 import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.orm._enum.IGenericEnum;
-import com.eryansky.modules.sys._enum.AreaType;
 
 /**
  * 消息提醒通道

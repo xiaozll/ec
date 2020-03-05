@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2018 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2018 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.ftp;
 
@@ -14,7 +14,7 @@ import java.io.*;
 /**
  * FTP 使用Resource方式注解 <br>
  * 例如：@Resource(name = "payFtp")
- * 
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2012-3-20 下午1:30:39
  */
@@ -82,19 +82,17 @@ public class FtpFactory {
 
     /**
      * 向FTP服务器上传文件.
-     * 
-     * @param path
-     *            FTP服务器保存目录
-     * @param filename
-     *            上传到FTP服务器上的文件名
-     * @param input
-     *            输入流
+     *
+     * @param path     FTP服务器保存目录
+     * @param filename 上传到FTP服务器上的文件名
+     * @param input    输入流
+     * @param encoding 默认值："UTF-8"
      * @return 成功返回true，否则返回false
      */
-    public boolean ftpUploadFile(String path, String filename, InputStream input) {
+    public boolean ftpUploadFile(String path, String filename, InputStream input, String encoding) {
         boolean success = false;
         FTPClient ftp = new FTPClient();
-        ftp.setControlEncoding("UTF-8");
+        ftp.setControlEncoding(null != encoding ? encoding : "UTF-8");
         try {
             int reply;
             ftp.connect(url, port);
@@ -129,21 +127,18 @@ public class FtpFactory {
 
     /**
      * 向FTP服务器上传文件.
-     * 
-     * @param path
-     *            FTP服务器保存目录
-     * @param filename
-     *            上传到FTP服务器上的文件名
-     * @param inputFilename
-     *            输入流
+     *
+     * @param path          FTP服务器保存目录
+     * @param filename      上传到FTP服务器上的文件名
+     * @param inputFilename 输入流
      * @return 成功返回true，否则返回false
      */
     public boolean ftpUploadFile(String path, String filename,
-            String inputFilename) {
+                                 String inputFilename) {
         File file = new File(inputFilename);
         try {
             return ftpUploadFile(path, filename, new BufferedInputStream(
-                    new FileInputStream(file)));
+                    new FileInputStream(file)), null);
         } catch (FileNotFoundException e) {
             return false;
         }
@@ -151,22 +146,20 @@ public class FtpFactory {
 
     /**
      * 从FTP服务器下载文件.
-     * 
-     * @param remotePath
-     *            FTP服务器上的相对路径
-     * @param fileName
-     *            要下载的文件名
-     * @param localPath
-     *            下载后保存到本地的路径
+     *
+     * @param remotePath FTP服务器上的相对路径
+     * @param fileName   要下载的文件名
+     * @param localPath  下载后保存到本地的路径
+     * @param encoding   默认值："UTF-8"
      * @return
      */
     public boolean ftpDownFile(String remotePath, String fileName,
-            String localPath) {
+                               String localPath, String encoding) {
         // 初始表示下载失败
         boolean success = false;
         // 创建FTPClient对象
         FTPClient ftp = new FTPClient();
-        ftp.setControlEncoding("GBK");
+        ftp.setControlEncoding(null != encoding ? encoding : "UTF-8");
         try {
             int reply;
             // 连接FTP服务器
@@ -187,7 +180,7 @@ public class FtpFactory {
             for (FTPFile ff : fs) {
                 if (ff.getName().equals(fileName)) {
                     // 根据绝对路径初始化文件
-                    File localFile = new File(localPath + "/" + ff.getName());
+                    File localFile = new File(localPath + File.separator + ff.getName());
                     // 输出流
                     OutputStream is = new FileOutputStream(localFile);
                     // 下载文件

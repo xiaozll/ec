@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-09-14
  */
-public class MessageUtil {
+public class MailUtils {
 	/**
 	 * email地址的正则表达式，包含边界匹配
 	 */

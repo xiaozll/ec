@@ -5,14 +5,17 @@
  */
 package com.eryansky.modules.sys.utils;
 
+import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.ConvertUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.modules.sys.mapper.OrganExtend;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.mapper.UserPassword;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.utils.AppConstants;
 
 import java.util.List;
 
@@ -356,6 +359,29 @@ public class UserUtils {
      */
     public static void updateUserPassword(List<String> userIds, String password) {
         Static.userService.updateUserPassword(userIds, password);
+    }
+
+
+    /**
+     * 校验密码最近几次是否使用过
+     * @param userId 用户ID
+     * @param pagePassword 未加密的密码
+     */
+    public static void checkSecurity(String userId,String pagePassword){
+        if(User.SUPERUSER_ID.equals(userId)){
+            return;
+        }
+        if(AppConstants.getIsSecurityOn()){
+            int max = AppConstants.getUserPasswordRepeatCount();
+            List<UserPassword> userPasswords = Static.userPasswordService.getUserPasswordsByUserId(userId,max);
+            if(Collections3.isNotEmpty(userPasswords)){
+                for(UserPassword userPassword:userPasswords){
+                    if (userPassword.getPassword().equals(Encrypt.e(pagePassword))) {
+                        throw new ActionException("你输入的密码在最近"+max+"次以内已使用过，请更换！");
+                    }
+                }
+            }
+        }
     }
 
 }

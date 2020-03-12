@@ -73,7 +73,7 @@ public class J2CacheCache extends AbstractValueAdaptingCache {
 	@Override
 	public ValueWrapper putIfAbsent(Object key, Object value) {
 		if (!cacheChannel.exists(j2CacheName, String.valueOf(key))) {
-			cacheChannel.set(j2CacheName, String.valueOf(key), value);
+			cacheChannel.set(j2CacheName, String.valueOf(key), value,false);
 		}
 		return get(key);
 	}
@@ -90,7 +90,7 @@ public class J2CacheCache extends AbstractValueAdaptingCache {
 
 	@Override
 	protected Object lookup(Object key) {
-		CacheObject cacheObject = cacheChannel.get(j2CacheName, String.valueOf(key), super.isAllowNullValues());
+		CacheObject cacheObject = cacheChannel.get(j2CacheName, String.valueOf(key), false);
 		if(cacheObject.rawValue() != null && cacheObject.rawValue().getClass().equals(NullObject.class) && super.isAllowNullValues()) {
 			return NullValue.INSTANCE;
 		}

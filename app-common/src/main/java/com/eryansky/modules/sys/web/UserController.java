@@ -481,15 +481,21 @@ public class UserController extends SimpleController {
 
     /**
      * 用户列表
-     *
+     * @param dataScope {@link DataScope}
+     * @param includeUserIds
+     * @param excludeUserIds
+     * @param query
+     * @param request
+     * @param response
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"userList"})
     @ResponseBody
-    public String userList(@RequestParam(value = "excludeUserIds", required = false) List<String> excludeUserIds, String dataScope,
+    public String userList(String dataScope,
                            @RequestParam(value = "includeUserIds", required = false) List<String> includeUserIds,
-                           HttpServletRequest request, HttpServletResponse response, String query) {
+                           @RequestParam(value = "excludeUserIds", required = false) List<String> excludeUserIds,
+                           String query,
+                           HttpServletRequest request, HttpServletResponse response) {
         List<User> list = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(dataScope)) {

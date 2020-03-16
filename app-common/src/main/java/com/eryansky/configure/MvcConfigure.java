@@ -63,8 +63,8 @@ public class MvcConfigure implements WebMvcConfigurer {
               .excludePathPatterns(Lists.newArrayList("/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**"))
               .order(Ordered.HIGHEST_PRECEDENCE + 200);
       registry.addInterceptor(new MobileInterceptor())
-              .addPathPatterns(AppConstants.getMobilePath()+"/**")
-              .order(Ordered.HIGHEST_PRECEDENCE + 300);;
+              .addPathPatterns("/**")
+              .order(Ordered.HIGHEST_PRECEDENCE + 300);
    }
 
    /**

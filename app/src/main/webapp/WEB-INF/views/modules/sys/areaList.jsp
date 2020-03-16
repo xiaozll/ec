@@ -41,7 +41,8 @@
 			<td>{{row.remark}}</td>
 			<e:hasPermission name="sys:area:edit"><td>
 				<a href="${ctxAdmin}/sys/area/form?id={{row.id}}">修改</a>
-				<a href="${ctxAdmin}/sys/area/delete?id={{row.id}}" onclick="return confirmx('要删除该区域及所有子区域项吗？', this.href)">删除</a>
+				<a href="${ctxAdmin}/sys/area/delete?id={{row.id}}" onclick="return confirmx('要删除该区域吗？', this.href)">删除</a>
+				<a href="${ctxAdmin}/sys/area/deleteOwnerAndChilds?id={{row.id}}" onclick="return confirmx('要删除该区域及所有子区域项吗？', this.href)">级联删除</a>
 				<a href="${ctxAdmin}/sys/area/form?parent.id={{row.id}}">添加下级区域</a>
 			</td></e:hasPermission>
 		</tr>

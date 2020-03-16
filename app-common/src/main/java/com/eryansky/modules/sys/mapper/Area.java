@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
  */
 public class Area extends TreeEntity<Area> {
 
+    public static final String ROOT_ID = "1";
     /**
      * 简称
      */

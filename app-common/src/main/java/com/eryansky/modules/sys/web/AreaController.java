@@ -118,14 +118,21 @@ public class AreaController extends SimpleController {
     @Logging(value = "区域管理-删除区域", logType = LogType.access)
     @RequiresPermissions("sys:area:edit")
     @RequestMapping(value = "delete")
-    public String delete(@ModelAttribute("model") Area area, RedirectAttributes redirectAttributes) {
-//		if (Area.isRoot(id)){
-//			addMessage(redirectAttributes, "删除区域失败, 不允许删除顶级区域或编号为空");
-//		}else{
-//			areaService.delete(area);
-        areaService.deleteOwnerAndChilds(area.getId());
-        addMessage(redirectAttributes, "删除区域成功");
-//		}
+    public String delete(@ModelAttribute("model") Area model, RedirectAttributes redirectAttributes) {
+		if (Area.ROOT_ID.equals(model.getId()) || Area.ROOT_ID.equals(model.getCode())){
+			addMessage(redirectAttributes, "删除区域失败, 不允许删除顶级区域或编号为空");
+		}else{
+			areaService.delete(model);
+		}
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/area/";
+    }
+
+    @Logging(value = "区域管理-级联删除区域", logType = LogType.access)
+    @RequiresPermissions("sys:area:edit")
+    @RequestMapping(value = "deleteOwnerAndChilds")
+    public String deleteOwnerAndChilds(@ModelAttribute("model") Area model, RedirectAttributes redirectAttributes) {
+        areaService.deleteOwnerAndChilds(model.getId());
+        addMessage(redirectAttributes, "删除区域以及子节点成功");
         return "redirect:" + AppConstants.getAdminPath() + "/sys/area/";
     }
 

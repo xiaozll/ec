@@ -10,7 +10,7 @@ import com.eryansky.common.utils.*;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.modules.sys.mapper.User;
-import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.event.SysLogEvent;
 import com.google.common.collect.Lists;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
@@ -20,7 +20,6 @@ import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.utils.SpringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.NamedThreadLocal;
@@ -69,14 +68,6 @@ public class LogInterceptor implements HandlerInterceptor {
 	 * 排除拦截的资源
 	 */
 	private List<String> excludeUrls = Lists.newArrayList();
-
-	/**
-	 * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
-	 */
-	public static final class Static {
-		private static LogService logService = SpringContextHolder.getBean(LogService.class);
-	}
-
 
 	public LogInterceptor(RequestMappingHandlerAdapter requestMappingHandlerAdapter) {
 		this.adapter = requestMappingHandlerAdapter;
@@ -214,8 +205,7 @@ public class LogInterceptor implements HandlerInterceptor {
 			log.setParams(request.getParameterMap());
 			// 如果有异常，设置异常信息
 			log.setException(Exceptions.getStackTraceAsString(ex));
-			Static.logService.saveAspectLog(log, handlerMethod);
-
+			SpringContextHolder.publishEvent(new SysLogEvent(log));
 		}
 
 		// 打印JVM信息。

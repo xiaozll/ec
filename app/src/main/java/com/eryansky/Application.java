@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
                 "com.eryansky.configure",
                 "com.eryansky.modules.**.aop",
                 "com.eryansky.modules.**.task",
+                "com.eryansky.modules.**.event",
                 "com.eryansky.modules.**.service",
                 "com.eryansky.modules.**.quartz",
                 "com.eryansky.modules.**.web"

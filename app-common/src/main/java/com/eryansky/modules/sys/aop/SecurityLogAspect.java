@@ -5,10 +5,12 @@
  */
 package com.eryansky.modules.sys.aop;
 
+import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.core.security.SecurityType;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.modules.sys._enum.LogType;
+import com.eryansky.modules.sys.event.SysLogEvent;
 import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.modules.sys.service.LogService;
 import com.eryansky.modules.sys.service.UserService;
@@ -33,9 +35,6 @@ import java.util.Date;
 public class SecurityLogAspect {
 
     private static Logger logger = LoggerFactory.getLogger(SecurityLogAspect.class);
-
-    @Autowired
-    private LogService logService;
 
     /**
      * 登录增强
@@ -110,7 +109,7 @@ public class SecurityLogAspect {
             end = System.currentTimeMillis();
             long opTime = end - start;
             log.setActionTime(String.valueOf(opTime));
-            logService.save(log);
+            SpringContextHolder.publishEvent(new SysLogEvent(log));
             if (logger.isDebugEnabled()) {
                 logger.debug("用户:{},操作类：{},操作方法：{},耗时：{}ms.", new Object[]{user, className, methodName, end - start});
             }

@@ -18,9 +18,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.dao.LogDao;
 import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.utils.AppConstants;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.method.HandlerMethod;
 
 import java.util.*;
 
@@ -297,14 +295,4 @@ public class LogService extends CrudService<LogDao, Log> {
         List<Map<String, Object>> list = dao.getDayLoginStatistics(parameter);
         return list;
     }
-
-
-    /**
-     * 清理过期日志
-     */
-    @Async
-    public void saveAspectLog(Log log, HandlerMethod handler) {
-        save(log);
-    }
-
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -85,4 +86,9 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
 			logger.warn("applicaitonContext属性未注入, 请在applicationContext.xml中定义SpringContextHolder.");
 		}
 	}
+
+	public static void publishEvent(ApplicationEvent event){
+		applicationContext.publishEvent(event);
+	}
+
 }

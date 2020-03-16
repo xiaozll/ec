@@ -223,7 +223,6 @@
         SELECT
           sum(a.file_size)
         FROM t_disk_file a
-        <include refid="fileJoins"/>
         <where>
             a.status = #{status}
             <if test="fileIds != null and fileIds.size() !=0">

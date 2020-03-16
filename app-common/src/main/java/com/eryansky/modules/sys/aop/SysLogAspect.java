@@ -7,6 +7,7 @@ package com.eryansky.modules.sys.aop;
 
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.Exceptions;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -71,18 +72,24 @@ public class SysLogAspect {
         }
         String user = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        HttpServletRequest request = null;
+        try {
+            request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
         // 执行方法所消耗的时间
         try {
-            HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+
             log.setType(logging.logType().getValue());
             log.setUserId(null != sessionInfo ? sessionInfo.getUserId() : User.SUPERUSER_ID);
             log.setModule(className + "-" + methodName);
-            log.setIp(null != sessionInfo ?sessionInfo.getIp():null);
+            log.setIp(null != sessionInfo ? sessionInfo.getIp() : null);
             log.setTitle(logging.value());
-            log.setAction(null != request ? request.getMethod() : "");
-            log.setUserAgent(sessionInfo.getUserAgent());
-            log.setDeviceType(sessionInfo.getDeviceType());
-            log.setBrowserType(sessionInfo.getBrowserType());
+            log.setAction(null != request ? request.getMethod() : StringUtils.EMPTY);
+            log.setUserAgent(null != sessionInfo ? sessionInfo.getUserAgent() : StringUtils.EMPTY);
+            log.setDeviceType(null != sessionInfo ? sessionInfo.getDeviceType() : StringUtils.EMPTY);
+            log.setBrowserType(null != sessionInfo ? sessionInfo.getBrowserType() : StringUtils.EMPTY);
             log.setOperTime(Calendar.getInstance().getTime());
             log.setRemark(logging.remark());
             SpringContextHolder.publishEvent(new SysLogEvent(log));

@@ -219,7 +219,7 @@
 
 
 
-    <select id="countFileSize" resultType="long">
+    <select id="countFileSize" resultType="java.lang.Long">
         SELECT
           sum(a.file_size)
         FROM t_disk_file a

@@ -347,7 +347,7 @@ public class FileService extends CrudService<FileDao, File> {
      * @param fileIds 文件ID集合
      * @return
      */
-    public long countFileSize(Collection<String> fileIds) {
+    public Long countFileSize(Collection<String> fileIds) {
         Parameter parameter = Parameter.newParameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("fileIds", fileIds);

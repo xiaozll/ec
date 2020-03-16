@@ -363,7 +363,8 @@ public class DiskUtils {
      */
     public static long countFileSize(Collection<String> fileIds) {
         if (Collections3.isNotEmpty(fileIds)) {
-            return Static.fileService.countFileSize(fileIds);
+            Long s = Static.fileService.countFileSize(fileIds);
+            return null != s ? s:0L;
         }
         return 0L;
     }

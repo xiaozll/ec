@@ -221,7 +221,7 @@
 
     <select id="countFileSize" resultType="long">
         SELECT
-          sum(a.fileSize)
+          sum(a.file_size)
         FROM t_disk_file a
         <include refid="fileJoins"/>
         <where>

@@ -5,7 +5,6 @@
  */
 package com.eryansky.modules.sys.task;
 
-import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.modules.sys.event.SysLogEvent;
 import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.modules.sys.service.LogService;

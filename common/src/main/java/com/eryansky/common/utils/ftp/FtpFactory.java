@@ -145,7 +145,7 @@ public class FtpFactory {
                     if (makeDirectory(subDirectory, ftp)) {
                         changeWorkingDirectory(subDirectory, ftp);
                     } else {
-                        System.out.println("创建目录[" + subDirectory + "]失败");
+                        logger.info("创建目录[" + subDirectory + "]失败");
                         changeWorkingDirectory(subDirectory, ftp);
                     }
                 } else {
@@ -175,9 +175,9 @@ public class FtpFactory {
         try {
             flag = ftp.makeDirectory(dir);
             if (flag) {
-                System.out.println("创建文件夹" + dir + " 成功！");
+                logger.info("创建文件夹" + dir + " 成功！");
             } else {
-                System.out.println("创建文件夹" + dir + " 失败！");
+                logger.info("创建文件夹" + dir + " 失败！");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,12 +197,12 @@ public class FtpFactory {
         try {
             flag = ftp.changeWorkingDirectory(directory);
             if (flag) {
-                System.out.println("进入文件夹" + directory + " 成功！");
+                logger.info("进入文件夹" + directory + " 成功！");
             } else {
-                System.out.println("进入文件夹" + directory + " 失败！");
+                logger.info("进入文件夹" + directory + " 失败！");
             }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.error(ioe.getMessage(),ioe);
         }
         return flag;
     }
@@ -241,7 +241,7 @@ public class FtpFactory {
             ftp.logout();
             success = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             if (ftp.isConnected()) {
                 try {
@@ -323,7 +323,7 @@ public class FtpFactory {
             // 下载成功
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             if (ftp.isConnected()) {
                 try {

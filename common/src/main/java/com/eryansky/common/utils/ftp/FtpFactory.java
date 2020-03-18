@@ -8,6 +8,8 @@ package com.eryansky.common.utils.ftp;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
@@ -19,6 +21,9 @@ import java.io.*;
  * @date 2012-3-20 下午1:30:39
  */
 public class FtpFactory {
+
+    private static final Logger logger = LoggerFactory.getLogger(FtpFactory.class);
+
 
     // 可使用@Resource进行注解
     /**
@@ -81,6 +86,129 @@ public class FtpFactory {
     }
 
     /**
+     * 判断ftp服务器文件是否存在
+     * @param path
+     * @param ftp
+     * @return
+     * @throws IOException
+     */
+    public static boolean existFile(String path, FTPClient ftp) throws IOException {
+        boolean flag = false;
+        FTPFile[] ftpFileArr = ftp.listFiles(path);
+        if (ftpFileArr.length > 0) {
+            flag = true;
+        }
+        return flag;
+    }
+
+    /**
+     * 创建多层目录文件，如果有ftp服务器已存在该文件，则不创建，如果无，则创建
+     * @param path
+     * @param remote
+     * @return
+     * @throws IOException
+     */
+    public boolean createDirectory(String path,String remote)
+            throws IOException {
+
+        FTPClient ftp = new FTPClient();
+        int reply;
+        ftp.connect(url, port);
+        // 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
+        ftp.login(username, password);// 登录
+        ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+        reply = ftp.getReplyCode();
+        if (!FTPReply.isPositiveCompletion(reply)) {
+            ftp.disconnect();
+        }
+        ftp.changeWorkingDirectory(path);// 转移到FTP服务器目录
+
+        boolean success = true;
+        String directory = remote + File.separator;
+        // String directory = remote.substring(0, remote.lastIndexOf("/") + 1);
+        // 如果远程目录不存在，则递归创建远程服务器目录
+        if (!directory.equalsIgnoreCase(File.separator) && !changeWorkingDirectory(new String(directory), ftp)) {
+            int start = 0;
+            int end = 0;
+            if (directory.startsWith(File.separator)) {
+                start = 1;
+            } else {
+                start = 0;
+            }
+            end = directory.indexOf(File.separator, start);
+            String paths = "";
+            while (true) {
+
+                String subDirectory = remote.substring(start, end);
+                path = path + File.separator + subDirectory;
+                if (!existFile(path, ftp)) {
+                    if (makeDirectory(subDirectory, ftp)) {
+                        changeWorkingDirectory(subDirectory, ftp);
+                    } else {
+                        System.out.println("创建目录[" + subDirectory + "]失败");
+                        changeWorkingDirectory(subDirectory, ftp);
+                    }
+                } else {
+                    changeWorkingDirectory(subDirectory, ftp);
+                }
+
+                paths = paths + File.separator + subDirectory;
+                start = end + 1;
+                end = directory.indexOf(File.separator, start);
+                // 检查所有目录是否创建完毕
+                if (end <= start) {
+                    break;
+                }
+            }
+        }
+        return success;
+    }
+
+    /**
+     * 创建目录
+     * @param dir
+     * @param ftp
+     * @return
+     */
+    public static boolean makeDirectory(String dir, FTPClient ftp) {
+        boolean flag = true;
+        try {
+            flag = ftp.makeDirectory(dir);
+            if (flag) {
+                System.out.println("创建文件夹" + dir + " 成功！");
+            } else {
+                System.out.println("创建文件夹" + dir + " 失败！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+
+    /**
+     * 改变目录路径
+     * @param directory
+     * @param ftp
+     * @return
+     */
+    public boolean changeWorkingDirectory(String directory, FTPClient ftp) {
+        boolean flag = true;
+        try {
+            flag = ftp.changeWorkingDirectory(directory);
+            if (flag) {
+                System.out.println("进入文件夹" + directory + " 成功！");
+            } else {
+                System.out.println("进入文件夹" + directory + " 失败！");
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        return flag;
+    }
+
+
+    /**
      * 向FTP服务器上传文件.
      *
      * @param path     FTP服务器保存目录
@@ -102,6 +230,7 @@ public class FtpFactory {
                 ftp.disconnect();
                 return success;
             }
+
             // 转到指定上传目录
             ftp.changeWorkingDirectory(path);
             ftp.setBufferSize(1024);
@@ -131,14 +260,15 @@ public class FtpFactory {
      * @param path          FTP服务器保存目录
      * @param filename      上传到FTP服务器上的文件名
      * @param inputFilename 输入流
+     * @param encoding 默认值："UTF-8"
      * @return 成功返回true，否则返回false
      */
     public boolean ftpUploadFile(String path, String filename,
-                                 String inputFilename) {
+                                 String inputFilename, String encoding) {
         File file = new File(inputFilename);
         try {
             return ftpUploadFile(path, filename, new BufferedInputStream(
-                    new FileInputStream(file)), null);
+                    new FileInputStream(file)), encoding);
         } catch (FileNotFoundException e) {
             return false;
         }

@@ -171,7 +171,7 @@ public class AreaController extends SimpleController {
      */
     @ResponseBody
     @RequestMapping(value = "areaUpData")
-    public List<TreeNode> provinceCityAreaData(String state,HttpServletResponse response) {
+    public List<TreeNode> areaUpData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
         for (int i = 0; i < list.size(); i++) {
@@ -193,7 +193,7 @@ public class AreaController extends SimpleController {
      */
     @ResponseBody
     @RequestMapping(value = "areaDownData")
-    public List<TreeNode> areaData(String state,HttpServletResponse response) {
+    public List<TreeNode> areaDownData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String areaId = OrganUtils.getAreaId(sessionInfo.getLoginCompanyId());

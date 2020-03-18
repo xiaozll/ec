@@ -103,7 +103,7 @@ public class FtpFactory {
 
     /**
      * 创建多层目录文件，如果有ftp服务器已存在该文件，则不创建，如果无，则创建
-     * @param path
+     * @param path 根目录为""
      * @param remote
      * @return
      * @throws IOException
@@ -211,7 +211,7 @@ public class FtpFactory {
     /**
      * 向FTP服务器上传文件.
      *
-     * @param path     FTP服务器保存目录
+     * @param path     FTP服务器保存目录 根目录为""
      * @param filename 上传到FTP服务器上的文件名
      * @param input    输入流
      * @param encoding 默认值："UTF-8"
@@ -257,7 +257,7 @@ public class FtpFactory {
     /**
      * 向FTP服务器上传文件.
      *
-     * @param path          FTP服务器保存目录
+     * @param path          FTP服务器保存目录 根目录为""
      * @param filename      上传到FTP服务器上的文件名
      * @param inputFilename 输入流
      * @param encoding 默认值："UTF-8"

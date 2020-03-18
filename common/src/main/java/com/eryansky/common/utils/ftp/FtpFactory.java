@@ -26,8 +26,6 @@ public class FtpFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(FtpFactory.class);
 
-
-    // 可使用@Resource进行注解
     /**
      * 服务器地址
      */

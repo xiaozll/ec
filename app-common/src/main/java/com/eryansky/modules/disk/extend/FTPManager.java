@@ -519,12 +519,12 @@ public class FTPManager implements IFileManager {
                 while (!init || (!isconnect && reconnect)) {
                     init = true;
                     try {
-                        logger.info("连接FTP服务器");
                         connect(url, port, username, password);
+                        logger.info("连接FTP服务器成功,{},{}",new Object[]{url,port});
                         isconnect = true;
                     } catch (IOException e) {
                         isconnect = false;
-                        logger.error("连接FTP服务器失败.");
+                        logger.error("连接FTP服务器失败,{},{}",new Object[]{url,port});
                         try {
                             Thread.sleep(connectTime);
                         } catch (InterruptedException e1) {
@@ -542,7 +542,7 @@ public class FTPManager implements IFileManager {
         try {
             disconnect();
         } catch (IOException e) {
-            logger.error("断开FTP服务器失败.");
+            logger.error(e.getMessage()+",断开FTP服务器失败.");
         }
     }
 

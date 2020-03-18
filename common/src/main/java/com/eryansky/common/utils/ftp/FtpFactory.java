@@ -193,7 +193,7 @@ public class FtpFactory {
                     if (makeDirectory(subDirectory, ftp)) {
                         changeWorkingDirectory(subDirectory, ftp);
                     } else {
-                        logger.info("创建目录[" + subDirectory + "]失败");
+                        logger.warn("创建目录[" + subDirectory + "]失败");
                         changeWorkingDirectory(subDirectory, ftp);
                     }
                 } else {
@@ -226,7 +226,7 @@ public class FtpFactory {
             if (flag) {
                 logger.info("创建文件夹" + dir + " 成功！");
             } else {
-                logger.info("创建文件夹" + dir + " 失败！");
+                logger.warn("创建文件夹" + dir + " 失败！");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -249,7 +249,7 @@ public class FtpFactory {
             if (flag) {
                 logger.info("进入文件夹" + directory + " 成功！");
             } else {
-                logger.info("进入文件夹" + directory + " 失败！");
+                logger.warn("进入文件夹" + directory + " 失败！");
             }
         } catch (IOException ioe) {
             logger.error(ioe.getMessage(), ioe);
@@ -297,7 +297,7 @@ public class FtpFactory {
                 try {
                     ftp.disconnect();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
         }
@@ -379,6 +379,7 @@ public class FtpFactory {
                 try {
                     ftp.disconnect();
                 } catch (IOException ioe) {
+                    logger.error(ioe.getMessage(), ioe);
                 }
             }
         }

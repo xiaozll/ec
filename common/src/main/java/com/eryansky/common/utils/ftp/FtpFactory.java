@@ -285,7 +285,7 @@ public class FtpFactory {
 
             // 转到指定上传目录
             ftp.changeWorkingDirectory(path);
-            ftp.setBufferSize(1024);
+            ftp.setBufferSize(8*1024);
             ftp.setFileType(FTPClient.ASCII_FILE_TYPE);
             // 将上传文件存储到指定目录
             ftp.storeFile(filename, input);

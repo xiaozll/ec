@@ -155,6 +155,7 @@ public class AreaController extends SimpleController {
             Area e = list.get(i);
             if (StringUtils.isBlank(extId) || (extId != null && !extId.equals(e.getId()) && e.getParentIds().indexOf("," + extId + ",") == -1)) {
                 TreeNode treeNode = new TreeNode(e.getId(), e.getName());
+                treeNode.setState(StringUtils.isNotBlank(state) ? state:TreeNode.STATE_OPEN);
                 treeNode.setpId(e.getParentId());
                 treeNodes.add(treeNode);
             }

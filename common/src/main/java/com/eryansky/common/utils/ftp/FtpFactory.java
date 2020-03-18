@@ -25,7 +25,8 @@ import java.util.List;
 public class FtpFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(FtpFactory.class);
-
+    public final static String CHARSET_UTF_8 = "UTF-8";
+    public final static String CHARSET_ISO8859_1 = "iso-8859-1";
     /**
      * 服务器地址
      */
@@ -86,6 +87,30 @@ public class FtpFactory {
     }
 
     /**
+     * 创建FTPClient
+     * ftp.logout();
+     * ftp.disconnect();
+     * @param path   根目录为""
+     * @return
+     * @throws IOException
+     */
+    public FTPClient createFTPClient(String path)
+            throws IOException {
+
+        FTPClient ftp = new FTPClient();
+        int reply;
+        ftp.connect(url, port);
+        // 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
+        ftp.login(username, password);// 登录
+        ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+        reply = ftp.getReplyCode();
+        if (!FTPReply.isPositiveCompletion(reply)) {
+            ftp.disconnect();
+        }
+        ftp.changeWorkingDirectory(path);// 转移到FTP服务器目录
+        return ftp;
+    }
+    /**
      * 查询ftp服务器上指定路径所有文件名
      *
      * @param path       根目录为""
@@ -119,12 +144,13 @@ public class FtpFactory {
             }
             ftp.logout();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             if (ftp.isConnected()) {
                 try {
                     ftp.disconnect();
                 } catch (IOException ioe) {
+                    logger.error(ioe.getMessage(), ioe);
                 }
             }
         }
@@ -267,10 +293,10 @@ public class FtpFactory {
      * @param encoding 默认值："UTF-8"
      * @return 成功返回true，否则返回false
      */
-    public boolean ftpUploadFile(String path, String filename, InputStream input, String encoding) {
+    public boolean uploadFile(String path, String filename, InputStream input, String encoding) {
         boolean success = false;
         FTPClient ftp = new FTPClient();
-        ftp.setControlEncoding(null != encoding ? encoding : "UTF-8");
+        ftp.setControlEncoding(null != encoding ? encoding : CHARSET_UTF_8);
         try {
             int reply;
             ftp.connect(url, port);
@@ -313,11 +339,11 @@ public class FtpFactory {
      * @param encoding      默认值："UTF-8"
      * @return 成功返回true，否则返回false
      */
-    public boolean ftpUploadFile(String path, String filename,
-                                 String inputFilename, String encoding) {
+    public boolean uploadFile(String path, String filename,
+                              String inputFilename, String encoding) {
         File file = new File(inputFilename);
         try {
-            return ftpUploadFile(path, filename, new BufferedInputStream(
+            return uploadFile(path, filename, new BufferedInputStream(
                     new FileInputStream(file)), encoding);
         } catch (FileNotFoundException e) {
             return false;
@@ -333,13 +359,13 @@ public class FtpFactory {
      * @param encoding   默认值："UTF-8"
      * @return
      */
-    public boolean ftpDownFile(String remotePath, String fileName,
-                               String localPath, String encoding) {
+    public boolean downloadFile(String remotePath, String fileName,
+                                String localPath, String encoding) {
         // 初始表示下载失败
         boolean success = false;
         // 创建FTPClient对象
         FTPClient ftp = new FTPClient();
-        ftp.setControlEncoding(null != encoding ? encoding : "UTF-8");
+        ftp.setControlEncoding(null != encoding ? encoding : CHARSET_UTF_8);
         try {
             int reply;
             // 连接FTP服务器

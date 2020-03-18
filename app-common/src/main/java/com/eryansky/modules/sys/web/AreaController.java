@@ -136,10 +136,19 @@ public class AreaController extends SimpleController {
         return "redirect:" + AppConstants.getAdminPath() + "/sys/area/";
     }
 
+    /**
+     *
+     * @param extId 排除的ID
+     * @param state 默认值：'open' 展开：{@link TreeNode#STATE_OPEN} 关闭：{@link TreeNode#STATE_CLOASED}
+     * @param response
+     * @return
+     */
     @RequiresUser
     @ResponseBody
     @RequestMapping(value = "treeData")
-    public List<TreeNode> treeData(@RequestParam(required = false) String extId, HttpServletResponse response) {
+    public List<TreeNode> treeData(@RequestParam(required = false) String extId,
+                                   String state,
+                                   HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAll();
         for (int i = 0; i < list.size(); i++) {
@@ -156,17 +165,19 @@ public class AreaController extends SimpleController {
     /**
      * 省、市、县数据
      *
+     * @param state 默认值：'open' 展开：{@link TreeNode#STATE_OPEN} 关闭：{@link TreeNode#STATE_CLOASED}
      * @param response
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "areaUpData")
-    public List<TreeNode> provinceCityAreaData(HttpServletResponse response) {
+    public List<TreeNode> provinceCityAreaData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
         for (int i = 0; i < list.size(); i++) {
             Area e = list.get(i);
             TreeNode treeNode = new TreeNode(e.getId(), e.getName());
+            treeNode.setState(StringUtils.isNotBlank(state) ? state:TreeNode.STATE_OPEN);
             treeNode.setpId(e.getParentId());
             treeNodes.add(treeNode);
         }
@@ -176,12 +187,13 @@ public class AreaController extends SimpleController {
     /**
      * 区县及下级数据
      *
+     * @param state 默认值：'open' 展开：{@link TreeNode#STATE_OPEN} 关闭：{@link TreeNode#STATE_CLOASED}
      * @param response
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "areaDownData")
-    public List<TreeNode> areaData(HttpServletResponse response) {
+    public List<TreeNode> areaData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String areaId = OrganUtils.getAreaId(sessionInfo.getLoginCompanyId());
@@ -189,6 +201,7 @@ public class AreaController extends SimpleController {
         for (int i = 0; i < list.size(); i++) {
             Area e = list.get(i);
             TreeNode treeNode = new TreeNode(e.getId(), e.getName());
+            treeNode.setState(StringUtils.isNotBlank(state) ? state:TreeNode.STATE_OPEN);
             treeNode.setpId(e.getParentId());
             treeNodes.add(treeNode);
         }
@@ -199,12 +212,13 @@ public class AreaController extends SimpleController {
     /**
      * 查找自己和子区域
      *
+     * @param state 默认值：'open' 展开：{@link TreeNode#STATE_OPEN} 关闭：{@link TreeNode#STATE_CLOASED}
      * @param response
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "ownAndChildData")
-    public List<TreeNode> ownAndChildData(HttpServletResponse response) {
+    public List<TreeNode> ownAndChildData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String areaId = OrganUtils.getAreaId(sessionInfo.getLoginCompanyId());
@@ -212,6 +226,7 @@ public class AreaController extends SimpleController {
         for (int i = 0; i < list.size(); i++) {
             Area e = list.get(i);
             TreeNode treeNode = new TreeNode(e.getId(), e.getName());
+            treeNode.setState(StringUtils.isNotBlank(state) ? state:TreeNode.STATE_OPEN);
             treeNode.setpId(e.getParentId());
             treeNodes.add(treeNode);
         }

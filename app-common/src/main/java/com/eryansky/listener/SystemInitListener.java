@@ -49,15 +49,15 @@ public class SystemInitListener extends DefaultSystemInitListener{
 		clearTempDir();
 
 		//WebService发布
-		if(StringUtils.isNotBlank(AppConstants.getWebServiceUrl())){
+		String webServiceUrl = AppConstants.getWebServiceUrl();
+		if(StringUtils.isNotBlank(webServiceUrl)){
 			logger.info("WebService发布...");
 			try {
-
-				Endpoint.publish(AppConstants.getWebServiceUrl(), Static.apiWebService);
+				Endpoint.publish(webServiceUrl, Static.apiWebService);
 			} catch (Exception e) {
 				logger.error("WebService发布失败，"+e.getMessage(),e);
 			}
-			logger.info("WebService发布成功，发布地址：{}",AppConstants.getWebServiceUrl());
+			logger.info("WebService发布成功，发布地址：{}",webServiceUrl);
 		}
 	}
 

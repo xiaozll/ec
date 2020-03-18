@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FTP 使用Resource方式注解 <br>
@@ -86,8 +88,55 @@ public class FtpFactory {
     }
 
     /**
+     * 查询ftp服务器上指定路径所有文件名
+     *
+     * @param path       根目录为""
+     * @param remotePath FTP服务器上的相对路径
+     * @return
+     */
+    public List<String> listFiles(String path, String remotePath) {
+        ArrayList<String> resultList = new ArrayList<String>();
+        FTPClient ftp = new FTPClient();
+        try {
+            int reply;
+            ftp.connect(url, port);
+            // 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
+            ftp.login(username, password);// 登录
+            ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+            reply = ftp.getReplyCode();
+            if (!FTPReply.isPositiveCompletion(reply)) {
+                ftp.disconnect();
+                return resultList;
+            }
+            ftp.changeWorkingDirectory(remotePath);// 转移到FTP服务器目录
+            FTPFile[] fs = ftp.listFiles();
+            for (FTPFile ff : fs) {
+                resultList.add(ff.getName());
+                // if (ff.getName().equals(fileName)) {
+                // File localFile = new File(localPath + "/" + ff.getName());
+                // OutputStream is = new FileOutputStream(localFile);
+                // ftp.retrieveFile(ff.getName(), is);
+                // is.close();
+                // }
+            }
+            ftp.logout();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (ftp.isConnected()) {
+                try {
+                    ftp.disconnect();
+                } catch (IOException ioe) {
+                }
+            }
+        }
+        return resultList;
+    }
+
+    /**
      * 判断ftp服务器文件是否存在
-     * @param path
+     *
+     * @param path 根目录为""
      * @param ftp
      * @return
      * @throws IOException
@@ -103,12 +152,13 @@ public class FtpFactory {
 
     /**
      * 创建多层目录文件，如果有ftp服务器已存在该文件，则不创建，如果无，则创建
-     * @param path 根目录为""
+     *
+     * @param path   根目录为""
      * @param remote
      * @return
      * @throws IOException
      */
-    public boolean createDirectory(String path,String remote)
+    public boolean createDirectory(String path, String remote)
             throws IOException {
 
         FTPClient ftp = new FTPClient();
@@ -166,6 +216,7 @@ public class FtpFactory {
 
     /**
      * 创建目录
+     *
      * @param dir
      * @param ftp
      * @return
@@ -188,6 +239,7 @@ public class FtpFactory {
 
     /**
      * 改变目录路径
+     *
      * @param directory
      * @param ftp
      * @return
@@ -202,7 +254,7 @@ public class FtpFactory {
                 logger.info("进入文件夹" + directory + " 失败！");
             }
         } catch (IOException ioe) {
-            logger.error(ioe.getMessage(),ioe);
+            logger.error(ioe.getMessage(), ioe);
         }
         return flag;
     }
@@ -241,7 +293,7 @@ public class FtpFactory {
             ftp.logout();
             success = true;
         } catch (IOException e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         } finally {
             if (ftp.isConnected()) {
                 try {
@@ -260,7 +312,7 @@ public class FtpFactory {
      * @param path          FTP服务器保存目录 根目录为""
      * @param filename      上传到FTP服务器上的文件名
      * @param inputFilename 输入流
-     * @param encoding 默认值："UTF-8"
+     * @param encoding      默认值："UTF-8"
      * @return 成功返回true，否则返回false
      */
     public boolean ftpUploadFile(String path, String filename,
@@ -323,7 +375,7 @@ public class FtpFactory {
             // 下载成功
 
         } catch (IOException e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         } finally {
             if (ftp.isConnected()) {
                 try {

@@ -23,6 +23,8 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.disk.mapper.File;
+import com.eryansky.modules.sys.mapper.Post;
+import com.eryansky.modules.sys.utils.PostUtils;
 import com.google.common.collect.Lists;
 import com.eryansky.core.excelTools.ExcelUtils;
 import com.eryansky.core.excelTools.JsGridReportBase;
@@ -57,6 +59,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 用户User管理 Controller层.
@@ -74,6 +77,8 @@ public class UserController extends SimpleController {
     private UserService userService;
     @Autowired
     private OrganService organService;
+    @Autowired
+    private PostService postService;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -622,17 +627,23 @@ public class UserController extends SimpleController {
     /**
      * 机构用户树
      *
+     * @param parentId
+     * @param postCode 岗位编码
      * @param checkedUserIds 选中的用户ID集合
+     * @param checkbox
+     * @param cascade
      * @return
      */
     @RequiresUser(required = false)
     @RequestMapping(value = {"organUserTreePage"})
     public ModelAndView organUserTreePage(String parentId,
+                                          String postCode,
                                           @RequestParam(value = "checkedUserIds", required = false) List<String> checkedUserIds,
                                           @RequestParam(value = "checkbox", defaultValue = "true") Boolean checkbox,
                                           @RequestParam(value = "cascade", defaultValue = "true") Boolean cascade) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-tree");
 //        List<TreeNode> treeNodes = organManager.findOrganUserTree(parentId, checkedUserIds,false);
+        modelAndView.addObject("postCode", postCode);
         modelAndView.addObject("checkedUserIds", checkedUserIds);
         modelAndView.addObject("checkbox", checkbox);
         modelAndView.addObject("cascade", cascade);
@@ -641,14 +652,42 @@ public class UserController extends SimpleController {
     }
 
 
+    /**
+     *
+     * @param parentId
+     * @param postCode 岗位编码
+     * @param checkedUserIds
+     * @param checkbox
+     * @param cascade
+     * @return
+     */
     @RequiresUser(required = false)
     @RequestMapping(value = {"organUserTree"})
     @ResponseBody
     public List<TreeNode> organUserTree(String parentId,
+                                        String postCode,
                                         @RequestParam(value = "checkedUserIds", required = false) List<String> checkedUserIds,
                                         @RequestParam(value = "checkbox", defaultValue = "true") Boolean checkbox,
                                         @RequestParam(value = "cascade", defaultValue = "true") Boolean cascade) {
-        return organService.findOrganUserTree(parentId, checkedUserIds, cascade);
+        List<TreeNode> treeNodes = organService.findOrganUserTree(parentId, checkedUserIds, cascade);
+        Post post = null;
+        if(StringUtils.isNotBlank(postCode) && StringUtils.isNotBlank(parentId) && !cascade){
+            post = PostUtils.getByCode(postCode);
+            if(null != post){
+                List<String> postOrganIds = organService.findAssociationOrganIdsByPostId(post.getId());
+                List<String> postUserIds = userService.findUserIdsByPostCode(postCode);
+                return treeNodes.stream().filter(v->{
+                    String nType = v.getAttribute("nType");
+                    if("o".equals(nType)){
+                        return postOrganIds.contains(v.getId());
+                    }else if("u".equals(nType)){
+                        return postUserIds.contains(v.getId());
+                    }
+                    return false;
+                }).collect(Collectors.toList());
+            }
+        }
+        return treeNodes;
     }
 
     /**

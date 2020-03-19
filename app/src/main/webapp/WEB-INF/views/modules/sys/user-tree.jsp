@@ -6,7 +6,7 @@
 </div>
 <script type="text/javascript">
     var $organUserTree = $("#organUserTree").tree({
-        url:'${ctxAdmin}/sys/user/organUserTree?cascade=${cascade}',
+        url:'${ctxAdmin}/sys/user/organUserTree?cascade=${cascade}&postCode=${postCode}',
         <%--data:${organUserTreeData},--%>
         lines: true,
         onlyLeafCheck:false,

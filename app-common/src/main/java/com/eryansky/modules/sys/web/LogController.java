@@ -26,6 +26,7 @@ import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
@@ -57,6 +58,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 日志
@@ -156,7 +158,6 @@ public class LogController extends SimpleController {
      * 日志明细信息
      * @param log
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"detail"})
     @ResponseBody
@@ -169,7 +170,6 @@ public class LogController extends SimpleController {
      * 清除日志
      *
      * @return
-     * @throws Exception
      */
     @Logging(value = "日志管理-删除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
@@ -184,7 +184,6 @@ public class LogController extends SimpleController {
      * 清空所有日志
      *
      * @return
-     * @throws Exception
      */
     @Logging(value = "日志管理-清除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
@@ -207,20 +206,13 @@ public class LogController extends SimpleController {
             cList.add(selectCombobox);
         }
 
-        LogType[] lts = LogType.values();
-        for (int i = 0; i < lts.length; i++) {
-            Combobox combobox = new Combobox();
-            combobox.setValue(lts[i].getValue());
-            combobox.setText(lts[i].getDescription());
-            cList.add(combobox);
-        }
+        cList.addAll(GenericEnumUtils.getList(LogType.class).stream().map(v-> new Combobox(v.getValue(),v.getDescription())).collect(Collectors.toList()));
         return cList;
     }
 
     /**
      * 数据修复 title
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"dataAutoFix"})
     @ResponseBody

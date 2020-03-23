@@ -54,6 +54,21 @@ public class GenericEnumUtils {
     }
 
     /**
+     * 枚举类List
+     *
+     * @param enumType
+     * @param <T>
+     * @return
+     */
+    public static <T extends Enum<T> & IGenericEnum<T>> Collection<IGenericEnum<T>> getList(Class<T> enumType) {
+        List<IGenericEnum<T>> list = new ArrayList<>();
+        for (IGenericEnum<T> enumOption : enumType.getEnumConstants()) {
+            list.add(enumOption);
+        }
+        return list;
+    }
+
+    /**
      * 枚举类Value List
      *
      * @param enumType
@@ -61,11 +76,11 @@ public class GenericEnumUtils {
      * @return
      */
     public static <T extends Enum<T> & IGenericEnum<T>> Collection<String> getValueList(Class<T> enumType) {
-        List<String> idValues = new ArrayList<String>();
+        List<String> list = new ArrayList<String>();
         for (IGenericEnum<T> enumOption : enumType.getEnumConstants()) {
-            idValues.add(enumOption.getValue());
+            list.add(enumOption.getValue());
         }
-        return idValues;
+        return list;
     }
 
     /**

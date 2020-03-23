@@ -107,7 +107,6 @@ public class UserController extends SimpleController {
      * 自定义查询
      *
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"datagrid"})
     @ResponseBody
@@ -126,10 +125,9 @@ public class UserController extends SimpleController {
     /**
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"input"})
-    public ModelAndView input(@ModelAttribute("model") User model) throws Exception {
+    public ModelAndView input(@ModelAttribute("model") User model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-input");
         modelAndView.addObject("userTypes", UserType.values());
         return modelAndView;
@@ -138,11 +136,10 @@ public class UserController extends SimpleController {
     /**
      * 性别下拉框
      *
-     * @throws Exception
      */
     @RequestMapping(value = {"sexTypeCombobox"})
     @ResponseBody
-    public List<Combobox> sexTypeCombobox(String selectType) throws Exception {
+    public List<Combobox> sexTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);
         if (titleCombobox != null) {
@@ -214,7 +211,7 @@ public class UserController extends SimpleController {
      * 修改用户密码页面.
      */
     @RequestMapping(value = {"password"})
-    public String password(@ModelAttribute("model") User model) throws Exception {
+    public String password(@ModelAttribute("model") User model) {
         return "modules/sys/user-password";
 
     }
@@ -227,7 +224,6 @@ public class UserController extends SimpleController {
      * @param password     原始密码
      * @param newPassword  新密码
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
@@ -291,7 +287,6 @@ public class UserController extends SimpleController {
      * @param userIds     用户ID集合
      * @param newPassword 新密码
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
@@ -317,7 +312,7 @@ public class UserController extends SimpleController {
      * 修改用户角色页面.
      */
     @RequestMapping(value = {"role"})
-    public ModelAndView role(@ModelAttribute("model") User model) throws Exception {
+    public ModelAndView role(@ModelAttribute("model") User model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-role");
         modelAndView.addObject("model", model);
         List<String> roleIds = roleService.findRoleIdsByUserId(model.getId());
@@ -333,7 +328,7 @@ public class UserController extends SimpleController {
     @RequestMapping(value = {"updateUserRole"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserRole(@RequestParam(value = "userIds", required = false) Set<String> userIds,
-                                 @RequestParam(value = "roleIds", required = false) Set<String> roleIds) throws Exception {
+                                 @RequestParam(value = "roleIds", required = false) Set<String> roleIds) {
         Result result = null;
         userService.updateUserRole(userIds, roleIds);
         userService.clearCache();
@@ -345,7 +340,7 @@ public class UserController extends SimpleController {
      * 设置组织机构页面.
      */
     @RequestMapping(value = {"organ"})
-    public String organ(@ModelAttribute("model") User model, Model uiModel) throws Exception {
+    public String organ(@ModelAttribute("model") User model, Model uiModel) {
         //设置默认组织机构初始值
         List<Combobox> defaultOrganCombobox = Lists.newArrayList();
         if (model.getId() != null) {
@@ -374,14 +369,13 @@ public class UserController extends SimpleController {
      * @param organIds       所所机构ID集合
      * @param defaultOrganId 默认机构
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户机构", logType = LogType.access)
     @RequestMapping(value = {"updateUserOrgan"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserOrgan(@RequestParam(value = "userIds", required = false) Set<String> userIds,
-                                  @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) throws Exception {
+                                  @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) {
         Result result = null;
         userService.updateUserOrgan(userIds, organIds, defaultOrganId);
         result = Result.successResult();
@@ -393,7 +387,7 @@ public class UserController extends SimpleController {
      * 设置用户岗位页面.
      */
     @RequestMapping(value = {"post"})
-    public String post(@ModelAttribute("model") User model, String organId, Model uiModel) throws Exception {
+    public String post(@ModelAttribute("model") User model, String organId, Model uiModel) {
         uiModel.addAttribute("organId", organId);
         return "modules/sys/user-post";
     }
@@ -420,7 +414,7 @@ public class UserController extends SimpleController {
      * 修改用户资源页面.
      */
     @RequestMapping(value = {"resource"})
-    public String resource(@ModelAttribute("model") User model, Model uiModel) throws Exception {
+    public String resource(@ModelAttribute("model") User model, Model uiModel) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         List<TreeNode> treeNodes = resourceService.findTreeNodeResourcesWithPermissions(sessionInfo.getUserId());
         String resourceComboboxData = JsonMapper.getInstance().toJson(treeNodes);
@@ -438,14 +432,13 @@ public class UserController extends SimpleController {
      * @param userIds     用户ID集合
      * @param resourceIds 资源ID集合
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户资源", logType = LogType.access)
     @RequestMapping(value = {"updateUserResource"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public Result updateUserResource(@RequestParam(value = "userIds", required = false) Set<String> userIds,
-                                     @RequestParam(value = "resourceIds", required = false) Set<String> resourceIds) throws Exception {
+                                     @RequestParam(value = "resourceIds", required = false) Set<String> resourceIds) {
         Result result = null;
         userService.updateUserResource(userIds, resourceIds);
         userService.clearCache();
@@ -568,12 +561,11 @@ public class UserController extends SimpleController {
     /**
      * @param q 查询关键字
      * @return
-     * @throws Exception
      */
     @RequiresUser(required = false)
     @RequestMapping(value = {"autoComplete"})
     @ResponseBody
-    public List<String> autoComplete(String q) throws Exception {
+    public List<String> autoComplete(String q) {
         List<String> cList = Lists.newArrayList();
         Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
         User entity = new User();
@@ -617,7 +609,7 @@ public class UserController extends SimpleController {
     @Logging(value = "用户管理-保存信息", logType = LogType.access)
     @RequestMapping(value = "saveUserinfo", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result saveUserinfo(@ModelAttribute("model") User model) throws Exception {
+    public Result saveUserinfo(@ModelAttribute("model") User model) {
         Result result = null;
         userService.save(model);
         result = Result.successResult();
@@ -731,7 +723,6 @@ public class UserController extends SimpleController {
      *
      * @param loginName
      * @return
-     * @throws Exception
      */
     @RequiresRoles(AppConstants.ROLE_SYSTEM_MANAGER)
     @Logging(value = "用户管理-查看密码", logType = LogType.access)
@@ -805,7 +796,6 @@ public class UserController extends SimpleController {
      * Excel导出，获取的数据格式是List<Object[]>
      *
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:user:edit")
     @RequestMapping("export")
@@ -840,7 +830,6 @@ public class UserController extends SimpleController {
      *
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"detail"})
     @ResponseBody

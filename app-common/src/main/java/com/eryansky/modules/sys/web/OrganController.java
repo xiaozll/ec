@@ -82,7 +82,7 @@ public class OrganController extends SimpleController {
 
     @RequestMapping(value = {"treegrid"})
     @ResponseBody
-    public String treegrid(String parentId) throws Exception {
+    public String treegrid(String parentId) {
         List<Organ> list = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(parentId)) {
@@ -105,10 +105,9 @@ public class OrganController extends SimpleController {
     /**
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"input"})
-    public ModelAndView input(@ModelAttribute("model") Organ model, String parentId, Model uiModel) throws Exception {
+    public ModelAndView input(@ModelAttribute("model") Organ model, String parentId, Model uiModel){
         ModelAndView modelAndView = new ModelAndView("modules/sys/organ-input");
         modelAndView.addObject("parentId", parentId);
         modelAndView.addObject("model", model);
@@ -121,7 +120,7 @@ public class OrganController extends SimpleController {
      */
     @RequestMapping(value = {"maxSort"})
     @ResponseBody
-    public Result maxSort() throws Exception {
+    public Result maxSort() {
         Result result;
         Integer maxSort = organService.getMaxSort();
         result = new Result(Result.SUCCESS, null, maxSort);
@@ -136,7 +135,7 @@ public class OrganController extends SimpleController {
     @SuppressWarnings("unchecked")
     @RequestMapping(value = {"parentOrgan"})
     @ResponseBody
-    public List<TreeNode> parentOrgan(String selectType, @ModelAttribute("model") Organ organ) throws Exception {
+    public List<TreeNode> parentOrgan(String selectType, @ModelAttribute("model") Organ organ) {
         List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
@@ -213,10 +212,9 @@ public class OrganController extends SimpleController {
      * 设置机构用户 页面
      *
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"user"})
-    public String user(@ModelAttribute("model") Organ model, Model uiModel) throws Exception {
+    public String user(@ModelAttribute("model") Organ model, Model uiModel) {
         List<User> organUsers = userService.findOrganUsers(model.getId());
         String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers, User.class,
                 new String[]{"id", "name", "sexView", "defaultOrganName"});
@@ -231,13 +229,12 @@ public class OrganController extends SimpleController {
      * 设置机构用户
      *
      * @return
-     * @throws Exception
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-机构用户", logType = LogType.access)
     @RequestMapping(value = {"updateOrganUser"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result updateOrganUser(@ModelAttribute("model") Organ organ) throws Exception {
+    public Result updateOrganUser(@ModelAttribute("model") Organ organ) {
         Result result;
         organService.saveOrgan(organ);
         result = Result.successResult();
@@ -249,12 +246,11 @@ public class OrganController extends SimpleController {
      * @param selectType
      * @param dataScope  {@link DataScope}
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String parentId, String selectType, String dataScope,
-                               @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) throws Exception {
+                               @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
         List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
@@ -287,7 +283,7 @@ public class OrganController extends SimpleController {
      */
     @RequestMapping(value = {"organTypeCombobox"})
     @ResponseBody
-    public List<Combobox> organTypeCombobox(String selectType, String parentId) throws Exception {
+    public List<Combobox> organTypeCombobox(String selectType, String parentId) {
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);
         if (titleCombobox != null) {
@@ -492,7 +488,6 @@ public class OrganController extends SimpleController {
      *
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = {"detail"})
     @ResponseBody

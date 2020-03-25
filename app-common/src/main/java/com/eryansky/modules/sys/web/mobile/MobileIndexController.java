@@ -298,6 +298,9 @@ public class MobileIndexController extends SimpleController {
     public Result base64ImageUpLoad(@RequestParam(value = "base64Data", required = false) String base64Data) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if (null == sessionInfo) {
+            return Result.errorResult().setMsg("未授权");
+        }
         Exception exception = null;
         File file = null;
         try {

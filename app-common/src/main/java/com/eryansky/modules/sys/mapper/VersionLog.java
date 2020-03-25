@@ -6,10 +6,9 @@
 package com.eryansky.modules.sys.mapper;
 
 import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
-import com.eryansky.core.security.SecurityUtils;
-import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys._enum.VersionLogType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.eryansky.modules.sys._enum.YesOrNo;
@@ -26,6 +25,7 @@ import java.util.Date;
 public class VersionLog extends DataEntity<VersionLog> {
 
     public static final String FOLDER_VERSIONLOG = "VersionLog";
+    public static final String DEFAULT_ID = "1";
 
     /**
      * 版本号
@@ -80,11 +80,17 @@ public class VersionLog extends DataEntity<VersionLog> {
     public void prePersist() {
         super.prePersist();
         this.pubTime = Calendar.getInstance().getTime();
+        if(StringUtils.isBlank(app)){
+            this.app = DEFAULT_ID;
+        }
     }
 
     @Override
     public void preUpdate() {
         this.pubTime = Calendar.getInstance().getTime();
+        if(StringUtils.isBlank(app)){
+            this.app = DEFAULT_ID;
+        }
     }
 
     public String getVersionName() {

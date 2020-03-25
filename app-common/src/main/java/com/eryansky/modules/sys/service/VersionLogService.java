@@ -8,6 +8,7 @@ package com.eryansky.modules.sys.service;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.modules.sys._enum.VersionLogType;
 import com.eryansky.modules.sys._enum.YesOrNo;
@@ -52,7 +53,7 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      */
     public VersionLog getByVersionCode(String app,String versionLogType, String versionCode) {
         VersionLog versionLog = new VersionLog();
-        versionLog.setApp(app);
+        versionLog.setApp(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID);
         versionLog.setVersionLogType(versionLogType);
         versionLog.setVersionCode(versionCode);
         return dao.getByVersionCode(versionLog);
@@ -68,7 +69,7 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      */
     public VersionLog getByVersionName(String app,String versionLogType, String versionName) {
         VersionLog versionLog = new VersionLog();
-        versionLog.setApp(app);
+        versionLog.setApp(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID);
         versionLog.setVersionLogType(versionLogType);
         versionLog.setVersionName(versionName);
         return dao.getByVersionName(versionLog);
@@ -95,7 +96,7 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      */
     public VersionLog getLatestVersionLog(String app,String versionLogType,String isPub) {
         VersionLog entity = new VersionLog();
-        entity.setApp(app);
+        entity.setApp(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID);
         entity.setVersionLogType(versionLogType);
         entity.setIsPub(isPub);
         entity.setIsPub(isPub);

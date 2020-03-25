@@ -78,6 +78,14 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
         }
     }
 
+    @Override
+    public void preUpdate() {
+        super.preUpdate();
+        if(StringUtils.isBlank(app)){
+            this.app = DEFAULT_ID;
+        }
+    }
+
     public SystemSerialNumber(String id) {
         super(id);
     }

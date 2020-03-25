@@ -45,7 +45,7 @@ public class SystemSerialNumberUtils {
      * @return
      */
     public static SystemSerialNumber getByModuleCode(String moduleCode) {
-        return getByModuleCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+        return getByModuleCode(null,moduleCode);
     }
 
     /**
@@ -68,7 +68,7 @@ public class SystemSerialNumberUtils {
      * @return
      */
     public static String getMaxSerialByModuleCode(String moduleCode) {
-        return getMaxSerialByModuleCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+        return getMaxSerialByModuleCode(null,moduleCode);
     }
 
     /**
@@ -93,7 +93,7 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String moduleCode) {
-        return generateSerialNumberByModelCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+        return generateSerialNumberByModelCode(null,moduleCode);
     }
 
     /**

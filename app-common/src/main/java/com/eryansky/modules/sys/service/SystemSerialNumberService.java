@@ -13,6 +13,7 @@ import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.dao.SystemSerialNumberDao;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
+import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.sn.GeneratorConstants;
 import com.eryansky.modules.sys.sn.SNGenerateApp;
 import com.eryansky.utils.AppDateUtils;
@@ -70,7 +71,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      */
     public SystemSerialNumber getByCode(String app,String moduleCode) {
         SystemSerialNumber entity = new SystemSerialNumber();
-        entity.setApp(app);
+        entity.setApp(StringUtils.isNotBlank(app) ? app: VersionLog.DEFAULT_ID);
         entity.setModuleCode(moduleCode);
         return dao.getByCode(entity);
     }
@@ -90,7 +91,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @return
      */
     public List<String> generatePrepareSerialNumbers(String app,String moduleCode) {
-        SystemSerialNumber entity = getByCode(app,moduleCode);
+        SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID,moduleCode);
         int version = entity.getVersion();
         /** 预生成数量 */
         int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;

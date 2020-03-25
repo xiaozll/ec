@@ -68,6 +68,7 @@ public class RedisCacheProvider implements CacheProvider {
         String clusterName = props.getProperty("cluster_name");
         String password = props.getProperty("password");
         int database = Integer.parseInt(props.getProperty("database", "0"));
+        boolean ssl = Boolean.valueOf(props.getProperty("ssl", "false"));
 
         long ct = System.currentTimeMillis();
 
@@ -77,7 +78,9 @@ public class RedisCacheProvider implements CacheProvider {
                 .password(password)
                 .cluster(clusterName)
                 .database(database)
-                .poolConfig(poolConfig).newClient();
+                .poolConfig(poolConfig)
+                .ssl(ssl)
+                .newClient();
 
         log.info("Redis client starts with mode({}),db({}),storage({}),namespace({}),time({}ms)",
                 mode,

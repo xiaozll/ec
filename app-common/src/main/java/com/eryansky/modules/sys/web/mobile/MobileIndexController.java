@@ -73,7 +73,9 @@ public class MobileIndexController extends SimpleController {
 
     /**
      * 下载页面
-     *
+     * @param app 应用标识 默认值: {@link VersionLog#DEFAULT_ID}
+     * @param versionLogType {@link VersionLogType}
+     * @param versionCode
      * @return
      */
     @Mobile(value = MobileValue.PC)
@@ -113,7 +115,7 @@ public class MobileIndexController extends SimpleController {
     /**
      * 查找更新
      * @param versionLogType {@link VersionLogType}
-     * @param app 应用标识
+     * @param app 应用标识 默认值: {@link VersionLog#DEFAULT_ID}
      * @return
      */
     @RequiresUser(required = false)
@@ -128,7 +130,7 @@ public class MobileIndexController extends SimpleController {
      * 查找更新
      * @param request
      * @param versionLogType {@link VersionLogType}
-     * @param app 应用标识
+     * @param app 应用标识 默认值: {@link VersionLog#DEFAULT_ID}
      * @return
      */
     @RequiresUser(required = false)
@@ -158,6 +160,7 @@ public class MobileIndexController extends SimpleController {
      *
      * @param response
      * @param request
+     * @param app 应用标识 默认值: {@link VersionLog#DEFAULT_ID}
      * @param versionCode    版本号
      * @param versionLogType {@link com.eryansky.modules.sys._enum.VersionLogType}
      *                       文件ID
@@ -167,8 +170,8 @@ public class MobileIndexController extends SimpleController {
     @RequestMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,
                                      HttpServletRequest request,
-                                     String versionCode,
                                      String app,
+                                     String versionCode,
                                      @PathVariable String versionLogType) {
         VersionLog versionLog = null;
         if (StringUtils.isNotBlank(versionCode)) {
@@ -328,7 +331,7 @@ public class MobileIndexController extends SimpleController {
             }
             String tempFileName = Identities.uuid() + suffix;
 
-            byte[] bs = new byte[0];
+            byte[] bs = null;
             try {
                 bs = EncodeUtils.base64Decode(data);
 //                bs = Base64Utils.decodeFromString(data);

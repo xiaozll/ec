@@ -158,21 +158,21 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
      *
      * @param noticeId 公告ID
      */
-    public void publish(String noticeId) {
+    public Notice publish(String noticeId) {
         Notice notice = this.get(noticeId);
         if (notice == null) {
             throw new ServiceException("公告[" + noticeId + "]不存在.");
         }
-        publish(notice);
+        return publish(notice);
     }
 
     @Async
-    public void asyncPublish(String noticeId) {
+    public Notice asyncPublish(String noticeId) {
         Notice notice = this.get(noticeId);
         if (notice == null) {
             throw new ServiceException("公告[" + noticeId + "]不存在.");
         }
-        publish(notice);
+        return  publish(notice);
     }
 
     /**

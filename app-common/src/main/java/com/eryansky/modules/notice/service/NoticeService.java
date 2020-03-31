@@ -74,7 +74,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         }
 
         //历史数据
-        noticeReceiveInfoService.deleteByNoticeId(entity.getId());
+//        noticeReceiveInfoService.deleteByNoticeId(entity.getId());
         noticeSendInfoService.deleteByNoticeId(entity.getId());
 
         saveNoticeSendInfos(userIds, entity.getId(), ReceiveObjectType.User.getValue());
@@ -218,7 +218,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
                 checkReceiveInfoAdd(receiveInfos, receiveInfo);
             });
         }
-
+        noticeReceiveInfoService.deleteByNoticeId(notice.getId());
         receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
         return notice;
     }

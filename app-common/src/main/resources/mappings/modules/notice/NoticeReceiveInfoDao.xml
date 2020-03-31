@@ -226,7 +226,7 @@
 
 	<delete id="deleteByNoticeId">
 		DELETE FROM t_notice_receive_info
-		WHERE notice_id = #{id}
+		WHERE notice_id = #{noticeId}
 	</delete>
 
 </mapper>

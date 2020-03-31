@@ -6,6 +6,7 @@
 package com.eryansky.modules.notice.mapper;
 
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -101,6 +102,11 @@ public class Notice extends DataEntity<Notice> {
      * 接收范围 {@link NoticeReceiveScope}
      */
     private String receiveScope;
+
+    /**
+     * 消息提醒 多个之间以“,”分割 {@link MessageChannel}
+     */
+    private String tipMessage;
 
     /**
      * 查询条件
@@ -238,6 +244,14 @@ public class Notice extends DataEntity<Notice> {
 
     public void setReceiveScope(String receiveScope) {
         this.receiveScope = receiveScope;
+    }
+
+    public String getTipMessage() {
+        return tipMessage;
+    }
+
+    public void setTipMessage(String tipMessage) {
+        this.tipMessage = tipMessage;
     }
 
     @JsonIgnore

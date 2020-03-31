@@ -17,7 +17,7 @@ public enum MessageChannel implements IGenericEnum<MessageChannel> {
     Mail("Mail", "邮件提醒"),
     SMS("SMS", "短信提醒"),
     Weixin("Weixin", "微信提醒"),
-    QYWeixin("QYWeixin", "微信提醒"),
+    QYWeixin("QYWeixin", "企业微信提醒"),
     Dingtalk("Dingtalk", "钉钉提醒"),
     APP("APP", "APP提醒");
 

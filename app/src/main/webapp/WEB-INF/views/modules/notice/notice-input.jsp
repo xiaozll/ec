@@ -3,6 +3,7 @@
 <%@ include file="/common/taglibs.jsp" %>
 <script type="text/javascript">
     var modelIsTop = '${model.isTop}';
+    var modelTipMessage = '${model.tipMessage}';
     var modelType = '${model.type}';
     var dictionaryTypeCode = '<%=NoticeUtils.DIC_NOTICE%>';
     var modelFileIds = ${fns:toJson(model.fileIds)};
@@ -73,6 +74,15 @@
                 <span class="tree-icon tree-file easyui-icon-tip easyui-tooltip"
                       title="设置为0，则永久置顶。" ></span>
             </span>
+        </div>
+        <div>
+            <label>提醒：</label>
+            <label style="text-align: left;width: 80px;">
+                <input type="checkbox" class="easyui-checkbox" name="tipMessage" style="width: 20px;" value="SMS" /> 短信
+            </label>
+            <label style="text-align: left;width: 80px;">
+                <input type="checkbox" class="easyui-checkbox" name="tipMessage" style="width: 20px;" value="APP" /> APP
+            </label>
         </div>
         <table style="border: 0px;width: 100%;">
             <tr>

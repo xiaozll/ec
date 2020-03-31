@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.notice_id AS "noticeId",
 		a.user_id AS "userId",
+		a.is_send AS "isSend",
 		a.is_read AS "isRead",
 		a.read_time AS "readTime"
 	</sql>
@@ -180,12 +181,14 @@
 		id,
 		notice_id,
 		user_id,
+		is_send,
 		is_read,
 		read_time
 		) VALUES (
 		#{id},
 		#{noticeId},
 		#{userId},
+		#{isSend},
 		#{isRead},
 		#{readTime}
 		)
@@ -210,6 +213,7 @@
 		UPDATE t_notice_receive_info SET
 		notice_id = #{noticeId},
 		user_id = #{userId},
+		is_send = #{isSend},
 		is_read = #{isRead},
 		read_time = #{readTime}
 		WHERE id = #{id}

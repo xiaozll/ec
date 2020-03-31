@@ -23,7 +23,8 @@
 		a.invalid_time AS "invalidTime",
 		a.user_id AS "userId",
 		a.organ_id AS "organId",
-		a.is_record_read AS "isRecordRead"
+		a.is_record_read AS "isRecordRead",
+		a.tip_message AS "tipMessage"
 	</sql>
 
 	<sql id="noticeJoins">
@@ -189,7 +190,8 @@
 		invalid_time,
 		user_id,
 		organ_id,
-		is_record_read
+		is_record_read,
+		tip_message
 		) VALUES (
 		#{id},
 		#{status},
@@ -211,7 +213,8 @@
 		#{invalidTime},
 		#{userId},
 		#{organId},
-		#{isRecordRead}
+		#{isRecordRead},
+		#{tipMessage}
 		)
 	</insert>
 
@@ -234,7 +237,8 @@
 		invalid_time = #{invalidTime},
 		user_id = #{userId},
 		organ_id = #{organId},
-		is_record_read = #{isRecordRead}
+		is_record_read = #{isRecordRead},
+		tip_message = #{tipMessage}
 		WHERE id = #{id}
 	</update>
 

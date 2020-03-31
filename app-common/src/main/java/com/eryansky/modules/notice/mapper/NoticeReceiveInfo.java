@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.notice.mapper;
 
+import com.eryansky.modules.sys._enum.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.modules.notice._enum.NoticeReadMode;
@@ -25,6 +26,10 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
      * 用户
      */
     private String userId;
+    /**
+     * 是否发送成功 ${@link YesOrNo}
+     */
+    private String isSend;
     /**
      * 是否已读 默认值：否 {@link NoticeReadMode}
      */
@@ -59,6 +64,14 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getIsSend() {
+        return isSend;
+    }
+
+    public void setIsSend(String isSend) {
+        this.isSend = isSend;
     }
 
     public String getIsRead() {

@@ -1,4 +1,14 @@
-﻿2020-01-07
+﻿2020-03-31
+1、通知支持提醒
+
+ALTER TABLE t_notice
+ADD COLUMN tip_message varchar(64) DEFAULT NULL COMMENT '提醒 通过微信发送或者短信发送 果个之间以“,”分割 系统提醒：Message 微信：Weixin 短信 SMS 企业微信提醒：QYWeixin APP提醒：APP';
+ALTER TABLE t_notice_receive_info
+ADD COLUMN is_send char(1) DEFAULT NULL COMMENT '是否发送 是/否 1/0';
+
+
+
+2020-01-07
 1、添加相关数学计算函数
 
 2020-01-05

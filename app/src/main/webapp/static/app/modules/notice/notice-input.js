@@ -1,4 +1,5 @@
 var modelIsTop = modelIsTop;
+var modelTipMessage = modelTipMessage;
 var modelType = modelType;
 var dictionaryTypeCode = dictionaryTypeCode;
 var modelFileIds = modelFileIds;
@@ -18,6 +19,18 @@ $(function () {
     $("input[name=isTop]").bind("click",function(){
         toggoleIsTop($(this).val());
     });
+    if(modelTipMessage){
+        var val = modelTipMessage.split(",");
+        var boxes = document.getElementsByName("tipMessage");
+        for(i=0;i<boxes.length;i++){
+            for(j=0;j<val.length;j++){
+                if(boxes[i].value == val[j]){
+                    boxes[i].checked = true;
+                    break
+                }
+            }
+        }
+    }
 
     var result= $.hasUsableFlash();
     if(!result) {

@@ -28,6 +28,7 @@ import com.eryansky.modules.notice.mapper.Notice;
 import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -212,10 +213,10 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
             receiveUserIds = userService.findUserIdsByOrganId(UserUtils.getDefaultOrganId(notice.getUserId()));
         }
         if (Collections3.isNotEmpty(receiveUserIds)) {
-            for (String userId : receiveUserIds) {
-                NoticeReceiveInfo receiveInfo = new NoticeReceiveInfo(userId, notice.getId());
+            Sets.newHashSet(receiveUserIds).forEach(v->{
+                NoticeReceiveInfo receiveInfo = new NoticeReceiveInfo(v, notice.getId());
                 checkReceiveInfoAdd(receiveInfos, receiveInfo);
-            }
+            });
         }
 
         receiveInfos.forEach(n->noticeReceiveInfoService.save(n));

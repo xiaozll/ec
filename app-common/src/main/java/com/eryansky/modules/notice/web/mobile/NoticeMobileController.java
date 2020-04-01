@@ -6,7 +6,9 @@
 package com.eryansky.modules.notice.web.mobile;
 
 import com.eryansky.common.model.Datagrid;
+import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
@@ -14,9 +16,12 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.web.annotation.Mobile;
+import com.eryansky.modules.notice.mapper.Notice;
 import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.service.NoticeReceiveInfoService;
+import com.eryansky.modules.notice.service.NoticeService;
 import com.eryansky.modules.sys._enum.LogType;
+import com.eryansky.modules.sys.mapper.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +37,17 @@ public class NoticeMobileController extends SimpleController {
 
     @Autowired
     private NoticeReceiveInfoService noticeReceiveInfoService;
+    @Autowired
+    private NoticeService noticeService;
+
+    @ModelAttribute("model")
+    public Notice get(@RequestParam(required = false) String id) {
+        if (StringUtils.isNotBlank(id)) {
+            return noticeService.get(id);
+        } else {
+            return new Notice();
+        }
+    }
 
     @Logging(logType = LogType.access, value = "我的通知")
     @RequestMapping(value = {""})
@@ -47,7 +63,7 @@ public class NoticeMobileController extends SimpleController {
     @ResponseBody
     public String noticePage() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
+        Page<NoticeReceiveInfo> page = new Page<>(SpringMVCHolder.getRequest());
         if (sessionInfo != null) {
             page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), null);
         }
@@ -56,5 +72,17 @@ public class NoticeMobileController extends SimpleController {
                 new String[]{"id", "title", "isRead", "isTop", "title", "noticeId", "typeView",
                         "isReadView", "publishTime"});
         return json;
+    }
+
+
+    /**
+     * 明细信息
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Notice model) {
+        return Result.successResult().setObj(model);
     }
 }

@@ -40,7 +40,6 @@ $(function () {
     uploadify();
     editor();
 
-
 });
 
 function editor(){
@@ -157,6 +156,45 @@ function uploadify() {
                 cancel.attr("rel", data.obj);
                 cancel.click(function() {
                     delUpload( data.obj,file.id,uploadify);
+                });
+            }
+        }
+
+    });
+}
+
+
+function uploadifyHeadImage() {
+    $('#file').uploadify({
+        method: 'post',
+        swf: ctxStatic + '/js/uploadify/scripts/uploadify.swf',  //FLash文件路径
+        buttonText: '浏  览',                                 //按钮文本
+        uploader: ctxAdmin + '/notice/upload;jsessionid='+jsessionid,
+        fileObjName: 'uploadFile',
+        removeCompleted: false,
+        multi: false,
+        fileSizeLimit: '1MB', //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+        fileTypeDesc: '全部文件', //文件描述
+        fileTypeExts: '*.gif; *.jpg; *.png; *.bmp',  //上传的文件后缀过滤器
+        //上传到服务器，服务器返回相应信息到data里
+        onUploadSuccess: function (file, data, response) {
+            data = eval("(" + data + ")");
+            if(data.code == 1){
+                $('#headImage_pre').attr("src",data['obj']['url']);
+                $('#headImage_pre').show();
+                $("#headImage").val(data['obj']['id']);
+            }
+            $('#' + file.id).find('.data').html(data.msg);
+
+
+            var uploadify = this;
+            var cancel = $('#file-queue .uploadify-queue-item[id="' + file.id + '"]').find(".cancel a");
+            if (cancel) {
+                cancel.attr("rel", data['obj']['id']);
+                cancel.click(function() {
+                    $('#' + file.id).empty();
+                    delete uploadify.queueData.files[file.id]; //删除上传组件中的附件队列
+                    $('#' + file.id).remove();
                 });
             }
         }

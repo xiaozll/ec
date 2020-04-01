@@ -372,6 +372,7 @@ public class NoticeController extends SimpleController {
     }
 
 
+
     /**
      * 删除附件
      *
@@ -510,5 +511,15 @@ public class NoticeController extends SimpleController {
         return cList;
     }
 
+    /**
+     * 明细信息
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Notice model) {
+        return Result.successResult().setObj(model);
+    }
 
 }

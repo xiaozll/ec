@@ -44,6 +44,10 @@ public class Notice extends DataEntity<Notice> {
      */
     private String title;
     /**
+     * 标题图
+     */
+    private String headImage;
+    /**
      * 通知公告类型 {@ling DictionaryUtils#DIC_NOTICE}
      */
     private String type;
@@ -132,6 +136,14 @@ public class Notice extends DataEntity<Notice> {
 
     public void setAppId(String appId) {
         this.appId = appId;
+    }
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 
     public void setTitle(String title) {

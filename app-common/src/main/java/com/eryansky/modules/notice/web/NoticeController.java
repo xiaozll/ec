@@ -337,7 +337,7 @@ public class NoticeController extends SimpleController {
      */
     @RequestMapping(value = {"upload"})
     @ResponseBody
-    public static Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
+    public Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Exception exception = null;
@@ -362,6 +362,7 @@ public class NoticeController extends SimpleController {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         } finally {
             if (exception != null) {
+                logger.error(exception.getMessage(),exception);
                 if (file != null) {
                     DiskUtils.deleteFile(file.getId());
                 }

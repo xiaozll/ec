@@ -168,6 +168,10 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
         return getNotice().getIsTopView();
     }
 
+    public String getHeadImageUrl() {
+        return getNotice().getHeadImageUrl();
+    }
+
     /**
      * 接收人部门
      * @return

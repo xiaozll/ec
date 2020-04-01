@@ -20,6 +20,7 @@ import com.eryansky.modules.notice.mapper.Notice;
 import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.service.NoticeReceiveInfoService;
 import com.eryansky.modules.notice.service.NoticeService;
+import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.eryansky.modules.sys._enum.LogType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,17 +80,18 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticePage",method = RequestMethod.POST)
+    @RequestMapping(value = "noticeData",method = RequestMethod.POST)
     @ResponseBody
-    public String noticePage(HttpServletRequest request, HttpServletResponse response) {
+    public String noticeData(HttpServletRequest request, HttpServletResponse response,
+                             NoticeQueryVo noticeQueryVo) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Page<NoticeReceiveInfo> page = new Page<>(request,response);
         if (sessionInfo != null) {
-            page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), null);
+            page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), noticeQueryVo);
         }
         Datagrid dg = new Datagrid(page.getTotalCount(), page.getResult());
         String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
-                new String[]{"id", "title", "isRead", "isTop", "title", "noticeId", "typeView",
+                new String[]{"id", "title", "isRead", "isTop", "title", "noticeId","headImageUrl", "typeView",
                         "isReadView", "publishTime"});
         return json;
     }

@@ -87,6 +87,7 @@ public class Message extends DataEntity<Message> {
 
     public Message() {
         super();
+        this.tipMessage = MessageChannel.Message.getValue();
     }
 
     public Message(String id) {

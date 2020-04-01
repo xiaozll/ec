@@ -21,10 +21,12 @@ import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.service.NoticeReceiveInfoService;
 import com.eryansky.modules.notice.service.NoticeService;
 import com.eryansky.modules.sys._enum.LogType;
-import com.eryansky.modules.sys.mapper.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
@@ -59,7 +61,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping("noticePage")
+    @RequestMapping(value = "noticePage",method = RequestMethod.GET)
     @ResponseBody
     public String noticePage() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -73,6 +75,25 @@ public class NoticeMobileController extends SimpleController {
                         "isReadView", "publishTime"});
         return json;
     }
+
+    /**
+     * @return
+     */
+    @RequestMapping(value = "noticePage",method = RequestMethod.POST)
+    @ResponseBody
+    public String noticePage(HttpServletRequest request, HttpServletResponse response) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        Page<NoticeReceiveInfo> page = new Page<>(request,response);
+        if (sessionInfo != null) {
+            page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), null);
+        }
+        Datagrid dg = new Datagrid(page.getTotalCount(), page.getResult());
+        String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
+                new String[]{"id", "title", "isRead", "isTop", "title", "noticeId", "typeView",
+                        "isReadView", "publishTime"});
+        return json;
+    }
+
 
 
     /**

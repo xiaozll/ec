@@ -40,6 +40,8 @@ $(function () {
     uploadify();
     editor();
 
+    uploadifyHeadImage();
+    $(".uploadify").css({'display': 'inline-block', 'height': '24px', 'padding-right': '18px', 'outline': 'none'});
 });
 
 function editor(){
@@ -145,7 +147,7 @@ function uploadify() {
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
             if(data.code != undefined && data.code == 1){
-                fileIdArray.push(data.obj);
+                fileIdArray.push(data.obj.id);
             }
             $('#' + file.id).find('.data').html(data.msg);
             var fileIds = fileIdArray.join(",");
@@ -153,9 +155,9 @@ function uploadify() {
             var uploadify = this;
             var cancel = $('#uploadify-queue .uploadify-queue-item[id="' + file.id + '"]').find(".cancel a");
             if (cancel) {
-                cancel.attr("rel", data.obj);
+                cancel.attr("rel", data.obj.id);
                 cancel.click(function() {
-                    delUpload( data.obj,file.id,uploadify);
+                    delUpload( data.obj.id,file.id,uploadify);
                 });
             }
         }
@@ -179,10 +181,11 @@ function uploadifyHeadImage() {
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
+            debugger;
             if(data.code == 1){
-                $('#headImage_pre').attr("src",data['obj']['url']);
-                $('#headImage_pre').show();
-                $("#headImage").val(data['obj']['id']);
+                $('#head_image_pre').attr("src",data['obj']['url']);
+                $('#head_image_pre').show();
+                $("#head_image").val(data['obj']['id']);
             }
             $('#' + file.id).find('.data').html(data.msg);
 

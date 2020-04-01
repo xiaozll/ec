@@ -28,8 +28,8 @@
         </div>
         <div>
             <label>标题图:</label>
-            <input id="headImage" name="headImage" readonly="readonly" value="${model.headImage}" style="display: none" />
-            <img id="headImage_pre" class="img-rounded" src="${model.headImageUrl}" alt="标题图" >
+            <input id="head_image" name="headImage" readonly="readonly" value="${model.headImage}" style="display: none" />
+            <img id="head_image_pre" class="img-rounded" src="${model.headImageUrl}" alt="标题图" >
             <input id="file" name="file"  multiple="false" >
         </div>
         <div>

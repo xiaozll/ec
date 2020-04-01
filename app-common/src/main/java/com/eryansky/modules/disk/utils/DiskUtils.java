@@ -425,7 +425,7 @@ public class DiskUtils {
      * @return
      */
     public static String getFileUrl(String fileId) {
-        if(null == fileId){
+        if(StringUtils.isBlank(fileId)){
             return null;
         }
         String ctx = StringUtils.EMPTY;

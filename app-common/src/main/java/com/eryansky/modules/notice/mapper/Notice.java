@@ -6,6 +6,7 @@
 package com.eryansky.modules.notice.mapper;
 
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -336,6 +337,10 @@ public class Notice extends DataEntity<Notice> {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getHeadImageUrl() {
+        return DiskUtils.getFileUrl(headImage);
     }
 
     /**

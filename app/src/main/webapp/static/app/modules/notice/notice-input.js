@@ -181,7 +181,6 @@ function uploadifyHeadImage() {
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
-            debugger;
             if(data.code == 1){
                 $('#head_image_pre').attr("src",data['obj']['url']);
                 $('#head_image_pre').show();

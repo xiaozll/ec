@@ -93,6 +93,7 @@ public class MessageController extends SimpleController {
         }
         modelAndView.addObject("model", model);
         modelAndView.addObject("messageReceiveObjectTypes", MessageReceiveObjectType.values());
+        modelAndView.addObject("messageChannels", MessageChannel.values());
         return modelAndView;
     }
 

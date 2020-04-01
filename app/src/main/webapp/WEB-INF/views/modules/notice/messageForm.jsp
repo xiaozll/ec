@@ -93,6 +93,12 @@
 				<form:input path="url" htmlEscape="false" maxlength="200" class="input-xxlarge"/>
 			</div>
 		</div>
+		<div class="control-group">
+			<label class="control-label">提醒:</label>
+			<div class="controls">
+				<form:checkboxes path="tipMessage" htmlEscape="false" items="${messageChannels}" itemLabel="description" itemValue="value"/>
+			</div>
+		</div>
 		<div class="form-actions">
 			<e:hasPermission name="notice:message:edit">
 				<input id="btnSubmit" class="btn btn-primary" type="submit" value="发送"/>&nbsp;

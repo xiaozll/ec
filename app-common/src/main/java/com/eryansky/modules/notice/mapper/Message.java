@@ -21,6 +21,7 @@ import java.util.Date;
  * @date 2016-03-14
  */
 public class Message extends DataEntity<Message> {
+    public static  final String DEFAULT_ID = "1";
     /**
      * 应用标识
      */
@@ -88,6 +89,7 @@ public class Message extends DataEntity<Message> {
     public Message() {
         super();
         this.tipMessage = MessageChannel.Message.getValue();
+        this.appId = DEFAULT_ID;
     }
 
     public Message(String id) {

@@ -62,7 +62,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticePage",method = RequestMethod.GET)
+    @RequestMapping(value = "noticePage")
     @ResponseBody
     public String noticePage() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -80,7 +80,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticeData",method = RequestMethod.POST)
+    @RequestMapping(value = "noticeData")
     @ResponseBody
     public String noticeData(HttpServletRequest request, HttpServletResponse response,
                              NoticeQueryVo noticeQueryVo) {

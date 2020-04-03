@@ -12,6 +12,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -92,7 +93,7 @@ public class NoticeMobileController extends SimpleController {
         String json = JsonMapper.getInstance().toJson(Result.successResult().setObj(page), NoticeReceiveInfo.class,
                 new String[]{"id", "title", "isRead", "isTop", "title", "noticeId","headImageUrl", "typeView",
                         "isReadView", "publishTime"});
-        return json;
+        return renderString(response,json, WebUtils.JSON_TYPE);
     }
 
 

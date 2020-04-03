@@ -15,6 +15,7 @@ import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security._enum.DeviceType;
+import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.PostService;
@@ -380,6 +381,7 @@ public class SecurityUtils {
         String appVersion_s = WebUtils.getParameter(request, "appVersion");
         sessionInfo.setAppVersion(appVersion_s);
         sessionInfo.setSessionId(sessionId);
+        sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(),sessionInfo.getLoginName()));
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
         try {
             sessionInfo.setHost(IpUtils.toIpString(InetAddress.getLocalHost()));

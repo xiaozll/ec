@@ -89,7 +89,7 @@ public class NoticeMobileController extends SimpleController {
         if (sessionInfo != null) {
             page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), noticeQueryVo);
         }
-        String json = JsonMapper.getInstance().toJson(page, NoticeReceiveInfo.class,
+        String json = JsonMapper.getInstance().toJson(Result.successResult().setObj(page), NoticeReceiveInfo.class,
                 new String[]{"id", "title", "isRead", "isTop", "title", "noticeId","headImageUrl", "typeView",
                         "isReadView", "publishTime"});
         return json;

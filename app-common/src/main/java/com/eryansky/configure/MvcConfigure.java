@@ -60,7 +60,7 @@ public class MvcConfigure implements WebMvcConfigurer {
       AuthorityInterceptor authorityInterceptor = new AuthorityInterceptor();
       authorityInterceptor.setRedirectURL("/jump.jsp");
       registry.addInterceptor(authorityInterceptor).addPathPatterns("/**")
-              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**"))
+              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**"))
               .order(Ordered.HIGHEST_PRECEDENCE + 200);
       registry.addInterceptor(new MobileInterceptor())
               .addPathPatterns("/**")

@@ -233,8 +233,9 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
      * @param userId
      * @param organId
      * @param organIds
+     * @param messageChannels
      */
-    public void sendToOrganNotice(String appId, String type, String title, String content, Date sendTime, String userId, String organId, List<String> organIds) {
+    public void sendToOrganNotice(String appId, String type, String title, String content, Date sendTime, String userId, String organId, List<String> organIds,List<MessageChannel> messageChannels) {
         //保存到notice表
         Notice notice = new Notice();
         notice.setId(Identities.uuid2());
@@ -246,6 +247,12 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         notice.setReceiveScope(NoticeReceiveScope.CUSTOM.getValue());
         notice.setUserId(userId);
         notice.setOrganId(organId);
+        if(Collections3.isEmpty(messageChannels)){
+            notice.setTipMessage(MessageChannel.Message.getValue()+","+MessageChannel.QYWeixin.getValue()+","+MessageChannel.APP.getValue());
+        }else{
+            notice.setTipMessage(Collections3.extractToString(messageChannels,"value",","));
+        }
+
         notice.setCreateTime(Calendar.getInstance().getTime());
         dao.insert(notice);
 

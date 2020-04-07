@@ -24,7 +24,7 @@ public interface IApiWebService {
 	 *   linkUrl:"",
 	 *   receiveType:"user",
 	 *   receiveIds:["loginName1","loginName2",...]
-	 *   tipType:["message","weixin"]
+	 *   tipType:["Message","QYWeixin"]
 	 * }
 	 * senderId   :发送者账号 可选
 	 * sendTime       :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
@@ -32,7 +32,7 @@ public interface IApiWebService {
 	 * linkUrl    :消息链接    可选
 	 * receiveType:接收对象类型（用户：user，部门：organ）默认为"user" 可选（暂不可用）
 	 * receiveIds :接收者账号 必选
-	 * tipType    :消息通道（消息：message，微信:weixin，邮件:mail，短信:sms） 默认为："['message','weixin']" 可选（暂不可用）、
+	 * tipType    :消息通道（消息：Message，企业微信:QYWeixin，邮件:Mail，短信:SMS，APP:APP） 默认为："['Message','QYWeixin',"APP"]" 可选
 	 * @return
 	 * 
 	 */
@@ -64,6 +64,7 @@ public interface IApiWebService {
 	 * content    :内容（支持HTML富文本）     必选
 	 * receiveType:接收对象类型（部门：organ，用户：user）默认为"organ" 可选（暂不可用）
 	 * receiveIds :接收对象(组织机构编码/用户账号) 必选
+	 * tipType    :消息通道（消息：Message，企业微信:QYWeixin，邮件:Mail，短信:SMS，APP:APP） 默认为："['Message','QYWeixin',"APP"]" 可选
 	 * @return
 	 *
 	 */

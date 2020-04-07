@@ -166,6 +166,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             List<String> receiveIds = (List) map.get("receiveIds");
             List<String> tipType = (List) map.get("tipType");
             String _receiveType = receiveType;
+            List<MessageChannel> messageChannels = Lists.newArrayList();
             try {
                 checkOptional(appId, "appId");
                 checkOptional(serviceId, "serviceId");
@@ -177,6 +178,15 @@ public class ApiWebServiceImpl implements IApiWebService {
                 }
                 if(StringUtils.isBlank(_receiveType) || ReceiveObjectType.Organ.toString().equalsIgnoreCase(_receiveType)){
                     _receiveType = MessageReceiveObjectType.Organ.getValue();
+                }
+
+                if(Collections3.isNotEmpty(tipType)){
+                    tipType.forEach(t->{
+                        MessageChannel messageChannel = MessageChannel.getByValue(t);
+                        if(null != messageChannel){
+                            messageChannels.add(messageChannel);
+                        }
+                    });
                 }
             } catch (Exception e) {//2.判断必填参数
                 logger.error(e.getMessage());
@@ -213,7 +223,7 @@ public class ApiWebServiceImpl implements IApiWebService {
 
             //发送
             try {
-                Static.noticeService.sendToOrganNotice(appId, type,title, content, sendTime, senderUser.getId(),senderUser.getDefaultOrganId(),organIds);
+                Static.noticeService.sendToOrganNotice(appId, type,title, content, sendTime, senderUser.getId(),senderUser.getDefaultOrganId(),organIds,messageChannels);
                 return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "通知发送成功");
             } catch (Exception e) {
                 return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "通知发送失败");

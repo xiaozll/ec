@@ -88,17 +88,17 @@ public class MessageUtils {
     public static void sendToUserMessage(String receiveUserId, String content,
                                          String linkUrl) {
         User user = Static.userService.getSuperUser();
-        sendUserMessage(user.getId(), content, linkUrl, receiveUserId,null);
+        sendUserMessage(user.getId(), content, linkUrl, receiveUserId, null);
     }
 
     /**
      * 发送消息
      *
-     * @param sender        发送者用户ID {@link User}
-     * @param content       必选 消息内容
-     * @param linkUrl       消息URL链接地址
-     * @param receiveUserId 必选 接收对象ID集合
-     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
+     * @param sender          发送者用户ID {@link User}
+     * @param content         必选 消息内容
+     * @param linkUrl         消息URL链接地址
+     * @param receiveUserId   必选 接收对象ID集合
+     * @param messageChannels 可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendUserMessage(String sender,
                                        String content,
@@ -106,7 +106,7 @@ public class MessageUtils {
                                        String receiveUserId,
                                        List<MessageChannel> messageChannels) {
         List<String> receiveObjectIds = Lists.newArrayList(receiveUserId);
-        sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,messageChannels);
+        sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds, messageChannels);
     }
 
 
@@ -118,14 +118,14 @@ public class MessageUtils {
      * @param linkUrl           消息URL链接地址
      * @param receiveObjectType 必选 接收类型 {@link MessageReceiveObjectType}
      * @param receiveObjectIds  必选 接收对象ID集合
-     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
+     * @param messageChannels   可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendMessage(String appId, String sender, String content,
                                    String linkUrl,
                                    String receiveObjectType,
                                    List<String> receiveObjectIds,
                                    List<MessageChannel> messageChannels) {
-        sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null,messageChannels);
+        sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null, messageChannels);
     }
 
     /**
@@ -136,13 +136,13 @@ public class MessageUtils {
      * @param linkUrl           消息URL链接地址
      * @param receiveObjectType 必选 接收类型 {@link MessageReceiveObjectType}
      * @param receiveObjectIds  必选 接收对象ID集合
-     * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
+     * @param messageChannels   可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static void sendMessage(String appId, String sender, String content,
                                    String linkUrl,
                                    String receiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         MessageReceiveObjectType m = MessageReceiveObjectType.getByValue(receiveObjectType);
-        sendMessage(appId, sender, null, content, linkUrl, m, receiveObjectIds, date,messageChannels);
+        sendMessage(appId, sender, null, content, linkUrl, m, receiveObjectIds, date, messageChannels);
     }
 
 
@@ -159,7 +159,7 @@ public class MessageUtils {
     public static void sendMessage(String sender, String content,
                                    String linkUrl,
                                    MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, List<MessageChannel> messageChannels) {
-        sendMessage(null, sender, null, content, linkUrl, messageReceiveObjectType, receiveObjectIds, null,messageChannels);
+        sendMessage(null, sender, null, content, linkUrl, messageReceiveObjectType, receiveObjectIds, null, messageChannels);
     }
 
     /**
@@ -182,10 +182,10 @@ public class MessageUtils {
         if (user == null) {
             throw new SystemException("[" + sender + "]用户不存在");
         }
-        if(Collections3.isEmpty(messageChannels)){
-            model.setTipMessage(MessageChannel.Message.getValue());
-        }else{
-            model.setTipMessage(Collections3.extractToString(messageChannels,"value",","));
+        if (Collections3.isEmpty(messageChannels)) {
+            model.setTipMessage(MessageChannel.Message.getValue() + "," + MessageChannel.QYWeixin.getValue() + "," + MessageChannel.APP.getValue());
+        } else {
+            model.setTipMessage(Collections3.extractToString(messageChannels, "value", ","));
         }
 
         model.setAppId(appId);

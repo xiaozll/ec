@@ -15,7 +15,7 @@ import java.io.*;
  */
 public class Yuicompressor {
 
-    private static final String[] DIRS = new String[]{"app/src/main/webapp/static/app",
+    private static final String[] DIRS = new String[]{"app/src/main/webapp/static/app","app/src/main/webapp/static/js/common",
             "app/src/main/webapp/static/js/adminlte/dist/"
     };
 

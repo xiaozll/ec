@@ -11,6 +11,8 @@ import com.eryansky.j2cache.lock.DefaultLockCallback;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
 import com.eryansky.utils.CacheUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import java.util.List;
  */
 public class SystemSerialNumberUtils {
 
+    private static Logger logger = LoggerFactory.getLogger(SystemSerialNumberUtils.class);
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -125,6 +128,7 @@ public class SystemSerialNumberUtils {
             }
         });
         if (!flag) {
+            logger.error("生成序列号失败，{}",new Object[]{region});
             return null;
         }
         value = CacheUtils.getCacheChannel().queuePop(region);

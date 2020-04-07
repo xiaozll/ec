@@ -93,7 +93,7 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String moduleCode) {
-        return generateSerialNumberByModelCode(null,moduleCode);
+        return generateSerialNumberByModelCode(null,moduleCode,null,null);
     }
 
     /**
@@ -101,9 +101,11 @@ public class SystemSerialNumberUtils {
      *
      * @param app APP标识
      * @param moduleCode 模块code
+     * @param timeoutInSecond 获取锁超时时间 单位：秒
+     * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
      * @return 序列号
      */
-    public static String generateSerialNumberByModelCode(String app,String moduleCode) {
+    public static String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
         app = null == app ? SystemSerialNumber.DEFAULT_ID:app;
         String region = SystemSerialNumber.QUEUE_SYS_SERIAL +"_" + app + ":" + moduleCode;
         String value = CacheUtils.getCacheChannel().queuePop(region);
@@ -112,7 +114,7 @@ public class SystemSerialNumberUtils {
         }
         String lockKey = "SystemSerialNumber_lock_"+app+"_"+":" + moduleCode;
         String finalApp = app;
-        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, 20, 60, new DefaultLockCallback<Boolean>(false, false) {
+        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, null != timeoutInSecond ? timeoutInSecond:20, null != keyExpireSeconds ? keyExpireSeconds:60, new DefaultLockCallback<Boolean>(false, false) {
             @Override
             public Boolean handleObtainLock() {
                 List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp,moduleCode);

@@ -21,7 +21,8 @@ import com.eryansky.modules.sys._enum.YesOrNo;
 public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
     public static final String DEFAULT_ID = "1";
-    public static final String QUEUE_SYS_SERIAL = "queue_system_serial";
+    public static final String QUEUE_KEY = "system_serial_queue";
+    public static final String LOCK_KEY = "system_serial_lock";
     /**
      * APP标识
      */

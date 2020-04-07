@@ -106,18 +106,18 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
-        app = null == app ? SystemSerialNumber.DEFAULT_ID:app;
-        String region = SystemSerialNumber.QUEUE_SYS_SERIAL +"_" + app + ":" + moduleCode;
+        app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
+        String region = SystemSerialNumber.QUEUE_KEY + "_" + app + ":" + moduleCode;
         String value = CacheUtils.getCacheChannel().queuePop(region);
         if (value != null) {
             return value;
         }
-        String lockKey = "SystemSerialNumber_lock_"+app+"_"+":" + moduleCode;
+        String lockKey = SystemSerialNumber.LOCK_KEY + "_" + app + "_" + ":" + moduleCode;
         String finalApp = app;
-        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, null != timeoutInSecond ? timeoutInSecond:60, null != keyExpireSeconds ? keyExpireSeconds:180, new DefaultLockCallback<Boolean>(false, false) {
+        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
             @Override
             public Boolean handleObtainLock() {
-                List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp,moduleCode);
+                List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode);
                 for (String serial : list) {
                     CacheUtils.getCacheChannel().queuePush(region, serial);
                 }

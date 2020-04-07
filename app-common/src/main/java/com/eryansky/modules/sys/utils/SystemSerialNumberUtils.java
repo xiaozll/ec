@@ -114,7 +114,7 @@ public class SystemSerialNumberUtils {
         }
         String lockKey = "SystemSerialNumber_lock_"+app+"_"+":" + moduleCode;
         String finalApp = app;
-        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, null != timeoutInSecond ? timeoutInSecond:20, null != keyExpireSeconds ? keyExpireSeconds:60, new DefaultLockCallback<Boolean>(false, false) {
+        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, null != timeoutInSecond ? timeoutInSecond:60, null != keyExpireSeconds ? keyExpireSeconds:180, new DefaultLockCallback<Boolean>(false, false) {
             @Override
             public Boolean handleObtainLock() {
                 List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp,moduleCode);

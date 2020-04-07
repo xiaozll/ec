@@ -49,9 +49,12 @@ public class MessageReceiveController extends SimpleController {
     private MessageTask messageTask;
 
     @ModelAttribute("model")
-    public MessageReceive get(@RequestParam(required = false) String id) {
+    public MessageReceive get(@RequestParam(required = false) String id,String messageId) {
         if (StringUtils.isNotBlank(id)) {
             return messageReceiveService.get(id);
+        } else if (StringUtils.isNotBlank(messageId)) {
+            SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+            return messageReceiveService.getUserMessageReceiveByMessageId(sessionInfo.getUserId(),messageId);
         } else {
             return new MessageReceive();
         }

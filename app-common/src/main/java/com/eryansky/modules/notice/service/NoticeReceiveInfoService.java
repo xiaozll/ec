@@ -113,6 +113,16 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
      * 设置用户通知为已读状态
      *
      * @param userId    用户ID
+     * @return
+     */
+    public int markUserNoticeReaded(String userId) {
+        return updateUserNotices(userId, null, NoticeReadMode.readed.getValue());
+    }
+
+    /**
+     * 设置用户通知为已读状态
+     *
+     * @param userId    用户ID
      * @param noticeIds 通知IDS
      * @return
      */

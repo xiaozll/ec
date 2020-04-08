@@ -290,6 +290,19 @@ public class NoticeController extends SimpleController {
     }
 
     /**
+     * 标记为已读(全部)
+     *
+     * @return
+     */
+    @RequestMapping(value = {"markReadedAll"})
+    @ResponseBody
+    public Result markReadedAll() {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        noticeReceiveInfoService.markUserNoticeReaded(sessionInfo.getUserId());
+        return Result.successResult();
+    }
+
+    /**
      * 发布通知
      *
      * @param id 通知ID

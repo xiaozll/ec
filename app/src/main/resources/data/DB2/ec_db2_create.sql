@@ -186,6 +186,7 @@ create table T_NOTICE
    CREATE_TIME          DATE,
    UPDATE_USER          VARCHAR(36),
    UPDATE_TIME          DATE,
+   HEAD_IMAGE           VARCHAR(36),
    TITLE                VARCHAR(512),
    "TYPE"               VARCHAR(64),
    CONTENT              LONG VARCHAR,
@@ -200,6 +201,7 @@ create table T_NOTICE
    IS_RECORD_READ       CHAR(1),
    RECEIVE_SCOPE        VARCHAR(36),
    APP_ID               VARCHAR(36),
+   TIP_MESSAGE          VARCHAR(63),
    constraint "P_Key_1" primary key (ID)
 );
 
@@ -226,6 +228,9 @@ comment on column T_NOTICE.UPDATE_USER is
 
 comment on column T_NOTICE.UPDATE_TIME is
 '更新时间';
+
+comment on column T_NOTICE.HEAD_IMAGE is
+'标题图';
 
 comment on column T_NOTICE.TITLE is
 '标题';
@@ -268,6 +273,9 @@ comment on column T_NOTICE.RECEIVE_SCOPE is
 
 comment on column T_NOTICE.APP_ID is
 'APP标识';
+
+comment on column T_NOTICE.TIP_MESSAGE is
+'提醒通道 多个之间以“,”分割 系统提醒：Message 微信：Weixin 短信 SMS 企业微信提醒：QYWeixin APP提醒：APP';
 
 --==============================================================
 -- Table: T_NOTICE_FILE
@@ -387,6 +395,7 @@ create table T_NOTICE_MESSAGE_RECEIVE
    MESSAGE_ID           VARCHAR(36)            default NULL,
    USER_ID              VARCHAR(36)            default NULL,
    IS_READ              CHAR(1)                default NULL,
+   IS_SEND              CHAR(1)                default NULL,
    READ_TIME            DATE,
    constraint "P_Key_1" primary key (ID)
 );
@@ -405,6 +414,9 @@ comment on column T_NOTICE_MESSAGE_RECEIVE.USER_ID is
 
 comment on column T_NOTICE_MESSAGE_RECEIVE.IS_READ is
 '是否读 是/否 1/0';
+
+comment on column T_NOTICE_MESSAGE_RECEIVE.IS_SEND is
+'是否发送成功 是/否 1/0';
 
 comment on column T_NOTICE_MESSAGE_RECEIVE.READ_TIME is
 '读取时间';

@@ -250,6 +250,7 @@ CREATE TABLE SYSDBA.T_NOTICE
     UPDATE_USER character varying(36) ,
     UPDATE_TIME timestamp without time zone ,
     TITLE character varying(512) ,
+    HEAD_IMAGE character varying(36) ,
     "TYPE" character varying(64) ,
     "CONTENT" clob ,
     USER_ID character varying(36) ,
@@ -262,7 +263,8 @@ CREATE TABLE SYSDBA.T_NOTICE
     IS_RECORD_READ character(1) ,
     RECEIVE_SCOPE character varying(36) ,
     APP_ID character varying(64) ,
-    ID character varying(36) NOT NULL, 
+    TIP_MESSAGE character varying(64) ,
+    ID character varying(36) NOT NULL,
     CONSTRAINT T_NOTICE_PK PRIMARY KEY (ID)
 )  
  BINLOG ON ;
@@ -339,7 +341,8 @@ CREATE TABLE SYSDBA.T_NOTICE_RECEIVE_INFO
     NOTICE_ID character varying(36) ,
     USER_ID character(32) ,
     IS_READ character(1) ,
-    ID character varying(36) NOT NULL, 
+    IS_SEND character(1) ,
+    ID character varying(36) NOT NULL,
     CONSTRAINT T_NOTICE_RECEIVE_INFO_PK PRIMARY KEY (ID)
 )  
  BINLOG ON ;

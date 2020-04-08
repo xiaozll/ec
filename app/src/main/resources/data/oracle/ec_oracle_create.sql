@@ -184,6 +184,7 @@ create table T_NOTICE  (
    UPDATE_USER          VARCHAR2(36),
    UPDATE_TIME          DATE,
    TITLE                VARCHAR2(512),
+   HEAD_IMAGE           VARCHAR2(36),
    TYPE                 VARCHAR2(64),
    CONTENT              CLOB,
    USER_ID              VARCHAR2(36),
@@ -197,6 +198,7 @@ create table T_NOTICE  (
    IS_RECORD_READ       CHAR(1),
    RECEIVE_SCOPE        VARCHAR2(36),
    APP_ID               VARCHAR2(36),
+   TIP_MESSAGE          VARCHAR2(64),
    constraint PK_T_NOTICE primary key (ID)
 );
 
@@ -226,6 +228,9 @@ comment on column T_NOTICE.UPDATE_TIME is
 
 comment on column T_NOTICE.TITLE is
 '标题';
+
+comment on column T_NOTICE.HEAD_IMAGE is
+'标题图';
 
 comment on column T_NOTICE.TYPE is
 '类型 来源于数据字典 NOTICE_TYPE';
@@ -265,6 +270,9 @@ comment on column T_NOTICE.RECEIVE_SCOPE is
 
 comment on column T_NOTICE.APP_ID is
 'APP标识';
+
+comment on column T_NOTICE.TIP_MESSAGE is
+'提醒通道 多个之间以“,”分割 系统提醒：Message 微信：Weixin 短信 SMS 企业微信提醒：QYWeixin APP提醒：APP';
 
 /*==============================================================*/
 /* Table: T_NOTICE_FILE                                         */

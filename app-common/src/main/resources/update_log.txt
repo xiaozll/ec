@@ -2,7 +2,7 @@
 1、通知支持提醒
 
 ALTER TABLE t_notice
-ADD COLUMN tip_message varchar(64) DEFAULT NULL COMMENT '提醒 通过微信发送或者短信发送 果个之间以“,”分割 系统提醒：Message 微信：Weixin 短信 SMS 企业微信提醒：QYWeixin APP提醒：APP';
+ADD COLUMN tip_message varchar(64) DEFAULT NULL COMMENT '提醒通道 多个之间以“,”分割 系统提醒：Message 微信：Weixin 短信 SMS 企业微信提醒：QYWeixin APP提醒：APP';
 ALTER TABLE t_notice
 ADD COLUMN head_image varchar(36) DEFAULT NULL COMMENT '标题图';
 ALTER TABLE t_notice_receive_info

@@ -53,6 +53,14 @@ public class SessionInfo implements Serializable {
      */
     private String loginName;
     /**
+     * 手机号
+     */
+    private String mobile;
+    /**
+     * 手机号(脱敏)
+     */
+    private String mobileSensitive;
+    /**
      * 可选登录账号
      */
     private List<String> loginNames = new ArrayList<String>(0);
@@ -260,6 +268,23 @@ public class SessionInfo implements Serializable {
         return this;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public SessionInfo setMobile(String mobile) {
+        this.mobile = mobile;
+        return this;
+    }
+
+    public String getMobileSensitive() {
+        return mobileSensitive;
+    }
+
+    public SessionInfo setMobileSensitive(String mobileSensitive) {
+        this.mobileSensitive = mobileSensitive;
+        return this;
+    }
 
     public List<String> getLoginNames() {
         return loginNames;

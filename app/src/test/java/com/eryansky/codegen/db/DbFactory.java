@@ -35,6 +35,8 @@ public class DbFactory {
         String dialect = dbConfig.getDriverClassName();    // mysql,sqlserver,db2,oracle
         if (dialect.contains("mysql")) {
             db = new MysqlDataSource(dbConfig);
+        } else if (dialect.contains("mariadb")) {
+            db = new MysqlDataSource(dbConfig);
         } else if (dialect.contains("db2")) {
             db = new DB2DataSource(dbConfig);
         } else {

@@ -11,7 +11,7 @@ import java.util.List;
 public class CodeGenMain {
 
     public static final String DRIVER = "org.mariadb.jdbc.Driver";
-    public static final String URL = "jdbc:mysql://localhost:3306/ec?useUnicode=true&characterEncoding=UTF-8"; // 数据库访问串
+    public static final String URL = "jdbc:mariadb://localhost:3306/ec?useUnicode=true&characterEncoding=UTF-8"; // 数据库访问串
     public static final String USERNAME = "root";
     public static final String PASSWORD = "password";
     public static final String SCHEMA = "";

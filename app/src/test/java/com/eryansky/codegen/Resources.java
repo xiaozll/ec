@@ -20,7 +20,8 @@ public class Resources {
 
 
 	/************ 模板配置 ************/
-	public static final String TEMPLATE_PATH = "app/src/test/java/template";
+	public static final String TEMPLATE_PATH = "app/src/test/java/com/eryansky/codegen/template";//Long bigint主键
+//	public static final String TEMPLATE_PATH = "app/src/test/java/com/eryansky/codegen/template_uuid";//String UUID主鍵
 	public static final String ENTITY_TEMPLATE = "java_entity.vm";
 	public static final String DAO_TEMPLATE = "java_dao.vm";
 	public static final String DAO_XML_TEMPLATE = "xml_dao.vm";

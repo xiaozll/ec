@@ -13,8 +13,10 @@ public enum DBType {
 	db2(0, "DB2"),
 	/** SQL Server(1) */
 	mssql(1, "SQL Server"),
-    /** SQL Server(1) */
-    MySQL(2, "MySQL");
+    /** SQL Server(2) */
+    MySQL(2, "MySQL"),
+	/** MariaDB(3) */
+    MariaDB(3, "MariaDB");
 
 	/**
 	 * 值 Integer型
@@ -46,7 +48,7 @@ public enum DBType {
 		return description;
 	}
 
-	public static DBType getDBType(Integer value) {
+	public static DBType getByDescription(Integer value) {
 		if (null == value)
 			return null;
 		for (DBType _enum : DBType.values()) {
@@ -56,7 +58,7 @@ public enum DBType {
 		return null;
 	}
 	
-	public static DBType getDBType(String description) {
+	public static DBType getByDescription(String description) {
 		if (null == description)
 			return null;
 		for (DBType _enum : DBType.values()) {

@@ -5,7 +5,10 @@
 package $controllerPackage;
 
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.model.Result;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,9 +49,16 @@ public class ${entityName}Controller extends SimpleController {
 
     @RequiresPermissions("${modulePermission}:${entityInstance}:view")
     @RequestMapping(value = {"","list"})
-    public String list(${entityName} model, Model uiModel,HttpServletRequest request, HttpServletResponse response) {
+    public String list(${entityName} model,
+                Model uiModel,
+                HttpServletRequest request,
+                HttpServletResponse response) {
         Page<${entityName}> page = new Page<${entityName}>(request,response);
-        page = ${entityInstance}Service.findPage(page,model);
+        if(WebUtils.isAjaxRequest(request)){
+            page = ${entityInstance}Service.findPage(page,model);
+            return renderString(response, JsonMapper.toJsonString(Result.successResult().setObj(page)), WebUtils.JSON_TYPE);
+        }
+
         uiModel.addAttribute("page",page);
         return "modules/${modulePath}/${entityInstance}List";
     }

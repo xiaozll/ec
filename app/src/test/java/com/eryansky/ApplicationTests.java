@@ -1,5 +1,6 @@
 package com.eryansky;
 
+import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.modules.sys.dao.VersionLogDao;
@@ -47,7 +48,14 @@ public class ApplicationTests {
 
 	@Test
 	public void generateSerialNumberByModelCode() {
-		System.out.println(SystemSerialNumberUtils.generateSerialNumberByModelCode("A01"));
+		for(int i=1;i<1000;i++){
+			new Thread(() ->{
+				System.out.println(Thread.currentThread().getName() + " " +SystemSerialNumberUtils.generateSerialNumberByModelCode("A01"));
+			}).start();
+		}
+
+		ThreadUtils.sleep(30*1000);
+
 	}
 
 

@@ -7,6 +7,7 @@ package com.eryansky.modules.sys.utils;
 
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.lock.DefaultLockCallback;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
@@ -108,21 +109,22 @@ public class SystemSerialNumberUtils {
      * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
      * @return 序列号
      */
-    public static String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
+    public static synchronized String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
         app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
-        String region = SystemSerialNumber.QUEUE_KEY + "_" + app + ":" + moduleCode;
-        String value = CacheUtils.getCacheChannel().queuePop(region);
+        String region = SystemSerialNumber.QUEUE_KEY + "_" + app + "_" + moduleCode;
+        CacheChannel cacheChannel = CacheUtils.getCacheChannel();
+        String value = cacheChannel.queuePop(region);
         if (value != null) {
             return value;
         }
-        String lockKey = SystemSerialNumber.LOCK_KEY + "_" + app + "_" + ":" + moduleCode;
+        String lockKey = SystemSerialNumber.LOCK_KEY + "_" + app + "_" +  moduleCode;
         String finalApp = app;
-        boolean flag = CacheUtils.getCacheChannel().lock(lockKey, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
+        boolean flag = cacheChannel.lock(lockKey, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
             @Override
             public Boolean handleObtainLock() {
                 List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode);
                 for (String serial : list) {
-                    CacheUtils.getCacheChannel().queuePush(region, serial);
+                    cacheChannel.queuePush(region, serial);
                 }
                 return true;
             }
@@ -131,7 +133,7 @@ public class SystemSerialNumberUtils {
             logger.error("生成序列号失败，锁超时，{}",new Object[]{region});
             return null;
         }
-        value = CacheUtils.getCacheChannel().queuePop(region);
+        value = cacheChannel.queuePop(region);
         return value;
     }
 

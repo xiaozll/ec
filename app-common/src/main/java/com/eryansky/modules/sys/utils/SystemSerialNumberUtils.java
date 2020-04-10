@@ -109,32 +109,35 @@ public class SystemSerialNumberUtils {
      * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
      * @return 序列号
      */
-    public static synchronized String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
+    public static String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
         app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
         String region = SystemSerialNumber.QUEUE_KEY + "_" + app + "_" + moduleCode;
         CacheChannel cacheChannel = CacheUtils.getCacheChannel();
-        String value = cacheChannel.queuePop(region);
-        if (value != null) {
+        synchronized (region.intern()) {
+            String value = cacheChannel.queuePop(region);
+            if (value != null) {
+                return value;
+            }
+            String lockKey = SystemSerialNumber.LOCK_KEY + "_" + app + "_" +  moduleCode;
+            String finalApp = app;
+            boolean flag = cacheChannel.lock(lockKey, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
+                @Override
+                public Boolean handleObtainLock() {
+                    List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode);
+                    for (String serial : list) {
+                        cacheChannel.queuePush(region, serial);
+                    }
+                    return true;
+                }
+            });
+            if (!flag) {
+                logger.error("生成序列号失败，锁超时，{}",new Object[]{region});
+                return null;
+            }
+            value = cacheChannel.queuePop(region);
             return value;
         }
-        String lockKey = SystemSerialNumber.LOCK_KEY + "_" + app + "_" +  moduleCode;
-        String finalApp = app;
-        boolean flag = cacheChannel.lock(lockKey, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
-            @Override
-            public Boolean handleObtainLock() {
-                List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode);
-                for (String serial : list) {
-                    cacheChannel.queuePush(region, serial);
-                }
-                return true;
-            }
-        });
-        if (!flag) {
-            logger.error("生成序列号失败，锁超时，{}",new Object[]{region});
-            return null;
-        }
-        value = cacheChannel.queuePop(region);
-        return value;
+
     }
 
 }

@@ -34,6 +34,26 @@ public class SystemSerialNumberUtils {
     }
 
     /**
+     * @param app
+     * @param moduleCode
+     * @return
+     */
+    public static String getQueueRegion(String app,String moduleCode) {
+        String queueRegion = SystemSerialNumber.QUEUE_KEY + "_" + app + "_" + moduleCode;
+        return queueRegion;
+    }
+
+    /**
+     * @param app
+     * @param moduleCode
+     * @return
+     */
+    public static String getLockRegion(String app,String moduleCode) {
+        String queueRegion = SystemSerialNumber.LOCK_KEY + "_" + app + "_" + moduleCode;
+        return queueRegion;
+    }
+
+    /**
      * @param id
      * @return
      */
@@ -111,30 +131,30 @@ public class SystemSerialNumberUtils {
      */
     public static String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
         app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
-        String region = SystemSerialNumber.QUEUE_KEY + "_" + app + "_" + moduleCode;
+        String queueRegion = getQueueRegion(app,moduleCode);
         CacheChannel cacheChannel = CacheUtils.getCacheChannel();
-        synchronized (region.intern()) {
-            String value = cacheChannel.queuePop(region);
+        synchronized (queueRegion.intern()) {
+            String value = cacheChannel.queuePop(queueRegion);
             if (value != null) {
                 return value;
             }
-            String lockKey = SystemSerialNumber.LOCK_KEY + "_" + app + "_" +  moduleCode;
+            String lockRegion = getLockRegion(app,moduleCode);
             String finalApp = app;
-            boolean flag = cacheChannel.lock(lockKey, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
+            boolean flag = cacheChannel.lock(lockRegion, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
                 @Override
                 public Boolean handleObtainLock() {
                     List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode);
                     for (String serial : list) {
-                        cacheChannel.queuePush(region, serial);
+                        cacheChannel.queuePush(queueRegion, serial);
                     }
                     return true;
                 }
             });
             if (!flag) {
-                logger.error("生成序列号失败，锁超时，{}",new Object[]{region});
+                logger.error("生成序列号失败，锁超时，{}",new Object[]{queueRegion});
                 return null;
             }
-            value = cacheChannel.queuePop(region);
+            value = cacheChannel.queuePop(queueRegion);
             return value;
         }
 

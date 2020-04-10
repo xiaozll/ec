@@ -48,9 +48,10 @@ public class ApplicationTests {
 
 	@Test
 	public void generateSerialNumberByModelCode() {
-		for(int i=1;i<1000;i++){
+		for(int i=1;i<5000;i++){
+			int finalI = i;
 			new Thread(() ->{
-				System.out.println(Thread.currentThread().getName() + " " +SystemSerialNumberUtils.generateSerialNumberByModelCode("A01"));
+				System.out.println(Thread.currentThread().getName() +" "+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode("A01"));
 			}).start();
 		}
 

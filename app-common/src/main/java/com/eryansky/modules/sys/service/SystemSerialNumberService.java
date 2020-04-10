@@ -16,6 +16,7 @@ import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.sn.GeneratorConstants;
 import com.eryansky.modules.sys.sn.SNGenerateApp;
+import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.utils.AppDateUtils;
 import com.eryansky.utils.CacheUtils;
 import org.springframework.stereotype.Service;
@@ -144,8 +145,8 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
                 systemSerialNumber.setVersion(0);
                 this.save(systemSerialNumber);
                 //清空缓存
-                String region = SystemSerialNumber.QUEUE_KEY + ":" + systemSerialNumber.getModuleCode();
-                CacheUtils.getCacheChannel().queueClear(region);
+                String queueRegion = SystemSerialNumberUtils.getQueueRegion(systemSerialNumber.getApp(),systemSerialNumber.getModuleCode());
+                CacheUtils.getCacheChannel().queueClear(queueRegion);
             }
         }
     }
@@ -154,9 +155,9 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
     /**
      * 清空缓存(指定key)
      */
-    public void clearCacheByModuleCode(String moduleCode) {
-        String region = SystemSerialNumber.QUEUE_KEY + ":" + moduleCode;
-        CacheUtils.getCacheChannel().queueClear(region);
+    public void clearCacheByModuleCode(String app,String moduleCode) {
+        String queueRegion = SystemSerialNumberUtils.getQueueRegion(app,moduleCode);
+        CacheUtils.getCacheChannel().queueClear(queueRegion);
     }
 
     /**
@@ -166,8 +167,8 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         List<SystemSerialNumber> numberList = this.findAll();
         for (SystemSerialNumber systemSerialNumber : numberList) {
             //清空缓存
-            String region = SystemSerialNumber.QUEUE_KEY + ":" + systemSerialNumber.getModuleCode();
-            CacheUtils.getCacheChannel().queueClear(region);
+            String queueRegion = SystemSerialNumberUtils.getQueueRegion(systemSerialNumber.getApp(),systemSerialNumber.getModuleCode());
+            CacheUtils.getCacheChannel().queueClear(queueRegion);
         }
     }
 }

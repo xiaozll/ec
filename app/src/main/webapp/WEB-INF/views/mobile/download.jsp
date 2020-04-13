@@ -21,7 +21,7 @@
     <script src="${ctxStatic}/js/jquery/qrcode/jquery.qrcode.min.js" type="text/javascript"></script>
     <%
         String versionCode = request.getParameter("versionCode");
-        String app = request.getParameter("app");
+        String app = null != request.getParameter("app") ? request.getParameter("app"):StringUtils.EMPTY;
         String httpPrefix = request.getScheme()+ "://" + request.getServerName() + ":" + request.getServerPort();
         String downloadUrl_Android = httpPrefix + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/1?app="+app;
         if(StringUtils.isNotBlank(versionCode)){

@@ -21,16 +21,17 @@
     <script src="${ctxStatic}/js/jquery/qrcode/jquery.qrcode.min.js" type="text/javascript"></script>
     <%
         String versionCode = request.getParameter("versionCode");
+        String app = request.getParameter("app");
         String httpPrefix = request.getScheme()+ "://" + request.getServerName() + ":" + request.getServerPort();
-//        String httpPrefix ="https://" + request.getServerName() ;
-        String downloadUrl_Android = httpPrefix + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/1";
+        String downloadUrl_Android = httpPrefix + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/1?app="+app;
         if(StringUtils.isNotBlank(versionCode)){
-            downloadUrl_Android += "?versionCode="+versionCode;
+            downloadUrl_Android += StringUtils.contains(downloadUrl_Android,"?") ? "&":"?";
+            downloadUrl_Android += "versionCode="+versionCode;
         }
-//        String downloadUrl_iPhone = "itms-services://?action=download-manifest&url=https://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/2";
-        String downloadUrl_iPhone = "itms-services://?action=download-manifest&url=https://" + request.getServerName() + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/3";
+        String downloadUrl_iPhone = "itms-services://?action=download-manifest&url=https://" + request.getServerName() + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/3?app="+app;
         if(StringUtils.isNotBlank(versionCode)){
-            downloadUrl_iPhone += "?versionCode="+versionCode;
+            downloadUrl_iPhone += StringUtils.contains(downloadUrl_iPhone,"?") ? "&":"?";
+            downloadUrl_iPhone += "versionCode="+versionCode;
         }
         request.setAttribute("httpPrefix", httpPrefix);
         request.setAttribute("downloadUrl_Android", downloadUrl_Android);

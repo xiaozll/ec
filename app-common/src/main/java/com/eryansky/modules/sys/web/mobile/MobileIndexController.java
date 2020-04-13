@@ -84,8 +84,9 @@ public class MobileIndexController extends SimpleController {
     public ModelAndView download(String app,String versionLogType, String versionCode) {
         ModelAndView modelAndView = new ModelAndView("mobile/download");
         VersionLog versionLog = null;
-        boolean likeIOS = AppUtils.likeIOS(UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest()));
-        boolean likeAndroid = AppUtils.likeAndroid(UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest()));
+        String ua = UserAgentUtils.getHTTPUserAgent(SpringMVCHolder.getRequest());
+        boolean likeIOS = AppUtils.likeIOS(ua);
+        boolean likeAndroid = AppUtils.likeAndroid(ua);
         if (versionLogType == null) {
             if (likeIOS) {
                 versionLogType = VersionLogType.iPhoneAPP.getValue();

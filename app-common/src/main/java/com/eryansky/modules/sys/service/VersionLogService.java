@@ -99,7 +99,6 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
         entity.setApp(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID);
         entity.setVersionLogType(versionLogType);
         entity.setIsPub(isPub);
-        entity.setIsPub(isPub);
         return dao.getLatestVersionLog(entity);
     }
 }

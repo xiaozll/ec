@@ -152,7 +152,7 @@
         </div>
     </div>
     <footer style="height: 30px;background-color: transparent;border:none;">
-        <span style="margin:0 auto;line-height: 30px;text-align: center;">版权所有&copy;XXX科技有限公司</span>
+        <span style="margin:0 auto;line-height: 30px;text-align: center;"> 版权所有 &copy; 2013-${fns:getDate('yyyy')} <a target="_blank" href="${fns:getAppProductURL()}">${fns:getAppProductName()}</a></span>
     </footer>
 </div>
 <iframe id="download_iframe" style="display:none"></iframe>

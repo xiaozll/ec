@@ -9,6 +9,7 @@ import com.eryansky.common.utils.BeanValidators;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.web.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,7 +205,7 @@ public abstract class SimpleController{
      * @return
      */
     protected String renderString(HttpServletResponse response, Object object) {
-        return renderString(response, JsonMapper.toJsonString(object), "application/json");
+        return renderString(response, JsonMapper.toJsonString(object), WebUtils.JSON_TYPE);
     }
 
 
@@ -218,7 +219,7 @@ public abstract class SimpleController{
         try {
             response.reset();
             response.setContentType(type);
-            response.setCharacterEncoding("utf-8");
+            response.setCharacterEncoding(WebUtils.DEFAULT_ENCODING);
             response.getWriter().print(string);
             return null;
         } catch (IOException e) {

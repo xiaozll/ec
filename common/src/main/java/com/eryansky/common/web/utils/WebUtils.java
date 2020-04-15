@@ -34,10 +34,10 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     private static final Log logger = LogFactory.getLog(WebUtils.class);
 
     //-- header 常量定义 --//
-    private static final String HEADER_ENCODING = "encoding";
-    private static final String HEADER_NOCACHE = "no-cache";
-    private static final String DEFAULT_ENCODING = "UTF-8";
-    private static final boolean DEFAULT_NOCACHE = true;
+    public static final String HEADER_ENCODING = "encoding";
+    public static final String HEADER_NOCACHE = "no-cache";
+    public static final String DEFAULT_ENCODING = "UTF-8";
+    public static final boolean DEFAULT_NOCACHE = true;
 
 
     //-- Content Type 定义 --//

@@ -273,6 +273,7 @@ public class MobileIndexController extends SimpleController {
                 IoUtils.closeSilently(istream);
             }
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
             throw new ActionException(e);
         }
         return null;
@@ -366,6 +367,7 @@ public class MobileIndexController extends SimpleController {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         } finally {
             if (exception != null) {
+                logger.error(exception.getMessage(),exception);
                 if (file != null) {
                     DiskUtils.deleteFile(file.getId());
                 }
@@ -412,6 +414,7 @@ public class MobileIndexController extends SimpleController {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         } finally {
             if (exception != null) {
+                logger.error(exception.getMessage(),exception);
                 if (file != null) {
                     DiskUtils.deleteFile(file.getId());
                 }

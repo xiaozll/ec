@@ -1,4 +1,6 @@
 <%@ page import="com.eryansky.common.utils.StringUtils" %>
+<%@ page import="com.eryansky.common.utils.encode.EncodeUtils" %>
+<%@ page import="com.eryansky.utils.AppUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ include file="/common/taglibs.jsp" %>
 <html style="background-color: #e6e6e6;">
@@ -22,18 +24,17 @@
     <%
         String versionCode = request.getParameter("versionCode");
         String app = null != request.getParameter("app") ? request.getParameter("app"):StringUtils.EMPTY;
-        String httpPrefix = request.getScheme()+ "://" + request.getServerName() + ":" + request.getServerPort();
-        String downloadUrl_Android = httpPrefix + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/1?app="+app;
+        String downloadUrl_Android = AppUtils.getAppURL() + AppConstants.getMobilePath() + "/downloadApp/1?app="+app;
         if(StringUtils.isNotBlank(versionCode)){
             downloadUrl_Android += StringUtils.contains(downloadUrl_Android,"?") ? "&":"?";
             downloadUrl_Android += "versionCode="+versionCode;
         }
-        String downloadUrl_iPhone = "itms-services://?action=download-manifest&url=https://" + request.getServerName() + request.getContextPath() + AppConstants.getMobilePath() + "/downloadApp/3?app="+app;
+        String ipaUrl = AppUtils.getAppURL() + AppConstants.getMobilePath() + "/downloadApp/3?app="+app;
+        String downloadUrl_iPhone = "itms-services://?action=download-manifest&url=" + EncodeUtils.urlEncode(ipaUrl);
         if(StringUtils.isNotBlank(versionCode)){
             downloadUrl_iPhone += StringUtils.contains(downloadUrl_iPhone,"?") ? "&":"?";
             downloadUrl_iPhone += "versionCode="+versionCode;
         }
-        request.setAttribute("httpPrefix", httpPrefix);
         request.setAttribute("downloadUrl_Android", downloadUrl_Android);
         request.setAttribute("downloadUrl_iPhone", downloadUrl_iPhone);
     %>

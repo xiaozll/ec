@@ -30,6 +30,10 @@ public class NoticeQueryVo implements Serializable {
      */
     private String type;
     /**
+     * 通知分类
+     */
+    private List<String> types;
+    /**
      * 通知内容
      */
     private String content;
@@ -76,6 +80,14 @@ public class NoticeQueryVo implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     public String getContent() {

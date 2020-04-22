@@ -73,7 +73,7 @@ public class NoticeMobileController extends SimpleController {
         }
         Datagrid dg = new Datagrid(page.getTotalCount(), page.getResult());
         String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
-                new String[]{"id", "title", "isRead", "isTop", "title", "noticeId", "typeView",
+                new String[]{"id", "noticeId","title", "type", "typeView", "isTop", "headImageUrl", "isRead",
                         "isReadView", "publishTime"});
         return json;
     }
@@ -91,7 +91,7 @@ public class NoticeMobileController extends SimpleController {
             page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), noticeQueryVo);
         }
         String json = JsonMapper.getInstance().toJson(Result.successResult().setObj(page), NoticeReceiveInfo.class,
-                new String[]{"id", "title", "isRead", "isTop", "title", "noticeId","headImageUrl", "typeView",
+                new String[]{"id", "noticeId","title", "type", "typeView", "isTop", "headImageUrl", "isRead",
                         "isReadView", "publishTime"});
         return renderString(response,json, WebUtils.JSON_TYPE);
     }

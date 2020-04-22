@@ -5,6 +5,8 @@
  */
 package com.eryansky.modules.notice.vo;
 
+import com.eryansky.modules.notice.mapper.Notice;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,11 +28,11 @@ public class NoticeQueryVo implements Serializable {
      */
     private String title;
     /**
-     * 通知分类
+     * 通知分类 {@link Notice#DIC_NOTICE}
      */
     private String type;
     /**
-     * 通知分类
+     * 通知分类 {@link Notice#DIC_NOTICE}
      */
     private List<String> types;
     /**

@@ -34,7 +34,6 @@ import java.util.List;
 public class Notice extends DataEntity<Notice> {
 
     public static final String FOLDER_NOTICE = "notice";
-    public static final String DIC_NOTICE = "notice";
     public static final String DATE_TIME_SHORT_FORMAT = "yyyy-MM-dd HH:mm";
 
     /**
@@ -50,7 +49,7 @@ public class Notice extends DataEntity<Notice> {
      */
     private String headImage;
     /**
-     * 通知公告类型 {@link Notice#DIC_NOTICE}
+     * 通知公告类型 {@link NoticeUtils#DIC_NOTICE}
      */
     private String type;
     /**

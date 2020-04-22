@@ -74,10 +74,13 @@
 				AND a.user_id = #{userId}
 			</if>
 
-			<if test="isRead != null">
+			<if test="isRead != null and isRead != ''">
 				AND a.is_read = #{isRead}
 			</if>
-			<if test="isTop != null">
+			<if test="type != null and type != ''">
+				AND n.type = #{type}
+			</if>
+			<if test="isTop != null and isTop != ''">
 				AND n.is_top = #{isTop}
 			</if>
 			<if test="publishUserId != null and publishUserId != ''">

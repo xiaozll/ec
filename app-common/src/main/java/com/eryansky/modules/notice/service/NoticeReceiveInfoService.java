@@ -12,7 +12,6 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.DateUtils;
-import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.orm.mybatis.service.CrudService;
@@ -63,20 +62,12 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
             parameter.put("publishUserId", noticeQueryVo.getPublishUserIds().get(0));
         }
         parameter.put("userId", userId);
-        if (noticeQueryVo != null) {
-            if (noticeQueryVo.getIsTop() != null) {
-                parameter.put("isTop", noticeQueryVo.getIsTop());
-            }
-            if (noticeQueryVo.getIsRead() != null) {
-                parameter.put("isRead", noticeQueryVo.getIsRead());
-            }
-
-            if (StringUtils.isNotBlank(noticeQueryVo.getTitle())) {
-                parameter.put("title", "%" + noticeQueryVo.getTitle() + "%");
-            }
-            if (StringUtils.isNotBlank(noticeQueryVo.getContent())) {
-                parameter.put("content", "%" + noticeQueryVo.getContent() + "%");
-            }
+        if (null != noticeQueryVo) {
+            parameter.put("isTop", noticeQueryVo.getIsTop());
+            parameter.put("type", noticeQueryVo.getType());
+            parameter.put("isRead", noticeQueryVo.getIsRead());
+            parameter.put("title", noticeQueryVo.getTitle());
+            parameter.put("content", noticeQueryVo.getContent());
 //            if (Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())) {
 //                parameter.put("publishUserIds", noticeQueryVo.getPublishUserIds());
 //            }

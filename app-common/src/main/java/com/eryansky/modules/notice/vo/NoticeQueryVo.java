@@ -5,9 +5,6 @@
  */
 package com.eryansky.modules.notice.vo;
 
-import com.eryansky.modules.notice._enum.IsTop;
-import com.eryansky.modules.notice._enum.NoticeReadMode;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +25,10 @@ public class NoticeQueryVo implements Serializable {
      * 通知标题
      */
     private String title;
+    /**
+     * 通知分类
+     */
+    private String type;
     /**
      * 通知内容
      */
@@ -67,6 +68,14 @@ public class NoticeQueryVo implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getContent() {

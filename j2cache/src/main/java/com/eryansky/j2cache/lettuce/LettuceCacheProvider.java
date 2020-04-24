@@ -17,6 +17,7 @@ package com.eryansky.j2cache.lettuce;
 
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.pubsub.RedisPubSubAdapter;
@@ -30,9 +31,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import java.time.Duration;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -68,6 +67,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
 
     private String channel;
     private String namespace;
+    private int scanCount;
 
     private final ConcurrentHashMap<String, Level2Cache> regions = new ConcurrentHashMap();
 
@@ -89,6 +89,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
     @Override
     public void start(Properties props) {
         this.namespace = props.getProperty("namespace");
+        this.scanCount = Integer.valueOf(props.getProperty("scanCount", "1000"));
         this.storage = props.getProperty("storage", "hash");
         this.channel = props.getProperty("channel", "j2cache");
 
@@ -98,15 +99,27 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
         int database = Integer.parseInt(props.getProperty("database", "0"));
         String sentinelMasterId = props.getProperty("sentinelMasterId");
 
-        boolean isCluster = false;
         if("redis-cluster".equalsIgnoreCase(scheme)) {
             scheme = "redis";
-            isCluster = true;
+            List<RedisURI> redisURIs = new ArrayList<>();
+            String[] hostArray = hosts.split(",");
+            for(String host : hostArray) {
+                String[] redisArray = host.split(":");
+                RedisURI uri = RedisURI.create(redisArray[0], Integer.valueOf(redisArray[1]));
+                uri.setDatabase(database);
+                uri.setPassword(password);
+                uri.setSentinelMasterId(sentinelMasterId);
+                redisURIs.add(uri);
+            }
+            RedisClusterClient.create(redisURIs);
         }
-
-        String redis_url = String.format("%s://%s@%s/%d#%s", scheme, password, hosts, database, sentinelMasterId);
-
-        redisClient = isCluster?RedisClusterClient.create(redis_url):RedisClient.create(redis_url);
+        else {
+            String[] redisArray = hosts.split(":");
+            RedisURI uri = RedisURI.create(redisArray[0], Integer.valueOf(redisArray[1]));
+            uri.setDatabase(database);
+            uri.setPassword(password);
+            redisClient = RedisClient.create(uri);
+        }
         try {
             int timeout = Integer.parseInt(props.getProperty("timeout", "10000"));
             redisClient.setDefaultTimeout(Duration.ofMillis(timeout));
@@ -140,7 +153,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
     public Cache buildCache(String region, CacheExpiredListener listener) {
         return regions.computeIfAbsent(this.namespace + ":" + region, v -> "hash".equalsIgnoreCase(this.storage)?
                 new LettuceHashCache(this.namespace, region, redisClient, pool):
-                new LettuceGenericCache(this.namespace, region,redisClient, pool));
+                new LettuceGenericCache(this.namespace, region,redisClient, pool,scanCount));
     }
 
     @Override

@@ -52,6 +52,7 @@ public abstract class LettuceCache implements Level2Cache {
     protected String region;
     protected AbstractRedisClient redisClient;
     protected GenericObjectPool<StatefulConnection<String, byte[]>> pool;
+    protected int scanCount;
 
     protected StatefulConnection connect() {
         try {

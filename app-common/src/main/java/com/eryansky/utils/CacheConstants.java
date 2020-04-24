@@ -47,7 +47,8 @@ public class CacheConstants {
     public static final String DICTIONARYITEM_CONBOBOX_CACHE = "dictionaryItem_combobox_cache";
 
 
-    public static final String ORGAN_USER_TREE_CACHE = "organ_user_tree_cache";
+    public static final String ORGAN_USER_TREE_1_CACHE = "organ_user_tree_1_cache";
+    public static final String ORGAN_USER_TREE_2_CACHE = "organ_user_tree_2_cache";
 
 	
 }

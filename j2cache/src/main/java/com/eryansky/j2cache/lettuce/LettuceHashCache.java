@@ -83,7 +83,6 @@ public class LettuceHashCache extends LettuceCache {
         try(StatefulConnection<String, byte[]> connection = super.connect()) {
             RedisHashCommands<String, byte[]> cmd = (RedisHashCommands)super.sync(connection);
             return cmd.hkeys(this.region);
-//            return cmd.hkeys(this.region).stream().map(k->k.substring(this.region.length()+1)).collect(Collectors.toList());
         }
     }
 

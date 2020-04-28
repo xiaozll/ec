@@ -168,7 +168,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-保存机构", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Organ organ, String _parentId) {
         Result result = null;
@@ -232,7 +232,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-机构用户", logType = LogType.access)
-    @RequestMapping(value = {"updateOrganUser"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateOrganUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateOrganUser(@ModelAttribute("model") Organ organ) {
         Result result;

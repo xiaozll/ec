@@ -103,7 +103,7 @@ public class PostController extends SimpleController {
 
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-保存岗位", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Post model, String organId) {
         Result result;
@@ -155,7 +155,7 @@ public class PostController extends SimpleController {
      */
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-岗位用户", logType = LogType.access)
-    @RequestMapping(value = {"updatePostUser"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updatePostUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updatePostUser(@ModelAttribute("model") Post model,
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) throws Exception {

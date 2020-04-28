@@ -115,7 +115,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-保存角色", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody()
     public Result save(@ModelAttribute("model") Role role) {
         Result result;
@@ -175,7 +175,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-角色资源", logType = LogType.access)
-    @RequestMapping(value = {"updateRoleResource"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateRoleResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateRoleResource(@RequestParam(value = "resourceIds", required = false) Set<String> resourceIds,
                                      @ModelAttribute("model") Role role) {

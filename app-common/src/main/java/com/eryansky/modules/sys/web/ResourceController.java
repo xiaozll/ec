@@ -94,9 +94,9 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-保存资源", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
-    public ResponseEntity<Result> save(@ModelAttribute("model") Resource resource, String _parentId) {
+    public Result save(@ModelAttribute("model") Resource resource, String _parentId) {
         Result result = null;
         resource.setParent(null);
         // 设置上级节点
@@ -114,12 +114,12 @@ public class ResourceController extends SimpleController {
                 result = new Result(Result.ERROR, "[上级资源]不能与[资源名称]相同.",
                         null);
                 logger.debug(result.toString());
-                return new ResponseEntity<>(result,getTextPlainHttpHeaders(),HttpStatus.OK);
+                return result;
             }
         }
         resourceService.saveResource(resource);
         result = Result.successResult();
-        return new ResponseEntity<>(result,getTextPlainHttpHeaders(),HttpStatus.OK);
+        return result;
     }
 
 

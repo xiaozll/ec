@@ -76,7 +76,7 @@ public class DictionaryController extends SimpleController {
 
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-保存字典", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Dictionary dictionary) {
         Result result = null;

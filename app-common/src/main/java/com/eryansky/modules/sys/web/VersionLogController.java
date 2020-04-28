@@ -205,7 +205,7 @@ public class VersionLogController extends SimpleController {
      */
     @RequiresPermissions("sys:versionLog:edit")
     @Logging(value = "版本更新-保存版本", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") VersionLog model) {
         Result result;

@@ -159,7 +159,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-保存用户", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") User user) {
         Result result = null;
@@ -227,7 +227,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @RequestMapping(value = {"updateUserPassword"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "id", required = true) String id,
                                      @RequestParam(value = "upateOperate", required = true) String upateOperate,
@@ -290,7 +290,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @RequestMapping(value = {"_updateUserPassword"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"_updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "userIds", required = true) List<String> userIds,
                                      @RequestParam(value = "newPassword", required = true) String newPassword){
@@ -325,7 +325,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户角色", logType = LogType.access)
-    @RequestMapping(value = {"updateUserRole"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateUserRole"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserRole(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "roleIds", required = false) Set<String> roleIds) {
@@ -372,7 +372,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户机构", logType = LogType.access)
-    @RequestMapping(value = {"updateUserOrgan"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateUserOrgan"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserOrgan(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                   @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) {
@@ -400,7 +400,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户岗位", logType = LogType.access)
-    @RequestMapping(value = {"updateUserPost"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateUserPost"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserPost(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "postIds", required = false) Set<String> postIds) {
@@ -435,7 +435,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户资源", logType = LogType.access)
-    @RequestMapping(value = {"updateUserResource"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"updateUserResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserResource(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                      @RequestParam(value = "resourceIds", required = false) Set<String> resourceIds) {
@@ -607,7 +607,7 @@ public class UserController extends SimpleController {
      * 保存用户信息.
      */
     @Logging(value = "用户管理-保存信息", logType = LogType.access)
-    @RequestMapping(value = "saveUserinfo", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "saveUserinfo", produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result saveUserinfo(@ModelAttribute("model") User model) {
         Result result = null;

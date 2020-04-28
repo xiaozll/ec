@@ -70,7 +70,7 @@ public class ConfigController extends SimpleController {
 
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-保存配置", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Config model) {
         Result result;

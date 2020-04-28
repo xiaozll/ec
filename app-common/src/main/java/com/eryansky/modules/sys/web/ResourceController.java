@@ -25,7 +25,10 @@ import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -93,10 +96,9 @@ public class ResourceController extends SimpleController {
     @Logging(value = "资源管理-保存资源", logType = LogType.access)
     @RequestMapping(value = {"save"}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public Result save(@ModelAttribute("model") Resource resource, String _parentId) {
+    public ResponseEntity<Result> save(@ModelAttribute("model") Resource resource, String _parentId) {
         Result result = null;
         resource.setParent(null);
-
         // 设置上级节点
         if (StringUtils.isNotBlank(_parentId)) {
             Resource parentResource = resourceService.get(_parentId);
@@ -112,12 +114,12 @@ public class ResourceController extends SimpleController {
                 result = new Result(Result.ERROR, "[上级资源]不能与[资源名称]相同.",
                         null);
                 logger.debug(result.toString());
-                return result;
+                return new ResponseEntity<>(result,getTextPlainHttpHeaders(),HttpStatus.OK);
             }
         }
         resourceService.saveResource(resource);
         result = Result.successResult();
-        return result;
+        return new ResponseEntity<>(result,getTextPlainHttpHeaders(),HttpStatus.OK);
     }
 
 

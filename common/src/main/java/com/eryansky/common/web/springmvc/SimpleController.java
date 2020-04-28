@@ -13,6 +13,8 @@ import com.eryansky.common.web.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -46,9 +48,15 @@ public abstract class SimpleController{
     @Autowired
     protected Validator validator;
 
+
     protected SimpleController() {
     }
 
+    public HttpHeaders getTextPlainHttpHeaders() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+        return responseHeaders;
+    }
 
 
     /**

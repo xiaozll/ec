@@ -89,7 +89,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
 
             List<String> targetIds = Lists.newArrayList();
             if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
-                targetIds.add(UserUtils.getLoginName(objectId));
+                targetIds.add(objectId);
             } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
                 targetIds = userService.findUsersLoginNamesByOrganId(objectId);
             } else if (MessageReceiveObjectType.Member.equals(messageReceiveObjectType)) {

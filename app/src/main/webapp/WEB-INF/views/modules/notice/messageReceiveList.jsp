@@ -5,12 +5,62 @@
     <title>我的消息</title>
     <meta name="decorator" content="default_sys"/>
     <script type="text/javascript">
+        $(function(){
+            $("#btnSubmit").click(function(){
+                $("#pageNo").val(1);
+                loadData();
+            });
+            $("#btnReset").click(function(){
+                $('#searchForm').find("input[type=hidden]").val("");
+                // $('#searchForm').find("select").select2("val", "");
+            });
+            loadData();
+            $("#setReadAll").click(function(){
+                $.ajax({
+                    url: appURL + '/a/notice/messageReceive/setReadAll',
+                    type: 'post',
+                    dataType: 'json',
+                    cache:false,
+                    success: function (data) {
+                        if (data.code == 1) {
+                            $('#pageNo').val(1);
+                            loadData();
+                        }
+                    }
+                });
+            });
+        });
         function page(n, s) {
             $("#pageNo").val(n);
             $("#pageSize").val(s);
-            $("#searchForm").submit();
+            loadData();
             return false;
         }
+        function loadData() {
+            var queryParam = $.serializeObject($("#searchForm"));
+            $.ajax({
+                url: ctxAdmin + "/notice/messageReceive?_=" + new Date().getTime(),
+                type: "post",
+                dataType: "json",
+                data: queryParam,
+                cache: false,
+                beforeSend: function (jqXHR, settings) {
+                    $("#list").html("<div style='padding: 10px 30px;text-align:center;font-size: 16px;'>数据加载中...</div>");
+                },
+                success: function (data) {
+                    data = data['obj'];
+                    if (data['totalCount'] > 0) {
+                        var html = Mustache.render($("#list_template").html(), data);
+                        $("#list").html(html);
+                        $(".pagination").append(data['appHtml']);
+
+                    } else {
+                        $("#list").html("<div style='color: red;padding: 10px 30px;text-align:center;font-size: 16px;'>暂无数据</div>");
+                    }
+                }
+            });
+        }
+
         /**
          * 设置已读 （异步）
          * @param id
@@ -24,6 +74,29 @@
             });
         }
     </script>
+    <script type="text/template" id="list_template">
+        <table id="contentTable" class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>消息内容</th>
+                <th>发送者</th>
+                <th>发送时间</th>
+                <th>阅读状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#result}}
+                <tr>
+                    <td><a href="javascript:" onclick="setRead('{{id}}');">{{message.content}}</a></td>
+                    <td>{{message.senderName}}</td>
+                    <td>{{message.sendTime}}</td>
+                    <td>{{isReadView}}</td>
+                </tr>
+            {{/result}}
+            </tbody>
+        </table>
+        <div class="pagination">${page}</div>
+    </script>
 </head>
 <body>
 <ul class="nav nav-tabs">
@@ -32,33 +105,13 @@
 <form:form id="searchForm" modelAttribute="model" action="${ctxAdmin}/notice/messageReceive" method="post" class="breadcrumb form-search">
     <input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
     <input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-    <form:radiobutton path="isRead" value="0" label="未阅" onclick="$('#searchForm').submit();"/>
-    <form:radiobutton path="isRead" value="1" label="已阅" onclick="$('#searchForm').submit();"/>
-    <%--<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;--%>
+    <form:radiobutton path="isRead" value="0" label="未阅" />
+    <form:radiobutton path="isRead" value="1" label="已阅" />&nbsp;&nbsp;
+    <input id="btnSubmit" class="btn btn-primary" type="button" value="查 询"/>&nbsp;
+    <input id="btnReset" class="btn btn-warning" type="reset" value="重 置"/>&nbsp;
+    <input id="setReadAll" class="btn btn-primary" type="button" value="全部标记为已读"/>&nbsp;
 </form:form>
 <tags:message content="${message}"/>
-<table id="contentTable" class="table table-striped table-bordered table-condensed">
-    <thead>
-    <tr>
-        <th>消息内容</th>
-        <th>发送者</th>
-        <th>发送时间</th>
-        <th>阅读状态</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach items="${page.result}" var="model">
-        <tr>
-            <%--<td><a href="${ctxAdmin}/notice/messageReceive/info?id=${model.id}" title="${model.message.content}">${fns:rabbr(model.message.content,100)}</a></td>--%>
-            <td><a href="javascript:" onclick="setRead('${model.id}');$('#c_${model.id}').toggle()">${fns:rabbr(model.message.content,60)}</a></td>
-            <td>${model.message.senderName}</td>
-            <td><fmt:formatDate value="${model.message.sendTime}" pattern="yyyy-MM-dd HH:mm"/></td>
-            <td>${model.isReadView}</td>
-        </tr>
-        <tr id="c_${model.id}" style="background:#fdfdfd;display:none;"><td colspan="4">${fns:replaceHtml(model.message.content)}</td></tr>
-    </c:forEach>
-    </tbody>
-</table>
-<div class="pagination">${page}</div>
+<div id="list"></div>
 </body>
 </html>

@@ -49,6 +49,7 @@
                     $("#list").html("<div style='padding: 10px 30px;text-align:center;font-size: 16px;'>数据加载中...</div>");
                 },
                 success: function (data) {
+                    data = data['obj'];
                     if (data['totalCount'] > 0) {
                         var html = Mustache.render($("#list_template").html(), data);
                         $("#list").html(html);

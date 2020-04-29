@@ -73,14 +73,10 @@ public class MessageReceiveController extends SimpleController {
     @RequestMapping(value = {"", "list"})
     public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<MessageReceive> page = new Page<MessageReceive>(request, response);
-        if (StringUtils.isBlank(model.getIsRead())) {
-            model.setIsRead(YesOrNo.NO.getValue());
-        }
         if (WebUtils.isAjaxRequest(request)) {
-            page = MessageUtils.findUserMessages(page.getPageNo(), page.getPageSize(), model.getIsRead());
-            return renderString(response, page);
-        } else {
-            page = MessageUtils.findUserMessages(page.getPageNo(), page.getPageSize(), model.getIsRead());
+            SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+            page = MessageUtils.findUserMessages(sessionInfo.getUserId(),page.getPageNo(), page.getPageSize(), model.getIsRead());
+            return renderString(response, Result.successResult().setObj(page));
         }
 
         uiModel.addAttribute("page", page);

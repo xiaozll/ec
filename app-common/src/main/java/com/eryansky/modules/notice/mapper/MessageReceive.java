@@ -104,19 +104,11 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
 
 
     public String getOrganName() {
-        User user = UserUtils.getUser(userId);
-        if (user != null) {
-            return user.getDefaultOrganName();
-        }
-        return null;
+        return UserUtils.getDefaultOrganName(userId);
     }
 
     public String getCompanyName() {
-        User user = UserUtils.getUser(userId);
-        if (user != null) {
-            return user.getCompanyName();
-        }
-        return null;
+        return UserUtils.getCompanyName(userId);
     }
 
     public String getUserName() {
@@ -124,9 +116,6 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
     }
 
     public String getIsReadView() {
-        if (YesOrNo.YES.getValue().equals(isRead)) {
-            return "已阅";
-        }
-        return "未阅";
+        return YesOrNo.YES.getValue().equals(isRead) ? "已阅":"未阅";
     }
 }

@@ -204,26 +204,11 @@ public class MessageUtils {
      *
      * @param pageNo   第几页
      * @param pageSize 分页大小 不分页：-1
-     * @return
-     */
-    public static Page<MessageReceive> findUserMessages(int pageNo, int pageSize, String isRead) {
-        return findUserMessages(pageNo, pageSize, null, isRead);
-    }
-
-    /**
-     * 用户消息
-     *
-     * @param pageNo   第几页
-     * @param pageSize 分页大小 不分页：-1
      * @param userId   用户ID
      * @return
      */
-    public static Page<MessageReceive> findUserMessages(int pageNo, int pageSize, String userId, String isRead) {
-        String _userId = userId;
-        if (StringUtils.isBlank(_userId)) {
-            _userId = SecurityUtils.getCurrentUserId();
-        }
+    public static Page<MessageReceive> findUserMessages(String userId, int pageNo, int pageSize, String isRead) {
         Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
-        return Static.messageReceiveService.findUserPage(page, _userId, isRead);
+        return Static.messageReceiveService.findUserPage(page, userId, isRead);
     }
 }

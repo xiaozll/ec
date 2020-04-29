@@ -736,7 +736,7 @@ public class SecurityUtils {
      */
     public static List<SessionInfo> findSessionInfoByLoginName(String loginName) {
         List<SessionInfo> list = findSessionInfoListWithOrder();
-        return list.stream().filter(sessionInfo -> loginName.equals(sessionInfo.getLoginName())).collect(Collectors.toList());
+        return list.stream().filter(sessionInfo -> loginName.equalsIgnoreCase(sessionInfo.getLoginName())).collect(Collectors.toList());
     }
 
     /**

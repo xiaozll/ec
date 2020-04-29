@@ -181,8 +181,9 @@ public class LoginController extends SimpleController {
         } else {
             if (AppConstants.getIsSecurityOn()) {
                 List<SessionInfo> userSessionInfos = SecurityUtils.findSessionInfoByLoginName(loginName);
-                if (AppConstants.getUserSessionSize() > 0 && userSessionInfos.size() >= AppConstants.getUserSessionSize()) {
-                    result = new Result(Result.ERROR, "已达到用户最大会话登录限制[" + AppConstants.getUserSessionSize() + "，请注销其它登录信息后再试！]", AppConstants.getUserSessionSize());
+                int sessionUserLimitSize = AppConstants.getUserSessionSize();
+                if(sessionUserLimitSize > 0 &&  userSessionInfos.size() >=sessionUserLimitSize ){
+                    result = new Result(Result.ERROR, "已达到用户最大会话登录限制["+ sessionUserLimitSize+"，请注销其它登录信息后再试！]", sessionUserLimitSize);
                     return result;
                 }
             }

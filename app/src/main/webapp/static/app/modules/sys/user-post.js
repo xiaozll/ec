@@ -1,5 +1,6 @@
 var modelId= modelId;
 var organId= organId;
+var postIds= postIds;
 
 var $post_combobox;
 $(function() {
@@ -9,8 +10,11 @@ $(function() {
 //加载用户
 function loadPost(){
     $post_combobox = $("#postIds").combobox({
-        url: ctxAdmin + '/sys/post/combobox?userId='+modelId+'&organId='+organId,
+        url: ctxAdmin + '/sys/post/userPostCombobox?userId='+modelId+'&organId='+organId,
         multiple: true,
         editable:false
     });
+    if(postIds){
+        $post_combobox.combobox('setValues',postIds);
+    }
 }

@@ -54,7 +54,7 @@
         <ec-app-common.version>4.1.20200424.08</ec-app-common.version>
         <ec-j2cache.version>2.8.20200424.08</ec-j2cache.version>
         <ec-j2cache-spring-boot-starter.version>2.8.20200424.08</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>1.4.20200424.08</ec-fastweixin.version>
+        <ec-fastweixlloin.version>1.4.20200424.08</ec-fastweixlloin.version>
 
 
         <jackson.version>2.10.3</jackson.version>

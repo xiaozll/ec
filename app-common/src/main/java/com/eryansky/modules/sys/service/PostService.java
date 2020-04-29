@@ -131,10 +131,22 @@ public class PostService extends CrudService<PostDao, Post> {
      * @return
      */
     public List<Post> findPostsByUserId(String userId) {
+        return findPostsByUserId(userId,null);
+    }
+
+    /**
+     * 用户岗位
+     *
+     * @param userId
+     * @param organId
+     * @return
+     */
+    public List<Post> findPostsByUserId(String userId,String organId) {
         Validate.notNull(userId, "参数[userId]不能为null");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("userId", userId);
+        parameter.put("organId", organId);
         return dao.findPostsByUserId(parameter);
     }
 
@@ -146,10 +158,22 @@ public class PostService extends CrudService<PostDao, Post> {
      * @return
      */
     public List<String> findPostIdsByUserId(String userId) {
+        return findPostIdsByUserId(userId,null);
+    }
+
+    /**
+     * 用户岗位IDS
+     *
+     * @param userId
+     * @param organId
+     * @return
+     */
+    public List<String> findPostIdsByUserId(String userId,String organId) {
         Validate.notNull(userId, "参数[userId]不能为null");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("userId", userId);
+        parameter.put("organId", organId);
         return dao.findPostIdsByUserId(parameter);
     }
 

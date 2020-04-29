@@ -3,6 +3,7 @@
 <script type="text/javascript">
     var modelId= '${model.id}';
     var organId= '${organId}';
+    var postIds = ${fns:toJson(postIds)};
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/user-post${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <div>

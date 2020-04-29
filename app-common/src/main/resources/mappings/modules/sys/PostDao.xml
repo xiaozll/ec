@@ -153,6 +153,9 @@
         <where>
             a.status = #{status}
             AND u.id = #{userId}
+            <if test="organId != null and organId !=''">
+                AND up.organ_id = #{organId}
+            </if>
         </where>
     </select>
 
@@ -165,6 +168,9 @@
         <where>
             a.status = #{status}
             AND u.id = #{userId}
+            <if test="organId != null and organId !=''">
+                AND up.organ_id = #{organId}
+            </if>
         </where>
     </select>
 

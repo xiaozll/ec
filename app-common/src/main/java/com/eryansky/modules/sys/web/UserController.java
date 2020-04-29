@@ -20,6 +20,7 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.disk.mapper.File;
@@ -329,11 +330,9 @@ public class UserController extends SimpleController {
     @ResponseBody
     public Result updateUserRole(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "roleIds", required = false) Set<String> roleIds) {
-        Result result = null;
         userService.updateUserRole(userIds, roleIds);
         userService.clearCache();
-        result = Result.successResult();
-        return result;
+        return Result.successResult();
     }
 
     /**
@@ -376,10 +375,8 @@ public class UserController extends SimpleController {
     @ResponseBody
     public Result updateUserOrgan(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                   @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) {
-        Result result = null;
         userService.updateUserOrgan(userIds, organIds, defaultOrganId);
-        result = Result.successResult();
-        return result;
+        return Result.successResult();
 
     }
 
@@ -389,6 +386,8 @@ public class UserController extends SimpleController {
     @RequestMapping(value = {"post"})
     public String post(@ModelAttribute("model") User model, String organId, Model uiModel) {
         uiModel.addAttribute("organId", organId);
+        List<String> postIds = postService.findPostIdsByUserId(model.getId(),organId);
+        uiModel.addAttribute("postIds", postIds);
         return "modules/sys/user-post";
     }
 
@@ -404,10 +403,8 @@ public class UserController extends SimpleController {
     @ResponseBody
     public Result updateUserPost(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "postIds", required = false) Set<String> postIds) {
-        Result result = null;
         userService.updateUserPost(userIds, postIds);
-        result = Result.successResult();
-        return result;
+        return Result.successResult();
     }
 
     /**
@@ -439,11 +436,9 @@ public class UserController extends SimpleController {
     @ResponseBody
     public Result updateUserResource(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                      @RequestParam(value = "resourceIds", required = false) Set<String> resourceIds) {
-        Result result = null;
         userService.updateUserResource(userIds, resourceIds);
         userService.clearCache();
-        result = Result.successResult();
-        return result;
+        return Result.successResult();
 
     }
 
@@ -472,7 +467,6 @@ public class UserController extends SimpleController {
         } catch (IOException e) {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         }
-
         return result;
     }
 

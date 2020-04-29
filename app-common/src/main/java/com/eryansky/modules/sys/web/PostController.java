@@ -190,10 +190,10 @@ public class PostController extends SimpleController {
      * @param userId     用户ID
      * @return
      */
-    @RequestMapping(value = {"combobox"})
+    @RequestMapping(value = {"userPostCombobox"})
     @ResponseBody
-    public List<Combobox> combobox(String selectType, String userId, String organId) {
-        List<Post> list = postService.findPostsByOrganId(organId);
+    public List<Combobox> userPostCombobox(String selectType, String userId, String organId) {
+        List<Post> list = StringUtils.isNotBlank(organId) ? postService.findPostsByOrganId(organId) : postService.findPostsByUserId(userId,organId);
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox titleCombobox = SelectType.combobox(selectType);
@@ -201,7 +201,7 @@ public class PostController extends SimpleController {
             cList.add(titleCombobox);
         }
         for (Post r : list) {
-            Combobox combobox = new Combobox(r.getId() + "", r.getName());
+            Combobox combobox = new Combobox(r.getId(), r.getName());
             cList.add(combobox);
         }
         return cList;

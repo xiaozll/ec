@@ -43,7 +43,7 @@ public class FilterConfiguration {
     public FilterRegistrationBean<MySiteMeshFilter> mySiteMeshFilterFilterRegistrationBean() {
         MySiteMeshFilter filter = new MySiteMeshFilter();
         FilterRegistrationBean<MySiteMeshFilter> bean = new FilterRegistrationBean<>(filter);
-        bean.addInitParameter("blackListURL", "/static/**");
+        bean.addInitParameter("blackListURL", "/static/**;/api/**");
         bean.addInitParameter("whiteListURL", "/**");
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 300);
         return bean;
@@ -59,7 +59,7 @@ public class FilterConfiguration {
     public FilterRegistrationBean<CustomHttpServletRequestFilter> customHttpServletRequestFilterFilterRegistrationBean() {
         CustomHttpServletRequestFilter filter = new CustomHttpServletRequestFilter();
         FilterRegistrationBean<CustomHttpServletRequestFilter> bean = new FilterRegistrationBean<>(filter);
-        bean.addInitParameter("blackListURL", "/static/**");
+        bean.addInitParameter("blackListURL", "/static/**;/api/**");
         bean.addInitParameter("whiteListURL", "/a/sys/proxy/**");
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 200);
         return bean;

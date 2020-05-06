@@ -11,6 +11,8 @@ import com.eryansky.common.utils.ConvertUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.modules.sys.mapper.OrganExtend;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.mapper.UserPassword;
@@ -84,7 +86,12 @@ public class UserUtils {
         if (null != user) {
             return user.getPhotoUrl();
         }
-        return null;
+        String ctx = StringUtils.EMPTY;
+        try {
+            ctx = WebUtils.getAppURL(SpringMVCHolder.getRequest());
+        } catch (Exception e) {
+        }
+        return  ctx + "/static/img/icon_boy.png";
     }
 
     /**

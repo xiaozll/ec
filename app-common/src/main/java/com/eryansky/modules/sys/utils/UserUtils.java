@@ -74,6 +74,20 @@ public class UserUtils {
     }
 
     /**
+     * 根据用户头像
+     *
+     * @param userId 用户账号
+     * @return
+     */
+    public static String getPhotoUrlByUserId(String userId) {
+        User user = getUser(userId);
+        if (null != user) {
+            return user.getPhotoUrl();
+        }
+        return null;
+    }
+
+    /**
      * 根据loginName查找用户
      *
      * @param loginName 用户账号

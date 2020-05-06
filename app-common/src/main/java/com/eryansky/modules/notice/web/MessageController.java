@@ -252,5 +252,16 @@ public class MessageController extends SimpleController {
         return WSResult.buildDefaultErrorResult(WSResult.class);
     }
 
+    /**
+     * 明细信息
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") Message model) {
+        return Result.successResult().setObj(model);
+    }
+
 
 }

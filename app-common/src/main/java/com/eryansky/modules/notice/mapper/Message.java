@@ -197,6 +197,10 @@ public class Message extends DataEntity<Message> {
         return UserUtils.getUserName(sender);
     }
 
+    public String getSenderHeadImageUrl() {
+        return UserUtils.getPhotoUrlByUserId(sender);
+    }
+
 
     public String getQuery() {
         return query;

@@ -15,6 +15,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.core.web.annotation.MobileValue;
+import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.notice.service.MessageReceiveService;
 import com.eryansky.modules.notice.task.MessageTask;
@@ -128,4 +129,14 @@ public class MessageReceiveController extends SimpleController {
         return Result.successResult();
     }
 
+    /**
+     * 明细信息
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") MessageReceive model) {
+        return Result.successResult().setObj(model);
+    }
 }

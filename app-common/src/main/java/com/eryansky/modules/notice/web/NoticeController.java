@@ -350,9 +350,9 @@ public class NoticeController extends SimpleController {
      */
     @RequestMapping(value = {"upload"})
     @ResponseBody
-    public Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
+    public Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile, String jsessionid) {
         Result result = null;
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        SessionInfo sessionInfo = SecurityUtils.getSessionInfo(jsessionid);
         Exception exception = null;
         File file = null;
         try {

@@ -15,8 +15,11 @@ import java.io.*;
  */
 public class Yuicompressor {
 
-    private static final String[] DIRS = new String[]{"app/src/main/webapp/static/app","app/src/main/webapp/static/js/common",
-            "app/src/main/webapp/static/js/adminlte/dist/"
+    private static final String[] DIRS = new String[]{
+            "app/src/main/webapp/static/app",
+            "app/src/main/webapp/static/js/common",
+            "app/src/main/webapp/static/js/adminlte/dist/",
+            "app/src/main/webapp/static/js/jquery/jquery-extend.js"
     };
 
     //    java -jar yuicompressor-2.4.7.jar --type js --charset utf-8 ../src/main/webapp/static/app/modules/disk/disk.js -o ../src/main/webapp/static/app/modules/disk/disk-min.js
@@ -29,6 +32,9 @@ public class Yuicompressor {
 
     public static void r(File fileOrDir){
         File[] fileNames = fileOrDir.listFiles(new StaticFileFilter());
+        if(null == fileNames){
+            fileNames = new File[]{fileOrDir};
+        }
         for(File f:fileNames){
             if(f.isDirectory()){
                 r(f);

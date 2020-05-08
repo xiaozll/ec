@@ -353,6 +353,7 @@ public class NoticeController extends SimpleController {
     public Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile, String jsessionid) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getSessionInfo(jsessionid);
+        sessionInfo = null != sessionInfo ? sessionInfo : SecurityUtils.getCurrentSessionInfo();
         Exception exception = null;
         File file = null;
         try {

@@ -138,6 +138,7 @@ function uploadify() {
         swf: ctxStatic + '/js/uploadify/scripts/uploadify.swf',
         buttonText: '浏  览',
         uploader: ctxAdmin + '/notice/upload;jsessionid='+jsessionid,
+        formData:{jsessionid:jsessionid},
         fileObjName: 'uploadFile',
         removeCompleted: false,
         multi: true,

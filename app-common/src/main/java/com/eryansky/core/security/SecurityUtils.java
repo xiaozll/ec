@@ -769,7 +769,7 @@ public class SecurityUtils {
      * @return
      */
     public static SessionInfo getSessionInfo(String id) {
-        return null == id ? getCurrentSessionInfo():getSessionInfo(id,null);
+        return getSessionInfo(id,null);
     }
 
     /**

@@ -756,7 +756,7 @@ $.hasUsableFlash = function () {
  * @param num
  * @returns {boolean|number}
  */
-$.keepTwoDecimal = function(num) {
+$.keepToTwoDecimal = function(num) {
 	var result = parseFloat(num);
 	if (isNaN(result)) {
 		console.error('传递参数错误，请检查！');
@@ -769,9 +769,10 @@ $.keepTwoDecimal = function(num) {
 /**
  * 四舍五入保留2位小数（不够位数，则用0替补）
  * @param num
+ * @param fractionalLength 长度 默认：2
  * @returns {string|boolean}
  */
-$.keepTwoDecimalFull = function(num) {
+$.keepToDecimalFull = function(num,fractionalLength) {
 	var result = parseFloat(num);
 	if (isNaN(result)) {
 		console.error('传递参数错误，请检查！');
@@ -789,7 +790,7 @@ $.keepTwoDecimalFull = function(num) {
 	}
 
 	// 当数字的长度< 小数点索引+2时，补0
-	while (s_x.length <= pos_decimal + 2) {
+	while (s_x.length <= pos_decimal + (fractionalLength || 2)) {
 		s_x += '0';
 	}
 	return s_x;

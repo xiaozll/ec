@@ -185,17 +185,18 @@ public class RedisGenericCache implements Level2Cache {
     private Collection<String> keys(BinaryJedisCommands cmd) {
         Collection<String> keys = new ArrayList<>();
         String cursor = "0";
-        ScanParams params = new ScanParams();
-        params.match(this.region + ":*").count(scanCount);
-        Collection<String> partKeys = null;
-        do {
-            ScanResult<String> scanResult = ((MultiKeyCommands) cmd).scan(cursor, params);
-            partKeys = scanResult.getResult();
-            if(partKeys != null ) {
-                keys.addAll(partKeys);
-                cursor = scanResult.getStringCursor();
+        ScanParams scanParams = new ScanParams();
+        scanParams.match(this.region + ":*");
+        scanParams.count(scanCount); // 这个不是返回结果的数量，应该是每次scan的数量
+        ScanResult<String> scan = ((MultiKeyCommands) cmd).scan(cursor, scanParams);
+        while (null != scan.getStringCursor()) {
+            keys.addAll(scan.getResult()); // 这一次scan match到的结果
+            if (!cursor.equals(scan.getStringCursor())) { // 不断拿着新的cursor scan，最终会拿到所有匹配的值
+                scan = ((MultiKeyCommands) cmd).scan(scan.getStringCursor(), scanParams);
+            } else {
+                break;
             }
-        }while(partKeys != null && partKeys.size() != 0);
+        }
         return keys;
     }
 

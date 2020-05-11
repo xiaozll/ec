@@ -5,12 +5,9 @@
  */
 package com.eryansky.core.security;
 
-import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.orm.persistence.AbstractBaseEntity;
 import com.eryansky.common.utils.StringUtils;
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 import eu.bitwalker.useragentutils.DeviceType;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,7 +25,6 @@ import java.util.Map;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2013-3-24 下午2:53:59
  */
-@JsonFilter(" ")
 @SuppressWarnings("serial")
 public class SessionInfo implements Serializable {
 
@@ -556,7 +552,6 @@ public class SessionInfo implements Serializable {
         return SecurityUtils.isUserAdmin(this.getUserId());
     }
 
-    @JsonIgnore
     public List<PermissonRole> getPermissonRoles() {
         return permissonRoles;
     }
@@ -572,7 +567,6 @@ public class SessionInfo implements Serializable {
         return this;
     }
 
-    @JsonIgnore
     public List<Permisson> getPermissons() {
         return permissons;
     }

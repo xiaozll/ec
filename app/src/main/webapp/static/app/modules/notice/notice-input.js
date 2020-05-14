@@ -31,17 +31,13 @@ $(function () {
             }
         }
     }
-
-    var result= $.hasUsableFlash();
-    if(!result) {
-        eu.showMsg("您未安装Flash插件，或您的浏览未启用Flash插件！")
-    }
-
     uploadify();
     editor();
 
+    if($('#head_image').val()){
+        addImageFile($('#head_image').val());
+    }
     uploadifyHeadImage();
-    $(".uploadify").css({'display': 'inline-block', 'height': '24px', 'padding-right': '18px', 'outline': 'none'});
 });
 
 function editor(){
@@ -132,74 +128,89 @@ function loadNoticeOrgan() {
 var fileIdArray = modelFileIds;
 var fileIds = fileIdArray.join(",");
 $("#fileIds").val(fileIds);
+var dataMap = new HashMap();
 function uploadify() {
-    $('#uploadify').uploadify({
-        method: 'post',
-        swf: ctxStatic + '/js/uploadify/scripts/uploadify.swf',
-        buttonText: '浏  览',
-        uploader: ctxAdmin + '/notice/upload;jsessionid='+jsessionid,
-        formData:{jsessionid:jsessionid},
+    $('#uploadify').Huploadify({
+        auto:true,
+        showUploadedPercent:true,
+        showUploadedSize:true,
+        uploader: ctxAdmin + '/notice/upload',
+        formData:{},
         fileObjName: 'uploadFile',
-        removeCompleted: false,
         multi: true,
         fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        fileTypeDesc: '全部文件',
+        removeTimeout:24*60*60*1000,
         fileTypeExts: '*.*',
-        onUploadSuccess: function (file, data, response) {
+        onUploadStart:function(file){
+        },
+        onInit:function(obj){
+        },
+        onUploadComplete: function (file, data) {
             data = eval("(" + data + ")");
-            if(data.code != undefined && data.code == 1){
-                fileIdArray.push(data.obj.id);
+            if (data.code != undefined && data.code == "1") {
+                fileIdArray.push(data['obj']['id']);
+                var _fileIds = fileIdArray.join(",");
+                $("#fileIds").val(_fileIds);
+                dataMap.put(file.index,data.obj);
+            } else {
+                $('#' + file.id).find('.data').html(' - ' + "<font color=#D94600>" + data.msg + "</font>");
             }
-            $('#' + file.id).find('.data').html(data.msg);
-            var fileIds = fileIdArray.join(",");
-            $("#fileIds").val(fileIds);
-            var uploadify = this;
-            var cancel = $('#uploadify-queue .uploadify-queue-item[id="' + file.id + '"]').find(".cancel a");
-            if (cancel) {
-                cancel.attr("rel", data.obj.id);
-                cancel.click(function() {
-                    delUpload( data.obj.id,file.id,uploadify);
-                });
-            }
+        },
+        onCancel:function(file){
+            var sf = dataMap.get(file['index']);
+            delUpload(sf['id']);
+            dataMap.remove(file['index']);
         }
 
     });
 }
 
 
+function addImageFile(id,url) {
+    $('#head_image').val(id);
+    if(url){
+        $('#head_image_pre').attr("src", url);
+    }
+    $('#head_image_pre').show();
+    $('#head_image_pre').next().show();
+    var left = $('#head_image_pre').position().left;
+    var top = $('#head_image_pre').position().top;
+    $('#head_image_cencel').css({position: "absolute", left: left + 75, top: top + 10, display: "block"});
+}
+
+function delImageFile() {
+    $('#head_image_pre').attr("src", "");
+    $('#head_image_pre').hide();
+    $('#head_image_pre').next().hide();
+    $('#head_image').val("");
+}
+
 function uploadifyHeadImage() {
-    $('#file').uploadify({
-        method: 'post',
-        swf: ctxStatic + '/js/uploadify/scripts/uploadify.swf',  //FLash文件路径
-        buttonText: '浏  览',                                 //按钮文本
-        uploader: ctxAdmin + '/notice/upload;jsessionid='+jsessionid,
+    $('#head_image_uploadify').Huploadify({
+        auto:true,
+        showUploadedPercent:true,
+        showUploadedSize:true,
+        uploader: ctxAdmin + '/notice/upload',
+        formData:{},
         fileObjName: 'uploadFile',
-        removeCompleted: false,
         multi: false,
-        fileSizeLimit: '1MB', //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        fileTypeDesc: '全部文件', //文件描述
+        fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+        removeTimeout:24*60*60*1000,
         fileTypeExts: '*.gif; *.jpg; *.png; *.bmp',  //上传的文件后缀过滤器
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
-            if(data.code == 1){
-                $('#head_image_pre').attr("src",data['obj']['url']);
-                $('#head_image_pre').show();
-                $("#head_image").val(data['obj']['id']);
+            if (1 === data['code']) {
+                addImageFile(data['obj']['id'],data['obj']['url']);
+                dataMap.put(file.index,data.obj);
+            } else {
+                $('#' + file.id).find('.data').html(' - ' + "<font color=#D94600>" + data.msg + "</font>");
             }
-            $('#' + file.id).find('.data').html(data.msg);
-
-
-            var uploadify = this;
-            var cancel = $('#file-queue .uploadify-queue-item[id="' + file.id + '"]').find(".cancel a");
-            if (cancel) {
-                cancel.attr("rel", data['obj']['id']);
-                cancel.click(function() {
-                    $('#' + file.id).empty();
-                    delete uploadify.queueData.files[file.id]; //删除上传组件中的附件队列
-                    $('#' + file.id).remove();
-                });
-            }
+        },
+        onCancel:function(file){
+            var sf = dataMap.get(file['index']);
+            delImageFile(sf['id']);
+            dataMap.remove(file['index']);
         }
 
     });
@@ -211,20 +222,31 @@ function loadOrOpen(fileId) {
 /**
  * 删除附件 页面删除
  * @param fileId 后台File ID
- * @param pageFileId uploadify页面ID'
- * @param uploadify
  */
-function delUpload(fileId,pageFileId,uploadify) {
+function delUpload(fileId) {
     fileIdArray.splice($.inArray(fileId,fileIdArray),1);
     var fileIds = fileIdArray.join(",");
     $("#fileIds").val(fileIds);
-    $('#' + fileId).remove();
-    if(pageFileId){
-        $('#' + pageFileId).empty();
-        delete uploadify.queueData.files[pageFileId]; //删除上传组件中的附件队列
-        $('#' + pageFileId).remove();
-    }
+    delUploadFile(fileId);
+}
 
+/**
+ * 删除附件 后台删除
+ * @param fileId 后台File ID
+ */
+function delUploadFile(fileId) {
+    $.ajax({
+        url: ctxAdmin + '/disk/delFolderFile',
+        type: 'post',
+        data: {fileIds: fileId},
+        dataType: 'json',
+        traditional: true,
+        success: function(data) {
+            if (1 === data.code) {
+                $("#"+fileId).remove();
+            }
+        }
+    });
 }
 
 /**

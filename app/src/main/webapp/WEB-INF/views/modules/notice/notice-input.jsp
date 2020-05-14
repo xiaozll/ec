@@ -10,9 +10,29 @@
     var noticeReceiveUserIds =  ${fns:toJson(receiveUserIds)};
     var noticeReceiveOrganIds = ${fns:toJson(receiveOrganIds)};
     var jsessionid = '${sessionInfo.sessionId}';
-    var fileSizeLimit = '<%=AppConstants.getPrettyNoticeMaxUploadSize()%>';//附件上传大小限制
+    var fileSizeLimit = '<%=AppConstants.getNoticeMaxUploadSize()%>';//附件上传大小限制
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/notice/notice-input${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
+<style type="text/css">
+    .img_div{
+        display : inline-block;
+        position : relative;
+    }
+
+    .img_div .delete{
+        position : absolute;
+        top : 5px;
+        right : 5px;
+        color: red;
+        border: 1px solid red;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 20px;
+        width : 20px;
+        height : 20px;
+        line-height: 20px;
+    }
+</style>
 <div>
     <form id="notice_form" class="dialog-form"  method="post" novalidate>
         <input type="hidden" name="id" value="${model.id}"/>
@@ -28,9 +48,15 @@
         </div>
         <div>
             <label>标题图:</label>
-            <input id="head_image" name="headImage" readonly="readonly" value="${model.headImage}" style="display: none" />
-            <img id="head_image_pre" class="img-rounded" src="${model.headImageUrl}" alt="标题图" >
-            <input id="file" name="file"  multiple="false" >
+            <div id="head_image_div" style="margin-left: 96px;">
+                <input id="head_image" name="headImage" readonly="readonly" value="${model.headImage}" type="hidden"/>
+                <div class="img_div">
+                    <img id="head_image_pre" class="img-rounded" src="${model.headImageUrl}" alt="标题图" style="max-height: 160px;display: none;" />
+                    <div class="delete" onclick="delImageFile();" style="display: none;">x</div>
+                </div>
+                <div id="head_image_uploadify"></div>
+            </div>
+
         </div>
         <div>
             <label>接收范围：</label>
@@ -90,25 +116,22 @@
                 <input type="checkbox" class="easyui-checkbox" name="tipMessage" style="width: 20px;" value="APP" /> APP
             </label>
         </div>
-        <table style="border: 0px;width: 100%;">
-            <tr>
-                <td style="display: inline-block; width: 96px; vertical-align: top;">附件：</td>
-                <td><input id="uploadify" name="file" type="file" multiple="true">
+        <div>
+            <label>附件：</label>
+            <div style="margin-left: 96px;">
+                <div id="uploadify"></div>
+                <input id="fileIds" name="fileIds" type="hidden" />
+                <c:if test="${not empty files}">
+                    <div>
+                        <c:forEach items="${files}" begin="0" var="file" varStatus="i">
+                            <div id='${file.id}' style="font-size: 14px;">${i.index +1}、<a href="#" onclick="loadOrOpen('${file.id}');" style="color: #0000ff;">${file.name}</a>&nbsp;&nbsp;
+                                <a href="#" onclick="delUpload('${file.id}');" style="color: red;">删除</a></div>
+                        </c:forEach>
+                    </div>
+                </c:if>
+            </div>
 
-                    <div id="queue"></div>
-                    <input id="fileIds" name="fileIds" type="hidden" />
-                    <c:if test="${not empty files}">
-                        <div>
-                            <c:forEach items="${files}" begin="0" var="file" varStatus="i">
-                                <div id='${file.id}' style="font-size: 14px;">${i.index +1}、<a href="#" onclick="loadOrOpen('${file.id}');" style="color: #0000ff;">${file.name}</a>&nbsp;&nbsp;
-                                    <a href="#" onclick="delUpload('${file.id}');" style="color: red;">删除</a></div>
-                            </c:forEach>
-                        </div>
-                    </c:if>
-                </td>
-            </tr>
-        </table>
-
+        </div>
     </form>
     <iframe id="annexFrame" style="display:none" src=""></iframe>
 </div>

@@ -2,7 +2,7 @@
 <%@ include file="/common/taglibs.jsp" %>
 <%@ include file="/common/meta.jsp" %>
 <%@ include file="/common/kendoui.jsp"%>
-<%@ include file="/common/uploadify.jsp"%>
+<%@ include file="/common/huploadify.jsp"%>
 <script type="text/javascript">
     var noticeId = '${noticeId}';
     var hasRepeatPermission = false;

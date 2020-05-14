@@ -193,6 +193,7 @@ function uploadifyHeadImage() {
         uploader: ctxAdmin + '/notice/upload',
         formData:{},
         fileObjName: 'uploadFile',
+        buttonText: '浏 览',
         multi: false,
         fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
         removeTimeout:24*60*60*1000,

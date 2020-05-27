@@ -156,27 +156,25 @@ public class UserMobileController extends SimpleController {
     @RequestMapping(value = "contactData")
     public String contactData(String companyId,HttpServletRequest request, HttpServletResponse response) {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
-        Map<String, List<User>> personPlatformContactMap = Maps.newConcurrentMap();
+        Map<String, List<User>> listMap = Maps.newConcurrentMap();
         personPlatformContacts.parallelStream().forEach(v->{
-            List<User> list = personPlatformContactMap.get(v.getNamePinyinHeadChar());
+            List<User> list = listMap.get(v.getNamePinyinHeadChar());
             if (Collections3.isEmpty(list)) {
                 list = Lists.newCopyOnWriteArrayList();
                 list.add(v);
             } else {
                 list.add(v);
             }
-            personPlatformContactMap.put(v.getNamePinyinHeadChar(), list);
+            listMap.put(v.getNamePinyinHeadChar(), list);
         });
-        Set<String> keySet = personPlatformContactMap.keySet();
+        Set<String> keySet = listMap.keySet();
         Iterator<String> iterator = keySet.iterator();
         while (iterator.hasNext()){
             String key = iterator.next();
-            List<User> platformContacts = personPlatformContactMap.get(key);
-            platformContacts.sort(Comparator.comparing(User::getName));
+            List<User> userList = listMap.get(key);
+            userList.sort(Comparator.comparing(User::getName));
         }
-
-
-        Result result = Result.successResult().setObj(personPlatformContactMap);
+        Result result = Result.successResult().setObj(listMap);
         String json = JsonMapper.getInstance().toJson(result, User.class, new String[]{"id", "name","mobile"});
         return renderString(response,json, WebUtils.JSON_TYPE);
     }

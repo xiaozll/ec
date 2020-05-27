@@ -181,4 +181,16 @@ public class UserMobileController extends SimpleController {
         String json = JsonMapper.getInstance().toJson(result, User.class, new String[]{"id", "name"});
         return renderString(response,json, WebUtils.JSON_TYPE);
     }
+
+    /**
+     * 详细信息
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = {"detail"})
+    @ResponseBody
+    public Result detail(@ModelAttribute("model") User model) {
+        return Result.successResult().setObj(model);
+    }
 }

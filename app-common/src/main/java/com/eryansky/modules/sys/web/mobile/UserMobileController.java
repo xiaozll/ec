@@ -154,8 +154,8 @@ public class UserMobileController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "contatData")
-    public String contatData(String companyId,HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "contactData")
+    public String contactData(String companyId,HttpServletRequest request, HttpServletResponse response) {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
         Map<String, List<User>> personPlatformContactMap = Maps.newConcurrentMap();
         personPlatformContacts.parallelStream().forEach(v->{

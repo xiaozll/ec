@@ -160,7 +160,7 @@ public class UserMobileController extends SimpleController {
         personPlatformContacts.parallelStream().forEach(v->{
             List<User> list = personPlatformContactMap.get(v.getNamePinyinHeadChar());
             if (Collections3.isEmpty(list)) {
-                list = Lists.newArrayList();
+                list = Lists.newCopyOnWriteArrayList();
                 list.add(v);
             } else {
                 list.add(v);

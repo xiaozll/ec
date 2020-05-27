@@ -177,7 +177,7 @@ public class UserMobileController extends SimpleController {
 
 
         Result result = Result.successResult().setObj(personPlatformContactMap);
-        String json = JsonMapper.getInstance().toJson(result, User.class, new String[]{"id", "name"});
+        String json = JsonMapper.getInstance().toJson(result, User.class, new String[]{"id", "name","mobile"});
         return renderString(response,json, WebUtils.JSON_TYPE);
     }
 

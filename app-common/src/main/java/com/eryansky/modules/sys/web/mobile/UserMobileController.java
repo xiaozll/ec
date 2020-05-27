@@ -3,8 +3,11 @@ package com.eryansky.modules.sys.web.mobile;
 import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -13,13 +16,17 @@ import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * 用户管理
@@ -136,5 +143,42 @@ public class UserMobileController extends SimpleController {
         }
         userService.save(model);
         return Result.successResult();
+    }
+
+
+    /**
+     * 通讯录 全部
+     *
+     * @param companyId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "contatData")
+    public String contatData(String companyId,HttpServletRequest request, HttpServletResponse response) {
+        List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
+        Map<String, List<User>> personPlatformContactMap = Maps.newConcurrentMap();
+        personPlatformContacts.parallelStream().forEach(v->{
+            List<User> list = personPlatformContactMap.get(v.getNamePinyinHeadChar());
+            if (Collections3.isEmpty(list)) {
+                list = Lists.newArrayList();
+                list.add(v);
+            } else {
+                list.add(v);
+            }
+            personPlatformContactMap.put(v.getNamePinyinHeadChar(), list);
+        });
+        Set<String> keySet = personPlatformContactMap.keySet();
+        Iterator<String> iterator = keySet.iterator();
+        while (iterator.hasNext()){
+            String key = iterator.next();
+            List<User> platformContacts = personPlatformContactMap.get(key);
+            platformContacts.sort(Comparator.comparing(User::getName));
+        }
+
+
+        Result result = Result.successResult().setObj(personPlatformContactMap);
+        String json = JsonMapper.getInstance().toJson(result, User.class, new String[]{"id", "name"});
+        return renderString(response,json, WebUtils.JSON_TYPE);
     }
 }

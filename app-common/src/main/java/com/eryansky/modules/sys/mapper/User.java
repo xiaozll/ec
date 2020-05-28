@@ -121,7 +121,7 @@ public class User extends DataEntity<User> implements IUser {
      */
     private String query;
     /**
-     * 脱毛后的手机号码
+     * 脱敏后的手机号码
      */
     private String mobileSensitive;
 

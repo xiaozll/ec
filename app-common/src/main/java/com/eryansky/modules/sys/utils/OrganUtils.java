@@ -186,6 +186,23 @@ public class OrganUtils {
         return null;
     }
 
+    /**
+     * 根据机构ID查找单位名称(简称)
+     *
+     * @param organId 机构ID
+     * @return
+     */
+    public static String getOrganCompanyShortName(String organId) {
+        if (StringUtils.isBlank(organId)) {
+            return null;
+        }
+        OrganExtend organExtend = getOrganCompany(organId);
+        if (organExtend != null) {
+            return organExtend.getShortName();
+        }
+        return null;
+    }
+
 
     /**
      * 根据机构ID查找机构名称
@@ -197,6 +214,20 @@ public class OrganUtils {
         Organ organ = getOrgan(organId);
         if (organ != null) {
             return organ.getName();
+        }
+        return null;
+    }
+
+    /**
+     * 根据机构ID查找机构名称(简称)
+     *
+     * @param organId 机构ID
+     * @return
+     */
+    public static String getOrganShortName(String organId) {
+        Organ organ = getOrgan(organId);
+        if (organ != null) {
+            return organ.getShortName();
         }
         return null;
     }

@@ -268,6 +268,23 @@ public class UserUtils {
     }
 
     /**
+     * 根据userId查找用户所属单位名称(简称)
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    public static String getCompanyShortName(String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return null;
+        }
+        OrganExtend company = OrganUtils.getCompanyByUserId(userId);
+        if (company != null) {
+            return company.getShortName();
+        }
+        return null;
+    }
+
+    /**
      * 根据userId查找用户所属机构ID
      *
      * @param userId 用户ID
@@ -317,6 +334,24 @@ public class UserUtils {
         }
         return null;
     }
+
+    /**
+     * 根据userId查找用户所属机构名称（简称）
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    public static String getDefaultOrganShortName(String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return null;
+        }
+        OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
+        if (organExtend != null) {
+            return organExtend.getShortName();
+        }
+        return null;
+    }
+
 
 
 

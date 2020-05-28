@@ -225,7 +225,7 @@ public class JsGridReportBase {
      * @param freezePanes 冻结
      * @throws Exception
      */
-    private HSSFWorkbook writeSheet(HSSFWorkbook wb, String title, HashMap<String, HSSFCellStyle> styles,
+    protected HSSFWorkbook writeSheet(HSSFWorkbook wb, String title, HashMap<String, HSSFCellStyle> styles,
                                     String creator, TableData tableData, Integer[] freezePanes) throws Exception {
 
         TableHeaderMetaData headerMetaData = tableData.getTableHeader();// 获得HTML的表头元素

@@ -460,6 +460,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         }
         treeNode.setpId(organ.getParentId());
         treeNode.addAttribute("code", organ.getCode());
+        treeNode.addAttribute("shortName", organ.getShortName());
 //        treeNode.addAttribute("sysCode", organ.getSysCode());
         treeNode.addAttribute("type", organ.getType());
         treeNode.addAttribute("nType", "o");//节点类型 机构

@@ -38,6 +38,21 @@
         WHERE a.id = #{id}
     </select>
 
+    <select id="findByIds" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="ids != null and ids.size() !=0">
+                AND a.id IN
+                <foreach collection="ids" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
     <select id="getUserByLoginName" resultType="User">
         SELECT
         <include refid="userColumns"/>

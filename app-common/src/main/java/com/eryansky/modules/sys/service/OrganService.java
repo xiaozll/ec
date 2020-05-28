@@ -1292,4 +1292,19 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         parameter.put("sql", sql);
         return dao.findBySql(parameter);
     }
+
+    /**
+     * 根据IDS查询
+     *
+     * @param ids
+     * @return
+     */
+    public List<Organ> findByIds(List<String> ids) {
+        if(Collections3.isEmpty(ids)){
+            return Collections.emptyList();
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("ids", ids);
+        return dao.findByIds(parameter);
+    }
 }

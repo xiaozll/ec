@@ -1467,4 +1467,19 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.findBySql(parameter);
     }
 
+    /**
+     * 根据IDS查询
+     *
+     * @param ids
+     * @return
+     */
+    public List<User> findByIds(List<String> ids) {
+        if(Collections3.isEmpty(ids)){
+            return Collections.emptyList();
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("ids", ids);
+        return dao.findByIds(parameter);
+    }
+
 }

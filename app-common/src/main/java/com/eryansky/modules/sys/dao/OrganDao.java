@@ -24,6 +24,8 @@ import java.util.List;
 @MyBatisDao
 public interface OrganDao extends TreeDao<Organ> {
 
+    List<Organ> findByIds(Parameter parameter);
+
     List<Organ> findCustomQuery(Parameter parameter);
 
     List<Organ> findWithInclude(Parameter parameter);

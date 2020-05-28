@@ -45,6 +45,21 @@
         WHERE a.id = #{id}
     </select>
 
+    <select id="findByIds" resultType="Organ">
+        SELECT
+        <include refid="organColumns"/>
+        FROM t_sys_organ a
+        <include refid="organJoins"/>
+        <where>
+            <if test="ids != null and ids.size() !=0">
+                AND a.id IN
+                <foreach collection="ids" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
 
     <select id="getByCode" resultType="Organ">
         SELECT

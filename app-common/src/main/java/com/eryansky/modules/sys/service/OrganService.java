@@ -228,12 +228,21 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<TreeNode> findCompanysTree() {
+        return findCompanysTree(false);
+    }
+
+    /**
+     * 查找所有单位 树形
+     *
+     * @return
+     */
+    public List<TreeNode> findCompanysTree(Boolean shortName) {
         List<Organ> organs = this.findCompanys();
         List<TreeNode> tempTreeNodes = Lists.newArrayList();
         Iterator<Organ> iterator = organs.iterator();
         while (iterator.hasNext()) {
             Organ organ = iterator.next();
-            TreeNode treeNode = this.organToTreeNode(organ, false, true);
+            TreeNode treeNode = this.organToTreeNode(organ, false, true,shortName);
             tempTreeNodes.add(treeNode);
         }
         return AppUtils.toTreeTreeNodes(tempTreeNodes);
@@ -429,7 +438,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public TreeNode organToTreeNode(Organ organ, Boolean addUser) {
-        return organToTreeNode(organ, addUser, null);
+        return organToTreeNode(organ, addUser, null,false);
     }
 
 
@@ -438,10 +447,12 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      *
      * @param organ   机构
      * @param addUser 状态栏考虑用户
+     * @param onlyCompany 仅单位
+     * @param shortName 简称
      * @return
      */
-    public TreeNode organToTreeNode(Organ organ, Boolean addUser, Boolean onlyCompany) {
-        TreeNode treeNode = new TreeNode(organ.getId(), organ.getName());
+    public TreeNode organToTreeNode(Organ organ, Boolean addUser, Boolean onlyCompany,Boolean shortName) {
+        TreeNode treeNode = new TreeNode(organ.getId(), null != shortName && shortName ? organ.getShortName():organ.getName());
         if (StringUtils.isBlank(organ.getParentId()) || "0".equals(organ.getParentId())) {
             treeNode.setIconCls(ICON_ORGAN_ROOT);
         } else {
@@ -460,7 +471,6 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         }
         treeNode.setpId(organ.getParentId());
         treeNode.addAttribute("code", organ.getCode());
-        treeNode.addAttribute("shortName", organ.getShortName());
 //        treeNode.addAttribute("sysCode", organ.getSysCode());
         treeNode.addAttribute("type", organ.getType());
         treeNode.addAttribute("nType", "o");//节点类型 机构

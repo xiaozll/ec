@@ -180,6 +180,30 @@ public class UserMobileController extends SimpleController {
     }
 
     /**
+     * 通讯录 全部
+     *
+     * @param companyId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "contactTagData")
+    public String contactTagData(String companyId,HttpServletRequest request, HttpServletResponse response) {
+        List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
+        List<Map<String,Object>> list = Lists.newArrayList();
+        personPlatformContacts.parallelStream().forEach(v->{
+            Map<String,Object> map = Maps.newHashMap();
+            map.put("id",v.getId());
+            map.put("name",v.getName());
+            map.put("phone",v.getMobile());
+            map.put("tagIndex",v.getNamePinyinHeadChar());
+        });
+        list.sort(Comparator.nullsLast(Comparator.comparing(m -> (String) m.get("name"),
+                Comparator.nullsLast(Comparator.naturalOrder()))));
+        return renderString(response,Result.successResult().setObj(list));
+    }
+
+    /**
      * 详细信息
      *
      * @param model

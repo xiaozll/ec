@@ -53,6 +53,38 @@
         ORDER BY a.sort ASC
     </select>
 
+    <select id="findByLoginNames" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            a.status = '0'
+            <if test="loginNames != null and loginNames.size() !=0">
+                AND a.login_name IN
+                <foreach collection="loginNames" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+    <select id="findByCodes" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            a.status = '0'
+            <if test="codes != null and codes.size() !=0">
+                AND a.code IN
+                <foreach collection="codes" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
     <select id="getUserByLoginName" resultType="User">
         SELECT
         <include refid="userColumns"/>

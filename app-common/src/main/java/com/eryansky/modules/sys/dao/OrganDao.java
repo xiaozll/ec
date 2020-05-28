@@ -26,6 +26,10 @@ public interface OrganDao extends TreeDao<Organ> {
 
     List<Organ> findByIds(Parameter parameter);
 
+    List<Organ> findByCodes(Parameter parameter);
+
+    List<Organ> findBySysCodes(Parameter parameter);
+
     List<Organ> findCustomQuery(Parameter parameter);
 
     List<Organ> findWithInclude(Parameter parameter);

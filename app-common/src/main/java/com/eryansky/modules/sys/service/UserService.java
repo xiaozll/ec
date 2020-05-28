@@ -1482,4 +1482,34 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.findByIds(parameter);
     }
 
+    /**
+     * 根据账号查询
+     *
+     * @param loginNames
+     * @return
+     */
+    public List<User> findByLoginNames(List<String> loginNames) {
+        if(Collections3.isEmpty(loginNames)){
+            return Collections.emptyList();
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("loginNames", loginNames);
+        return dao.findByLoginNames(parameter);
+    }
+
+    /**
+     * 根据员工编号查询
+     *
+     * @param codes
+     * @return
+     */
+    public List<User> findByCodes(List<String> codes) {
+        if(Collections3.isEmpty(codes)){
+            return Collections.emptyList();
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("codes", codes);
+        return dao.findByCodes(parameter);
+    }
+
 }

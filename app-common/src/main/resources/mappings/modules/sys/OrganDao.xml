@@ -61,6 +61,40 @@
         ORDER BY a.sort ASC
     </select>
 
+    <select id="findByCodes" resultType="Organ">
+        SELECT
+        <include refid="organColumns"/>
+        FROM t_sys_organ a
+        <include refid="organJoins"/>
+        <where>
+            a.status = '0'
+            <if test="codes != null and codes.size() !=0">
+                AND a.code IN
+                <foreach collection="codes" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+    <select id="findBySysCodes" resultType="Organ">
+        SELECT
+        <include refid="organColumns"/>
+        FROM t_sys_organ a
+        <include refid="organJoins"/>
+        <where>
+            a.status = '0'
+            <if test="sysCodes != null and sysCodes.size() !=0">
+                AND a.sys_code IN
+                <foreach collection="sysCodes" open="(" separator="," close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
     <select id="getByCode" resultType="Organ">
         SELECT
         <include refid="organColumns"/>

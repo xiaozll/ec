@@ -1307,4 +1307,34 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         parameter.put("ids", ids);
         return dao.findByIds(parameter);
     }
+
+    /**
+     * 根据员工编号查询
+     *
+     * @param codes
+     * @return
+     */
+    public List<Organ> findByCodes(List<String> codes) {
+        if(Collections3.isEmpty(codes)){
+            return Collections.emptyList();
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("codes", codes);
+        return dao.findByCodes(parameter);
+    }
+
+    /**
+     * 根据员工编号查询
+     *
+     * @param sysCodes
+     * @return
+     */
+    public List<Organ> findBySysCodes(List<String> sysCodes) {
+        if(Collections3.isEmpty(sysCodes)){
+            return Collections.emptyList();
+        }
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("sysCodes", sysCodes);
+        return dao.findBySysCodes(parameter);
+    }
 }

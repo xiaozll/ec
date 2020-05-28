@@ -333,7 +333,7 @@ public class User extends DataEntity<User> implements IUser {
      */
     public String getNamePinyinHeadChar() {
         if (StringUtils.isNotBlank(name)) {
-            String str = Pinyin4js.getPinYinHeadChar(StringUtils.trim(name));
+            String str = Pinyin4js.getPinYinHeadChar(Pinyin4js.filterSpecialCharacter(StringUtils.trim(name)));
             if (str != null) {
                 return str.substring(0, 1).toUpperCase();
             }

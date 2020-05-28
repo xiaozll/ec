@@ -13,8 +13,22 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Pinyin4js {
+
+    /**
+     * 常见特殊字符过滤
+     *
+     * @param str
+     * @return
+     */
+    public static String filterSpecialCharacter(String str) {
+        String regEx = "[`~!@#$%^&*()+=|{}:;\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？']";
+        str = Pattern.compile(regEx).matcher(str).replaceAll("").trim();
+        return str;
+    }
+
 
     /**
      * 字符串集合转换字符串(逗号分隔)

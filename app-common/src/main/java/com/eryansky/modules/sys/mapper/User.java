@@ -125,8 +125,6 @@ public class User extends DataEntity<User> implements IUser {
      */
     private String mobileSensitive;
 
-
-
     public User() {
     }
 

@@ -197,6 +197,7 @@ public class UserMobileController extends SimpleController {
             map.put("name",v.getName());
             map.put("phone",v.getMobile());
             map.put("tagIndex",v.getNamePinyinHeadChar());
+            list.add(map);
         });
         list.sort(Comparator.nullsLast(Comparator.comparing(m -> (String) m.get("name"),
                 Comparator.nullsLast(Comparator.naturalOrder()))));

@@ -44,7 +44,7 @@ function loadParent(){
 function loadIco(){
     $('#iconCls').combobox({
         method:'get',
-        url:ctxStatic + '/js/json/resource.json',
+        url:ctx + '/js/json/icon-app.json',
         multiple:false,//是否可多选
         editable:false,//是否可编辑
         formatter:function(row){

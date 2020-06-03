@@ -268,19 +268,19 @@
           // 初始化二级菜单
           $('.sidebar-menu').sidebarMenu({data: defaultFirst.children});
           // 初始化首页
-          initPortal(defaultFirst);
+          initPortal(defaultFirst,fasle);
         },"json");
       }
 
       /**
        * 加载看板
        */
-      function initPortal(menu) {
+      function initPortal(menu,close) {
         if (menu.url) {
           addTabs({
             id: menu.id,
             title: menu.text,
-            close: true,
+            close: close || false,
             url: menu.url
           });
         }
@@ -313,7 +313,7 @@
             $('.sidebar-menu').empty();
             $('.sidebar-menu').sidebarMenu({data: menu.children});
             // 初始化看板
-            initPortal(menu);
+            initPortal(menu,true);
           }
         })
 

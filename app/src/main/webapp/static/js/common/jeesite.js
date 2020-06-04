@@ -49,6 +49,6 @@ function confirmx(mess, href){
 
 $(document).ready(function() {
 	//所有下拉框使用select2
-	$("select").select2();
+	$("select").select2({language: 'zh-CN'});
 	$('.fancybox').fancybox();
 });

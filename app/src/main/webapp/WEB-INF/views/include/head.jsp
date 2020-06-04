@@ -15,9 +15,9 @@
 <script src="${ctxStatic}/js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 <script src="${ctxStatic}/js/common/mustache.min.js" type="text/javascript"></script>
 <script src="${ctxStatic}/js/list/list.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/js/select2/select2.js" type="text/javascript"></script>
-<script src="${ctxStatic}/js/select2/select2_locale_zh-CN.js" type="text/javascript"></script>
-<link href="${ctxStatic}/js/select2/select2.css" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/js/select2/select2.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/js/select2/i18n/zh-CN.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/x-editable/css/bootstrap-editable.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/x-editable/js/bootstrap-editable.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/fancyBox/source/jquery.fancybox.css" type="text/css" rel="stylesheet" />

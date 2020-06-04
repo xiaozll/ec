@@ -20,9 +20,9 @@
 <script src="${ctxStatic}/js/bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript"></script>
 <!--[if lte IE 6]><link href="${ctxStatic}/js/bootstrap/bsie/css/bootstrap-ie6.min.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/bootstrap/bsie/js/bootstrap-ie.min.js" type="text/javascript"></script><![endif]-->
-<script src="${ctxStatic}/js/select2/select2.js" type="text/javascript"></script>
-<script src="${ctxStatic}/js/select2/select2_locale_zh-CN.js" type="text/javascript"></script>
-<link href="${ctxStatic}/js/select2/select2.css" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/js/select2/select2.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/js/select2/select2.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/js/select2/i18n/zh-CN.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/common/common.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/common/common.js" type="text/javascript"></script>
 <script src="${ctxStatic}/js/common/mustache.min.js" type="text/javascript"></script>

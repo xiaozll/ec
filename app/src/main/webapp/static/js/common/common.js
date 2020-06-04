@@ -7,10 +7,13 @@ $(document).ready(function() {
 	try{
 		// 链接去掉虚框
 		$("a").bind("focus",function() {
-			if(this.blur) {this.blur()};
+			if(this.blur) {this.blur()}
 		});
 		//所有下拉框使用select2
-		$("select").select2({language: 'zh-CN'});
+		if(!(!!navigator.userAgent.match(/AppleWebKit.*Mobile.*/))) {
+			$("select").select2({language: 'zh-CN'});
+		}
+
 	}catch(e){
 		// blank
 	}
@@ -41,7 +44,7 @@ function getQueryString(name, url) {
 	}else{
 		url = url.substring(url.indexOf("?"));
 	}
-	r = url.substr(1).match(reg)
+	r = url.substr(1).match(reg);
 	if (r != null) return unescape(r[2]); return null;
 }
 
@@ -94,12 +97,12 @@ function loading(mess){
 
 // 警告对话框
 function alertx(mess, closed){
-	$.jBox.info(mess, '提示', {closed:function(){
-		if (typeof closed == 'function') {
-			closed();
-		}
-	}});
-	$('.jbox-body .jbox-icon').css('top','55px');
+    $.jBox.info(mess, '提示', {closed:function(){
+            if (typeof closed == 'function') {
+                closed();
+            }
+        }});
+    $('.jbox-body .jbox-icon').css('top','55px');
 }
 
 // 确认对话框
@@ -124,10 +127,10 @@ function confirmx(mess, href, closed){
 
 // 提示输入对话框
 function promptx(title, lable, href, closed){
-	top.$.jBox("<div class='form-search' style='padding:20px;text-align:center;'>" + lable + "：<input type='text' id='txt' name='txt'/></div>", {
+	$.jBox("<div class='form-search' style='padding:20px;text-align:center;'>" + lable + "：<input type='text' id='txt' name='txt'/></div>", {
 		title: title, submit: function (v, h, f){
 			if (f.txt == '') {
-				top.$.jBox.tip("请输入" + lable + "。", 'error');
+				$.jBox.tip("请输入" + lable + "。", 'error');
 				return false;
 			}
 			if (typeof href == 'function') {
@@ -146,7 +149,7 @@ function promptx(title, lable, href, closed){
 
 // 添加TAB页面
 function addTabPage(title, url, closeable, $this, refresh){
-	top.$.fn.jerichoTab.addTab({
+	$.fn.jerichoTab.addTab({
 		tabFirer: $this,
 		title: title,
 		closeable: closeable == undefined,

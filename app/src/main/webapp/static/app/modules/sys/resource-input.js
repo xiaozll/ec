@@ -46,9 +46,10 @@ function loadIco(){
         method:'get',
         url:ctx + '/js/json/icon-app.json',
         multiple:false,//是否可多选
-        editable:false,//是否可编辑
+        editable:true,//是否可编辑
         formatter:function(row){
-            return $.formatString('<span class="tree-icon tree-file {0}"></span>{1}', row.value, row.text);
+            // return $.formatString('<span class="tree-icon tree-file {0}"></span>{1}', row.value, row.text);
+            return $.formatString('<i class="icon iconfont icon-{0}"></i> {1}', row.value, row.text);
         }
     });
 }

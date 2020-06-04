@@ -2,6 +2,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file="/common/meta.jsp"%>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/resource${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
+<link rel="stylesheet" href="${ctx}/js/iconfont/iconfont.css?_=${sysInitTime}">
 <div class="easyui-layout" fit="true" style="margin: 0px;border: 0px;overflow: hidden;width:100%;height:100%;">
 
     <%-- 列表右键 --%>

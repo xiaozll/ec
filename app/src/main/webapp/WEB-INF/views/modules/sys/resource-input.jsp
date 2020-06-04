@@ -28,7 +28,7 @@
         <div>
             <label>资源图标:</label>
             <input id="iconCls" name="iconCls" type="text" value="${model.iconCls}"
-                    style="width: 200px;height: 28px;"/>
+                    style="width: 260px;height: 28px;"/>
         </div>
         <div>
             <label>资源名称:</label>
@@ -39,7 +39,7 @@
         <div>
             <label>资源编码:</label>
             <input type="text" id="code" name="code" value="${model.code}"
-                   maxLength="36" class="easyui-validatebox textbox" placeholder="请输入资源编码..."
+                   maxLength="64" class="easyui-validatebox textbox" placeholder="请输入资源编码..."
                    data-options="validType:['minLength[1]']" />
             <%--提示小图标--%>
             <span class="tree-icon tree-file easyui-icon-tip easyui-tooltip"

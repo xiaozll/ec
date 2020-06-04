@@ -1990,6 +1990,13 @@ var addTabs = function (options) {
 
     activeTabByPageId(pageId);
 
+    if(options.activeId) {//初始化选定
+        $(".nav-tabs").find(".active").removeClass("active");
+        $(".nav-tabs li:eq("+option.activeId+")").addClass("active");
+        $(".tab-content").find(".active").removeClass("active");
+        $(".tab-content .tab-pane:eq("+option.activeId+")").addClass("active");
+    }
+
 };
 
 //关闭tab
@@ -2028,6 +2035,8 @@ function closeTabByPageId(pageId) {
 
     }
 
+
+
     try{
         var $iframe = $tabPanel.children("iframe");
         $iframe[0].src = 'about:blank';
@@ -2047,12 +2056,12 @@ function closeTabByPageId(pageId) {
     $title.remove();
     $tabPanel.remove();
     // scrollToTab($('.menu_tab.active')[0]);
-
 }
 
 function closeTabOnly(pageId) {
     var $title = findTabTitle(pageId);//有tab的标题
     var $tabPanel = findTabPanel(pageId);//装有iframe
+
     try{
         var $iframe = $tabPanel.children("iframe");
         $iframe[0].src = 'about:blank';
@@ -2071,6 +2080,12 @@ function closeTabOnly(pageId) {
     }
     $title.remove();
     $tabPanel.remove();
+    if($.support.leadingWhitespace){
+        try {
+            CollectGarbage();
+        } catch (e) {
+        }
+    }
 }
 
 var closeCurrentTab = function () {
@@ -2385,11 +2400,11 @@ $(function () {
 
                 //图标
                 var $icon = $('<i></i>');
-                $icon.addClass(item.icon);
+                $icon.addClass('icon iconfont icon-'+item.icon);
 
                 //标题
                 var $title = $('<span class="title"></span>');
-                $title.addClass('menu-text').text(item.text);
+                $title.addClass('menu-text').text(" "+item.text);
 
                 $a.append($icon);
                 $a.append($title);

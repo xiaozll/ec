@@ -14,7 +14,7 @@
 			});
 			$("#btnReset").click(function(){
 				$('#searchForm').find("input[type=hidden]").val("");
-				// $('#searchForm').find("select").select2("val", "");
+				// $('#searchForm').find("select").val(null).trigger("change");
 			});
 			$("#btnExport").click(function(){
 				var param = $.serializeObject($("#searchForm"));

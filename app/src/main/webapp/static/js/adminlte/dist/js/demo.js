@@ -256,7 +256,9 @@
    */
   function store(name, val) {
     if (typeof (Storage) !== "undefined") {
-      localStorage.setItem(name, val);
+      var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
+      ctx = ctx.replace("/", "");
+      localStorage.setItem(ctx + "_" + name, val);
     } else {
       window.alert('Please use a modern browser to properly view this template!');
     }
@@ -270,7 +272,9 @@
    */
   function get(name) {
     if (typeof (Storage) !== "undefined") {
-      return localStorage.getItem(name);
+      var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
+      ctx = ctx.replace("/", "");
+      return localStorage.getItem(ctx + "_" + name);
     } else {
       window.alert('Please use a modern browser to properly view this template!');
     }

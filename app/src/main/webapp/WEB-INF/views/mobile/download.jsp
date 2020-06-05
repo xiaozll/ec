@@ -41,6 +41,7 @@
     <script type="text/javascript">
         $.afui.useOSThemes=false;
         var url = window.location.href;
+        var likeIOS = ${likeIOS};
         $(function () {
             $("#qr").qrcode({
                 "render": "div",

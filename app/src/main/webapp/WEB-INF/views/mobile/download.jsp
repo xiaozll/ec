@@ -48,14 +48,13 @@
                 mode: 4,
                 "text": url
             });
-
+            $(".download").bind('click', function() {
+                if(isWeiXin()){
+                    $("#tip_msg").addClass("active");
+                    return false;
+                }
+            });
         });
-        function weixin(){
-            if(isWeiXin()){
-                $("#tip_msg").addClass("active");
-            }
-
-        }
 
         function isWeiXin() {
             var ua = window.navigator.userAgent.toLowerCase();
@@ -129,10 +128,10 @@
             </div>
 
             <c:if test="${likeIOS == false}">
-                <a href="${downloadUrl_Android}" onclick="weixin();" class="button login" data-ignore="true">Android版${not empty model.versionName ? '(V'.concat(model.versionName).concat(')'):''}下载</a>
+                <a href="${downloadUrl_Android}" class="button login download" data-ignore="true">Android版${not empty model.versionName ? '(V'.concat(model.versionName).concat(')'):''}下载</a>
             </c:if>
             <c:if test="${likeIOS == true}">
-                <a href="${downloadUrl_iPhone}" onclick="weixin();" class="button login" data-ignore="true">iOS版${not empty model.versionName ? '(V'.concat(model.versionName).concat(')'):''}下载</a>
+                <a href="${downloadUrl_iPhone}" class="button login download" data-ignore="true">iOS版${not empty model.versionName ? '(V'.concat(model.versionName).concat(')'):''}下载</a>
             </c:if>
         </div>
         <div class="panel" id="tip_msg">

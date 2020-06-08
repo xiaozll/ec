@@ -1227,10 +1227,11 @@ public class UserService extends CrudService<UserDao, User> {
             Set<Organ> organs = organMap.get(grade);
             for (Organ rs : organs) {
                 TreeNode organTreeNode = new TreeNode(rs.getId(), (null != shortOrganName && shortOrganName && StringUtils.isNotBlank(rs.getShortName())) ? rs.getShortName():rs.getName());
-                organTreeNode.setpId(rs.get_parentId());
+                organTreeNode.setpId(rs.getParentId());
                 Map<String, Object> attributes = Maps.newHashMap();
                 attributes.put("nType", "o");
                 attributes.put("type", rs.getType());
+                attributes.put("sort", rs.getSort());
                 attributes.put("code", rs.getCode());
                 attributes.put("sysCode", rs.getSysCode());
                 organTreeNode.setAttributes(attributes);

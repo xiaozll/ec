@@ -1150,16 +1150,26 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.findOwnerAndChildsByPostAndOrgan(parameter);
     }
 
-
+    /**
+     * 快速查找方法
+     *
+     * @param unionUsers 用户信息
+     * @param rootId 根ID
+     * @return
+     */
+    public List<TreeNode> toTreeNodeByUsersAndRootOrganId(Collection<User> unionUsers,String rootId) throws ServiceException {
+        return toTreeNodeByUsersAndRootOrganId(unionUsers,false,rootId);
+    }
 
     /**
      * 快速查找方法
      *
-     * @param unionUsers
-     * @param rootId
+     * @param unionUsers 用户信息
+     * @param shortOrganName 机构简称
+     * @param rootId 根ID
      * @return
      */
-    public List<TreeNode> toTreeNodeByUsersAndRootOrganId(Collection<User> unionUsers, String rootId) throws ServiceException {
+    public List<TreeNode> toTreeNodeByUsersAndRootOrganId(Collection<User> unionUsers,Boolean shortOrganName,String rootId) throws ServiceException {
         int minGrade = 0;
         int maxGrade = 0;
         Map<Integer, Set<Organ>> organMap = Maps.newHashMap();// 树层级 机构
@@ -1216,7 +1226,7 @@ public class UserService extends CrudService<UserDao, User> {
         for (Integer grade : gradeKeys) {
             Set<Organ> organs = organMap.get(grade);
             for (Organ rs : organs) {
-                TreeNode organTreeNode = new TreeNode(rs.getId(), rs.getName());
+                TreeNode organTreeNode = new TreeNode(rs.getId(), (null != shortOrganName && shortOrganName && StringUtils.isNotBlank(rs.getShortName())) ? rs.getShortName():rs.getName());
                 organTreeNode.setpId(rs.get_parentId());
                 Map<String, Object> attributes = Maps.newHashMap();
                 attributes.put("nType", "o");

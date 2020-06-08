@@ -1236,7 +1236,7 @@ public class UserService extends CrudService<UserDao, User> {
                 attributes.put("sysCode", rs.getSysCode());
                 organTreeNode.setAttributes(attributes);
                 organTreeNode.setIconCls(OrganService.ICON_GROUP);
-                organTreeNode.setNocheck(true);
+//                organTreeNode.setNocheck(true);
                 List<User> userList = userMap.get(rs.getId());
                 if (Collections3.isNotEmpty(userList)) {
                     Collections.sort(userList, new Comparator<User>() {

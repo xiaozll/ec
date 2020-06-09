@@ -1263,7 +1263,7 @@ public class UserService extends CrudService<UserDao, User> {
                 organTreeNode.addAttribute("nType", "o");
                 organTreeNode.addAttribute("type", oe.getType());
                 organTreeNode.addAttribute("code", oe.getCode());
-                organTreeNode.addAttribute("sysCode", oe.getSysCode());
+//                organTreeNode.addAttribute("sysCode", oe.getSysCode());
                 organTreeNode.setIconCls(ICON_GROUP);
 //                organTreeNode.setNocheck(true);
                 treeNodes.add(organTreeNode);

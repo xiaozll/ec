@@ -330,6 +330,7 @@ public class OrganController extends SimpleController {
      * @param extId
      * @param type
      * @param grade
+     * @param shortName
      * @param response
      * @return
      */
@@ -339,81 +340,91 @@ public class OrganController extends SimpleController {
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
                                    @RequestParam(required = false) Integer type,
                                    @RequestParam(required = false) Integer grade,
+                                   Boolean shortName,
                                    HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
-        return organService.findOrganTree(null, extId);
+        return organService.findOrganTree(null, extId,shortName);
     }
 
     /**
      * 查找所有机构类型机构 {@link OrganType#organ}
      *
      * @param response
+     * @param shortName 简称
      * @return
      */
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = "treeCompanyData")
     public List<TreeNode> treeCompanyData(
+            Boolean shortName,
             HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
-        return organService.findCompanysTree();
+        return organService.findCompanysTree(shortName);
     }
 
     /**
      * 查找自己和子机构机构类型机构 {@link OrganType#organ}
      *
      * @param parentId
+     * @param shortName 简称
      * @param response
      * @return
      */
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = "ownerAndChildsHomeCompanysData")
-    public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId, HttpServletResponse response) {
+    public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId,
+                                                         Boolean shortName,
+                                                         HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
         String _parentId = parentId;
         if (StringUtils.isBlank(_parentId)) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null : sessionInfo.getLoginHomeCompanyId();
         }
-        return organService.findOwnerAndChildsCompanysTree(_parentId);
+        return organService.findOwnerAndChildsCompanysTree(_parentId,shortName);
     }
 
     /**
      * 查找自己和子机构机构类型机构 {@link OrganType#organ}
      *
      * @param parentId
+     * @param shortName
      * @param response
      * @return
      */
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = "ownerAndChildsCompanysData")
-    public List<TreeNode> ownerAndChildsCompanysData(String parentId, HttpServletResponse response) {
+    public List<TreeNode> ownerAndChildsCompanysData(String parentId,
+                                                     Boolean shortName,
+                                                     HttpServletResponse response) {
         response.setContentType("application/json; charset=UTF-8");
         String _parentId = parentId;
         if (StringUtils.isBlank(_parentId)) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null : sessionInfo.getLoginCompanyId();
         }
-        return organService.findOwnerAndChildsCompanysTree(_parentId);
+        return organService.findOwnerAndChildsCompanysTree(_parentId,shortName);
     }
 
 
     /**
      * 省市县区域数据
      *
+     * @param shortName
      * @param response
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "provinceCityAreaData")
-    public List<TreeNode> provinceCityAreaData(HttpServletResponse response) {
+    public List<TreeNode> provinceCityAreaData(Boolean shortName,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
         for (int i = 0; i < list.size(); i++) {
             Area e = list.get(i);
-            TreeNode treeNode = new TreeNode(e.getId(), e.getName());
+            TreeNode treeNode = new TreeNode(e.getId(), null != shortName && shortName ? e.getShortName():e.getName());
             treeNode.setpId(e.getParentId());
             treeNodes.add(treeNode);
         }

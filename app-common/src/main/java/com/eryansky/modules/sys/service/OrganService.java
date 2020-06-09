@@ -233,7 +233,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
 
     /**
      * 查找所有单位 树形
-     *
+     * @param shortName
      * @return
      */
     public List<TreeNode> findCompanysTree(Boolean shortName) {
@@ -270,7 +270,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     }
 
     public List<TreeNode> findOrganTree(String parentId, boolean cacheable, boolean cascade) {
-        return findOrganUserTree(parentId, null, false, null, cascade);
+        return findOrganUserTree(parentId, null, false, null, cascade,null);
     }
 
 
@@ -282,7 +282,18 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<TreeNode> findOrganTree(String parentId, String excludeOrganId) {
-        return findOrganUserTree(parentId, excludeOrganId, false, null, true);
+        return findOrganTree(parentId, excludeOrganId, null);
+    }
+
+    /**
+     * 机构树
+     *
+     * @param parentId       顶级机构 查询所有为null
+     * @param excludeOrganId 排除的机构ID
+     * @return
+     */
+    public List<TreeNode> findOrganTree(String parentId, String excludeOrganId, Boolean shortName) {
+        return findOrganUserTree(parentId, excludeOrganId, false, null, true,shortName);
     }
 
     /**
@@ -293,7 +304,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<TreeNode> findOrganUserTree(String parentId, boolean addUser, boolean cascade) {
-        return findOrganUserTree(parentId, null, addUser, null, cascade);
+        return findOrganUserTree(parentId, null, addUser, null, cascade,null);
     }
 
     /**
@@ -305,7 +316,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      */
     @Cacheable(value = CacheConstants.ORGAN_USER_TREE_2_CACHE)
     public List<TreeNode> findOrganUserTree(String parentId, Collection<String> checkedUserIds, boolean cascade) {
-        return findOrganUserTree(parentId, null, true, checkedUserIds, cascade);
+        return findOrganUserTree(parentId, null, true, checkedUserIds, cascade,null);
     }
 
 
@@ -315,9 +326,10 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @param addUser        是否在机构下添加用户
      * @param checkedUserIds 选中的用户（addUser为true时 有效）
      * @param cascade        级联
+     * @param shortName      机构简称
      * @return
      */
-    public List<TreeNode> findOrganUserTree(String parentId, String excludeOrganId, boolean addUser, Collection<String> checkedUserIds, boolean cascade) {
+    public List<TreeNode> findOrganUserTree(String parentId, String excludeOrganId, boolean addUser, Collection<String> checkedUserIds, boolean cascade,Boolean shortName) {
         List<Organ> organs = null;
         if (parentId == null) {
             if (cascade) {
@@ -347,7 +359,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             if (StringUtils.isNotBlank(excludeOrganId) && organ.getParentIds() != null && organ.getParentIds().contains(excludeOrganId)) {
                 continue;
             }
-            TreeNode treeNode = this.organToTreeNode(organ, addUser);
+            TreeNode treeNode = this.organToTreeNode(organ, addUser,null,shortName);
             if (cascade && addUser) {
                 List<User> organUsers = userService.findOrganDefaultUsers(organ.getId());
                 if (Collections3.isNotEmpty(organUsers)) {
@@ -914,12 +926,22 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public List<TreeNode> findOwnerAndChildsCompanysTree(String id) {
+        return findOwnerAndChildsCompanysTree(id,null);
+    }
+
+    /**
+     * 查找本机以及下级所有单位
+     *
+     * @param id 机构ID
+     * @return
+     */
+    public List<TreeNode> findOwnerAndChildsCompanysTree(String id,Boolean shortName) {
         List<Organ> organs = this.findOwnerAndChildsCompanys(id);
         List<TreeNode> tempTreeNodes = Lists.newArrayList();
         Iterator<Organ> iterator = organs.iterator();
         while (iterator.hasNext()) {
             Organ organ = iterator.next();
-            TreeNode treeNode = this.organToTreeNode(organ);
+            TreeNode treeNode = this.organToTreeNode(organ,null,null,shortName);
             tempTreeNodes.add(treeNode);
         }
 

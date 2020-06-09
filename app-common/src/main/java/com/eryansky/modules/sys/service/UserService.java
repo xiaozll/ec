@@ -1228,13 +1228,11 @@ public class UserService extends CrudService<UserDao, User> {
             for (Organ rs : organs) {
                 TreeNode organTreeNode = new TreeNode(rs.getId(), (null != shortOrganName && shortOrganName && StringUtils.isNotBlank(rs.getShortName())) ? rs.getShortName():rs.getName());
                 organTreeNode.setpId(rs.getParentId());
-                Map<String, Object> attributes = Maps.newHashMap();
-                attributes.put("nType", "o");
-                attributes.put("type", rs.getType());
-                attributes.put("sort", rs.getSort());
-                attributes.put("code", rs.getCode());
-                attributes.put("sysCode", rs.getSysCode());
-                organTreeNode.setAttributes(attributes);
+                organTreeNode.addAttribute("nType", "o");
+                organTreeNode.addAttribute("type", rs.getType());
+                organTreeNode.addAttribute("sort", rs.getSort());
+                organTreeNode.addAttribute("code", rs.getCode());
+                organTreeNode.addAttribute("sysCode", rs.getSysCode());
                 organTreeNode.setIconCls(OrganService.ICON_GROUP);
 //                organTreeNode.setNocheck(true);
                 List<User> userList = userMap.get(rs.getId());
@@ -1255,9 +1253,7 @@ public class UserService extends CrudService<UserDao, User> {
                     });
                     for (User user : userList) {
                         TreeNode userNode = new TreeNode(user.getId(), user.getName());
-                        Map<String, Object> userAttributes = Maps.newHashMap();
-                        userAttributes.put("nType", "u");
-                        userNode.setAttributes(userAttributes);
+                        userNode.addAttribute("nType", "u");
                         if (SexType.girl.getValue().equals(user.getSex())) {
                             userNode.setIconCls(OrganService.ICON_USER_RED);
                         } else {

@@ -1012,145 +1012,15 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * 快速查找方法
      *
      * @param userIds 用户
+     * @param shortOrganName 机构简称
+     * @param rootId 根ID
      * @returnIDS
      */
-    public List<TreeNode> findOrganUserTreeByUserIds(Collection<String> userIds) throws ServiceException {
+    public List<TreeNode> findOrganUserTreeByUserIds(Collection<String> userIds,Boolean shortOrganName,String rootId) throws ServiceException {
         List<User> users = userService.findUsersByIds(userIds);
-        return findOrganUserTreeByUsers(users, null);
+        return userService.toTreeNodeByUsersAndRootOrganId(users, shortOrganName,rootId);
     }
 
-
-    /**
-     * 快速查找方法
-     *
-     * @param userList    用户列表
-     * @param rootOrganId 根机构ID
-     * @return
-     */
-    public List<TreeNode> findOrganUserTreeByUsers(Collection<User> userList, String rootOrganId) throws ServiceException {
-        int minLevel = Integer.MAX_VALUE;
-        int maxLevel = Integer.MIN_VALUE;
-        Map<Integer, List<OrganExtend>> organMap = Maps.newHashMap();// 树层级 机构
-        Map<String, OrganExtend> organTempMap = Maps.newHashMap();// 机构 机构
-        Map<String, List<User>> userMap = Maps.newHashMap();// 机构ID 用户
-        if (Collections3.isNotEmpty(userList)) {
-            for (User user : userList) {
-                OrganExtend userOrganExtend = OrganUtils.getOrganExtendByUserId(user.getId());
-                if (userOrganExtend == null) {
-                    throw new ServiceException(Result.ERROR, user.getName() + "未设置默认机构.", null);
-                }
-
-                OrganExtend _userOrganExtend = userOrganExtend;
-                while (_userOrganExtend != null) {
-                    List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
-                    if (Collections3.isEmpty(organs)) {
-                        organs = Lists.newArrayList();
-                    }
-                    List<OrganExtend> pList = organMap.get(_userOrganExtend.getTreeLevel());
-                    if (Collections3.isEmpty(pList) || !pList.contains(_userOrganExtend)) {
-                        organs.add(_userOrganExtend);
-                    }
-                    organMap.put(_userOrganExtend.getTreeLevel(), organs);
-                    organTempMap.put(_userOrganExtend.getId(), _userOrganExtend);
-
-                    if (maxLevel < _userOrganExtend.getTreeLevel()) {
-                        maxLevel = _userOrganExtend.getTreeLevel();
-                    }
-                    if (minLevel > _userOrganExtend.getTreeLevel()) {
-                        minLevel = _userOrganExtend.getTreeLevel();
-                    }
-
-                    //补全上级机构
-                    if (StringUtils.isNotBlank(rootOrganId)) {
-                        if (rootOrganId.equals(_userOrganExtend.getId())) {
-                            _userOrganExtend = null;
-                        } else {
-                            _userOrganExtend = OrganUtils.getOrganExtend(_userOrganExtend.getParentId());
-                        }
-                    } else {
-                        _userOrganExtend = null;
-                    }
-
-                }
-
-                List<User> users = userMap.get(userOrganExtend.getId());
-                if (Collections3.isEmpty(users)) {
-                    users = Lists.newArrayList();
-                }
-                users.add(user);
-                userMap.put(userOrganExtend.getId(), users);
-            }
-
-            for (User user : userList) {
-                //补漏(中间漏了的机构)
-                OrganExtend _userOrganExtend = OrganUtils.getOrganExtendByUserId(user.getId());
-                while (_userOrganExtend != null) {
-                    if (_userOrganExtend.getTreeLevel() >= minLevel && !organTempMap.containsKey(_userOrganExtend.getId())) {
-                        List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
-                        if (Collections3.isEmpty(organs)) {
-                            organs = Lists.newArrayList();
-                        }
-                        List<OrganExtend> pList = organMap.get(_userOrganExtend.getTreeLevel());
-                        if (Collections3.isEmpty(pList) || !pList.contains(_userOrganExtend)) {
-                            organs.add(_userOrganExtend);
-                        }
-                        organMap.put(_userOrganExtend.getTreeLevel(), organs);
-                        organTempMap.put(_userOrganExtend.getId(), _userOrganExtend);
-
-                    }
-                    _userOrganExtend = OrganUtils.getOrganExtend(_userOrganExtend.getParentId());
-
-                }
-            }
-
-        }
-
-        List<Integer> levelKeys = Lists.newArrayList(organMap.keySet());
-        Collections.sort(levelKeys);
-
-        List<TreeNode> treeNodes = Lists.newArrayList();
-        for (Integer level : levelKeys) {
-            List<OrganExtend> organExtends = organMap.get(level);
-            for (OrganExtend oe : organExtends) {
-                TreeNode organTreeNode = new TreeNode(oe.getId(), oe.getName());
-                organTreeNode.setpId(oe.getParentId());
-                organTreeNode.addAttribute("nType", "o");
-                organTreeNode.addAttribute("type", oe.getType());
-                organTreeNode.addAttribute("code", oe.getCode());
-                organTreeNode.addAttribute("sysCode", oe.getSysCode());
-                organTreeNode.setIconCls(ICON_GROUP);
-                organTreeNode.setNocheck(true);
-                treeNodes.add(organTreeNode);
-                List<User> _userList = userMap.get(oe.getId());
-                if (Collections3.isEmpty(_userList)) {
-                    continue;
-                }
-
-                _userList.sort((User u1, User u2) -> {
-                    if (u1.getSort() > u2.getSort()) {
-                        return 1;
-                    } else if (u1.getSort() < u2.getSort()) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                });
-
-                for (User user : _userList) {
-                    TreeNode userNode = new TreeNode(user.getId(), user.getName());
-                    userNode.setpId(oe.getId());
-                    userNode.addAttribute("nType", "u");
-                    if (SexType.girl.getValue().equals(user.getSex())) {
-                        userNode.setIconCls(ICON_USER_RED);
-                    } else {
-                        userNode.setIconCls(ICON_USER);
-                    }
-                    organTreeNode.addChild(userNode);
-                }
-            }
-        }
-        return treeNodes;
-    }
 
 
     /*机构扩展表*/

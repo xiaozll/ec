@@ -40,6 +40,8 @@ import org.springframework.util.Assert;
 
 import java.util.*;
 
+import static com.eryansky.modules.sys.service.OrganService.*;
+
 /**
  * 用户表 service
  *
@@ -1170,163 +1172,120 @@ public class UserService extends CrudService<UserDao, User> {
      * @return
      */
     public List<TreeNode> toTreeNodeByUsersAndRootOrganId(Collection<User> unionUsers,Boolean shortOrganName,String rootId) throws ServiceException {
-        int minGrade = 0;
-        int maxGrade = 0;
-        Map<Integer, Set<Organ>> organMap = Maps.newHashMap();// 树层级 机构
+        int minLevel = Integer.MAX_VALUE;
+        int maxLevel = Integer.MIN_VALUE;
+        Map<Integer, List<OrganExtend>> organMap = Maps.newHashMap();// 树层级 机构
+        Map<String, OrganExtend> organTempMap = Maps.newHashMap();// 机构 机构
         Map<String, List<User>> userMap = Maps.newHashMap();// 机构ID 用户
         if (Collections3.isNotEmpty(unionUsers)) {
             for (User user : unionUsers) {
-                OrganExtend userOrgan = OrganUtils.getOrganExtendByUserId(user.getId());
-                if (userOrgan == null) {
+                OrganExtend userOrganExtend = OrganUtils.getOrganExtendByUserId(user.getId());
+                if (userOrganExtend == null) {
                     throw new ServiceException(Result.ERROR, user.getName() + "未设置默认机构.", null);
                 }
-                //补全上级机构
-                OrganExtend _userOrgan = userOrgan;
-                while (_userOrgan != null) {
-                    Set<Organ> organs = organMap.get(_userOrgan.getTreeLevel());
+
+                OrganExtend _userOrganExtend = userOrganExtend;
+                while (_userOrganExtend != null) {
+                    List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
                     if (Collections3.isEmpty(organs)) {
-                        organs = Sets.newHashSet();
+                        organs = Lists.newArrayList();
                     }
-                    Set<Organ> pSet = organMap.get(_userOrgan.getTreeLevel()+1);
-                    if(Collections3.isEmpty(pSet) || !pSet.contains(_userOrgan)){
-                        organs.add(_userOrgan);
+                    List<OrganExtend> pList = organMap.get(_userOrganExtend.getTreeLevel());
+                    if (Collections3.isEmpty(pList) || !pList.contains(_userOrganExtend)) {
+                        organs.add(_userOrganExtend);
                     }
-                    organMap.put(_userOrgan.getTreeLevel(), organs);
-                    if(StringUtils.isNotBlank(rootId) && rootId.equals(_userOrgan.getId())){
-                        _userOrgan = null;
-                    }else{
-                        _userOrgan = OrganUtils.getOrganExtend(_userOrgan.getParentId());
+                    organMap.put(_userOrganExtend.getTreeLevel(), organs);
+                    organTempMap.put(_userOrganExtend.getId(), _userOrganExtend);
+
+                    if (maxLevel < _userOrganExtend.getTreeLevel()) {
+                        maxLevel = _userOrganExtend.getTreeLevel();
+                    }
+                    if (minLevel > _userOrganExtend.getTreeLevel()) {
+                        minLevel = _userOrganExtend.getTreeLevel();
+                    }
+
+                    //补全上级机构
+                    if (StringUtils.isNotBlank(rootId)) {
+                        if (rootId.equals(_userOrganExtend.getId())) {
+                            _userOrganExtend = null;
+                        } else {
+                            _userOrganExtend = OrganUtils.getOrganExtend(_userOrganExtend.getParentId());
+                        }
+                    } else {
+                        _userOrganExtend = null;
                     }
 
                 }
 
-                List<User> users = userMap.get(userOrgan.getId());
+                List<User> users = userMap.get(userOrganExtend.getId());
                 if (Collections3.isEmpty(users)) {
                     users = Lists.newArrayList();
                 }
                 users.add(user);
-                userMap.put(userOrgan.getId(), users);
-                if (maxGrade < userOrgan.getTreeLevel()) {
-                    maxGrade = userOrgan.getTreeLevel();
-                }
-                if (minGrade > userOrgan.getTreeLevel()) {
-                    minGrade = userOrgan.getTreeLevel();
-                }
-
+                userMap.put(userOrganExtend.getId(), users);
             }
+
+            for (User user : unionUsers) {
+                //补漏(中间漏了的机构)
+                OrganExtend _userOrganExtend = OrganUtils.getOrganExtendByUserId(user.getId());
+                while (_userOrganExtend != null) {
+                    if (_userOrganExtend.getTreeLevel() >= minLevel && !organTempMap.containsKey(_userOrganExtend.getId())) {
+                        List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
+                        if (Collections3.isEmpty(organs)) {
+                            organs = Lists.newArrayList();
+                        }
+                        List<OrganExtend> pList = organMap.get(_userOrganExtend.getTreeLevel());
+                        if (Collections3.isEmpty(pList) || !pList.contains(_userOrganExtend)) {
+                            organs.add(_userOrganExtend);
+                        }
+                        organMap.put(_userOrganExtend.getTreeLevel(), organs);
+                        organTempMap.put(_userOrganExtend.getId(), _userOrganExtend);
+
+                    }
+                    _userOrganExtend = OrganUtils.getOrganExtend(_userOrganExtend.getParentId());
+
+                }
+            }
+
         }
-        List<Integer> gradeKeys = Lists.newArrayList(organMap.keySet());
-        Collections.sort(gradeKeys);
 
-        List<TreeNode> tempTreeNodes = Lists.newArrayList();
-        Map<String,TreeNode> tempMap = Maps.newLinkedHashMap();
+        List<Integer> levelKeys = Lists.newArrayList(organMap.keySet());
+        Collections.sort(levelKeys);
 
-        gradeKeys = Lists.newArrayList(organMap.keySet());
-        Collections.sort(gradeKeys);
-        for (Integer grade : gradeKeys) {
-            Set<Organ> organs = organMap.get(grade);
-            for (Organ rs : organs) {
-                TreeNode organTreeNode = new TreeNode(rs.getId(), (null != shortOrganName && shortOrganName && StringUtils.isNotBlank(rs.getShortName())) ? rs.getShortName():rs.getName());
-                organTreeNode.setpId(rs.getParentId());
+        List<TreeNode> treeNodes = Lists.newArrayList();
+        for (Integer level : levelKeys) {
+            List<OrganExtend> organExtends = organMap.get(level);
+            organExtends.sort(Comparator.comparing(OrganExtend::getSort, Comparator.nullsLast(Integer::compareTo)));
+            for (OrganExtend oe : organExtends) {
+                TreeNode organTreeNode = new TreeNode(oe.getId(), (null != shortOrganName && shortOrganName && StringUtils.isNotBlank(oe.getShortName())) ? oe.getShortName():oe.getName());
+                organTreeNode.setpId(oe.getParentId());
                 organTreeNode.addAttribute("nType", "o");
-                organTreeNode.addAttribute("type", rs.getType());
-                organTreeNode.addAttribute("sort", rs.getSort());
-                organTreeNode.addAttribute("code", rs.getCode());
-                organTreeNode.addAttribute("sysCode", rs.getSysCode());
-                organTreeNode.setIconCls(OrganService.ICON_GROUP);
+                organTreeNode.addAttribute("type", oe.getType());
+                organTreeNode.addAttribute("code", oe.getCode());
+                organTreeNode.addAttribute("sysCode", oe.getSysCode());
+                organTreeNode.setIconCls(ICON_GROUP);
 //                organTreeNode.setNocheck(true);
-                List<User> userList = userMap.get(rs.getId());
-                if (Collections3.isNotEmpty(userList)) {
-                    Collections.sort(userList, new Comparator<User>() {
+                treeNodes.add(organTreeNode);
+                List<User> _userList = userMap.get(oe.getId());
+                if (Collections3.isEmpty(_userList)) {
+                    continue;
+                }
+                _userList.sort(Comparator.comparing(User::getSort, Comparator.nullsLast(Integer::compareTo)));
 
-                        @Override
-                        public int compare(User u1, User u2) {
-                            if (u1.getSort() > u2.getSort()) {
-                                return 1;
-                            } else if(u1.getSort() < u2.getSort()) {
-                                return -1;
-                            } else {
-                                return 0;
-                            }
-                        }
-
-                    });
-                    for (User user : userList) {
-                        TreeNode userNode = new TreeNode(user.getId(), user.getName());
-                        userNode.addAttribute("nType", "u");
-                        if (SexType.girl.getValue().equals(user.getSex())) {
-                            userNode.setIconCls(OrganService.ICON_USER_RED);
-                        } else {
-                            userNode.setIconCls(OrganService.ICON_USER);
-                        }
-                        organTreeNode.addChild(userNode);
+                for (User user : _userList) {
+                    TreeNode userNode = new TreeNode(user.getId(), user.getName());
+                    userNode.setpId(oe.getId());
+                    userNode.addAttribute("nType", "u");
+                    if (SexType.girl.getValue().equals(user.getSex())) {
+                        userNode.setIconCls(ICON_USER_RED);
+                    } else {
+                        userNode.setIconCls(ICON_USER);
                     }
-                }
-                boolean flag = true;
-                for(TreeNode treeNode0:tempTreeNodes){
-                    if(treeNode0.getId().equals(organTreeNode.getId())){
-                        flag = false;
-                        break;
-                    }
-                }
-                if(flag){
-                    tempTreeNodes.add(organTreeNode);
-                }
-                tempMap.put(organTreeNode.getId(), organTreeNode);
-            }
-        }
-
-
-        Set<String> keyIds = tempMap.keySet();
-        Set<String> removeKeyIds = Sets.newHashSet();
-        Iterator<String> iteratorKey = keyIds.iterator();
-        while (iteratorKey.hasNext()){
-            String key = iteratorKey.next();
-            TreeNode treeNode = null;
-            for(TreeNode treeNode1:tempTreeNodes){
-                if(treeNode1.getId().equals(key)){
-                    treeNode = treeNode1;
-                    break;
+                    organTreeNode.addChild(userNode);
                 }
             }
-
-            if(StringUtils.isNotBlank(treeNode.getpId())){
-                TreeNode pTreeNode = getParentTreeNode(treeNode.getpId(), tempTreeNodes);
-                if(pTreeNode != null){
-                    for(TreeNode treeNode2:tempTreeNodes){
-                        if(treeNode2.getId().equals(pTreeNode.getId())){
-                            treeNode2.addChild(treeNode);
-                            removeKeyIds.add(treeNode.getId());
-                            break;
-                        }
-                    }
-
-                }
-            }
-
         }
-
-        //remove
-        if(Collections3.isNotEmpty(removeKeyIds)){
-            keyIds.removeAll(removeKeyIds);
-        }
-
-        List<TreeNode> result = Lists.newArrayList();
-        keyIds = tempMap.keySet();
-        iteratorKey = keyIds.iterator();
-        while (iteratorKey.hasNext()){
-            String _key = iteratorKey.next();
-            TreeNode treeNode = null;
-            for(TreeNode treeNode4:tempTreeNodes){
-                if(treeNode4.getId().equals(_key)){
-                    treeNode = treeNode4;
-                    result.add(treeNode);
-                    break;
-                }
-            }
-
-        }
-        return result;
+        return treeNodes;
     }
 
     /**

@@ -464,7 +464,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public TreeNode organToTreeNode(Organ organ, Boolean addUser, Boolean onlyCompany,Boolean shortName) {
-        TreeNode treeNode = new TreeNode(organ.getId(), null != shortName && shortName ? organ.getShortName():organ.getName());
+        TreeNode treeNode = new TreeNode(organ.getId(), null != shortName && shortName && StringUtils.isNotBlank(organ.getShortName()) ? organ.getShortName():organ.getName());
         if (StringUtils.isBlank(organ.getParentId()) || "0".equals(organ.getParentId())) {
             treeNode.setIconCls(ICON_ORGAN_ROOT);
         } else {

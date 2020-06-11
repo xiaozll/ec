@@ -6,7 +6,6 @@
     <meta name="decorator" content="default_sys"/>
     <script type="text/javascript">
         #set( $J = '$' )$J(function(){
-            resetTip();
             loadData();
             $("#btnSubmit").click(function(){
                 $("#pageNo").val(1);

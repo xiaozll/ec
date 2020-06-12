@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" th:href="@{/static/js/adminlte/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" th:href="@{/static/js/adminlte/dist/css/font-awesome.min.css}">
     <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css" th:href="@{/static/js/adminlte/dist/css/ionicons.min.css}">
+    <link rel="stylesheet" href="bower_components/iconfont/iconfont.css" th:href="@{/js/iconfont/iconfont.css}">
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css" th:href="@{/static/js/adminlte/dist/css/AdminLTE.min.css}">
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css" th:href="@{/static/js/adminlte/dist/css/skins/_all-skins.min.css}">
     <link href="/static/js/jquery-jbox/2.3/Skins/Bootstrap/jbox.css" th:href="@{/static/js/jquery-jbox/2.3/Skins/Bootstrap/jbox.css}" rel="stylesheet" />
@@ -307,9 +308,9 @@
           var ul = $("#navbar-collapse").find("ul").eq(0);
           $.each(data, function (i, firstMenu) {
             if (i == 0) {
-              $(ul).append('<li class="active"><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="'+firstMenu.icon+'"></i> '+firstMenu.text+'<span class="sr-only"></span></a></li>');
+              $(ul).append('<li class="active"><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'<span class="sr-only"></span></a></li>');
             } else {
-              $(ul).append('<li><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="'+firstMenu.icon+'"></i> '+firstMenu.text+'</a></li>');
+              $(ul).append('<li><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'</a></li>');
             }
           });
           var defaultFirst = data[0];

@@ -307,7 +307,7 @@
           // 初始化一级导航菜单
           var ul = $("#navbar-collapse").find("ul").eq(0);
           $.each(data, function (i, firstMenu) {
-            if (i == 0) {
+            if (i === 0) {
               $(ul).append('<li class="active"><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'<span class="sr-only"></span></a></li>');
             } else {
               $(ul).append('<li><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'</a></li>');

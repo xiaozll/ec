@@ -62,14 +62,6 @@ a:hover {
     border-left: 1px solid #ccc;
 : 3px 0px 1px 0px;
 }
-.icon {
-	padding: 2px 9px;
-	background: url(../img/icon/tabicons.png) no-repeat;
-}
-
-.icon-sys {
-	background: url(../img/icon/directory.png) no-repeat;
-}
 
 .eu-input{
     height:28px;

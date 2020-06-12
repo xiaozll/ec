@@ -17,6 +17,7 @@ public class Yuicompressor {
 
     private static final String[] DIRS = new String[]{
             "app/src/main/webapp/static/app",
+            "app/src/main/webapp/static/css",
             "app/src/main/webapp/static/js/common",
             "app/src/main/webapp/static/js/easyui/extend",
             "app/src/main/webapp/static/js/adminlte/dist/",

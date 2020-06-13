@@ -71,6 +71,7 @@
 		urls=url.split("|");
 		$("#${input}Preview").children().remove();
 		for (var i=0; i<urls.length; i++){
+            urls[i] = urls[i].replace(/[\"\']/g, '');
 			if (urls[i]!=""){//<c:if test="${type eq 'thumb' || type eq 'images'}">
 				li = "<li><a href=\""+urls[i]+"\" url=\""+urls[i]+"\" class=\"fancybox\" rel=\"gallery\"><img src=\""+urls[i]+"\" url=\""+urls[i]+"\" style=\"max-width:200px;max-height:200px;_height:200px;border:0;padding:3px;\"></a>";//</c:if><c:if test="${type ne 'thumb' && type ne 'images'}">
 				li = "<li><a href=\""+urls[i]+"\" url=\""+urls[i]+"\" target=\"_blank\">"+decodeURIComponent(urls[i].substring(urls[i].lastIndexOf("/")+1))+"</a>";//</c:if>

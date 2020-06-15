@@ -320,6 +320,8 @@ public class SecurityUtils {
         sessionInfo.setUserId(user.getId());
         sessionInfo.setName(user.getName());
         sessionInfo.setLoginName(user.getLoginName());
+        sessionInfo.setAvatar(user.getPhotoUrl());
+        sessionInfo.setGender(user.getSex());
         sessionInfo.setMobile(user.getMobile());
         sessionInfo.setMobileSensitive(user.getMobileSensitive());
         List<String> roleIds = Static.roleService.findRoleIdsByUserId(user.getId());

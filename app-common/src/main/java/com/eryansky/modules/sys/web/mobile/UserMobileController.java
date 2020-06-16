@@ -72,7 +72,7 @@ public class UserMobileController extends SimpleController {
     /**
      * 修改密码 保存
      *
-     * @param model
+     * @param id 用戶ID
      * @param password
      * @param newPassword
      * @return
@@ -80,7 +80,10 @@ public class UserMobileController extends SimpleController {
     @Logging(logType = LogType.access,value = "修改密码")
     @RequestMapping(value = "savePassword")
     @ResponseBody
-    public Result savePassword(@ModelAttribute("model")User model, String password, String newPassword) {
+    public Result savePassword(@RequestParam(name = "id") String id,
+                               @RequestParam(name = "password")String password,
+                               @RequestParam(name = "newPassword")String newPassword) {
+        User model = userService.get(id);
         if (model == null || StringUtils.isBlank(model.getId())) {
             throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
         }

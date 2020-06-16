@@ -190,7 +190,12 @@
             <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.tmatesoft.svnkit</groupId>
+            <artifactId>svnkit</artifactId>
+            <version>1.10.1</version>
+            <scope>test</scope>
+        </dependency>
 
 
         <dependency>

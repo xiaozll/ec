@@ -13,9 +13,7 @@ public class CodeCount {
     static long whiteLine = 0;
 
     public static void main(String[] args) {
-//        String rootDir = "D:\\work_jf\\workspace\\is\\app\\src\\main\\";
         String rootDir = SvnKitUtils.rootDir ;
-//        String[] modules = new String[]{"sys","cms","disk","oa","platform","notice","weixin","mobile","mail"};
         String[] modules = SvnKitUtils.modules;
 
         for(int i =0;i<modules.length;i++){

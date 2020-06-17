@@ -91,10 +91,10 @@ public class UserMobileController extends SimpleController {
         if (model == null || StringUtils.isBlank(model.getId())) {
             throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
         }
-        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
-        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
-            throw new ActionException("未授权修改账号密码！");
-        }
+//        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
+//        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
+//            throw new ActionException("未授权修改账号密码！");
+//        }
         String originalPassword = model.getPassword(); //数据库存储的原始密码
         String pagePassword = password; //页面输入的原始密码（未加密）
         if (!originalPassword.equals(Encrypt.e(pagePassword))) {

@@ -11,6 +11,7 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.User;
@@ -227,6 +228,7 @@ public class UserMobileController extends SimpleController {
      * @param loginName
      * @return
      */
+    @RequiresUser(required = false)
     @RequestMapping(value = {"detailByLoginName"})
     @ResponseBody
     public Result detailByLoginName(String loginName) {

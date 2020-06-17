@@ -218,4 +218,18 @@ public class UserMobileController extends SimpleController {
     public Result detail(@ModelAttribute("model") User model) {
         return Result.successResult().setObj(model);
     }
+
+
+    /**
+     * 详细信息
+     *
+     * @param loginName
+     * @return
+     */
+    @RequestMapping(value = {"detailByLoginName"})
+    @ResponseBody
+    public Result detailByLoginName(String loginName) {
+        User model = UserUtils.getUserByLoginName(loginName);
+        return Result.successResult().setObj(model);
+    }
 }

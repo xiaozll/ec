@@ -24,7 +24,9 @@ $(function () {
     initSelectUser();
 
     if(noticeId != "") {
-        view(noticeId,hasRepeatPermission);
+        window.setTimeout(function(){
+            view(noticeId,hasRepeatPermission);
+        },500);
     }
     mymessage();
 });

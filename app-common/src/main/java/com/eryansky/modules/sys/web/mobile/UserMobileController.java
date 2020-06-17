@@ -80,10 +80,11 @@ public class UserMobileController extends SimpleController {
     @Logging(logType = LogType.access,value = "修改密码")
     @RequestMapping(value = "savePassword")
     @ResponseBody
-    public Result savePassword(@RequestParam(name = "id") String id,
+    public Result savePassword(@RequestParam(name = "id",required = false) String id,
+                               @RequestParam(name = "loginName",required = false) String loginName,
                                @RequestParam(name = "password")String password,
                                @RequestParam(name = "newPassword")String newPassword) {
-        User model = userService.get(id);
+        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
         if (model == null || StringUtils.isBlank(model.getId())) {
             throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
         }

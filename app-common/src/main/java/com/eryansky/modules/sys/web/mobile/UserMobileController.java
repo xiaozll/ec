@@ -58,6 +58,7 @@ public class UserMobileController extends SimpleController {
      * @param uiModel
      * @return
      */
+    @RequiresUser(required = false)
     @RequestMapping(value = "password")
     public String password(@ModelAttribute("model")User model, String msg, Model uiModel) {
         if(null == model || StringUtils.isBlank(model.getId())){
@@ -78,6 +79,7 @@ public class UserMobileController extends SimpleController {
      * @param newPassword
      * @return
      */
+    @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
     @RequestMapping(value = "savePassword")
     @ResponseBody
@@ -225,14 +227,16 @@ public class UserMobileController extends SimpleController {
     /**
      * 详细信息
      *
+     * @param id
      * @param loginName
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = {"detailByLoginName"})
+    @RequestMapping(value = {"detailByIdOrLoginName"})
     @ResponseBody
-    public Result detailByLoginName(String loginName) {
-        User model = UserUtils.getUserByLoginName(loginName);
+    public Result detailByIdOrLoginName(String id,
+                                    String loginName) {
+        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
         return Result.successResult().setObj(model);
     }
 }

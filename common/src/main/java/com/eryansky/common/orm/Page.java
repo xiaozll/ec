@@ -296,12 +296,14 @@ public class Page<T> implements Serializable{
 	 * 获得排序字段,无默认值. 多个排序字段时用','分隔.
 	 */
 	public String getOrderBy() {
-		// SQL过滤，防止注入
-		String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|((extractvalue|updatexml)([\\s]*?)\\()|"
-				+ "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute|case when)\\b)";
-		java.util.regex.Pattern sqlPattern = java.util.regex.Pattern.compile(reg, java.util.regex.Pattern.CASE_INSENSITIVE);
-		if (sqlPattern.matcher(orderBy).find()) {
-			return "";
+		if(null != orderBy && !"".equals(orderBy)){
+			// SQL过滤，防止注入
+			String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|((extractvalue|updatexml)([\\s]*?)\\()|"
+					+ "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute|case when)\\b)";
+			java.util.regex.Pattern sqlPattern = java.util.regex.Pattern.compile(reg, java.util.regex.Pattern.CASE_INSENSITIVE);
+			if (sqlPattern.matcher(orderBy).find()) {
+				return "";
+			}
 		}
 		return orderBy;
 	}

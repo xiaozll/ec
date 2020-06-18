@@ -16,8 +16,11 @@ import com.eryansky.modules.sys._enum.YesOrNo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.springframework.core.io.DefaultResourceLoader;
 
 import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -445,6 +448,34 @@ public class AppUtils {
         Properties properties = new Properties();
         map.forEach(properties::put);
         return properties;
+    }
+
+    /**
+     * 获取工程路径
+     *
+     * @return
+     */
+    public static String getProjectPath() {
+        try {
+            File file = new DefaultResourceLoader().getResource("").getFile();
+            if (file != null) {
+                while (true) {
+                    File f = new File(file.getPath() + File.separator + "src" + File.separator + "main");
+                    if (f == null || f.exists()) {
+                        break;
+                    }
+                    if (file.getParentFile() != null) {
+                        file = file.getParentFile();
+                    } else {
+                        break;
+                    }
+                }
+                return file.toString();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

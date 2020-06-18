@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 与具体ORM实现无关的分页参数及查询结果封装.
@@ -300,7 +301,7 @@ public class Page<T> implements Serializable{
 			// SQL过滤，防止注入
 			String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|((extractvalue|updatexml)([\\s]*?)\\()|"
 					+ "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute|case when)\\b)";
-			java.util.regex.Pattern sqlPattern = java.util.regex.Pattern.compile(reg, java.util.regex.Pattern.CASE_INSENSITIVE);
+			Pattern sqlPattern = Pattern.compile(reg, Pattern.CASE_INSENSITIVE);
 			if (sqlPattern.matcher(orderBy).find()) {
 				return "";
 			}

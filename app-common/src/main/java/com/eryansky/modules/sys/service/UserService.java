@@ -986,6 +986,25 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
+     * 根据岗位查询（分页）
+     *
+     * @param page 分页对象
+     * @param postId 岗位ID
+     * @param postCode 岗位编码
+     * @return
+     */
+    public Page<User> findPageByPost(Page<User> page,String postId,String postCode) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put("postId", postId);
+        parameter.put("postCode", postCode);
+        return page.setResult(dao.findUsersByPost(parameter));
+    }
+
+
+    /**
      * 根据岗位查询
      *
      * @param postId 岗位ID
@@ -1063,6 +1082,29 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("organId", organId);
         parameter.put("organCode", organCode);
         return dao.findListByPostAndOrgan(parameter);
+    }
+
+
+    /**
+     * 根据岗位查询（分页）
+     *
+     * @param page  分页对象
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @param organCode 机构编码
+     * @return
+     */
+    public Page<User> findPageByPostAndOrgan(Page<User> page,String postId,String postCode, String organId, String organCode) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put("postId", postId);
+        parameter.put("postCode", postCode);
+        parameter.put("organId", organId);
+        parameter.put("organCode", organCode);
+        return page.setResult(dao.findListByPostAndOrgan(parameter));
     }
 
     /**

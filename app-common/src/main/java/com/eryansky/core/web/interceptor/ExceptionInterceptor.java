@@ -34,7 +34,7 @@ import java.util.Set;
 public class ExceptionInterceptor implements HandlerExceptionResolver {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-
+    private final static String MSG_DETAIL = " 详细信息:";
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         Result result = null;
@@ -51,7 +51,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         //Ajax方式返回错误信息
         String emsg = ex.getMessage();
         StringBuilder sb = new StringBuilder();
-        final String MSG_DETAIL = " 详细信息:";
+
         boolean isWarn = false;//是否是警告级别的异常
         Object obj = null;//其它信息
         sb.append("发生异常:");
@@ -86,7 +86,8 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         //空指针异常
         else if(Exceptions.isCausedBy(ex, NullPointerException.class)){
-            sb.append("空指针异常！");
+            sb.append("空指针异常，请联系管理员！");
+//            sb.append("空指针异常！");
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }
@@ -113,7 +114,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }else{
-                sb.append("未知异常！");
+                sb.append("未知异常，请联系管理员！");
             }
         }
         if(isWarn){

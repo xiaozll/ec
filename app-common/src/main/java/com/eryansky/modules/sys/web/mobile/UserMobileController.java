@@ -148,8 +148,12 @@ public class UserMobileController extends SimpleController {
             throw new ActionException("未授权修改账号信息！");
         }
         userService.save(model);
-        //刷新Session信息
-        SecurityUtils.reloadSession(model.getId());
+        try {
+            //刷新Session信息
+            SecurityUtils.reloadSession(model.getId());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
         return Result.successResult();
     }
 

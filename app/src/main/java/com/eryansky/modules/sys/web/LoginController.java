@@ -507,12 +507,17 @@ public class LoginController extends SimpleController {
 
     /**
      * 异步方式返回session信息
+     * @reload 刷新Session信息
      */
     @RequestMapping(value = {"sessionInfo"})
     @ResponseBody
-    public Result sessionInfo() {
+    public Result sessionInfo(Boolean reload) {
         Result result = Result.successResult();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if (null != reload && reload) {
+            SecurityUtils.reloadSession(sessionInfo.getUserId());
+            sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        }
         result.setObj(sessionInfo);
         if (logger.isDebugEnabled()) {
             logger.debug(result.toString());

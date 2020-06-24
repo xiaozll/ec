@@ -435,6 +435,30 @@ public class SecurityUtils {
     }
 
     /**
+     * 重新加载当前登录用户Session信息
+     * @return
+     */
+    public static SessionInfo reloadCurrentSession(){
+        SessionInfo sessionInfo = getCurrentSessionInfo();
+        if(null == sessionInfo){
+            return null;
+        }
+        return putUserToSession(sessionInfo.getSessionId(),getCurrentUser());
+    }
+
+    /**
+     * 重新加载用户Session信息
+     * @param userId 用户ID
+     * @return
+     */
+    public static void reloadSession(String userId){
+        List<SessionInfo> sessionInfos = findSessionInfoByUserId(userId);
+        sessionInfos.forEach(sessionInfo -> {
+            putUserToSession(sessionInfo.getSessionId(),UserUtils.getUser(sessionInfo.getUserId()));
+        });
+    }
+
+    /**
      * 重新加载当前登录用户权限
      * @return
      */

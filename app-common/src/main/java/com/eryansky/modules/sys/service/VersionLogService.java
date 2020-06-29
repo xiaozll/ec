@@ -83,7 +83,7 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      * @return
      */
     public VersionLog getLatestVersionLog(String app,String versionLogType) {
-        return getLatestVersionLog(app,versionLogType, YesOrNo.YES.getValue());
+        return getLatestVersionLog(app,versionLogType, YesOrNo.YES.getValue(),YesOrNo.NO.getValue());
     }
 
     /**
@@ -94,11 +94,12 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      * @param isPub
      * @return
      */
-    public VersionLog getLatestVersionLog(String app,String versionLogType,String isPub) {
+    public VersionLog getLatestVersionLog(String app,String versionLogType,String isPub,String isShelf) {
         VersionLog entity = new VersionLog();
         entity.setApp(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID);
         entity.setVersionLogType(versionLogType);
         entity.setIsPub(isPub);
+        entity.setIsShelf(isShelf);
         return dao.getLatestVersionLog(entity);
     }
 }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file="/common/meta.jsp"%>
-<%@ include file="/common/uploadify.jsp"%>
+<%@ include file="/common/huploadify.jsp"%>
 <script type="text/javascript">
     var isAdmin = ${not empty isAdmin ? isAdmin: false};
 </script>

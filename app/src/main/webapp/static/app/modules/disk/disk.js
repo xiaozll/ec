@@ -84,7 +84,7 @@ function loadFileDatagrid() {
             width: 100
         },{
             field: 'updateTime',
-            title: '上传时间',
+            title: '更新时间',
             sortable: true,
             width: 200
         },

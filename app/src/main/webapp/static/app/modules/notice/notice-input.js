@@ -147,7 +147,7 @@ function uploadify() {
         },
         onUploadComplete: function (file, data) {
             data = eval("(" + data + ")");
-            if (data.code != undefined && data.code == "1") {
+            if (data.code != undefined && data.code === 1) {
                 fileIdArray.push(data['obj']['id']);
                 var _fileIds = fileIdArray.join(",");
                 $("#fileIds").val(_fileIds);

@@ -20,7 +20,7 @@
          style="width:180px; text-align: left;padding:5px;">
            <div style="padding: 5px;">
             <a onclick="javascript:try {
-                        parent.addTabs({id:'diskSearch',title: '文件检索',close: true,url: '${ctxAdmin}/disk/search',urlType: 'relative'});
+                        parent.addTabs({id:'diskSearch',title: '文件检索',close: true,url: '${ctxAdmin}/disk/search',urlType: ''});
                     } catch(e) {
                         eu.addTab(window.parent.layout_center_tabs, '文件检索','${ctxAdmin}/disk/search', true,'eu-icon-disk_search','',false);
                     }" class="easyui-linkbutton"

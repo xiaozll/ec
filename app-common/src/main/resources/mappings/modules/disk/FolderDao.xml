@@ -181,7 +181,7 @@
                 AND  a.parent_id = #{parentId}
             </if>
             <if test="excludeFolderId != null and excludeFolderId !=''">
-                AND a.id <![CDATA[ <> ]]> #{excludeFolderId} AND a.parent_ids NOT LIKE
+               AND (a.id <![CDATA[ <> ]]> #{excludeFolderId} AND a.parent_ids NOT LIKE
                 <choose>
                     <when test="dbName == 'db2'">'%,'||#{excludeFolderId}||',%'</when>
                     <when test="dbName == 'mysql'">CONCAT('%,', #{excludeFolderId}, ',%')</when>

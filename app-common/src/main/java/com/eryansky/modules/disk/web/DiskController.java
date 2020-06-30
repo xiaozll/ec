@@ -266,7 +266,8 @@ public class DiskController extends SimpleController {
         userOwnerTreeNode.addAttribute("folderAuthorize", FolderAuthorize.User.getValue());
         userOwnerTreeNode.setIconCls(ICON_DISK);
         treeNodes.add(userOwnerTreeNode);
-        if(DiskUtils.isDiskAdmin(sessionInfo.getUserId())){
+        boolean isAdmin = DiskUtils.isDiskAdmin(sessionInfo.getUserId());
+        if(isAdmin){
             TreeNode systemTreeNode = new TreeNode(FolderAuthorize.SysTem.getValue(), FolderAuthorize.SysTem.getDescription());
             systemTreeNode.addAttribute(NODE_TYPE, NType.FolderAuthorize.toString());
             systemTreeNode.addAttribute("folderAuthorize", FolderAuthorize.SysTem.getValue());
@@ -274,8 +275,7 @@ public class DiskController extends SimpleController {
             treeNodes.add(systemTreeNode);
         }
 
-        List<Folder> userFolders = folderService.findNormalTypeFoldersByUserId(loginUserId);
-//        List<Folder> userFolders = folderService.findNormalTypeAndSystemFoldersByUserId(loginUserId);
+        List<Folder> userFolders = isAdmin ? folderService.findNormalTypeAndSystemFoldersByUserId(loginUserId) : folderService.findNormalTypeFoldersByUserId(loginUserId);
 
         List<TreeNode> userFolderTreeNodes = Lists.newArrayList();
         for (Folder folder : userFolders) {

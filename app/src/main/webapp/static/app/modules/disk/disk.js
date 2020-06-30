@@ -235,6 +235,7 @@ function loadDiskTree() {
                     $(this).tree('select', defaultSelectedNode.target);
                 }
             }
+            $(this).tree("expandAll");
             var rootNodes = $(this).tree("getRoots");
             if (defaultSelectedNode == null) {
             	$folder_tree.tree("select", rootNodes[0].target);

@@ -67,6 +67,12 @@
             <input id="parentId" name="parentId" style="width: 260px;height: 28px;" />
         </div>
         <div>
+            <label>排序号:</label>
+            <input name="sort" type="text" class="easyui-validatebox textbox" value="${model.sort}"
+                   maxLength="11"
+                   data-options="validType:['number']">
+        </div>
+        <div>
             <label>备注:</label>
             <%--<textarea maxLength="255" name="remark"--%>
                       <%--style="position: relative;resize: none;height: 75px;width: 260px;">${model.remark}</textarea>--%>

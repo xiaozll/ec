@@ -126,9 +126,9 @@ public class FolderService extends TreeService<FolderDao, Folder> {
 
     public TreeNode folderToTreeNode(Folder folder) {
         TreeNode treeNode = new TreeNode(folder.getId(), folder.getName());
-        treeNode.getAttributes().put(DiskController.NODE_TYPE,
+        treeNode.addAttribute(DiskController.NODE_TYPE,
                 DiskController.NType.Folder.toString());
-        treeNode.getAttributes().put(DiskController.NODE_USERNAME, folder.getUserName());
+        treeNode.addAttribute(DiskController.NODE_USERNAME, folder.getUserName());
         treeNode.setIconCls("icon-folder");
         treeNode.setpId(folder.getParentId());
         return treeNode;

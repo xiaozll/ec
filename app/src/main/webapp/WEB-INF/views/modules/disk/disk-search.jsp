@@ -94,8 +94,8 @@ function loadSearchDatagrid() {
                 width: 100
             },
             {
-                field: 'createTime',
-                title: '创建时间',
+                field: 'updateTime',
+                title: '更新时间',
                 sortable: true,
                 width: 200
             },
@@ -369,20 +369,22 @@ function loadFileSize() {
                     </td>
                     <td>云盘类型:<input  id="folderAuthorize"  name="folderAuthorize"  style="width: 160px;height: 28px;"/></td>
                     <td>
-                        创建时间:<input  id="startTime" name="startTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd 00:00:00'" style="width: 120px"/>
+                        更新时间:<input  id="startTime" name="startTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd HH:mm'" style="width: 120px"/>
                         ~
-                        <input id="endTime" name="endTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd 23:59:59'" style="width: 120px"/>
+                        <input id="endTime" name="endTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd HH:mm'" style="width: 120px"/>
                     </td>
                     <td> <iframe id="annexFrame" src="" frameborder="no" style="padding: 0;border: 0;width: 300px;height: 26px;"></iframe>
                     </td>
                 </tr>
                 <tr >
                     <td colspan="2">
-                        <table>
-                            <td style="white-space:nowrap;">拥有者:</td>
-                            <td ><select id="personIds" name="personIds" style="width: 250px;"></select></td>
-                            <td ><a href="#" class="easyui-linkbutton" data-options="iconCls:'eu-icon-user'" style="width: 100px;" onclick="selectUser();">选择</a></td>
-                        </table>
+                        <c:if test="${isAdmin}">
+                            <table>
+                                <td style="white-space:nowrap;">拥有者:</td>
+                                <td ><select id="personIds" name="personIds" style="width: 250px;"></select></td>
+                                <td ><a href="#" class="easyui-linkbutton" data-options="iconCls:'eu-icon-user'" style="width: 100px;" onclick="selectUser();">选择</a></td>
+                            </table>
+                        </c:if>
                     </td>
                     <td>文件大小:<input  id="sizeType" name="sizeType" style="width: 160px;height: 28px;"/>
                         <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',onClick:search">查询</a>

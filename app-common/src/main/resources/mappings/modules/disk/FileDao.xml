@@ -98,12 +98,30 @@
         <include refid="fileJoins"/>
         <where>
             a.status = #{status}
-            <if test="userId != null and userId !=''">
-                AND a.user_id = #{userId}
-            </if>
             <if test="folderId != null and folderId !=''">
                 AND a.folder_id = #{folderId}
             </if>
+
+            <if test="folderAuthorize != null and folderAuthorize !=''">
+                AND f.folder_authorize = #{folderAuthorize}
+            </if>
+
+            <choose>
+                <when test="isAdmin">
+                    <if test="userId != null and userId !=''">
+                        AND a.user_id = #{userId}
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="userId == null or userId ==''">
+                        AND 1 = 0
+                    </if>
+                    AND ((a.user_id = #{userId} AND f.folder_authorize = '0')
+                    OR f.folder_authorize = "1")
+                    AND f.type = '0'
+                </otherwise>
+            </choose>
+
 
             <if test="query != null and query !=''">
                 AND a.name LIKE
@@ -127,7 +145,17 @@
                     </when>
                 </choose>
             </if>
-
+            <choose>
+                <when test="startTime != null and endTime != null">
+                    AND a.update_time BETWEEN #{startTime} AND #{endTime}
+                </when>
+                <when test="startTime != null and endTime == null">
+                    AND a.update_time <![CDATA[>=]]> #{startTime}
+                </when>
+                <when test="startTime == null and endTime != null">
+                    AND a.update_time <![CDATA[<=]]> #{endTime}
+                </when>
+            </choose>
         </where>
         <choose>
             <when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">

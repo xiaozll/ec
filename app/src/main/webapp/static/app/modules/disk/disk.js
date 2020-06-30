@@ -7,6 +7,7 @@ var $folder_file_datagrid;
 var defaultSelectedNode = null; //存放被选中的节点对象 临时变量
 var editRow = undefined;
 var editRowData = undefined;
+var isAdmin = isAdmin;
 var folder_file_toolbar = {
     text: '上传文件',
     iconCls: 'eu-icon-upload',
@@ -82,7 +83,7 @@ function loadFileDatagrid() {
             title: '上传人',
             width: 100
         },{
-            field: 'createTime',
+            field: 'updateTime',
             title: '上传时间',
             sortable: true,
             width: 200
@@ -98,7 +99,8 @@ function loadFileDatagrid() {
             	        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-cancel\"' onclick='rejectChanges(" + rowIndex + ");' >取消  </a>";
             	    } else {
             	        operateHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-disk_download\"' onclick='downloadFile(\"" + rowData.fileId + "\")'>下载</a>";
-                        var editHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='beginEdit(" + rowIndex + ")'>更名</a>";
+
+            	        var editHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='beginEdit(" + rowIndex + ")'>更名</a>";
                         var delHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-remove\"' onclick='delFolderFile(\"" + rowData.id + "\",\"" + rowData.name + "\")'>删除</a>&nbsp";
                         operateHtml +=  editHtml;
                         operateHtml +=  delHtml;
@@ -158,6 +160,7 @@ function loadDiskTree() {
         onSelect: function(node) {
         	if (true && $folder_file_datagrid) {
         	    var nType = node.attributes["nType"];
+        	    var folderAuthorize = node.attributes["folderAuthorize"];
 
                 var _toolbar =  [{
                     text: '批量下载',
@@ -168,8 +171,14 @@ function loadDiskTree() {
                 }];
                 var _queryParams = {};
 
-                if (("FolderAuthorize" == nType &&'0' == node.id) || ("Folder" == nType)) { //我的云盘
-                    _toolbar.unshift(folder_file_toolbar);
+                if ("FolderAuthorize" == nType){
+                    if('0' == node.id || ('1' == node.id && "1" === folderAuthorize && isAdmin)){
+                        _toolbar.unshift(folder_file_toolbar);
+                    }
+                }else if ("Folder" == nType){
+                    if(('0' == folderAuthorize  || ("1" === folderAuthorize && isAdmin))){
+                        _toolbar.unshift(folder_file_toolbar);
+                    }
                 }
 
         	    if ("Folder" == nType) {
@@ -322,7 +331,7 @@ function showFolderDialog(folderId) {
             var nType = selectedNode.attributes['nType'];
             var nodeId = selectedNode.id;
             var parentFolderId = '';
-            if ("FolderAuthorize" == nType && ("0" == nodeId) ) { //一级目录
+            if ("FolderAuthorize" == nType && ("0" == nodeId || "1" == nodeId) ) { //一级目录
                 folderAuthorize = nodeId;
             } else if ("Folder" == nType) { //文件夹目录
                 parentFolderId = nodeId;

@@ -23,6 +23,7 @@ import com.eryansky.common.web.utils.DownloadUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.disk.mapper.Folder;
+import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -105,6 +106,8 @@ public class DiskController extends SimpleController {
     @RequestMapping(value = {""})
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk");
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        modelAndView.addObject("isAdmin",DiskUtils.isDiskAdmin(sessionInfo.getUserId()));
         return modelAndView;
     }
 
@@ -132,7 +135,7 @@ public class DiskController extends SimpleController {
     }
 
     /**
-     * 文件授权下拉框
+     * 文件夾授权下拉框
      *
      * @return
      */
@@ -150,12 +153,10 @@ public class DiskController extends SimpleController {
         Combobox combobox = new Combobox(FolderAuthorize.User.getValue(), FolderAuthorize.User.getDescription());
         cList.add(combobox);
 
-        if ("search".equals(requestType)) {
-            combobox = new Combobox(FolderAuthorize.SysTem.getValue(), FolderAuthorize.SysTem.getDescription());
-            cList.add(combobox);
+        if("search".equals(requestType) || DiskUtils.isDiskAdmin(SecurityUtils.getCurrentUserId())){
+            Combobox systemCombobox = new Combobox(FolderAuthorize.SysTem.getValue(), FolderAuthorize.SysTem.getDescription());
+            cList.add(systemCombobox);
         }
-
-
         return cList;
     }
 
@@ -192,6 +193,10 @@ public class DiskController extends SimpleController {
     @RequestMapping(value = {"saveFolder"})
     @ResponseBody
     public Result saveFolder(@ModelAttribute("model") Folder folder) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if(FolderAuthorize.SysTem.getValue().equals(folder.getFolderAuthorize()) && !DiskUtils.isDiskAdmin(sessionInfo.getUserId())){
+            return Result.errorResult().setMsg("未授权该操作");
+        }
         if (StringUtils.isBlank(folder.getUserId())) {
             folder.setUserId(SecurityUtils.getCurrentUserId());
         }
@@ -209,6 +214,14 @@ public class DiskController extends SimpleController {
     @RequestMapping(value = {"folderRemove/{folderId}"})
     @ResponseBody
     public Result folderRemove(@PathVariable String folderId) {
+        Folder folder = folderService.get(folderId);
+        if(null == folder){
+            return Result.warnResult().setMsg("数据不存在,"+ folderId);
+        }
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if(FolderAuthorize.SysTem.getValue().equals(folder.getFolderAuthorize()) && !DiskUtils.isDiskAdmin(sessionInfo.getUserId())){
+            return Result.errorResult().setMsg("未授权该操作");
+        }
         folderService.deleteFolderAndFiles(folderId);
         return Result.successResult();
     }
@@ -220,10 +233,18 @@ public class DiskController extends SimpleController {
      */
     public TreeNode folderToTreeNode(Folder folder) {
         TreeNode treeNode = new TreeNode(folder.getId(), folder.getName());
-        treeNode.getAttributes().put(DiskController.NODE_TYPE, DiskController.NType.Folder.toString());
-        treeNode.getAttributes().put(DiskController.NODE_OPERATE, true);
+        treeNode.addAttribute(DiskController.NODE_TYPE, DiskController.NType.Folder.toString());
+        treeNode.addAttribute("folderAuthorize", folder.getFolderAuthorize());
+        treeNode.addAttribute(DiskController.NODE_OPERATE, true);
         treeNode.setIconCls(ICON_FOLDER);
         treeNode.setpId(folder.getParentId());
+        if (StringUtils.isBlank(treeNode.getpId())) {
+            FolderAuthorize folderAuthorize = FolderAuthorize.getByValue(folder.getFolderAuthorize());
+            if (null != folderAuthorize) {
+                treeNode.setpId(folderAuthorize.getValue());
+            }
+
+        }
         return treeNode;
     }
 
@@ -241,17 +262,28 @@ public class DiskController extends SimpleController {
         String loginUserId = sessionInfo.getUserId(); // 登录人Id
 
         TreeNode userOwnerTreeNode = new TreeNode(FolderAuthorize.User.getValue(), FolderAuthorize.User.getDescription());
-        userOwnerTreeNode.getAttributes().put(NODE_TYPE, NType.FolderAuthorize.toString());
+        userOwnerTreeNode.addAttribute(NODE_TYPE, NType.FolderAuthorize.toString());
+        userOwnerTreeNode.addAttribute("folderAuthorize", FolderAuthorize.User.getValue());
         userOwnerTreeNode.setIconCls(ICON_DISK);
         treeNodes.add(userOwnerTreeNode);
+        if(DiskUtils.isDiskAdmin(sessionInfo.getUserId())){
+            TreeNode systemTreeNode = new TreeNode(FolderAuthorize.SysTem.getValue(), FolderAuthorize.SysTem.getDescription());
+            systemTreeNode.addAttribute(NODE_TYPE, NType.FolderAuthorize.toString());
+            systemTreeNode.addAttribute("folderAuthorize", FolderAuthorize.SysTem.getValue());
+            systemTreeNode.setIconCls(ICON_DISK);
+            treeNodes.add(systemTreeNode);
+        }
 
         List<Folder> userFolders = folderService.findNormalTypeFoldersByUserId(loginUserId);
+//        List<Folder> userFolders = folderService.findNormalTypeAndSystemFoldersByUserId(loginUserId);
+
         List<TreeNode> userFolderTreeNodes = Lists.newArrayList();
         for (Folder folder : userFolders) {
             userFolderTreeNodes.add(this.folderToTreeNode(folder));
         }
-        treeNodes.addAll(AppUtils.toTreeTreeNodes(userFolderTreeNodes));
-        return treeNodes;
+
+        treeNodes.addAll(userFolderTreeNodes);
+        return AppUtils.toTreeTreeNodes(treeNodes);
     }
 
     /**
@@ -271,17 +303,23 @@ public class DiskController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String loginUserId = sessionInfo.getUserId(); // 登录人Id
 
-        if (folderId == null && folderAuthorize == null) {
+        if (StringUtils.isBlank(folderId) && StringUtils.isBlank(folderAuthorize)) {
             json = JsonMapper.getInstance().toJson(new Datagrid());
         } else {
-            Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
-            Folder _folder = folderService.initHideFolderAndSaveForUser(loginUserId);
+            Page<File> page = new Page<>(SpringMVCHolder.getRequest());
+            Folder _folder;
             File entity = new File();
+            if(FolderAuthorize.SysTem.getValue().equals(folderAuthorize)){//系统云盘
+                 _folder = StringUtils.isNotBlank(folderId) ? new Folder(folderId) : folderService.initHideFolderAndSaveForSystem(loginUserId);
+            }else{//我的云盘
+                _folder = StringUtils.isNotBlank(folderId) ? new Folder(folderId) : folderService.initHideFolderAndSaveForUser(loginUserId);
+                entity.setUserId(loginUserId);
+            }
             entity.setQuery(fileName);
             entity.setFolderId(_folder.getId());
             page = fileService.findPage(page, entity);
 
-            Datagrid<File> dg = new Datagrid<File>(page.getTotalCount(),
+            Datagrid<File> dg = new Datagrid<>(page.getTotalCount(),
                     page.getResult());
             if (Collections3.isNotEmpty(page.getResult())) {
                 for (File file : page.getResult()) {
@@ -296,7 +334,7 @@ public class DiskController extends SimpleController {
             json = JsonMapper.getInstance().toJson(
                     dg,
                     File.class,
-                    new String[]{"id", "fileId", "name", "prettyFileSize", "createTime", "userName"});
+                    new String[]{"id", "fileId", "name", "prettyFileSize", "updateTime", "userName"});
         }
 
         return json;
@@ -349,6 +387,9 @@ public class DiskController extends SimpleController {
         if (FolderAuthorize.User.getValue().equals(folderId) || FolderAuthorize.User.getValue().equals(folderAuthorize)) {
             String loginUserId = SecurityUtils.getCurrentUserId();
             model = folderService.initHideFolderAndSaveForUser(loginUserId);
+        }else if (FolderAuthorize.SysTem.getValue().equals(folderId) || FolderAuthorize.SysTem.getValue().equals(folderAuthorize)) {
+            String loginUserId = SecurityUtils.getCurrentUserId();
+            model = folderService.initHideFolderAndSaveForSystem(loginUserId);
         } else if (StringUtils.isNotBlank(folderId)) { // 选中文件夹
             model = folderService.get(folderId);
         } else {
@@ -480,14 +521,14 @@ public class DiskController extends SimpleController {
         userId = Collections3.isNotEmpty(personIds) ? personIds.get(0) : userId;
         Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
         page = fileService.searchFilePage(page, userId, fileName,
-                folderAuthorize, sizeType, startTime, endTime);
+                folderAuthorize, sizeType,isAdmin, startTime, endTime);
         if (page != null) {
             Datagrid<File> dg = new Datagrid<File>(page.getTotalCount(),
                     page.getResult());
             json = JsonMapper.getInstance().toJson(
                     dg,
                     File.class,
-                    new String[]{"id", "name", "code", "prettyFileSize", "location", "createTime", "userName"});
+                    new String[]{"id", "name", "code", "prettyFileSize", "location", "createTime", "updateTime", "userName"});
         }
         return json;
 

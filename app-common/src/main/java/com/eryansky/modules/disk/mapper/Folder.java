@@ -44,7 +44,7 @@ public class Folder extends TreeEntity<Folder> {
     private String parentId;
 
     /**
-     * 文件夹类型
+     * 文件夹类型 {@link FolderType}
      */
     private String type;
 

@@ -88,6 +88,7 @@ public class FileService extends CrudService<FileDao, File> {
 
     public Page<File> searchFilePage(Page<File> page, String userId,
                                      String fileName, String folderAuthorize, String fileSizeType,
+                                     boolean isAdmin,
                                      Date startTime, Date endTime) {
         Parameter patameter = new Parameter();
         patameter.put(BaseInterceptor.PAGE, page);
@@ -95,6 +96,7 @@ public class FileService extends CrudService<FileDao, File> {
         patameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
 
         patameter.put("folderAuthorize", folderAuthorize);
+        patameter.put("isAdmin", isAdmin);
         patameter.put("userId", userId);
         patameter.put("query", fileName);
         patameter.put("fileSizeType", fileSizeType);

@@ -2,6 +2,9 @@
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file="/common/meta.jsp"%>
 <%@ include file="/common/uploadify.jsp"%>
+<script type="text/javascript">
+    var isAdmin = ${not empty isAdmin ? isAdmin: false};
+</script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/disk/disk${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <div id="folder_treeMenu_all" class="easyui-menu" style="width:120px;">
     <div name="addFolder" data-options="iconCls:'easyui-icon-add'">新建文件夹</div>

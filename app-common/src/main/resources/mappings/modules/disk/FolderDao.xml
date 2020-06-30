@@ -195,6 +195,23 @@
         ORDER BY a.sort ASC
     </select>
 
+
+    <select id="findNormalTypeAndSystemFoldersByUserId" resultType="Folder">
+        SELECT
+        <include refid="folderColumns"/>
+        FROM t_disk_folder a
+        <include refid="folderJoins"/>
+        <where>
+            a.status = #{status}
+            AND ((a.user_id = #{userId} AND a.folder_authorize = '0')
+            OR a.folder_authorize = "1")
+            <if test="type != null and type !=''">
+                AND a.type = #{type}
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
     <select id="findFoldersByUserId" resultType="Folder">
         SELECT
         <include refid="folderColumns"/>

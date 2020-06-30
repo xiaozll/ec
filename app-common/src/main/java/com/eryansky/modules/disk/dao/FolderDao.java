@@ -33,4 +33,6 @@ public interface FolderDao extends TreeDao<Folder> {
     List<Folder> findFolders(Parameter parameter);
 
     List<Folder> findFoldersByUserId(Parameter parameter);
+
+    List<Folder> findNormalTypeAndSystemFoldersByUserId(Parameter parameter);
 }

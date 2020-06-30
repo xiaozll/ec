@@ -64,7 +64,7 @@
         </div>
         <div>
             <label>上级文件夹:</label>
-            <input id="parentId" name="parent.id" style="width: 260px;height: 28px;" />
+            <input id="parentId" name="parentId" style="width: 260px;height: 28px;" />
         </div>
         <div>
             <label>备注:</label>

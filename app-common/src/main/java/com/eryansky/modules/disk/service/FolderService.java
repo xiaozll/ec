@@ -79,6 +79,25 @@ public class FolderService extends TreeService<FolderDao, Folder> {
     /**
      * 判断和创建个人云盘的默认文件夹
      */
+    public Folder initHideFolderAndSaveForSystem(String userId) {
+        List<Folder> list = findFoldersByUserId(null, FolderType.HIDE.getValue(), FolderAuthorize.SysTem.getValue(), FolderAuthorize.SysTem.getValue());
+        Folder folder = Collections3.isEmpty(list) ? null : list.get(0);
+        if (folder == null) {
+            folder = new Folder();// 创建默认文件夹
+            folder.setUserId(userId);
+            folder.setCode(FolderAuthorize.SysTem.getValue());
+            folder.setType(FolderType.HIDE.getValue());
+            folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
+            folder.setName(FolderAuthorize.SysTem.getDescription()+"_"+FolderType.HIDE.getValue());
+            save(folder);
+        }
+        return folder;
+    }
+
+
+    /**
+     * 判断和创建个人云盘的默认文件夹
+     */
     public Folder initHideFolderAndSaveForUser(String userId) {
         List<Folder> list = findFoldersByUserId(userId, FolderType.HIDE.getValue(), FolderAuthorize.User.getValue(), null);
         Folder folder = Collections3.isEmpty(list) ? null : list.get(0);
@@ -87,7 +106,7 @@ public class FolderService extends TreeService<FolderDao, Folder> {
             folder.setUserId(userId);
             folder.setType(FolderType.HIDE.getValue());
             folder.setFolderAuthorize(FolderAuthorize.User.getValue());
-            folder.setName(FolderType.HIDE.getDescription());
+            folder.setName(FolderAuthorize.User.getDescription()+"_"+FolderType.HIDE.getValue());
             save(folder);
         }
         return folder;
@@ -159,6 +178,15 @@ public class FolderService extends TreeService<FolderDao, Folder> {
     public List<Folder> findNormalTypeFoldersByUserId(String userId) {
         return findFoldersByUserId(userId, FolderType.NORMAL.getValue(), null, null);
     }
+
+    public List<Folder> findNormalTypeAndSystemFoldersByUserId(String userId) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("type", FolderType.NORMAL.getValue());
+        parameter.put("userId", userId);
+        return dao.findNormalTypeAndSystemFoldersByUserId(parameter);
+    }
+
 
     public List<Folder> findFoldersByUserId(String userId, String type, String folderAuthorize, String code) {
         Parameter parameter = new Parameter();

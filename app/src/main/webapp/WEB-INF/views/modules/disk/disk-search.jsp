@@ -68,7 +68,7 @@ function loadSearchDatagrid() {
                 field: 'name',
                 title: '文件名',
                 sortable: true,
-                width: 260,
+                width: 300,
                 formatter: function(value, rowData, rowIndex) {
                     return "<a onclick='downloadFile(\"" + rowData.id + "\")'>" + value + "</a>";
                 }

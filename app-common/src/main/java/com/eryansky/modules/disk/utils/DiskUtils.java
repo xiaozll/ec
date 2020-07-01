@@ -269,14 +269,9 @@ public class DiskUtils {
                 location.append(folderAuthorize.getDescription())
                         .append("：")
                         .append(folderName)
-                        .append("[").
-                        append(folder.getCode()).
-                        append("]");
-                if (FolderAuthorize.User.getValue().equals(folderAuthorize.getValue())) {
-                    location.append("[").
-                            append(userName).
-                            append("[");
-                }
+                        .append("[")
+                        .append(userName)
+                        .append("[");
             }
 
         }

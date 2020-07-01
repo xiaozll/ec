@@ -62,7 +62,7 @@ public class FolderService extends TreeService<FolderDao, Folder> {
         if (folder == null) {
             folder = new Folder();
             folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
-            folder.setName(FolderAuthorize.SysTem.getDescription()+"_"+FolderType.HIDE.getValue());
+            folder.setName(code+"_"+FolderType.HIDE.getValue());
             folder.setCode(code);
             folder.setType(FolderType.HIDE.getValue());
             folder.setUserId(userId);
@@ -88,7 +88,7 @@ public class FolderService extends TreeService<FolderDao, Folder> {
             folder.setCode(FolderAuthorize.SysTem.getValue());
             folder.setType(FolderType.HIDE.getValue());
             folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
-            folder.setName(FolderAuthorize.SysTem.getDescription()+"_"+FolderType.HIDE.getValue());
+            folder.setName(FolderAuthorize.SysTem.getValue()+"_"+FolderType.HIDE.getDescription());
             save(folder);
         }
         return folder;

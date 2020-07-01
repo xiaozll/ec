@@ -265,12 +265,11 @@ public class DiskUtils {
             String userName = folder.getUserName();// 文件夹创建人
             String folderName = folder.getName();// 文件夹名称
             FolderAuthorize folderAuthorize = FolderAuthorize.getByValue(folder.getFolderAuthorize());// 文件夹授权类型
-            if (null != folderAuthorize && FolderAuthorize.User.getValue().equals(folderAuthorize)) {
-                location.append(FolderAuthorize.User.getDescription())
-                        .append("：").append(userName).append(folderName);
-            }else if (null != folderAuthorize && FolderAuthorize.SysTem.getValue().equals(folderAuthorize)) {
-                location.append(FolderAuthorize.SysTem.getDescription())
-                        .append("：").append(folderName);
+            if(null != folderAuthorize){
+                location.append(folderAuthorize.getDescription()).append("：").append(folderName);
+                if (FolderAuthorize.User.getValue().equals(folderAuthorize.getValue())) {
+                    location.append("（").append(userName).append("）");
+                }
             }
 
         }

@@ -68,7 +68,7 @@ function loadSearchDatagrid() {
                 field: 'name',
                 title: '文件名',
                 sortable: true,
-                width: 300,
+                width: 360,
                 formatter: function(value, rowData, rowIndex) {
                     return "<a onclick='downloadFile(\"" + rowData.id + "\")'>" + value + "</a>";
                 }
@@ -102,7 +102,7 @@ function loadSearchDatagrid() {
             {
                 field: 'location',
                 title: '位置',
-                width: 300
+                width: 260
             },
             {
                 field: 'operate_all',

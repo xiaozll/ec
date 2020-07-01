@@ -153,7 +153,7 @@ function uploadify() {
                 $("#fileIds").val(_fileIds);
                 dataMap.put(file.index,data.obj);
             } else {
-                $('#' + file.id).find('.data').html(' - ' + "<font color=#D94600>" + data.msg + "</font>");
+                eu.showAlertMsg(data['msg']);
             }
         },
         onCancel:function(file){
@@ -184,7 +184,7 @@ function delImageFile() {
     $('#head_image_pre').next().hide();
     $('#head_image').val("");
 }
-
+var photoDataMap = new HashMap();
 function uploadifyHeadImage() {
     $('#head_image_uploadify').Huploadify({
         auto:true,
@@ -203,15 +203,15 @@ function uploadifyHeadImage() {
             data = eval("(" + data + ")");
             if (1 === data['code']) {
                 addImageFile(data['obj']['id'],data['obj']['url']);
-                dataMap.put(file.index,data.obj);
+                photoDataMap.put(file.index,data.obj);
             } else {
-                $('#' + file.id).find('.data').html(' - ' + "<font color=#D94600>" + data.msg + "</font>");
+                eu.showAlertMsg(data['msg']);
             }
         },
         onCancel:function(file){
-            var sf = dataMap.get(file['index']);
+            var sf = photoDataMap.get(file['index']);
             delImageFile(sf['id']);
-            dataMap.remove(file['index']);
+            photoDataMap.remove(file['index']);
         }
 
     });

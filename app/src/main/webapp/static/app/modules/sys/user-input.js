@@ -6,12 +6,11 @@ var organs_combotree;
 $(function() {
     loadOrgan();
     loadSex();
-    var result= $.hasUsableFlash();
-    if(!result) {
-        eu.showMsg("您未安装Flash插件，或您的浏览未启用Flash插件！")
+
+    if($('#image').val()){
+        addImageFile($('#image').val());
     }
-    uploadify();
-    $(".uploadify").css({'display': 'inline-block', 'height': '24px', 'padding-right': '18px', 'outline': 'none'});
+    uploadifyImage();
     if(modelId == ""){  //新增
         setSortValue();
         $("input[name=status]:eq(0)").prop("checked",'checked');//状态 初始化值
@@ -52,39 +51,53 @@ function setSortValue() {
     }, 'json');
 }
 
-function uploadify() {
-    $('#file').uploadify({
-        method: 'post',
-        swf: ctxStatic + '/js/uploadify/scripts/uploadify.swf',  //FLash文件路径
-        buttonText: '浏  览',                                 //按钮文本
-        uploader: ctxAdmin + '/sys/user/upload;jsessionid='+jsessionid,
+function addImageFile(id,url) {
+    $('#image').val(id);
+    if(url){
+        $('#image_pre').attr("src", url);
+    }
+    $('#image_pre').show();
+    $('#image_pre').next().show();
+    var left = $('#image_pre').position().left;
+    var top = $('#image_pre').position().top;
+    $('#image_cencel').css({position: "absolute", left: left + 75, top: top + 10, display: "block"});
+}
+
+function delImageFile() {
+    $('#image_pre').attr("src", "");
+    $('#image_pre').hide();
+    $('#image_pre').next().hide();
+    $('#image').val("");
+}
+var imageDataMap = new HashMap();
+function uploadifyImage() {
+    $('#image_uploadify').Huploadify({
+        auto:true,
+        showUploadedPercent:true,
+        showUploadedSize:true,
+        uploader: ctxAdmin + '/sys/user/upload',
+        formData:{},
         fileObjName: 'uploadFile',
-        removeCompleted: false,
+        buttonText: '浏 览',
         multi: false,
-        fileSizeLimit: '1MB', //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        fileTypeDesc: '全部文件', //文件描述
+        fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+        removeTimeout:24*60*60*1000,
         fileTypeExts: '*.gif; *.jpg; *.png; *.bmp',  //上传的文件后缀过滤器
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
-            if(data.code == 1){
-                $('#photo_pre').attr("src",data['obj']['url']);
-                $('#photo_pre').show();
-                $("#photo").val(data['obj']['id']);
+            console.log(file, data, response);
+            if (1 === data['code']) {
+                addImageFile(data['obj']['id'],data['obj']['url']);
+                imageDataMap.put(file.index,data.obj);
+            } else {
+                eu.showAlertMsg(data['msg']);
             }
-            $('#' + file.id).find('.data').html(data.msg);
-
-
-            var uploadify = this;
-            var cancel = $('#file-queue .uploadify-queue-item[id="' + file.id + '"]').find(".cancel a");
-            if (cancel) {
-                cancel.attr("rel", data['obj']['id']);
-                cancel.click(function() {
-                    $('#' + file.id).empty();
-                    delete uploadify.queueData.files[file.id]; //删除上传组件中的附件队列
-                    $('#' + file.id).remove();
-                });
-            }
+        },
+        onCancel:function(file){
+            var sf = imageDataMap.get(file['index']);
+            delImageFile(sf['id']);
+            imageDataMap.remove(file['index']);
         }
 
     });

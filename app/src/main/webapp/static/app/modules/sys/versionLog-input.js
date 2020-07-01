@@ -1,9 +1,9 @@
-var jsessionid = jsessionid;
 var modelId = modelId;
 var modelIsPub = modelIsPub;
 var modelIsTip = modelIsTip;
 var modelIsShelf = modelIsShelf;
-
+var modelFileId = modelFileId;
+var fileSizeLimit = fileSizeLimit;
 $(function () {
     //日志类型 搜索选项
     $('#versionLogType').combobox({
@@ -11,10 +11,6 @@ $(function () {
         editable:false,//是否可编辑
         width:120
     });
-    var result= $.hasUsableFlash();
-    if(!result) {
-        eu.showMsg("您未安装Flash插件，或您浏览未启用Flash插件！")
-    }
     uploadify();
 
     if(modelId == ""){  //新增
@@ -28,29 +24,37 @@ $(function () {
     }
 });
 
+var dataMap = new HashMap();
 function uploadify() {
-    $('#uploadify').uploadify({
-        method: 'post',
-        swf: ctxStatic + '/js/uploadify/scripts/uploadify.swf',
-        buttonText: '浏  览',
-        uploader: ctxAdmin + '/sys/versionLog/upload;jsessionid='+jsessionid,
-        formData:{jsessionid:jsessionid},
+    $('#uploadify').Huploadify({
+        auto:true,
+        showUploadedPercent:true,
+        showUploadedSize:true,
+        uploader: ctxAdmin + '/sys/versionLog/upload',
+        formData:{},
         fileObjName: 'uploadFile',
-        removeCompleted: false,
-        multi: true,
-        fileSizeLimit: '100MB', //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        fileTypeDesc: '全部文件',
+        multi: false,
+        fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+        removeTimeout:24*60*60*1000,
         fileTypeExts: '*.*',
-        onUploadSuccess: function (file, data, response) {
+        onUploadStart:function(file){
+        },
+        onInit:function(obj){
+        },
+        onUploadComplete: function (file, data) {
             data = eval("(" + data + ")");
-            var fileId="";
-            if(data.code != undefined && data.code == 1){
-                fileId=data.obj;
+            console.log(file,data);
+            if (data.code === 1) {
+                $("#fileId").val(data['obj']['id']);
+                dataMap.put(file.index,data.obj);
+            } else {
+                eu.showAlertMsg(data['msg']);
             }
-            $('#' + file.id).find('.data').html(data.msg);
-            $("#fileId").val(fileId);
-            var uploadify = this;
-
+        },
+        onCancel:function(file){
+            var sf = dataMap.get(file['index']);
+            delUpload(sf['id']);
+            dataMap.remove(file['index']);
         }
 
     });
@@ -60,7 +64,30 @@ function loadOrOpen(fileId) {
     $('#annexFrame').attr('src', ctxAdmin + '/disk/fileDownload/' + fileId);
 }
 
-function delUpload(id){
-    $("#fileId").val("");
-    $("#"+id).parent().remove();
+/**
+ * 删除附件 页面删除
+ * @param fileId 后台File ID
+ */
+function delUpload(fileId) {
+    $("#fileId").val('');
+    delUploadFile(fileId);
+}
+
+/**
+ * 删除附件 后台删除
+ * @param fileId 后台File ID
+ */
+function delUploadFile(fileId) {
+    $.ajax({
+        url: ctxAdmin + '/disk/delFolderFile',
+        type: 'post',
+        data: {fileIds: fileId},
+        dataType: 'json',
+        traditional: true,
+        success: function(data) {
+            if (1 === data.code) {
+                $("#"+fileId).remove();
+            }
+        }
+    });
 }

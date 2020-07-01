@@ -2,7 +2,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file="/common/meta.jsp"%>
 <%@ include file="/common/autocomplete.jsp"%>
-<%@ include file="/common/uploadify.jsp"%>
+<%@ include file="/common/huploadify.jsp"%>
 <link href="${ctxStatic}/js/bootstrap/2.3.2/custom/bootstrap-img.css" rel="stylesheet" type="text/css"/>
 <%--<%@ include file="/common/zTree.jsp"%>--%>
 <script type="text/javascript">

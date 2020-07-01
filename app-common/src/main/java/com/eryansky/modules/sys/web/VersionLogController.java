@@ -156,12 +156,10 @@ public class VersionLogController extends SimpleController {
     /**
      * 文件上传
      */
-    @RequiresUser(required = false)
     @RequestMapping(value = {"upload"})
     @ResponseBody
-    public static Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile, String jsessionid) {
-        SessionInfo sessionInfo = SecurityUtils.getSessionInfo(jsessionid);
-        sessionInfo = null != sessionInfo ? sessionInfo : SecurityUtils.getCurrentSessionInfo();
+    public static Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (null == sessionInfo) {
             return Result.errorResult().setMsg("未授权！");
         }
@@ -170,7 +168,7 @@ public class VersionLogController extends SimpleController {
         File file = null;
         try {
             file = DiskUtils.saveSystemFile(VersionLog.FOLDER_VERSIONLOG, sessionInfo.getUserId(), multipartFile);
-            result = Result.successResult().setObj(file.getId()).setMsg("文件上传成功！");
+            result = Result.successResult().setObj(file).setMsg("文件上传成功！");
         } catch (InvalidExtensionException e) {
             exception = e;
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());

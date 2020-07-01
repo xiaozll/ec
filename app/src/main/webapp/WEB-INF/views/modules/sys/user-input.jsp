@@ -1,9 +1,30 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
+<style type="text/css">
+    .img_div{
+        display : inline-block;
+        position : relative;
+    }
+
+    .img_div .delete{
+        position : absolute;
+        top : 5px;
+        right : 5px;
+        color: red;
+        border: 1px solid red;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 20px;
+        width : 20px;
+        height : 20px;
+        line-height: 20px;
+    }
+</style>
 <script type="text/javascript">
     var modelId = '${model.id}';
     var modelStatus = '${model.status}';
     var jsessionid = '${sessionInfo.sessionId}';
+    var fileSizeLimit = '<%=AppConstants.getDiskMaxUploadSize()%>';
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/user-input${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <div>
@@ -59,9 +80,14 @@
         </div>
         <div>
             <label>头像:</label>
-            <input id="photo" name="photo" readonly="readonly" value="${model.photo}" style="display: none" />
-            <img id="photo_pre" class="img-rounded" src="${model.photoUrl}" alt="头像" style="width: 64px; height: 64px;">
-            <input id="file" name="file"  multiple="true" >
+            <div id="image_div" style="margin-left: 96px;">
+                <input id="image" name="photo" readonly="readonly" value="${model.photo}" type="hidden"/>
+                <div class="img_div">
+                    <img id="image_pre" class="img-rounded" src="${model.photoUrl}" alt="头像" style="max-height: 72px;display: none;" />
+                    <div class="delete" onclick="delImageFile();" style="display: none;">x</div>
+                </div>
+                <div id="image_uploadify"></div>
+            </div>
         </div>
         <div>
             <label>性别:</label>

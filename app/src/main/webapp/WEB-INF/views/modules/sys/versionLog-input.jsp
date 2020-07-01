@@ -1,13 +1,13 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ include file="/common/taglibs.jsp" %>
-<%@ include file="/common/uploadify.jsp"%>
-
+<%@ include file="/common/huploadify.jsp"%>
 <script type="text/javascript">
-    var jsessionid = '${sessionInfo.sessionId}';
     var modelId = '${model.id}';
     var modelIsPub = '${model.isPub}';
     var modelIsTip = '${model.isTip}';
     var modelIsShelf = '${model.isShelf}';
+    var modelFileId = '${model.fileId}';
+    var fileSizeLimit = '<%=AppConstants.getDiskMaxUploadSize()%>';
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/versionLog-input${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <div>
@@ -44,6 +44,15 @@
             </label>
         </div>
         <div>
+            <label>是否下架:</label>
+            <label style="text-align: left;width: 80px;">
+                <input type="radio" name="isShelf"  style="width: 20px;" value="1" /> 是
+            </label>
+            <label style="text-align: left;width: 80px;">
+                <input type="radio" name="isShelf" style="width: 20px;" value="0" /> 否
+            </label>
+        </div>
+        <div>
             <label>提示更新:</label>
             <label style="text-align: left;width: 80px;">
                 <input type="radio" name="isTip"  style="width: 20px;" value="1" /> 提示
@@ -59,10 +68,9 @@
         <table style="border: 0px;width: 100%;">
             <tr>
                 <td style="display: inline-block; width: 96px; vertical-align: top;">附件：</td>
-                <td><input id="uploadify" name="file" type="file" multiple="true">
-
-                    <div id="queue"></div>
-                    <input id="fileId" name="fileId" type="hidden" />
+                <td>
+                    <div id="uploadify"></div>
+                    <input id="fileId" name="fileId" type="hidden" value="${model.fileId}" />
                     <div>
                         <c:if test="${not empty file}">
                             <div id='${file.id}' style="font-size: 14px;"><a href="#" onclick="loadOrOpen('${file.id}');" style="color: #0000ff;">${file.name}</a>&nbsp;&nbsp;

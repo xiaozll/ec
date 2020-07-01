@@ -71,14 +71,6 @@
                    data-options="required:true,missingMessage:'请输入登录名.',validType:['CHS','length[2,6]']" />
         </div>
         <div>
-            <label>公司邮箱:</label>
-            <input name="email" type="text" value="${model.email}"  class="easyui-validatebox textbox" validType="email" maxLength="64" />
-        </div>
-        <div>
-            <label>办公电话:</label>
-            <input name="tel" type="text"  value="${model.tel}"  class="easyui-validatebox textbox" validType="phone">
-        </div>
-        <div>
             <label>头像:</label>
             <div id="image_div" style="margin-left: 96px;">
                 <input id="image" name="photo" readonly="readonly" value="${model.photo}" type="hidden"/>
@@ -96,6 +88,14 @@
         <div>
             <label>出生日期:</label>
             <input id="birthday" name="birthday" value="${model.birthday}"  type="text" class="easyui-my97" />
+        </div>
+        <div>
+            <label>公司邮箱:</label>
+            <input name="email" type="text" value="${model.email}"  class="easyui-validatebox textbox" validType="email" maxLength="64" />
+        </div>
+        <div>
+            <label>办公电话:</label>
+            <input name="tel" type="text"  value="${model.tel}"  class="easyui-validatebox textbox" validType="phone">
         </div>
         <div>
             <label>手机号:</label>

@@ -9,7 +9,7 @@ public enum FileSizeType implements IGenericEnum<FileSizeType> {
 
     MIN("0", "10M以下"),
     MIDDEN("1", "10M~100M"),
-    MAX("3", "100M以上");
+    MAX("2", "100M以上");
 
     private final String value;
     private final String description;

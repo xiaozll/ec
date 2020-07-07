@@ -7,8 +7,8 @@ import com.eryansky.core.web.upload.FileUploadUtils;
 import com.eryansky.modules.disk._enum.FileType;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
-import com.eryansky.utils.AppConstants;
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 
@@ -259,6 +259,7 @@ public class File extends DataEntity<File> implements Serializable {
      *
      * @return
      */
+    @JsonIgnore
     public java.io.File getDiskFile() {
         return DiskUtils.getDiskFile(this);
     }

@@ -710,7 +710,7 @@ public class SecurityUtils {
      * @return
      */
     public static Page<SessionInfo> findSessionInfoPage(Page<SessionInfo> page,String companyId) {
-        return findSessionInfoPage(page,companyId);
+        return findSessionInfoPage(page,companyId,null);
     }
 
     /**

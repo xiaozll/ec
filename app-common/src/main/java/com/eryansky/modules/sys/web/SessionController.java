@@ -49,9 +49,10 @@ public class SessionController extends SimpleController {
     @RequestMapping(value = {"onLineSessions"})
     @ResponseBody
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) throws Exception {
-        Page<SessionInfo> page = new Page<SessionInfo>(request);
-        page = SecurityUtils.findSessionInfoPage(page, query);
-        return new Datagrid<SessionInfo>(page.getTotalCount(), page.getResult());
+        Page<SessionInfo> page = new Page<>(request);
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        page = SecurityUtils.findSessionInfoPage(page,sessionInfo.isSuperUser() ? null:sessionInfo.getLoginCompanyId(),query);
+        return new Datagrid<>(page.getTotalCount(), page.getResult());
     }
 
 

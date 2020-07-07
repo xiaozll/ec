@@ -706,20 +706,25 @@ public class SecurityUtils {
     /**
      * 查看当前登录用户信息 （分页查询）
      * @param page
+     * @param companyId 单位ID
      * @return
      */
-    public static Page<SessionInfo> findSessionInfoPage(Page<SessionInfo> page) {
-        return findSessionInfoPage(page,null);
+    public static Page<SessionInfo> findSessionInfoPage(Page<SessionInfo> page,String companyId) {
+        return findSessionInfoPage(page,companyId);
     }
 
     /**
      * 查看当前登录用户信息 （分页查询）
      * @param page
+     * @param companyId 单位ID
      * @param query 查询条件
      * @return
      */
-    public static Page<SessionInfo> findSessionInfoPage(Page<SessionInfo> page, String query) {
+    public static Page<SessionInfo> findSessionInfoPage(Page<SessionInfo> page,String companyId, String query) {
         List<SessionInfo> list = StringUtils.isNotBlank(query) ? findSessionInfoByQuery(query): findSessionInfoListWithOrder();
+        if(null != companyId){
+            list = list.parallelStream().filter(v->companyId.equals(v.getLoginCompanyId()) || companyId.equals(v.getLoginHomeCompanyId())).collect(Collectors.toList());
+        }
         page.setTotalCount(list.size());
         if(Page.PAGESIZE_ALL == page.getPageSize()){
             return page.setResult(list);

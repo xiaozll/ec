@@ -63,7 +63,7 @@
     <repositories>
         <repository>
             <id>jfit-nexus</id>
-            <name>Team Nexus ReposiDtory</name>
+            <name>jfit Nexus Repository</name>
             <url>http://www.jfit.com.cn/nexus/repository/maven-public/</url>
         </repository>
         <repository>

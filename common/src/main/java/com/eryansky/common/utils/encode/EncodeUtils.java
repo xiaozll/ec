@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * 各种格式的编码加码工具类.
@@ -125,8 +125,15 @@ public class EncodeUtils {
 	/**
 	 * Xml 转码.
 	 */
-	public static String xmlEscape(String xml) {
-		return StringEscapeUtils.escapeXml(xml);
+	public static String xml10Escape(String xml) {
+		return StringEscapeUtils.escapeXml10(xml);
+	}
+
+	/**
+	 * Xml 转码.
+	 */
+	public static String xml11Escape(String xml) {
+		return StringEscapeUtils.escapeXml11(xml);
 	}
 
 	/**

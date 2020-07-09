@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${ec-parent.version}</version>
     </parent>
     <artifactId>ec-app-common</artifactId>
     <version>${ec-app-common.version}</version>
@@ -24,7 +24,7 @@
         <sitemesh.version>2.4.2</sitemesh.version>
         <commons-csv.version>1.8</commons-csv.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
-
+        <batik.version>1.10</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-all</artifactId>
-            <version>1.10</version>
+            <version>${batik.version}</version>
         </dependency>
 
 

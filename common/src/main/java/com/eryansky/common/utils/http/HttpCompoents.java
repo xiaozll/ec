@@ -19,17 +19,16 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
-import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.conn.util.PublicSuffixMatcher;
+import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.cookie.*;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.impl.cookie.BestMatchSpecFactory;
-import org.apache.http.impl.cookie.BrowserCompatSpec;
-import org.apache.http.impl.cookie.BrowserCompatSpecFactory;
+import org.apache.http.impl.cookie.*;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,11 +153,15 @@ public class HttpCompoents {
                 }
 
             };
+
+            PublicSuffixMatcher publicSuffixMatcher = PublicSuffixMatcherLoader.getDefault();
+            RFC6265CookieSpecProvider cookieSpecProvider = new RFC6265CookieSpecProvider(publicSuffixMatcher);
             Registry<CookieSpecProvider> r = RegistryBuilder
                     .<CookieSpecProvider> create()
-                    .register(CookieSpecs.BEST_MATCH, new BestMatchSpecFactory())
-                    .register(CookieSpecs.BROWSER_COMPATIBILITY,
-                            new BrowserCompatSpecFactory())
+                    .register(CookieSpecs.DEFAULT,
+                            new DefaultCookieSpecProvider(publicSuffixMatcher))
+                    .register(CookieSpecs.STANDARD,cookieSpecProvider)
+                    .register(CookieSpecs.STANDARD_STRICT, cookieSpecProvider)
                     .register("easy", easySpecProvider).build();
 
             requestConfig = RequestConfig.custom()
@@ -334,14 +337,9 @@ public class HttpCompoents {
         }
         httpGet.setConfig(requestConfig);
         try {
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-            try {
+            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 HttpEntity entity = response.getEntity();
                 return EntityUtils.toString(entity, useCharset);
-            } finally {
-                if(response != null){
-                    response.close();
-                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -416,14 +414,9 @@ public class HttpCompoents {
                 httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
             }
             httpPost.setConfig(requestConfig);
-            CloseableHttpResponse response = httpClient.execute(httpPost);
-            try {
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 HttpEntity entity = response.getEntity();
                 return EntityUtils.toString(entity, useCharset);
-            } finally {
-                if(response != null){
-                    response.close();
-                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -465,8 +458,7 @@ public class HttpCompoents {
      * @return
      */
     public List<Cookie> getCookies() {
-        List<Cookie> cookies = cookieStore.getCookies();
-        return cookies;
+        return cookieStore.getCookies();
     }
 
 
@@ -528,8 +520,7 @@ public class HttpCompoents {
      * @return
      */
     public Executor getExecutor() {
-        Executor executor = Executor.newInstance(httpClient);
-        return executor;
+        return Executor.newInstance(httpClient);
     }
 
     public CloseableHttpClient getHttpClient() {

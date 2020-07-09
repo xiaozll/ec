@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${ec-parent.version}</version>
     </parent>
 
     <artifactId>ec-common</artifactId>
@@ -16,8 +16,9 @@
 
     <properties>
         <commons-cli.version>1.4</commons-cli.version>
-        <commons-io.version>2.6</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <commons-fileupload.version>1.4</commons-fileupload.version>
+        <commons-text.version>1.8</commons-text.version>
         <commons-lang3.version>3.10</commons-lang3.version>
         <commons-email.version>1.5</commons-email.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -31,8 +32,8 @@
         <log4j.version>1.2.17</log4j.version>
 
         <guava.version>29.0-jre</guava.version>
-        <joda.version>2.10.1</joda.version>
-        <dozer.version>5.4.0</dozer.version>
+        <joda-time.version>2.10.6</joda-time.version>
+        <dozer.version>5.5.1</dozer.version>
         <freemarker.version>2.3.28</freemarker.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,6 +50,11 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>${commons-fileupload.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons-text.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -102,6 +108,7 @@
             <artifactId>commons-logging</artifactId>
             <version>${commons-logging.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -131,7 +138,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>${joda.version}</version>
+            <version>${joda-time.version}</version>
         </dependency>
         <dependency>
             <groupId>eu.bitwalker</groupId>
@@ -212,7 +219,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.14.3</version>
+            <version>7.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

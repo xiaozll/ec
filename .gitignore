@@ -13,3 +13,5 @@
 /j2cache/target/
 /j2cache-spring-boot-starter/target/
 /app-common/target/
+/client-common/ec-client-common.iml
+/client-common/target/

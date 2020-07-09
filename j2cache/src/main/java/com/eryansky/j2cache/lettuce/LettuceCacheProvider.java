@@ -19,6 +19,8 @@ import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulConnection;
+import io.lettuce.core.cluster.ClusterClientOptions;
+import io.lettuce.core.cluster.ClusterTopologyRefreshOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.pubsub.RedisPubSubAdapter;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -98,6 +100,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
         String password = props.getProperty("password");
         int database = Integer.parseInt(props.getProperty("database", "0"));
         String sentinelMasterId = props.getProperty("sentinelMasterId");
+        long clusterTopologyRefreshMs = Long.valueOf(props.getProperty("clusterTopologyRefresh", "3000"));
 
         if("redis-cluster".equalsIgnoreCase(scheme)) {
             scheme = "redis";
@@ -112,6 +115,15 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
                 redisURIs.add(uri);
             }
             redisClient = RedisClusterClient.create(redisURIs);
+            ClusterTopologyRefreshOptions topologyRefreshOptions = ClusterTopologyRefreshOptions.builder()
+                    //开启自适应刷新
+                    .enableAdaptiveRefreshTrigger(ClusterTopologyRefreshOptions.RefreshTrigger.MOVED_REDIRECT, ClusterTopologyRefreshOptions.RefreshTrigger.PERSISTENT_RECONNECTS)
+                    .enableAllAdaptiveRefreshTriggers()
+                    .adaptiveRefreshTriggersTimeout(Duration.ofMillis(clusterTopologyRefreshMs))
+                    //开启定时刷新,时间间隔根据实际情况修改
+                    .enablePeriodicRefresh(Duration.ofMillis(clusterTopologyRefreshMs))
+                    .build();
+            ((RedisClusterClient)redisClient).setOptions(ClusterClientOptions.builder().topologyRefreshOptions(topologyRefreshOptions).build());
         }
         else {
             String[] redisArray = hosts.split(":");

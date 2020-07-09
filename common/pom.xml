@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>${ec-parent.version}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>ec-common</artifactId>

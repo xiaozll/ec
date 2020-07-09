@@ -22,5 +22,6 @@ public class Constants {
     public static final String DB_MYSQL = "mysql";
     public static final String DB_MARIADB = "mariadb";
     public static final String DB_DB2 = "db2";
+    public static final String DB_ORACLE = "oracle";
 
 }

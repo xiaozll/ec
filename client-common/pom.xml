@@ -22,8 +22,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <commons-codec.version>1.12</commons-codec.version>
-        <ec-common.version>4.1.20200708.03</ec-common.version>
-        <ec-client-common.version>4.1.20200708.03</ec-client-common.version>
+
+        <ec-common.version>4.1.20200709.01</ec-common.version>
+        <ec-client-common.version>4.1.20200709.01</ec-client-common.version>
+
     </properties>
 
     <repositories>

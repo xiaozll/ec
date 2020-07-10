@@ -255,6 +255,14 @@ public class OrganUtils {
         return null;
     }
 
+    public static String getAreaType(String organId) {
+        Organ organ = getOrgan(organId);
+        if (organ != null) {
+            return organ.getType();
+        }
+        return null;
+    }
+
 //    递归方法
 
     /**

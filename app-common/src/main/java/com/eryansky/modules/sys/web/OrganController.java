@@ -21,11 +21,9 @@ import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.OrganType;
-import com.eryansky.modules.sys.mapper.Organ;
-import com.eryansky.modules.sys.mapper.OrganExtend;
-import com.eryansky.modules.sys.mapper.User;
-import com.eryansky.modules.sys.mapper.Area;
+import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.utils.DictionaryUtils;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
@@ -320,6 +318,8 @@ public class OrganController extends SimpleController {
             Combobox groupCombobox = new Combobox(OrganType.organ.getValue(), OrganType.organ.getDescription());
             cList.add(groupCombobox);
         }
+        List<DictionaryItem> dictionaryItems = DictionaryUtils.getDictList(Organ.DIC_ORGAN_TYPE);
+        dictionaryItems.stream().forEach(v->cList.add(new Combobox(v.getCode(), v.getName())));
         return cList;
     }
 

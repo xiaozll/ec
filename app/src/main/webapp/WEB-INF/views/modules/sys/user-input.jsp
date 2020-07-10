@@ -36,7 +36,7 @@
             <label>用户类型:</label>
             <select id="userType" name="userType" class="easyui-combobox" style="width: 120px;height: 28px;" >
                 <c:forEach items="${userTypes}" var="userType">
-                    <option value="${userType.value}" <c:if test="${model.userType eq userType.value}">selected</c:if>>${userType.description}</option>
+                    <option value="${userType.value}" <c:if test="${model.userType eq userType.value}">selected</c:if>>${userType.text}</option>
                 </c:forEach>
             </select>
         </div>

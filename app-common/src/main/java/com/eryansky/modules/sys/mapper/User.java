@@ -19,7 +19,10 @@ import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.DataScope;
+import com.eryansky.modules.sys._enum.OrganType;
 import com.eryansky.modules.sys._enum.SexType;
+import com.eryansky.modules.sys._enum.UserType;
+import com.eryansky.modules.sys.utils.DictionaryUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -35,8 +38,9 @@ import java.util.Date;
 @JsonFilter(" ")
 public class User extends DataEntity<User> implements IUser {
 
-    public static final String SUPERUSER_ID = "1";
-    public static final String FOLDER_USER_PHOTO = "userPhoto";
+    public static final String SUPERUSER_ID = "1";//超级管理员ID
+    public static final String FOLDER_USER_PHOTO = "userPhoto";//头像文件夹编码
+    public static final String DIC_USER_TYPE = "SYS_USER_TYPE_EXTEND";//扩展自定义用户类型数据字典编码
 
     /**
      * 登录名
@@ -107,7 +111,7 @@ public class User extends DataEntity<User> implements IUser {
      */
     private Integer sort;
     /**
-     * 用户类型
+     * 用户类型 ${@link UserType}以及 {@link Organ#DIC_ORGAN_TYPE}
      */
     private String userType;
     /**
@@ -347,6 +351,21 @@ public class User extends DataEntity<User> implements IUser {
         return GenericEnumUtils.getDescriptionByValue(SexType.class,sex,sex);
     }
 
+    /**
+     * 用户类型显示.
+     */
+    public String getTypeView() {
+        String typeView = GenericEnumUtils.getDescriptionByValue(UserType.class,userType,null);
+        if(null == typeView){
+            typeView = DictionaryUtils.getDictionaryNameByDC(DIC_USER_TYPE,userType,userType);
+        }
+        return typeView;
+    }
+
+    /**
+     * 手机号脱敏
+     * @return
+     */
     public String getMobileSensitive() {
         return SensitiveUtils.getSensitive(mobile,SensitiveType.MOBILE_PHONE);
     }

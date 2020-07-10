@@ -24,7 +24,8 @@ import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.disk.mapper.File;
-import com.eryansky.modules.sys.mapper.Post;
+import com.eryansky.modules.sys.mapper.*;
+import com.eryansky.modules.sys.utils.DictionaryUtils;
 import com.eryansky.modules.sys.utils.PostUtils;
 import com.google.common.collect.Lists;
 import com.eryansky.core.excelTools.ExcelUtils;
@@ -37,9 +38,6 @@ import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededExcepti
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.*;
-import com.eryansky.modules.sys.mapper.Organ;
-import com.eryansky.modules.sys.mapper.User;
-import com.eryansky.modules.sys.mapper.UserPassword;
 import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
@@ -130,7 +128,11 @@ public class UserController extends SimpleController {
     @RequestMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") User model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-input");
-        modelAndView.addObject("userTypes", UserType.values());
+        List<Combobox> userTypes = Lists.newArrayList();
+        Arrays.asList(UserType.values()).forEach(v->userTypes.add(new Combobox(v.getValue(),v.getDescription())));
+        List<DictionaryItem> dictionaryItems = DictionaryUtils.getDictList(User.DIC_USER_TYPE);
+        dictionaryItems.forEach(v->userTypes.add(new Combobox(v.getCode(),v.getName())));
+        modelAndView.addObject("userTypes", userTypes);
         return modelAndView;
     }
 

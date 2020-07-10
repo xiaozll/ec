@@ -1,4 +1,10 @@
-﻿2020-03-31
+﻿2020-07-10
+1、添加机构自定义扩展机构类型
+数据字典编码：SYS_ORGAN_TYPE_EXTEND
+2、添加用户自定义扩展用户类型
+数据字典编码：SYS_USER_TYPE_EXTEND
+
+2020-03-31
 1、通知支持提醒
 
 ALTER TABLE t_notice

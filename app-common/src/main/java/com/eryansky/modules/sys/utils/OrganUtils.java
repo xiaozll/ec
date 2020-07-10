@@ -218,6 +218,21 @@ public class OrganUtils {
         return null;
     }
 
+
+    /**
+     * 根据机构ID查找机构类型
+     *
+     * @param organId 机构ID
+     * @return
+     */
+    public static String getOrganType(String organId) {
+        Organ organ = getOrgan(organId);
+        if (organ != null) {
+            return organ.getType();
+        }
+        return null;
+    }
+
     /**
      * 根据机构ID查找机构名称(简称)
      *

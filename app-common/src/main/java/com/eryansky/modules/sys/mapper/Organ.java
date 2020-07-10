@@ -12,6 +12,7 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.TreeEntity;
 import com.eryansky.modules.sys._enum.OrganType;
 import com.eryansky.modules.sys._enum.ResourceType;
+import com.eryansky.modules.sys.utils.DictionaryUtils;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -27,12 +28,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonFilter(" ")
 public class Organ extends TreeEntity<Organ> {
 
+    public static final String DIC_ORGAN_TYPE = "SYS_ORGAN_TYPE_EXTEND";//扩展自定义机构类型数据字典编码
+
     /**
      * 简称
      */
     private String shortName;
     /**
-     * 机构类型 {@link OrganType}
+     * 机构类型 {@link OrganType} 以及 {@link Organ#DIC_ORGAN_TYPE}
      */
     private String type;
     /**
@@ -255,9 +258,13 @@ public class Organ extends TreeEntity<Organ> {
 
 
     /**
-     * 机构类新显示.
+     * 机构类型显示.
      */
     public String getTypeView() {
-        return GenericEnumUtils.getDescriptionByValue(OrganType.class,type,type);
+        String typeView = GenericEnumUtils.getDescriptionByValue(OrganType.class,type,null);
+        if(null == typeView){
+            typeView = DictionaryUtils.getDictionaryNameByDC(DIC_ORGAN_TYPE,type,type);
+        }
+        return typeView;
     }
 }

@@ -130,7 +130,7 @@
           <!-- search form -->
           <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="搜索...">
+              <input type="text" id="q" name="q" class="form-control" placeholder="搜索...">
               <span class="input-group-btn">
                 <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="search_menu()"><i
                         class="fa fa-search"></i>
@@ -342,7 +342,7 @@
        */
       function logout() {
         var r=confirm("您确定要退出系统吗？");
-        if (r==true){
+        if (r===true){
           window.location.href = appURL+"/a/login/logout";
         }
       }
@@ -359,7 +359,8 @@
         // 下面切换菜单方法
         var activeMenu = $.trim($(a).text());
         $.each(menuData,function (i, menu) {
-          if (activeMenu == menu.text) {
+          if (activeMenu === menu.text) {
+            $("#q").val(menu.text);
             // 初始化二级菜单
             $('.sidebar-menu').empty();
             $('.sidebar-menu').sidebarMenu({data: menu.children});

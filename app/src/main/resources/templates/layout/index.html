@@ -29,6 +29,7 @@
       var ctxAdmin = ctx+'/a';
       var ctxStatic = ctx+'/static';
       var appURL = "[[${T(com.eryansky.utils.AppUtils).getAppURL()}]]";
+      var portalPage = "[[${T(com.eryansky.utils.AppConstants).getAppPortalPage()}]]";
     </script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -273,7 +274,7 @@
           id: 'portal',
           title: '首页',
           close: false,
-          url: appURL + '/a/portal'
+          url: portalPage || appURL + '/a/portal'
         });
 
         App.fixIframeCotent();

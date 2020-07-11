@@ -404,6 +404,15 @@ public class AppConstants extends SysConstants {
     }
 
     /**
+     * 系统Portal首页
+     * @return
+     */
+    public static String getAppPortalPage() {
+        String code = "app.portalPage";
+        return getConfigValue(code);
+    }
+
+    /**
      * 软件版本
      * @return
      */

@@ -409,7 +409,7 @@ public class AppConstants extends SysConstants {
      */
     public static String getAppPortalPage() {
         String code = "app.portalPage";
-        return getConfigValue(code);
+        return getConfigValue(code,"/a/portal");
     }
 
     /**

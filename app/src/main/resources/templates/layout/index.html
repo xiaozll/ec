@@ -28,6 +28,7 @@
       var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
       var ctxAdmin = ctx+'/a';
       var ctxStatic = ctx+'/static';
+      var appURL = "[[${T(com.eryansky.utils.AppUtils).getAppURL()}]]";
     </script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -266,13 +267,13 @@
       }
 
       $(function () {
-        App.setbasePath(ctx);
+        App.setbasePath(appURL);
         App.setGlobalImgPath("/static/js/adminlte/dist/img/");
         addTabs({
           id: 'portal',
           title: '首页',
           close: false,
-          url: '/a/portal'
+          url: appURL + '/a/portal'
         });
 
         App.fixIframeCotent();
@@ -302,7 +303,7 @@
       var menuData = {};
       /*  初始化导航菜单 */
       function initMenu(){
-        $.post(ctxAdmin+"/login/navTree2", function(data) {
+        $.post(appURL+"/a/login/navTree2", function(data) {
           menuData = data;
           // 初始化一级导航菜单
           var ul = $("#navbar-collapse").find("ul").eq(0);
@@ -341,7 +342,7 @@
       function logout() {
         var r=confirm("您确定要退出系统吗？");
         if (r==true){
-          window.location.href = ctxAdmin+"/login/logout";
+          window.location.href = appURL+"/a/login/logout";
         }
       }
 

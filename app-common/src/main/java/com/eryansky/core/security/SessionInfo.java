@@ -49,6 +49,10 @@ public class SessionInfo implements Serializable {
      */
     private String loginName;
     /**
+     * 员工编号
+     */
+    private String code;
+    /**
      * 手机号
      */
     private String mobile;
@@ -261,6 +265,15 @@ public class SessionInfo implements Serializable {
      */
     public SessionInfo setLoginName(String loginName) {
         this.loginName = loginName;
+        return this;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public SessionInfo setCode(String code) {
+        this.code = code;
         return this;
     }
 

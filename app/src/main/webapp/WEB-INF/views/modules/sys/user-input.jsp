@@ -51,6 +51,11 @@
                    class="easyui-validatebox textbox"
                    data-options="required:true,missingMessage:'请输入登录名.',validType:['minLength[1]']"/>
         </div>
+        <div>
+            <label>登录名:</label>
+            <input type="text" id="code" name="code" maxLength="36" value="${model.code}"
+                   class="easyui-validatebox textbox"/>
+        </div>
         <div id="password_div">
             <label>密码:</label>
             <input type="password" id="password"

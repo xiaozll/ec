@@ -287,7 +287,7 @@ public class UserService extends CrudService<UserDao, User> {
      */
     @SuppressWarnings("unchecked")
     public User getUserByLoginName(String loginName, String status) {
-        Assert.notNull(loginName, "参数[loginName]为空!");
+        Assert.notNull(loginName, "参数[loginName]不能为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, status);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
@@ -295,6 +295,51 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.getUserByLoginName(parameter);
     }
 
+    /**
+     * 根据编号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param code 编号
+     * @return
+     */
+    public List<User> findByCode(String code) {
+        return findByCode(code, DataEntity.STATUS_NORMAL);
+    }
+
+    /**
+     * 根据编号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param code 编号
+     * @param status
+     * @return
+     */
+    public List<User> findByCode(String code, String status) {
+        Assert.notNull(code, "参数[code]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("code", code);
+        return dao.findByCode(parameter);
+    }
+
+    /**
+     * 根据账号或编号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param loginName 账号（必填）
+     * @param code 编码（可选）
+     * @return
+     */
+    public List<User> findByLoginNameOrCode(String loginName, String code) {
+        Assert.notNull(loginName, "参数[loginName]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("loginName", loginName);
+        parameter.put("code", code);
+        return dao.findByLoginNameOrCode(parameter);
+    }
 
     /**
      * 根据手机号查找.

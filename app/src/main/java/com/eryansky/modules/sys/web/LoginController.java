@@ -21,6 +21,7 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityConstants;
@@ -253,6 +254,35 @@ public class LoginController extends SimpleController {
         }
         return "redirect:/";
     }
+
+    /**
+     * 切换账号 无需密码
+     * @param request
+     * @param loginName
+     * @return
+     */
+    @RequestMapping(value = {"toggleLogin"},method = RequestMethod.POST)
+    @ResponseBody
+    public Result toggleLogin(HttpServletRequest request,@RequestParam(value = "loginName") String loginName) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if (sessionInfo == null) {
+            return Result.errorResult().setMsg("未登录");
+        }
+        if(!sessionInfo.getLoginNames().contains(loginName)){
+            return Result.errorResult().setMsg("未授权账号【"+loginName+"】");
+        }
+
+        User user = UserUtils.getUserByLoginName(loginName);
+        if(null == user){
+            return Result.errorResult().setMsg("账号不存在【"+loginName+"】");
+        }
+
+        SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout);
+        SecurityUtils.putUserToSession(request,user);
+        logger.info("{}用户切换账号{},IP:{}.", new Object[]{sessionInfo.getId(),loginName, SpringMVCHolder.getIp()});
+        return Result.successResult();
+    }
+
 
     @RequestMapping(value = {"index"})
     public String index(String theme) {

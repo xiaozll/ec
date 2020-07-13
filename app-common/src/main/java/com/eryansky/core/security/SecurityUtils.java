@@ -320,6 +320,7 @@ public class SecurityUtils {
         sessionInfo.setUserId(user.getId());
         sessionInfo.setName(user.getName());
         sessionInfo.setLoginName(user.getLoginName());
+        sessionInfo.setCode(user.getCode());
         sessionInfo.setAvatar(user.getPhotoUrl());
         sessionInfo.setGender(user.getSex());
         sessionInfo.setMobile(user.getMobile());
@@ -387,11 +388,14 @@ public class SecurityUtils {
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(),sessionInfo.getLoginName()));
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
-        try {
-            sessionInfo.setHost(IpUtils.toIpString(InetAddress.getLocalHost()));
-        } catch (UnknownHostException e) {
-            logger.error(e.getMessage());
-        }
+        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
+        //可选账号
+        List<User> users = UserUtils.findByCode(sessionInfo.getCode());
+        users.forEach(v->{
+            if(v.getLoginName().equalsIgnoreCase(sessionInfo.getLoginName())){
+                sessionInfo.addIfNotExistLoginName(v.getLoginName());
+            }
+        });
 
         String userAgent = UserAgentUtils.getHTTPUserAgent(request);
         boolean likeIOS = AppUtils.likeIOS(userAgent);

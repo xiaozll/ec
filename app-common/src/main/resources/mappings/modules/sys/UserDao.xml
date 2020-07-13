@@ -109,6 +109,33 @@
         </where>
     </select>
 
+    <select id="findByCode" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND a.code = #{code}
+        </where>
+    </select>
+
+    <select id="findByLoginNameOrCode" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            a.status = #{status}
+            AND a.login_name = #{loginName}
+            <if test="code != null and code !=''">
+                OR a.code = #{code}
+            </if>
+        </where>
+    </select>
+
+
+
     <select id="findLoginUser" resultType="User">
         SELECT
         <include refid="userColumns"/>

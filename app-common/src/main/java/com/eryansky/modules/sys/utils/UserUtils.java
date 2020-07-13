@@ -19,6 +19,7 @@ import com.eryansky.modules.sys.mapper.UserPassword;
 import com.eryansky.modules.sys.service.*;
 import com.eryansky.utils.AppConstants;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,6 +60,30 @@ public class UserUtils {
             return Static.userService.getUserByLoginName(loginName);
         }
         return null;
+    }
+
+    /**
+     * 根据员工编号查找用户
+     *
+     * @param code 员工编号
+     * @return
+     */
+    public static List<User> findByCode(String code) {
+        if (StringUtils.isNotBlank(code)) {
+            return Static.userService.findByCode(code);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 根据账号、员工编号查找用户
+     *
+     * @param loginName 账号
+     * @param code 工编号
+     * @return
+     */
+    public static List<User> findByLoginNameOrCode(String loginName,String code) {
+        return Static.userService.findByLoginNameOrCode(loginName,code);
     }
 
     /**

@@ -219,6 +219,38 @@
 
     </dependencies>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <targetPath>META-INF/resources</targetPath>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+                <excludes>
+                    <exclude>userfiles/**</exclude>
+                    <exclude>disk/**</exclude>
+                    <exclude>static/js/bootstrap/2.3.2/docs/**</exclude>
+                    <exclude>static/js/bootstrap/3.2.0/**</exclude>
+                    <exclude>static/js/easyui/src/**</exclude>
+                    <exclude>static/js/easyui/**/*.html</exclude>
+                    <exclude>static/js/easyui/**/*.json</exclude>
+                    <exclude>static/js/easyui/**/*.txt</exclude>
+                    <exclude>static/js/jquery-ztree/3.5.12/api/**</exclude>
+                    <exclude>static/js/jquery-ztree/3.5.12/demo/**</exclude>
+                    <exclude>static/js/My97DatePicker/docs/**</exclude>
+                    <exclude>static/js/jquery-validation/1.11.1/test/**</exclude>
+                    <exclude>static/js/jquery-validation/1.11.1/lib/**</exclude>
+                    <exclude>static/js/jquery-validation/1.11.1/localization/**</exclude>
+                    <exclude>static/js/fancyBox/lib/**</exclude>
+                    <exclude>static/js/fancyBox/demo/**</exclude>
+                    <exclude>static/js/jquery-jbox/2.3/docs/**</exclude>
+                    <exclude>static/js/jquery-jbox/2.3/Skins2/**</exclude>
+                    <exclude>static/js/treeTable/demo/**</exclude>
+                    <exclude>static/js/vue/examples/**</exclude>
+                    <exclude>static/js/vue/src/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

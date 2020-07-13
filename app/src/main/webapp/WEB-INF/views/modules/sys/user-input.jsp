@@ -52,7 +52,7 @@
                    data-options="required:true,missingMessage:'请输入登录名.',validType:['minLength[1]']"/>
         </div>
         <div>
-            <label>登录名:</label>
+            <label>员工编号:</label>
             <input type="text" id="code" name="code" maxLength="36" value="${model.code}"
                    class="easyui-validatebox textbox"/>
         </div>

@@ -31,8 +31,8 @@
 	.jbox-title-panel,.jbox-button-panel{
 		box-sizing: content-box;
 	}
-	#jbox-state-state0 > div{overflow-y:scroll;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
-	#jbox-content{overflow-y:scroll;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
+	#jbox-state-state0 > div{overflow-y:hidden;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
+	#jbox-content{overflow-y:hidden;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
 	#jbox-iframe{overflow-y:auto;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
 </style>
 <script type="text/javascript">

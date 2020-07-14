@@ -81,7 +81,7 @@
 							top.$.jBox.tip("不能选择当前栏目以外的栏目模型，请重新选择。");
 							return false;
 						}//</c:if><c:if test="${not empty allSelectNodeTypes}">
-						if (allSelectNodeTypes.indexOf(nodes[i]['attributes']['nodeType']) < 0){
+						if (allSelectNodeTypes.indexOf(nodes[i]['attributes']['nType']) < 0){
 							top.$.jBox.tip("不允许选择的节点类型（"+nodes[i]['text']+"）请重新选择。");
 							return false;
 						}//</c:if>

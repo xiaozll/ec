@@ -28,9 +28,7 @@
 	class="${cssClass}" style="${cssStyle}"/><a id="${id}Button" href="javascript:" class="btn${disabled eq 'true' ? ' disabled' : ''} ${hideBtn ? 'hide' : ''}" style="${smallBtn?'padding:4px 2px;':''}">&nbsp;<i class="icon-search"></i></a>&nbsp;&nbsp;
 </div>
 <style type="text/css">
-	.jbox-title-panel,.jbox-button-panel{
-		box-sizing: content-box;
-	}
+	.jbox-title-panel,.jbox-button-panel{box-sizing: content-box;}
 	#jbox-state-state0 > div{overflow-y:hidden;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
 	#jbox-content{overflow-y:hidden;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
 	#jbox-iframe{overflow-y:auto;-webkit-overflow-scrolling: touch;overflow-x:hidden;}
@@ -40,7 +38,6 @@
 	function ${id}SetAjaxURL(url){
 		${id}_ajax_url = url;
 	}
-
 	function ${id}GetAjaxURL(){
 		return ${id}_ajax_url;
 	}

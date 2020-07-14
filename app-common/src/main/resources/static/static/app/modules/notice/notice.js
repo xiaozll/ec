@@ -210,7 +210,7 @@ function initDatagrid(){
                 iconCls: 'eu-icon-user',
                 handler: function () {
                     try {
-                        parent.addTabs({id:'contactGroup',title: '我的联系人',close: true,url: ctxAdmin + '/mail/contactGroup',urlType: 'relative'});
+                        parent.addTabs({id:'contactGroup',title: '我的联系人',close: true,url: ctxAdmin + '/mail/contactGroup',urlType: ''});
                     } catch(e) {
                         eu.addTab(window.parent.layout_center_tabs, '我的联系人',ctxAdmin + '/mail/contactGroup', true,'eu-icon-user','',false);
                     }

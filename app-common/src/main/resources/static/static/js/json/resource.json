@@ -1,0 +1,54 @@
+[
+    {
+        "value": "fa fa-television",
+        "text": "television"
+    },
+    {
+        "value": "fa fa-sticky-note-o",
+        "text": "sticky-note-o"
+    },
+    {
+        "value": "fa fa-bell",
+        "text": "bell"
+    },
+    {
+        "value": "fa fa-cloud",
+        "text": "cloud"
+    },
+    {
+        "value": "fa fa-database",
+        "text": "database"
+    },
+    {
+        "value": "fa fa-user",
+        "text": "user"
+    },
+    {
+        "value": "fa fa-users",
+        "text": "users"
+    },
+    {
+        "value": "fa fa-bullhorn",
+        "text": "bullhorn"
+    },
+    {
+        "value": "fa fa-bolt",
+        "text": "bolt"
+    },
+    {
+        "value": "fa fa-cog",
+        "text": "cog"
+    },
+    {
+        "value": "fa fa-legal",
+        "text": "legal"
+    },
+    {
+        "value": "fa fa-search",
+        "text": "search"
+    },
+    {
+        "value": "fa fa-trophy",
+        "text": "trophy"
+    }
+]

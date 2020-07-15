@@ -12,7 +12,7 @@
 				data:{simpleData:{enable:true},key:{name:'text'}},
 				view:{
 					fontCss:function(treeId, treeNode) {
-						return (!!treeNode.highlight) ? {"font-weight":"bold"} : {"font-weight":"normal"};
+						return (!!treeNode.highlight) ? {color:"red","font-weight":"bold"} : {"font-weight":"normal"};
 					}
 				},
 				callback:{beforeClick:function(id, node){
@@ -73,7 +73,7 @@
 				value = "";
 			}
 			
-			// 如果和上次一次，就退出不查了。
+			// 如果和上次一样，就退出不查了。
 			if (lastValue === value) {
 				return;
 			}

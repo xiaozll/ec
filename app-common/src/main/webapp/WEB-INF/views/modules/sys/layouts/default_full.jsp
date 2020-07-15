@@ -20,6 +20,8 @@
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/js/easyui/extend/my97/my97${yuicompressor}.css" />
     <script type="text/javascript" src="${ctxStatic}/js/easyui/extend/my97/jquery.easyui.my97${yuicompressor}.js" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/js/easyui/extend/icon/eu-icon${yuicompressor}.css?_=${sysInitTime}" />
+    <%-- easyui扩展 --%>
+    <script type="text/javascript" src="${ctxStatic}/js/easyui/extend/js/easyui-extend${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
     <%-- easyui自定义表单校验扩展 --%>
     <script type="text/javascript" src="${ctxStatic}/js/easyui/extend/js/validatebox-extend${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 	<sitemesh:head/>

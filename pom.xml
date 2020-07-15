@@ -51,12 +51,12 @@
         <httpcomponents.version>4.5.12</httpcomponents.version>
         <commons-codec.version>1.12</commons-codec.version>
 
-        <ec-common.version>4.2.20200712.05</ec-common.version>
-        <ec-app-common.version>4.2.20200712.05</ec-app-common.version>
-        <ec-client-common.version>4.2.20200712.05</ec-client-common.version>
-        <ec-j2cache.version>4.2.20200712.05</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20200712.05</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20200712.05</ec-fastweixin.version>
+        <ec-common.version>4.2.20200712.06</ec-common.version>
+        <ec-app-common.version>4.2.20200712.06</ec-app-common.version>
+        <ec-client-common.version>4.2.20200712.06</ec-client-common.version>
+        <ec-j2cache.version>4.2.20200712.06</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20200712.06</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20200712.06</ec-fastweixin.version>
 
         <jackson.version>2.10.4</jackson.version>
         <swagger2.version>2.9.2</swagger2.version>

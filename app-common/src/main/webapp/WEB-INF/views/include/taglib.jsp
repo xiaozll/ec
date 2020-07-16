@@ -6,7 +6,6 @@
 <%@ taglib prefix="fns" uri="/WEB-INF/tlds/fns.tld" %>
 <%@ taglib prefix="e" uri="/WEB-INF/tlds/es.tld" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="fns" uri="http://java.sun.com/jsp/jstl/functionss" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="ctxFront" value="${pageContext.request.contextPath}${fns:getFrontPath()}"/>
 <c:set var="ctxAdmin" value="${pageContext.request.contextPath}${fns:getAdminPath()}"/>

@@ -1,4 +1,4 @@
-/**
+/*!
  * jQuery方法扩展
  * 
  * @author 尔演@Eryan eryanwcp@gmail.com

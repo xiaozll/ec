@@ -16,14 +16,14 @@ import java.io.*;
 public class Yuicompressor {
 
     private static final String[] DIRS = new String[]{
-            "app-common/src/main/resources/static/static/app",
-            "app-common/src/main/resources/static/static/app",
-            "app-common/src/main/resources/static/static/css",
-            "app/src/main/webapp/static/app",
-            "app/src/main/webapp/static/css",
-            "app-common/src/main/resources/static/static/js/common",
-            "app-common/src/main/resources/static/static/js/easyui/extend",
-            "app-common/src/main/resources/static/static/js/adminlte/dist/",
+//            "app-common/src/main/resources/static/static/app",
+//            "app-common/src/main/resources/static/static/app",
+//            "app-common/src/main/resources/static/static/css",
+//            "app/src/main/webapp/static/app",
+//            "app/src/main/webapp/static/css",
+//            "app-common/src/main/resources/static/static/js/common",
+//            "app-common/src/main/resources/static/static/js/easyui/extend",
+//            "app-common/src/main/resources/static/static/js/adminlte/dist/",
             "app-common/src/main/resources/static/static/js/jquery/jquery-extend.js"
     };
 

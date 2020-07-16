@@ -1,5 +1,5 @@
 ﻿<%@ page import="com.eryansky.utils.AppConstants" %>
-<%@ page import="com.eryansky.common.web.utils.WebUtils" %>
+<%@ page import="com.eryansky.utils.AppUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
@@ -12,6 +12,8 @@
 <c:set var="ctxFront" value="${pageContext.request.contextPath}${fns:getFrontPath()}" />
 <c:set var="ctxMobile" value="${pageContext.request.contextPath}${fns:getMobilePath()}" />
 <c:set var="ctxStatic" value="${pageContext.request.contextPath}/static"/>
+<c:set var="urlSuffix" value="${fns:getUrlSuffix()}"/>
+<c:set var="appURL" value="${fns:getAppURL()}"/>
 <%
     long sysInitTime = AppConstants.SYS_INIT_TIME;
     //系统启动时间
@@ -19,5 +21,4 @@
     if(!AppConstants.isdevMode()){
         request.setAttribute("yuicompressor",".min");
     }
-    request.setAttribute("appURL", WebUtils.getAppURL(request));
 %>

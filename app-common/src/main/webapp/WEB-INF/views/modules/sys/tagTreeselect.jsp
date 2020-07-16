@@ -90,11 +90,11 @@
 			}
 			// 保存最后一次
 			lastValue = value;
+			updateNodes(false);
 			// 如果要查空字串，就退出不查了。
 			if (value === "") {
 				return;
 			}
-			updateNodes(false);
 			tree.expandAll(false);
 			nodeList = tree.getNodesByParamFuzzy(keyType, value);
 			if (nodeList && nodeList.length > 0) {

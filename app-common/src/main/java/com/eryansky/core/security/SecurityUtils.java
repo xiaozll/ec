@@ -390,9 +390,10 @@ public class SecurityUtils {
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
         sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号
-        List<User> users = UserUtils.findByCode(sessionInfo.getCode());
+//        List<User> users = UserUtils.findByCode(sessionInfo.getCode());
+        List<User> users = UserUtils.findByLoginNameOrCode(sessionInfo.getLoginName(),sessionInfo.getCode());
         users.forEach(v->{
-            if(v.getLoginName().equalsIgnoreCase(sessionInfo.getLoginName())){
+            if(!v.getLoginName().equalsIgnoreCase(sessionInfo.getLoginName())){
                 sessionInfo.addIfNotExistLoginName(v.getLoginName());
             }
         });

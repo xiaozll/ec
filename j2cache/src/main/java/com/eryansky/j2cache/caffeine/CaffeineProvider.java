@@ -65,11 +65,10 @@ public class CaffeineProvider implements CacheProvider {
         return caches.computeIfAbsent(region, v -> {
             CacheConfig config = cacheConfigs.get(region);
             if (config == null) {
+                log.warn("Caffeine cache [{}] not defined, using default.", region);
                 config = cacheConfigs.get(DEFAULT_REGION);
                 if (config == null)
                     throw new CacheException(String.format("Undefined [default] caffeine cache"));
-
-                log.warn("Caffeine cache [{}] not defined, using default.", region);
             }
             return newCaffeineCache(region, config.size, config.expire, listener);
         });

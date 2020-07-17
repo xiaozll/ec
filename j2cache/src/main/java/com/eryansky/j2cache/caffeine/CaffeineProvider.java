@@ -108,8 +108,8 @@ public class CaffeineProvider implements CacheProvider {
      * 返回对 Caffeine cache 的 封装
      * @param region region name
      * @param size   max cache object size in memory
-     * @param expire cache object expire time in millisecond
-     *               if this parameter set to 0 or negative numbers
+     * @param expire cache object expire time in second
+     *               if this parameter set to 0s or negative numbers
      *               means never expire
      * @param listener  j2cache cache listener
      * @return CaffeineCache

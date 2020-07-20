@@ -670,6 +670,7 @@ public class SecurityUtils {
      * 将用户信息从session中移除
      *
      * @param sessionId session ID
+     * @param securityType {@link SecurityType}
      */
     public static void removeSessionInfoFromSession(String sessionId, SecurityType securityType) {
         removeSessionInfoFromSession(sessionId,securityType,true);

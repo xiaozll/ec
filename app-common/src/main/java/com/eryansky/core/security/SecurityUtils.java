@@ -388,7 +388,7 @@ public class SecurityUtils {
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(),sessionInfo.getLoginName()));
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
-        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
+//        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号
 //        List<User> users = UserUtils.findByCode(sessionInfo.getCode());
         List<User> users = UserUtils.findByLoginNameOrCode(sessionInfo.getLoginName(),sessionInfo.getCode());

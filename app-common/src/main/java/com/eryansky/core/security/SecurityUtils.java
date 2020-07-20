@@ -662,7 +662,7 @@ public class SecurityUtils {
      * 全部下线
      */
     public static void offLineAll(){
-        List<SessionInfo> sessionInfos = SecurityUtils.findSessionInfoListWithOrder();
+        List<SessionInfo> sessionInfos = SecurityUtils.findSessionInfoList();
         sessionInfos.forEach(sessionInfo -> removeSessionInfoFromSession(sessionInfo.getId(), SecurityType.offline));
     }
 
@@ -681,7 +681,7 @@ public class SecurityUtils {
      *
      * @param sessionId session ID
      * @param securityType {@link SecurityType}
-     * @param invalidate
+     * @param invalidate 刷新
      */
     public static void removeSessionInfoFromSession(String sessionId, SecurityType securityType,Boolean invalidate) {
         SessionInfo _sessionInfo = Static.applicationSessionContext.getSession(sessionId);

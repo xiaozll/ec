@@ -3,6 +3,7 @@ package com.eryansky.modules.sys.web;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
@@ -18,6 +19,7 @@ import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.service.LogService;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.eryansky.utils.AppDateUtils;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -127,7 +129,8 @@ public class LogReportController extends SimpleController {
     @RequestMapping(value = {"dayLoginStatisticsData"})
     @ResponseBody
     public Result dayLoginStatisticsData(String startTime, String endTime) throws Exception {
-        List<Map<String, Object>> list = logService.getDayLoginStatistics(startTime, endTime);
+        String _startTime = StringUtils.isBlank(startTime) ? DateUtils.formatDate(AppDateUtils.getCurrentYearStartTime()):startTime;
+        List<Map<String, Object>> list = logService.getDayLoginStatistics(_startTime, endTime);
         Date date = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         for (Map<String, Object> map : list) {

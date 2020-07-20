@@ -18,10 +18,12 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.CookieUtils;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityConstants;
@@ -254,6 +256,58 @@ public class LoginController extends SimpleController {
         }
         return "redirect:/";
     }
+
+
+    /**
+     * 自动登录
+     * @param loginName
+     * @param token
+     * @param request
+     * @param uiModel
+     * @return
+     */
+    @RequiresUser(required = false)
+    @ResponseBody
+    @RequestMapping(value = {"autoLogin"})
+    public Result autoLogin(@RequestParam(required = true) String loginName,
+                            @RequestParam(required = true) String token,
+                            HttpServletRequest request, Model uiModel) {
+        //登录限制
+        checkLoginLimit();
+
+        Result result = null;
+
+        boolean verify = false;
+        try {
+            verify = JWTUtils.verify(token,loginName,loginName);
+        } catch (Exception e) {
+            logger.error("{},{},Token校验失败,{}", token,loginName,e.getMessage());
+        }
+        if(!verify){
+            return Result.errorResult().setMsg("Token校验失败！");
+        }
+
+        User user = UserUtils.getUserByLoginName(loginName);
+        if(null == user){
+            logger.warn("不存在账号[{}],",new Object[]{loginName});
+            return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
+        }
+
+        SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
+        userService.login(sessionInfo.getUserId());
+        SecurityUtils.refreshSessionInfo(sessionInfo);
+
+        logger.info("用户{}自动登录,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
+
+        //设置跳转URL 如果session中包含未被授权的URL 则跳转到该页面
+        String resultUrl = request.getContextPath()+ AppConstants.getAdminPath();
+        Map<String,Object> data = Maps.newHashMap();
+        data.put("sessionInfo",sessionInfo);
+        data.put("homeUrl",resultUrl);
+        result = new Result(Result.SUCCESS, "用户自动登录成功!", data);
+        return result;
+    }
+
 
     /**
      * 切换账号 无需密码

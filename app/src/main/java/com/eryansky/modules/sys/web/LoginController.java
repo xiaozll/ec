@@ -280,7 +280,9 @@ public class LoginController extends SimpleController {
         SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout);
         SecurityUtils.putUserToSession(request,user);
         logger.info("{}用户切换账号{},IP:{}.", new Object[]{sessionInfo.getId(),loginName, SpringMVCHolder.getIp()});
-        return Result.successResult();
+        Map<String,Object> data = Maps.newHashMap();
+        data.put("sessionInfo",sessionInfo);
+        return Result.successResult().setObj(data);
     }
 
 

@@ -10,10 +10,10 @@ import com.eryansky.common.utils.mapper.JsonMapper;
 import java.io.Serializable;
 
 /**
- * Ajax请求Json响应结果模型.
+ * 请求响应结果模型.
  * 
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2012-10-16 上午9:57:59
+ * @date 2020-07-21
  */
 @SuppressWarnings("serial")
 public class Result implements Serializable {
@@ -53,9 +53,14 @@ public class Result implements Serializable {
 	 */
 	private String msg;
 	/**
-	 * 其它数据信息（比如跳转地址）
+	 * 数据
 	 */
+	@Deprecated
 	private Object obj;
+	/**
+	 * 数据
+	 */
+	private Object data;
 
 	public Result() {
 		super();
@@ -142,14 +147,31 @@ public class Result implements Serializable {
 	}
 
 	/**
-	 * 设置其它数据信息（比如跳转地址）
+	 * 设置数据
 	 * 
 	 * @param obj
-	 *            其它数据信息（比如跳转地址）
+	 *            数据
 	 */
 	public Result setObj(Object obj) {
 		this.obj = obj;
         return this;
+	}
+
+	/**
+	 * 其它数据信息
+	 */
+	public Object getData() {
+		return data;
+	}
+
+	/**
+	 * 设置其它数据信息
+	 *
+	 * @param data 数据
+	 */
+	public Result setData(Object data) {
+		this.data = data;
+		return this;
 	}
 
 	@SuppressWarnings("static-access")

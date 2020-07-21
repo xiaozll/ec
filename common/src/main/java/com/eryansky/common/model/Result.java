@@ -23,6 +23,10 @@ public class Result implements Serializable {
 	 */
 	public static final int SUCCESS = 1;
 	/**
+	 * API 成功
+	 */
+	public static final int SUCCESS_API = 200;
+	/**
 	 * 警告
 	 */
 	public static final int WARN = 2;

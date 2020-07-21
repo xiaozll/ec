@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2013-2014 http://www.jfit.com.cn
+ *  Copyright (c) 2012-2018 http://www.eryansky.com
  *
  *          江西省锦峰软件科技有限公司         
  */

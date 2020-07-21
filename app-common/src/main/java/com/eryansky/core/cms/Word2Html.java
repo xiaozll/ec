@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * word转html 支持doc、docx 自动导入图片
  * 更新：2016-06-30 支持docx格式
- * @author 温春平@wencp jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-01-09
  */
 public class Word2Html {

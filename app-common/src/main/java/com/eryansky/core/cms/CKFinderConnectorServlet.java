@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /**
  * CKFinderConnectorServlet
- * @author 温春平&wencp jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @version 2013-01-15
  */
 public class CKFinderConnectorServlet extends ConnectorServlet {

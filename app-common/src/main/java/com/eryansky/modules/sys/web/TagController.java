@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 标签Controller
  *
- * @author 温春平&wencp wencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @version 2013-3-23
  */
 @Controller

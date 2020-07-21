@@ -6,7 +6,7 @@
 package com.eryansky.client.common.utils;
 
 /**
- * @author 温春平 jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2019-07-29 
  */
 public class Constants {

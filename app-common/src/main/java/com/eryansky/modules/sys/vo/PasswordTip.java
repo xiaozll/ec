@@ -6,7 +6,7 @@
 package com.eryansky.modules.sys.vo;
 
 /**
- * @author 温春平@wencp jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-06-14 
  */
 public class PasswordTip {

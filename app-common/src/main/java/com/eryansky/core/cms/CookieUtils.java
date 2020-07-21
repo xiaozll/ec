@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Cookie工具类
- * @author 温春平&wencp jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @version 2013-01-15
  */
 public class CookieUtils {

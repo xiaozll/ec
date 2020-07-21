@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /**
  * 查看CK上传的图片
- * @author 温春平@wencp jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-01-21
  *
  */

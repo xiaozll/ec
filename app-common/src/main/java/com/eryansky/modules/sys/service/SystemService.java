@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 系统任务
  *
- * @author 温春平@wencp jfwencp@jx.tobacco.gov.cn
+ * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2017-09-19
  */
 @Service

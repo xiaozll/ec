@@ -53,9 +53,9 @@ public class Resources {
 	/************ controller访问地址 : request_mapping/moudle ****************/
 	public static final String REQUEST_MAPPING = "jsp/"+MODULE.replace(".","/");
 
-	public static final String JSP_STORE_PATH =  "/Users/jfit_mac/work/workspace/ec/app/src/main/webapp/WEB-INF/views/";
+	public static final String JSP_STORE_PATH =  "E:\\workspace\\wencp\\ec\\app\\src\\main\\webapp\\WEB-INF\\views\\";
 	/************ 生成JAVA文件的根目录，系统根据package声明进行目录创建 **********/
-	public static final String JAVA_STROE_PATH = "/Users/jfit_mac/work/workspace/ec/app/src/main/java/";
+	public static final String JAVA_STROE_PATH = "E:\\workspace\\wencp\\ec\\app\\src\\main\\java\\";
 
 	public static String getClazzNameByTableName(String tableName) {
 		return null;

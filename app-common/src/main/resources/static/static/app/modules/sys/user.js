@@ -151,10 +151,10 @@ $(function () {
                     var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " +
                         "onclick='edit(" + rowIndex + ");' >编辑</a>";
 
-                operaterHtml += "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
+                operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
 
                     if(isSuperUser()){//查看用户原始密码
-                        operaterHtml += "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' onclick='viewUserPassword(\"" + rowData['loginName'] + "\");' >密码</a>";
+                        operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' onclick='viewUserPassword(\"" + rowData['loginName'] + "\");' >密码</a>";
                     }
                     return operaterHtml;
                 }}
@@ -429,13 +429,9 @@ function viewUserResources(rowIndex) {
     if (rowIndex != undefined) {
         $user_datagrid.datagrid('unselectAll');
         $user_datagrid.datagrid('selectRow', rowIndex);
-        var rowData = $user_datagrid.datagrid('getSelected');
-        $user_datagrid.datagrid('unselectRow', rowIndex);
-        return;
     }
     //选中的行（最后一次选择的行）
     var row = $user_datagrid.datagrid('getSelected');
-    console.log(row);
     if(!row || !row["id"]){
         eu.showMsg("您未选择任何操作对象，请选择一行数据！");
         return false;

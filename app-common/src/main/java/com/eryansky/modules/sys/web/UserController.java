@@ -6,10 +6,7 @@
 package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.exception.ActionException;
-import com.eryansky.common.model.Combobox;
-import com.eryansky.common.model.Datagrid;
-import com.eryansky.common.model.Result;
-import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.model.*;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
@@ -821,6 +818,18 @@ public class UserController extends SimpleController {
         JsGridReportBase report = new JsGridReportBase(request, response);
         report.exportToExcel(title, SecurityUtils.getCurrentSessionInfo().getName(), tds);
 
+    }
+
+
+    /**
+     * 用户权限树
+     */
+    @RequestMapping(value = {"userResources"})
+    @ResponseBody
+    public Result userResources(String userId) {
+        String _userId = StringUtils.isNotBlank(userId) ? userId:SecurityUtils.getCurrentUserId();
+        List<TreeNode>  list = resourceService.findTreeNodeResourcesWithPermissions(_userId);
+        return Result.successResult().setData(list);
     }
 
     /**

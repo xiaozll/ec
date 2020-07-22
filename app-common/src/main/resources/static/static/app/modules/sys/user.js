@@ -151,10 +151,10 @@ $(function () {
                     var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " +
                         "onclick='edit(" + rowIndex + ");' >编辑</a>";
 
-                operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
+                operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-search'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
 
                     if(isSuperUser()){//查看用户原始密码
-                        operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' onclick='viewUserPassword(\"" + rowData['loginName'] + "\");' >密码</a>";
+                        operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-search'  href='#' onclick='viewUserPassword(\"" + rowData['loginName'] + "\");' >密码</a>";
                     }
                     return operaterHtml;
                 }}
@@ -227,7 +227,7 @@ $(function () {
             '-',
             {
                 text: '查看用户权限',
-                iconCls: 'easyui-icon-edit',
+                iconCls: 'easyui-icon-search',
                 handler: function () {
                     viewUserResources();
                 }

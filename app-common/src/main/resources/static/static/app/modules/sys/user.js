@@ -226,7 +226,7 @@ $(function () {
             },
             '-',
             {
-                text: '查看用户权限',
+                text: '查看权限',
                 iconCls: 'easyui-icon-search',
                 handler: function () {
                     viewUserResources();
@@ -437,7 +437,7 @@ function viewUserResources(rowIndex) {
         return false;
     }
     var url = ctxAdmin + '/sys/user/viewUserResources?userId=' + row['id'];
-    var title = '查看用户权限-' + row['name'];
+    var title = '查看权限-' + row['name'];
     try {
         parent.addTabs({id: 'viewUserResources_' + row['id'], title: title, close: true, url: url, urlType: ''});
     } catch (e) {

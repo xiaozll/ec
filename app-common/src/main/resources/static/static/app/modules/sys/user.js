@@ -151,6 +151,8 @@ $(function () {
                     var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " +
                         "onclick='edit(" + rowIndex + ");' >编辑</a>";
 
+                operaterHtml += "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
+
                     if(isSuperUser()){//查看用户原始密码
                         operaterHtml += "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' onclick='viewUserPassword(\"" + rowData['loginName'] + "\");' >密码</a>";
                     }
@@ -220,6 +222,14 @@ $(function () {
                 iconCls: 'eu-icon-folder',
                 handler: function () {
                     editUserResource()
+                }
+            },
+            '-',
+            {
+                text: '查看用户权限',
+                iconCls: 'easyui-icon-edit',
+                handler: function () {
+                    viewUserResources();
                 }
             },
             '-',
@@ -382,7 +392,6 @@ function showDialog(row) {
     });
 
 }
-
 //编辑
 function edit(rowIndex, rowData) {
     //响应双击事件
@@ -412,6 +421,31 @@ function edit(rowIndex, rowData) {
         showDialog(row);
     } else {
         eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+    }
+}
+//产看用户权限
+function viewUserResources(rowIndex) {
+    //响应双击事件
+    if (rowIndex != undefined) {
+        $user_datagrid.datagrid('unselectAll');
+        $user_datagrid.datagrid('selectRow', rowIndex);
+        var rowData = $user_datagrid.datagrid('getSelected');
+        $user_datagrid.datagrid('unselectRow', rowIndex);
+        return;
+    }
+    //选中的行（最后一次选择的行）
+    var row = $user_datagrid.datagrid('getSelected');
+    console.log(row);
+    if(!row || !row["id"]){
+        eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+        return false;
+    }
+    var url = ctxAdmin + '/sys/user/viewUserResources?userId=' + row['id'];
+    var title = '查看用户权限-' + row['name'];
+    try {
+        parent.addTabs({id: 'viewUserResources_' + row['id'], title: title, close: true, url: url, urlType: ''});
+    } catch (e) {
+        eu.addTab(window.parent.layout_center_tabs, title, url, true, "");
     }
 }
 //初始化修改密码表单

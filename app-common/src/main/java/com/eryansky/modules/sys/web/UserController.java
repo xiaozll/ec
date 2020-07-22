@@ -822,11 +822,27 @@ public class UserController extends SimpleController {
 
 
     /**
+     * 查看用户资源权限
+     */
+    @RequestMapping(value = {"viewUserResources"})
+    public String viewUserResources(String userId, Model uiModel,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) {
+        User model = UserUtils.getUser(userId);
+        if(WebUtils.isAjaxRequest(request)){
+            List<Resource> list = resourceService.findResourcesWithPermissions(model.getId());
+            return renderString(response, new Datagrid<>(list.size(), list));
+        }
+        uiModel.addAttribute("model", model);
+        return "modules/sys/user-resource-view";
+    }
+
+    /**
      * 用户权限树
      */
-    @RequestMapping(value = {"userResources"})
+    @RequestMapping(value = {"userResourcesData"})
     @ResponseBody
-    public Result userResources(String userId) {
+    public Result userResourcesData(String userId) {
         String _userId = StringUtils.isNotBlank(userId) ? userId:SecurityUtils.getCurrentUserId();
         List<TreeNode>  list = resourceService.findTreeNodeResourcesWithPermissions(_userId);
         return Result.successResult().setData(list);

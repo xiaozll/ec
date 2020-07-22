@@ -93,8 +93,9 @@ function dictionaryItemDatagrid() {
                             currentDictionaryId = record['value'];
                             editRowData["dictionaryCode"] = record['data'];
                             var dictionaryCode = editRowData["dictionaryCode"];
-                            initCodeAndValue(dictionaryCode);
-
+                            if(editRowData == undefined || editRowData['id'] == undefined || editRowData['id'] ===''){
+                                initCodeAndValue(dictionaryCode);
+                            }
                         },
                         onLoadSuccess: function () {
                             var data = $(this).combobox('getData');
@@ -106,7 +107,7 @@ function dictionaryItemDatagrid() {
                                     return false;
                                 }
                             });
-                            if(editRowData == undefined || editRowData['id'] == undefined || editRowData['id'] ==''){
+                            if(editRowData == undefined || editRowData['id'] == undefined || editRowData['id'] ===''){
                                 initCodeAndValue(dictionaryCode);
                             }
                         }

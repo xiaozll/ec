@@ -150,7 +150,8 @@ public class UserController extends SimpleController {
         }
         SexType[] _enums = SexType.values();
         for (int i = 0; i < _enums.length; i++) {
-            Combobox combobox = new Combobox(_enums[i].getValue().toString(), _enums[i].getDescription());
+            SexType e = _enums[i];
+            Combobox combobox = new Combobox(e.getValue(), e.getDescription());
             cList.add(combobox);
         }
         return cList;

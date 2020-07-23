@@ -59,9 +59,9 @@ $(function() {
         ]],
         columns:[[
             {field:'id',title:'主键',hidden:true,sortable:true,align:'right',width:80} ,
-            {field:'organName',title:'部门',width:120,hidden:false},
-            {field:'code',title:'岗位编码',width:120,sortable:true},
-            {field:'sort',title:'排序号',width:100,sortable:true},
+            {field:'organName',title:'部门',width:200,hidden:false},
+            {field:'code',title:'岗位编码',width:200,sortable:true},
+            {field:'sort',title:'排序号',align:"right",width:60,sortable:true},
             {field:'remark',title:'备注',width:200}
         ]],
         toolbar:[{

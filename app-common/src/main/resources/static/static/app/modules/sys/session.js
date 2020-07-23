@@ -61,7 +61,7 @@ $(function () {
         }, {
             title: '登录名',
             field: 'loginName',
-            width: 120
+            width: 200
         }, {
             title: '部门',
             field: 'loginOrganName',

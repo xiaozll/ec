@@ -42,7 +42,7 @@ function initDatagrid(){
             {field: 'isShelfView',title: '是否下架',width: 120},
             {field: 'operate', title: '操作', formatter:function(value,rowData,rowIndex){
                     var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit' onclick='edit(" + rowIndex + ");' >编辑</a>";
-                    operaterHtml += "<a class='easyui-linkbutton' iconCls='easyui-icon-remove' onclick='del(" + rowIndex + ");' >删除</a>";
+                    operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-remove' onclick='del(" + rowIndex + ");' >删除</a>";
                     return operaterHtml;
                 }
             }

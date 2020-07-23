@@ -148,11 +148,8 @@ $(function () {
                     return value;
                 }},
                 {field: 'operater', title: '操作', width: 260, formatter: function (value, rowData, rowIndex) {
-                    var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " +
-                        "onclick='edit(" + rowIndex + ");' >编辑</a>";
-
-                operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-search'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
-
+                    var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " + "onclick='edit(" + rowIndex + ");' >编辑</a>";
+                    operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-search'  href='#' " + "onclick='viewUserResources(" + rowIndex + ");' >查看权限</a>";
                     if(isSuperUser()){//查看用户原始密码
                         operaterHtml += "&nbsp;<a class='easyui-linkbutton' iconCls='easyui-icon-search'  href='#' onclick='viewUserPassword(\"" + rowData['loginName'] + "\");' >密码</a>";
                     }

@@ -23,7 +23,7 @@ $(function () {
             [
                 {field: 'ck', checkbox: true},
                 {field: 'name', title: '角色名称', width: 200},
-                {field: 'code', title: '角色编码', width: 120}
+                {field: 'code', title: '角色编码', width: 200}
             ]
         ],
         columns: [

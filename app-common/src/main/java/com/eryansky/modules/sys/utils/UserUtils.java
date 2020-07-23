@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.utils;
 
 import com.eryansky.common.exception.ActionException;
+import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.ConvertUtils;
 import com.eryansky.common.utils.StringUtils;
@@ -458,7 +459,7 @@ public class UserUtils {
             if(Collections3.isNotEmpty(userPasswords)){
                 for(UserPassword userPassword:userPasswords){
                     if (userPassword.getPassword().equals(Encrypt.e(pagePassword))) {
-                        throw new ActionException("你输入的密码在最近"+max+"次以内已使用过，请更换！");
+                        throw new ServiceException("你输入的密码在最近"+max+"次以内已使用过，请更换！");
                     }
                 }
             }

@@ -64,22 +64,22 @@
 							continue; // 如果为复选框选择，则过滤掉父节点
 						}//</c:if><c:if test="${notAllowSelectRoot}">
 						if (nodes[i].level == 0){
-							top.$.jBox.tip("不能选择根节点（"+nodes[i]['text']+"）请重新选择。");
+							$.jBox.tip("不能选择根节点（"+nodes[i]['text']+"）请重新选择。");
 							return false;
 						}//</c:if><c:if test="${notAllowSelectParent}">
 						if (nodes[i].isParent){
-							top.$.jBox.tip("不能选择父节点（"+nodes[i]['text']+"）请重新选择。");
+							$.jBox.tip("不能选择父节点（"+nodes[i]['text']+"）请重新选择。");
 							return false;
 						}//</c:if><c:if test="${not empty module && selectScopeModule}">
 						if (nodes[i]['attributes']['module'] == ""){
-							top.$.jBox.tip("不能选择公共模型（"+nodes[i]['text']+"）请重新选择。");
+							$.jBox.tip("不能选择公共模型（"+nodes[i]['text']+"）请重新选择。");
 							return false;
 						}else if (nodes[i]['attributes']['module'] != "${module}"){
-							top.$.jBox.tip("不能选择当前栏目以外的栏目模型，请重新选择。");
+							$.jBox.tip("不能选择当前栏目以外的栏目模型，请重新选择。");
 							return false;
 						}//</c:if><c:if test="${not empty allSelectNodeTypes}">
 						if (allSelectNodeTypes.indexOf(nodes[i]['attributes']['nType']) < 0){
-							top.$.jBox.tip("不允许选择的节点类型（"+nodes[i]['text']+"）请重新选择。");
+							$.jBox.tip("不允许选择的节点类型（"+nodes[i]['text']+"）请重新选择。");
 							return false;
 						}//</c:if>
 						ids.push(nodes[i].id);

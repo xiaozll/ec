@@ -1,7 +1,10 @@
 package com.eryansky.configure;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +17,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 //开始异步支持
 @EnableAsync
 public class AopConfigurer implements AsyncConfigurer {
+
+    private static Logger logger = LoggerFactory.getLogger(AopConfigurer.class);
 
     @Override
     public Executor getAsyncExecutor() {
@@ -32,7 +37,13 @@ public class AopConfigurer implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return null;
+        return new AsyncUncaughtExceptionHandler() {
+            @Override
+            public void handleUncaughtException(Throwable throwable, Method method, Object... objects) {
+                logger.error(method.getName() +":"+throwable.getMessage(), throwable);
+            }
+
+        };
     }
 
 }

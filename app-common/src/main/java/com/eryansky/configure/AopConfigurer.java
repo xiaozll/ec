@@ -30,7 +30,7 @@ public class AopConfigurer implements AsyncConfigurer {
         //最大线程数量
         executor.setMaxPoolSize(processors * 5);
         //线程池的队列容量
-        executor.setQueueCapacity(processors * 2);
+        executor.setQueueCapacity(processors * 100);
         executor.initialize();
         return executor;
     }

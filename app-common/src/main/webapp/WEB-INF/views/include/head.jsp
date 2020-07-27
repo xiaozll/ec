@@ -22,8 +22,8 @@
 <script src="${ctxStatic}/js/x-editable/js/bootstrap-editable.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/fancyBox/source/jquery.fancybox.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/fancyBox/source/jquery.fancybox.js" type="text/javascript"></script>
-<link href="${ctxStatic}/js/common/common.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/js/common/common.js" type="text/javascript"></script>
+<link href="${ctxStatic}/js/common/common.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/js/common/common.min.js" type="text/javascript"></script>
 <link rel="shortcut icon" href="${ctxStatic}/img/favicon.ico">
 
 

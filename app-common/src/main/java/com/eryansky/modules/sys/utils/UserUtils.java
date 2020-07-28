@@ -64,6 +64,33 @@ public class UserUtils {
     }
 
     /**
+     * 根据ID或登录名查找用户
+     *
+     * @param idOrLoginName ID或登录名
+     * @return
+     */
+    public static User getUserByIdOrLoginName(String idOrLoginName) {
+        if (StringUtils.isNotBlank(idOrLoginName)) {
+            return Static.userService.getUserByIdOrLoginName(idOrLoginName);
+        }
+        return null;
+    }
+
+
+    /**
+     * 根据ID或手机号查找用户
+     *
+     * @param idOrMobile ID或手机号
+     * @return
+     */
+    public static User getUserByIdOrMobile(String idOrMobile) {
+        if (StringUtils.isNotBlank(idOrMobile)) {
+            return Static.userService.getUserByIdOrMobile(idOrMobile);
+        }
+        return null;
+    }
+
+    /**
      * 根据员工编号查找用户
      *
      * @param code 员工编号

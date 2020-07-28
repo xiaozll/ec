@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
@@ -58,7 +59,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @return
      */
     public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String userId, String isRead) {
-        return findUserPage(page,null, userId, isRead, null);
+        return findUserPage(page,null, userId, isRead, null,null);
     }
 
     /**
@@ -70,7 +71,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @param isSend
      * @return
      */
-    public Page<MessageReceive> findUserPage(Page<MessageReceive> page,String appId, String userId, String isRead, String isSend) {
+    public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String appId, String userId, String isRead, String isSend, Map<String,Object> params) {
         Parameter parameter = new Parameter();
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
@@ -79,6 +80,9 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
         parameter.put("userId", userId);
         parameter.put("isRead", isRead);
         parameter.put("isSend", isSend);
+        if (null != params) {
+            params.forEach(parameter::putIfAbsent);
+        }
         page.setResult(dao.findUserList(parameter));
         return page;
     }

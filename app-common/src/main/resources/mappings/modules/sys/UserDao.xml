@@ -109,6 +109,30 @@
         </where>
     </select>
 
+    <select id="getUserByIdOrMobile" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND (a.id = #{idOrMobile} OR a.mobile = #{idOrMobile})
+        </where>
+    </select>
+
+    <select id="getUserByIdOrLoginName" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND (a.id = #{idOrLoginName} OR a.login_name = #{idOrLoginName})
+        </where>
+    </select>
+
     <select id="findByCode" resultType="User">
         SELECT
         <include refid="userColumns"/>

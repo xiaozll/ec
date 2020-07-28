@@ -295,6 +295,68 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.getUserByLoginName(parameter);
     }
 
+
+    /**
+     * 根据ID或登录名名查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param idOrLoginName ID或登录名
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByIdOrLoginName(String idOrLoginName) {
+        return getUserByIdOrLoginName(idOrLoginName, DataEntity.STATUS_NORMAL);
+    }
+
+    /**
+     * 根据ID或登录名查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param idOrLoginName ID或登录名
+     * @param status
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByIdOrLoginName(String idOrLoginName, String status) {
+        Assert.notNull(idOrLoginName, "参数[idOrLoginName]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("idOrLoginName", idOrLoginName);
+        return dao.getUserByIdOrLoginName(parameter);
+    }
+
+
+    /**
+     * 根据ID或手机号名名查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param idOrMobile ID或手机号
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByIdOrMobile(String idOrMobile) {
+        return getUserByIdOrMobile(idOrMobile, DataEntity.STATUS_NORMAL);
+    }
+
+    /**
+     * 根据ID或手机号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param idOrMobile ID或手机号
+     * @param status
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByIdOrMobile(String idOrMobile, String status) {
+        Assert.notNull(idOrMobile, "参数[idOrMobile]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("idOrMobile", idOrMobile);
+        return dao.getUserByIdOrMobile(parameter);
+    }
+
     /**
      * 根据编号查找.
      * <br>注：排除已删除的对象

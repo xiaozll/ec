@@ -72,6 +72,9 @@
 			<if test="category != null and category != ''">
 				AND m.category = #{category}
 			</if>
+			<if test="appId != null and appId != ''">
+				AND m.app_id = #{appId}
+			</if>
 			<if test="isRead != null and isRead != ''">
 				AND a.is_read = #{isRead}
 			</if>

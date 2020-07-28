@@ -5,9 +5,12 @@
  */
 package com.eryansky.modules.notice.dao;
 
+import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.MyBatisDao;
 import com.eryansky.common.orm.persistence.CrudDao;
 import com.eryansky.modules.notice.mapper.Message;
+
+import java.util.List;
 
 
 /**
@@ -18,5 +21,7 @@ import com.eryansky.modules.notice.mapper.Message;
  */
 @MyBatisDao
 public interface MessageDao extends CrudDao<Message> {
+
+    List<Message> findQueryList(Parameter parameter);
 }
 

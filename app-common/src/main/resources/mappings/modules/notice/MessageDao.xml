@@ -97,7 +97,68 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+	<select id="findQueryList" resultType="Message">
+		SELECT
+		<include refid="noticeMessageColumns"/>
+		FROM t_notice_message a
+		<include refid="noticeMessageJoins"/>
+		<where>
+			a.status = #{status}
+			<if test="appId != null and appId != ''">
+				AND a.app_id = #{appId}
+			</if>
+			<if test="organId != null and organId != ''">
+				AND a.organ_id = #{organId}
+			</if>
+
+			<if test="category != null and category != ''">
+				AND a.category = #{category}
+			</if>
+
+			<if test="query != null and query != ''">
+				AND (
+				a.title LIKE
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
+				OR a.url LIKE
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
+				OR a.content LIKE
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
+				OR a.app_id LIKE
+				<choose>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
+				</choose>
+				)
+			</if>
+			${dsf}
+		</where>
+		<choose>
+			<when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
+				ORDER BY ${entityPage.orderBy} ${entityPage.order}
+			</when>
+			<otherwise>
+				ORDER BY a.update_time DESC
+			</otherwise>
+		</choose>
+	</select>
 
 	<select id="findAllList" resultType="Message">
 		SELECT 

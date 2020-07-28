@@ -7,9 +7,13 @@ package com.eryansky.modules.notice.service;
 
 import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.orm.model.Parameter;
+import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.modules.sys.utils.UserUtils;
 //import com.eryansky.modules.weixin.utils.WeixinUtils;
+import com.eryansky.utils.AppConstants;
 import com.google.common.collect.Lists;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.core.security.SecurityUtils;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
@@ -47,6 +52,30 @@ public class MessageService extends CrudService<MessageDao, Message> {
         entity.getSqlMap().put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
         entity.setEntityPage(page);
         page.setResult(dao.findList(entity));
+        return page;
+    }
+
+    /**
+     *
+     * @param page
+     * @param appId
+     * @param userId 分级授权用户ID
+     * @param params
+     * @return
+     */
+    public Page<Message> findPage(Page<Message> page,String appId,String userId,Map<String,Object> params) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put("appId",appId);
+        if(StringUtils.isNotBlank(userId) ){
+            parameter.put("sqlMap.dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+        }
+
+        if (null != params) {
+            params.forEach(parameter::putIfAbsent);
+        }
+        page.setResult(dao.findQueryList(parameter));
         return page;
     }
 

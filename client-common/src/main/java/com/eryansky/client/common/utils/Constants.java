@@ -24,4 +24,7 @@ public class Constants {
     public static final String DB_DB2 = "db2";
     public static final String DB_ORACLE = "oracle";
 
+    public static final String YES = "1";
+    public static final String NO = "0";
+
 }

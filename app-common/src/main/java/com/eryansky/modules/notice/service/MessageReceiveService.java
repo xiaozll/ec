@@ -17,6 +17,7 @@ import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.sys._enum.YesOrNo;
 //import com.eryansky.modules.weixin.utils.WeixinUtils;
 import com.eryansky.modules.sys.mapper.VersionLog;
+import com.eryansky.utils.AppConstants;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -74,6 +75,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
     public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String appId, String userId, String isRead, String isSend, Map<String,Object> params) {
         Parameter parameter = new Parameter();
         parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("bizMode", MessageMode.Published.getValue());
         parameter.put("appId", StringUtils.isNotBlank(appId) ? appId: VersionLog.DEFAULT_ID);

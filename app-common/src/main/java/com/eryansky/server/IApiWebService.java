@@ -20,15 +20,19 @@ public interface IApiWebService {
 	 * data={
 	 * 	 senderId:"",
 	 * 	 sendTime:"yyyy-MM-dd HH:mm:ss",
-	 *   content:"接口测试",
+	 *   title:"标题",
+	 *   category:"分类",
+	 *   content:"消息内容",
 	 *   linkUrl:"",
 	 *   receiveType:"user",
 	 *   receiveIds:["loginName1","loginName2",...]
 	 *   tipType:["Message","QYWeixin"]
 	 * }
 	 * senderId   :发送者账号 可选
-	 * sendTime       :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
-	 * content    :消息内容     必选
+	 * sendTime   :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
+	 * title      :消息标题    可选
+	 * category   :消息分类    可选
+	 * content    :消息内容    必选
 	 * linkUrl    :消息链接    可选
 	 * receiveType:接收对象类型（用户：user，部门：organ）默认为"user" 可选（暂不可用）
 	 * receiveIds :接收者账号 必选

@@ -23,13 +23,16 @@ public class MessageAPIController extends SimpleController {
 
     /**
      * 发送消息
+     * @param appKey 访问密钥:
      * @param data 参数说明:
      * {
      * 	 appId:"appId",
      * 	 serviceId:"serviceId",
      * 	 senderId:"",
      * 	 sendTime:"yyyy-MM-dd HH:mm:ss",
-     *   content:"接口测试",
+     *   title:"标题",
+     *   category:"分类",
+     *   content:"消息内容",
      *   linkUrl:"",
      *   receiveIds:["loginName1","loginName2",...]
      * }
@@ -37,6 +40,8 @@ public class MessageAPIController extends SimpleController {
      * serviceId  :应用集成服务ID  必选
      * senderId   :发送者账号(第三方系统账号，需在应用集成平台做账号映射) 可选
      * sendTime   :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
+     * title    :消息标题     可选
+     * category    :消息分类     可选
      * content    :消息内容     必选
      * linkUrl    :消息链接    可选
      * receiveIds :接收者账号(第三方系统账号，需在应用集成平台做账号映射) 必选
@@ -54,7 +59,7 @@ public class MessageAPIController extends SimpleController {
     @RequiresUser(required = false)
     @RequestMapping(value = { "sendMessage"},method = RequestMethod.POST)
     @ResponseBody
-    public Result sendMessage(String data) {
+    public Result sendMessage(String appKey,String data) {
         if(SystemInitListener.Static.apiWebService != null){
             WSResult wsResult = SystemInitListener.Static.apiWebService.sendMessage(data);
             return WSResult.SUCCESS.equals(wsResult.getCode()) ? Result.successResult().setMsg(wsResult.getMessage()): Result.errorResult().setMsg(wsResult.getMessage());

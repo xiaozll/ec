@@ -59,6 +59,8 @@ public class ApiWebServiceImpl implements IApiWebService {
             String appId = (String) map.get("appId");
             String serviceId = (String) map.get("serviceId");
             String senderId = (String) map.get("senderId");
+            String title = (String) map.get("title");
+            String category = (String) map.get("category");
             String content = (String) map.get("content");
             String linkUrl = (String) map.get("linkUrl");
             String date = (String) map.get("date");
@@ -119,8 +121,7 @@ public class ApiWebServiceImpl implements IApiWebService {
 
             //微信发送消息
             try {
-
-                MessageUtils.sendMessage(appId, senderUser.getId(), content, linkUrl, _receiveType, receiveObjectIds,sendTime,messageChannels);
+                MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, MessageReceiveObjectType.getByValue(_receiveType), receiveObjectIds,sendTime,messageChannels);
                 return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功");
             } catch (Exception e) {
                 return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息发送失败");

@@ -153,13 +153,25 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @param userId
      * @param isRead
      */
-    public void setReadAll(String userId, String isRead) {
-        MessageReceive receive = new MessageReceive();
-        receive.setUserId(userId);
-        receive.setIsRead(StringUtils.isBlank(isRead) ? YesOrNo.YES.getValue() : isRead);
-        receive.setReadTime(Calendar.getInstance().getTime());
-        receive.setIsSend(YesOrNo.YES.getValue());
-        dao.setUserMessageRead(receive);
+    public int setReadAll(String userId, String isRead) {
+        return setReadAll(Message.DEFAULT_ID,userId,isRead);
+    }
+
+    /**
+     * 设置通知已读状态
+     *
+     * @param userId
+     * @param isRead
+     */
+    public int setReadAll(String appId,String userId, String isRead) {
+        Parameter parameter = new Parameter();
+        parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
+        parameter.put("appId", appId);
+        parameter.put("userId", userId);
+        parameter.put("isSend", YesOrNo.YES.getValue());
+        parameter.put("isRead", StringUtils.isBlank(isRead) ? YesOrNo.YES.getValue() : isRead);
+        parameter.put("readTime", Calendar.getInstance().getTime());
+        return  dao.setUserMessageRead(parameter);
     }
 
 

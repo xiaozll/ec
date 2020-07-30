@@ -16,7 +16,6 @@ import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSessionEvent;

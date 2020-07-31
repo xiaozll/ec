@@ -113,8 +113,8 @@ public class ApiWebServiceImpl implements IApiWebService {
             for (String localLoginName : receiveIds) {
                 User recevieUser = Static.userService.getUserByLoginName(localLoginName);
                 if (recevieUser == null) {
-                    logger.error("账号[" + localLoginName + "]，无相关账号信息");
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "]，无相关账号信息");
+                    logger.error("账号[" + localLoginName + "],无相关账号信息");
+                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],无相关账号信息");
                 }
                 receiveObjectIds.add(recevieUser.getId());
             }
@@ -152,7 +152,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             Map<String, Object> map = JsonMapper.getInstance().fromJson(data, HashMap.class);
             if(map == null){
                 logger.error("请求参数格式错误:" + data);
-                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数格式错误");
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数格式错误:data=" + data);
             }
 
             String appId = (String) map.get("appId");

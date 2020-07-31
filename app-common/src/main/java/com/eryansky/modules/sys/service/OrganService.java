@@ -132,6 +132,35 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         return dao.getByCode(parameter);
     }
 
+
+    /**
+     * 根据ID或编码得到
+     *
+     * @param idOrCode 机构ID或编码
+     * @return
+     */
+    public Organ getByIdOrCode(String idOrCode) {
+        return getByIdOrCode(idOrCode,DataEntity.STATUS_NORMAL);
+    }
+
+    /**
+     * 根据ID或编码得到
+     *
+     * @param idOrCode 机构ID或编码
+     * @param status {@link StatusState}
+     * @return
+     */
+    public Organ getByIdOrCode(String idOrCode, String status) {
+        if (StringUtils.isBlank(idOrCode)) {
+            return null;
+        }
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("idOrCode", idOrCode);
+        return dao.getByIdOrCode(parameter);
+    }
+
     /**
      * 根据编码得到Organ.
      *

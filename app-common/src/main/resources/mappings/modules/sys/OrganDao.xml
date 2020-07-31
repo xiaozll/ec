@@ -108,6 +108,19 @@
         </where>
     </select>
 
+    <select id="getByIdOrCode" resultType="Organ">
+        SELECT
+        <include refid="organColumns"/>
+        FROM t_sys_organ a
+        <include refid="organJoins"/>
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND (a.id = #{idOrCode} OR a.code = #{idOrCode})
+        </where>
+    </select>
+
     <select id="getDeleteByIdOrCode" resultType="Organ">
         SELECT
         <include refid="organColumns"/>

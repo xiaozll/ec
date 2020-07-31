@@ -83,6 +83,8 @@ public interface OrganDao extends TreeDao<Organ> {
 
     Organ getByCode(Parameter parameter);
 
+    Organ getByIdOrCode(Parameter parameter);
+
     Organ getDeleteByIdOrCode(Parameter parameter);
 
 

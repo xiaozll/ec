@@ -53,7 +53,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             Map<String, Object> map = JsonMapper.getInstance().fromJson(data, HashMap.class);
             if(map == null){
                 logger.error("请求参数格式错误:" + data);
-                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数格式错误");
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数格式错误:data=" + data);
             }
 
             String appId = (String) map.get("appId");
@@ -99,9 +99,9 @@ public class ApiWebServiceImpl implements IApiWebService {
             //发送者
             User senderUser = null;
             if (StringUtils.isNotBlank(senderId)) {
-                senderUser = Static.userService.getUserByLoginName(senderId);
+                senderUser = Static.userService.getUserByIdOrLoginName(senderId);
                 if (senderUser == null) {
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + "，无相关账号信息");
+                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + ",无相关账号信息");
                 }
             }
             if (senderUser == null) {
@@ -111,7 +111,7 @@ public class ApiWebServiceImpl implements IApiWebService {
 
             List<String> receiveObjectIds = new ArrayList<String>();
             for (String localLoginName : receiveIds) {
-                User recevieUser = Static.userService.getUserByLoginName(localLoginName);
+                User recevieUser = Static.userService.getUserByIdOrLoginName(localLoginName);
                 if (recevieUser == null) {
                     logger.error("账号[" + localLoginName + "],无相关账号信息");
                     return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],无相关账号信息");
@@ -199,7 +199,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             if (StringUtils.isNotBlank(senderId)) {
                 senderUser = Static.userService.getUserByLoginName(senderId);
                 if (senderUser == null) {
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + "，应用集成平台无相关账号映射信息");
+                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + ",应用集成平台无相关账号映射信息");
                 }
             }
             if (senderUser == null) {
@@ -208,10 +208,10 @@ public class ApiWebServiceImpl implements IApiWebService {
 
             List<String> organIds = new ArrayList<String>();
             for (String companyCode : receiveIds) {
-                Organ company = Static.organService.getByCode(companyCode);
+                Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {
-                    logger.error("机构[" + companyCode + "]，应用集成平台无相关映射信息");
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "]，应用集成平台无相关映射信息");
+                    logger.error("机构[" + companyCode + "],无相关账号信息");
+                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
                 }
                 List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());
                 if(Collections3.isNotEmpty(organList)){

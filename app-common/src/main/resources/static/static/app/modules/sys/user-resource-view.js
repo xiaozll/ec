@@ -17,8 +17,8 @@ $(function () {
         idField: 'id',
         treeField: "name",
         frozenColumns: [[
-            {field: 'name', title: '资源名称', width: 200},
-            {field: 'code', title: '资源编码', width: 120}
+            {field:'name',title:'资源名称',width:300},
+            {field:'code',title:'资源编码',width:260}
         ]],
         columns: [[
             {field: 'id', title: '主键', hidden: true, sortable: true, align: 'right', width: 80},

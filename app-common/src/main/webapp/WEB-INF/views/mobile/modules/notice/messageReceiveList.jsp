@@ -65,19 +65,35 @@
          * 设置已读 （异步）
          * @param id
          */
-        function setRead(id){
+        function setRead(id,messageId,linkUrl){
             $.ajax({
                 url: '${ctxAdmin}/notice/messageReceive/setRead?id='+id,
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {}
             });
+            if(linkUrl){
+                try {
+                    $.ajax({
+                        url: '${ctx}/f/getMessageSSOUrl?messageId=' + messageId,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (1 === data['code']) {
+                                window.location.assign(data['obj']);
+                            }
+                        }
+                    });
+                } catch (e) {
+                    window.location.assign(linkUrl);
+                }
+            }
         }
     </script>
     <script type="text/template" id="list_template">
         <ul id="contentTable" class="list">
             {{#result}}
-                <li onclick="setRead('{{id}}');">{{message.sendTime}}[{{message.senderName}}]：{{message.content}}</li>
+                <li onclick="setRead('{{id}}','{{message.id}}','{{message.url}}');">{{message.sendTime}}[{{message.senderName}}]：{{message.content}}</li>
             {{/result}}
         </ul>
         <div class="page pagination"></div>

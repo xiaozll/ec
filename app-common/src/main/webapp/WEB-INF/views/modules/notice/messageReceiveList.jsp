@@ -65,13 +65,29 @@
          * 设置已读 （异步）
          * @param id
          */
-        function setRead(id){
+        function setRead(id,messageId,linkUrl){
             $.ajax({
                 url: '${ctxAdmin}/notice/messageReceive/setRead?id='+id,
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {}
             });
+            if(linkUrl){
+                try {
+                    $.ajax({
+                        url: '${ctx}/f/getMessageSSOUrl?messageId=' + messageId,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (1 === data['code']) {
+                                window.location.assign(data['obj']);
+                            }
+                        }
+                    });
+                } catch (e) {
+                    window.location.assign(linkUrl);
+                }
+            }
         }
     </script>
     <script type="text/template" id="list_template">
@@ -87,7 +103,7 @@
             <tbody>
             {{#result}}
                 <tr>
-                    <td><a href="javascript:" onclick="setRead('{{id}}');">{{message.content}}</a></td>
+                    <td><a href="javascript:" onclick="setRead('{{id}}','{{message.id}}','{{message.url}}');">{{message.content}}</a></td>
                     <td>{{message.senderName}}</td>
                     <td>{{message.sendTime}}</td>
                     <td>{{isReadView}}</td>

@@ -7,6 +7,7 @@ import javax.jws.WebService;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
@@ -63,6 +64,9 @@ public class ApiWebServiceImpl implements IApiWebService {
             String category = (String) map.get("category");
             String content = (String) map.get("content");
             String linkUrl = (String) map.get("linkUrl");
+            if (StringUtils.isNotBlank(linkUrl)){
+                linkUrl = EncodeUtils.urlDecode(linkUrl);
+            }
             String date = (String) map.get("date");
             Date sendTime = DateUtils.parseDate(date);
             List<String> receiveIds = (List) map.get("receiveIds");

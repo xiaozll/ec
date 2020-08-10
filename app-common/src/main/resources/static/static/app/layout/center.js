@@ -213,7 +213,7 @@ function initLoginPasswordForm(){
 
 function editLoginUserPassword(){
     //弹出对话窗口
-    login_about_dialog = $('<div/>').dialog({
+    login_password_dialog = $('<div/>').dialog({
         title:'&nbsp;修改用户密码',
         top: 100,
         width : 460,
@@ -231,11 +231,11 @@ function editLoginUserPassword(){
             text : '关闭',
             iconCls : 'easyui-icon-cancel',
             handler : function() {
-                login_about_dialog.dialog('destroy');
+                login_password_dialog.dialog('destroy');
             }
         }],
         onClose : function() {
-            login_about_dialog.dialog('destroy');
+            login_password_dialog.dialog('destroy');
         },
         onLoad:function(){
             initLoginPasswordForm();

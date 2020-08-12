@@ -270,6 +270,13 @@
         DELETE FROM t_sys_user_post WHERE post_id = #{id} AND organ_id = #{organId}
     </delete>
 
+    <delete id="deletePostUsersByPostIdAndOrganIdAndUserIds">
+        DELETE FROM t_sys_user_post WHERE post_id = #{id} AND organ_id = #{organId} AND user_id IN
+        <foreach item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <insert id="insertPostUsers">
         INSERT INTO t_sys_user_post(post_id, user_id,organ_id)
         <foreach collection="ids" item="item" separator=" union all ">

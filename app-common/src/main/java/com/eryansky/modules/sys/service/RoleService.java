@@ -249,6 +249,23 @@ public class RoleService extends CrudService<RoleDao, Role> {
     }
 
     /**
+     * 保存角色用户关联信息
+     * 保存之前先删除原有
+     *
+     * @param id  角色ID
+     * @param ids 用户IDS
+     */
+    public void addRoleUsers(String id, Collection<String> ids) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("ids", ids);
+        dao.deleteRoleUsersByRoleIdANDUserIds(parameter);
+        if (Collections3.isNotEmpty(ids)) {
+            dao.insertRoleUsers(parameter);
+        }
+    }
+
+    /**
      * 插入指定角色用户关联信息
      *
      * @param id  角色ID

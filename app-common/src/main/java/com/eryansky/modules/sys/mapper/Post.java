@@ -8,9 +8,9 @@ package com.eryansky.modules.sys.mapper;
 
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * 岗位
@@ -45,13 +45,13 @@ public class Post extends DataEntity<Post> {
     /**
      * 附属机构
      */
-    private Set<String> organIds;
+    private List<String> organIds;
 
     private String query;
 
 
     public Post() {
-        this.organIds = Sets.newHashSet();
+        this.organIds = Lists.newArrayList();
     }
 
     public Post(String id) {
@@ -98,11 +98,11 @@ public class Post extends DataEntity<Post> {
         return this.organId;
     }
 
-    public Set<String> getOrganIds() {
+    public List<String> getOrganIds() {
         return organIds;
     }
 
-    public void setOrganIds(Set<String> organIds) {
+    public void setOrganIds(List<String> organIds) {
         this.organIds = organIds;
     }
 

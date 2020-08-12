@@ -14,11 +14,11 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
-import com.eryansky.modules.sys.mapper.OrganExtend;
-import com.eryansky.modules.sys.mapper.User;
-import com.eryansky.modules.sys.mapper.UserPassword;
+import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.*;
 import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Lists;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +34,9 @@ public class UserUtils {
      */
     public static final class Static {
         private static UserService userService = SpringContextHolder.getBean(UserService.class);
+        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
+        private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
+        private static PostService postService = SpringContextHolder.getBean(PostService.class);
         private static UserPasswordService userPasswordService = SpringContextHolder.getBean(UserPasswordService.class);
     }
 
@@ -491,6 +494,112 @@ public class UserUtils {
                 }
             }
         }
+    }
+
+
+    /**
+     * 用户添加角色
+     * @param userId 用户ID
+     * @param roleCode 角色编码
+     */
+    public static void addUserRole(String userId, String roleCode) {
+        if(null == roleCode){
+            throw new ServiceException("角色编码不能为空！");
+        }
+        Role role = Static.roleService.getByCode(roleCode);
+        if(null == role){
+            throw new ServiceException("角色【"+roleCode+"】不存在！");
+        }
+        Static.roleService.addRoleUsers(role.getId(), Lists.newArrayList(userId));
+        SecurityUtils.reloadSessionPermission(userId);
+    }
+
+    /**
+     * 删除用户角色
+     * @param userId 用户ID
+     * @param roleCode 角色编码
+     */
+    public static void deleteUserRole(String userId,String roleCode) {
+        if(null == roleCode){
+            throw new ServiceException("角色编码不能为空！");
+        }
+        Role role = Static.roleService.getByCode(roleCode);
+        if(null == role){
+            throw new ServiceException("角色【"+roleCode+"】不存在！");
+        }
+        Static.roleService.deleteRoleUsersByRoleIdANDUserIds(role.getId(), Lists.newArrayList(userId));
+        SecurityUtils.reloadSessionPermission(userId);
+    }
+
+    /**
+     * 用户添加岗位
+     * @param userId 用户ID
+     * @param postCode 岗位编码
+     */
+    public static void addUserOrganPost(String userId, String postCode) {
+        User user = UserUtils.getUser(userId);
+        if(null == user){
+            throw new ServiceException("用户【"+userId+"】不存在！");
+        }
+        addUserOrganPost(userId,user.getDefaultOrganId(),postCode);
+    }
+
+
+    /**
+     * 用户添加岗位
+     * @param userId 用户ID
+     * @param organId 机构ID
+     * @param postCode 岗位编码
+     */
+    public static void addUserOrganPost(String userId, String organId,String postCode) {
+        if(null == postCode){
+            throw new ServiceException("岗位编码不能为空！");
+        }
+        Post post = Static.postService.getByCode(postCode);
+        if(null == post){
+            throw new ServiceException("岗位【"+postCode+"】不存在！");
+        }
+        List<String> organIds = Static.organService.findAssociationOrganIdsByPostId(post.getId());
+        if(!organIds.contains(organId) && !organId.equals(post.getOrganId())){
+            throw new ServiceException("岗位【"+postCode+"】未关联机构【"+organId+"】！");
+        }
+        Static.postService.addPostOrganUsers(post.getId(),organId,Lists.newArrayList(userId));
+        SecurityUtils.reloadSessionPermission(userId);
+    }
+
+    /**
+     * 删除用户岗位
+     * @param userId 用户ID
+     * @param postCode 岗位编码
+     */
+    public static void deleteUserOrganPost(String userId,String postCode) {
+        User user = UserUtils.getUser(userId);
+        if(null == user){
+            throw new ServiceException("用户【"+userId+"】不存在！");
+        }
+        deleteUserOrganPost(userId,user.getDefaultOrganId(),postCode);
+    }
+
+    /**
+     * 删除用户岗位
+     * @param userId 用户ID
+     * @param organId 机构ID
+     * @param postCode 岗位编码
+     */
+    public static void deleteUserOrganPost(String userId,String organId,String postCode) {
+        if(null == postCode){
+            throw new ServiceException("岗位编码不能为空！");
+        }
+        if(null == organId){
+            throw new ServiceException("机构ID不能为空！");
+        }
+        Post post = Static.postService.getByCode(postCode);
+        if(null == post){
+            throw new ServiceException("岗位【"+postCode+"】不存在！");
+        }
+
+        Static.postService.deletePostUsersByPostIdAndOrganIdAndUserIds(post.getId(),organId,Lists.newArrayList(userId));
+        SecurityUtils.reloadSessionPermission(userId);
     }
 
 }

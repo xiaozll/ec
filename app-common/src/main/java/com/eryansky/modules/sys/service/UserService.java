@@ -1493,6 +1493,7 @@ public class UserService extends CrudService<UserDao, User> {
      * 保存之前先删除原有
      *
      * @param id  用户ID
+     * @param organId  机构ID
      * @param ids 岗位IDS
      */
     public void saveUserOrganPosts(String id, String organId, Collection<String> ids) {

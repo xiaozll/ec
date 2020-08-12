@@ -219,24 +219,6 @@ public class PostService extends CrudService<PostDao, Post> {
         }
     }
 
-    /**
-     * 保存岗位用户关联信息
-     * 保存之前先删除原有
-     *
-     * @param id  岗位ID
-     * @param ids 用户IDS
-     */
-    @Deprecated
-    public void savePostUsers(String id, Collection<String> ids) {
-        Parameter parameter = Parameter.newParameter();
-        parameter.put("id", id);
-        parameter.put("ids", ids);
-        dao.deletePostUsersByPostId(parameter);
-        if (Collections3.isNotEmpty(ids)) {
-            dao.insertPostUsers(parameter);
-        }
-    }
-
 
     /**
      * 保存岗位用户关联信息
@@ -257,5 +239,71 @@ public class PostService extends CrudService<PostDao, Post> {
         }
     }
 
+    /**
+     * 保存岗位用户关联信息
+     * 保存之前先删除原有
+     *
+     * @param id      岗位ID
+     * @param organId 机构ID
+     * @param ids     用户IDS
+     */
+    public void addPostOrganUsers(String id, String organId, Collection<String> ids) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("organId", organId);
+        parameter.put("ids", ids);
+        dao.deletePostUsersByPostIdAndOrganIdAndUserIds(parameter);
+        if (Collections3.isNotEmpty(ids)) {
+            dao.insertPostUsers(parameter);
+        }
+    }
+
+    /**
+     * 删除岗位用户关联信息
+     *
+     * @param id      岗位ID
+     * @param organId 机构ID
+     * @param ids     用户IDS
+     */
+    public int insertPostUsers(String id, String organId, Collection<String> ids) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("organId", organId);
+        parameter.put("ids", ids);
+        return  dao.insertPostUsers(parameter);
+    }
+
+
+    /**
+     * 删除岗位用户关联信息
+     *
+     * @param id      岗位ID
+     * @param organId 机构ID
+     * @param ids     用户IDS
+     */
+    public int deletePostUsersByPostIdAndOrganId(String id, String organId, Collection<String> ids) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("organId", organId);
+        parameter.put("ids", ids);
+        return  dao.deletePostUsersByPostIdAndOrganId(parameter);
+    }
+
+    /**
+     * 删除指定岗位-机构-用户关联信息
+     *
+     * @param id  角色ID
+     * @param organId 机构ID
+     * @param ids 用户IDS
+     */
+    public void deletePostUsersByPostIdAndOrganIdAndUserIds(String id,String organId, Collection<String> ids) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("organId", organId);
+        parameter.put("ids", ids);
+        if (Collections3.isNotEmpty(ids)) {
+            dao.deletePostUsersByPostIdAndOrganIdAndUserIds(parameter);
+        }
+    }
 
 }

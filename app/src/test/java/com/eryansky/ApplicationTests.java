@@ -5,10 +5,9 @@ import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.modules.sys.dao.VersionLogDao;
 import com.eryansky.modules.sys.mapper.VersionLog;
-import com.eryansky.modules.sys.service.ConfigService;
-import com.eryansky.modules.sys.service.UserService;
-import com.eryansky.modules.sys.service.VersionLogService;
+import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
+import com.eryansky.modules.sys.utils.UserUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
@@ -32,11 +31,30 @@ public class ApplicationTests {
 	@Autowired
 	private UserService userService;
 	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private PostService postService;
+	@Autowired
 	private VersionLogService versionLogService;
 
 	@Test
 	public void contextLoads() {
 		userService.aop();
+	}
+
+
+	@Test
+	public void addUserRoleAndPost() {
+		String userId = "1eb60440083945bb84394b7b1cc77414";
+		String postCode = "post1";
+		String roleCode = "role1";
+		System.out.println(JsonMapper.toJsonString(postService.findPostsByUserId(userId)));
+		UserUtils.addUserOrganPost(userId,postCode);
+		System.out.println(JsonMapper.toJsonString(postService.findPostsByUserId(userId)));
+
+		System.out.println(JsonMapper.toJsonString(roleService.findRolesByUserId(userId)));
+		UserUtils.addUserRole(userId,roleCode);
+		System.out.println(JsonMapper.toJsonString(roleService.findRolesByUserId(userId)));
 	}
 
 

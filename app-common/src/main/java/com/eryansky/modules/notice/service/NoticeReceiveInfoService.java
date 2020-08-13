@@ -42,7 +42,7 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
     }
 
     /**
-     * 我的邮件 分页查询.
+     * 我的通知 分页查询.
      *
      * @param page
      * @param userId        用户ID

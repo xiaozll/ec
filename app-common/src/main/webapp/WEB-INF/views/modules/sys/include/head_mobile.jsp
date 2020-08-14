@@ -43,6 +43,6 @@
     var appURL = "${appURL}";
     try {
         toastr.options = {"closeButton":true,"positionClass": "toast-top-center"};
-        $.ajaxSetup({headers:{'Authorization':'${sessionInfo.token}'}});
+        $.ajaxSetup({headers:{'Authorization':'Bearer ${sessionInfo.token}'}});
     } catch (e) { }
 </script>

@@ -266,7 +266,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
                     String authorization = request.getHeader("Authorization");
                     if(WebUtils.isAjaxRequest(request) || StringUtils.startsWith(authorization,"Bearer ")){
                         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                        WebUtils.renderJson(response, new Result().setCode(401).setMsg("未授权"));
+                        WebUtils.renderJson(response, new Result().setCode(401).setMsg("未授权或会话信息已失效"));
                     }else{
                         //返回校验不通过页面
                         response.sendRedirect(request.getContextPath()+redirectURL);

@@ -46,7 +46,7 @@
             "closeButton":true,
             "positionClass": "toast-top-center"};
         $.ajaxSetup({
-            header:{'Authorization':'${sessionInfo.token}'}
+            headers:{'Authorization':'${sessionInfo.token}'}
         });
     } catch (e) {
     }

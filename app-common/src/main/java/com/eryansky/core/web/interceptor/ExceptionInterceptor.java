@@ -114,6 +114,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }else{
+                logger.error(emsg);
                 sb.append("未知异常，请联系管理员！");
             }
         }

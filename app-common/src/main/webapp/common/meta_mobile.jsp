@@ -28,4 +28,7 @@
     var ctxStatic = "${ctxStatic}";
     var ctxMobile = "${ctxMobile}";
     var appURL = "${appURL}";
+    try {
+        $.ajaxSetup({headers:{'Authorization':'Bearer ${sessionInfo.token}'}});
+    } catch (e) {console.log(e);}
 </script>

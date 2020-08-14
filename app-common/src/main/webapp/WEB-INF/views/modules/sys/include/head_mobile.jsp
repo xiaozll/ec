@@ -42,12 +42,7 @@
     var ctxStatic = "${ctxStatic}";
     var appURL = "${appURL}";
     try {
-        toastr.options = {
-            "closeButton":true,
-            "positionClass": "toast-top-center"};
-        $.ajaxSetup({
-            headers:{'Authorization':'${sessionInfo.token}'}
-        });
-    } catch (e) {
-    }
+        toastr.options = {"closeButton":true,"positionClass": "toast-top-center"};
+        $.ajaxSetup({headers:{'Authorization':'${sessionInfo.token}'}});
+    } catch (e) { }
 </script>

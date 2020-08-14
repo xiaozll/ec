@@ -79,6 +79,7 @@ $(function () {
     }).datagrid('showTooltip');
 
 });
+
 function formInit() {
     $config_form = $('#config_form').form({
         url: ctxAdmin + '/sys/config/save',
@@ -96,11 +97,11 @@ function formInit() {
         success: function (data) {
             $.messager.progress('close');
             var json = $.parseJSON(data);
-            if (json.code == 1) {
+            if (json.code === 1) {
                 $config_dialog.dialog('destroy');//销毁对话框
                 $config_datagrid.datagrid('reload');//重新加载列表数据
                 eu.showMsg(json.msg);//操作结果提示
-            } else if (json.code == 2) {
+            } else if (json.code === 2) {
                 $.messager.alert('提示信息！', json.msg, 'warning', function () {
                     if (json.obj) {
                         $('#config_form input[name="' + json.obj + '"]').focus();
@@ -112,10 +113,11 @@ function formInit() {
         }
     });
 }
+
 //显示弹出窗口 新增：row为空 编辑:row有值
 function showDialog(row) {
     var inputUrl = ctxAdmin + "/sys/config/input";
-    if (row != undefined && row.id) {
+    if (row !== undefined && row.id) {
         inputUrl = inputUrl + "?id=" + row.id;
     }
 
@@ -161,7 +163,7 @@ function showDialog(row) {
 //编辑
 function edit(rowIndex, rowData) {
     //响应双击事件
-    if (rowIndex != undefined) {
+    if (rowIndex !== undefined) {
         showDialog(rowData);
         return;
     }
@@ -186,7 +188,7 @@ function del() {
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要删除选中的所有行？', function (r) {
             if (r) {
-                var ids = new Array();
+                var ids = [];
                 $.each(rows, function (i, row) {
                     ids[i] = row.id;
                 });
@@ -197,7 +199,7 @@ function del() {
                     traditional: true,
                     dataType: 'json',
                     success: function (data) {
-                        if (data.code == 1) {
+                        if (data.code === 1) {
                             $config_datagrid.datagrid('load');	// reload the user data
                             eu.showMsg(data.msg);//操作结果提示
                         } else {
@@ -221,7 +223,7 @@ function syncFromProperties() {
         traditional: true,
         dataType: 'json',
         success: function (data) {
-            if (data.code == 1) {
+            if (data.code === 1) {
                 $config_datagrid.datagrid('load');	// reload the user data
                 eu.showMsg(data.msg);//操作结果提示
             } else {

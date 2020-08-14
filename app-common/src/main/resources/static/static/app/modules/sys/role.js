@@ -1,7 +1,7 @@
 var role_datagrid;
 var role_form;
 var role_search_form;
-var role_resource_form
+var role_resource_form;
 var role_user_form;
 var role_dialog;
 var role_resource_dialog;
@@ -95,6 +95,7 @@ $(function () {
     }).datagrid('showTooltip');
 
 });
+
 function formInit() {
     role_form = $('#role_form').form({
         url: ctxAdmin + '/sys/role/save',
@@ -112,11 +113,11 @@ function formInit() {
         success: function (data) {
             $.messager.progress('close');
             var json = $.parseJSON(data);
-            if (json.code == 1) {
+            if (json.code === 1) {
                 role_dialog.dialog('destroy');//销毁对话框
                 role_datagrid.datagrid('reload');//重新加载列表数据
                 eu.showMsg(json.msg);//操作结果提示
-            } else if (json.code == 2) {
+            } else if (json.code === 2) {
                 $.messager.alert('提示信息！', json.msg, 'warning', function () {
                     if (json.obj) {
                         $('#role_form input[name="' + json.obj + '"]').focus();
@@ -128,10 +129,11 @@ function formInit() {
         }
     });
 }
+
 //显示弹出窗口 新增：row为空 编辑:row有值
 function showDialog(row) {
     var inputUrl = ctxAdmin + "/sys/role/input";
-    if (row != undefined && row.id) {
+    if (row !== undefined && row.id) {
         inputUrl = inputUrl + "?id=" + row.id;
     }
 
@@ -173,7 +175,7 @@ function showDialog(row) {
 //编辑
 function edit(rowIndex, rowData) {
     //响应双击事件
-    if (rowIndex != undefined) {
+    if (rowIndex !== undefined) {
         showDialog(rowData);
         return;
     }
@@ -211,7 +213,7 @@ function initRoleResourceForm() {
         success: function (data) {
             $.messager.progress('close');
             var json = $.parseJSON(data);
-            if (json.code == 1) {
+            if (json.code === 1) {
                 role_resource_dialog.dialog('destroy');//销毁对话框
                 role_datagrid.datagrid('reload');	// reload the role data
                 eu.showMsg(json.msg);//操作结果提示
@@ -221,6 +223,7 @@ function initRoleResourceForm() {
         }
     });
 }
+
 //修改角色角色
 function editRoleResource() {
     //选中的所有行
@@ -239,7 +242,7 @@ function editRoleResource() {
             height: 200,
             modal: true,
             maximizable: true,
-            href: ctxAdmin + '/sys/role/resource?id='+row['id'],
+            href: ctxAdmin + '/sys/role/resource?id=' + row['id'],
             buttons: [
                 {
                     text: '保存',
@@ -280,7 +283,7 @@ function editRoleUser() {
             eu.showMsg("您选择了多个操作对象，默认操作最后一次被选中的记录！");
         }
         var userUrl = ctxAdmin + "/sys/role/user";
-        if (row != undefined && row.id) {
+        if (row.id) {
             userUrl = userUrl + "?id=" + row.id;
         }
         //弹出对话窗口
@@ -319,7 +322,7 @@ function del() {
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要删除选中的所有行？', function (r) {
             if (r) {
-                var ids = new Array();
+                var ids = [];
                 $.each(rows, function (i, row) {
                     ids[i] = row.id;
                 });
@@ -330,7 +333,7 @@ function del() {
                     traditional: true,
                     dataType: 'json',
                     success: function (data) {
-                        if (data.code == 1) {
+                        if (data.code === 1) {
                             role_datagrid.datagrid('load');	// reload the user data
                             eu.showMsg(data.msg);//操作结果提示
                         } else {

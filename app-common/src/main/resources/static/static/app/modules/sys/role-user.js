@@ -3,14 +3,14 @@ var roleId = roleId;
 
 var $role_user_datagrid;
 var $user_role_search_form;
-$(function(){
+$(function () {
     $user_role_search_form = $("#user_role_search_form").form();
     initRoleUserDatagrid();
 });
 
-function initRoleUserDatagrid(){
+function initRoleUserDatagrid() {
     $role_user_datagrid = $("#role_user_datagrid").datagrid({
-        url: ctxAdmin + '/sys/role/userDatagrid?roleId='+roleId,
+        url: ctxAdmin + '/sys/role/userDatagrid?roleId=' + roleId,
         fit: true,
         pagination: true,
         rownumbers: true,
@@ -54,11 +54,11 @@ function initRoleUserDatagrid(){
     });
 }
 
-function showAddRoleUserDialog(){
+function showAddRoleUserDialog() {
     _dialog = $("<div/>").dialog({
         title: "选择用户",
         top: 10,
-        href: ctxAdmin + '/sys/role/select?dataScope=2&cascade=true&roleId='+roleId,
+        href: ctxAdmin + '/sys/role/select?dataScope=2&cascade=true&roleId=' + roleId,
         width: '700',
         height: '450',
         maximizable: true,
@@ -90,20 +90,20 @@ function showAddRoleUserDialog(){
 }
 
 function addRoleUser() {
-    var selectUserIds = new Array();
+    var selectUserIds = [];
     $("#selectUser option").each(function () {
         var txt = $(this).val();
         selectUserIds.push($.trim(txt));
     });
-    if(selectUserIds.length >0){
+    if (selectUserIds.length > 0) {
         $.ajax({
-            url: ctxAdmin + '/sys/role/addRoleUser?id='+roleId,
+            url: ctxAdmin + '/sys/role/addRoleUser?id=' + roleId,
             type: 'post',
             data: {userIds: selectUserIds},
             traditional: true,
             dataType: 'json',
             success: function (data) {
-                if (data.code == 1) {
+                if (data.code === 1) {
                     $role_user_datagrid.datagrid('reload');
                     eu.showMsg(data.msg);
                 } else {
@@ -115,23 +115,23 @@ function addRoleUser() {
 
 }
 
-function delRoleUser(){
+function delRoleUser() {
     var rows = $role_user_datagrid.datagrid('getChecked');
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要移除选中的所有行？', function (r) {
             if (r) {
-                var ids = new Array();
+                var ids = [];
                 $.each(rows, function (i, row) {
                     ids[i] = row.id;
                 });
                 $.ajax({
-                    url: ctxAdmin + '/sys/role/removeRoleUser?id='+roleId,
+                    url: ctxAdmin + '/sys/role/removeRoleUser?id=' + roleId,
                     type: 'post',
                     data: {userIds: ids},
                     traditional: true,
                     dataType: 'json',
                     success: function (data) {
-                        if (data.code == 1) {
+                        if (data.code === 1) {
                             $role_user_datagrid.datagrid('reload');
                             eu.showMsg(data.msg);
                         } else {
@@ -146,6 +146,6 @@ function delRoleUser(){
     }
 }
 
-function searchRoleUser(){
+function searchRoleUser() {
     $role_user_datagrid.datagrid('load', $.serializeObject($user_role_search_form));
 }

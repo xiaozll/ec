@@ -7,7 +7,7 @@ var $select_user_datagrid;
 var $select_user_search_form;
 var $select_organ_tree;
 var $select_role_tree;
-var selectUserIds = new Array();
+var selectUserIds = [];
 var selectUserDatagridData = userDatagridData;
 $(function () {
     selectOrganTree();
@@ -17,11 +17,12 @@ $(function () {
     });
     userDatagrid();
 });
+
 function userDatagrid() {
     $select_user_search_form = $('#select_user_search_form').form();
-    var frozenColumns = new Array();
+    var frozenColumns = [];
     var multipleColumn = {field: 'ck', checkbox: true};
-    if(''==multiple || multiple == 'true'){
+    if ('' === multiple || multiple === 'true') {
         frozenColumns.push(multipleColumn);
     }
     frozenColumns.push({field: 'name', title: '姓名', width: 80, sortable: true});
@@ -45,7 +46,7 @@ function userDatagrid() {
         autoRowHeight: false,
         frozenColumns: [frozenColumns],
         columns: [[
-            {field: 'id', title: '主键', hidden: true, sortable: true, width: 10} ,
+            {field: 'id', title: '主键', hidden: true, sortable: true, width: 10},
             {field: 'sexView', title: '性别', width: 50},
             {field: 'defaultOrganName', title: '部门', width: 150}
         ]],
@@ -79,7 +80,7 @@ function selectDefault() {
     var dgData = $select_user_datagrid.datagrid("getData").rows;
     $.each(selectUserIds, function (i, userId) {
         $.each(dgData, function (j, row) {
-            if (userId == row.id) {
+            if (userId === row.id) {
                 $select_user_datagrid.datagrid("selectRow", j);
             }
         });
@@ -90,11 +91,11 @@ function selectDefault() {
 function addSelectUser(rows) {
     $.each(rows, function (i, row) {
         var isSame = false;
-        if ($("#selectUser option").length == 0) {
+        if ($("#selectUser option").length === 0) {
             $("#selectUser").append("<option value='" + row.id + "'>" + row.name + "</option>");
         } else {
             $("#selectUser option").each(function () {
-                if ($(this).val() == row.id) {
+                if ($(this).val() === row.id) {
                     isSame = true;
                     return;
                 }
@@ -108,12 +109,12 @@ function addSelectUser(rows) {
 }
 
 function sysc() {
-    selectUserIds = new Array();
+    selectUserIds = [];
     $("#selectUser option").each(function () {
         selectUserIds.push($(this).val());
     });
-    var selectUserSize= $("#selectUser option").length;
-    $("#select_layout").layout().layout("panel","east").panel("setTitle","已选择<span style='color: red;'>"+selectUserSize+"</span>人");
+    var selectUserSize = $("#selectUser option").length;
+    $("#select_layout").layout().layout("panel", "east").panel("setTitle", "已选择<span style='color: red;'>" + selectUserSize + "</span>人");
 }
 
 function cancelSelectUser(rows) {
@@ -126,15 +127,15 @@ function cancelSelectUser(rows) {
 /**
  * 从已选择人员中去除选择
  */
-function cancelSelectedUser(){
-    $.each($("#selectUser").find("option:selected"),function(i,option){
-        var cancelUserId= $(option).val();
+function cancelSelectedUser() {
+    $.each($("#selectUser").find("option:selected"), function (i, option) {
+        var cancelUserId = $(option).val();
         $(option).remove();
-        $.each($select_user_datagrid.datagrid("getSelections"),function(j,row){
-            if(row && cancelUserId == row.id && selectUserDatagridData.rows){
-                $.each(selectUserDatagridData.rows,function(ii,rowData){
-                    if(cancelUserId == rowData.id){
-                        $select_user_datagrid.datagrid("uncheckRow",ii);
+        $.each($select_user_datagrid.datagrid("getSelections"), function (j, row) {
+            if (row && cancelUserId === row.id && selectUserDatagridData.rows) {
+                $.each(selectUserDatagridData.rows, function (ii, rowData) {
+                    if (cancelUserId === rowData.id) {
+                        $select_user_datagrid.datagrid("uncheckRow", ii);
                     }
                 });
             }
@@ -143,12 +144,13 @@ function cancelSelectedUser(){
     });
     sysc()
 }
+
 //部门树形
 function selectOrganTree() {
     //组织机构树
     var selectedOrganNode = null;//存放被选中的节点对象 临时变量
     $select_organ_tree = $("#select_organ_tree").tree({
-        url: ctxAdmin + "/sys/organ/tree?dataScope="+dataScope+'&cascade='+cascade,
+        url: ctxAdmin + "/sys/organ/tree?dataScope=" + dataScope + '&cascade=' + cascade,
         onClick: function (node) {
             var selectesRoleNode = $select_role_tree.tree('getSelected');
             if (selectesRoleNode) {
@@ -166,18 +168,19 @@ function selectOrganTree() {
         onLoadSuccess: function (node, data) {
             $(this).tree("collapseAll");
             var rootNode = $(this).tree("getRoot");
-            if(rootNode){//展开第一级
-                $(this).tree("expand",rootNode.target);
+            if (rootNode) {//展开第一级
+                $(this).tree("expand", rootNode.target);
             }
         }
     });
 }
+
 //部门树形
 function selectRoleTree() {
     //组织机构树
     var selectedRoleNode = null;//存放被选中的节点对象 临时变量
     $select_role_tree = $("#select_role_tree").tree({
-        url: ctxAdmin + "/sys/role/tree?dataScope="+dataScope+'&cascade='+cascade,
+        url: ctxAdmin + "/sys/role/tree?dataScope=" + dataScope + '&cascade=' + cascade,
         onClick: function (node) {
             var selectesOrganNode = $select_organ_tree.tree('getSelected');
             if (selectesOrganNode) {
@@ -187,8 +190,8 @@ function selectRoleTree() {
         },
         onBeforeSelect: function (node) {
             var selected = $(this).tree('getSelected');
-            if (selected != undefined && node != undefined) {
-                if (selected.id == node.id) {
+            if (selected !== undefined && node !== undefined) {
+                if (selected.id === node.id) {
                     $(".tree-node-selected", $(this).tree()).removeClass("tree-node-selected");//移除样式
                     selectedRoleNode = null;
                     return false;
@@ -208,6 +211,7 @@ function selectRoleTree() {
         }
     });
 }
+
 //搜索
 function search() {
     var selectOrganNode = $select_organ_tree.tree('getSelected');//
@@ -222,6 +226,6 @@ function search() {
     }
     $select_user_datagrid.datagrid({
         url: ctxAdmin + "/sys/user/datagridSelectUser",
-        queryParams: {organId: organId, roleId: roleId,excludeUserIds: excludeUserIdStrs, query: $("#query").val()}
+        queryParams: {organId: organId, roleId: roleId, excludeUserIds: excludeUserIdStrs, query: $("#query").val()}
     });
 }

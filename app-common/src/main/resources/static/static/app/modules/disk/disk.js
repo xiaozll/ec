@@ -11,11 +11,11 @@ var isAdmin = isAdmin;
 var folder_file_toolbar = {
     text: '上传文件',
     iconCls: 'eu-icon-upload',
-    handler: function() {
+    handler: function () {
         addFolderFile();
     }
 };
-$(function() {
+$(function () {
     $folder_file_search_form = $("#folder_file_search_form").form();
     loadDiskTree();
     loadFileDatagrid();
@@ -43,27 +43,27 @@ function loadFileDatagrid() {
             field: 'ck',
             checkbox: true
         },
-        {
-            field: 'name',
-            title: '文件名',
-            sortable: true,
-            width: 360,
-            formatter: function(value, rowData, rowIndex) {
-               if(value != "总大小") {
-            	   return "<a onclick='downloadFile(\"" + rowData.fileId + "\")'>" + value + "</a>";
-               } else {
-            	   return value;
-               }
-            },
-            editor: {
-                type: 'validatebox',
-                options: {
-                    required: true,
-                    missingMessage: '请输入名称！',
-                    validType: ['minLength[1]', 'length[1,200]']
+            {
+                field: 'name',
+                title: '文件名',
+                sortable: true,
+                width: 360,
+                formatter: function (value, rowData, rowIndex) {
+                    if (value !== "总大小") {
+                        return "<a onclick='downloadFile(\"" + rowData.fileId + "\")'>" + value + "</a>";
+                    } else {
+                        return value;
+                    }
+                },
+                editor: {
+                    type: 'validatebox',
+                    options: {
+                        required: true,
+                        missingMessage: '请输入名称！',
+                        validType: ['minLength[1]', 'length[1,200]']
+                    }
                 }
-            }
-        }]],
+            }]],
         columns: [[{
             field: 'id',
             title: '主键',
@@ -72,70 +72,70 @@ function loadFileDatagrid() {
             align: 'right',
             width: 80
         },
-        {
-            field: 'prettyFileSize',
-            title: '文件大小',
-            sortable: true,
-            align: 'right',
-            width: 110
-        },
-        {
-            field: 'userName',
-            title: '上传人',
-            width: 100
-        },{
-            field: 'updateTime',
-            title: '更新时间',
-            sortable: true,
-            width: 200
-        },
-        {
-            field: 'operate',
-            title: '操作',
-            formatter: function(value, rowData, rowIndex) {
-            	var operateHtml = "";
-            	if (rowData.id) {
-            	    if (rowData.editing) {
-            	        operateHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-save\"' onclick='saveFileName(this," + rowIndex + ",\"" + rowData.id + "\")' >保存 </a>";
-            	        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-cancel\"' onclick='rejectChanges(" + rowIndex + ");' >取消  </a>";
-            	    } else {
-            	        operateHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-disk_download\"' onclick='downloadFile(\"" + rowData.fileId + "\")'>下载</a>";
+            {
+                field: 'prettyFileSize',
+                title: '文件大小',
+                sortable: true,
+                align: 'right',
+                width: 110
+            },
+            {
+                field: 'userName',
+                title: '上传人',
+                width: 100
+            }, {
+                field: 'updateTime',
+                title: '更新时间',
+                sortable: true,
+                width: 200
+            },
+            {
+                field: 'operate',
+                title: '操作',
+                formatter: function (value, rowData, rowIndex) {
+                    var operateHtml = "";
+                    if (rowData.id) {
+                        if (rowData.editing) {
+                            operateHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-save\"' onclick='saveFileName(this," + rowIndex + ",\"" + rowData.id + "\")' >保存 </a>";
+                            operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-cancel\"' onclick='rejectChanges(" + rowIndex + ");' >取消  </a>";
+                        } else {
+                            operateHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-disk_download\"' onclick='downloadFile(\"" + rowData.fileId + "\")'>下载</a>";
 
-            	        var editHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='beginEdit(" + rowIndex + ")'>更名</a>";
-                        var delHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-remove\"' onclick='delFolderFile(\"" + rowData.id + "\",\"" + rowData.name + "\")'>删除</a>&nbsp";
-                        operateHtml +=  editHtml;
-                        operateHtml +=  delHtml;
-            	    }
-            	}
-            	return operateHtml;
-            }
-        }]],
-        onBeforeEdit: function(index, row) {
+                            var editHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='beginEdit(" + rowIndex + ")'>更名</a>";
+                            var delHtml = "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-remove\"' onclick='delFolderFile(\"" + rowData.id + "\",\"" + rowData.name + "\")'>删除</a>&nbsp";
+                            operateHtml += editHtml;
+                            operateHtml += delHtml;
+                        }
+                    }
+                    return operateHtml;
+                }
+            }]],
+        onBeforeEdit: function (index, row) {
             editRow = index;
             editRowData = row;
             row.editing = true;
             updateActions(index);
             $.parser.parse($(".easyui-linkbutton").parent());
         },
-        onAfterEdit: function(index, row) {
+        onAfterEdit: function (index, row) {
             row.editing = false;
             updateActions(index);
             $.parser.parse($(".easyui-linkbutton").parent());
             editRow = undefined;
         },
-        onCancelEdit: function(index, row) {
+        onCancelEdit: function (index, row) {
             row.editing = false;
             updateActions(index);
             $.parser.parse($(".easyui-linkbutton").parent());
             editRow = undefined;
         },
-        onLoadSuccess: function() {
+        onLoadSuccess: function () {
             $(this).datagrid('clearSelections'); //取消所有的已选择项
             $(this).datagrid('clearChecked'); //取消所有的选中的择项
             $(this).datagrid('unselectAll'); //取消全选按钮为全选状态
             editRow = undefined;
         },
-        onHeaderContextMenu:function(e,field){
+        onHeaderContextMenu: function (e, field) {
             e.preventDefault();
         }
     }).datagrid('showTooltip');
@@ -145,79 +145,79 @@ function loadDiskTree() {
     //组织机构树
     $folder_tree = $("#folder_tree").tree({
         url: ctxAdmin + "/disk/diskTree",
-        formatter: function(node) {
+        formatter: function (node) {
             return node.text;
         },
-        onClick: function(node) {
+        onClick: function (node) {
             //  $(this).tree('beginEdit',node.target);
         },
-        onBeforeSelect: function(node) {
+        onBeforeSelect: function (node) {
             defaultSelectedNode = node;
             return true;
         },
-        onBeforeLoad: function(node, param) {
+        onBeforeLoad: function (node, param) {
             $("#folder_tree").html("数据加载中...");
         },
-        onSelect: function(node) {
-        	if (true && $folder_file_datagrid) {
-        	    var nType = node.attributes["nType"];
-        	    var folderAuthorize = node.attributes["folderAuthorize"];
+        onSelect: function (node) {
+            if ($folder_file_datagrid) {
+                var nType = node.attributes["nType"];
+                var folderAuthorize = node.attributes["folderAuthorize"];
 
-                var _toolbar =  [{
+                var _toolbar = [{
                     text: '批量下载',
                     iconCls: 'eu-icon-disk_download',
-                    handler: function() {
+                    handler: function () {
                         downloadFile();
                     }
                 }];
                 var _queryParams = {};
 
-                if ("FolderAuthorize" == nType){
-                    if('0' == node.id || ('1' == node.id && "1" === folderAuthorize && isAdmin)){
+                if ("FolderAuthorize" === nType) {
+                    if ('0' == node.id || ('1' == node.id && "1" === folderAuthorize && isAdmin)) {
                         _toolbar.unshift(folder_file_toolbar);
                     }
-                }else if ("Folder" == nType){
-                    if(('0' == folderAuthorize  || ("1" === folderAuthorize && isAdmin))){
+                } else if ("Folder" === nType) {
+                    if (('0' === folderAuthorize || ("1" === folderAuthorize && isAdmin))) {
                         _toolbar.unshift(folder_file_toolbar);
                     }
                 }
 
-        	    if ("Folder" == nType) {
-        	        _queryParams = {
-        	            folderId: node.id
-        	        } //文件夹ID
-        	    }else if ("FolderAuthorize" == nType) {
+                if ("Folder" === nType) {
+                    _queryParams = {
+                        folderId: node.id
+                    } //文件夹ID
+                } else if ("FolderAuthorize" === nType) {
                     _queryParams = {
                         folderAuthorize: node.id
                     } //文件夹隶属云盘类型
                 }
                 $folder_file_datagrid.datagrid({
-        	        toolbar: _toolbar,
-        	        queryParams: _queryParams,
-        	        url: ctxAdmin + '/disk/folderFileDatagrid'
-        	    }).datagrid('showTooltip');
-        	}
+                    toolbar: _toolbar,
+                    queryParams: _queryParams,
+                    url: ctxAdmin + '/disk/folderFileDatagrid'
+                }).datagrid('showTooltip');
+            }
         },
-        onContextMenu: function(e, node) {
+        onContextMenu: function (e, node) {
             e.preventDefault();
             contextMenuNode = node;
             var nType = node.attributes["nType"];
             var treeName = 'folder_treeMenu_add';
-            if ("Folder" == nType) {
-                if (true == node.attributes.operate) {
+            if ("Folder" === nType) {
+                if (true === node.attributes.operate) {
                     treeName = 'folder_treeMenu_all';
                 } else {
                     treeName = '';
                 }
             }
-            if ('' != treeName) {
+            if ('' !== treeName) {
                 $("#" + treeName).menu({
-                    onClick: function(item) {
-                        if ("addFolder" == item.name) {
+                    onClick: function (item) {
+                        if ("addFolder" === item.name) {
                             showFolderDialog();
-                        } else if ("editFolder" == item.name) {
+                        } else if ("editFolder" === item.name) {
                             showFolderDialog(node.id);
-                        } else if ("deleteFolder" == item.name) {
+                        } else if ("deleteFolder" === item.name) {
                             delFolder(node.id, node.text);
                         }
                     }
@@ -227,7 +227,7 @@ function loadDiskTree() {
                 });
             }
         },
-        onLoadSuccess: function(node, data) {
+        onLoadSuccess: function (node, data) {
             contextMenuNode = undefined;
             if (defaultSelectedNode != null) {
                 defaultSelectedNode = $(this).tree('find', defaultSelectedNode.id);
@@ -238,7 +238,7 @@ function loadDiskTree() {
             $(this).tree("expandAll");
             var rootNodes = $(this).tree("getRoots");
             if (defaultSelectedNode == null) {
-            	$folder_tree.tree("select", rootNodes[0].target);
+                $folder_tree.tree("select", rootNodes[0].target);
             }
         }
     });
@@ -263,14 +263,14 @@ function saveFileName(target, index, id) {
         type: 'POST',
         url: ctxAdmin + '/disk/fileSave',
         data: $.extend({
-            id: selectRow.id,
-            modelType: 'File'
-        },
-        selectRow),
+                id: selectRow.id,
+                modelType: 'File'
+            },
+            selectRow),
         traditional: true,
         dataType: 'json',
-        success: function(data) {
-            if (data.code == 1) {
+        success: function (data) {
+            if (data.code === 1) {
                 $folder_file_datagrid.datagrid('reload');
                 eu.showMsg(data.msg); //操作结果提示
             }
@@ -278,17 +278,20 @@ function saveFileName(target, index, id) {
 
     });
 }
+
 function updateActions(index) {
     $folder_file_datagrid.datagrid('updateRow', {
         index: index,
         row: {}
     });
-    $folder_file_datagrid.datagrid('refreshRow',index);
+    $folder_file_datagrid.datagrid('refreshRow', index);
 }
+
 //开始编辑
 function beginEdit(index) {
     $folder_file_datagrid.datagrid('beginEdit', index);
 }
+
 //撤销
 function rejectChanges(index) {
     $folder_file_datagrid.datagrid('endEdit', index);
@@ -297,21 +300,21 @@ function rejectChanges(index) {
 
 //下载文件
 function downloadFile(pageId) {
-    var ids = new Array();
+    var ids = [];
     if (pageId) {
         ids.push(pageId);
     } else {
         var rows = $folder_file_datagrid.datagrid('getChecked');
-        if (rows && true) {
+        if (rows) {
             $.each(rows,
-                function(i, row) {
+                function (i, row) {
                     ids.push(row.fileId);
                 });
         }
     }
 
-    if(ids.length > 0){
-        var url  = ctxAdmin  + "/disk/downloadDiskFile?fileIds=" + ids.join(",");
+    if (ids.length > 0) {
+        var url = ctxAdmin + "/disk/downloadDiskFile?fileIds=" + ids.join(",");
         $("#annexFrame").attr("src", url);
     } else {
         eu.showMsg("请选择要操作的对象！");
@@ -323,27 +326,27 @@ function downloadFile(pageId) {
 //文件夹 弹窗 新增、修改
 function showFolderDialog(folderId) {
     var inputUrl = ctxAdmin + "/disk/folderInput";
-    if (folderId != undefined) {
+    if (folderId !== undefined) {
         inputUrl += "?folderId=" + folderId;
     } else {
         var selectedNode = $folder_tree.tree("getSelected");
-        selectedNode = (contextMenuNode != undefined) ? contextMenuNode: selectedNode;
-        if (selectedNode != undefined && selectedNode != null) {
+        selectedNode = (contextMenuNode !== undefined) ? contextMenuNode : selectedNode;
+        if (selectedNode !== undefined && selectedNode != null) {
             var folderAuthorize = '';
             var nType = selectedNode.attributes['nType'];
             var nodeId = selectedNode.id;
             var parentFolderId = '';
-            if ("FolderAuthorize" == nType && ("0" == nodeId || "1" == nodeId) ) { //一级目录
+            if ("FolderAuthorize" === nType && ("0" === nodeId || "1" === nodeId)) { //一级目录
                 folderAuthorize = nodeId;
-            } else if ("Folder" == nType) { //文件夹目录
+            } else if ("Folder" === nType) { //文件夹目录
                 parentFolderId = nodeId;
                 var parentNode = $folder_tree.tree("getParent", selectedNode.target);
                 var nodeLevel = $folder_tree.tree("getLevel", selectedNode.target);
-                while (parentNode != undefined && nodeLevel != 2) {
+                while (parentNode !== undefined && nodeLevel !== 2) {
                     nodeLevel = $folder_tree.tree("getLevel", parentNode.target);
                     parentNode = $folder_tree.tree("getParent", parentNode.target);
                 }
-                if (parentNode != undefined) {
+                if (parentNode !== undefined) {
                     folderAuthorize = parentNode.id;
                 }
             }
@@ -364,21 +367,21 @@ function showFolderDialog(folderId) {
         buttons: [{
             text: '保存',
             iconCls: 'easyui-icon-save',
-            handler: function() {
+            handler: function () {
                 $folder_form.submit();
             }
         },
-        {
-            text: '关闭',
-            iconCls: 'easyui-icon-cancel',
-            handler: function() {
-                $folder_dialog.dialog('destroy');
-            }
-        }],
-        onClose: function() {
+            {
+                text: '关闭',
+                iconCls: 'easyui-icon-cancel',
+                handler: function () {
+                    $folder_dialog.dialog('destroy');
+                }
+            }],
+        onClose: function () {
             $(this).dialog('destroy');
         },
-        onLoad: function() {
+        onLoad: function () {
             folderFormInit();
         }
     });
@@ -386,11 +389,10 @@ function showFolderDialog(folderId) {
 }
 
 
-
 function folderFormInit() {
     $folder_form = $('#folder_form').form({
         url: ctxAdmin + '/disk/saveFolder',
-        onSubmit: function(param) {
+        onSubmit: function (param) {
             $.messager.progress({
                 title: '提示信息！',
                 text: '数据处理中，请稍后....'
@@ -403,20 +405,20 @@ function folderFormInit() {
             }
             return isValid;
         },
-        success: function(data) {
+        success: function (data) {
             $.messager.progress('close');
             var json = $.parseJSON(data);
-            if (json.code == 1) {
+            if (json.code === 1) {
                 $folder_dialog.dialog('destroy'); //销毁对话框
                 $folder_tree.tree("reload");
                 eu.showMsg(json.msg); //操作结果提示
-            } else if (json.code == 2) {
+            } else if (json.code === 2) {
                 $.messager.alert('提示信息！', json.msg, 'warning',
-                function() {
-                    if (json.obj) {
-                        $('#$folder_form input[name="' + json.obj + '"]').focus();
-                    }
-                });
+                    function () {
+                        if (json.obj) {
+                            $('#$folder_form input[name="' + json.obj + '"]').focus();
+                        }
+                    });
             } else {
                 eu.showAlertMsg(json.msg, 'error');
             }
@@ -430,30 +432,30 @@ function folderFormInit() {
  */
 function delFolder(folderId, folderName) {
     $.messager.confirm('确认提示！', '您确定要删除[' + folderName + '],包含下级文件夹以及文件?',
-    function(r) {
-        if (r) {
-            $.messager.progress({
-                title: '提示信息！',
-                text: '数据处理中，请稍后....'
-            });
-            $.ajax({
-                url: ctxAdmin + '/disk/folderRemove/' + folderId,
-                type: 'post',
-                dataType: 'json',
-                traditional: true,
-                success: function(data) {
-                    $.messager.progress('close');
-                    if (data.code == 1) {
-                        $folder_tree.tree('reload');
-                        $folder_file_datagrid.datagrid('reload');
-                        eu.showMsg(data.msg); //操作结果提示
-                    } else {
-                        eu.showAlertMsg(data.msg, 'error');
+        function (r) {
+            if (r) {
+                $.messager.progress({
+                    title: '提示信息！',
+                    text: '数据处理中，请稍后....'
+                });
+                $.ajax({
+                    url: ctxAdmin + '/disk/folderRemove/' + folderId,
+                    type: 'post',
+                    dataType: 'json',
+                    traditional: true,
+                    success: function (data) {
+                        $.messager.progress('close');
+                        if (data.code === 1) {
+                            $folder_tree.tree('reload');
+                            $folder_file_datagrid.datagrid('reload');
+                            eu.showMsg(data.msg); //操作结果提示
+                        } else {
+                            eu.showAlertMsg(data.msg, 'error');
+                        }
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
 }
 
 /**
@@ -461,13 +463,13 @@ function delFolder(folderId, folderName) {
  */
 function addFolderFile() {
     var selectedNode = $folder_tree.tree("getSelected");
-    if (selectedNode != undefined && selectedNode.id != undefined) {
+    if (selectedNode !== undefined && selectedNode.id !== undefined) {
         var text = selectedNode.text;
         var title = "上传文件";
-        if (text != undefined && text != null && text != "") {
+        if (text !== undefined && text !== null && text !== "") {
             title += ":" + text;
         }
-        var url = ctxAdmin + '/disk/fileInput?folderId='+selectedNode.id;
+        var url = ctxAdmin + '/disk/fileInput?folderId=' + selectedNode.id;
         _dialog = $("<div/>").dialog({
             title: title,
             top: 10,
@@ -480,69 +482,70 @@ function addFolderFile() {
             buttons: [{
                 text: '关闭',
                 iconCls: 'easyui-icon-cancel',
-                handler: function() {
+                handler: function () {
                     _dialog.dialog('destroy');
                     $folder_file_datagrid.datagrid("reload");
                 }
             }],
-            onClose: function() {
+            onClose: function () {
                 _dialog.dialog('destroy');
             }
         });
     }
 
 }
+
 /**
  * 删除文件夹下的文件
  * @param fileId
  */
 function delFolderFile(fileId, fileName) {
     var rows = $folder_file_datagrid.datagrid('getChecked');
-    if (fileId != undefined || rows.length > 0) {
+    if (fileId !== undefined || rows.length > 0) {
         var tipMsg = "您确定要删除";
-        if (fileName != undefined) {
-        	tipMsg += "文件[" + fileName + "]?";
+        if (fileName !== undefined) {
+            tipMsg += "文件[" + fileName + "]?";
         } else {
             tipMsg += "选中的所有文件?";
         }
 
         $.messager.confirm('确认提示！', tipMsg,
-        function(r) {
-            if (r) {
-                var selectedFileIds = new Array();
-                $.messager.progress({
-                    title: '提示信息！',
-                    text: '数据处理中，请稍后....'
-                });
-                if (fileId != undefined) {
-                    selectedFileIds.push(fileId);
-                } else {
-                    $.each(rows,
-                    function(i, row) {
-                        selectedFileIds.push(row.id);
+            function (r) {
+                if (r) {
+                    var selectedFileIds = [];
+                    $.messager.progress({
+                        title: '提示信息！',
+                        text: '数据处理中，请稍后....'
+                    });
+                    if (fileId !== undefined) {
+                        selectedFileIds.push(fileId);
+                    } else {
+                        $.each(rows,
+                            function (i, row) {
+                                selectedFileIds.push(row.id);
+                            });
+                    }
+
+                    $.ajax({
+                        url: ctxAdmin + '/disk/delFolderFile',
+                        type: 'post',
+                        data: {
+                            fileIds: selectedFileIds
+                        },
+                        dataType: 'json',
+                        traditional: true,
+                        success: function (data) {
+                            $.messager.progress('close');
+                            if (data.code === 1) {
+                                $folder_file_datagrid.datagrid("reload");
+                                eu.showMsg(data.msg); //操作结果提示
+                            } else {
+                                eu.showAlertMsg(data.msg, 'error');
+                            }
+                        }
                     });
                 }
-
-                $.ajax({
-                    url: ctxAdmin + '/disk/delFolderFile',
-                    type: 'post',
-                    data: {
-                        fileIds: selectedFileIds
-                    },
-                    dataType: 'json',
-                    traditional: true,
-                    success: function(data) {
-                        $.messager.progress('close');
-                        if (data.code == 1) {
-                            $folder_file_datagrid.datagrid("reload");
-                            eu.showMsg(data.msg); //操作结果提示
-                        } else {
-                            eu.showAlertMsg(data.msg, 'error');
-                        }
-                    }
-                });
-            }
-        });
+            });
 
     } else {
         eu.showMsg("请选择要操作的对象！");
@@ -556,6 +559,6 @@ function search() {
     if (selectedNode) {
         folderId = selectedNode.id;
     }
-    var queryParam = $.extend($.serializeObject($folder_file_search_form),{folderId:folderId});
-    $folder_file_datagrid.datagrid("load",queryParam);
+    var queryParam = $.extend($.serializeObject($folder_file_search_form), {folderId: folderId});
+    $folder_file_datagrid.datagrid("load", queryParam);
 }

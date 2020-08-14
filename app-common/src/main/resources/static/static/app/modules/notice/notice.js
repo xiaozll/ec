@@ -14,24 +14,24 @@ var $query_PublishUser_MultiSelect;
 
 var _operateType = undefined;//全局变量
 $(function () {
-    if(isSuperUser){//meta.jsp
+    if (isSuperUser) {//meta.jsp
         $("#publishUserIds_tr").show();
-        $("#layout_north").panel("resize",{height:138});
+        $("#layout_north").panel("resize", {height: 138});
         $.parser.parse($(".easyui-layout").parent());
     }
     $notice_search_form = $('#notice_search_form').form();
     initReadDatagrid();
     initSelectUser();
 
-    if(noticeId != "") {
-        window.setTimeout(function(){
-            view(noticeId,hasRepeatPermission);
-        },500);
+    if (noticeId !== "") {
+        window.setTimeout(function () {
+            view(noticeId, hasRepeatPermission);
+        }, 500);
     }
     mymessage();
 });
 
-function refreshMessage(){
+function refreshMessage() {
     mymessage();
     //刷新 portal消息
     try {
@@ -40,19 +40,19 @@ function refreshMessage(){
     }
 }
 
-function mymessage(){
+function mymessage() {
     $.ajax({
-        url:ctxAdmin + '/notice/myMessage',
-        type:'get',
-        dataType:'json',
-        success:function(data) {
-            if (data.code==1){
+        url: ctxAdmin + '/notice/myMessage',
+        type: 'get',
+        dataType: 'json',
+        success: function (data) {
+            if (data.code === 1) {
                 var obj = data.obj;
-                if(obj["noticeScopes"]>0){
-                    var text = read_linkbutton_text + "&nbsp;<span style='color: red;'>（"+obj["noticeScopes"]+"）</span>";
-                    $("#read_linkbutton").linkbutton({text:text});
-                }else{
-                    $("#read_linkbutton").linkbutton({text:read_linkbutton_text});
+                if (obj["noticeScopes"] > 0) {
+                    var text = read_linkbutton_text + "&nbsp;<span style='color: red;'>（" + obj["noticeScopes"] + "）</span>";
+                    $("#read_linkbutton").linkbutton({text: text});
+                } else {
+                    $("#read_linkbutton").linkbutton({text: read_linkbutton_text});
                 }
 
             }
@@ -60,55 +60,56 @@ function mymessage(){
     });
 }
 
-function initReadDatagrid(){
+function initReadDatagrid() {
     $notice_datagrid = $('#notice_datagrid').datagrid({
-        url : ctxAdmin + '/notice/readDatagrid',
-        fit:true,
-        pagination : true,//底部分页
-        rownumbers : true,//显示行数
-        fitColumns : false,//自适应列宽
-        striped : true,//显示条纹
-        pageSize : 20,//每页记录数
-        checkOnSelect:false,
-        selectOnCheck:false,
-        idField : 'id',
-        frozenColumns: [[{field: 'ck',checkbox: true} ,
-            {field: 'title',title: '标题',width: 360,
+        url: ctxAdmin + '/notice/readDatagrid',
+        fit: true,
+        pagination: true,//底部分页
+        rownumbers: true,//显示行数
+        fitColumns: false,//自适应列宽
+        striped: true,//显示条纹
+        pageSize: 20,//每页记录数
+        checkOnSelect: false,
+        selectOnCheck: false,
+        idField: 'id',
+        frozenColumns: [[{field: 'ck', checkbox: true},
+            {
+                field: 'title', title: '标题', width: 360,
                 formatter: function (value, rowData, rowIndex) {
-                    return "<a href='#' onclick='view(\"" + rowData["noticeId"]+"\","+hasRepeatPermission+")' >"+value+"</a>";
+                    return "<a href='#' onclick='view(\"" + rowData["noticeId"] + "\"," + hasRepeatPermission + ")' >" + value + "</a>";
                 }
             }
         ]],
-        columns : [ [ {
-            field : 'id',
-            title : '主键',
-            hidden : true,
-            sortable : true,
-            align : 'right',
-            width : 80
+        columns: [[{
+            field: 'id',
+            title: '主键',
+            hidden: true,
+            sortable: true,
+            align: 'right',
+            width: 80
         }, {
-            field : 'publishUserName',
-            title : '发布人',
-            width : 100
+            field: 'publishUserName',
+            title: '发布人',
+            width: 100
         }, {
-            field : 'publishTime',
-            title : '发布时间',
-            sortable : true,
-            width : 146
-        },{
-            field : 'isReadView',
-            title : '通知状态',
-            sortable : true,
-            width : 100
-        }] ],
-        toolbar : [ {
-            text : '标记为已读',
-            iconCls : 'eu-icon-mail_mark_read',
-            handler : function() {
+            field: 'publishTime',
+            title: '发布时间',
+            sortable: true,
+            width: 146
+        }, {
+            field: 'isReadView',
+            title: '通知状态',
+            sortable: true,
+            width: 100
+        }]],
+        toolbar: [{
+            text: '标记为已读',
+            iconCls: 'eu-icon-mail_mark_read',
+            handler: function () {
                 markReaded();
             }
-        } ],
-        onLoadSuccess : function() {
+        }],
+        onLoadSuccess: function () {
             $(this).datagrid('clearSelections');
             $(this).datagrid('clearChecked');
             $(this).datagrid('unselectAll');
@@ -117,7 +118,7 @@ function initReadDatagrid(){
     }).datagrid('showTooltip');
 }
 
-function initDatagrid(){
+function initDatagrid() {
     $notice_datagrid = $('#notice_datagrid').datagrid({
         url: ctxAdmin + '/notice/datagrid',
         fit: true,
@@ -126,42 +127,43 @@ function initDatagrid(){
         striped: true,//显示条纹
         pageSize: 20,//每页记录数
         singleSelect: false,//单选模式
-        checkOnSelect:true,
-        selectOnCheck:true,
+        checkOnSelect: true,
+        selectOnCheck: true,
         rownumbers: true,//显示行数
         checkbox: true,
         nowrap: true,
         border: false,
         idField: 'id',
-        frozenColumns: [ [
-            {field: 'ck',checkbox: true},
-            {field: 'title',title: '标题',width: 360,
+        frozenColumns: [[
+            {field: 'ck', checkbox: true},
+            {
+                field: 'title', title: '标题', width: 360,
                 formatter: function (value, rowData, rowIndex) {
-                    return "<a href='#' onclick='view(\"" + rowData["id"]+"\","+hasRepeatPermission+")' >"+value+"</a>";
+                    return "<a href='#' onclick='view(\"" + rowData["id"] + "\"," + hasRepeatPermission + ")' >" + value + "</a>";
                 }
             }
         ]],
         columns: [[
-            {field: 'id',title: '主键',hidden: true,sortable: true,width: 80},
-            {field:'typeView',title: '类型',width: 80},
-            {field:'publishUserName',title: '发布人',width: 80},
+            {field: 'id', title: '主键', hidden: true, sortable: true, width: 80},
+            {field: 'typeView', title: '类型', width: 80},
+            {field: 'publishUserName', title: '发布人', width: 80},
             {
                 field: 'publishTime',
                 title: '发布时间',
                 width: 146,
-                sortable : true
+                sortable: true
             },
             {
                 field: 'effectTime',
                 title: '生效时间',
                 width: 136,
-                sortable : true
+                sortable: true
             },
             {
                 field: 'invalidTime',
                 title: '终止时间',
                 width: 136,
-                sortable : true
+                sortable: true
             },
             {
                 field: 'modeView',
@@ -176,11 +178,11 @@ function initDatagrid(){
                     var operateHtml = "";
                     var editHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='edit(\"" + rowData["id"] + "\");' >编辑</a>";
                     if (rowData["bizMode"] === '0') {//未发布
-                        operateHtml = editHtml+"&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
-                    } else if (rowData["bizMode"] == 1) {//已发布
+                        operateHtml = editHtml + "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
+                    } else if (rowData["bizMode"] === 1) {//已发布
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
                     }
-                    if(rowData["isRecordRead"] == 1 && rowData["bizMode"] != 0 && rowData["bizMode"] != 3){//记录查看情况
+                    if (rowData["isRecordRead"] === 1 && rowData["bizMode"] !== 0 && rowData["bizMode"] !== 3) {//记录查看情况
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_find\"'  onclick='readInfo(\"" + rowData["id"] + "\");' >查看阅读情况</a>";
                     }
 
@@ -210,20 +212,26 @@ function initDatagrid(){
                 iconCls: 'eu-icon-user',
                 handler: function () {
                     try {
-                        parent.addTabs({id:'contactGroup',title: '我的联系人',close: true,url: ctxAdmin + '/mail/contactGroup',urlType: ''});
-                    } catch(e) {
-                        eu.addTab(window.parent.layout_center_tabs, '我的联系人',ctxAdmin + '/mail/contactGroup', true,'eu-icon-user','',false);
+                        parent.addTabs({
+                            id: 'contactGroup',
+                            title: '我的联系人',
+                            close: true,
+                            url: ctxAdmin + '/mail/contactGroup',
+                            urlType: ''
+                        });
+                    } catch (e) {
+                        eu.addTab(window.parent.layout_center_tabs, '我的联系人', ctxAdmin + '/mail/contactGroup', true, 'eu-icon-user', '', false);
                     }
 
 
                 }
             }],
-        onRowContextMenu : function(e, rowIndex, rowData) {
+        onRowContextMenu: function (e, rowIndex, rowData) {
             e.preventDefault();
             $(this).datagrid('unselectAll');
             $(this).datagrid('selectRow', rowIndex);
         },
-        onLoadSuccess : function() {
+        onLoadSuccess: function () {
             $(this).datagrid('clearSelections');
             $(this).datagrid('clearChecked');
             $(this).datagrid('unselectAll');
@@ -232,24 +240,24 @@ function initDatagrid(){
     }).datagrid("showTooltip");
 }
 
-function view(noticeId,isRepeat){
+function view(noticeId, isRepeat) {
     var inputUrl = ctxAdmin + '/notice/view/' + noticeId;
-    var toolbar = new Array();
+    var toolbar = [];
     var closeToolbar = {
-        text : '关闭',
-        iconCls : 'easyui-icon-cancel',
-        handler : function() {
+        text: '关闭',
+        iconCls: 'easyui-icon-cancel',
+        handler: function () {
             notice_view_dialog.dialog('destroy');
             $notice_datagrid.datagrid("reload");
             refreshMessage();
         }
     };
 
-    if(isRepeat != undefined && isRepeat == true){
+    if (isRepeat !== undefined && isRepeat === true) {
         var repeatToolbar = {
-            text : '转发',
-            iconCls : 'eu-icon-mail_reply_sender',
-            handler : function() {
+            text: '转发',
+            iconCls: 'eu-icon-mail_reply_sender',
+            handler: function () {
                 notice_view_dialog.dialog('destroy');
                 edit(noticeId, "Repeat");
             }
@@ -258,17 +266,17 @@ function view(noticeId,isRepeat){
     }
     toolbar.push(closeToolbar);
 
-    var thisHeight = document.body.clientHeight - 50  ;
-    var thisWidth = document.body.clientWidth* 0.9 - 50;
+    var thisHeight = document.body.clientHeight - 50;
+    var thisWidth = document.body.clientWidth * 0.9 - 50;
     var notice_view_dialog = $('<div/>').dialog({
-        title : '查看通知',
-        width : thisWidth,
-        height : thisHeight,
-        modal : true,
-        maximizable : true,
-        content : '<iframe id="notice_view_iframe" scrolling="no" frameborder="0"  src="'+inputUrl+'" ></iframe>',
-        buttons : toolbar,
-        onClose : function() {
+        title: '查看通知',
+        width: thisWidth,
+        height: thisHeight,
+        modal: true,
+        maximizable: true,
+        content: '<iframe id="notice_view_iframe" scrolling="no" frameborder="0"  src="' + inputUrl + '" ></iframe>',
+        buttons: toolbar,
+        onClose: function () {
             notice_view_dialog.dialog('destroy');
             $notice_datagrid.datagrid("reload");
             refreshMessage();
@@ -276,23 +284,23 @@ function view(noticeId,isRepeat){
     });
 }
 
-function readInfo(noticeId){
-    var inputUrl= ctxAdmin + '/notice/readInfo/'+noticeId;
+function readInfo(noticeId) {
+    var inputUrl = ctxAdmin + '/notice/readInfo/' + noticeId;
     var _dialog = $('<div/>').dialog({
-        title:'查看状态',
-        width : 600,
-        height : 400,
-        modal : true,
-        maximizable:true,
-        href : inputUrl,
-        buttons : [{
-            text : '关闭',
-            iconCls : 'easyui-icon-cancel',
-            handler : function() {
+        title: '查看状态',
+        width: 600,
+        height: 400,
+        modal: true,
+        maximizable: true,
+        href: inputUrl,
+        buttons: [{
+            text: '关闭',
+            iconCls: 'easyui-icon-cancel',
+            handler: function () {
                 _dialog.dialog('destroy');
             }
         }],
-        onClose : function() {
+        onClose: function () {
             _dialog.dialog('destroy');
         }
     });
@@ -310,10 +318,10 @@ function formInit() {
             var isValid = $(this).form('validate');
             if (!isValid) {
                 $.messager.progress('close');
-            }else{
+            } else {
                 var effectTime = $("#_effectTime").my97("getValue");
                 var endTime = $("#_endTime").my97("getValue");
-                if (endTime != undefined && endTime != "" && effectTime > endTime) {
+                if (endTime !== undefined && endTime !== "" && effectTime > endTime) {
                     eu.showAlertMsg("后者所填时间必须大于前者时间", 'warning');
                     isValid = false;
                 }
@@ -324,11 +332,11 @@ function formInit() {
         success: function (data) {
             $.messager.progress('close');
             var json = $.parseJSON(data);
-            if (json.code == 1) {
+            if (json.code === 1) {
                 $notice_dialog.dialog('destroy');//销毁对话框
                 $notice_datagrid.datagrid('reload');//重新加载列表数据
                 eu.showMsg(json.msg);//操作结果提示
-            } else if (json.code == 2) {
+            } else if (json.code === 2) {
                 $.messager.alert('提示信息！', json.msg, 'warning', function () {
                     if (json.obj) {
                         $('#$notice_form input[title="' + json.obj + '"]').focus();
@@ -342,12 +350,12 @@ function formInit() {
 }
 
 //新增 编辑 转发
-function edit(noticeId,operateType) {
+function edit(noticeId, operateType) {
     var inputUrl = ctxAdmin + '/notice/input?operateType=';
-    if (operateType != undefined) {
+    if (operateType !== undefined) {
         inputUrl += operateType;
     }
-    if (noticeId != undefined) {
+    if (noticeId !== undefined) {
         inputUrl += "&id=" + noticeId;
     }
 
@@ -365,14 +373,14 @@ function edit(noticeId,operateType) {
                 _operateType = "Save";
                 $notice_form.submit();
             }
-        },{
+        }, {
             text: '发布',
             iconCls: 'eu-icon-mail_forward',
             handler: function () {
                 _operateType = "Publish";
                 $notice_form.submit();
             }
-        },{
+        }, {
             text: '关闭',
             iconCls: 'easyui-icon-cancel',
             handler: function () {
@@ -390,13 +398,14 @@ function edit(noticeId,operateType) {
 
 
 }
+
 /**
  * 发布
  * @param noticeId
  */
 function publish(noticeId) {
-    $.post(ctxAdmin + '/notice/publish/'+noticeId, {}, function (data) {
-        if (data.code == 1) {
+    $.post(ctxAdmin + '/notice/publish/' + noticeId, {}, function (data) {
+        if (data.code === 1) {
             $notice_datagrid.datagrid('reload');	// reload the user data
             eu.showMsg(data.msg);//操作结果提示
         } else {
@@ -404,14 +413,15 @@ function publish(noticeId) {
         }
     });
 }
+
 /**
  * 失效
  * @param noticeId
  */
 function invalid(noticeId) {
-    $.post(ctxAdmin + '/notice/invalid/'+noticeId, {}, function (data) {
+    $.post(ctxAdmin + '/notice/invalid/' + noticeId, {}, function (data) {
         var json = $.parseJSON(data);
-        if (json.code == 1) {
+        if (json.code === 1) {
             $notice_datagrid.datagrid('reload');	// reload the user data
             eu.showMsg(json.msg);//操作结果提示
         } else {
@@ -426,23 +436,23 @@ function invalid(noticeId) {
  * @param rowIndex
  */
 function markReaded(rowIndex) {
-    var rows = new Array();
+    var rows = [];
     var tipMsg = "您确定要删除选中的所有通知标记为已读？";
-    if(rowIndex != undefined){
+    if (rowIndex !== undefined) {
         $notice_datagrid.datagrid('unselectAll');
         $notice_datagrid.datagrid('selectRow', rowIndex);
         var rowData = $notice_datagrid.datagrid('getSelected');
         rows.push(rowData);
         $notice_datagrid.datagrid('unselectRow', rowIndex);
-        tipMsg = "您确定要将通知["+rowData["title"]+"]标记为已读？";
-    }else{
+        tipMsg = "您确定要将通知[" + rowData["title"] + "]标记为已读？";
+    } else {
         rows = $notice_datagrid.datagrid('getChecked');
     }
 
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要标记所有行为已读？', function (r) {
             if (r) {
-                var ids = new Array();
+                var ids = [];
                 $.each(rows, function (i, row) {
                     ids[i] = row.noticeId;
                 });
@@ -453,7 +463,7 @@ function markReaded(rowIndex) {
                     dataType: 'json',
                     traditional: true,
                     success: function (data) {
-                        if (data.code == 1) {
+                        if (data.code === 1) {
                             $notice_datagrid.datagrid('reload');
                             eu.showMsg(json.msg);
                             refreshMessage();
@@ -471,14 +481,13 @@ function markReaded(rowIndex) {
 }
 
 
-
 //删除
-function del(){
-    var rows =  $notice_datagrid.datagrid('getChecked');
+function del() {
+    var rows = $notice_datagrid.datagrid('getChecked');
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要删除选中的所有行?', function (r) {
             if (r) {
-                var ids = new Array();
+                var ids = [];
                 $.each(rows, function (i, row) {
                     ids[i] = row.id;
                 });
@@ -489,7 +498,7 @@ function del(){
                     dataType: 'json',
                     traditional: true,
                     success: function (data) {
-                        if (data.code == 1) {
+                        if (data.code === 1) {
                             $notice_datagrid.datagrid('load');	// reload the user data
                             eu.showMsg(data.msg);//操作结果提示
                         } else {
@@ -506,7 +515,7 @@ function del(){
 
 function convertValues(MultiSelect) {
     var query = "";
-    if(MultiSelect != undefined){
+    if (MultiSelect !== undefined) {
         query = MultiSelect.input.val();
 
     }
@@ -525,14 +534,14 @@ function initSelectUser() {
                     url: ctxAdmin + '/sys/user/customUserList',
                     dataType: 'json'
                 },
-                parameterMap: function(data, type) {
-                    if (type == "read") {
+                parameterMap: function (data, type) {
+                    if (type === "read") {
                         return convertValues($query_PublishUser_MultiSelect);
                     }
                 }
             },
-            serverFiltering:true,
-            group: { field: "defaultOrganName" }
+            serverFiltering: true,
+            group: {field: "defaultOrganName"}
         }
     }).data("kendoMultiSelect");
 
@@ -541,10 +550,10 @@ function initSelectUser() {
 function selectQueryUser() {
     var userIds = "";
     var dataItems = $query_PublishUser_MultiSelect.dataItems();
-    if (dataItems && dataItems.length >0) {
+    if (dataItems && dataItems.length > 0) {
         var num = dataItems.length;
         $.each(dataItems, function (n, value) {
-            if (n == num - 1) {
+            if (n === num - 1) {
                 userIds += value.id;
             } else {
                 userIds += value.id + ",";
@@ -556,7 +565,7 @@ function selectQueryUser() {
     var _dialog = $("<div/>").dialog({
         title: "选择用户",
         top: 10,
-        href: ctxAdmin + '/sys/user/organUserTreePage?checkedUserIds='+userIds,
+        href: ctxAdmin + '/sys/user/organUserTreePage?checkedUserIds=' + userIds,
         width: '500',
         height: '360',
         maximizable: true,
@@ -588,16 +597,17 @@ function selectQueryUser() {
 
 
 function setQuerySelectUser() {
-    var selectUserIds = new Array();
+    var selectUserIds = [];
     var checkNodes = $("#organUserTree").tree("getChecked");
-    $.each(checkNodes,function(i,node){
-        if("u" ==node.attributes.nType){
+    $.each(checkNodes, function (i, node) {
+        if ("u" === node.attributes.nType) {
             selectUserIds.push(node.id);
         }
-    })
+    });
     $query_PublishUser_MultiSelect.value(selectUserIds);
 }
+
 //搜索
 function search() {
-    $notice_datagrid.datagrid('load',$.serializeObject($notice_search_form));
+    $notice_datagrid.datagrid('load', $.serializeObject($notice_search_form));
 }

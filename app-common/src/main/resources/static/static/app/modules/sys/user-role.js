@@ -2,17 +2,18 @@ var roleIds = roleIds;
 
 var $roleCombobox;
 
-$(function() {
+$(function () {
     loadUserRole();
 });
+
 // 加載用户角色信息
 function loadUserRole() {
     $roleCombobox = $('#user_role_form-roleIds').combobox({
         url: ctxAdmin + '/sys/role/combobox',
         multiple: true,
-        editable:false
+        editable: false
     });
-    if(roleIds){
-        $roleCombobox.combobox("setValues",roleIds);
+    if (roleIds) {
+        $roleCombobox.combobox("setValues", roleIds);
     }
 }

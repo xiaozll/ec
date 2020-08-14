@@ -3,22 +3,22 @@ var modelStatus = modelStatus;
 var jsessionid = jsessionid;
 
 var organs_combotree;
-$(function() {
+$(function () {
     loadOrgan();
     loadSex();
 
-    if($('#image').val()){
+    if ($('#image').val()) {
         addImageFile($('#image').val());
     }
     uploadifyImage();
-    if(modelId == ""){  //新增
+    if (modelId === "") {  //新增
         setSortValue();
-        $("input[name=status]:eq(0)").prop("checked",'checked');//状态 初始化值
+        $("input[name=status]:eq(0)").prop("checked", 'checked');//状态 初始化值
 
         $('#password_div').css('display', 'block');
         $('#repassword_div').css('display', 'block');
-    }else{
-        $('input[name=status][value='+modelStatus+']').prop("checked",'checked');
+    } else {
+        $('input[name=status][value=' + modelStatus + ']').prop("checked", 'checked');
         $('#password_div').css('display', 'none');
         $('#repassword_div').css('display', 'none');
         $('#password_div input').removeAttr('class');
@@ -26,34 +26,35 @@ $(function() {
     }
 });
 
-function loadOrgan(){
+function loadOrgan() {
     organs_combotree = $("#defaultOrganId").combotree({
-        url:ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
-        multiple:false,
-        editable:false
+        url: ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
+        multiple: false,
+        editable: false
     });
 }
+
 //性别
-function loadSex(){
+function loadSex() {
     $('#sex').combobox({
         url: ctxAdmin + '/sys/user/sexTypeCombobox?selectType=select',
-        editable:false,
-        value:'2'
+        editable: false,
+        value: '2'
     });
 }
 
 //设置排序默认值
 function setSortValue() {
-    $.get(ctxAdmin + '/sys/user/maxSort', function(data) {
-        if (data.code == 1) {
-            $('#orderNo').numberspinner('setValue',data.obj+30);
+    $.get(ctxAdmin + '/sys/user/maxSort', function (data) {
+        if (data.code === 1) {
+            $('#orderNo').numberspinner('setValue', data.obj + 30);
         }
     }, 'json');
 }
 
-function addImageFile(id,url) {
+function addImageFile(id, url) {
     $('#image').val(id);
-    if(url){
+    if (url) {
         $('#image_pre').attr("src", url);
     }
     $('#image_pre').show();
@@ -69,32 +70,34 @@ function delImageFile() {
     $('#image_pre').next().hide();
     $('#image').val("");
 }
+
 var imageDataMap = new HashMap();
+
 function uploadifyImage() {
     $('#image_uploadify').Huploadify({
-        auto:true,
-        showUploadedPercent:true,
-        showUploadedSize:true,
+        auto: true,
+        showUploadedPercent: true,
+        showUploadedSize: true,
         uploader: ctxAdmin + '/sys/user/upload',
-        formData:{},
+        formData: {},
         fileObjName: 'uploadFile',
         buttonText: '浏 览',
         multi: false,
         fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        removeTimeout:24*60*60*1000,
+        removeTimeout: 24 * 60 * 60 * 1000,
         fileTypeExts: '*.gif; *.jpg; *.png; *.bmp',  //上传的文件后缀过滤器
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
             console.log(file, data, response);
             if (1 === data['code']) {
-                addImageFile(data['obj']['id'],data['obj']['url']);
-                imageDataMap.put(file.index,data.obj);
+                addImageFile(data['obj']['id'], data['obj']['url']);
+                imageDataMap.put(file.index, data.obj);
             } else {
                 eu.showAlertMsg(data['msg']);
             }
         },
-        onCancel:function(file){
+        onCancel: function (file) {
             var sf = imageDataMap.get(file['index']);
             delImageFile(sf['id']);
             imageDataMap.remove(file['index']);
@@ -104,6 +107,6 @@ function uploadifyImage() {
 }
 
 //登录名 同步成员工编号
-function sync(){
+function sync() {
     $("#code").val($("#loginName").val());
 }

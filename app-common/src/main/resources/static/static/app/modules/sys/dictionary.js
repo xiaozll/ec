@@ -34,12 +34,12 @@ function loadDictionaryTree() {
         },
         onContextMenu: function (e, node) {
             e.preventDefault();
-            if (node.id != undefined && node.id != "") {
+            if (node.id !== undefined && node.id !== "") {
                 $("#treeMenu").menu({
                     onClick: function (item) {
-                        if (item.name == "edit") {
+                        if (item.name === "edit") {
                             showDictionaryDialog(node.id);
-                        } else if (item.name == "delete") {
+                        } else if (item.name === "delete") {
                             delDictionary(node.id, node.text);
                         }
                     }
@@ -53,6 +53,7 @@ function loadDictionaryTree() {
         }
     });
 }
+
 /**
  * 列表
  */
@@ -93,7 +94,7 @@ function dictionaryItemDatagrid() {
                             currentDictionaryId = record['value'];
                             editRowData["dictionaryCode"] = record['data'];
                             var dictionaryCode = editRowData["dictionaryCode"];
-                            if(editRowData == undefined || editRowData['id'] == undefined || editRowData['id'] ===''){
+                            if (editRowData === undefined || editRowData['id'] === undefined || editRowData['id'] === '') {
                                 initCodeAndValue(dictionaryCode);
                             }
                         },
@@ -102,12 +103,12 @@ function dictionaryItemDatagrid() {
                             currentDictionaryId = $(this).combobox('getValue');
                             var dictionaryCode = "";
                             $.each(data, function (i, record) {
-                                if (record['value'] == currentDictionaryId) {
+                                if (record['value'] === currentDictionaryId) {
                                     dictionaryCode = record['data'];
                                     return false;
                                 }
                             });
-                            if(editRowData == undefined || editRowData['id'] == undefined || editRowData['id'] ===''){
+                            if (editRowData === undefined || editRowData['id'] === undefined || editRowData['id'] === '') {
                                 initCodeAndValue(dictionaryCode);
                             }
                         }
@@ -140,14 +141,14 @@ function dictionaryItemDatagrid() {
                     options: {
                         url: ctxAdmin + '/sys/dictionaryItem/combotree?selectType=select',
                         onBeforeLoad: function (node, param) {
-                            if(currentDictionaryId == undefined && editRowData['dictionaryId'] != ''){
+                            if (currentDictionaryId === undefined && editRowData['dictionaryId'] !== '') {
                                 currentDictionaryId = editRowData['dictionaryId'];
                             }
 
-                            if (currentDictionaryId != undefined) {
+                            if (currentDictionaryId !== undefined) {
                                 param['dictionary.id'] = currentDictionaryId;
                             }
-                            if (editRowData != undefined) {
+                            if (editRowData !== undefined) {
                                 param.id = editRowData.id;
                             }
                         }
@@ -168,7 +169,7 @@ function dictionaryItemDatagrid() {
                             var vallueEditor = $dictionaryItem_datagrid.datagrid('getEditor', {
                                 index: editRow,
                                 field: 'value'
-                            })
+                            });
                             $(vallueEditor.target).textbox("setValue", newValue);
                         }
                     }
@@ -260,6 +261,7 @@ function dictionaryItemDatagrid() {
         }
     }).datagrid('showTooltip');
 }
+
 /**
  * 初始化 编码 值
  * @param dictionaryCode
@@ -278,7 +280,7 @@ function initCodeAndValue(dictionaryCode) {
  * @returns {boolean}
  */
 function addDictionaryItem() {
-    if (editRow != undefined) {
+    if (editRow !== undefined) {
         eu.showMsg("请先保存正在编辑的数据！");
         return false;
         //$dictionaryItem_datagrid.datagrid('endEdit', editRow);
@@ -289,7 +291,7 @@ function addDictionaryItem() {
         if (node != null && node['attributes']['groupId'] != null) {
             dictionaryId = node['id'];
         }
-        var row = {id: '', dictionaryId: dictionaryId,editing:true};
+        var row = {id: '', dictionaryId: dictionaryId, editing: true};
         $dictionaryItem_datagrid.datagrid('appendRow', row);
         editRow = $dictionaryItem_datagrid.datagrid('getRows').length - 1;
         $dictionaryItem_datagrid.datagrid('selectRow', editRow);
@@ -305,8 +307,9 @@ function updateActions(index) {
         index: index,
         row: {}
     });
-    $dictionaryItem_datagrid.datagrid('refreshRow',index);
+    $dictionaryItem_datagrid.datagrid('refreshRow', index);
 }
+
 /**
  * 开始编辑
  * @param index
@@ -314,6 +317,7 @@ function updateActions(index) {
 function beginEdit(index) {
     $dictionaryItem_datagrid.datagrid('beginEdit', index);
 }
+
 /**
  *
  * @param index
@@ -322,6 +326,7 @@ function rejectChanges(index) {
     $dictionaryItem_datagrid.datagrid('endEdit', index);
     $dictionaryItem_datagrid.datagrid('rejectChanges', index);
 }
+
 /**
  * 保持数据字典项
  * @param target
@@ -347,17 +352,17 @@ function saveDictionaryItem(target, index, id) {
         traditional: true,
         dataType: 'json',
         success: function (data) {
-            if (data.code == 1) {
+            if (data.code === 1) {
                 $dictionaryItem_datagrid.datagrid('reload');
                 eu.showMsg(data.msg);
-            } else if (data.code == 2) {
+            } else if (data.code === 2) {
                 eu.showMsg(data.msg);
                 var validateEdit = $dictionaryItem_datagrid.datagrid('getEditor', {index: index, field: data['obj']});
-                if(validateEdit != undefined){
+                if (validateEdit !== undefined) {
                     $(validateEdit.target).focus();
                 }
                 beginEdit(index);
-            }else {
+            } else {
                 eu.showAlertMsg(data.msg);
                 rejectChanges(index);
             }
@@ -386,11 +391,11 @@ function dictionaryFormInit() {
         success: function (data) {
             $.messager.progress('close');
             var json = $.parseJSON(data);
-            if (json.code == 1) {
+            if (json.code === 1) {
                 $dictionary_dialog.dialog('destroy');//销毁对话框
                 $dictionary_tree.tree('reload');//重新加载列表数据
                 eu.showMsg(json.msg);//操作结果提示
-            } else if (json.code == 2) {
+            } else if (json.code === 2) {
                 $.messager.alert('提示信息！', json.msg, 'warning', function () {
                     if (json.obj) {
                         $('#dictionary_form input[name="' + json.obj + '"]').focus();
@@ -412,7 +417,7 @@ function dictionaryFormInit() {
  */
 function showDictionaryDialog(dictionaryId) {
     var inputUrl = ctxAdmin + "/sys/dictionary/input";
-    if (dictionaryId != undefined) {
+    if (dictionaryId !== undefined) {
         inputUrl += "?id=" + dictionaryId;
     }
     //弹出对话窗口
@@ -454,7 +459,7 @@ function showDictionaryDialog(dictionaryId) {
  */
 function setDictionaryItemSortValue(target) {
     $.get(ctxAdmin + '/sys/dictionaryItem/maxSort', function (data) {
-        if (data.code == 1) {
+        if (data.code === 1) {
             $(target).numberbox({value: data.obj + 30});
             $(target).numberbox('validate');
         }
@@ -470,7 +475,7 @@ function setDictionaryItemSortValue(target) {
 function delDictionary(dictionaryId, dictionaryName) {
     $.messager.confirm('确认提示！', '您确定要删除[' + dictionaryName + ']？', function (r) {
         if (r) {
-            var ids = new Array();
+            var ids = [];
             ids.push(dictionaryId);
             $.ajax({
                 url: ctxAdmin + '/sys/dictionary/remove',
@@ -479,7 +484,7 @@ function delDictionary(dictionaryId, dictionaryName) {
                 dataType: 'json',
                 traditional: true,
                 success: function (data) {
-                    if (data.code == 1) {
+                    if (data.code === 1) {
                         $dictionaryItem_datagrid.datagrid("reload");
                         $dictionary_tree.tree('reload');
                         eu.showMsg(data.msg);//操作结果提示
@@ -499,9 +504,9 @@ function delDictionary(dictionaryId, dictionaryName) {
  */
 function delDictionaryItem(dictionaryItemId, dictionaryItemName) {
     var rows = $dictionaryItem_datagrid.datagrid('getChecked');
-    if (dictionaryItemId != undefined || rows.length > 0) {
+    if (dictionaryItemId !== undefined || rows.length > 0) {
         var tipMsg = "您确定要删除";
-        if (dictionaryItemName != undefined) {
+        if (dictionaryItemName !== undefined) {
             tipMsg += "字典项[" + dictionaryItemName + "]?";
         } else {
             tipMsg += "选中的所有字典项?";
@@ -509,12 +514,12 @@ function delDictionaryItem(dictionaryItemId, dictionaryItemName) {
 
         $.messager.confirm('确认提示！', tipMsg, function (r) {
             if (r) {
-                var selectedIds = new Array();
+                var selectedIds = [];
                 $.messager.progress({
                     title: '提示信息！',
                     text: '数据处理中，请稍后....'
                 });
-                if (dictionaryItemId != undefined) {
+                if (dictionaryItemId !== undefined) {
                     selectedIds.push(dictionaryItemId);
                 } else {
                     $.each(rows, function (i, row) {
@@ -530,7 +535,7 @@ function delDictionaryItem(dictionaryItemId, dictionaryItemName) {
                     traditional: true,
                     success: function (data) {
                         $.messager.progress('close');
-                        if (data.code == 1) {
+                        if (data.code === 1) {
                             $dictionaryItem_datagrid.datagrid('clearSelections');
                             $dictionaryItem_datagrid.datagrid('load');
                             eu.showMsg(data.msg);//操作结果提示

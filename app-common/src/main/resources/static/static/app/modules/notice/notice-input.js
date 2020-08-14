@@ -13,18 +13,18 @@ var $form_noticeOrgan_combotree = undefined;
 $(function () {
     loadReceiveScope();
 
-    var $isTop =  $("input[name=isTop]:eq("+modelIsTop+")");
-    $isTop.prop("checked",'checked');
+    var $isTop = $("input[name=isTop]:eq(" + modelIsTop + ")");
+    $isTop.prop("checked", 'checked');
     toggoleIsTop($isTop.val());
-    $("input[name=isTop]").bind("click",function(){
+    $("input[name=isTop]").bind("click", function () {
         toggoleIsTop($(this).val());
     });
-    if(modelTipMessage){
+    if (modelTipMessage) {
         var val = modelTipMessage.split(",");
         var boxes = document.getElementsByName("tipMessage");
-        for(i=0;i<boxes.length;i++){
-            for(j=0;j<val.length;j++){
-                if(boxes[i].value == val[j]){
+        for (i = 0; i < boxes.length; i++) {
+            for (j = 0; j < val.length; j++) {
+                if (boxes[i].value === val[j]) {
                     boxes[i].checked = true;
                     break
                 }
@@ -34,13 +34,13 @@ $(function () {
     uploadify();
     editor();
 
-    if($('#head_image').val()){
+    if ($('#head_image').val()) {
         addImageFile($('#head_image').val());
     }
     uploadifyHeadImage();
 });
 
-function editor(){
+function editor() {
     $("#editor").kendoEditor({
         encoded: false,
         resizable: {
@@ -49,12 +49,13 @@ function editor(){
         }
     });
 }
+
 /**
  * 数据字典 Javascript调用方式
  */
-function loadNoticeType(){
+function loadNoticeType() {
     $('#notice_type').combobox({
-        url: ctxAdmin + '/sys/dictionary/combobox?dictionaryTypeCode='+dictionaryTypeCode+'&selectType=select',
+        url: ctxAdmin + '/sys/dictionary/combobox?dictionaryTypeCode=' + dictionaryTypeCode + '&selectType=select',
         multiple: false,//是否可多选
         editable: false,//是否可编辑
         width: 120,
@@ -65,53 +66,53 @@ function loadNoticeType(){
 }
 
 
-function loadReceiveScope(){
+function loadReceiveScope() {
     $('#receiveScope').combobox({
         url: ctxAdmin + '/notice/receiveScopeCombobox',
         multiple: false,
         editable: false,
-        required:true,
-        missingMessage:'请选择接收范围.',
+        required: true,
+        missingMessage: '请选择接收范围.',
         onChange: function (newValue, oldValue) {
             toggoleReceiveScope(newValue);
         },
-        onLoadSuccess:function(){
+        onLoadSuccess: function () {
             var value = $(this).combobox("getValue");
             toggoleReceiveScope(value);
         }
     });
 }
 
-function toggoleReceiveScope(receiveScope){
-    if("0" == receiveScope){
+function toggoleReceiveScope(receiveScope) {
+    if ("0" === receiveScope) {
         $("#noticeUserIds_div").show();
         $("#noticeOrganIds_div").show();
-        if($form_noticeUser_MultiSelect == undefined){
+        if ($form_noticeUser_MultiSelect === undefined) {
             loadNoticeUser();
         }
-        if($form_noticeOrgan_combotree == undefined){
+        if ($form_noticeOrgan_combotree === undefined) {
             loadNoticeOrgan();
         }
-    }else{
+    } else {
         $("#noticeUserIds_div").hide();
-        if($form_noticeUser_MultiSelect != undefined){
+        if ($form_noticeUser_MultiSelect !== undefined) {
             $form_noticeUser_MultiSelect.value(" ");
         }
         $("#noticeOrganIds_div").hide();
-        if($form_noticeOrgan_combotree != undefined){
-            $form_noticeOrgan_combotree.combotree("setValue","");
+        if ($form_noticeOrgan_combotree !== undefined) {
+            $form_noticeOrgan_combotree.combotree("setValue", "");
         }
     }
 }
 
-function toggoleIsTop(isTop){
-    if("0" == isTop){//不置顶
+function toggoleIsTop(isTop) {
+    if ("0" === isTop) {//不置顶
         $("#endTopDay_span").hide();
         //TODO 清空#endTopDay
-    }else{
+    } else {
         $("#endTopDay_span").show();
-        if(!$("#endTopDay").numberspinner().numberspinner("getValue")){
-            $("#endTopDay").numberspinner("setValue",7);
+        if (!$("#endTopDay").numberspinner().numberspinner("getValue")) {
+            $("#endTopDay").numberspinner("setValue", 7);
         }
     }
 }
@@ -121,7 +122,7 @@ function loadNoticeOrgan() {
         url: ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
         multiple: true,//是否可多选
         editable: false,
-        value:noticeReceiveOrganIds
+        value: noticeReceiveOrganIds
     });
 }
 
@@ -129,34 +130,35 @@ var fileIdArray = modelFileIds;
 var fileIds = fileIdArray.join(",");
 $("#fileIds").val(fileIds);
 var dataMap = new HashMap();
+
 function uploadify() {
     $('#uploadify').Huploadify({
-        auto:true,
-        showUploadedPercent:true,
-        showUploadedSize:true,
+        auto: true,
+        showUploadedPercent: true,
+        showUploadedSize: true,
         uploader: ctxAdmin + '/notice/upload',
-        formData:{},
+        formData: {},
         fileObjName: 'uploadFile',
         multi: true,
         fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        removeTimeout:24*60*60*1000,
+        removeTimeout: 24 * 60 * 60 * 1000,
         fileTypeExts: '*.*',
-        onUploadStart:function(file){
+        onUploadStart: function (file) {
         },
-        onInit:function(obj){
+        onInit: function (obj) {
         },
         onUploadComplete: function (file, data) {
             data = eval("(" + data + ")");
-            if (data.code != undefined && data.code === 1) {
+            if (data.code !== undefined && data.code === 1) {
                 fileIdArray.push(data['obj']['id']);
                 var _fileIds = fileIdArray.join(",");
                 $("#fileIds").val(_fileIds);
-                dataMap.put(file.index,data.obj);
+                dataMap.put(file.index, data.obj);
             } else {
                 eu.showAlertMsg(data['msg']);
             }
         },
-        onCancel:function(file){
+        onCancel: function (file) {
             var sf = dataMap.get(file['index']);
             delUpload(sf['id']);
             dataMap.remove(file['index']);
@@ -166,9 +168,9 @@ function uploadify() {
 }
 
 
-function addImageFile(id,url) {
+function addImageFile(id, url) {
     $('#head_image').val(id);
-    if(url){
+    if (url) {
         $('#head_image_pre').attr("src", url);
     }
     $('#head_image_pre').show();
@@ -184,31 +186,33 @@ function delImageFile() {
     $('#head_image_pre').next().hide();
     $('#head_image').val("");
 }
+
 var photoDataMap = new HashMap();
+
 function uploadifyHeadImage() {
     $('#head_image_uploadify').Huploadify({
-        auto:true,
-        showUploadedPercent:true,
-        showUploadedSize:true,
+        auto: true,
+        showUploadedPercent: true,
+        showUploadedSize: true,
         uploader: ctxAdmin + '/notice/upload',
-        formData:{},
+        formData: {},
         fileObjName: 'uploadFile',
         buttonText: '浏 览',
         multi: false,
         fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        removeTimeout:24*60*60*1000,
+        removeTimeout: 24 * 60 * 60 * 1000,
         fileTypeExts: '*.gif; *.jpg; *.png; *.bmp',  //上传的文件后缀过滤器
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
             if (1 === data['code']) {
-                addImageFile(data['obj']['id'],data['obj']['url']);
-                photoDataMap.put(file.index,data.obj);
+                addImageFile(data['obj']['id'], data['obj']['url']);
+                photoDataMap.put(file.index, data.obj);
             } else {
                 eu.showAlertMsg(data['msg']);
             }
         },
-        onCancel:function(file){
+        onCancel: function (file) {
             var sf = photoDataMap.get(file['index']);
             delImageFile(sf['id']);
             photoDataMap.remove(file['index']);
@@ -216,6 +220,7 @@ function uploadifyHeadImage() {
 
     });
 }
+
 function loadOrOpen(fileId) {
     $('#annexFrame').attr('src', ctxAdmin + '/disk/fileDownload/' + fileId);
 }
@@ -225,7 +230,7 @@ function loadOrOpen(fileId) {
  * @param fileId 后台File ID
  */
 function delUpload(fileId) {
-    fileIdArray.splice($.inArray(fileId,fileIdArray),1);
+    fileIdArray.splice($.inArray(fileId, fileIdArray), 1);
     var fileIds = fileIdArray.join(",");
     $("#fileIds").val(fileIds);
     delUploadFile(fileId);
@@ -242,9 +247,9 @@ function delUploadFile(fileId) {
         data: {fileIds: fileId},
         dataType: 'json',
         traditional: true,
-        success: function(data) {
+        success: function (data) {
             if (1 === data.code) {
-                $("#"+fileId).remove();
+                $("#" + fileId).remove();
             }
         }
     });
@@ -254,7 +259,7 @@ function delUploadFile(fileId) {
  *
  */
 function loadNoticeUser() {
-    var dataSource = {data: [],group: { field: "defaultOrganName" }};
+    var dataSource = {data: [], group: {field: "defaultOrganName"}};
     $form_noticeUser_MultiSelect = $("#noticeUserIds").kendoMultiSelect({
         dataTextField: "name",
         dataValueField: "id",
@@ -272,20 +277,21 @@ function loadNoticeUser() {
         url: ctxAdmin + '/sys/user/userList?dataScope=2',
         //async: false,
         success: function (data) {
-            var dataSource = {data: data,group: { field: "defaultOrganName" }};
+            var dataSource = {data: data, group: {field: "defaultOrganName"}};
             $form_noticeUser_MultiSelect.setDataSource(dataSource);
             $form_noticeUser_MultiSelect.value(noticeReceiveUserIds);
         }
     });
 
 }
+
 function _selectUser() {
     var userIds = "";
     var dataItems = $form_noticeUser_MultiSelect.dataItems();
     if (dataItems && dataItems.length > 0) {
         var num = dataItems.length;
         $.each(dataItems, function (n, value) {
-            if (n == num - 1) {
+            if (n === num - 1) {
                 userIds += value.id;
             } else {
                 userIds += value.id + ",";
@@ -328,7 +334,7 @@ function _selectUser() {
 }
 
 function _setSelectUser() {
-    var selectUserIds = new Array();
+    var selectUserIds = [];
     $("#selectUser option").each(function () {
         var txt = $(this).val();
         selectUserIds.push($.trim(txt));

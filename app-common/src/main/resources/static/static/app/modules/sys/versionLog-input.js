@@ -7,51 +7,52 @@ var fileSizeLimit = fileSizeLimit;
 $(function () {
     //日志类型 搜索选项
     $('#versionLogType').combobox({
-        url:ctxAdmin + '/sys/versionLog/versionLogTypeCombobox?selectType=select',
-        editable:false,//是否可编辑
-        width:120
+        url: ctxAdmin + '/sys/versionLog/versionLogTypeCombobox?selectType=select',
+        editable: false,//是否可编辑
+        width: 120
     });
     uploadify();
 
-    if(modelId == ""){  //新增
-        $("input[name=isPub]:eq(0)").prop("checked",'checked');//状态 初始化值
-        $("input[name=isTip]:eq(0)").prop("checked",'checked');//状态 初始化值
-        $("input[name=isShelf]:eq(1)").prop("checked",'checked');//状态 初始化值
-    }else{
-        $('input[name=isPub][value='+modelIsPub+']').prop("checked",'checked');
-        $('input[name=isTip][value='+modelIsTip+']').prop("checked",'checked');
-        $('input[name=isShelf][value='+modelIsShelf+']').prop("checked",'checked');
+    if (modelId === "") {  //新增
+        $("input[name=isPub]:eq(0)").prop("checked", 'checked');//状态 初始化值
+        $("input[name=isTip]:eq(0)").prop("checked", 'checked');//状态 初始化值
+        $("input[name=isShelf]:eq(1)").prop("checked", 'checked');//状态 初始化值
+    } else {
+        $('input[name=isPub][value=' + modelIsPub + ']').prop("checked", 'checked');
+        $('input[name=isTip][value=' + modelIsTip + ']').prop("checked", 'checked');
+        $('input[name=isShelf][value=' + modelIsShelf + ']').prop("checked", 'checked');
     }
 });
 
 var dataMap = new HashMap();
+
 function uploadify() {
     $('#uploadify').Huploadify({
-        auto:true,
-        showUploadedPercent:true,
-        showUploadedSize:true,
+        auto: true,
+        showUploadedPercent: true,
+        showUploadedSize: true,
         uploader: ctxAdmin + '/sys/versionLog/upload',
-        formData:{},
+        formData: {},
         fileObjName: 'uploadFile',
         multi: false,
         fileSizeLimit: fileSizeLimit, //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-        removeTimeout:24*60*60*1000,
+        removeTimeout: 24 * 60 * 60 * 1000,
         fileTypeExts: '*.*',
-        onUploadStart:function(file){
+        onUploadStart: function (file) {
         },
-        onInit:function(obj){
+        onInit: function (obj) {
         },
         onUploadComplete: function (file, data) {
             data = eval("(" + data + ")");
-            console.log(file,data);
+            console.log(file, data);
             if (data.code === 1) {
                 $("#fileId").val(data['obj']['id']);
-                dataMap.put(file.index,data.obj);
+                dataMap.put(file.index, data.obj);
             } else {
                 eu.showAlertMsg(data['msg']);
             }
         },
-        onCancel:function(file){
+        onCancel: function (file) {
             var sf = dataMap.get(file['index']);
             delUpload(sf['id']);
             dataMap.remove(file['index']);
@@ -84,9 +85,9 @@ function delUploadFile(fileId) {
         data: {fileIds: fileId},
         dataType: 'json',
         traditional: true,
-        success: function(data) {
+        success: function (data) {
             if (1 === data.code) {
-                $("#"+fileId).remove();
+                $("#" + fileId).remove();
             }
         }
     });

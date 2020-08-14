@@ -3,44 +3,45 @@ var usersCombogridData = usersCombogridData;
 var managerUserId = managerUserId;
 
 var $managerUser_combogrid;
-$(function() {
+$(function () {
     loadManagerUser();
 });
 
 //加载主管用户
-function loadManagerUser(){
+function loadManagerUser() {
     $managerUser_combogrid = $('#managerUserId').combogrid({
-        width:360,
-        panelWidth:360,
-        panelHeight:360,
-        idField:'id',
-        textField:'name',
-        data:organUserCombogridData,
+        width: 360,
+        panelWidth: 360,
+        panelHeight: 360,
+        idField: 'id',
+        textField: 'name',
+        data: organUserCombogridData,
         fitColumns: true,
         striped: true,
-        editable:true,
-        rownumbers:true,//序号
-        collapsible:false,//是否可折叠的
-        method:'post',
-        columns:[[
-            {field:'id',title:'主键ID',width:100,hidden:'true'},
+        editable: true,
+        rownumbers: true,//序号
+        collapsible: false,//是否可折叠的
+        method: 'post',
+        columns: [[
+            {field: 'id', title: '主键ID', width: 100, hidden: 'true'},
             {field: 'name', title: '姓名', width: 60, sortable: true},
             {field: 'sexView', title: '性别', width: 50},
             {field: 'defaultOrganName', title: '机构', width: 120, sortable: true}
         ]]
     });
-    if(managerUserId){
-        $managerUser_combogrid.combogrid("setValue",managerUserId);
+    if (managerUserId) {
+        $managerUser_combogrid.combogrid("setValue", managerUserId);
     }
 
 }
+
 //加载分管用户
-function selectUser(){
+function selectUser() {
     var checkedUserIds = $("#superManagerUserId").val();
     _dialog = $("<div/>").dialog({
         title: "选择用户",
         top: 10,
-        href: ctxAdmin + '/sys/user/organUserTreePage?checkbox=false&checkedUserIds='+checkedUserIds,
+        href: ctxAdmin + '/sys/user/organUserTreePage?checkbox=false&checkedUserIds=' + checkedUserIds,
         width: '500',
         height: '360',
         maximizable: true,
@@ -53,7 +54,7 @@ function selectUser(){
                 setSelectUser();
                 _dialog.dialog('destroy');
             }
-        },{
+        }, {
             text: '关闭',
             iconCls: 'easyui-icon-cancel',
             handler: function () {
@@ -67,15 +68,15 @@ function selectUser(){
     });
 }
 
-function setSelectUser(){
+function setSelectUser() {
     var node = $("#organUserTree").tree("getSelected");
-    if(node){
-        if("u" ==node.attributes.nType){
+    if (node) {
+        if ("u" === node.attributes.nType) {
             $("#superManagerUserId").val(node['id']);
-            $("#superManagerUserName").textbox('setValue',node['text']);
-        }else{
+            $("#superManagerUserName").textbox('setValue', node['text']);
+        } else {
             $("#superManagerUserId").val('');
-            $("#superManagerUserName").textbox('setValue','');
+            $("#superManagerUserName").textbox('setValue', '');
         }
 
     }

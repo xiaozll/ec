@@ -44,7 +44,10 @@
     try {
         toastr.options = {
             "closeButton":true,
-            "positionClass": "toast-top-center"}
+            "positionClass": "toast-top-center"};
+        $.ajaxSetup({
+            header:{'Authorization':'${sessionInfo.token}'}
+        });
     } catch (e) {
     }
 </script>

@@ -47,9 +47,9 @@ function initMenuTree() {
             var url = node.attributes.url;
             if (url) {
 
-                if (url.substring(0, 4) == "http") {
+                if (url.substring(0, 4) === "http") {
 
-                } else if (url.substring(0, 1) == "/") {
+                } else if (url.substring(0, 1) === "/") {
                     url = ctx + url;
                 } else {
                     url = ctxAdmin + '/' + url;

@@ -14,8 +14,10 @@ import com.eryansky.common.utils.encode.Encryption;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        System.out.println(Encryption.decrypt("7e0cd7be3e66d4a8"));
-        System.out.println(Encrypt.e(Encryption.decrypt("7e0cd7be3e66d4a8")));
+        System.out.println(Encrypt.md5("1"));//79b2cf0337180351d2dcc5ee9d625481
+        System.out.println(Encrypt.md5("jxyc@123"));//1e46df17f20fe9c1da92e62e81b76281
+        System.out.println(Encrypt.e("jxjfhp@123_2"));//363f38e310c2dbc1d7cb3df2b2eb4d52
+        System.out.println(Encrypt.e("15879034026wcp"));//363f38e310c2dbc1d7cb3df2b2eb4d52
 
     }
 }

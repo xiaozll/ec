@@ -1,7 +1,10 @@
 package com.eryansky.core.security;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.utils.CacheUtils;
+
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -26,8 +29,12 @@ public class ApplicationSessionContext {
 	}
 
 	public void addSession(SessionInfo sessionInfo) {
+		addSession(null,sessionInfo);
+	}
+
+	public void addSession(String sessionId,SessionInfo sessionInfo) {
 		if (sessionInfo != null) {
-			CacheUtils.put(CACHE_SESSION,sessionInfo.getId(),sessionInfo);
+			CacheUtils.put(CACHE_SESSION, StringUtils.isNotBlank(sessionId) ? sessionId:sessionInfo.getId(),sessionInfo);
 		}
 	}
 
@@ -40,6 +47,15 @@ public class ApplicationSessionContext {
 	public SessionInfo getSession(String sessionId) {
 		if (sessionId == null) return null;
 		return (SessionInfo) CacheUtils.get(CACHE_SESSION,sessionId);
+	}
+
+	public List<SessionInfo> findSessionInfoDataRemoveDuplicate() {
+		List<SessionInfo> list = findSessionInfoData();
+		LinkedHashSet<SessionInfo> set = new LinkedHashSet<>(list.size());
+		set.addAll(list);
+		list.clear();
+		list.addAll(set);
+		return list;
 	}
 
 	public List<SessionInfo> findSessionInfoData() {

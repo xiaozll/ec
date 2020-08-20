@@ -72,7 +72,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
         String requestUrl = request.getRequestURI();
         requestUrl = requestUrl.replaceAll("//","/");
         if(logger.isDebugEnabled()){
-            logger.debug(requestUrl);
+            logger.debug(request.getSession().getId() + ":" + request.getHeader("Authorization") + ":" + requestUrl);
         }
         //注解处理
         Boolean annotationHandler = this.annotationHandler(request,response,o,sessionInfo,requestUrl);

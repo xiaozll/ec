@@ -373,6 +373,7 @@ public class FtpFactory {
             ftp.connect(url, port);
             // 登录ftp
             ftp.login(username, password);
+            ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
             reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftp.disconnect();

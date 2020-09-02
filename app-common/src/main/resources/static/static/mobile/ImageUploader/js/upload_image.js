@@ -65,9 +65,9 @@ function ImageUploader($parent, options) {
             beforeComplete: function(file) {},//图片上传前回调函数
             afterComplete: function() {},//图片上传完成回调函数
             afterDeleteImageComplete: function() {}//图片删除回调函数
-        }, options),
-            n.file = null,
-            n.$controller = $parent,
+        }, options);
+            n.file = null;
+            n.$controller = $parent;
             n.$uploadBtn = $parent.find(n.config.uploadBtn);
         n.$fileInput = $parent.find(n.config.fileInput);
         n.$uploadBtn.css({
@@ -117,7 +117,7 @@ function ImageUploader($parent, options) {
              */
             function upload(result) {
                 //图片大小控制
-                if (result.length / 1024 / 1400 >= context.config.limitSize) {
+                if (result.length / 1024 / 1024 >= context.config.limitSize) {
                     context.$fileInput.val("");
                     alert("上传文件太大");
                     return;
@@ -179,7 +179,7 @@ function ImageUploader($parent, options) {
                 }
                 var n = context.file = e.target.files[0];
                 var result = context.config.beforeComplete.call(context,n);
-                if(result != undefined &&  result == false){
+                if(result !== undefined &&  result === false){
                     return ;
                 }
                 if (context.file) {
@@ -192,13 +192,13 @@ function ImageUploader($parent, options) {
                             context.compressImage(e.target.result,upload);
                             //upload(e.target.result);
                         }
-                    }
+                    };
                     reader.readAsDataURL(context.file);
                 }
             });
         }
 
-    })
+    });
 
     /**
      * 将图片绘制在父容器中
@@ -365,10 +365,10 @@ function ImageUploader($parent, options) {
         var width = img.width;
         //var step = img.getAttribute('step');
         var step = 2;
-        if (step == null) {
+        if (step === null) {
             step = min_step;
         }
-        if (direction == 'right') {
+        if (direction === 'right') {
             step++;
             //旋转到原位置，即超过最大值
             step > max_step && (step = min_step);
@@ -413,7 +413,7 @@ function ImageUploader($parent, options) {
      * @return {[type]}
      */
     function _canvasResize(context,result, upload) {
-        var image = new Image()
+        var image = new Image();
         base64 = null;
         image.src = result;
         image.onload = function() {
@@ -432,7 +432,7 @@ function ImageUploader($parent, options) {
             ctx.drawImage(this, 0, 0, expectWidth, expectHeight);
 
             //等于1不需要旋转
-            if (Orientation != "" && Orientation != 1) {
+            if (Orientation !== "" && Orientation !== 1) {
                 switch (Orientation) {
                     case 6: //需要顺时针（向左）90度旋转
                         _rotateImg(this, 'left', canvas);
@@ -452,4 +452,4 @@ function ImageUploader($parent, options) {
     }
 
     return new imageUploader($parent, options);
-};
+}

@@ -5,7 +5,7 @@ var sessionInfoUserId = sessionInfoUserId;//参考父页面 user.jsp
  */
 function isSuperUser() {
     //超级管理员id为"1"
-    return sessionInfoUserId === 1;
+    return sessionInfoUserId === "1";
 
 }
 
@@ -14,7 +14,7 @@ function isSuperUser() {
  */
 function isSuperOwner(userId) {
     //超级管理员id为"1"
-    return userId === 1;
+    return userId === "1";
 
 }
 
@@ -23,7 +23,7 @@ function isSuperOwner(userId) {
  * @param userId
  */
 function isOpeated(userId) {
-    return !(userId === 1 && !isSuperUser());
+    return !(userId === "1" && !isSuperUser());
 
 }
 

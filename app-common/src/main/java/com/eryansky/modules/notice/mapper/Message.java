@@ -11,8 +11,10 @@ import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.notice._enum.MessageMode;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 消息表
@@ -70,7 +72,14 @@ public class Message extends DataEntity<Message> {
      */
     private String tipMessage;
 
+    /**
+     * 消息发送
+     */
     private MessageSender messageSender;
+    /**
+     * 消息接收
+     */
+    private List<MessageReceive> messageReceives;
 
 
     /**
@@ -220,6 +229,15 @@ public class Message extends DataEntity<Message> {
 
     public void setMessageSender(MessageSender messageSender) {
         this.messageSender = messageSender;
+    }
+
+    @JsonIgnore
+    public List<MessageReceive> getMessageReceives() {
+        return messageReceives;
+    }
+
+    public void setMessageReceives(List<MessageReceive> messageReceives) {
+        this.messageReceives = messageReceives;
     }
 
     public String getReceiveObjectType() {

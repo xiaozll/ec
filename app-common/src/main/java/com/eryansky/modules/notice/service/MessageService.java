@@ -110,6 +110,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
         message.setBizMode(MessageMode.Publishing.getValue());
         message.setSendTime(Calendar.getInstance().getTime());
         this.save(message);
+        List<MessageReceive> messageReceives = Lists.newArrayList();
         for (String objectId : receiveObjectIds) {
             MessageSender messageSender = new MessageSender(message.getId());
             messageSender.setObjectType(messageReceiveObjectType.getValue());
@@ -130,10 +131,12 @@ public class MessageService extends CrudService<MessageDao, Message> {
                 messageReceive.setUserId(targetId);
                 messageReceive.setIsRead(YesOrNo.NO.getValue());
                 messageReceiveService.save(messageReceive);
+                messageReceives.add(messageReceive);
             }
         }
         message.setBizMode(MessageMode.Published.getValue());
         this.save(message);
+        message.setMessageReceives(messageReceives);
         return message;
     }
 }

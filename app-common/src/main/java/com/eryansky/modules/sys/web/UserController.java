@@ -655,8 +655,8 @@ public class UserController extends SimpleController {
                                         @RequestParam(value = "checkedUserIds", required = false) List<String> checkedUserIds,
                                         @RequestParam(value = "checkbox", defaultValue = "true") Boolean checkbox,
                                         @RequestParam(value = "cascade", defaultValue = "true") Boolean cascade,
-                                        Boolean shortName) {
-        List<TreeNode> treeNodes = organService.findOrganUserTree(parentId, null, true, checkedUserIds, cascade,shortName);
+                                        @RequestParam(value = "shortName", defaultValue = "false") Boolean shortName) {
+        List<TreeNode> treeNodes = shortName ? organService.findOrganUserTree(parentId, null, true, checkedUserIds, cascade, shortName) : organService.findOrganUserTree(parentId, checkedUserIds, cascade);
         Post post = null;
         if(StringUtils.isNotBlank(postCode) && StringUtils.isNotBlank(parentId) && !cascade){
             post = PostUtils.getByCode(postCode);

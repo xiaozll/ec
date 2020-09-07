@@ -214,7 +214,7 @@
         WHERE
         a.status = '0'
         <if test="id != null and id !=''">
-            AND (a.id = #{id} OR OR a.parent_id = #{id})
+            AND (a.id = #{id} OR a.parent_id = #{id})
         </if>
         <if test="types != null and types.size() !=0">
             AND a.type IN

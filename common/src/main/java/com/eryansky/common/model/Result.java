@@ -34,6 +34,10 @@ public class Result implements Serializable {
 	 * 失败
 	 */
 	public static final int ERROR = 0;
+	/**
+	 * API 失败
+	 */
+	public static final int ERROR_API = 500;
 	
 	/**
 	 * 成功消息
@@ -92,6 +96,7 @@ public class Result implements Serializable {
 	public static Result successResult() {
 		return new Result(SUCCESS, SUCCESS_MSG, null);
 	}
+
 	/**
 	 * 默认操作警告结果.
 	 */
@@ -105,6 +110,21 @@ public class Result implements Serializable {
 	 */
 	public static Result errorResult() {
 		return new Result(ERROR, ERROR_MSG, null);
+	}
+
+
+	/**
+	 * API 默认操作成功结果.
+	 */
+	public static Result successApiResult() {
+		return new Result(SUCCESS_API, SUCCESS_MSG, null);
+	}
+
+	/**
+	 * API 默认操作失败结果.
+	 */
+	public static Result errorApiResult() {
+		return new Result(ERROR_API, ERROR_MSG, null);
 	}
 
 	/**

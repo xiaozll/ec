@@ -20,6 +20,7 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
+import com.eryansky.core.security.annotation.RestApi;
 import com.eryansky.modules.disk.mapper.File;
 import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.utils.DictionaryUtils;
@@ -856,6 +857,7 @@ public class UserController extends SimpleController {
      */
     @RequestMapping(value = {"detail"})
     @ResponseBody
+    @RestApi()
     public Result detail(@ModelAttribute("model") User model) {
         return Result.successResult().setObj(model);
     }

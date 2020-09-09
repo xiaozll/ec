@@ -17,7 +17,7 @@ import static com.eryansky.core.security._enum.Logical.*;
  * @author : 尔演&Eryan eryanwcp@gmail.com
  * @date : 2014-06-11 20:06
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.TYPE, ElementType.METHOD,ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RequiresRoles {

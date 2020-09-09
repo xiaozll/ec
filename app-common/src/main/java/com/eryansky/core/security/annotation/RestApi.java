@@ -23,6 +23,12 @@ import static com.eryansky.core.security._enum.Logical.AND;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RestApi {
 
+    /**
+     * 用户是否需要登录 是：true 否：false 默认值：true
+     * @return
+     */
+    boolean required() default true;
+
     String[] value() default "";
 
     Logical logical() default AND;

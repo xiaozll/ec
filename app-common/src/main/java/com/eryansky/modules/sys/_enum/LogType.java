@@ -28,6 +28,13 @@ public enum LogType implements IGenericEnum<LogType> {
      * 异常(3)
      */
     exception("3", "异常"),
+    /**
+     * REST调用
+     */
+    REST("R", "REST调用"),
+    /**
+     * RPC API调用
+     */
     API("A", "API调用");
 
     /**

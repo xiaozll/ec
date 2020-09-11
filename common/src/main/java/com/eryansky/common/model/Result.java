@@ -39,6 +39,10 @@ public class Result implements Serializable {
 	 * API 失败
 	 */
 	public static final int ERROR_API = 500;
+	/**
+	 * 未授权
+	 */
+	public static final int NO_PERMISSION = 403;
 
 	/**
 	 * 成功消息
@@ -52,6 +56,10 @@ public class Result implements Serializable {
 	 * 失败消息
 	 */
 	public static final String ERROR_MSG = "操作失败:发生未知异常！";
+	/**
+	 * 未授权
+	 */
+	public static final String NO_PERMISSION_MSG = "未授权！";
 
 	/**
 	 * 结果状态码(可自定义结果状态码) 1:操作成功 0:操作失败
@@ -126,6 +134,13 @@ public class Result implements Serializable {
 	 */
 	public static Result errorApiResult() {
 		return new Result(ERROR_API, ERROR_MSG, null);
+	}
+
+	/**
+	 * 未授权结果.
+	 */
+	public static Result noPermissionResult() {
+		return new Result(NO_PERMISSION, NO_PERMISSION_MSG, null);
 	}
 
 	/**

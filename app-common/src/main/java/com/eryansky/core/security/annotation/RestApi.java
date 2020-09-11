@@ -24,7 +24,7 @@ import static com.eryansky.core.security._enum.Logical.AND;
 public @interface RestApi {
 
     /**
-     * 用户是否需要登录 是：true 否：false 默认值：true
+     * 用户是否需要授权访问 是：true 否：false 默认值：true
      * @return
      */
     boolean required() default true;

@@ -35,7 +35,7 @@
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
         <spring-boot.version>2.2.9.RELEASE</spring-boot.version>
-        <logback.version>6.3</logback.version>
+        <logback.version>6.4</logback.version>
 
         <tomcat.version>9.0.37</tomcat.version>
         <jstl.version>1.2</jstl.version>

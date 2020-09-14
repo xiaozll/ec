@@ -215,6 +215,9 @@ public class User extends DataEntity<User> implements IUser {
         return DiskUtils.getFileUrl(photo);
     }
 
+    public String getPhotoSrc() {
+        return DiskUtils.getFileSrc(photo);
+    }
     public void setEmail(String email) {
         this.email = email;
     }

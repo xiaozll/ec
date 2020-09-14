@@ -212,7 +212,7 @@ public class UserMobileController extends SimpleController {
             map.put("name",v.getName());
             map.put("phone",v.getMobile());
             if(showPhoto){
-                map.put("photoUrl",v.getPhotoUrl());
+                map.put("photoSrc",v.getPhotoSrc());
             }
             map.put("tagIndex",v.getNamePinyinHeadChar());
             list.add(map);

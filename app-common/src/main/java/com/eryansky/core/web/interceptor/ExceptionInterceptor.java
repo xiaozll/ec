@@ -10,8 +10,10 @@ import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.Exceptions;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.SysUtils;
+import com.eryansky.common.web.utils.WebUtils;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
     private final static String MSG_DETAIL = " 详细信息:";
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        String requestUrl = request.getRequestURI();
+        requestUrl = requestUrl.replaceAll("//","/");
+
         Result result = null;
         //开发模式下打印堆栈信息
         if(SysConstants.isdevMode()){
@@ -132,6 +137,10 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
 //        return  new ModelAndView("error-business", model);
 
         //异步方式返回异常信息
+        if(StringUtils.startsWith(requestUrl, request.getContextPath()+"/rest")){
+            result.setCode(Result.ERROR_API);
+            WebUtils.renderJson(response, result);
+        }
 //        WebUtils.renderText(response, result);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -139,6 +148,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         maps.put("code", result.getCode());
         maps.put("msg", result.getMsg());
         maps.put("obj", null);
+        maps.put("data", null);
         MappingJackson2JsonView mappingJackson2JsonView = new MappingJackson2JsonView();
         mappingJackson2JsonView.setAttributesMap(maps);
         modelAndView.setView(mappingJackson2JsonView);

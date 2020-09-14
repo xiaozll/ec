@@ -201,7 +201,9 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @RequestMapping(value = "contactTagData")
-    public String contactTagData(String companyId,HttpServletRequest request, HttpServletResponse response) {
+    public String contactTagData(String companyId,
+                                 @RequestParam(value = "showPhoto",defaultValue = "false") Boolean showPhoto,
+                                 HttpServletRequest request, HttpServletResponse response) {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
         List<Map<String,Object>> list = Lists.newArrayList();
         personPlatformContacts.parallelStream().forEach(v->{
@@ -209,6 +211,9 @@ public class UserMobileController extends SimpleController {
             map.put("id",v.getId());
             map.put("name",v.getName());
             map.put("phone",v.getMobile());
+            if(showPhoto){
+                map.put("photoUrl",v.getPhotoUrl());
+            }
             map.put("tagIndex",v.getNamePinyinHeadChar());
             list.add(map);
         });

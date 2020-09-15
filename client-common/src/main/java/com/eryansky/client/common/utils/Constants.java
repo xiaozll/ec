@@ -18,6 +18,7 @@ public class Constants {
     public static final String DATE_TIME_SHORT_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.S";
     public static final String TIMEZONE = "GMT+08:00";
+    public static final String T_END_TIME = "9999-12-31";
 
     public static final String DB_MYSQL = "mysql";
     public static final String DB_MARIADB = "mariadb";

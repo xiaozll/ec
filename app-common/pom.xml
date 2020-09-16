@@ -230,6 +230,10 @@
                     <exclude>disk/**</exclude>
                     <exclude>static/static/js/bootstrap/2.3.2/docs/**</exclude>
                     <exclude>static/static/js/bootstrap/3.2.0/**</exclude>
+                    <exclude>static/static/js/ckeditor/_samples/**</exclude>
+                    <exclude>static/static/js/ckeditor/_source/**</exclude>
+                    <exclude>static/static/js/ckfinder/_samples/**</exclude>
+                    <exclude>static/static/js/ckfinder/help/**</exclude>
                     <exclude>static/static/js/easyui/src/**</exclude>
                     <exclude>static/static/js/easyui/**/*.html</exclude>
                     <exclude>static/static/js/easyui/**/*.json</exclude>

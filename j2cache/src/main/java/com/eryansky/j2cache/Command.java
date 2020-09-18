@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * 命令消息封装
@@ -57,8 +57,8 @@ public class Command implements java.io.Serializable{
 
 	public static int genRandomSrc() {
 		long ct = System.currentTimeMillis();
-		Random rnd_seed = new Random(ct);
-		return (int)(rnd_seed.nextInt(10000) * 1000 + ct % 1000);
+		SecureRandom rndSeed  = new SecureRandom ();
+		return (int)(rndSeed .nextInt(10000) * 1000 + ct % 1000);
 	}
 
 	public Command(){}//just for json deserialize , dont remove it.

@@ -1156,47 +1156,8 @@ public class SysUtils {
 		return result;
 	}
 
-	/**
-	 * 134-、135-、136-、137-、138-、139-、150-、151-、152-、158-、159-、147-、187-、188-
-	 * 182-
-	 * <p/>
-	 * 157 -
-	 * 
-	 * @param mobilephone
-	 * @return
-	 */
-	public static boolean checkMobilephoneByCMCC(String mobilephone) {
-		String cmcc = new String(
-				"134,135,136,137,138,139,150,151,152,157,158,159,188,182,187,147,");
-		try {
-			if (mobilephone.length() != 11)
-				return false;
-			String sub = mobilephone.substring(0, 3) + ",";
-			if (cmcc.indexOf(sub) == -1)
-				return false;
-			@SuppressWarnings("unused")
-			float m = Float.parseFloat(mobilephone);
-			return isIntArray(toStringArray(mobilephone));
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	@SuppressWarnings("unused")
-	public static boolean checkMobilephone(String mobilephone) {
-		String cmcc = new String("13,15,18,");
-		try {
-			if (mobilephone.length() != 11)
-				return false;
-			String sub = mobilephone.substring(0, 2) + ",";
-			if (cmcc.indexOf(sub) == -1)
-				return false;
-			float m = Float.parseFloat(mobilephone);
-			return isIntArray(toStringArray(mobilephone));
-		} catch (Exception e) {
-			return false;
-		}
-	}
+	//校验手机是否合规 2020年最全的国内手机号格式
+	private static final String REGEX_MOBILE = "((\\+86|0086)?\\s*)((134[0-8]\\d{7})|(((13([0-3]|[5-9]))|(14[5-9])|15([0-3]|[5-9])|(16(2|[5-7]))|17([0-3]|[5-8])|18[0-9]|19(1|[8-9]))\\d{8})|(14(0|1|4)0\\d{7})|(1740([0-5]|[6-9]|[10-12])\\d{7}))";
 
 	/**
 	 * 手机号验证
@@ -1204,18 +1165,12 @@ public class SysUtils {
 	 * @return 验证通过返回true
 	 */
 	public static boolean isMobile(final String str) {
-		if(null == str){
+		if (StringUtils.isEmpty(str)) {
 			return false;
 		}
-		Pattern p = null;
-		Matcher m = null;
-		boolean b = false;
-		String regex = "^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8,9])|(18[0-9])|(19[0|1|8|9]))\\d{8}$";
-		p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE); // 验证手机号
-		m = p.matcher(str);
-		b = m.matches();
-		return b;
+		return Pattern.matches(REGEX_MOBILE, str);
 	}
+
 	/**
 	 * 电话号码验证
 	 * @param  str

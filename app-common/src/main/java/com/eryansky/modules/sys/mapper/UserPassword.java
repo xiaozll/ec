@@ -38,10 +38,12 @@ public class UserPassword extends DataEntity<UserPassword> {
     private String password;
 
     public UserPassword() {
+        super();
         this.modifyTime = Calendar.getInstance().getTime();
     }
 
     public UserPassword(String userId, String password) {
+        this();
         this.userId = userId;
         this.password = password;
     }

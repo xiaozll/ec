@@ -102,6 +102,7 @@ public class FtpFactory {
         ftp.connect(url, port);
         // 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
         ftp.login(username, password);// 登录
+        ftp.enterRemotePassiveMode();
         ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
         reply = ftp.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
@@ -125,6 +126,7 @@ public class FtpFactory {
             ftp.connect(url, port);
             // 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
             ftp.login(username, password);// 登录
+            ftp.enterRemotePassiveMode();
             ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
             reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
@@ -190,6 +192,7 @@ public class FtpFactory {
         ftp.connect(url, port);
         // 如果采用默认端口，可以使用ftp.connect(url)的方式直接连接FTP服务器
         ftp.login(username, password);// 登录
+        ftp.enterRemotePassiveMode();
         ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
         reply = ftp.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
@@ -301,12 +304,12 @@ public class FtpFactory {
             int reply;
             ftp.connect(url, port);
             ftp.login(username, password);
+            ftp.enterRemotePassiveMode();
             reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {
                 ftp.disconnect();
                 return success;
             }
-
             // 转到指定上传目录
             ftp.changeWorkingDirectory(path);
             ftp.setBufferSize(8*1024);
@@ -373,6 +376,7 @@ public class FtpFactory {
             ftp.connect(url, port);
             // 登录ftp
             ftp.login(username, password);
+            ftp.enterLocalPassiveMode();
             ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
             reply = ftp.getReplyCode();
             if (!FTPReply.isPositiveCompletion(reply)) {

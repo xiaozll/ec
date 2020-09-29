@@ -7,7 +7,7 @@ $(function () {
     loadPost();
 });
 
-//加载用户
+//加载用户可选岗位
 function loadPost() {
     $post_combobox = $("#postIds").combobox({
         url: ctxAdmin + '/sys/post/userPostCombobox?userId=' + modelId + '&organId=' + organId,

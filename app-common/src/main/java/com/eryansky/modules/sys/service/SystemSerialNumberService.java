@@ -92,14 +92,13 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @return
      */
     public List<String> generatePrepareSerialNumbers(String app,String moduleCode) {
-        System.out.println(moduleCode);
         SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID,moduleCode);
         /** 预生成数量 */
         int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;
         /** 数据库存储的当前最大序列号 **/
         long maxSerialInt = StringUtils.isNotBlank(entity.getMaxSerial()) ? Integer.valueOf(entity.getMaxSerial()) : 0;
         //临时List变量
-        List<String> resultList = new ArrayList<String>(prepare);
+        List<String> resultList = new ArrayList<>(prepare);
         SNGenerateApp snGenerateApp = new SNGenerateApp();
         Map map = new HashMap(); //设定参数
         map.put(GeneratorConstants.PARAM_MODULE_CODE, moduleCode);

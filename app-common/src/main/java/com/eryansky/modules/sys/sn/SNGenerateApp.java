@@ -45,11 +45,12 @@ public class SNGenerateApp {
     public static void main(String[] args) {
         SNGenerateApp snGenerateApp = new SNGenerateApp();
         //设定流水号生成规则
-        String snFormatStr = "Str@ 国办发〔#DateTime@yyyy#Str@〕#NumSeq@0C0#Str@ 号";
+        String snFormatStr = "Str@ 国办发〔#DateTime@yyyy#Str@〕#NumSeq@10C0#Str@ 号";
         Map parameterMap1 = new HashMap(); //设定参数
         parameterMap1.put(GeneratorConstants.PARAM_MODULE_CODE, "1"); //使用 sequence id 1 进行流水自增
-        for (int i = 1; i <= 5; i++)//生成 5 个流水号
+        for (int i = 0; i < 5; i++)//生成 5 个流水号
         {
+            parameterMap1.put(GeneratorConstants.PARAM_MAX_SERIAL, String.valueOf(i));
             System.out.println("流水号" + i + ":" + snGenerateApp.generateSN(snFormatStr, parameterMap1));
         }
     }

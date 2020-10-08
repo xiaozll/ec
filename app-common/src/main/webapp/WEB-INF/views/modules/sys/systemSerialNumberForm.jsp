@@ -61,7 +61,7 @@
                 <br>例如 “Str@ 国办发〔# DateTime@yyyy # Str@〕# NumSeq@0C0 # Str@”，“Str” 表示为固定字符串类型，固定字符串为 “国办发〔”；<br>
                 类似的 “DateTime@yyyy”，“DateTime” 表示时间日期类型，格式为四位的年代号，根据当前时间生成，格式：“yyyyMMddHHmmss”；<br>
                 “NumSeq@0C0”，“0C0”，“C”前部分为数值长度（默认为“0”，“0”表示长度为[当前最大值]的长度），“后半部分”表示补充字符（默认为：“0”）<br>
-                “CustomStr@customCode”，“customCode”表示自定义编码。
+                “CustomStr@param1”，“param1”表示自定义编码。
             </span>
         </div>
     </div>

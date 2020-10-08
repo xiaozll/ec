@@ -142,8 +142,8 @@ public class SystemSerialNumberUtils {
      * @param moduleCode 模块code
      * @return 序列号
      */
-    public static String generateSerialNumberByModelCode(String moduleCode,String customCode) {
-        return generateSerialNumberByModelCode(null,moduleCode,null,null,customCode,null);
+    public static String generateSerialNumberByModelCode(String moduleCode,String customCategory) {
+        return generateSerialNumberByModelCode(null,moduleCode,null,null,customCategory,null);
     }
 
 

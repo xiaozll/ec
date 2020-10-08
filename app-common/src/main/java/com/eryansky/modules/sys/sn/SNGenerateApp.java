@@ -46,10 +46,10 @@ public class SNGenerateApp {
     public static void main(String[] args) {
         SNGenerateApp snGenerateApp = new SNGenerateApp();
         //设定流水号生成规则
-        String snFormatStr = "Custom@customCode#Str@ 国办发〔#DateTime@yyyy#Str@〕#NumSeq@10C0#Str@ 号";
+        String snFormatStr = "CustomStr@param1#Str@ 国办发〔#DateTime@yyyy#Str@〕#NumSeq@10C0#Str@ 号";
         Map parameterMap1 = new HashMap(); //设定参数
         parameterMap1.put(GeneratorConstants.PARAM_MODULE_CODE, "1"); //使用 sequence id 1 进行流水自增
-        parameterMap1.put("customCode", "3607"); //使用 sequence id 1 进行流水自增
+        parameterMap1.put("param1", "3607"); //使用 sequence id 1 进行流水自增
         for (int i = 0; i < 5; i++)//生成 5 个流水号
         {
             parameterMap1.put(GeneratorConstants.PARAM_MAX_SERIAL, String.valueOf(i));

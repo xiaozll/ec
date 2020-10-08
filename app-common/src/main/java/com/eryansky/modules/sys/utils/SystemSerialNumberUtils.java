@@ -113,12 +113,12 @@ public class SystemSerialNumberUtils {
      *
      * @param app
      * @param moduleCode
-     * @param customCode
+     * @param customCategory
      * @return
      */
-    public static Long getMaxSerialByModuleCode(String app,String moduleCode,String customCode) {
+    public static Long getMaxSerialByModuleCode(String app,String moduleCode,String customCategory) {
         SystemSerialNumber systemSerialNumber = getByModuleCode(app,moduleCode);
-        String maxSerialKey = null == customCode ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL:SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL+"_"+customCode;
+        String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL:SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL+"_"+customCategory;
         if (systemSerialNumber != null &&  null != systemSerialNumber.getMaxSerial()) {
             MaxSerialItem item = systemSerialNumber.getMaxSerial().getItems().stream().filter(v->v.getKey().equals(maxSerialKey)).findFirst().orElse(new MaxSerialItem());
             return item.getValue();
@@ -167,7 +167,7 @@ public class SystemSerialNumberUtils {
      * @param timeoutInSecond 获取锁超时时间 单位：秒
      * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
      * @param customCategory 自定义分类编码
-     * @param params 自定义参数
+     * @param params 自定义分类参数
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String app, String moduleCode, Integer timeoutInSecond, Long keyExpireSeconds, String customCategory, Map<String,String> params) {

@@ -9,8 +9,8 @@ import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys._enum.ResetType;
-import com.eryansky.modules.sys._enum.SexType;
 import com.eryansky.modules.sys._enum.YesOrNo;
+import com.eryansky.modules.sys.sn.MaxSerial;
 
 /**
  * 序列号生成器
@@ -23,6 +23,7 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
     public static final String DEFAULT_ID = "1";
     public static final String QUEUE_KEY = "system_serial_queue";
     public static final String LOCK_KEY = "system_serial_lock";
+    public static final String DEFAULT_KEY_MAX_SERIAL = "maxSerial";
     /**
      * APP标识
      */
@@ -42,7 +43,7 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
     /**
      * 系列号最大值
      */
-    private String maxSerial;
+    private MaxSerial maxSerial;
     /**
      * 重置类型 {@link ResetType}
      */
@@ -67,7 +68,7 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
     public SystemSerialNumber() {
         this.isAutoIncrement = YES;
-        this.maxSerial = "0";
+        this.maxSerial = new MaxSerial();
         this.preMaxNum = "1";
     }
 
@@ -123,11 +124,11 @@ public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
         this.configTemplate = configTemplate;
     }
 
-    public String getMaxSerial() {
+    public MaxSerial getMaxSerial() {
         return maxSerial;
     }
 
-    public void setMaxSerial(String maxSerial) {
+    public void setMaxSerial(MaxSerial maxSerial) {
         this.maxSerial = maxSerial;
     }
 

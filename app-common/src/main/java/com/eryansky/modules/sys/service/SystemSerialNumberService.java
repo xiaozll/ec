@@ -9,12 +9,15 @@ import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.dao.SystemSerialNumberDao;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.sn.GeneratorConstants;
+import com.eryansky.modules.sys.sn.MaxSerial;
+import com.eryansky.modules.sys.sn.MaxSerialItem;
 import com.eryansky.modules.sys.sn.SNGenerateApp;
 import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.utils.AppDateUtils;
@@ -84,7 +87,6 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         SystemSerialNumber entity = new SystemSerialNumber();
         return dao.findAllList(entity);
     }
-
     /**
      * 根据模块code生成预数量的序列号存放到Map中
      *
@@ -92,16 +94,41 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @return
      */
     public List<String> generatePrepareSerialNumbers(String app,String moduleCode) {
+        return generatePrepareSerialNumbers(app,moduleCode,null,null);
+    }
+    /**
+     * 根据模块code生成预数量的序列号存放到Map中
+     *
+     * @param moduleCode 模块code
+     * @return
+     */
+    public List<String> generatePrepareSerialNumbers(String app,String moduleCode,String customCategory, Map<String,String> params) {
+        String _moduleCode = null == customCategory ? moduleCode:moduleCode+"_"+customCategory;
+        String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL:SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL+"_"+customCategory;
         SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID,moduleCode);
         /** 预生成数量 */
         int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;
         /** 数据库存储的当前最大序列号 **/
-        long maxSerialInt = StringUtils.isNotBlank(entity.getMaxSerial()) ? Integer.valueOf(entity.getMaxSerial()) : 0;
+        if(null == entity.getMaxSerial()){
+            entity.setMaxSerial(new MaxSerial());
+        }
+        MaxSerialItem maxSerialItem = null;
+        if(Collections3.isNotEmpty(entity.getMaxSerial().getItems())){
+            maxSerialItem = entity.getMaxSerial().getItems().stream().filter(v->v.getKey().equals(maxSerialKey)).findFirst().orElse(null);
+        }
+        if(null == maxSerialItem){
+            maxSerialItem = new MaxSerialItem().setKey(maxSerialKey);
+        }
+        long maxSerialInt = maxSerialItem.getValue();
         //临时List变量
         List<String> resultList = new ArrayList<>(prepare);
         SNGenerateApp snGenerateApp = new SNGenerateApp();
         Map map = new HashMap(); //设定参数
-        map.put(GeneratorConstants.PARAM_MODULE_CODE, moduleCode);
+        map.put(GeneratorConstants.PARAM_MODULE_CODE, _moduleCode);
+        if(null != params){
+            map.putAll(params);
+        }
+        map.put(GeneratorConstants.PARAM_CUSTOM_CATEGORY, customCategory);
         for (int i = 0; i < prepare; i++) {
             map.put(GeneratorConstants.PARAM_MAX_SERIAL, maxSerialInt + "");
             String formatSerialNum = snGenerateApp.generateSN(entity.getConfigTemplate(), map);
@@ -109,7 +136,9 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
             resultList.add(formatSerialNum);
         }
         //更新数据
-        entity.setMaxSerial(maxSerialInt + "");
+        maxSerialItem.setValue(maxSerialInt);
+        entity.getMaxSerial().addIfNotExist(maxSerialItem.getKey(),maxSerialItem.getValue());
+        entity.getMaxSerial().update(maxSerialItem.getKey(),maxSerialItem.getValue());
         updateByVersion(entity);
         return resultList;
     }
@@ -140,7 +169,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
                 flag = AppDateUtils.getCurrentYearStartTime().equals(now);
             }
             if (flag) {
-                systemSerialNumber.setMaxSerial("0");
+                systemSerialNumber.setMaxSerial(new MaxSerial());
                 systemSerialNumber.setVersion(0);
                 this.save(systemSerialNumber);
                 //清空缓存

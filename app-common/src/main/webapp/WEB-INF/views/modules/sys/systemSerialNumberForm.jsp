@@ -57,10 +57,11 @@
         <label class="control-label">模板:</label>
         <div class="controls">
             <form:textarea id="configTemplate" htmlEscape="true" path="configTemplate" rows="4" maxlength="128" class="input-xxlarge required"/>
-            <span class="help-inline">“#” 为子序列间的分隔符。在每个子序列规则定义的内部，用 “@” 分为两部分，前面一部分（Str/DateTime/NumSeq）表明该子序列的类型，后面一部分是用于生成子序列串所需的信息。
+            <span class="help-inline">“#” 为子序列间的分隔符。在每个子序列规则定义的内部，用 “@” 分为两部分，前面一部分（Str/DateTime/NumSeq/CustomStr）表明该子序列的类型，后面一部分是用于生成子序列串所需的信息。
                 <br>例如 “Str@ 国办发〔# DateTime@yyyy # Str@〕# NumSeq@0C0 # Str@”，“Str” 表示为固定字符串类型，固定字符串为 “国办发〔”；<br>
                 类似的 “DateTime@yyyy”，“DateTime” 表示时间日期类型，格式为四位的年代号，根据当前时间生成，格式：“yyyyMMddHHmmss”；<br>
-                “NumSeq@0C0”，“0C0”，“C”前部分为数值长度（默认为“0”，“0”表示长度为[当前最大值]的长度），“后半部分”表示补充字符（默认为：“0”）。
+                “NumSeq@0C0”，“0C0”，“C”前部分为数值长度（默认为“0”，“0”表示长度为[当前最大值]的长度），“后半部分”表示补充字符（默认为：“0”）<br>
+                “CustomStr@customCode”，“customCode”表示自定义编码。
             </span>
         </div>
     </div>

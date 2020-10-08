@@ -8,6 +8,7 @@ import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.dynamic.sql.render.RenderingStrategies;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.eryansky.modules.sys.mapper.VersionLogDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
@@ -66,10 +68,36 @@ public class ApplicationTests {
 
 	@Test
 	public void generateSerialNumberByModelCode() {
-		for(int i=1;i<5000;i++){
+		String moduleCode = "A01";
+		Map<String,String> params0 = Maps.newHashMap();
+		params0.put("customCode1","");
+		params0.put("customCode2","");
+		String customCode0 = null;
+		for(int i=1;i<10;i++){
 			int finalI = i;
 			new Thread(() ->{
-				System.out.println(Thread.currentThread().getName() +" "+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode("A01"));
+				System.out.println(Thread.currentThread().getName() +" 0-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCode0,params0));
+			}).start();
+		}
+
+		Map<String,String> params1 = Maps.newHashMap();
+		params1.put("customCode1","A01");
+		params1.put("customCode2","A01");
+		String customCode1 = "A01";
+		for(int i=1;i<10;i++){
+			int finalI = i;
+			new Thread(() ->{
+				System.out.println(Thread.currentThread().getName() +" 1-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCode1,params1));
+			}).start();
+		}
+		Map<String,String> params2 = Maps.newHashMap();
+		params2.put("customCode1","B02");
+		params2.put("customCode2","B02");
+		String customCode2 = "B02";
+		for(int i=1;i<10;i++){
+			int finalI = i;
+			new Thread(() ->{
+				System.out.println(Thread.currentThread().getName() +" 2-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCode2,params2));
 			}).start();
 		}
 

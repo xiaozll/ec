@@ -11,11 +11,13 @@ import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.lock.DefaultLockCallback;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
+import com.eryansky.modules.sys.sn.MaxSerialItem;
 import com.eryansky.utils.CacheUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
@@ -91,8 +93,8 @@ public class SystemSerialNumberUtils {
      * @param moduleCode
      * @return
      */
-    public static String getMaxSerialByModuleCode(String moduleCode) {
-        return getMaxSerialByModuleCode(null,moduleCode);
+    public static Long getMaxSerialByModuleCode(String moduleCode) {
+        return getMaxSerialByModuleCode(null,moduleCode,null);
     }
 
     /**
@@ -102,10 +104,24 @@ public class SystemSerialNumberUtils {
      * @param moduleCode
      * @return
      */
-    public static String getMaxSerialByModuleCode(String app,String moduleCode) {
+    public static Long getMaxSerialByModuleCode(String app,String moduleCode) {
+        return getMaxSerialByModuleCode(app,moduleCode,null);
+    }
+
+    /**
+     * 获得当前最大值
+     *
+     * @param app
+     * @param moduleCode
+     * @param customCode
+     * @return
+     */
+    public static Long getMaxSerialByModuleCode(String app,String moduleCode,String customCode) {
         SystemSerialNumber systemSerialNumber = getByModuleCode(app,moduleCode);
-        if (systemSerialNumber != null) {
-            return systemSerialNumber.getMaxSerial();
+        String maxSerialKey = null == customCode ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL:SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL+"_"+customCode;
+        if (systemSerialNumber != null &&  null != systemSerialNumber.getMaxSerial()) {
+            MaxSerialItem item = systemSerialNumber.getMaxSerial().getItems().stream().filter(v->v.getKey().equals(maxSerialKey)).findFirst().orElse(new MaxSerialItem());
+            return item.getValue();
         }
         return null;
     }
@@ -117,7 +133,30 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String moduleCode) {
-        return generateSerialNumberByModelCode(null,moduleCode,null,null);
+        return generateSerialNumberByModelCode(null,moduleCode,null,null,null,null);
+    }
+
+    /**
+     * 根据模块code生成序列号
+     *
+     * @param moduleCode 模块code
+     * @return 序列号
+     */
+    public static String generateSerialNumberByModelCode(String moduleCode,String customCode) {
+        return generateSerialNumberByModelCode(null,moduleCode,null,null,customCode,null);
+    }
+
+
+    /**
+     * 根据模块code生成序列号
+     *
+     * @param moduleCode 模块code
+     * @param customCategory 自定义分类编码
+     * @param params 自定义参数
+     * @return 序列号
+     */
+    public static String generateSerialNumberByModelCode(String moduleCode,String customCategory, Map<String,String> params) {
+        return generateSerialNumberByModelCode(null,moduleCode,null,null,customCategory,params);
     }
 
     /**
@@ -127,23 +166,27 @@ public class SystemSerialNumberUtils {
      * @param moduleCode 模块code
      * @param timeoutInSecond 获取锁超时时间 单位：秒
      * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
+     * @param customCategory 自定义分类编码
+     * @param params 自定义参数
      * @return 序列号
      */
-    public static String generateSerialNumberByModelCode(String app,String moduleCode,Integer timeoutInSecond, Long keyExpireSeconds) {
+    public static String generateSerialNumberByModelCode(String app, String moduleCode, Integer timeoutInSecond, Long keyExpireSeconds, String customCategory, Map<String,String> params) {
         app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
-        String queueRegion = getQueueRegion(app,moduleCode);
+        String _moduleCode = null == customCategory ? moduleCode:moduleCode+"_"+customCategory;
+        String queueRegion = getQueueRegion(app,_moduleCode);
+        String lockKey = getLockRegion(app,moduleCode);
         CacheChannel cacheChannel = CacheUtils.getCacheChannel();
-        synchronized (queueRegion.intern()) {
+        synchronized (lockKey.intern()) {
             String value = cacheChannel.queuePop(queueRegion);
             if (value != null) {
                 return value;
             }
-            String lockRegion = getLockRegion(app,moduleCode);
+            String lockRegion = getLockRegion(app,_moduleCode);
             String finalApp = app;
             boolean flag = cacheChannel.lock(lockRegion, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
                 @Override
                 public Boolean handleObtainLock() {
-                    List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode);
+                    List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode,customCategory,params);
                     for (String serial : list) {
                         cacheChannel.queuePush(queueRegion, serial);
                     }

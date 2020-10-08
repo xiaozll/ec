@@ -14,7 +14,9 @@ public class GeneratorConstants {
     public static final String DATE_TIME = "DateTime";
     public static final String CHARATER_SEQUENCE = "Charater";
     public static final String NUMBER_SEQUENCE = "NumSeq";
+    public static final String STRING_CUSTOM = "CustomStr";
 
     public static final String PARAM_MODULE_CODE = "moduleCode";
     public static final String PARAM_MAX_SERIAL = "maxSerial";
+    public static final String PARAM_CUSTOM_CATEGORY = "customCategory";
 }

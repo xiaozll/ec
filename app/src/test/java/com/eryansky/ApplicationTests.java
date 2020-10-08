@@ -70,34 +70,34 @@ public class ApplicationTests {
 	public void generateSerialNumberByModelCode() {
 		String moduleCode = "A01";
 		Map<String,String> params0 = Maps.newHashMap();
-		params0.put("customCode1","");
-		params0.put("customCode2","");
-		String customCode0 = null;
+		params0.put("param1","");
+		params0.put("param2","");
+		String customCategory0 = null;
 		for(int i=1;i<10;i++){
 			int finalI = i;
 			new Thread(() ->{
-				System.out.println(Thread.currentThread().getName() +" 0-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCode0,params0));
+				System.out.println(Thread.currentThread().getName() +" 0-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCategory0,params0));
 			}).start();
 		}
 
 		Map<String,String> params1 = Maps.newHashMap();
-		params1.put("customCode1","A01");
-		params1.put("customCode2","A01");
-		String customCode1 = "A01";
+		params1.put("param1","A01");
+		params1.put("param2","A01");
+		String customCategory1 = "A01";
 		for(int i=1;i<10;i++){
 			int finalI = i;
 			new Thread(() ->{
-				System.out.println(Thread.currentThread().getName() +" 1-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCode1,params1));
+				System.out.println(Thread.currentThread().getName() +" 1-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCategory1,params1));
 			}).start();
 		}
 		Map<String,String> params2 = Maps.newHashMap();
-		params2.put("customCode1","B02");
-		params2.put("customCode2","B02");
-		String customCode2 = "B02";
+		params2.put("param1","B02");
+		params2.put("param2","B02");
+		String customCategory2 = "B02";
 		for(int i=1;i<10;i++){
 			int finalI = i;
 			new Thread(() ->{
-				System.out.println(Thread.currentThread().getName() +" 2-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCode2,params2));
+				System.out.println(Thread.currentThread().getName() +" 2-"+ finalI +" " +SystemSerialNumberUtils.generateSerialNumberByModelCode(moduleCode,customCategory2,params2));
 			}).start();
 		}
 

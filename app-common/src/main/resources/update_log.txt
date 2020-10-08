@@ -1,6 +1,6 @@
 ﻿2020-09-30
-1、序列号支持多模块划分
-增加自定义参数(1个)
+1、序列号生成器支持多分类划分
+增加支持自定义参数(n个)
 ALTER TABLE `t_sys_serial_number` MODIFY COLUMN `max_serial` text COMMENT '系列号最大值';
 UPDATE t_sys_serial_number SET max_serial = CONCAT('{"items":[{"key":"maxSerial","value":',max_serial,'}]}');-- {"items":[{"key":"maxSerial","value":0}]}
 

@@ -196,6 +196,7 @@ public class NoticeController extends SimpleController {
         List<String> fileIds = Collections.EMPTY_LIST;
         List<String> receiveUserIds = Collections.EMPTY_LIST;
         List<String> receiveOrganIds = Collections.EMPTY_LIST;
+        List<String> receiveContactGroupIds = Collections.EMPTY_LIST;
         if (OperateType.Repeat.equals(operateType)) {// 转发
             List<String> sourceFileIds = noticeService.findFileIdsByNoticeId(model.getId());
             files = DiskUtils.copyFiles(loginUserId, Notice.FOLDER_NOTICE, sourceFileIds);
@@ -209,12 +210,14 @@ public class NoticeController extends SimpleController {
 
             receiveUserIds = noticeSendInfoService.findUserIdsByNoticeId(model.getId());
             receiveOrganIds = noticeSendInfoService.findOrganIdsByNoticeId(model.getId());
+            receiveContactGroupIds = noticeSendInfoService.findContactGroupIdsByNoticeId(model.getId());
 
         }
         modelAndView.addObject("files", files);
         modelAndView.addObject("fileIds", fileIds);
         modelAndView.addObject("receiveUserIds", receiveUserIds);
         modelAndView.addObject("receiveOrganIds", receiveOrganIds);
+        modelAndView.addObject("receiveContactGroupIds", receiveContactGroupIds);
         modelAndView.addObject("operateType", operateType);
         modelAndView.addObject("model", model);
         return modelAndView;
@@ -258,6 +261,7 @@ public class NoticeController extends SimpleController {
     public Result save(@ModelAttribute("model") Notice model, OperateType operateType,
                        @RequestParam(value = "_noticeUserIds", required = false) List<String> noticeUserIds,
                        @RequestParam(value = "_noticeOrganIds", required = false) List<String> noticeOrganIds,
+                       @RequestParam(value = "_noticeContactGroupIds", required = false) List<String> noticeContactGroupIds,
                        @RequestParam(value = "fileIds", required = false) List<String> fileIds) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Result result;
@@ -266,7 +270,7 @@ public class NoticeController extends SimpleController {
             model.setOrganId(sessionInfo.getLoginOrganId());
         }
         boolean isPub = OperateType.Publish.equals(operateType);
-        noticeService.saveNoticeAndFiles(model, null, noticeUserIds, noticeOrganIds, fileIds);
+        noticeService.saveNoticeAndFiles(model, null, noticeUserIds, noticeOrganIds,noticeContactGroupIds, fileIds);
         if(isPub){
             noticeService.publish(model);
         }

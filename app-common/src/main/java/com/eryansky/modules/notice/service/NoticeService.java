@@ -13,6 +13,7 @@ import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.disk.utils.DiskUtils;
@@ -30,11 +31,13 @@ import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 通知管理
@@ -48,7 +51,8 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
     private NoticeReceiveInfoService noticeReceiveInfoService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private ContactGroupService contactGroupService;
 
     /**
      * 保存通知和文件
@@ -59,7 +63,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
      * @param organIds
      * @param fileIds
      */
-    public void saveNoticeAndFiles(Notice entity, Boolean isPub, Collection<String> userIds, Collection<String> organIds, List<String> fileIds) {
+    public void saveNoticeAndFiles(Notice entity, Boolean isPub, Collection<String> userIds, Collection<String> organIds, Collection<String> contactGroupIds, List<String> fileIds) {
         List<String> oldFileIds = Collections.emptyList();
         if (!entity.getIsNewRecord()) {
             oldFileIds = findFileIdsByNoticeId(entity.getId());
@@ -79,6 +83,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
 
         saveNoticeSendInfos(userIds, entity.getId(), ReceiveObjectType.User.getValue());
         saveNoticeSendInfos(organIds, entity.getId(), ReceiveObjectType.Organ.getValue());
+        saveNoticeSendInfos(contactGroupIds, entity.getId(), ReceiveObjectType.ContactGroup.getValue());
 
         if (isPub != null && isPub) {
             publish(entity);
@@ -88,6 +93,9 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
     private void saveNoticeSendInfos(Collection<String> ids, String noticeId, String receieveObjectType) {
         if (Collections3.isNotEmpty(ids)) {
             for (String id : ids) {
+                if(StringUtils.isBlank(id)){
+                    continue;
+                }
                 NoticeSendInfo noticeSendInfo = new NoticeSendInfo();
                 noticeSendInfo.setReceiveObjectType(receieveObjectType);
                 noticeSendInfo.setNoticeId(noticeId);
@@ -193,8 +201,13 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
 
         if (NoticeReceiveScope.CUSTOM.getValue().equals(notice.getReceiveScope())) {
             List<String> _receiveUserIds = NoticeUtils.findNoticeReceiveUserIds(notice.getId());
-            List<String> receiveOrganIds = NoticeUtils.findNoticeReceiveOrganIds(notice.getId());;
+            List<String> receiveOrganIds = NoticeUtils.findNoticeReceiveOrganIds(notice.getId());
             List<String> userIds = userService.findUserIdsByOrganIds(receiveOrganIds);
+            List<String> receiveContactGroupIds = NoticeUtils.findNoticeReceivContactGroupIds(notice.getId());
+            if(Collections3.isNotEmpty(receiveContactGroupIds)){
+                List<String> finalReceiveUserIds = receiveUserIds;
+                receiveContactGroupIds.stream().forEach(v-> finalReceiveUserIds.addAll(contactGroupService.findContactGroupUsers(v).stream().map(BaseEntity::getId).collect(Collectors.toList())));
+            }
             if (Collections3.isNotEmpty(_receiveUserIds)) {
                 receiveUserIds.addAll(_receiveUserIds);
             }

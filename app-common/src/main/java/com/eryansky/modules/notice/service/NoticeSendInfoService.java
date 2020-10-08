@@ -69,6 +69,17 @@ public class NoticeSendInfoService extends CrudService<NoticeSendInfoDao, Notice
         return findObjectIdsByNoticeId(noticeId, ReceiveObjectType.Organ.getValue());
     }
 
+
+    /**
+     * 查找接收机构IDS
+     *
+     * @param noticeId 通知ID
+     * @return
+     */
+    public List<String> findContactGroupIdsByNoticeId(String noticeId) {
+        return findObjectIdsByNoticeId(noticeId, ReceiveObjectType.ContactGroup.getValue());
+    }
+
     /**
      * 查找接收对象IDS
      *

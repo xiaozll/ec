@@ -3,6 +3,65 @@
 增加支持自定义参数(n个),示例："CustomStr@param1#Str@字符串"
 ALTER TABLE `t_sys_serial_number` MODIFY COLUMN `max_serial` text COMMENT '系列号最大值';
 UPDATE t_sys_serial_number SET max_serial = CONCAT('{"items":[{"key":"maxSerial","value":',max_serial,'}]}');-- {"items":[{"key":"maxSerial","value":0}]}
+2、添加自定义联系人组
+
+-- ----------------------------
+-- 自定义联系人组
+-- ----------------------------
+DROP TABLE IF EXISTS `t_notice_contact_group`;
+CREATE TABLE `t_notice_contact_group`  (
+  `ID` varchar(36) COMMENT '主键ID UUID',
+  `STATUS` char(1) COMMENT '状态 正常/删除/审核/锁定 0/1/2/3',
+  `VERSION` int(11) COMMENT '版本号',
+  `CREATE_USER` varchar(36) COMMENT '创建者',
+  `CREATE_TIME` datetime(0) COMMENT '创建时间',
+  `UPDATE_USER` varchar(36) COMMENT '更新者',
+  `UPDATE_TIME` datetime(0) COMMENT '更新时间',
+  `CONTACT_GROUP_TYPE` varchar(36) COMMENT '联系人组类型 系统:0 邮件：1',
+  `IS_DEFAULT` char(1) COMMENT '默认组 是：1 否：0',
+  `NAME` varchar(128) COMMENT '联系人组名称',
+  `SORT` int(11) COMMENT '排序号',
+  `ORIGIN_USER_ID` varchar(36) COMMENT '来源用户',
+  `REMARK` varchar(255) COMMENT '备注',
+  `USER_ID` varchar(36) COMMENT '用户ID',
+  PRIMARY KEY (`ID`) USING BTREE
+) ENGINE = InnoDB COMMENT = '联系人分组';
+
+-- ----------------------------
+-- 自定义联系人关联对象
+-- ----------------------------
+DROP TABLE IF EXISTS `t_notice_contact_group_object`;
+CREATE TABLE `t_notice_contact_group_object`  (
+  `CONTACT_GROUP_ID` varchar(36) COMMENT '分组ID',
+  `OBJECT_ID` varchar(36) COMMENT '对象ID',
+  INDEX `FK_7le7xf32qlksdtdb1wl8mdgud`(`CONTACT_GROUP_ID`) USING BTREE,
+  CONSTRAINT `t_notice_contact_group_object_ibfk_1` FOREIGN KEY (`CONTACT_GROUP_ID`) REFERENCES `t_notice_contact_group` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB COMMENT = '分组关联对象';
+
+-- ----------------------------
+-- 邮件联系人
+-- ----------------------------
+DROP TABLE IF EXISTS `t_notice_mail_contact`;
+CREATE TABLE `t_notice_mail_contact`  (
+  `ID` varchar(36) COMMENT '主键ID UUID',
+  `STATUS` char(1) COMMENT '状态 正常/删除/审核/锁定 0/1/2/3',
+  `VERSION` int(11) COMMENT '版本号',
+  `CREATE_USER` varchar(36) COMMENT '创建者',
+  `CREATE_TIME` datetime(0) COMMENT '创建时间',
+  `UPDATE_USER` varchar(36) COMMENT '更新者',
+  `UPDATE_TIME` datetime(0) COMMENT '更新时间',
+  `EMAIL` varchar(128) COMMENT '邮件地址',
+  `NAME` varchar(128) COMMENT '姓名',
+  `MOBILE` varchar(36) COMMENT '手机号',
+  `USER_ID` varchar(36) COMMENT '用户ID',
+  `CONTACT_GROUP_ID` varchar(36) COMMENT '分组ID',
+  `REMARK` varchar(255) COMMENT '备注',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `USER_ID`(`USER_ID`) USING BTREE
+) ENGINE = InnoDB COMMENT = '邮件联系人';
+
+
+
 
 2020-07-13
 1、新增多账号切换支持

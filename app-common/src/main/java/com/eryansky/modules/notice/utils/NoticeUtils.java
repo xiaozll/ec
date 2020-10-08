@@ -72,6 +72,13 @@ public class NoticeUtils {
         return Static.noticeSendInfoService.findOrganIdsByNoticeId(noticeId);
     }
 
+    public static List<String> findNoticeReceivContactGroupIds(String noticeId) {
+        if (StringUtils.isBlank(noticeId)) {
+            return Collections.emptyList();
+        }
+        return Static.noticeSendInfoService.findContactGroupIdsByNoticeId(noticeId);
+    }
+
 
     /**
      * 通知管理员 超级管理 + 系统管理员 + 通知管理员

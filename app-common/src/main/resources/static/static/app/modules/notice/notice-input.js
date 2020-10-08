@@ -5,11 +5,13 @@ var dictionaryTypeCode = dictionaryTypeCode;
 var modelFileIds = modelFileIds;
 var noticeReceiveUserIds = noticeReceiveUserIds;
 var noticeReceiveOrganIds = noticeReceiveOrganIds;
+var noticeReceiveContactGroupIds = noticeReceiveContactGroupIds;
 var jsessionid = jsessionid;
 var fileSizeLimit = fileSizeLimit;
 
 var $form_noticeUser_MultiSelect = undefined;
 var $form_noticeOrgan_combotree = undefined;
+var $form_contactGroup_combotree = undefined;
 $(function () {
     loadReceiveScope();
 
@@ -38,6 +40,7 @@ $(function () {
         addImageFile($('#head_image').val());
     }
     uploadifyHeadImage();
+    loadContactGroup();
 });
 
 function editor() {
@@ -83,10 +86,22 @@ function loadReceiveScope() {
     });
 }
 
+
+//按自定义组
+function loadContactGroup() {
+    $form_contactGroup_combotree = $("#_noticeContactGroupIds").combotree({
+        url: ctxAdmin + "/notice/contactGroup/groupTree?contactGroupType=0",
+        multiple: true,//是否可多选
+        editable: false,
+        value: noticeReceiveContactGroupIds
+    });
+}
+
 function toggoleReceiveScope(receiveScope) {
     if ("0" === receiveScope) {
         $("#noticeUserIds_div").show();
         $("#noticeOrganIds_div").show();
+        $("#noticeContactGroupIds_div").show();
         if ($form_noticeUser_MultiSelect === undefined) {
             loadNoticeUser();
         }
@@ -101,6 +116,10 @@ function toggoleReceiveScope(receiveScope) {
         $("#noticeOrganIds_div").hide();
         if ($form_noticeOrgan_combotree !== undefined) {
             $form_noticeOrgan_combotree.combotree("setValue", "");
+        }
+        $("#noticeContactGroupIds_div").hide();
+        if ($form_contactGroup_combotree !== undefined) {
+            $form_contactGroup_combotree.combotree("setValue", "");
         }
     }
 }

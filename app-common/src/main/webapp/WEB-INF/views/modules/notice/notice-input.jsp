@@ -9,6 +9,7 @@
     var modelFileIds = ${fns:toJson(model.fileIds)};
     var noticeReceiveUserIds =  ${fns:toJson(receiveUserIds)};
     var noticeReceiveOrganIds = ${fns:toJson(receiveOrganIds)};
+    var noticeReceiveContactGroupIds = ${fns:toJson(receiveContactGroupIds)};
     var jsessionid = '${sessionInfo.sessionId}';
     var fileSizeLimit = '<%=AppConstants.getNoticeMaxUploadSize()%>';//附件上传大小限制
 </script>
@@ -74,6 +75,12 @@
             <label>接收部门：</label>
             <input type="select" id="_noticeOrganIds" name="_noticeOrganIds" style="width: 260px;height: 28px;"
                    data-options="missingMessage:'请选择部门.'"/>
+        </div>
+
+        <div  id="noticeContactGroupIds_div" style="clear:both">
+            <label>接收联系人组：</label>
+            <input type="select" id="_noticeContactGroupIds" name="_noticeContactGroupIds" style="width: 260px;height: 28px;"
+                   data-options="missingMessage:'请选接收联系人组.'"/>
         </div>
 
         <table style="border: 0px;width: 100%;">

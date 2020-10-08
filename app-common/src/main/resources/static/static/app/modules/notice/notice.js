@@ -216,11 +216,11 @@ function initDatagrid() {
                             id: 'contactGroup',
                             title: '我的联系人',
                             close: true,
-                            url: ctxAdmin + '/mail/contactGroup',
+                            url: ctxAdmin + '/notice/contactGroup',
                             urlType: ''
                         });
                     } catch (e) {
-                        eu.addTab(window.parent.layout_center_tabs, '我的联系人', ctxAdmin + '/mail/contactGroup', true, 'eu-icon-user', '', false);
+                        eu.addTab(window.parent.layout_center_tabs, '我的联系人', ctxAdmin + '/notice/contactGroup', true, 'eu-icon-user', '', false);
                     }
 
 

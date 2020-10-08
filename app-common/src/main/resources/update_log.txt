@@ -1,10 +1,15 @@
 ﻿2020-10-08
 1、序列号生成器支持多分类划分
 增加支持自定义参数(n个),示例："CustomStr@param1#Str@字符串"
+mybatis-config.xml添加如下配置：
+<typeHandlers>
+    <typeHandler javaType="com.eryansky.modules.sys.sn.MaxSerial"  handler="com.eryansky.common.orm.mybatis.type.JsonTypeHandler"></typeHandler>
+</typeHandlers>
+变更SQL：
 ALTER TABLE `t_sys_serial_number` MODIFY COLUMN `max_serial` text COMMENT '系列号最大值';
 UPDATE t_sys_serial_number SET max_serial = CONCAT('{"items":[{"key":"maxSerial","value":',max_serial,'}]}');-- {"items":[{"key":"maxSerial","value":0}]}
 2、添加自定义联系人组
-
+变更SQL：
 -- ----------------------------
 -- 自定义联系人组
 -- ----------------------------

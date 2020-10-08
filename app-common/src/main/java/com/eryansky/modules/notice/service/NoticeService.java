@@ -206,7 +206,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
             List<String> receiveContactGroupIds = NoticeUtils.findNoticeReceivContactGroupIds(notice.getId());
             if(Collections3.isNotEmpty(receiveContactGroupIds)){
                 List<String> finalReceiveUserIds = receiveUserIds;
-                receiveContactGroupIds.stream().forEach(v-> finalReceiveUserIds.addAll(contactGroupService.findContactGroupUsers(v).stream().map(BaseEntity::getId).collect(Collectors.toList())));
+                receiveContactGroupIds.forEach(v-> finalReceiveUserIds.addAll(contactGroupService.findContactGroupUsers(v).stream().map(BaseEntity::getId).collect(Collectors.toList())));
             }
             if (Collections3.isNotEmpty(_receiveUserIds)) {
                 receiveUserIds.addAll(_receiveUserIds);

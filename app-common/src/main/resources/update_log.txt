@@ -1,4 +1,4 @@
-﻿2020-09-30
+﻿2020-10-08
 1、序列号生成器支持多分类划分
 增加支持自定义参数(n个),示例："CustomStr@param1#Str@字符串"
 ALTER TABLE `t_sys_serial_number` MODIFY COLUMN `max_serial` text COMMENT '系列号最大值';

@@ -56,6 +56,11 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 		return new NullObject();
 	}
 
+	private void assertNotClose() {
+		if(closed)
+			throw new IllegalStateException("CacheChannel closed");
+	}
+
 	/**
 	 * <p>Just for Inner Use.</p>
 	 *
@@ -84,8 +89,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public CacheObject get(String region, String key, boolean...cacheNullObject)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		CacheObject obj = new CacheObject(region, key, CacheObject.LEVEL_1);
 		obj.setValue(holder.getLevel1Cache(region).get(key));
@@ -126,8 +130,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public CacheObject get(String region, String key, Function<String, Object> loader, boolean...cacheNullObject) {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		CacheObject cache = get(region, key, false);
 
@@ -161,8 +164,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public Map<String, CacheObject> get(String region, Collection<String> keys)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		final Map<String, Object> objs = holder.getLevel1Cache(region).get(keys);
 		List<String> level2Keys = keys.stream().filter(k -> !objs.containsKey(k) || objs.get(k) == null).collect(Collectors.toList());
@@ -193,8 +195,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public Map<String, CacheObject> get(String region, Collection<String> keys, Function<String, Object> loader, boolean...cacheNullObject)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		Map<String, CacheObject> results = get(region, keys);
 		results.entrySet().stream().filter(e -> e.getValue().rawValue() == null).forEach( e -> {
@@ -367,8 +368,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public int check(String region, String key) {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		if(holder.getLevel1Cache(region).exists(key))
 			return 1;
@@ -400,8 +400,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 		if (!cacheNullObject && value == null)
 			return ;
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		try {
 			Level1Cache level1 = holder.getLevel1Cache(region);
@@ -444,8 +443,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
     public void set(String region, String key, Object value, long timeToLiveInSeconds, boolean cacheNullObject) {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		if (!cacheNullObject && value == null)
 			return ;
@@ -483,8 +481,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void set(String region, Map<String, Object> elements, boolean cacheNullObject)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		try {
 			if (cacheNullObject && elements.containsValue(null)) {
@@ -506,11 +503,12 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 				if(config.isSyncTtlToRedis())
 					holder.getLevel2Cache(region).put(elements, level1.ttl());
 				else
+
 					holder.getLevel2Cache(region).put(elements);
 			}
 		} finally {
 			//广播
-			this.sendEvictCmd(region, elements.keySet().toArray(new String[0]));
+			this.sendEvictCmd(region, elements.keySet().stream().toArray(String[]::new));
 		}
 	}
 
@@ -539,8 +537,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void set(String region, Map<String, Object> elements, long timeToLiveInSeconds, boolean cacheNullObject)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		if(timeToLiveInSeconds <= 0)
 			set(region, elements, cacheNullObject);
@@ -580,8 +577,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void evict(String region, String...keys)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		try {
 			//先清比较耗时的二级缓存，再清一级缓存
@@ -599,8 +595,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void clear(String region)  {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		try {
 			//先清比较耗时的二级缓存，再清一级缓存
@@ -629,8 +624,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void removeRegion(String region) {
 
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		holder.getL1Provider().removeCache(region);
 	}
@@ -643,8 +637,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return key list
 	 */
 	public Collection<String> keys(String region)  {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		Set<String> keys = new HashSet<>();
 		keys.addAll(holder.getLevel1Cache(region).keys());
@@ -669,8 +662,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return
 	 */
 	public Long ttl(String region,String key)  {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 		Long ttl =  ttl(region,key,1);
 		return null != ttl ? ttl:ttl(region,key,2);
 	}
@@ -683,8 +675,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return
 	 */
 	public Long ttl(String region,String key,int level)  {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 		return level > 1 ? holder.getLevel2Cache(region).ttl(key):holder.getLevel1Cache(region).ttl(key);
 	}
 
@@ -774,8 +765,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param values
 	 */
 	public void queuePush(String region, String... values){
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 
 		Level2Cache level2Cache = holder.getLevel2Cache(region);
 		if(!(level2Cache instanceof NullCache)){
@@ -792,8 +782,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return
 	 */
 	public String queuePop(String region) {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 		Level2Cache level2Cache = holder.getLevel2Cache(region);
 		if(!(level2Cache instanceof NullCache)){
 			return level2Cache.queuePop();
@@ -809,8 +798,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return
 	 */
 	public int queueSize(String region) {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 		Level2Cache level2Cache = holder.getLevel2Cache(region);
 		if(!(level2Cache instanceof NullCache)){
 			return level2Cache.queueSize();
@@ -826,8 +814,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @return
 	 */
 	public Collection<String> queueList(String region) {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
 		Level2Cache level2Cache = holder.getLevel2Cache(region);
 		if(!(level2Cache instanceof NullCache)){
 			return level2Cache.queueList();
@@ -842,8 +829,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param region
 	 */
 	public void queueClear(String region) {
-		if(closed)
-			throw new IllegalStateException("CacheChannel closed");
+		assertNotClose();
         Level2Cache level2Cache = holder.getLevel2Cache(region);
         if(!(level2Cache instanceof NullCache)){
             level2Cache.queueClear();

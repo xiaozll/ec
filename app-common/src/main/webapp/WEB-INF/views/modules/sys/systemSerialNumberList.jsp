@@ -58,7 +58,6 @@
 				<th>APP标识</th>
 				<th>模块名称</th>
 				<th>模块编码</th>
-				<th>最大值</th>
 				<th>重置类型</th>
 				<th>是否自动增长</th>
 				<th>预生成流水号数量</th>
@@ -72,7 +71,6 @@
 				<td>{{app}}</td>
 				<td>{{moduleName}}</td>
 				<td>{{moduleCode}}</td>
-				<td>{{maxSerial}}</td>
 				<td>{{resetTypeView}}</td>
 				<td>{{isAutoIncrementView}}</td>
 				<td>{{preMaxNum}}</td>

@@ -9,7 +9,9 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.web.springmvc.StringEscapeEditor;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.excelTools.CsvUtils;
 import com.eryansky.core.excelTools.ExcelUtils;
@@ -20,11 +22,13 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
+import com.eryansky.modules.sys.sn.MaxSerial;
 import com.eryansky.utils.AppConstants;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +59,7 @@ public class SystemSerialNumberController extends SimpleController {
             return new SystemSerialNumber();
         }
     }
+
 
     @RequiresPermissions("sys:systemSerialNumber:view")
     @RequestMapping(value = {"list", ""})
@@ -115,10 +120,13 @@ public class SystemSerialNumberController extends SimpleController {
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
     @RequestMapping(value = "save")
-    public String save(@ModelAttribute("model") SystemSerialNumber model, Model uiModel, RedirectAttributes redirectAttributes) {
+    public String save(@ModelAttribute("model") SystemSerialNumber model,
+                       String _maxSerial, Model uiModel, RedirectAttributes redirectAttributes) {
         if (!beanValidator(uiModel, model)) {
             return form(model, uiModel);
         }
+        MaxSerial maxSerial = (MaxSerial) JsonMapper.fromJsonString(_maxSerial, MaxSerial.class);
+        model.setMaxSerial(maxSerial);
         systemSerialNumberService.save(model);
         addMessage(redirectAttributes, "保存'" + model.getModuleName() + "'成功");
         return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";

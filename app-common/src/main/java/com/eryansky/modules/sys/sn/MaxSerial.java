@@ -5,11 +5,10 @@
  */
 package com.eryansky.modules.sys.sn;
 
-import com.google.common.collect.Lists;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.google.common.collect.Sets;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,5 +46,10 @@ public class MaxSerial implements Serializable {
             item.setValue(value);
         }
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return JsonMapper.toJsonString(this);
     }
 }

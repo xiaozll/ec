@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2020-03-05
  */
 @MyBatisDao
-public interface ContactDao extends CrudDao<MailContact> {
+public interface MailContactDao extends CrudDao<MailContact> {
 
 
     List<MailContact> checkExist(Parameter parameter);

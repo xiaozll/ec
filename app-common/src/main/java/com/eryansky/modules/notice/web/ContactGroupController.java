@@ -17,7 +17,6 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
-import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
@@ -25,7 +24,7 @@ import com.eryansky.modules.notice._enum.ContactGroupType;
 import com.eryansky.modules.notice.mapper.ContactGroup;
 import com.eryansky.modules.notice.mapper.MailContact;
 import com.eryansky.modules.notice.service.ContactGroupService;
-import com.eryansky.modules.notice.service.ContactService;
+import com.eryansky.modules.notice.service.MailContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,7 +46,7 @@ public class ContactGroupController extends SimpleController {
     @Autowired
     private ContactGroupService contactGroupService;
     @Autowired
-    private ContactService contactService;
+    private MailContactService contactService;
 
     @ModelAttribute("model")
     public ContactGroup get(@RequestParam(required = false) String id) {

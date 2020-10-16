@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.utils.AppConstants;
-import com.eryansky.modules.notice.dao.ContactDao;
+import com.eryansky.modules.notice.dao.MailContactDao;
 import com.eryansky.modules.notice.mapper.MailContact;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * @date 2020-03-05
  */
 @Service
-public class ContactService extends CrudService<ContactDao, MailContact> {
+public class MailContactService extends CrudService<MailContactDao, MailContact> {
 
     public Page<MailContact> findPageByContactGroupId(Page<MailContact> page, String contactGroupId, String query) {
         Parameter parameter = Parameter.newParameter();

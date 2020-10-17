@@ -5,6 +5,7 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
+import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;
@@ -73,8 +74,9 @@ public class UserMobileController extends SimpleController {
 
     /**
      * 修改密码 保存
-     *
-     * @param id 用戶ID
+     * @param id
+     * @param loginName
+     * @param encrypt 默认密钥： 0~!@#$%^&*9 {@link Encryption#strDefaultKey}
      * @param password
      * @param newPassword
      * @return
@@ -85,6 +87,7 @@ public class UserMobileController extends SimpleController {
     @ResponseBody
     public Result savePassword(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "loginName",required = false) String loginName,
+                               @RequestParam(defaultValue = "false") Boolean encrypt,
                                @RequestParam(name = "password")String password,
                                @RequestParam(name = "newPassword")String newPassword) {
         User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
@@ -95,8 +98,16 @@ public class UserMobileController extends SimpleController {
 //        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
 //            throw new ActionException("未授权修改账号密码！");
 //        }
-        String originalPassword = model.getPassword(); //数据库存储的原始密码
-        String pagePassword = password; //页面输入的原始密码（未加密）
+        String originalPassword = null; //数据库存储的原始密码
+        String pagePassword= null;//页面输入的原始密码（未加密）
+        try {
+            originalPassword = encrypt ? Encryption.decrypt(model.getPassword()) : model.getPassword();
+            pagePassword = encrypt ? Encryption.decrypt(password) : password;
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return Result.warnResult().setMsg("密码解码错误！");
+        }
+
         if (!originalPassword.equals(Encrypt.e(pagePassword))) {
             return Result.warnResult().setMsg("原始密码输入错误！");
         }

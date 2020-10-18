@@ -148,6 +148,12 @@ public class MobileIndexController extends SimpleController {
         }
         VersionLog max = versionLogService.getLatestVersionLog(app,_versionLogType);
         Map<String,Object> data = Maps.newHashMap();
+        //兼容性代码
+        data.put("versionName",null != max ? max.getVersionName():null);
+        data.put("versionCode",null != max ? max.getVersionCode():null);
+        data.put("isTip",null != max ? max.getIsTip():null);
+        data.put("remark",null != max ? max.getRemark():null);
+
         data.put("versionLog",max);
         data.put("appDownLoadUrl",AppUtils.getAppURL()+"/m/download?app="+app);
         data.put("apkDownLoadUrl",AppUtils.getAppURL()+"/m/downloadApp/"+VersionLogType.Android.getValue()+"?app="+app);

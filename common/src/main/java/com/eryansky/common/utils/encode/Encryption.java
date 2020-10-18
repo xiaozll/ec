@@ -18,8 +18,11 @@ public class Encryption {
     /**
      * 密钥
      */
-	private static String strDefaultKey = "0~!@#$%^&*9";
-	private static final String DEFAULT_CHARSET = "UTF-8";
+	public static final String DEFAULT_KEY = "0~!@#$%^&*9";
+	/**
+	 * 编码方式 默认:UTF-8
+	 */
+	public static final String DEFAULT_CHARSET = "UTF-8";
 
 	/**
 	 * 将byte数组转换为表示16进制值的字符串， 如：byte[]{8,18}转换为：0813， 和public static byte[]
@@ -83,7 +86,7 @@ public class Encryption {
 	 * @throws Exception
 	 */
 	public static byte[] encrypt(byte[] arrB) throws Exception {
-		Key key = getKey(strDefaultKey.getBytes());
+		Key key = getKey(DEFAULT_KEY.getBytes());
 		Cipher cipher = Cipher.getInstance("DES");
 		cipher.init(Cipher.ENCRYPT_MODE, key);
 		return cipher.doFinal(arrB);
@@ -111,7 +114,7 @@ public class Encryption {
 	 * @throws Exception
 	 */
 	public static byte[] decrypt(byte[] arrB) throws Exception {
-		Key key = getKey(strDefaultKey.getBytes());
+		Key key = getKey(DEFAULT_KEY.getBytes());
 		Cipher cipher = Cipher.getInstance("DES");
 		cipher.init(Cipher.DECRYPT_MODE, key);
 		return cipher.doFinal(arrB);

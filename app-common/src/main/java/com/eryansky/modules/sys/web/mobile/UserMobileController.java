@@ -103,8 +103,8 @@ public class UserMobileController extends SimpleController {
         String pagePassword= null;//页面输入的原始密码（未加密）
         String _newPassword= null;
         try {
-            pagePassword = encrypt ? new String(EncodeUtils.base64Decode(password)) : password;
-            _newPassword = encrypt ? new String(EncodeUtils.base64Decode(newPassword)) : newPassword;
+            pagePassword = encrypt ? new String(EncodeUtils.base64Decode(StringUtils.trim(password))) : StringUtils.trim(password);
+            _newPassword = encrypt ? new String(EncodeUtils.base64Decode(StringUtils.trim(newPassword))) : StringUtils.trim(newPassword);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return Result.warnResult().setMsg("密码解码错误！");
@@ -153,8 +153,8 @@ public class UserMobileController extends SimpleController {
         String pagePassword= null;//页面输入的原始密码（未加密）
         String _newPassword= null;
         try {
-            pagePassword = encrypt ? Encryption.decrypt(password) : password;
-            _newPassword = encrypt ? Encryption.decrypt(newPassword) : newPassword;
+            pagePassword = encrypt ? Encryption.decrypt(StringUtils.trim(password)) : StringUtils.trim(password);
+            _newPassword = encrypt ? Encryption.decrypt(StringUtils.trim(newPassword)) : StringUtils.trim(newPassword);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return Result.warnResult().setMsg("密码解码错误！");

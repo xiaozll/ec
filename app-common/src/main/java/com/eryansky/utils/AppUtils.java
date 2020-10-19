@@ -436,6 +436,19 @@ public class AppUtils {
         return value;
     }
 
+
+    public static String getClientAppURL() {
+        try {
+            return WebUtils.getAppURL(SpringMVCHolder.getRequest());
+        } catch (Exception e) {
+        }
+        String value = AppConstants.getAppURL();
+        if(StringUtils.isNotBlank(value)){
+            return value;
+        }
+        return value;
+    }
+
     /**
      * Map转Properties
      * @param map

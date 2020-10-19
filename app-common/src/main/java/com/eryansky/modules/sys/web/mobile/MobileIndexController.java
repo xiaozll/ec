@@ -155,7 +155,7 @@ public class MobileIndexController extends SimpleController {
         data.put("remark",null != max ? max.getRemark():null);
 
         data.put("versionLog",max);
-        data.put("appDownLoadUrl",AppUtils.getAppURL()+"/m/download?app="+app);
+        data.put("appDownLoadUrl", AppUtils.getAppURL() + "/m/download?app=" + (null == app ? "" : app));
         data.put("apkDownLoadUrl",AppUtils.getAppURL()+"/m/downloadApp/"+VersionLogType.Android.getValue()+"?app="+app);
         return Result.successResult().setObj(data);
     }

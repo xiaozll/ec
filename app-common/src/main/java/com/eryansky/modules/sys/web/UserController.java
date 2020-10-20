@@ -640,7 +640,7 @@ public class UserController extends SimpleController {
 
 
     /**
-     *
+     * 查找用户机构树
      * @param parentId
      * @param postCode 岗位编码
      * @param checkedUserIds
@@ -675,6 +675,63 @@ public class UserController extends SimpleController {
                 }).collect(Collectors.toList());
             }
         }
+        return treeNodes;
+    }
+
+    /**
+     * 查找本级机构及以下用户机构树
+     * @param parentId
+     * @param checkedUserIds
+     * @param checkbox
+     * @param cascade
+     * @param response
+     * @return
+     */
+    @RequiresUser(required = false)
+    @RequestMapping(value = "ownOrganUserTree")
+    @ResponseBody
+    public List<TreeNode> ownOrganUserTree(String parentId,
+                                   @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
+                                   @RequestParam(value = "checkbox",defaultValue = "true")Boolean checkbox,
+                                   @RequestParam(value = "cascade",defaultValue = "true")Boolean cascade,HttpServletResponse response) {
+
+        String _parentId = parentId;
+        if(StringUtils.isBlank(_parentId)){
+            SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+            _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null:sessionInfo.getLoginCompanyId();
+        }
+        WebUtils.setExpiresHeader(response, 5 * 60 * 1000);
+        List<TreeNode> treeNodes = organService.findOrganUserTree(_parentId, checkedUserIds,cascade);
+        return treeNodes;
+    }
+
+    /**
+     * 查找本级机构及以下用户机构树
+     * @param parentId
+     * @param organCode
+     * @param checkedUserIds
+     * @param checkbox
+     * @param cascade
+     * @return
+     */
+    @RequiresUser(required = false)
+    @RequestMapping(value = { "organUserTreeByOrganCode" })
+    @ResponseBody
+    public List<TreeNode> organUserTreeByOrganCode(String parentId,String organCode,
+                                                   @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
+                                                   @RequestParam(value = "checkbox",defaultValue = "true")Boolean checkbox,
+                                                   @RequestParam(value = "cascade",defaultValue = "true")Boolean cascade) {
+        String _organCode = organCode;
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if(StringUtils.isBlank(_organCode)){
+            _organCode = sessionInfo.getLoginHomeCompanyCode();
+        }
+        Organ o = organService.getByCode(_organCode);
+        if (o != null) {
+            parentId = o.getId();
+        }
+
+        List<TreeNode> treeNodes = organService.findOrganUserTree(parentId, checkedUserIds,cascade);
         return treeNodes;
     }
 

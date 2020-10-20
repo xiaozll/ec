@@ -527,7 +527,7 @@ public class UserService extends CrudService<UserDao, User> {
      */
     public Page<User> findPage(Page<User> page, String organId, String query, String userType) {
         Parameter parameter = new Parameter();
-        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+//        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put("organId", organId);

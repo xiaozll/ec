@@ -241,7 +241,7 @@
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
         LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
         <where>
-            a.status = #{status}
+            a.status <![CDATA[ <> ]]> '1'
             AND (o.id = #{organId}  OR o.parent_ids LIKE
             <choose>
                 <when test="dbName == 'db2'">'%,'||#{organId}||',%'</when>

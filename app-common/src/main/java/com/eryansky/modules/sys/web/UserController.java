@@ -688,9 +688,9 @@ public class UserController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = "ownOrganUserTree")
+    @RequestMapping(value = "ownerAndChildsOrganUserTree")
     @ResponseBody
-    public List<TreeNode> ownOrganUserTree(String parentId,
+    public List<TreeNode> ownerAndChildsOrganUserTree(String parentId,
                                    @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
                                    @RequestParam(value = "checkbox",defaultValue = "true")Boolean checkbox,
                                    @RequestParam(value = "cascade",defaultValue = "true")Boolean cascade,HttpServletResponse response) {

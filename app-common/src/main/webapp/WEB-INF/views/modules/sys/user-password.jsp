@@ -11,12 +11,15 @@
 			<input type="password" id="newPassword" name="newPassword"
 				class="easyui-validatebox textbox"
 			<c:choose>
-			<c:when test="${isSecurityOn && !isCurrentUserAdmin}">
-				   data-options="required:true,missingMessage:'请输入新密码.',validType:['safepass_yc','minLength[1]']"/>
-			</c:when>
-			<c:otherwise>
-				data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>
-			</c:otherwise>
+				<c:when test="${isCurrentUserAdmin}">
+				   data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>
+				</c:when>
+				<c:when test="${isSecurityOn}">
+					   data-options="required:true,missingMessage:'请输入新密码.',validType:['safepass_yc','minLength[1]']"/>
+				</c:when>
+				<c:otherwise>
+					data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>
+				</c:otherwise>
 			</c:choose>
 		</div>
 		<div>

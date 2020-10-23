@@ -145,8 +145,8 @@ public class UserMobileController extends SimpleController {
                                @RequestParam(name = "password")String password,
                                @RequestParam(name = "newPassword")String newPassword) {
         User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
-        if (model == null || StringUtils.isBlank(model.getId())) {
-            throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
+        if (model == null) {
+            return Result.errorResult().setMsg("用户[" + (null == model ? "":model.getLoginName()) + "]不存在.");
         }
 //        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
 //        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
@@ -160,11 +160,11 @@ public class UserMobileController extends SimpleController {
             _newPassword = encrypt ? Encryption.decrypt(StringUtils.trim(newPassword)) : StringUtils.trim(newPassword);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
-            return Result.warnResult().setMsg("密码解码错误！");
+            return Result.errorResult().setMsg("密码解码错误！");
         }
 
         if (!originalPassword.equals(Encrypt.e(pagePassword))) {
-            return Result.warnResult().setMsg("原始密码输入错误！");
+            return Result.warnResult().setMsg("【"+model.getLoginName()+"】"+"原始密码输入错误！");
         }
 
         UserUtils.checkSecurity(model.getId(),_newPassword);

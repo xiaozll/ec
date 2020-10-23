@@ -310,7 +310,7 @@ public class UserMobileController extends SimpleController {
     @ResponseBody
     public Result detailByIdOrLoginName(String id,
                                     String loginName) {
-        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
+        User model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName):userService.get(id);
         return Result.successResult().setObj(model);
     }
 }

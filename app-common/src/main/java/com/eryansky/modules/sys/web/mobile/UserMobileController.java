@@ -91,7 +91,7 @@ public class UserMobileController extends SimpleController {
                                @RequestParam(defaultValue = "false") Boolean encrypt,
                                @RequestParam(name = "ps")String password,
                                @RequestParam(name = "newPs")String newPassword) {
-        if (StringUtils.isBlank(id) || StringUtils.isBlank(loginName)) {
+        if (StringUtils.isBlank(id) && StringUtils.isBlank(loginName)) {
             return Result.warnResult().setMsg("无用户信息！");
         }
         User model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName):userService.get(id);

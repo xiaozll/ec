@@ -1,5 +1,6 @@
 package com.eryansky.modules.sys.utils;
 
+import com.eryansky.utils.AppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -153,15 +154,11 @@ public class DownloadFileUtils {
             /**
              * 设置response的Content-Type,set the MIME type
              */
-            String contentType = null;
-
-            if (contentType != null) {
-                // /logger.debug("设置内容类型:" + contentType);
+            String contentType = AppUtils.getServletContext().getMimeType(downloadFile.getName());
+            if (null != contentType) {
                 response.setContentType(contentType);
             } else {
-                //response.setContentType("audio/mpeg");
-                //response.setContentType("application/octet-stream");
-                response.setContentType("text/plain");
+                response.setContentType("application/x-download");
             }
 
             // /////////////////////////设置文件下载名称Content-Disposition///////////////////////////

@@ -1,9 +1,10 @@
 <%@ page import="com.eryansky.utils.AppConstants" %>
 <%@ page import="com.eryansky.core.security.SecurityUtils" %>
+<%@ include file="/common/taglibs.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <c:set var="isSecurityOn" value="<%=AppConstants.getIsSecurityOn()%>"></c:set>
 <c:set var="isCurrentUserAdmin" value="<%=SecurityUtils.isCurrentUserAdmin()%>"></c:set>
-<div>
+<div>non
 	<form id="user_password_form" class="dialog-form" method="post">
 		<input type="hidden" id="user_password_form_id" name="id" value="${model.id}"/>
 		<div>
@@ -15,7 +16,7 @@
 				   data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>
 				</c:when>
 				<c:when test="${isSecurityOn}">
-					   data-options="required:true,missingMessage:'请输入新密码.',validType:['safepass_yc','minLength[1]']"/>
+					data-options="required:true,missingMessage:'请输入新密码.',validType:['safepass_yc','minLength[1]']"/>
 				</c:when>
 				<c:otherwise>
 					data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>

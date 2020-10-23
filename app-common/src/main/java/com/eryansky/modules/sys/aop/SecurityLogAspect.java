@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.aop;
 
 import com.eryansky.common.spring.SpringContextHolder;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.security.SecurityType;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -104,6 +106,12 @@ public class SecurityLogAspect {
             log.setDeviceType(sessionInfo.getDeviceType());
             log.setBrowserType(sessionInfo.getBrowserType());
             log.setOperTime(new Date());
+            try {
+                HttpServletRequest request = SpringMVCHolder.getRequest();
+                log.setParams(request.getParameterMap());
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
             end = System.currentTimeMillis();
             long opTime = end - start;
             log.setActionTime(String.valueOf(opTime));

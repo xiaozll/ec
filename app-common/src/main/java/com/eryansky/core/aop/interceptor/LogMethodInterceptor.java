@@ -24,6 +24,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
@@ -142,6 +143,12 @@ public class LogMethodInterceptor implements MethodInterceptor, InitializingBean
             log.setActionTime(String.valueOf(time));
             log.setIp(ip);
             log.setRemark(remark);
+            try {
+                HttpServletRequest request = SpringMVCHolder.getRequest();
+                log.setParams(request.getParameterMap());
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
             if (sessionInfo != null) {
                 log.setUserAgent(sessionInfo.getUserAgent());
                 log.setDeviceType(sessionInfo.getDeviceType());

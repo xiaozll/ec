@@ -91,7 +91,10 @@ public class UserMobileController extends SimpleController {
                                @RequestParam(defaultValue = "false") Boolean encrypt,
                                @RequestParam(name = "ps")String password,
                                @RequestParam(name = "newPs")String newPassword) {
-        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
+        if (StringUtils.isBlank(id) || StringUtils.isBlank(loginName)) {
+            return Result.warnResult().setMsg("无用户信息！");
+        }
+        User model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName):userService.get(id);
         if (model == null || StringUtils.isBlank(model.getId())) {
             throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
         }
@@ -310,7 +313,7 @@ public class UserMobileController extends SimpleController {
     @ResponseBody
     public Result detailByIdOrLoginName(String id,
                                     String loginName) {
-        User model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName):userService.get(id);
+        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
         return Result.successResult().setObj(model);
     }
 }

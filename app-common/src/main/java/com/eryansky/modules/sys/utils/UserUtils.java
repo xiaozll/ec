@@ -12,6 +12,7 @@ import com.eryansky.common.utils.ConvertUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
+import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.SecurityUtils;
@@ -470,7 +471,14 @@ public class UserUtils {
      * @param password 密码(未加密)
      */
     public static void updateUserPassword(List<String> userIds, String password) {
-        Static.userService.updateUserPassword(userIds, password);
+//        Static.userService.updateUserPassword(userIds, password);
+        userIds.forEach(userId->{
+            try {
+                Static.userService.updatePasswordByUserId(userId,Encrypt.e(password), Encryption.encrypt(password));
+            } catch (Exception e) {
+                throw new ActionException(e);
+            }
+        });
     }
 
 

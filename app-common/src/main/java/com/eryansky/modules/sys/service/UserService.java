@@ -104,7 +104,7 @@ public class UserService extends CrudService<UserDao, User> {
 
 
     /**
-     * 修改密码
+     * 修改密码（AOP切面拦截）
      * @param id 用户ID
      * @param password 密码 {@link Encrypt#e(String)}
      * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
@@ -115,7 +115,7 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
-     * 修改密码
+     * 修改密码（AOP切面拦截）
      * @param loginName 账号
      * @param password 密码 {@link Encrypt#e(String)}
      * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}

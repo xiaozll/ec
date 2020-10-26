@@ -296,15 +296,15 @@ public class UserController extends SimpleController {
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "userIds", required = true) List<String> userIds,
                                      @RequestParam(value = "newPassword", required = true) String newPassword){
-//        userService.updateUserPassword(userIds, newPassword);
-        userIds.forEach(userId->{
-            try {
-                userService.updatePasswordByUserId(userId,Encrypt.e(newPassword),Encryption.encrypt(newPassword));
-            } catch (Exception e) {
-                logger.error(e.getMessage(),e);
-                throw new ActionException(e);
-            }
-        });
+        userService.updateUserPassword(userIds, newPassword);
+//        userIds.forEach(userId->{
+//            try {
+//                userService.updatePasswordByUserId(userId,Encrypt.e(newPassword),Encryption.encrypt(newPassword));
+//            } catch (Exception e) {
+//                logger.error(e.getMessage(),e);
+//                throw new ActionException(e);
+//            }
+//        });
 
         return Result.successResult();
     }

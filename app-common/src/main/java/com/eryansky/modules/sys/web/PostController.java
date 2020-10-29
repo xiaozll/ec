@@ -22,6 +22,7 @@ import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Post;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
@@ -193,7 +194,7 @@ public class PostController extends SimpleController {
     @RequestMapping(value = {"userPostCombobox"})
     @ResponseBody
     public List<Combobox> userPostCombobox(String selectType, String userId, String organId) {
-        List<Post> list = StringUtils.isNotBlank(organId) ? postService.findPostsByOrganId(organId) : postService.findPostsByUserId(userId,organId);
+        List<Post> list = StringUtils.isNotBlank(organId) ? postService.findPostsByOrganId(organId) : postService.findPostsByUserId(userId, UserUtils.getDefaultOrganId(userId));
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox titleCombobox = SelectType.combobox(selectType);

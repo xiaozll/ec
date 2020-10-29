@@ -20,6 +20,7 @@ import com.eryansky.modules.sys.dao.PostDao;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -122,6 +123,21 @@ public class PostService extends CrudService<PostDao, Post> {
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("organId", organId);
         return dao.findPostsByOrganId(parameter);
+    }
+
+
+    /**
+     * 机构岗位
+     *
+     * @param organIds
+     * @return
+     */
+    public List<Post> findPostsByOrganIds(Collection<String> organIds) {
+        Validate.notEmpty(organIds, "参数[organIds]不能为null");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("organIds", organIds);
+        return dao.findPostsByOrganIds(parameter);
     }
 
     /**

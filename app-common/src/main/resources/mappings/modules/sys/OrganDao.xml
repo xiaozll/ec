@@ -519,7 +519,7 @@
             a.status = '0'
             AND u.id = #{userId}
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY u.default_organ_id,a.sort ASC
     </select>
 
     <select id="findOrganIdsByUserId" resultType="java.lang.String">
@@ -532,7 +532,7 @@
             a.status = '0'
             AND u.id = #{userId}
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY u.default_organ_id,a.sort ASC
     </select>
 
     <select id="findAssociationOrgansByPostId" resultType="Organ">

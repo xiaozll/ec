@@ -194,7 +194,18 @@ public class PostController extends SimpleController {
     @RequestMapping(value = {"userPostCombobox"})
     @ResponseBody
     public List<Combobox> userPostCombobox(String selectType, String userId, String organId) {
-        List<Post> list = StringUtils.isNotBlank(organId) ? postService.findPostsByOrganId(organId) : postService.findPostsByUserId(userId, UserUtils.getDefaultOrganId(userId));
+        List<String> userOrganIds = UserUtils.findOrganIdsByUserId(userId);
+        String _organId = organId;
+        if(Collections3.isNotEmpty(userOrganIds)){
+            if(StringUtils.isBlank(_organId)){
+                _organId = userOrganIds.get(0);
+            }
+            if(StringUtils.isNotBlank(_organId) && !userOrganIds.contains(_organId)){
+                _organId = userOrganIds.get(0);
+            }
+        }
+
+        List<Post> list = StringUtils.isNotBlank(_organId) ? postService.findPostsByOrganId(_organId) : postService.findPostsByUserId(userId, _organId);
         List<Combobox> cList = Lists.newArrayList();
 
         Combobox titleCombobox = SelectType.combobox(selectType);

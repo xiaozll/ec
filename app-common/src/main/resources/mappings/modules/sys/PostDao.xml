@@ -144,6 +144,22 @@
         </where>
     </select>
 
+
+    <select id="findPostsByOrganIds" resultType="Post">
+        SELECT DISTINCT
+        <include refid="postColumns"/>
+        FROM t_sys_post a
+        LEFT JOIN t_sys_post_organ po ON po.post_id = a.id
+        LEFT JOIN t_sys_organ o ON po.organ_id = o.id
+        <where>
+            a.status = '0'
+            AND (a.organ_id IN  <foreach collection="organIds" open="(" separator="," close=")" item="item">#{item}</foreach>
+                 OR o.id IN <foreach collection="organIds" open="(" separator="," close=")" item="item">#{item} </foreach>
+             )
+
+        </where>
+    </select>
+
     <select id="findPostsByUserId" resultType="Post">
         SELECT
         <include refid="postColumns"/>

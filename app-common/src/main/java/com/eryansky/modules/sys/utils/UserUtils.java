@@ -376,6 +376,31 @@ public class UserUtils {
 
 
     /**
+     * 查找用户所属机构IDS
+     * @param userId 用户ID
+     * @return
+     */
+    public static List<String> findOrganIdsByUserId(String userId){
+        if(StringUtils.isBlank(userId)){
+            return null;
+        }
+        return Static.organService.findOrganIdsByUserId(userId);
+    }
+
+    /**
+     * 查找用户所属机构
+     * @param userId 用户ID
+     * @return
+     */
+    public static List<Organ> findOrgansByUserId(String userId){
+        if(StringUtils.isBlank(userId)){
+            return null;
+        }
+        return Static.organService.findOrgansByUserId(userId);
+    }
+
+
+    /**
      * 根据userId查找用户所属机构名称
      *
      * @param userId 用户ID

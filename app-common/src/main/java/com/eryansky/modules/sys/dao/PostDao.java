@@ -30,6 +30,8 @@ public interface PostDao extends CrudDao<Post> {
 
     List<Post> findPostsByOrganId(Parameter parameter);
 
+    List<Post> findPostsByOrganIds(Parameter parameter);
+
     List<Post> findPostsByUserId(Parameter parameter);
 
     List<String> findPostIdsByUserId(Parameter parameter);

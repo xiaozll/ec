@@ -737,7 +737,7 @@
 
     <select id="findUserIdsByPostAndOrgan" resultType="java.lang.String">
         SELECT
-        a.id
+        DISTINCT a.id
         FROM t_sys_user a
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
@@ -766,7 +766,7 @@
 
     <select id="findOwnerAndChildsByPostAndOrgan" resultType="User">
         SELECT
-        <include refid="userColumns"/>
+        DISTINCT <include refid="userColumns"/>
         FROM t_sys_user a
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id

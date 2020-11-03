@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/mobile/af/af.ui.css" />
 
     <script type="text/javascript" charset="utf-8" src="${ctxStatic}/js/jquery/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="${ctxStatic}/js/jquery/jquery.cookie-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${ctxStatic}/js/jquery/jquery.cookie.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctxStatic}/mobile/af/fastclick.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="${ctxStatic}/mobile/af/appframework.ui.js"></script>
 
@@ -29,7 +29,7 @@
 <div class="view">
     <div class="pages">
         <div class="panel" id="loginpanel">
-            <img src="${ctxStatic}/img/logo_jfit.png" style="position: absolute;top:10px;left:10px;"/>
+            <img src="${ctxStatic}/img/logo.png" style="position: absolute;top:10px;left:10px;"/>
             <div class="title"><h1>${fns:getAppFullName()}</h1></div>
             <form class="loginform" role="form">
                 <div class="inputoutdiv"><input type="text" id="loginName" placeholder="账号"><img src="${ctxStatic}/img/mobile/user.png"/></div>

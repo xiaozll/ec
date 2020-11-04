@@ -14,6 +14,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.SysUtils;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.SecurityUtils;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,12 +126,12 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         if(isWarn){
             result = new Result(Result.WARN,sb.toString(),obj);
-            logger.warn(result.toString());
+            logger.warn(SecurityUtils.getCurrentUserLoginName()+":"+result.toString());
         }else{
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
             }
-            logger.error(result.toString());
+            logger.error(SecurityUtils.getCurrentUserLoginName()+":"+result.toString());
         }
 //        Map<String, Object> model = Maps.newHashMap();
 //        model.put("ex", ex);

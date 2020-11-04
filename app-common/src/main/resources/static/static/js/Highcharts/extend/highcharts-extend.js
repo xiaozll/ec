@@ -1,7 +1,6 @@
 var eu = eu || {};
 
-eu.contextPath = "";
-var ctx = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
+eu.contextPath = window.document.location.pathname.substring(0, window.document.location.pathname.indexOf('\/', 1));
 $.extend(Highcharts.getOptions().lang, {
     printChart : '打印图表',
     downloadPNG : '下载 PNG 图片',
@@ -12,7 +11,7 @@ $.extend(Highcharts.getOptions().lang, {
 });
 $.extend(Highcharts.getOptions().exporting, {
     filename : 'chart',
-    url : eu.contextPath  ?? ctx+ '/servlet/DownloadChartServlet'
+    url : eu.contextPath  + '/servlet/DownloadChartServlet'
 });
 $.extend(Highcharts.getOptions(), {
     credits : {

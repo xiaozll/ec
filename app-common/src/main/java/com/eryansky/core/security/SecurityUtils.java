@@ -25,6 +25,7 @@ import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
+import com.google.common.net.InetAddresses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -397,6 +398,10 @@ public class SecurityUtils {
                 sessionInfo.addIfNotExistLoginName(v.getLoginName());
             }
         });
+        try {
+            sessionInfo.setHost(InetAddresses.toAddrString(InetAddress.getLocalHost()));
+        } catch (UnknownHostException e) {
+        }
 
         String userAgent = UserAgentUtils.getHTTPUserAgent(request);
         boolean likeIOS = AppUtils.likeIOS(userAgent);

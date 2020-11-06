@@ -1,6 +1,7 @@
 package com.eryansky.configure.web;
 
 import com.eryansky.common.web.filter.CustomHttpServletRequestFilter;
+import com.eryansky.common.web.filter.XssFilter;
 import com.eryansky.core.web.filter.MySiteMeshFilter;
 import com.eryansky.core.web.interceptor.ExceptionInterceptor;
 import com.eryansky.filters.ChinesePathFilter;
@@ -19,19 +20,6 @@ import org.springframework.core.Ordered;
 @Configuration
 public class FilterConfiguration {
 
-    /**
-     * 中文
-     *
-     * @return
-     */
-    @Bean
-    public FilterRegistrationBean<ChinesePathFilter> chinesePathFilterFilterRegistrationBean() {
-        ChinesePathFilter filter = new ChinesePathFilter();
-        FilterRegistrationBean<ChinesePathFilter> bean = new FilterRegistrationBean<>(filter);
-        bean.setFilter(filter);
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE+100);
-        return bean;
-    }
 
 
     /**
@@ -65,6 +53,35 @@ public class FilterConfiguration {
         return bean;
     }
 
+
+
+    /**
+     * 中文
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean<ChinesePathFilter> chinesePathFilterFilterRegistrationBean() {
+        ChinesePathFilter filter = new ChinesePathFilter();
+        FilterRegistrationBean<ChinesePathFilter> bean = new FilterRegistrationBean<>(filter);
+        bean.setFilter(filter);
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 100);
+        return bean;
+    }
+
+    /**
+     * XSS
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean<XssFilter> xssFilterRegistrationBean() {
+        XssFilter filter = new XssFilter();
+        FilterRegistrationBean<XssFilter> bean = new FilterRegistrationBean<>(filter);
+        bean.setFilter(filter);
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 80);
+        return bean;
+    }
 
     /**
      * 自定义异常处理

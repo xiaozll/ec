@@ -65,6 +65,8 @@ public class FilterConfiguration {
         ChinesePathFilter filter = new ChinesePathFilter();
         FilterRegistrationBean<ChinesePathFilter> bean = new FilterRegistrationBean<>(filter);
         bean.setFilter(filter);
+        bean.addInitParameter("blackListURL", "/static/**");
+        bean.addInitParameter("whiteListURL", "/**");
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 100);
         return bean;
     }
@@ -79,6 +81,8 @@ public class FilterConfiguration {
         XssFilter filter = new XssFilter();
         FilterRegistrationBean<XssFilter> bean = new FilterRegistrationBean<>(filter);
         bean.setFilter(filter);
+        bean.addInitParameter("blackListURL", "/static/**;/api/**;/druid/**");
+        bean.addInitParameter("whiteListURL", "/**");
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 80);
         return bean;
     }

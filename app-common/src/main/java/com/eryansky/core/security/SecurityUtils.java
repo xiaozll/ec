@@ -376,8 +376,8 @@ public class SecurityUtils {
         sessionInfo.setUserAgent(UserAgentUtils.getHTTPUserAgent(request));
         sessionInfo.setDeviceType(UserAgentUtils.getDeviceType(request).toString());
         sessionInfo.setBrowserType(UserAgentUtils.getBrowser(request).getName());
-        String code = WebUtils.getParameter(request, "code");
-        sessionInfo.setDeviceCode(code);
+        String deviceCode = WebUtils.getParameter(request, "deviceCode");
+        sessionInfo.setDeviceCode(deviceCode);
         String longitude_s = WebUtils.getParameter(request, "longitude");
         String latitude_s = WebUtils.getParameter(request, "latitude");
         String accuracy_s = WebUtils.getParameter(request, "accuracy");

@@ -322,6 +322,7 @@ public class SecurityUtils {
         sessionInfo.setName(user.getName());
         sessionInfo.setLoginName(user.getLoginName());
         sessionInfo.setCode(user.getCode());
+        sessionInfo.setUserType(user.getUserType());
         sessionInfo.setAvatar(user.getPhotoUrl());
         sessionInfo.setGender(user.getSex());
         sessionInfo.setMobile(user.getMobile());

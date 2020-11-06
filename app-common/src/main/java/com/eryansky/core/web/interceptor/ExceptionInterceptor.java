@@ -131,7 +131,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
             }
-            logger.error(SecurityUtils.getCurrentUserLoginName()+":"+result.toString());
+            logger.error(SecurityUtils.getCurrentUserLoginName()+":"+result.toString(),ex);
         }
 //        Map<String, Object> model = Maps.newHashMap();
 //        model.put("ex", ex);

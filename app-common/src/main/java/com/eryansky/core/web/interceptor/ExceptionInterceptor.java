@@ -126,12 +126,12 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         if(isWarn){
             result = new Result(Result.WARN,sb.toString(),obj);
-            logger.warn(SecurityUtils.getCurrentUserLoginName()+":"+result.toString());
+            logger.warn(SecurityUtils.getCurrentUserLoginName() + ":" + result.toString(), ex);
         }else{
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
             }
-            logger.error(SecurityUtils.getCurrentUserLoginName()+":"+result.toString(),ex);
+            logger.error(SecurityUtils.getCurrentUserLoginName() + ":" + result.toString(), ex);
         }
 //        Map<String, Object> model = Maps.newHashMap();
 //        model.put("ex", ex);

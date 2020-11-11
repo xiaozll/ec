@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014-2019 http://www.jfit.com.cn
+ * Copyright (c) 2012-2020 http://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */

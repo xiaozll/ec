@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2018 http://www.eryansky.com
+ * Copyright (c) 2012-2020 http://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,6 +14,8 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
+import com.eryansky.core.web.annotation.Mobile;
+import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys._enum.LogType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +39,7 @@ public class SessionController extends SimpleController {
     @RequiresPermissions("sys:session:view")
     @Logging(value = "在线用户", logType = LogType.access)
     @RequestMapping(value = {""})
+    @Mobile(value = MobileValue.ALL)
     public ModelAndView list() {
         return new ModelAndView("modules/sys/session");
     }

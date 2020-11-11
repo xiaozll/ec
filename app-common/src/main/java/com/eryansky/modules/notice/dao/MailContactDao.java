@@ -1,5 +1,5 @@
 /**
-*  Copyright (c) 江西省锦峰软件科技有限公司 2013-2020 http://www.jfit.com.cn
+*  Copyright (c) 2012-2020 http://www.eryansky.com
 *
 */
 package com.eryansky.modules.notice.dao;

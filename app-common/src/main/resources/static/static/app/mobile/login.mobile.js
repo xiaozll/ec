@@ -62,7 +62,7 @@ function login() {
             if (data.code === 1) {
                 if (data['obj']) {
                     setTimeout(function () {//延时1秒 集群环境等待缓存同步
-                        window.location = data['obj'];
+                        window.location = data['obj']['homeUrl'];
                     }, 1000);
                 } else {
                     setTimeout(function () {//延时1秒 集群环境等待缓存同步

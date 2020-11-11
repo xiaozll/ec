@@ -30,6 +30,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.interceptor.*;
 
 import javax.sql.DataSource;
@@ -114,7 +115,7 @@ public class DBConfigure {
     }
 
     @Bean("txManager")
-    public PlatformTransactionManager annotationDrivenTransactionManager(@Qualifier("dataSource") DataSource dataSource) {
+    public TransactionManager annotationDrivenTransactionManager(@Qualifier("dataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 
@@ -124,7 +125,7 @@ public class DBConfigure {
 
     // 事务的实现Advice
     @Bean
-    public TransactionInterceptor txAdvice(@Qualifier("txManager")PlatformTransactionManager m) {
+    public TransactionInterceptor txAdvice(@Qualifier("txManager") TransactionManager m) {
         NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
         RuleBasedTransactionAttribute readOnlyTx = new RuleBasedTransactionAttribute();
         readOnlyTx.setReadOnly(true);

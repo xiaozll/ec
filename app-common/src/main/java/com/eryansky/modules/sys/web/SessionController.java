@@ -53,12 +53,23 @@ public class SessionController extends SimpleController {
     @ResponseBody
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) throws Exception {
         Page<SessionInfo> page = new Page<>(request);
+        page = SecurityUtils.findSessionInfoPage(page,null,query);
+        return new Datagrid<>(page.getTotalCount(), page.getResult());
+    }
+
+    /**
+     * 在线用户
+     *
+     * @return
+     */
+    @RequestMapping(value = {"winthPermissionsOnLineSessions"})
+    @ResponseBody
+    public Datagrid<SessionInfo> winthPermissionsOnLineSessions(HttpServletRequest request, String query) throws Exception {
+        Page<SessionInfo> page = new Page<>(request);
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         page = SecurityUtils.findSessionInfoPage(page,sessionInfo.isSuperUser() ? null:sessionInfo.getLoginCompanyId(),query);
         return new Datagrid<>(page.getTotalCount(), page.getResult());
     }
-
-
     /**
      * 强制用户下线
      *

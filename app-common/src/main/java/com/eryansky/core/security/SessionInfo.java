@@ -176,6 +176,10 @@ public class SessionInfo implements Serializable {
      * token
      */
     private String token;
+    /**
+     * 刷新Token
+     */
+    private String refreshToken;
     private String avatar;
     private String gender;
 
@@ -688,6 +692,15 @@ public class SessionInfo implements Serializable {
 
     public SessionInfo setToken(String token) {
         this.token = token;
+        return this;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public SessionInfo setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
         return this;
     }
 

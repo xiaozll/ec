@@ -26,6 +26,7 @@ import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
 import com.google.common.net.InetAddresses;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -389,6 +390,7 @@ public class SecurityUtils {
         sessionInfo.setAppVersion(appVersion_s);
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(),sessionInfo.getLoginName()));
+        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(),sessionInfo.getLoginName(), 7 * 24 * 60 * 60 * 1000));
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
 //        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号

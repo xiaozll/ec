@@ -535,10 +535,12 @@ function initData(flag){
 
 
 function search(){
-    var selectedNode = $contactGroup_tree.tree("getSelected");
     var contactGroupId = '';
-    if(selectedNode){
-        contactGroupId = selectedNode.id;
+    if($contactGroup_tree){
+        var selectedNode = $contactGroup_tree.tree("getSelected");
+        if(selectedNode){
+            contactGroupId = selectedNode.id;
+        }
     }
     if($contactGroup_datagrid != undefined){
         $contactGroup_datagrid.datagrid({

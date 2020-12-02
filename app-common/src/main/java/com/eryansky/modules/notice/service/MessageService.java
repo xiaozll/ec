@@ -47,9 +47,10 @@ public class MessageService extends CrudService<MessageDao, Message> {
     private UserService userService;
 
 
-    @Override
-    public Page<Message> findPage(Page<Message> page, Message entity) {
-        entity.getSqlMap().put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
+    public Page<Message> findPage(Page<Message> page, Message entity, boolean isDataScopeFilter) {
+        if(isDataScopeFilter){
+            entity.getSqlMap().put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
+        }
         entity.setEntityPage(page);
         page.setResult(dao.findList(entity));
         return page;

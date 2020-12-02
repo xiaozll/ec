@@ -23,18 +23,18 @@
     <form id="versionLog_form" class="dialog-form" method="post">
         <input type="hidden" id="id" name="id" />
         <div>
-            <label>版本号:</label>
+            <label>版本号：</label>
             ${model.versionName}
         </div>
         <div>
-            <label>内部编号:</label>
+            <label>内部编号：</label>
             ${model.versionCode}
         </div>
         <div>
-            <label>类型:</label>
+            <label>类型：</label>
             ${model.versionLogTypeView}</div>
         <div>
-            <label style="vertical-align: top;">更新说明:</label>
+            <label style="vertical-align: top;">更新说明：</label>
             ${model.remark}
         </div>
         <c:if test="${not empty file}">

@@ -78,7 +78,7 @@ public class FileService extends CrudService<FileDao, File> {
      * 文件检索
      *
      * @param userId 是否指定权限人员
-     * @param fileName 文件名称
+     * @param query 文件名称
      * @param folderAuthorize  云盘类型
      * @param fileSizeType 文件大小类型
      * @param startTime 上传时间启
@@ -87,7 +87,7 @@ public class FileService extends CrudService<FileDao, File> {
      */
 
     public Page<File> searchFilePage(Page<File> page, String userId,
-                                     String fileName, String folderAuthorize, String fileSizeType,
+                                     String query, String folderAuthorize, String fileSizeType,
                                      boolean isAdmin,
                                      Date startTime, Date endTime) {
         Parameter patameter = new Parameter();
@@ -98,7 +98,7 @@ public class FileService extends CrudService<FileDao, File> {
         patameter.put("folderAuthorize", folderAuthorize);
         patameter.put("isAdmin", isAdmin);
         patameter.put("userId", userId);
-        patameter.put("query", fileName);
+        patameter.put("query", query);
         patameter.put("fileSizeType", fileSizeType);
         patameter.put("startTime", startTime == null ? null : DateUtils.formatDateTime(startTime));
         patameter.put("endTime", endTime == null ? null : DateUtils.formatDateTime(endTime));

@@ -564,8 +564,7 @@ function search() {
     }
     var queryData = {};
     var dictionaryData = {'dictionary.id': dictionaryId};
-    //var formData = $.serializeObject($dictionaryItem_search_form);
-    var formData = {name: $("#name_OR_code").val(), code: $("#name_OR_code").val()};
+    var formData = $.serializeObject($dictionaryItem_search_form);
     queryData = $.extend(queryData, dictionaryData, formData);//合并对象
 
 

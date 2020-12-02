@@ -48,7 +48,7 @@
 		<form:hidden path="title"/>
 		<tags:message content="${message}"/>
 		<div id="user_div" class="control-group">
-			<label class="control-label">接收对象:</label>
+			<label class="control-label">接收对象：</label>
 			<div class="controls">
 				<form:select id="receiveObjectType" path="receiveObjectType" cssStyle="width: 100px;" itemValue="user" >
 					<form:options items="${messageReceiveObjectTypes}" itemLabel="description" itemValue="value" htmlEscape="false" cssClass="required"/>
@@ -67,20 +67,20 @@
 		</div>
 
 		<%--<div class="control-group">--%>
-			<%--<label class="control-label">标题:</label>--%>
+			<%--<label class="control-label">标题：</label>--%>
 			<%--<div class="controls">--%>
 				<%--<form:input path="title" htmlEscape="false" maxlength="200" class="input-xlarge"/>--%>
 			<%--</div>--%>
 		<%--</div>--%>
 		<div class="control-group">
-			<label class="control-label">消息内容:</label>
+			<label class="control-label">消息内容：</label>
 			<div class="controls">
 				<form:textarea id="content" htmlEscape="true" path="content" rows="6" maxlength="512" class="input-xxlarge required"/>
 				<%--<tags:ckeditor replace="content" uploadPath="/notice/message" height="200" />--%>
 			</div>
 		</div>
 		<%--<div class="control-group">--%>
-			<%--<label class="control-label">图片:</label>--%>
+			<%--<label class="control-label">图片：</label>--%>
 			<%--<div class="controls">--%>
 				<%--<input type="hidden" id="image" name="image" value="${model.image}" />--%>
 				<%--<tags:ckfinder input="image" type="images" uploadPath="/notice/message"  selectMultiple="false"/>--%>
@@ -88,13 +88,13 @@
 			<%--</div>--%>
 		<%--</div>--%>
 		<div class="control-group">
-			<label class="control-label">链接地址:</label>
+			<label class="control-label">链接地址：</label>
 			<div class="controls">
 				<form:input path="url" htmlEscape="false" maxlength="200" class="input-xxlarge"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">提醒:</label>
+			<label class="control-label">提醒：</label>
 			<div class="controls">
 				<form:checkboxes path="tipMessage" htmlEscape="false" items="${messageChannels}" itemLabel="description" itemValue="value"/>
 			</div>

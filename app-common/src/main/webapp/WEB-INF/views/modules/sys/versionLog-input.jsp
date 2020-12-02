@@ -14,28 +14,28 @@
     <form id="versionLog_form" class="dialog-form" method="post">
         <input type="hidden" id="id" name="id" />
         <div>
-            <label>APP:</label>
+            <label>APP：</label>
             <input type="text" name="app"
                    maxLength="36" class="easyui-validatebox textbox" placeholder="APP" />
         </div>
         <div>
-            <label>版本号:</label>
+            <label>版本号：</label>
             <input type="text" name="versionName"
                    maxLength="36" class="easyui-validatebox textbox" placeholder="版本号"
                    data-options="required:true,missingMessage:'请输入版本号....',validType:['minLength[1]']" />
         </div>
         <div>
-            <label>内部编号:</label>
+            <label>内部编号：</label>
             <input type="text" name="versionCode"
                    maxLength="36" class="easyui-validatebox textbox" placeholder="内部编号"
                    data-options="required:true,missingMessage:'请输入内部编号....',validType:['minLength[1]']" />
         </div>
         <div>
-            <label>类型:</label>
+            <label>类型：</label>
             <input id="versionLogType" name="versionLogType" style="height: 28px;" />
         </div>
         <div>
-            <label>是否发布:</label>
+            <label>是否发布：</label>
             <label style="text-align: left;width: 80px;">
                 <input type="radio" name="isPub"  style="width: 20px;" value="1" /> 是
             </label>
@@ -44,7 +44,7 @@
             </label>
         </div>
         <div>
-            <label>是否下架:</label>
+            <label>是否下架：</label>
             <label style="text-align: left;width: 80px;">
                 <input type="radio" name="isShelf"  style="width: 20px;" value="1" /> 是
             </label>
@@ -53,7 +53,7 @@
             </label>
         </div>
         <div>
-            <label>提示更新:</label>
+            <label>提示更新：</label>
             <label style="text-align: left;width: 80px;">
                 <input type="radio" name="isTip"  style="width: 20px;" value="1" /> 提示
             </label>
@@ -62,7 +62,7 @@
             </label>
         </div>
         <div>
-            <label style="vertical-align: top;">更新说明:</label>
+            <label style="vertical-align: top;">更新说明：</label>
             <input name="remark" class="easyui-textbox" data-options="multiline:true" placeholder="更新说明" style="width:420px;height:200px;">
         </div>
         <table style="border: 0px;width: 100%;">

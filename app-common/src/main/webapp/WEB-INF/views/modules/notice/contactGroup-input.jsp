@@ -40,7 +40,7 @@
                    maxLength="10" data-options="required:true,missingMessage:'请输入名称.',validType:['minLength[1]']">
         </div>
         <%--<div>--%>
-            <%--<label>类型:</label>--%>
+            <%--<label>类型：</label>--%>
             <%--<input id="contactGroupType" name="contactGroupType" style="height: 28px;width: 120px;" />--%>
         <%--</div>--%>
         <div>

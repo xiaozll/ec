@@ -52,28 +52,28 @@
         <input type="hidden" id="version" name="version" value="${model.version}"/>
 
         <div>
-            <label>名称:</label>
+            <label>名称：</label>
             <input name="name" type="text" class="easyui-validatebox textbox" value="${model.name}"
                    maxLength="12"
                    data-options="required:true,missingMessage:'请输入名称.',validType:['minLength[1]','legalInput']">
         </div>
         <div>
-            <label>归类:</label>
+            <label>归类：</label>
             <input id="folderAuthorize" name="folderAuthorize" style="width: 120px;height: 28px;"/>
                    <%--data-options="validType:['comboboxRequired[\'#folderAuthorize\']']"/>--%>
         </div>
         <div>
-            <label>上级文件夹:</label>
+            <label>上级文件夹：</label>
             <input id="parentId" name="parentId" style="width: 260px;height: 28px;" />
         </div>
         <div>
-            <label>排序号:</label>
+            <label>排序号：</label>
             <input name="sort" type="text" class="easyui-validatebox textbox" value="${model.sort}"
                    maxLength="11"
                    data-options="validType:['number']">
         </div>
         <div>
-            <label>备注:</label>
+            <label>备注：</label>
             <%--<textarea maxLength="255" name="remark"--%>
                       <%--style="position: relative;resize: none;height: 75px;width: 260px;">${model.remark}</textarea>--%>
             <input name="remark" maxlength="120" class="easyui-textbox" value="${model.remark}" data-options="multiline:true" style="width:260px;height:100px;">

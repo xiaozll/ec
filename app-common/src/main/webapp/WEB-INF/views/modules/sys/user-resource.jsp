@@ -8,7 +8,7 @@
 <div>
     <form id="user_resource_form" class="dialog-form"  method="post" novalidate>
         <div>
-            <label style="vertical-align: top;">关联资源:</label>
+            <label style="vertical-align: top;">关联资源：</label>
             <input id="resourceIds" name="resourceIds" style="width:260px;height:200px;" />
             级联模式<input id="changeMode" type="checkbox" />
         </div>

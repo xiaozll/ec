@@ -134,7 +134,7 @@ function downloadFile(pageId) {
         ids.push(pageId);
     } else {
         var rows = file_search_datagrid.datagrid('getChecked');
-        if (rows && true) {
+        if (rows) {
             $.each(rows,
                     function(i, row) {
                         ids.push(row.id);
@@ -159,11 +159,11 @@ function delFile(fileId, fileName) {
     var ids = new Array();
     var tipMsg = "您确定要删除选中文件吗?";
 
-    if (fileId != undefined && fileId != null) {
+    if (fileId !== undefined && fileId !== null) {
         ids.push(fileId);
     } else {
         var rows = file_search_datagrid.datagrid('getChecked');
-        if (rows && true) {
+        if (rows) {
             $.each(rows,
                     function(i, row) {
                         ids.push(row.id);
@@ -189,7 +189,7 @@ function delFile(fileId, fileName) {
                             traditional: true,
                             success: function(data) {
                                 $.messager.progress('close');
-                                if (data.code == 1) {
+                                if (data.code === 1) {
                                     file_search_datagrid.datagrid("reload");
                                     eu.showMsg(data.msg); //操作结果提示
                                 } else {
@@ -213,11 +213,11 @@ function cascadeDelFile(fileCode) {
     var ids = new Array();
     var tipMsg = "引用该选中文件的所有数据将<font color=#D94600>级联删除</font>,您确定要删除吗?";
 
-    if (fileCode != undefined) {
+    if (fileCode !== undefined) {
         ids.push(fileCode);
     } else {
         var rows = file_search_datagrid.datagrid('getChecked');
-        if (rows && true) {
+        if (rows) {
             $.each(rows,
                     function(i, row) {
                         ids.push(row.code);
@@ -246,7 +246,7 @@ function cascadeDelFile(fileCode) {
                             traditional: true,
                             success: function(data) {
                                 $.messager.progress('close');
-                                if (data.code == 1) {
+                                if (data.code === 1) {
                                     file_search_datagrid.datagrid("reload");
                                     eu.showMsg(data.msg); //操作结果提示
                                 } else {
@@ -289,7 +289,7 @@ function selectUser() {
         var num = dataItems.length;
         $.each(dataItems,
                 function(n, value) {
-                    if (n == num - 1) {
+                    if (n === num - 1) {
                         personIds += value.id;
                     } else {
                         personIds += value.id + ",";
@@ -354,22 +354,22 @@ function loadFileSize() {
 }
 </script>
 
-<div class="easyui-layout" fit="true" style="margin: 0px;border: 0px;overflow: hidden;width:100%;height:100%;">
+<div class="easyui-layout" fit="true" style="margin: 0;border: 0;overflow: hidden;width:100%;height:100%;">
     <div data-options="region:'center',split:true" style="overflow: hidden;">
         <table id="file_search_datagrid" > </table>
     </div>
 
     <div data-options="region:'north',title:'过滤条件',split:false,collapsed:false,border:false"
-         style="width: 100%;height:106px; ">
+         style="width: 100%;height:110px;overflow-y: hidden;">
         <form id="file_search_form" style="padding: 5px;">
             <table style="border: 0">
                 <tr>
-                    <td>文件名称:<input type="text"  name="fileName" placeholder="文件名..."  class="easyui-validatebox textbox eu-input"
-                                    maxLength="25" style="width: 160px"/>
+                    <td>类型：<input  id="folderAuthorize"  name="folderAuthorize"  style="width: 160px;height: 28px;"/>
                     </td>
-                    <td>云盘类型:<input  id="folderAuthorize"  name="folderAuthorize"  style="width: 160px;height: 28px;"/></td>
+                    <td>关键字：<input type="text"  name="query" placeholder="关键字..."  class="easyui-validatebox textbox eu-input"
+                                   maxLength="25" style="width: 160px"/></td>
                     <td>
-                        更新时间:<input  id="startTime" name="startTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd HH:mm'" style="width: 120px"/>
+                        更新时间：<input  id="startTime" name="startTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd HH:mm'" style="width: 120px"/>
                         ~
                         <input id="endTime" name="endTime" class="easyui-my97"  data-options="dateFmt:'yyyy-MM-dd HH:mm'" style="width: 120px"/>
                     </td>
@@ -380,15 +380,15 @@ function loadFileSize() {
                     <td colspan="2">
                         <c:if test="${isAdmin}">
                             <table>
-                                <td style="white-space:nowrap;">拥有者:</td>
+                                <td style="white-space:nowrap;">拥有者：</td>
                                 <td ><select id="personIds" name="personIds" style="width: 250px;"></select></td>
                                 <td ><a href="#" class="easyui-linkbutton" data-options="iconCls:'eu-icon-user'" style="width: 100px;" onclick="selectUser();">选择</a></td>
                             </table>
                         </c:if>
                     </td>
-                    <td>文件大小:<input  id="sizeType" name="sizeType" style="width: 160px;height: 28px;"/>
-                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',onClick:search">查询</a>
-                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no'" onclick="javascript:file_search_form.form('reset');">重置查询</a>
+                    <td>文件大小：<input  id="sizeType" name="sizeType" style="width: 160px;height: 28px;"/>
+                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
+                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:file_search_form.form('reset');">重置</a>
                     </td>
 
                 </tr>

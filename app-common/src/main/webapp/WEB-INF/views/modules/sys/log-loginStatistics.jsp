@@ -47,8 +47,8 @@
             &nbsp;起始时间：<input type="text" id="startTime" name="startTime" class="easyui-my97" placeholder="起始时间..."/>
             &nbsp;结束时间：<input type="text" id="endTime" name="endTime" class="easyui-my97"  placeholder="结束时间..."/>
             &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28, onClick:search">查询</a>
-            <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$log_search_form.form('reset');">重置查询</a>
-            <a href="#" class="easyui-linkbutton" id="exportExcel" data-options="width:100,height:28, onClick:exportExcel">导出excel</a>
+            <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$log_search_form.form('reset');">重置</a>
+            <a href="#" class="easyui-linkbutton" id="exportExcel" data-options="width:100,height:28, onClick:exportExcel">导出</a>
         </form>
     </div>
 

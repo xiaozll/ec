@@ -7,7 +7,7 @@
 <div>
 	<form id="user_role_form" class="dialog-form" method="post" novalidate>
 		<div >
-			<label >关联角色:</label>
+			<label >关联角色：</label>
 			<input id="user_role_form-roleIds" name="roleIds"
 				   style="width: 260px;height: 28px;"/>
 		</div>

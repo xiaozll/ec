@@ -122,23 +122,23 @@
 			<if test="dictionary != null and dictionary.id != null and dictionary.id != ''">
 				AND a.dictionary_id = #{dictionary.id}
 			</if>
-			<if test="name != null and name != ''">
-				AND a.name LIKE
+			<if test="query != null and query != ''">
+				AND (
+				a.name LIKE
 				<choose>
-					<when test="dbName == 'db2'">'%'||#{name}||'%'</when>
-					<when test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</when>
-					<when test="dbName == 'oracle'">'%'||#{name}||'%'</when>
-					<otherwise>'%'+#{name}+'%'</otherwise>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
 				</choose>
-			</if>
-			<if test="code != null and code != ''">
-				AND a.name LIKE
+				OR a.code LIKE
 				<choose>
-					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
-					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
-					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
-					<otherwise>'%'+#{code}+'%'</otherwise>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
 				</choose>
+				)
 			</if>
 		</where>
 		<choose>

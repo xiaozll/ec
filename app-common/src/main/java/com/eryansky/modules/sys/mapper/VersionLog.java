@@ -68,6 +68,11 @@ public class VersionLog extends DataEntity<VersionLog> {
      */
     private String remark;
 
+    /**
+     * 关键字
+     */
+    private String query;
+
     public VersionLog() {
         super();
     }
@@ -193,6 +198,14 @@ public class VersionLog extends DataEntity<VersionLog> {
      */
     public String getVersionLogTypeView() {
         return GenericEnumUtils.getDescriptionByValue(VersionLogType.class,versionLogType,versionLogType);
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 
     @Override

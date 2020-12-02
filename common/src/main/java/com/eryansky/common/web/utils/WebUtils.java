@@ -153,11 +153,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		// Http1.1 header
 		String acceptEncoding = request.getHeader("Accept-Encoding");
 
-		if (StringUtils.contains(acceptEncoding, "gzip")) {
-			return true;
-		} else {
-			return false;
-		}
+        return StringUtils.contains(acceptEncoding, "gzip");
 	}
 
 	/**
@@ -220,11 +216,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 	 */
 	public static boolean isAjaxRequest(HttpServletRequest request) {
 		String header = request.getHeader("X-Requested-With");
-		if (header != null && "XMLHttpRequest".equals(header)) {
-			return true;
-		} else {
-			return false;
-		}
+        return "XMLHttpRequest".equals(header);
 	}
 
     /**

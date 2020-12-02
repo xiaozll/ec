@@ -12,7 +12,7 @@
         <input type="hidden" id="version" name="version" value="${model.version}"/>
         <input type="hidden" name="organId" value="${model.organId}"/>
         <div>
-            <label style="vertical-align: top;">岗位用户:</label>
+            <label style="vertical-align: top;">岗位用户：</label>
             <input id="userIds" name="userIds"/>
         </div>
     </form>

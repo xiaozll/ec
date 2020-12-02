@@ -42,6 +42,11 @@ public class Dictionary extends DataEntity<Dictionary> {
      */
     private Integer orderNo;
 
+    /**
+     * 关键字
+     */
+    private String query;
+
     public Dictionary() {
         super();
     }
@@ -122,4 +127,11 @@ public class Dictionary extends DataEntity<Dictionary> {
         return null;
     }
 
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
 }

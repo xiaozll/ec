@@ -37,6 +37,7 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,7 +69,8 @@ public class VersionLogController extends SimpleController {
     @RequiresPermissions("sys:versionLog:view")
     @Logging(value = "版本更新", logType = LogType.access)
     @RequestMapping(value = {""})
-    public String list() {
+    public String list(Model uiModel) {
+        uiModel.addAttribute("versionLogTypes",VersionLogType.values());
         return "modules/sys/versionLog";
     }
 
@@ -106,9 +108,10 @@ public class VersionLogController extends SimpleController {
         parameter.put("versionName", model.getVersionName());
         parameter.put("remark", model.getRemark());
         parameter.put("versionLogType", model.getVersionLogType());
+        parameter.put("query", model.getQuery());
 
         page = versionLogService.findPage(page, parameter);
-        return new Datagrid<VersionLog>(page.getTotalCount(), page.getResult());
+        return new Datagrid<>(page.getTotalCount(), page.getResult());
     }
 
     /**

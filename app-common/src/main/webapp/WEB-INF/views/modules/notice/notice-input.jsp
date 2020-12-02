@@ -48,7 +48,7 @@
             <%--<input id="notice_type" name="type" style="height: 28px;" />--%>
         </div>
         <div>
-            <label>标题图:</label>
+            <label>标题图：</label>
             <div id="head_image_div" style="margin-left: 96px;">
                 <input id="head_image" name="headImage" readonly="readonly" value="${model.headImage}" type="hidden"/>
                 <div class="img_div">

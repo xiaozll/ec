@@ -8,7 +8,7 @@
 	<form id="user_password_form" class="dialog-form" method="post">
 		<input type="hidden" id="user_password_form_id" name="id" value="${model.id}"/>
 		<div>
-			<label>新密码:</label> 
+			<label>新密码：</label>
 			<input type="password" id="newPassword" name="newPassword"
 				class="easyui-validatebox textbox"
 			<c:choose>
@@ -24,7 +24,7 @@
 			</c:choose>
 		</div>
 		<div>
-			<label>确认新密码:</label> 
+			<label>确认新密码：</label>
 			<input type="password" id="newPassword2" name="newPassword2"
 				class="easyui-validatebox textbox" required="true"
 				missingMessage="请再次输入新密码." validType="equalTo['#newPassword']"

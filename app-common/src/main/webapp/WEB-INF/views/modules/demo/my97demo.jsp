@@ -13,10 +13,10 @@
 </head>
 <body>
 	<!-- 整合my97作为easyui插件 -->
-	easyui日期:<br>
+	easyui日期：<br>
 	<input type="text" class="easyui-datebox" validateType="isAfter['@today','Today']" >
 		<br><br>
-	整合my97到easyui的日期控件(包含时间选择范围限制):<br>
+	整合my97到easyui的日期控件(包含时间选择范围限制)：<br>
 	<input type="text" id="date-first" class="easyui-my97" validateType="isAfter['@today','Today']"
 		data-options="required:true,missingMessage:'请设置时间...'">
     <br/>

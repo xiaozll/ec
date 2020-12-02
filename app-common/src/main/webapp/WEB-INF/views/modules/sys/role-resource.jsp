@@ -11,7 +11,7 @@
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" value="${model.version}"/>
         <div>
-            <label>关联资源:</label>
+            <label>关联资源：</label>
             <input id="resourceIds" name="resourceIds"  style="width:200px" />
             <label><input id="changeMode" type="checkbox"/>级联模式</label>
         </div>

@@ -34,14 +34,14 @@
 		<form:hidden path="id"/>
 		<tags:message content="${message}"/>
 		<div class="control-group">
-			<label class="control-label">上级区域:</label>
+			<label class="control-label">上级区域：</label>
 			<div class="controls">
 				<tags:treeselect id="area" name="parent.id" value="${area.parent.id}" labelName="parent.name" labelValue="${area.parent.name}"
 					title="区域" url="${ctxAdmin}/sys/area/treeData" extId="${area.id}" cssClass="" allowClear="true"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">区域名称:</label>
+			<label class="control-label">区域名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="128" class="input-xxlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -51,20 +51,20 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">区域简称:</label>
+			<label class="control-label">区域简称：</label>
 			<div class="controls">
 				<form:input path="shortName" htmlEscape="false" maxlength="128" class="input-xxlarge"/>
 				<span class="help-inline"></span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">区域编码:</label>
+			<label class="control-label">区域编码：</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="64" class="input-xxlarge required" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">备注:</label>
+			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remark" htmlEscape="false" rows="3" maxlength="200" class="input-xxlarge"/>
 			</div>

@@ -9,7 +9,7 @@
 <div>
     <form id="user_post_form" class="dialog-form" method="post">
         <div>
-            <label>岗位:</label>
+            <label>岗位：</label>
             <input type="select" id="postIds" name="postIds"
                    style="width: 260px;height: 28px;"/>
         </div>

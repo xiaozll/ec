@@ -33,7 +33,7 @@
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" value="${model.version}"/>
         <div>
-            <label>用户类型:</label>
+            <label>用户类型：</label>
             <select id="userType" name="userType" class="easyui-combobox" style="width: 120px;height: 28px;" >
                 <c:forEach items="${userTypes}" var="userType">
                     <option value="${userType.value}" <c:if test="${model.userType eq userType.value}">selected</c:if>>${userType.text}</option>
@@ -41,29 +41,29 @@
             </select>
         </div>
         <div>
-            <label>所属组织机构:</label>
+            <label>所属组织机构：</label>
             <input type="select" id="defaultOrganId" name="defaultOrganId" value="${model.defaultOrganId}"
                    style="width: 260px;height: 28px;"/>
         </div>
         <div>
-            <label>登录名:</label>
+            <label>登录名：</label>
             <input type="text" id="loginName" name="loginName" maxLength="36" value="${model.loginName}"
                    class="easyui-validatebox textbox"
                    data-options="required:true,missingMessage:'请输入登录名.',validType:['minLength[1]']"/>
         </div>
         <div>
-            <label>员工编号:</label>
+            <label>员工编号：</label>
             <input type="text" id="code" name="code" maxLength="36" value="${model.code}"
                    class="easyui-validatebox textbox"/>
         </div>
         <div id="password_div">
-            <label>密码:</label>
+            <label>密码：</label>
             <input type="password" id="password"
                    name="password" class="easyui-validatebox textbox" maxLength="36" value="${model.password}"
                    data-options="required:true,missingMessage:'请输入密码.',validType:['minLength[1]']">
         </div>
         <div id="repassword_div">
-            <label>确认密码:</label>
+            <label>确认密码：</label>
             <input type="password" id="repassword"
                    name="repassword" class="easyui-validatebox textbox" required="true"
                    missingMessage="请再次填写密码." validType="equalTo['#password']"
@@ -71,12 +71,12 @@
         </div>
 
         <div>
-            <label>姓名:</label>
+            <label>姓名：</label>
             <input name="name" type="text" maxLength="12" value="${model.name}" class="easyui-validatebox textbox"
                    data-options="required:true,missingMessage:'请输入登录名.',validType:['CHS','length[2,6]']" />
         </div>
         <div>
-            <label>头像:</label>
+            <label>头像：</label>
             <div id="image_div" style="margin-left: 96px;">
                 <input id="image" name="photo" readonly="readonly" value="${model.photo}" type="hidden"/>
                 <div class="img_div">
@@ -87,48 +87,48 @@
             </div>
         </div>
         <div>
-            <label>性别:</label>
+            <label>性别：</label>
             <input id="sex" name="sex" value="${model.sex}"  style="width: 120px;height: 28px;" />
         </div>
         <div>
-            <label>出生日期:</label>
+            <label>出生日期：</label>
             <input id="birthday" name="birthday" value="${model.birthday}"  type="text" class="easyui-my97" />
         </div>
         <div>
-            <label>公司邮箱:</label>
+            <label>公司邮箱：</label>
             <input name="email" type="text" value="${model.email}"  class="easyui-validatebox textbox" validType="email" maxLength="64" />
         </div>
         <div>
-            <label>办公电话:</label>
+            <label>办公电话：</label>
             <input name="tel" type="text"  value="${model.tel}"  class="easyui-validatebox textbox" validType="phone">
         </div>
         <div>
-            <label>手机号:</label>
+            <label>手机号：</label>
             <input name="mobile" type="text" value="${model.mobile}" class="easyui-validatebox textbox" validType="mobile">
         </div>
         <div>
-            <label>QQ:</label>
+            <label>QQ：</label>
             <input name="qq" type="text" value="${model.qq}" class="easyui-numberbox textbox" validType="QQ" maxLength="64" style="height: 28px;" />
         </div>
         <div>
-            <label>个人邮箱:</label>
+            <label>个人邮箱：</label>
             <input name="personEmail" type="text" value="${model.personEmail}" class="easyui-validatebox textbox" validType="email" maxLength="64" />
         </div>
         <div>
-            <label>地址:</label>
+            <label>地址：</label>
             <input name="address" type="text" value="${model.address}" class="easyui-validatebox textbox" validType="legalInput" maxLength="255" />
         </div>
         <div>
-            <label >备注:</label>
+            <label >备注：</label>
             <input name="remark" maxLength="1000" value="${model.remark}"  class="easyui-textbox" data-options="multiline:true" style="width:260px;height:75px;">
         </div>
         <div>
-            <label>排序:</label>
+            <label>排序：</label>
             <input type="text" id="sort" name="sort" value="${model.sort}"  class="easyui-numberspinner"
                    data-options="min:1,max:99999999,size:9,maxlength:9,height:28" />
         </div>
         <div>
-            <label>状态:</label>
+            <label>状态：</label>
             <label style="text-align: left;width: 60px;">
                 <input type="radio" name="status" style="width: 20px;" value="0" /> 启用
             </label>

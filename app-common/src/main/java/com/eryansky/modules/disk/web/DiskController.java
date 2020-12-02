@@ -495,7 +495,7 @@ public class DiskController extends SimpleController {
     /**
      * 文件检索
      *
-     * @param fileName        文件名
+     * @param query        关键字
      * @param folderAuthorize 云盘类型
      * @param startTime       开始时间
      * @param endTime         结束时间
@@ -506,7 +506,7 @@ public class DiskController extends SimpleController {
     @RequestMapping(value = {"fileSearchDatagrid"})
     @ResponseBody
     public String fileSearchDatagrid(
-            String fileName,
+            String query,
             String folderAuthorize,
             String sizeType,
             Date startTime,
@@ -520,7 +520,7 @@ public class DiskController extends SimpleController {
         }
         userId = Collections3.isNotEmpty(personIds) ? personIds.get(0) : userId;
         Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
-        page = fileService.searchFilePage(page, userId, fileName,
+        page = fileService.searchFilePage(page, userId, query,
                 folderAuthorize, sizeType,isAdmin, startTime, endTime);
         if (page != null) {
             Datagrid<File> dg = new Datagrid<File>(page.getTotalCount(),

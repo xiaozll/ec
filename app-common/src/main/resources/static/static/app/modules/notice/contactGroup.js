@@ -3,7 +3,7 @@ var $contactGroup_user_tree;
 var $contactGroup_mail_tree;
 var $contactGroup_form;
 var $contactGroup_dialog;
-var $contactGroup_user_search_form;
+var $contactGroup_search_form;
 var $contactGroup_datagrid;
 var $contactGroup_user_datagrid;
 var $contactGroup_mail_datagrid;
@@ -13,6 +13,7 @@ var $contactGroupMail_dialog;
 var isUser=1;
 
 $(function(){
+    $contactGroup_search_form = $('#contactGroup_search_form').form();
     $("#groupTree-tabs").tabs({
         onSelect:function(title,index){
             initData(true);

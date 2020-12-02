@@ -103,46 +103,46 @@
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" />
         <div>
-            <label>姓名:</label>
+            <label>姓名：</label>
             <input name="name" type="text" id="name" maxLength="6" class="easyui-validatebox textbox"
                    data-options="required:true,missingMessage:'请输入姓名.',validType:['CHS','length[2,6]']" />
         </div>
 
         <div>
-            <label>性别:</label>
+            <label>性别：</label>
             <input id="sex" name="sex" />
         </div>
         <div>
-            <label>出生日期:</label>
+            <label>出生日期：</label>
             <input id="birthday" name="birthday" type="text" class="easyui-my97" />
         </div>
-        <label>头像:</label>
+        <label>头像：</label>
         <input id="photo" name="photo" readonly="readonly" style="display: none" />
         <img id="photo_pre" src="" alt="头像" style="margin-left: 76px;width: 64px; height: 64px;">
         <input id="file" name="file" type="file" multiple="true">
         <div>
-            <label>公司邮箱:</label>
+            <label>公司邮箱：</label>
             <input name="email" type="text" class="easyui-validatebox textbox" validType="email" maxLength="64" />
         </div>
         <div>
-            <label>个人邮箱:</label>
+            <label>个人邮箱：</label>
             <input name="personEmail" type="text" class="easyui-validatebox textbox" validType="email" maxLength="64" />
         </div>
         <div>
-            <label>地址:</label>
+            <label>地址：</label>
             <input name="address" type="text" class="easyui-validatebox textbox" validType="legalInput" maxLength="255" />
         </div>
         <div>
-            <label>办公电话:</label>
+            <label>办公电话：</label>
             <input name="tel" type="text" class="easyui-validatebox textbox" validType="phone">
         </div>
 
         <div>
-            <label>手机号:</label>
+            <label>手机号：</label>
             <input name="mobile" type="text" class="easyui-validatebox textbox" validType="mobile">
         </div>
         <div>
-            <label>QQ:</label>
+            <label>QQ：</label>
             <input name="qq" type="text" class="easyui-numberbox" validType="QQ" maxLength="64" style="height:28px;" />
         </div>
     </form>

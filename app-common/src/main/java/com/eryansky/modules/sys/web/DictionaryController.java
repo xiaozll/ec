@@ -200,7 +200,7 @@ public class DictionaryController extends SimpleController {
     public Datagrid<Dictionary> treegrid(Dictionary Dictionary, HttpServletRequest request, HttpServletResponse response) {
         Page<Dictionary> page = new Page<Dictionary>(request);
         page = dictionaryService.findPage(page, Dictionary);
-        return new Datagrid<Dictionary>(page.getTotalCount(), page.getResult());
+        return new Datagrid<>(page.getTotalCount(), page.getResult());
     }
 
     /**

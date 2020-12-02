@@ -46,17 +46,17 @@
             </div>
 
             <div data-options="region:'north',title:'过滤条件',split:false,collapsed:false,border:false"
-                 style="width: 100%;height:62px; ">
+                 style="width: 100%;height:70px;overflow-y: hidden;">
                 <form id="contactGroup_search_form" style="padding: 5px;">
                     &nbsp;&nbsp;<span id="search">
-                    关键字:<input type="text" id="query" name="query" class="easyui-validatebox textbox eu-input" placeholder="关键字..."
+                    关键字：<input type="text" id="query" name="query" class="easyui-validatebox textbox eu-input" placeholder="关键字..."
                           onkeydown="if(event.keyCode==13)search()"  maxLength="25" style="width: 160px"/>
 
                 </span>
-                    <%--姓名或登录名:<input type="text" id="loginNameOrName" name="loginNameOrName" class="easyui-validatebox textbox eu-input" placeholder="姓名或登录名..."--%>
+                    <%--姓名或登录名：<input type="text" id="loginNameOrName" name="loginNameOrName" class="easyui-validatebox textbox eu-input" placeholder="姓名或登录名..."--%>
                           <%--onkeydown="if(event.keyCode==13)search()"  maxLength="25" style="width: 160px"/>--%>
-                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',onClick:search">查询</a>
-                    <%--&lt;%&ndash;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no'" onclick="javascript:$contactGroup_user_search_form.form('reset');">重置查询</a>&ndash;%&gt;--%>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$contactGroup_search_form.form('reset');">重置</a>
                 </form>
             </div>
         </div>

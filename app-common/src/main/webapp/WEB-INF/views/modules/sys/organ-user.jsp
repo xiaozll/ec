@@ -10,16 +10,16 @@
     <form id="organ_user_form" class="dialog-form" method="post">
         <input type="hidden" id="id" name="id" value="${model.id}" />
         <%--<div>--%>
-            <%--<label>机构用户:</label>--%>
+            <%--<label>机构用户：</label>--%>
             <%--<input type="select" id="userIds" name="userIds" style="width: 260px;height:28px;"/>--%>
         <%--</div>--%>
         <div>
-            <label>主管:</label>
+            <label>主管：</label>
             <input type="select" id="managerUserId" name="managerUserId" value="${model.managerUserId}"
                    style="width: 260px;height:28px;"/>
         </div>
         <div>
-            <label>分管领导:</label>
+            <label>分管领导：</label>
             <input type="hidden" id="superManagerUserId" name="superManagerUserId" value="${model.superManagerUserId}">
             <input class="easyui-textbox" id="superManagerUserName" name="superManagerUserName" value="${model.superManagerUserName}"
                    data-options="editable:false,buttonText:' 选 择 ',buttonIcon:'eu-icon-user',prompt:'分管领导',onClickButton:selectUser"

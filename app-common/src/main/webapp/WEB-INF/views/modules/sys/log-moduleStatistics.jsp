@@ -54,7 +54,7 @@
 	<label>结束日期：</label><input id="endTime" name="endTime" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
 							   value="${paramMap.endTime}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>&nbsp;&nbsp;
 	<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-	<button type="button" class="btn btn-primary" onclick="exportExcel();">导出excel</button>
+	<button type="button" class="btn btn-primary" onclick="exportExcel();">导出</button>
 	<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 	</div>

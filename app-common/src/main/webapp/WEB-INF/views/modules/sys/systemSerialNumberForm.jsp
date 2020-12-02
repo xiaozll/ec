@@ -34,27 +34,27 @@
     <form:hidden id="id" path="id"/>
     <tags:message content="${message}"/>
     <div class="control-group">
-        <label class="control-label">APP标识:</label>
+        <label class="control-label">APP标识：</label>
         <div class="controls">
             <form:input path="app" htmlEscape="false" maxlength="36" class="input-xxlarge"/>
             <span class="help-inline">默认值：“1”</span>
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label">模块名称:</label>
+        <label class="control-label">模块名称：</label>
         <div class="controls">
             <form:input path="moduleName" htmlEscape="false" maxlength="200" class="input-xxlarge required"/>
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label">模块编码:</label>
+        <label class="control-label">模块编码：</label>
         <div class="controls">
             <form:input path="moduleCode" htmlEscape="false" maxlength="128" class="input-xxlarge required"/>
         </div>
     </div>
 
     <div class="control-group">
-        <label class="control-label">模板:</label>
+        <label class="control-label">模板：</label>
         <div class="controls">
             <form:textarea id="configTemplate" htmlEscape="true" path="configTemplate" rows="4" maxlength="128" class="input-xxlarge required"/>
             <span class="help-inline">“#” 为子序列间的分隔符。在每个子序列规则定义的内部，用 “@” 分为两部分，前面一部分（Str/DateTime/NumSeq/CustomStr）表明该子序列的类型，后面一部分是用于生成子序列串所需的信息。
@@ -67,13 +67,13 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label">当前最大值:</label>
+        <label class="control-label">当前最大值：</label>
         <div class="controls">
             <textarea id="maxSerial" name="_maxSerial" rows="4" maxlength="4096" class="input-xxlarge">${model.maxSerial}</textarea>
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label">缓存大小:</label>
+        <label class="control-label">缓存大小：</label>
         <div class="controls">
             <form:input path="preMaxNum" htmlEscape="false" maxlength="11" class="input-large digits"/>
             <span class="help-inline">预生成流水号数量</span>
@@ -81,7 +81,7 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label">重置类型:</label>
+        <label class="control-label">重置类型：</label>
         <div class="controls">
             <form:select path="resetType">
                 <form:option value="">请选择...</form:option>
@@ -91,7 +91,7 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label">备注:</label>
+        <label class="control-label">备注：</label>
         <div class="controls">
             <form:textarea id="remark" htmlEscape="true" path="remark" rows="4" maxlength="200" class="input-xxlarge"/>
         </div>

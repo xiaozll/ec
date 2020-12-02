@@ -9,12 +9,12 @@
 <div>
     <form id="user_organ_form" class="dialog-form" method="post" novalidate>
         <div>
-            <label>所属组织机构:</label>
+            <label>所属组织机构：</label>
             <input type="select" id="organIds" name="organIds"
                    style="width: 260px;height: 28px;"/>
         </div>
         <div>
-            <label>默认组织机构:</label>
+            <label>默认组织机构：</label>
             <input type="select" id="defaultOrganId" name="defaultOrganId"
                    style="width: 260px;height: 28px;"/>
         </div>

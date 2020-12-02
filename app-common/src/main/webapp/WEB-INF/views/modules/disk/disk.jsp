@@ -38,21 +38,21 @@
     </div>
     <!-- 中间部分 列表 -->
     <div data-options="region:'center',split:true" style="overflow: hidden;">
-        <div class="easyui-layout" fit="true" style="margin: 0px;border: 0px;overflow: hidden;width:100%;height:100%;">
+        <div class="easyui-layout" fit="true" style="margin: 0;border: 0;overflow: hidden;width:100%;height:100%;">
             <div data-options="region:'center',split:true" style="overflow: hidden;">
                 <table id="folder_file_datagrid" ></table>
             </div>
 
             <div data-options="region:'north',title:'过滤条件',split:false,collapsed:false,border:false"
-                 style="width: 100%;height:76px; ">
+                 style="width: 100%;height:70px;overflow-y: hidden;">
                 <form id="folder_file_search_form" style="padding: 5px;">
-                    &nbsp;&nbsp;文件名:<input type="text" id="fileName" name="fileName" placeholder="文件名..." class="easyui-validatebox textbox eu-input"
+                    &nbsp;&nbsp;文件名：<input type="text" id="fileName" name="fileName" placeholder="文件名..." class="easyui-validatebox textbox eu-input"
                                            onkeydown="if(event.keyCode==13)search()"  maxLength="25" style="width: 160px"/>
-                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',onClick:search">查询</a>
-                    <iframe id="annexFrame" src="" frameborder="no" style="padding: 0;border: 0;width: 300px;height: 26px;"></iframe>
-                    <%--<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no'" onclick="javascript:folder_file_search_form.form('reset');">重置查询</a>--%>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$user_search_form.form('reset');">重置</a>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<iframe id="annexFrame" src="" frameborder="no" style="padding: 0;border: 0;width: 0;height: 0;display: none;"></iframe>

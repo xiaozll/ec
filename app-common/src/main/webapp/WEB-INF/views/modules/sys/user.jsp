@@ -39,11 +39,11 @@
             <div data-options="region:'north',title:'过滤条件',split:false,collapsed:false,border:false"
                  style="width: 100%;height:70px;overflow-y: hidden; ">
                 <form id="user_search_form" style="padding: 5px;">
-                    &nbsp;关键字:<input type="text" id="query" name="query"
+                    &nbsp;关键字：<input type="text" id="query" name="query"
                                         class="easyui-validatebox textbox eu-input" placeholder="关键字..."
-                                        onkeydown="if(event.keyCode==13)search()" maxLength="25" style="width: 160px"/>
+                                        onkeydown="if(event.keyCode==13)search()" maxLength="25" style="width: 160px;height: 28px;"/>
                     &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
-                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$user_search_form.form('reset');">重置查询</a>
+                     <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$folder_file_search_form.form('reset');">重置</a>
                 </form>
             </div>
         </div>

@@ -47,6 +47,11 @@ public class DictionaryItem extends DataEntity<DictionaryItem> {
      */
     private Dictionary dictionary;
 
+    /**
+     * 关键字
+     */
+    private String query;
+
     public DictionaryItem() {
         super();
     }
@@ -159,4 +164,11 @@ public class DictionaryItem extends DataEntity<DictionaryItem> {
         return null;
     }
 
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
 }

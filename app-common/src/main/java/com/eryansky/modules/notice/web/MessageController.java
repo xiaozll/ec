@@ -70,13 +70,17 @@ public class MessageController extends SimpleController {
 
     @RequiresPermissions("notice:message:view")
     @RequestMapping(value = {"list", "", "audit"})
-    public ModelAndView list(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView list(@ModelAttribute("model") Message model,String appId, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageList");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (null != sessionInfo && !sessionInfo.isSuperUser()) {//非管理员
+        String userId = sessionInfo.getUserId();
+        if (!sessionInfo.isSuperUser()) {//非管理员
             model.setOrganId(sessionInfo.getLoginCompanyId());
+        }else{//管理员
+            model.setAppId(null);
+            userId = null;
         }
-        Page<Message> page = messageService.findPage(new Page<>(request, response), model,true);
+        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),model.getAppId(),userId,model.getStatus(),true);
         modelAndView.addObject("page", page);
         modelAndView.addObject("model", model);
         return modelAndView;

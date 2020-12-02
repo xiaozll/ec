@@ -111,6 +111,9 @@
 			<if test="organId != null and organId != ''">
 				AND a.organ_id = #{organId}
 			</if>
+			<if test="userId != null and userId != ''">
+				AND a.sender = #{userId}
+			</if>
 
 			<if test="category != null and category != ''">
 				AND a.category = #{category}

@@ -47,12 +47,17 @@ public class MessageService extends CrudService<MessageDao, Message> {
     private UserService userService;
 
 
-    public Page<Message> findPage(Page<Message> page, Message entity, boolean isDataScopeFilter) {
+    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, boolean isDataScopeFilter) {
+        Parameter parameter = Parameter.newParameter();
         if(isDataScopeFilter){
-            entity.getSqlMap().put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
+            parameter.put("sqlMap.dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
         }
-        entity.setEntityPage(page);
-        page.setResult(dao.findList(entity));
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put("appId",appId);
+        parameter.put("userId",userId);
+        parameter.put("status",status);
+        page.setResult(dao.findQueryList(parameter));
         return page;
     }
 

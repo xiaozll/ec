@@ -78,7 +78,7 @@ public class MessageController extends SimpleController {
         if (!sessionInfo.isSuperUser()) {//非管理员
             model.setOrganId(sessionInfo.getLoginCompanyId());
         }else{//管理员
-            _appId = null;
+            _appId = StringUtils.isNotBlank(appId) ? appId:null;
             userId = null;
         }
         Page<Message> page = messageService.findQueryPage(new Page<>(request, response),_appId,userId,model.getStatus(),true);

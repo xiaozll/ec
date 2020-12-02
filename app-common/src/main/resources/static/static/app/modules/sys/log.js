@@ -49,7 +49,7 @@ $(function () {
         ]],
         toolbar: [
             {
-                text: '导出Excel',
+                text: '导出',
                 iconCls: 'easyui-icon-search',
                 handler: function () {
                     exportQuery();

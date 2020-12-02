@@ -74,13 +74,14 @@ public class MessageController extends SimpleController {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageList");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String userId = sessionInfo.getUserId();
+        String _appId = StringUtils.isNotBlank(appId) ? appId:Message.DEFAULT_ID;
         if (!sessionInfo.isSuperUser()) {//非管理员
             model.setOrganId(sessionInfo.getLoginCompanyId());
         }else{//管理员
-            model.setAppId(null);
+            _appId = null;
             userId = null;
         }
-        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),model.getAppId(),userId,model.getStatus(),true);
+        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),_appId,userId,model.getStatus(),true);
         modelAndView.addObject("page", page);
         modelAndView.addObject("model", model);
         return modelAndView;

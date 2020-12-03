@@ -47,8 +47,8 @@
                 <form id="notice_search_form" style="padding: 5px;">
                     <table style="border: 0">
                         <tr>
-                            <td>标&nbsp;题：</td>
-                            <td><input type="text" id="query" name="query" placeholder="标题" class="easyui-validatebox textbox eu-input" maxLength="25" style="width: 260px" /></td>
+                            <td>关键字：</td>
+                            <td><input type="text" id="query" name="query" placeholder="关键字" class="easyui-validatebox textbox eu-input" maxLength="25" style="width: 260px" /></td>
                             <!-- <td>内&nbsp;容：</td>
                             <td><input type="text" name="content" maxLength="25" style="width: 260px"/></td> -->
                             <td>&nbsp;</td>

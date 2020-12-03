@@ -200,11 +200,22 @@ public class UserUtils {
      * @return
      */
     public static String getUserName(String userId) {
+        return getUserName(userId,null);
+    }
+
+    /**
+     * 根据userId查找用户姓名
+     *
+     * @param userId 用户ID
+     * @param defaultResult 为null时返回
+     * @return
+     */
+    public static String getUserName(String userId,String defaultResult) {
         User user = getUser(userId);
         if (user != null) {
             return user.getName();
         }
-        return null;
+        return defaultResult;
     }
 
     /**

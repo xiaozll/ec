@@ -221,6 +221,7 @@ public class J2CacheSpringRedisAutoConfiguration {
 				log.warn("Redis mode [" + mode + "] not defined. Using 'single'.");
 			break;
 		}
+		connectionFactory.setValidateConnection(true);
 		return connectionFactory;
 	}
 

@@ -16,7 +16,7 @@
                                  maxlength="20" placeholder="关键字"/>
                 &nbsp;更新时间：<input type="text" name="startTime" class="easyui-my97" placeholder="更新时间"/>
                             ~ <input type="text" name="endTime" class="easyui-my97"  placeholder="更新时间"/>
-            &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
+            &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
             <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$versionLog_search_form.form('reset');">重置</a>
         </form>
         </form>

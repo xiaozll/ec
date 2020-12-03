@@ -387,7 +387,7 @@ function loadFileSize() {
                         </c:if>
                     </td>
                     <td>文件大小：<input  id="sizeType" name="sizeType" style="width: 160px;height: 28px;"/>
-                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
+                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
                         <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:file_search_form.form('reset');">重置</a>
                     </td>
 

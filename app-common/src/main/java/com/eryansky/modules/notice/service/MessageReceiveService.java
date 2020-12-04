@@ -229,8 +229,8 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * 根据消息ID查找
      *
      * @param messageId 消息ID
-     * @param isRead    是否阅读
-     * @param isSend    消是否发送成功
+     * @param isRead    是否阅读 {@link YesOrNo}
+     * @param isSend    消是否发送成功 {@link YesOrNo}
      * @return
      */
     public List<MessageReceive> findByMessageId(String messageId, String isRead, String isSend) {
@@ -258,8 +258,8 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      *
      * @param page
      * @param messageId 消息ID
-     * @param isRead    是否阅读
-     * @param isSend    消是否发送成功
+     * @param isRead    是否阅读 {@link YesOrNo}
+     * @param isSend    消是否发送成功 {@link YesOrNo}
      * @return
      */
     public Page<MessageReceive> findPageByMessageId(Page<MessageReceive> page, String messageId, String isRead, String isSend) {
@@ -290,8 +290,8 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      *
      * @param senderUserId 消息发送人ID
      * @param messageId    消息ID
-     * @param isRead       是否阅读
-     * @param isSend       消是否发送成功
+     * @param isRead       是否阅读 {@link YesOrNo}
+     * @param isSend       消是否发送成功 {@link YesOrNo}
      * @return
      */
     public List<MessageReceive> findBySenderUserId(String senderUserId, String messageId, String isRead, String isSend) {
@@ -320,8 +320,8 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      *
      * @param senderUserId 消息发送人ID
      * @param messageId    消息ID
-     * @param isRead       是否阅读
-     * @param isSend       消是否发送成功
+     * @param isRead       是否阅读 {@link YesOrNo}
+     * @param isSend       消是否发送成功 {@link YesOrNo}
      * @return
      */
     public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page, String senderUserId, String messageId, String isRead, String isSend) {

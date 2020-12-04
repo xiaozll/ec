@@ -713,9 +713,9 @@
         FROM t_sys_user a
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
-        <if test="organCode != null and organCode !=''">
+        <if test="organCode != null or companyId != null or companyCode != null or homeCompanyId != null or homeCompanyCode != null">
             LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-            LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+            LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         </if>
         <where>
             a.status = #{status}
@@ -730,6 +730,18 @@
             </if>
             <if test="organCode != null and organCode !=''">
                 AND o.code = #{organCode}
+            </if>
+            <if test="companyId != null and companyId !=''">
+                AND o.conmpay_id = #{companyId}
+            </if>
+            <if test="companyCode != null and companyCode !=''">
+                AND o.company_code = #{companyCode}
+            </if>
+            <if test="homeCompanyId != null and homeCompanyId !=''">
+                AND o.home_company_id = #{homeCompanyId}
+            </if>
+            <if test="homeCompanyCode != null and homeCompanyCode !=''">
+                AND o.home_company_code = #{homeCompanyCode}
             </if>
         </where>
         ORDER BY a.sort ASC
@@ -741,9 +753,9 @@
         FROM t_sys_user a
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
-        <if test="organCode != null and organCode !=''">
+        <if test="organCode != null or companyId != null or companyCode != null or homeCompanyId != null or homeCompanyCode != null">
             LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-            LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+            LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         </if>
         <where>
             a.status = #{status}
@@ -758,6 +770,18 @@
             </if>
             <if test="organCode != null and organCode !=''">
                 AND o.code = #{organCode}
+            </if>
+            <if test="companyId != null and companyId !=''">
+                AND o.conmpay_id = #{companyId}
+            </if>
+            <if test="companyCode != null and companyCode !=''">
+                AND o.company_code = #{companyCode}
+            </if>
+            <if test="homeCompanyId != null and homeCompanyId !=''">
+                AND o.home_company_id = #{homeCompanyId}
+            </if>
+            <if test="homeCompanyCode != null and homeCompanyCode !=''">
+                AND o.home_company_code = #{homeCompanyCode}
             </if>
         </where>
         ORDER BY a.sort ASC
@@ -771,7 +795,7 @@
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             a.status = #{status}
             <if test="postId != null and postId !=''">
@@ -801,7 +825,7 @@
         LEFT JOIN t_sys_post p ON p.id = up.post_id
         <if test="organCode != null and organCode !=''">
             LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-            LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+            LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         </if>
         <where>
             a.status = #{status}

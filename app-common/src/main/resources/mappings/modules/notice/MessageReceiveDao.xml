@@ -98,6 +98,29 @@
 		</where>
 	</select>
 
+	<select id="findByMessageId" resultType="MessageReceive">
+		SELECT
+		<include refid="messageReceiveColumns"/>
+		FROM t_notice_message_receive a
+		<where>
+			a.message_id = #{messageId}
+		</where>
+	</select>
+
+	<select id="findBySenderUserId" resultType="MessageReceive">
+		SELECT
+		<include refid="messageReceiveColumns"/>
+		FROM t_notice_message_receive a
+		<include refid="messageReceiveJoins"/>
+		<where>
+			m.status = #{status}
+			AND m.sender = #{senderUserId}
+			<if test="messageId != null and messageId !=''">
+				AND a.message_id = #{messageId}
+			</if>
+		</where>
+	</select>
+
 
 	<update id="updateByUserIdAndMessageId">
 		UPDATE t_notice_message_receive

@@ -1162,12 +1162,56 @@ public class UserService extends CrudService<UserDao, User> {
     /**
      * 根据岗位查询
      *
+     * @param postId  岗位ID
+     * @param companyId 单位ID
+     * @return
+     */
+    public List<User> findListByPostIdAndCompanyId(String postId, String companyId) {
+        return findListByPostAndOrgan(postId,null,null,null,companyId,null,null,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param homeCompanyId 上级单位ID
+     * @return
+     */
+    public List<User> findListByPostIdAndHomeCompanyId(String postId, String homeCompanyId) {
+        return findListByPostAndOrgan(postId,null,null,null,null,null,homeCompanyId,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
      * @param postCode  岗位编码
      * @param organCode 机构编码
      * @return
      */
     public List<User> findListByPostCodeAndOrganCode(String postCode, String organCode) {
         return findListByPostAndOrgan(null,postCode,null,organCode);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postCode  岗位编码
+     * @param companyCode 单位编码
+     * @return
+     */
+    public List<User> findListByPostCodeAndCompanyCode(String postCode, String companyCode) {
+        return findListByPostAndOrgan(null,postCode,null,null,null,companyCode,null,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postCode  岗位编码
+     * @param homeCompanyCode 上级单位编码
+     * @return
+     */
+    public List<User> findListByPostCodeAndHomeCompanyCode(String postCode, String homeCompanyCode) {
+        return findListByPostAndOrgan(null,postCode,null,null,null,null,null,homeCompanyCode);
     }
 
 
@@ -1181,6 +1225,23 @@ public class UserService extends CrudService<UserDao, User> {
      * @return
      */
     public List<User> findListByPostAndOrgan(String postId,String postCode, String organId, String organCode) {
+        return findListByPostAndOrgan(postId, postCode, organId, organCode,null,null,null,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @param organCode 机构编码
+     * @param companyId 单位ID
+     * @param companyCode 单位编码
+     * @param homeCompanyId 上级单位ID
+     * @param homeCompanyCode 上级单位编码
+     * @return
+     */
+    public List<User> findListByPostAndOrgan(String postId,String postCode, String organId, String organCode,String companyId,String companyCode,String homeCompanyId,String homeCompanyCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
@@ -1188,6 +1249,10 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("postCode", postCode);
         parameter.put("organId", organId);
         parameter.put("organCode", organCode);
+        parameter.put("companyId", companyId);
+        parameter.put("companyCode", companyCode);
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("homeCompanyCode", homeCompanyCode);
         return dao.findListByPostAndOrgan(parameter);
     }
 
@@ -1203,6 +1268,23 @@ public class UserService extends CrudService<UserDao, User> {
      * @return
      */
     public Page<User> findPageByPostAndOrgan(Page<User> page,String postId,String postCode, String organId, String organCode) {
+        return findPageByPostAndOrgan(page, postId, postCode, organId, organCode,null,null,null,null);
+    }
+
+    /**
+     * 根据岗位查询（分页）
+     *
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @param organCode 机构编码
+     * @param companyId 单位ID
+     * @param companyCode 单位编码
+     * @param homeCompanyId 上级单位ID
+     * @param homeCompanyCode 上级单位编码
+     * @return
+     */
+    public Page<User> findPageByPostAndOrgan(Page<User> page,String postId,String postCode, String organId, String organCode,String companyId,String companyCode,String homeCompanyId,String homeCompanyCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
@@ -1211,8 +1293,13 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("postCode", postCode);
         parameter.put("organId", organId);
         parameter.put("organCode", organCode);
+        parameter.put("companyId", companyId);
+        parameter.put("companyCode", companyCode);
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("homeCompanyCode", homeCompanyCode);
         return page.setResult(dao.findListByPostAndOrgan(parameter));
     }
+
 
     /**
      * 根据岗位查询
@@ -1223,6 +1310,29 @@ public class UserService extends CrudService<UserDao, User> {
      */
     public List<String> findUserIdsByPostIdAndOrganId(String postId,String organId){
         return findUserIdsByPostAndOrgan(postId,null,organId,null);
+    }
+
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param companyId 单位ID
+     * @return
+     */
+    public List<String> findUserIdsByPostIdAndCompanyId(String postId,String companyId){
+        return findUserIdsByPostAndOrgan(postId,null,null,null,companyId,null,null,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param homeCompanyId 单位ID
+     * @return
+     */
+    public List<String> findUserIdsByPostIdAndHomeCompanyId(String postId,String homeCompanyId){
+        return findUserIdsByPostAndOrgan(postId,null,null,null,null,null,homeCompanyId,null);
     }
 
     /**
@@ -1239,6 +1349,28 @@ public class UserService extends CrudService<UserDao, User> {
     /**
      * 根据岗位查询
      *
+     * @param postCode  岗位编码
+     * @param companyCode 单位编码
+     * @return
+     */
+    public List<String> findUserIdsByPostCodeAndCompanyCode(String postCode,String companyCode){
+        return findUserIdsByPostAndOrgan(null,postCode,null,null,null,companyCode,null,null);
+    }
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postCode  岗位编码
+     * @param homeCompanyCode 上级单位编码
+     * @return
+     */
+    public List<String> findUserIdsByPostCodeAndHomeCompanyCode(String postCode,String homeCompanyCode){
+        return findUserIdsByPostAndOrgan(null,postCode,null,null,null,null,null,homeCompanyCode);
+    }
+
+    /**
+     * 根据岗位查询
+     *
      * @param postId  岗位ID
      * @param postCode  岗位编码
      * @param organId 机构ID
@@ -1246,6 +1378,24 @@ public class UserService extends CrudService<UserDao, User> {
      * @return
      */
     public List<String> findUserIdsByPostAndOrgan(String postId,String postCode, String organId, String organCode) {
+        return findUserIdsByPostAndOrgan(postId, postCode, organId, organCode,null,null,null,null);
+    }
+
+
+    /**
+     * 根据岗位查询
+     *
+     * @param postId  岗位ID
+     * @param postCode  岗位编码
+     * @param organId 机构ID
+     * @param organCode 机构编码
+     * @param companyId 单位ID
+     * @param companyCode 单位编码
+     * @param homeCompanyId 上级单位ID
+     * @param homeCompanyCode 上级单位编码
+     * @return
+     */
+    public List<String> findUserIdsByPostAndOrgan(String postId,String postCode, String organId, String organCode,String companyId,String companyCode,String homeCompanyId,String homeCompanyCode) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
@@ -1253,8 +1403,13 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("postCode", postCode);
         parameter.put("organId", organId);
         parameter.put("organCode", organCode);
+        parameter.put("companyId", companyId);
+        parameter.put("companyCode", companyCode);
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("homeCompanyCode", homeCompanyCode);
         return dao.findUserIdsByPostAndOrgan(parameter);
     }
+
 
     /**
      * 根据岗位查询

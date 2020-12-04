@@ -212,4 +212,69 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
 //        messageReceive.setIsSend(flag ? YesOrNo.YES.getValue() : YesOrNo.NO.getValue());
 //        save(messageReceive);
     }
+
+
+    /**
+     * 根据消息ID查找
+     * @param messageId 消息ID
+     * @return
+     */
+    public List<MessageReceive> findByMessageId(String messageId){
+        Parameter parameter = new Parameter();
+        parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
+        parameter.put("messageId", messageId);
+        return  dao.findByMessageId(parameter);
+    }
+
+
+    /**
+     * 根据消息发送人查找
+     * @param senderUserId 消息发送人ID
+     * @return
+     */
+    public List<MessageReceive> findBySenderUserId(String senderUserId){
+        return  findBySenderUserId(senderUserId,null);
+    }
+
+
+    /**
+     * 根据消息发送人查找
+     * @param senderUserId 消息发送人ID
+     * @param messageId 消息ID
+     * @return
+     */
+    public List<MessageReceive> findBySenderUserId(String senderUserId,String messageId){
+        Parameter parameter = new Parameter();
+        parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
+        parameter.put("senderUserId", senderUserId);
+        parameter.put("messageId", messageId);
+        return  dao.findBySenderUserId(parameter);
+    }
+
+
+    /**
+     * 根据消息发送人查找（分页）
+     * @param senderUserId 消息发送人ID
+     * @return
+     */
+    public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page,String senderUserId){
+        return  findPageBySenderUserId(page,senderUserId,null);
+    }
+
+    /**
+     * 根据消息发送人查找（分页）
+     * @param senderUserId 消息发送人ID
+     * @param messageId 消息ID
+     * @return
+     */
+    public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page,String senderUserId,String messageId){
+        Parameter parameter = new Parameter();
+        parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("senderUserId", senderUserId);
+        parameter.put("messageId", messageId);
+        return  page.setResult(dao.findBySenderUserId(parameter));
+    }
+
 }

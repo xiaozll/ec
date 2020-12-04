@@ -104,6 +104,12 @@
 		FROM t_notice_message_receive a
 		<where>
 			a.message_id = #{messageId}
+			<if test="isRead != null and isRead != ''">
+				AND a.is_read = #{isRead}
+			</if>
+			<if test="isSend != null and isSend != ''">
+				AND a.is_send = #{isSend}
+			</if>
 		</where>
 	</select>
 
@@ -117,6 +123,12 @@
 			AND m.sender = #{senderUserId}
 			<if test="messageId != null and messageId !=''">
 				AND a.message_id = #{messageId}
+			</if>
+			<if test="isRead != null and isRead != ''">
+				AND a.is_read = #{isRead}
+			</if>
+			<if test="isSend != null and isSend != ''">
+				AND a.is_send = #{isSend}
 			</if>
 		</where>
 	</select>

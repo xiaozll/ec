@@ -60,7 +60,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @return
      */
     public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String userId, String isRead) {
-        return findUserPage(page,null, userId, isRead, null,null);
+        return findUserPage(page, null, userId, isRead, null, null);
     }
 
     /**
@@ -72,13 +72,13 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @param isSend
      * @return
      */
-    public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String appId, String userId, String isRead, String isSend, Map<String,Object> params) {
+    public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String appId, String userId, String isRead, String isSend, Map<String, Object> params) {
         Parameter parameter = new Parameter();
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("bizMode", MessageMode.Published.getValue());
-        parameter.put("appId", StringUtils.isNotBlank(appId) ? appId: VersionLog.DEFAULT_ID);
+        parameter.put("appId", StringUtils.isNotBlank(appId) ? appId : VersionLog.DEFAULT_ID);
         parameter.put("userId", userId);
         parameter.put("isRead", isRead);
         parameter.put("isSend", isSend);
@@ -105,11 +105,12 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
 
     /**
      * 根据用户ID以及消息ID查找
+     *
      * @param userId
      * @param messageId
      * @return
      */
-    public MessageReceive getUserMessageReceiveByMessageId(String userId,String messageId){
+    public MessageReceive getUserMessageReceiveByMessageId(String userId, String messageId) {
         Parameter parameter = new Parameter();
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("userId", userId);
@@ -120,19 +121,19 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
 
     /**
      * 根据用户ID以及消息ID设置未发送成功
+     *
      * @param userId
      * @param messageId
      * @return
      */
-    public int updateByUserIdAndMessageId(String userId,String messageId,String isSend,String isRead){
+    public int updateByUserIdAndMessageId(String userId, String messageId, String isSend, String isRead) {
         MessageReceive messageReceive = new MessageReceive();
         messageReceive.setUserId(userId);
         messageReceive.setMessageId(messageId);
-        messageReceive.setIsSend(YesOrNo.YES.getValue().equals(isSend) ? YesOrNo.YES.getValue():YesOrNo.NO.getValue());
-        messageReceive.setIsRead(YesOrNo.YES.getValue().equals(isRead) ? YesOrNo.YES.getValue():YesOrNo.NO.getValue());
+        messageReceive.setIsSend(YesOrNo.YES.getValue().equals(isSend) ? YesOrNo.YES.getValue() : YesOrNo.NO.getValue());
+        messageReceive.setIsRead(YesOrNo.YES.getValue().equals(isRead) ? YesOrNo.YES.getValue() : YesOrNo.NO.getValue());
         return dao.updateByUserIdAndMessageId(messageReceive);
     }
-
 
 
     /**
@@ -154,7 +155,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @param isRead
      */
     public int setReadAll(String userId, String isRead) {
-        return setReadAll(Message.DEFAULT_ID,userId,isRead);
+        return setReadAll(Message.DEFAULT_ID, userId, isRead);
     }
 
     /**
@@ -163,7 +164,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @param userId
      * @param isRead
      */
-    public int setReadAll(String appId,String userId, String isRead) {
+    public int setReadAll(String appId, String userId, String isRead) {
         Parameter parameter = new Parameter();
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("appId", appId);
@@ -171,7 +172,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
         parameter.put("isSend", YesOrNo.YES.getValue());
         parameter.put("isRead", StringUtils.isBlank(isRead) ? YesOrNo.YES.getValue() : isRead);
         parameter.put("readTime", Calendar.getInstance().getTime());
-        return  dao.setUserMessageRead(parameter);
+        return dao.setUserMessageRead(parameter);
     }
 
 
@@ -213,68 +214,126 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
 //        save(messageReceive);
     }
 
+    /**
+     * 根据消息ID查找
+     *
+     * @param messageId 消息ID
+     * @return
+     */
+    public List<MessageReceive> findByMessageId(String messageId) {
+        return findByMessageId(messageId, null, null);
+    }
+
 
     /**
      * 根据消息ID查找
+     *
      * @param messageId 消息ID
+     * @param isRead    是否阅读
+     * @param isSend    消是否发送成功
      * @return
      */
-    public List<MessageReceive> findByMessageId(String messageId){
+    public List<MessageReceive> findByMessageId(String messageId, String isRead, String isSend) {
         Parameter parameter = new Parameter();
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("messageId", messageId);
-        return  dao.findByMessageId(parameter);
+        parameter.put("isRead", isRead);
+        parameter.put("isSend", isSend);
+        return dao.findByMessageId(parameter);
     }
 
-
     /**
-     * 根据消息发送人查找
-     * @param senderUserId 消息发送人ID
-     * @return
-     */
-    public List<MessageReceive> findBySenderUserId(String senderUserId){
-        return  findBySenderUserId(senderUserId,null);
-    }
-
-
-    /**
-     * 根据消息发送人查找
-     * @param senderUserId 消息发送人ID
+     * 根据消息ID查找
+     *
+     * @param page
      * @param messageId 消息ID
      * @return
      */
-    public List<MessageReceive> findBySenderUserId(String senderUserId,String messageId){
+    public Page<MessageReceive> findPageByMessageId(Page<MessageReceive> page, String messageId) {
+        return findPageByMessageId(page, messageId);
+    }
+
+    /**
+     * 根据消息ID查找
+     *
+     * @param page
+     * @param messageId 消息ID
+     * @param isRead    是否阅读
+     * @param isSend    消是否发送成功
+     * @return
+     */
+    public Page<MessageReceive> findPageByMessageId(Page<MessageReceive> page, String messageId, String isRead, String isSend) {
+        Parameter parameter = new Parameter();
+        parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
+        parameter.put("messageId", messageId);
+        parameter.put("isRead", isRead);
+        parameter.put("isSend", isSend);
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        return page.setResult(dao.findByMessageId(parameter));
+    }
+
+
+    /**
+     * 根据消息发送人查找
+     *
+     * @param senderUserId 消息发送人ID
+     * @return
+     */
+    public List<MessageReceive> findBySenderUserId(String senderUserId) {
+        return findBySenderUserId(senderUserId, null, null, null);
+    }
+
+
+    /**
+     * 根据消息发送人查找
+     *
+     * @param senderUserId 消息发送人ID
+     * @param messageId    消息ID
+     * @param isRead       是否阅读
+     * @param isSend       消是否发送成功
+     * @return
+     */
+    public List<MessageReceive> findBySenderUserId(String senderUserId, String messageId, String isRead, String isSend) {
         Parameter parameter = new Parameter();
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("senderUserId", senderUserId);
         parameter.put("messageId", messageId);
-        return  dao.findBySenderUserId(parameter);
+        parameter.put("isRead", isRead);
+        parameter.put("isSend", isSend);
+        return dao.findBySenderUserId(parameter);
     }
 
 
     /**
      * 根据消息发送人查找（分页）
+     *
      * @param senderUserId 消息发送人ID
      * @return
      */
-    public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page,String senderUserId){
-        return  findPageBySenderUserId(page,senderUserId,null);
+    public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page, String senderUserId) {
+        return findPageBySenderUserId(page, senderUserId, null, null, null);
     }
 
     /**
      * 根据消息发送人查找（分页）
+     *
      * @param senderUserId 消息发送人ID
-     * @param messageId 消息ID
+     * @param messageId    消息ID
+     * @param isRead       是否阅读
+     * @param isSend       消是否发送成功
      * @return
      */
-    public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page,String senderUserId,String messageId){
+    public Page<MessageReceive> findPageBySenderUserId(Page<MessageReceive> page, String senderUserId, String messageId, String isRead, String isSend) {
         Parameter parameter = new Parameter();
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("senderUserId", senderUserId);
         parameter.put("messageId", messageId);
-        return  page.setResult(dao.findBySenderUserId(parameter));
+        parameter.put("isRead", isRead);
+        parameter.put("isSend", isSend);
+        return page.setResult(dao.findBySenderUserId(parameter));
     }
 
 }

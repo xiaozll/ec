@@ -117,6 +117,10 @@ public class Notice extends DataEntity<Notice> {
      * 查询条件
      */
     private String query;
+    /**
+     * 业务关联对象
+     */
+    private String objectId;
 
     public Notice() {
         super();
@@ -337,6 +341,14 @@ public class Notice extends DataEntity<Notice> {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getHeadImageUrl() {

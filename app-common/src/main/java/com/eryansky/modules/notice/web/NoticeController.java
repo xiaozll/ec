@@ -188,15 +188,20 @@ public class NoticeController extends SimpleController {
      * @throws Exception
      */
     @RequestMapping(value = {"input"})
-    public ModelAndView input(@ModelAttribute("model") Notice model, OperateType operateType) {
+    public ModelAndView input(@ModelAttribute("model") Notice model,
+                              @RequestParam(value = "receiveUserIds",required = false) List<String> fileIds,
+                              @RequestParam(value = "receiveUserIds",required = false) List<String> receiveUserIds,
+                              @RequestParam(value = "receiveOrganIds",required = false) List<String> receiveOrganIds,
+                              @RequestParam(value = "receiveContactGroupIds",required = false) List<String> receiveContactGroupIds,
+                              OperateType operateType) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-input");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String loginUserId = sessionInfo.getUserId();
         List<File> files = Collections.EMPTY_LIST;
-        List<String> fileIds = Collections.EMPTY_LIST;
-        List<String> receiveUserIds = Collections.EMPTY_LIST;
-        List<String> receiveOrganIds = Collections.EMPTY_LIST;
-        List<String> receiveContactGroupIds = Collections.EMPTY_LIST;
+        List<String> _fileIds = Collections.EMPTY_LIST;
+        List<String> _receiveUserIds = Collections.EMPTY_LIST;
+        List<String> _receiveOrganIds = Collections.EMPTY_LIST;
+        List<String> _receiveContactGroupIds = Collections.EMPTY_LIST;
         if (OperateType.Repeat.equals(operateType)) {// 转发
             List<String> sourceFileIds = noticeService.findFileIdsByNoticeId(model.getId());
             files = DiskUtils.copyFiles(loginUserId, Notice.FOLDER_NOTICE, sourceFileIds);
@@ -208,16 +213,24 @@ public class NoticeController extends SimpleController {
             model.setFileIds(fileIds);
             files = DiskUtils.findFilesByIds(fileIds);
 
-            receiveUserIds = noticeSendInfoService.findUserIdsByNoticeId(model.getId());
-            receiveOrganIds = noticeSendInfoService.findOrganIdsByNoticeId(model.getId());
-            receiveContactGroupIds = noticeSendInfoService.findContactGroupIdsByNoticeId(model.getId());
+            _receiveUserIds = noticeSendInfoService.findUserIdsByNoticeId(model.getId());
+            _receiveOrganIds = noticeSendInfoService.findOrganIdsByNoticeId(model.getId());
+            _receiveContactGroupIds = noticeSendInfoService.findContactGroupIdsByNoticeId(model.getId());
+
+        }else if (model.getIsNewRecord()) {//新增
+            _fileIds = fileIds;
+            model.setFileIds(fileIds);
+            files = DiskUtils.findFilesByIds(fileIds);
+            _receiveUserIds = receiveUserIds;
+            _receiveOrganIds = receiveOrganIds;
+            _receiveContactGroupIds = receiveContactGroupIds;
 
         }
         modelAndView.addObject("files", files);
-        modelAndView.addObject("fileIds", fileIds);
-        modelAndView.addObject("receiveUserIds", receiveUserIds);
-        modelAndView.addObject("receiveOrganIds", receiveOrganIds);
-        modelAndView.addObject("receiveContactGroupIds", receiveContactGroupIds);
+        modelAndView.addObject("fileIds", _fileIds);
+        modelAndView.addObject("receiveUserIds", _receiveUserIds);
+        modelAndView.addObject("receiveOrganIds", _receiveOrganIds);
+        modelAndView.addObject("receiveContactGroupIds", _receiveContactGroupIds);
         modelAndView.addObject("operateType", operateType);
         modelAndView.addObject("model", model);
         return modelAndView;

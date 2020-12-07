@@ -60,6 +60,10 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
 
         boolean isWarn = false;//是否是警告级别的异常
         Object obj = null;//其它信息
+        String loginName = SecurityUtils.getCurrentUserLoginName();
+        if(null != loginName){
+            sb.append(loginName).append(",");
+        }
         sb.append("发生异常:");
         //Hibernate Validator Bo注解校验异常处理
         if(Exceptions.isCausedBy(ex, ConstraintViolationException.class)){
@@ -131,7 +135,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
             }
-            logger.error(SecurityUtils.getCurrentUserLoginName() + ":" + result.toString(), ex);
+            logger.error(result.toString(), ex);
         }
 //        Map<String, Object> model = Maps.newHashMap();
 //        model.put("ex", ex);

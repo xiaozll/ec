@@ -8,6 +8,8 @@ package com.eryansky.utils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.hyperic.sigar.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Calendar;
@@ -20,6 +22,8 @@ import java.util.Properties;
  * @date: 2013-11-27 下午9:01
  */
 public class SigarUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(SigarUtil.class);
 
     public static void main(String[] args) {
         try {
@@ -49,6 +53,8 @@ public class SigarUtil {
                 diskWritesAndReadsOnInit.put(fs.getDevName(), usage.getDiskReadBytes() + "|" + usage.getDiskWriteBytes());
             }
         } catch (Exception e) {
+            logger.error("java.library.path:{}",System.getProperty("java.library.path"));
+            logger.error(e.getMessage(),e);
         } finally {
             if (sigar != null)
                 sigar.close();
@@ -114,6 +120,7 @@ public class SigarUtil {
             cpuu = cpuu.substring(0,cpuu.length()-1);
             status.setCpuUsage(cpuu);
         } catch (Exception e) {
+            logger.error(e.getMessage(),e);
         }
     }
 
@@ -130,7 +137,7 @@ public class SigarUtil {
             status.setUsedSwap(swap.getUsed() / (1024 * 1024));
             status.setFreeSwap(swap.getFree() / (1024 * 1024));
         } catch (Exception e) {
-
+            logger.error(e.getMessage(),e);
         }
     }
 
@@ -175,7 +182,7 @@ public class SigarUtil {
                 }
             }
         } catch (Exception e) {
-
+            logger.error(e.getMessage(),e);
         }
     }
 }

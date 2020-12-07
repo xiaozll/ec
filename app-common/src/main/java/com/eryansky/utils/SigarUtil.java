@@ -36,7 +36,12 @@ public class SigarUtil {
     // 磁盘读写初始数据 用于计算读写速率
     private static Map<String, String> diskWritesAndReadsOnInit = new HashMap<String, String>();
     private static long initTime;
+    private static boolean init = false;
     static {
+        init();
+    }
+
+    private static void  init(){
         initTime = System.currentTimeMillis();
         resetClasspath();
         Sigar sigar = null;
@@ -52,9 +57,11 @@ public class SigarUtil {
                 usage = sigar.getFileSystemUsage(fs.getDirName());
                 diskWritesAndReadsOnInit.put(fs.getDevName(), usage.getDiskReadBytes() + "|" + usage.getDiskWriteBytes());
             }
+            init = true;
         } catch (Exception e) {
             logger.error("java.library.path:{}",System.getProperty("java.library.path"));
             logger.error(e.getMessage(),e);
+            init = false;
         } finally {
             if (sigar != null)
                 sigar.close();
@@ -99,6 +106,9 @@ public class SigarUtil {
 
     public static void getServerCpuInfo(Sigar sigar, ServerStatus status) {
         try {
+            if(!init){
+                init();
+            }
             CpuInfo infos[] = sigar.getCpuInfoList();
             CpuPerc cpuList[] = sigar.getCpuPercList();
             double totalUse = 0L;
@@ -127,6 +137,9 @@ public class SigarUtil {
 
     public static void getServerMemoryInfo(Sigar sigar, ServerStatus status) {
         try {
+            if(!init){
+                init();
+            }
             Mem mem = sigar.getMem();
             status.setTotalMem(mem.getTotal() / (1024 * 1024));
             status.setUsedMem(mem.getUsed() / (1024 * 1024));
@@ -143,6 +156,9 @@ public class SigarUtil {
 
     public static void getServerDiskInfo(Sigar sigar, ServerStatus status) {
         try {
+            if(!init){
+                init();
+            }
             FileSystem fslist[] = sigar.getFileSystemList();
             FileSystemUsage usage = null;
             for (int i = 0; i < fslist.length; i++) {

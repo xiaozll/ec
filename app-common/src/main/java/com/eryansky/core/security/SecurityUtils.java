@@ -819,6 +819,7 @@ public class SecurityUtils {
         return list.stream().filter(sessionInfo -> StringUtils.contains(sessionInfo.getLoginName(), query)
                 || StringUtils.contains(sessionInfo.getName(), query)
                 || StringUtils.contains(sessionInfo.getHost(), query)
+                || StringUtils.contains(sessionInfo.getIp(), query)
                 || StringUtils.contains(sessionInfo.getMobile(), query)).collect(Collectors.toList());
     }
 

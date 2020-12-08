@@ -274,6 +274,7 @@ public class UserMobileController extends SimpleController {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
         List<Map<String,Object>> list = Lists.newArrayList();
         personPlatformContacts.parallelStream().forEach(v->{
+            //排除管理员
             if(UserType.Platform.getValue().equals(v.getUserType()) || UserType.User.getValue().equals(v.getUserType())){
                 Map<String,Object> map = Maps.newHashMap();
                 map.put("id",v.getId());

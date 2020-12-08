@@ -16,6 +16,7 @@ import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.modules.sys._enum.LogType;
+import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
@@ -273,15 +274,18 @@ public class UserMobileController extends SimpleController {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
         List<Map<String,Object>> list = Lists.newArrayList();
         personPlatformContacts.parallelStream().forEach(v->{
-            Map<String,Object> map = Maps.newHashMap();
-            map.put("id",v.getId());
-            map.put("name",v.getName());
-            map.put("phone",v.getMobile());
-            if(showPhoto){
-                map.put("photoSrc",v.getPhotoSrc());
+            if(UserType.Platform.getValue().equals(v.getUserType()) || UserType.User.getValue().equals(v.getUserType())){
+                Map<String,Object> map = Maps.newHashMap();
+                map.put("id",v.getId());
+                map.put("name",v.getName());
+                map.put("phone",v.getMobile());
+                if(showPhoto){
+                    map.put("photoSrc",v.getPhotoSrc());
+                }
+                map.put("tagIndex",v.getNamePinyinHeadChar());
+                list.add(map);
             }
-            map.put("tagIndex",v.getNamePinyinHeadChar());
-            list.add(map);
+
         });
         list.sort(Comparator.nullsLast(Comparator.comparing(m -> (String) m.get("name"),
                 Comparator.nullsLast(Comparator.naturalOrder()))));

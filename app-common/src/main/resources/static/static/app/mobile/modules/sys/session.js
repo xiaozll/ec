@@ -64,6 +64,11 @@ $(function () {
             field: 'loginName',
             width: 200
         }, {
+            title: '手机号',
+            field: 'mobile',
+            width: 120,
+            hidden: true
+        }, {
             title: '部门',
             field: 'loginOrganName',
             width: 200,

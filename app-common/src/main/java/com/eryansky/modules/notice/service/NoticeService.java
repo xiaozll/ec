@@ -175,15 +175,6 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         return publish(notice);
     }
 
-    @Async
-    public Notice asyncPublish(String noticeId) {
-        Notice notice = this.get(noticeId);
-        if (notice == null) {
-            throw new ServiceException("公告[" + noticeId + "]不存在.");
-        }
-        return  publish(notice);
-    }
-
     /**
      * 发布公告
      *

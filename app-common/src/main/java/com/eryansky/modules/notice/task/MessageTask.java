@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 消息发送异步任务
@@ -42,19 +43,20 @@ public class MessageTask {
      * @param receiveObjectType
      */
     @Async
-    public void saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds) {
+    public CompletableFuture<Message> saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds) {
         MessageReceiveObjectType messageReceiveObjectType = MessageReceiveObjectType.getByValue(receiveObjectType);
         if(null == messageReceiveObjectType){
             logger.warn("参数[receiveObjectType]未定义对应类型，{}",receiveObjectType);
-            return;
+            return CompletableFuture.completedFuture(null);
         }
         if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
-            saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
+            return saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
         } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
-            saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
+            return saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
         }else{
             logger.warn("[receiveObjectType]未实现的类型",receiveObjectType);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -63,8 +65,8 @@ public class MessageTask {
      * @param receiveObjectIds
      */
     @Async
-    public void saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
-        messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
+    public CompletableFuture<Message> saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
+        return CompletableFuture.completedFuture(messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds));
     }
 
     /**
@@ -73,8 +75,9 @@ public class MessageTask {
      * @param receive
      */
     @Async
-    public void setRead(MessageReceive receive) {
+    public CompletableFuture<Void> setRead(MessageReceive receive) {
         messageReceiveService.setRead(receive);
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -83,8 +86,9 @@ public class MessageTask {
      * @param userId
      */
     @Async
-    public void setReadAll(String userId) {
+    public CompletableFuture<Void> setReadAll(String userId) {
         messageReceiveService.setReadAll(userId, null);
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -93,7 +97,8 @@ public class MessageTask {
      * @param userId
      */
     @Async
-    public void reSendByUserId(String userId) {
+    public CompletableFuture<Void>  reSendByUserId(String userId) {
         messageReceiveService.reSendByUserId(userId);
+        return CompletableFuture.completedFuture(null);
     }
 }

@@ -1,21 +1,4 @@
 /**
- * Copyright (c) 2012-2013 http://www.eryansky.com
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * <p>
- * Copyright (c) 2012-2020 http://www.eryansky.com
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * <p>
- * Copyright (c) 2012-2020 http://www.eryansky.com
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * <p>
- * Copyright (c) 2012-2020 http://www.eryansky.com
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- */
-/**
  *  Copyright (c) 2012-2020 http://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");

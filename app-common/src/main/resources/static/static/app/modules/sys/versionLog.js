@@ -54,7 +54,7 @@ function initDatagrid() {
             text: '新增',
             iconCls: 'easyui-icon-add',
             handler: function () {
-                showDialog()
+                showDialog();
             }
         }, {
             text: '删除',

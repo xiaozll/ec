@@ -254,7 +254,7 @@ function formInit(){
 //联系人组 弹窗 新增、修改
 function showDialog(contactGroupId,contactGroupType){
     var inputUrl = ctxAdmin + "/notice/contactGroup/input?contactGroupType="+contactGroupType;
-    if (contactGroupId != undefined) {
+    if (contactGroupId) {
         inputUrl = inputUrl + "&id=" + contactGroupId;
     }
 

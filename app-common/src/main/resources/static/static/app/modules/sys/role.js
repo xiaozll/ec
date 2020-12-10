@@ -133,7 +133,7 @@ function formInit() {
 //显示弹出窗口 新增：row为空 编辑:row有值
 function showDialog(row) {
     var inputUrl = ctxAdmin + "/sys/role/input";
-    if (row !== undefined && row.id) {
+    if (row && row.id) {
         inputUrl = inputUrl + "?id=" + row.id;
     }
 

@@ -34,7 +34,7 @@ $(function () {
             text: '新增',
             iconCls: 'easyui-icon-add',
             handler: function () {
-                showDialog()
+                showDialog();
             }
         }, '-', {
             text: '编辑',
@@ -112,7 +112,7 @@ function showDialog(row) {
         inputUrl = inputUrl + "?id=" + row.id;
     } else {
         var selectedNode = $resource_treegrid.treegrid('getSelected');
-        if (selectedNode !== undefined && selectedNode.type !== undefined) {
+        if (selectedNode && selectedNode.type !== undefined) {
             inputUrl += "?parentId=" + selectedNode['id'];
         }
     }

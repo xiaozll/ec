@@ -68,7 +68,7 @@ $(function () {
             text: '新增',
             iconCls: 'easyui-icon-add',
             handler: function () {
-                showDialog()
+                showDialog();
             }
         }, '-', {
             text: '编辑',

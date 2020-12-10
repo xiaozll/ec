@@ -40,7 +40,7 @@ $(function () {
             text: '新增',
             iconCls: 'easyui-icon-add',
             handler: function () {
-                showDialog()
+                showDialog();
             }
         }, '-', {
             text: '编辑',
@@ -126,11 +126,11 @@ function formInit() {
 //显示弹出窗口 新增：row为空 编辑:row有值
 function showDialog(row) {
     var inputUrl = ctxAdmin + "/sys/organ/input";
-    if (row !== undefined && row.id) {//编辑
+    if (row && row.id) {//编辑
         inputUrl = inputUrl + "?id=" + row.id;
     } else {//新增
         var selectedNode = $organ_treegrid.treegrid('getSelected');
-        if (selectedNode !== undefined && selectedNode['id'] !== undefined) {
+        if (selectedNode && selectedNode['id'] !== undefined) {
             inputUrl += "?parentId=" + selectedNode['id'];
         }
     }

@@ -50,7 +50,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
     public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, boolean isDataScopeFilter) {
         Parameter parameter = Parameter.newParameter();
         if(isDataScopeFilter){
-            parameter.put("sqlMap.dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));//数据权限控制
+            parameter.put("sqlMap.dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
         }
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);

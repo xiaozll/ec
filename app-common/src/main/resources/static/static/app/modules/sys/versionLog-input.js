@@ -4,15 +4,8 @@ var modelIsTip = modelIsTip;
 var modelIsShelf = modelIsShelf;
 var modelFileId = modelFileId;
 var fileSizeLimit = fileSizeLimit;
+var $versionLogType_combobox = undefined;
 $(function () {
-    //日志类型 搜索选项
-    $('#versionLogType').combobox({
-        url: ctxAdmin + '/sys/versionLog/versionLogTypeCombobox?selectType=select',
-        editable: false,//是否可编辑
-        width: 120
-    });
-    uploadify();
-
     if (modelId === "") {  //新增
         $("input[name=isPub]:eq(0)").prop("checked", 'checked');//状态 初始化值
         $("input[name=isTip]:eq(0)").prop("checked", 'checked');//状态 初始化值
@@ -22,8 +15,19 @@ $(function () {
         $('input[name=isTip][value=' + modelIsTip + ']').prop("checked", 'checked');
         $('input[name=isShelf][value=' + modelIsShelf + ']').prop("checked", 'checked');
     }
+    uploadify();
+    loadVersionLogType();
 });
 
+function loadVersionLogType(){
+    //日志类型 搜索选项
+    $versionLogType_combobox= $('#version_log_type').combobox({
+        url: ctxAdmin + '/sys/versionLog/versionLogTypeCombobox?selectType=select',
+        multiple: false,
+        editable: false,
+        width: 120
+    });
+}
 var dataMap = new HashMap();
 
 function uploadify() {

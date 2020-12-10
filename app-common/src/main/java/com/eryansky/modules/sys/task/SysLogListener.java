@@ -13,6 +13,8 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2020-03-16
@@ -26,8 +28,10 @@ public class SysLogListener implements ApplicationListener<SysLogEvent> {
     @Async
     @Override
     public void onApplicationEvent(SysLogEvent event) {
-        Log log = (Log) event.getSource();
-        logService.save(log);
+        CompletableFuture.runAsync(()->{
+            Log log = (Log) event.getSource();
+            logService.save(log);
+        });
     }
 
 

@@ -147,10 +147,10 @@ public class VersionLogController extends SimpleController {
         }
 
         VersionLogType[] lts = VersionLogType.values();
-        for (int i = 0; i < lts.length; i++) {
+        for (VersionLogType lt : lts) {
             Combobox combobox = new Combobox();
-            combobox.setValue(lts[i].getValue());
-            combobox.setText(lts[i].getDescription());
+            combobox.setValue(lt.getValue());
+            combobox.setText(lt.getDescription());
             cList.add(combobox);
         }
         return cList;

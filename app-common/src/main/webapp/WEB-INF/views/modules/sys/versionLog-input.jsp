@@ -32,7 +32,7 @@
         </div>
         <div>
             <label>类型：</label>
-            <input id="versionLogType" name="versionLogType" style="height: 28px;" />
+            <input id="versionLogType" name="versionLogType" class="easyui-combobox" style="height: 28px;" />
         </div>
         <div>
             <label>是否发布：</label>

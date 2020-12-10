@@ -44,7 +44,6 @@ function uploadify() {
         },
         onUploadComplete: function (file, data) {
             data = eval("(" + data + ")");
-            console.log(file, data);
             if (data.code === 1) {
                 $("#fileId").val(data['obj']['id']);
                 dataMap.put(file.index, data.obj);

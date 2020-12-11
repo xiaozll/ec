@@ -132,6 +132,9 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
         messageReceive.setMessageId(messageId);
         messageReceive.setIsSend(YesOrNo.YES.getValue().equals(isSend) ? YesOrNo.YES.getValue() : YesOrNo.NO.getValue());
         messageReceive.setIsRead(YesOrNo.YES.getValue().equals(isRead) ? YesOrNo.YES.getValue() : YesOrNo.NO.getValue());
+        if(YesOrNo.YES.getValue().equals((messageReceive.getIsRead()))){
+            messageReceive.setReadTime(Calendar.getInstance().getTime());
+        }
         return dao.updateByUserIdAndMessageId(messageReceive);
     }
 

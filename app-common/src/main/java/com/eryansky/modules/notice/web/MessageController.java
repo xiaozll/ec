@@ -211,7 +211,7 @@ public class MessageController extends SimpleController {
         User superUser = UserUtils.getSuperUser();
         List<String> receiveObjectIds = new ArrayList<String>(1);
         receiveObjectIds.add(superUser.getId());
-        MessageUtils.sendMessage(null, sessionInfo.getUserId(), content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,null);
+        MessageUtils.sendMessage(null, null != sessionInfo ? sessionInfo.getUserId():null, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,null);
         result = Result.successResult().setMsg("消息正在发送...请稍候！");
         return result;
     }

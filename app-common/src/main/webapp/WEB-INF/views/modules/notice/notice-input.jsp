@@ -39,8 +39,8 @@
         <input type="hidden" name="id" value="${model.id}"/>
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" value="${model.version}"/>
-        <input type="hidden" id="objectType" name="version" value="${model.objectType}"/>
-        <input type="hidden" id="objectId" name="version" value="${model.objectId}"/>
+        <input type="hidden" id="objectType" name="objectType" value="${model.objectType}"/>
+        <input type="hidden" id="objectId" name="objectId" value="${model.objectId}"/>
 
         <div>
             <label>通知标题：</label>

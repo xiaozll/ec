@@ -5,6 +5,13 @@
 <%@ include file="/common/huploadify.jsp"%>
 <script type="text/javascript">
     var noticeId = '${noticeId}';
+    var objectId = '${objectId}';
+    var fileIds = '${fileIds}';
+    var receiveUserIds = '${receiveUserIds}';
+    var receiveOrganIds = '${receiveOrganIds}';
+    var receiveContactGroupIds = '${receiveContactGroupIds}';
+    var objectId = '${objectId}';
+    var objectId = '${objectId}';
     var hasRepeatPermission = false;
     <e:hasPermission name="notice:repeat">
         hasRepeatPermission = true;

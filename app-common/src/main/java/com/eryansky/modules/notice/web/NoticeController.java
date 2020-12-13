@@ -92,9 +92,19 @@ public class NoticeController extends SimpleController {
      * @return
      */
     @RequestMapping(value = {""})
-    public ModelAndView list(String noticeId) {
+    public ModelAndView list(String noticeId,
+                             @RequestParam(value = "objectId",required = false) String objectId,
+                             @RequestParam(value = "receiveUserIds",required = false) List<String> fileIds,
+                             @RequestParam(value = "receiveUserIds",required = false) List<String> receiveUserIds,
+                             @RequestParam(value = "receiveOrganIds",required = false) List<String> receiveOrganIds,
+                             @RequestParam(value = "receiveContactGroupIds",required = false) List<String> receiveContactGroupIds) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice");
         modelAndView.addObject("noticeId", noticeId);
+        modelAndView.addObject("objectId", objectId);
+        modelAndView.addObject("fileIds", fileIds);
+        modelAndView.addObject("receiveUserIds", receiveUserIds);
+        modelAndView.addObject("receiveOrganIds", receiveOrganIds);
+        modelAndView.addObject("receiveContactGroupIds", receiveContactGroupIds);
         return modelAndView;
     }
 

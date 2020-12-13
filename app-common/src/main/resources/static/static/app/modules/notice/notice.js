@@ -1,4 +1,9 @@
 var noticeId = noticeId;
+var objectId = objectId;
+var fileIds = fileIds;
+var receiveUserIds = receiveUserIds;
+var receiveOrganIds = receiveOrganIds;
+var receiveContactGroupIds = receiveContactGroupIds;
 var hasRepeatPermission = hasRepeatPermission;
 var isSuperUser = isSuperUser;
 
@@ -27,7 +32,13 @@ $(function () {
         window.setTimeout(function () {
             view(noticeId, hasRepeatPermission);
         }, 500);
+    }else if(objectId){
+        window.setTimeout(function () {
+            edit(undefined,undefined,objectId,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds);
+        }, 500);
     }
+
+
     mymessage();
 });
 
@@ -350,13 +361,16 @@ function formInit() {
 }
 
 //新增 编辑 转发
-function edit(noticeId, operateType) {
+function edit(noticeId, operateType,objectId,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds) {
     var inputUrl = ctxAdmin + '/notice/input?operateType=';
     if (operateType !== undefined) {
         inputUrl += operateType;
     }
     if (noticeId !== undefined) {
         inputUrl += "&id=" + noticeId;
+    }
+    if(objectId != undefined){
+        inputUrl += "&objectId=" + objectId+"&fileIds="+fileIds+"&receiveUserIds="+receiveUserIds+"&receiveOrganIds="+receiveOrganIds+"&receiveContactGroupIds="+receiveContactGroupIds;
     }
 
     $notice_dialog = $('<div/>').dialog({

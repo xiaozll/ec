@@ -63,7 +63,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
      * @param organIds
      * @param fileIds
      */
-    public void saveNoticeAndFiles(Notice entity, Boolean isPub, Collection<String> userIds, Collection<String> organIds, Collection<String> contactGroupIds, List<String> fileIds) {
+    public Notice saveNoticeAndFiles(Notice entity, Boolean isPub, Collection<String> userIds, Collection<String> organIds, Collection<String> contactGroupIds, List<String> fileIds) {
         List<String> oldFileIds = Collections.emptyList();
         if (!entity.getIsNewRecord()) {
             oldFileIds = findFileIdsByNoticeId(entity.getId());
@@ -88,6 +88,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         if (isPub != null && isPub) {
             publish(entity);
         }
+        return entity;
     }
 
     private void saveNoticeSendInfos(Collection<String> ids, String noticeId, String receieveObjectType) {

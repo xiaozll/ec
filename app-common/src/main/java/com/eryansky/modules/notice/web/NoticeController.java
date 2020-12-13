@@ -94,17 +94,19 @@ public class NoticeController extends SimpleController {
     @RequestMapping(value = {""})
     public ModelAndView list(String noticeId,
                              @RequestParam(value = "objectId",required = false) String objectId,
-                             @RequestParam(value = "receiveUserIds",required = false) List<String> fileIds,
+                             @RequestParam(value = "title",required = false) String title,
+                             @RequestParam(value = "fileIds",required = false) List<String> fileIds,
                              @RequestParam(value = "receiveUserIds",required = false) List<String> receiveUserIds,
                              @RequestParam(value = "receiveOrganIds",required = false) List<String> receiveOrganIds,
                              @RequestParam(value = "receiveContactGroupIds",required = false) List<String> receiveContactGroupIds) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice");
         modelAndView.addObject("noticeId", noticeId);
         modelAndView.addObject("objectId", objectId);
-        modelAndView.addObject("fileIds", fileIds);
-        modelAndView.addObject("receiveUserIds", receiveUserIds);
-        modelAndView.addObject("receiveOrganIds", receiveOrganIds);
-        modelAndView.addObject("receiveContactGroupIds", receiveContactGroupIds);
+        modelAndView.addObject("title", title);
+        modelAndView.addObject("fileIds", Collections3.isNotEmpty(fileIds) ? Collections3.convertToString(fileIds,","):"");
+        modelAndView.addObject("receiveUserIds", Collections3.isNotEmpty(receiveUserIds) ? Collections3.convertToString(receiveUserIds,","):"");
+        modelAndView.addObject("receiveOrganIds", Collections3.isNotEmpty(receiveOrganIds) ? Collections3.convertToString(receiveOrganIds,","):"");
+        modelAndView.addObject("receiveContactGroupIds", Collections3.isNotEmpty(receiveContactGroupIds) ? Collections3.convertToString(receiveContactGroupIds,","):"");
         return modelAndView;
     }
 
@@ -234,6 +236,9 @@ public class NoticeController extends SimpleController {
             _receiveUserIds = receiveUserIds;
             _receiveOrganIds = receiveOrganIds;
             _receiveContactGroupIds = receiveContactGroupIds;
+            if(StringUtils.isNotBlank(model.getObjectId())){
+                model.setReceiveScope(NoticeReceiveScope.CUSTOM.getValue());
+            }
 
         }
         modelAndView.addObject("files", files);

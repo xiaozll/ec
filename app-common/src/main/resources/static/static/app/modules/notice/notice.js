@@ -1,6 +1,7 @@
 var noticeId = noticeId;
 var objectId = objectId;
 var fileIds = fileIds;
+var title = title;
 var receiveUserIds = receiveUserIds;
 var receiveOrganIds = receiveOrganIds;
 var receiveContactGroupIds = receiveContactGroupIds;
@@ -34,7 +35,7 @@ $(function () {
         }, 500);
     }else if(objectId){
         window.setTimeout(function () {
-            edit(undefined,undefined,objectId,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds);
+            edit(noticeId,undefined,objectId,title,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds);
         }, 500);
     }
 
@@ -361,7 +362,7 @@ function formInit() {
 }
 
 //新增 编辑 转发
-function edit(noticeId, operateType,objectId,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds) {
+function edit(noticeId, operateType,objectId,title,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds) {
     var inputUrl = ctxAdmin + '/notice/input?operateType=';
     if (operateType !== undefined) {
         inputUrl += operateType;
@@ -370,7 +371,7 @@ function edit(noticeId, operateType,objectId,fileIds,receiveUserIds,receiveOrgan
         inputUrl += "&id=" + noticeId;
     }
     if(objectId != undefined){
-        inputUrl += "&objectId=" + objectId+"&fileIds="+fileIds+"&receiveUserIds="+receiveUserIds+"&receiveOrganIds="+receiveOrganIds+"&receiveContactGroupIds="+receiveContactGroupIds;
+        inputUrl += "&objectId=" + objectId+"&title="+title+"&fileIds="+fileIds+"&receiveUserIds="+receiveUserIds+"&receiveOrganIds="+receiveOrganIds+"&receiveContactGroupIds="+receiveContactGroupIds;
     }
 
     $notice_dialog = $('<div/>').dialog({

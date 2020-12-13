@@ -6,6 +6,7 @@
 <script type="text/javascript">
     var noticeId = '${noticeId}';
     var objectId = '${objectId}';
+    var title = '${title}';
     var fileIds = '${fileIds}';
     var receiveUserIds = '${receiveUserIds}';
     var receiveOrganIds = '${receiveOrganIds}';

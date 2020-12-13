@@ -1,7 +1,9 @@
 var noticeId = noticeId;
+var objectType = objectType;
 var objectId = objectId;
 var fileIds = fileIds;
 var title = title;
+var content = content;
 var receiveUserIds = receiveUserIds;
 var receiveOrganIds = receiveOrganIds;
 var receiveContactGroupIds = receiveContactGroupIds;
@@ -33,9 +35,9 @@ $(function () {
         window.setTimeout(function () {
             view(noticeId, hasRepeatPermission);
         }, 500);
-    }else if(objectId){
+    } else if (objectId) {
         window.setTimeout(function () {
-            edit(noticeId,undefined,objectId,title,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds);
+            edit(noticeId, undefined, objectType, objectId, title, content, fileIds, receiveUserIds, receiveOrganIds, receiveContactGroupIds);
         }, 500);
     }
 
@@ -362,7 +364,7 @@ function formInit() {
 }
 
 //新增 编辑 转发
-function edit(noticeId, operateType,objectId,title,fileIds,receiveUserIds,receiveOrganIds,receiveContactGroupIds) {
+function edit(noticeId, operateType, objectType, objectId, title, content, fileIds, receiveUserIds, receiveOrganIds, receiveContactGroupIds) {
     var inputUrl = ctxAdmin + '/notice/input?operateType=';
     if (operateType !== undefined) {
         inputUrl += operateType;
@@ -370,8 +372,8 @@ function edit(noticeId, operateType,objectId,title,fileIds,receiveUserIds,receiv
     if (noticeId !== undefined) {
         inputUrl += "&id=" + noticeId;
     }
-    if(objectId != undefined){
-        inputUrl += "&objectId=" + objectId+"&title="+title+"&fileIds="+fileIds+"&receiveUserIds="+receiveUserIds+"&receiveOrganIds="+receiveOrganIds+"&receiveContactGroupIds="+receiveContactGroupIds;
+    if (objectId != undefined) {
+        inputUrl += "&objectType=" + objectType + "&objectId=" + objectId + "&title=" + title + "&content=" + content + "&fileIds=" + fileIds + "&receiveUserIds=" + receiveUserIds + "&receiveOrganIds=" + receiveOrganIds + "&receiveContactGroupIds=" + receiveContactGroupIds;
     }
 
     $notice_dialog = $('<div/>').dialog({

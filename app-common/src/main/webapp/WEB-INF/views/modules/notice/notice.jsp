@@ -5,8 +5,10 @@
 <%@ include file="/common/huploadify.jsp"%>
 <script type="text/javascript">
     var noticeId = '${noticeId}';
+    var objectType = '${objectType}';
     var objectId = '${objectId}';
     var title = '${title}';
+    var content = '${content}';
     var fileIds = '${fileIds}';
     var receiveUserIds = '${receiveUserIds}';
     var receiveOrganIds = '${receiveOrganIds}';

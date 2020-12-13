@@ -93,16 +93,20 @@ public class NoticeController extends SimpleController {
      */
     @RequestMapping(value = {""})
     public ModelAndView list(String noticeId,
+                             @RequestParam(value = "objectType",required = false) String objectType,
                              @RequestParam(value = "objectId",required = false) String objectId,
                              @RequestParam(value = "title",required = false) String title,
+                             @RequestParam(value = "content",required = false) String content,
                              @RequestParam(value = "fileIds",required = false) List<String> fileIds,
                              @RequestParam(value = "receiveUserIds",required = false) List<String> receiveUserIds,
                              @RequestParam(value = "receiveOrganIds",required = false) List<String> receiveOrganIds,
                              @RequestParam(value = "receiveContactGroupIds",required = false) List<String> receiveContactGroupIds) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice");
         modelAndView.addObject("noticeId", noticeId);
+        modelAndView.addObject("objectType", objectType);
         modelAndView.addObject("objectId", objectId);
         modelAndView.addObject("title", title);
+        modelAndView.addObject("content", content);
         modelAndView.addObject("fileIds", Collections3.isNotEmpty(fileIds) ? Collections3.convertToString(fileIds,","):"");
         modelAndView.addObject("receiveUserIds", Collections3.isNotEmpty(receiveUserIds) ? Collections3.convertToString(receiveUserIds,","):"");
         modelAndView.addObject("receiveOrganIds", Collections3.isNotEmpty(receiveOrganIds) ? Collections3.convertToString(receiveOrganIds,","):"");

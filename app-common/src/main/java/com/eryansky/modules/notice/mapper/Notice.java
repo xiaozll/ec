@@ -118,6 +118,10 @@ public class Notice extends DataEntity<Notice> {
      */
     private String query;
     /**
+     * 业务关联对象类型
+     */
+    private String objectType;
+    /**
      * 业务关联对象
      */
     private String objectId;
@@ -341,6 +345,14 @@ public class Notice extends DataEntity<Notice> {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
     }
 
     public String getObjectId() {

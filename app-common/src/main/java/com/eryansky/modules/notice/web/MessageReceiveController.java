@@ -76,7 +76,7 @@ public class MessageReceiveController extends SimpleController {
         Page<MessageReceive> page = new Page<MessageReceive>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-            page = MessageUtils.findUserMessages(sessionInfo.getUserId(),page.getPageNo(), page.getPageSize(), model.getIsRead());
+            page = MessageUtils.findUserMessages(sessionInfo.getUserId(),page.getPageNo(), page.getPageSize(),null, model.getIsRead(),null);
             return renderString(response, Result.successResult().setObj(page));
         }
 

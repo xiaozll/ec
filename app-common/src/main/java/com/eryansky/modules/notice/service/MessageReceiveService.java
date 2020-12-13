@@ -60,16 +60,18 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @return
      */
     public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String userId, String isRead) {
-        return findUserPage(page, null, userId, isRead, null, null);
+        return findUserPage(page, VersionLog.DEFAULT_ID, userId, isRead, null, null);
     }
 
     /**
      * 用户消息
      *
      * @param page
+     * @param appId
      * @param userId 用户ID
      * @param isRead
      * @param isSend
+     * @param params
      * @return
      */
     public Page<MessageReceive> findUserPage(Page<MessageReceive> page, String appId, String userId, String isRead, String isSend, Map<String, Object> params) {
@@ -78,7 +80,8 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(Message.FIELD_STATUS, Message.STATUS_NORMAL);
         parameter.put("bizMode", MessageMode.Published.getValue());
-        parameter.put("appId", StringUtils.isNotBlank(appId) ? appId : VersionLog.DEFAULT_ID);
+        parameter.put("appId", appId);
+//        parameter.put("appId", StringUtils.isNotBlank(appId) ? appId : VersionLog.DEFAULT_ID);
         parameter.put("userId", userId);
         parameter.put("isRead", isRead);
         parameter.put("isSend", isSend);

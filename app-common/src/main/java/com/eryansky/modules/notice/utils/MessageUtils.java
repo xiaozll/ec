@@ -213,4 +213,17 @@ public class MessageUtils {
         Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
         return Static.messageReceiveService.findUserPage(page, userId, isRead);
     }
+
+    /**
+     * 用户消息
+     *
+     * @param pageNo   第几页
+     * @param pageSize 分页大小 不分页：-1
+     * @param userId   用户ID
+     * @return
+     */
+    public static Page<MessageReceive> findUserMessages(String userId, int pageNo, int pageSize, String appId, String isRead, String isSend) {
+        Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
+        return Static.messageReceiveService.findUserPage(page, appId, userId,isRead,null,null);
+    }
 }

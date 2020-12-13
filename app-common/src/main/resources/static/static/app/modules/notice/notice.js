@@ -29,7 +29,7 @@ $(function () {
     initReadDatagrid();
     initSelectUser();
 
-    if (noticeId !== "") {
+    if (noticeId !== "" && objectId === '') {
         window.setTimeout(function () {
             view(noticeId, hasRepeatPermission);
         }, 500);

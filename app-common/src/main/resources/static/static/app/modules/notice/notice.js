@@ -373,7 +373,10 @@ function edit(noticeId, operateType, objectType, objectId, title, content, fileI
         inputUrl += "&id=" + noticeId;
     }
     if (objectId != undefined) {
-        inputUrl += "&objectType=" + objectType + "&objectId=" + objectId + "&title=" + title + "&content=" + content + "&fileIds=" + fileIds + "&receiveUserIds=" + receiveUserIds + "&receiveOrganIds=" + receiveOrganIds + "&receiveContactGroupIds=" + receiveContactGroupIds;
+        inputUrl += "&objectType=" + objectType + "&objectId=" + objectId;
+    }
+    if (objectId != undefined && !noticeId) {
+        inputUrl +="&title=" + title + "&content=" + content + "&fileIds=" + fileIds + "&receiveUserIds=" + receiveUserIds + "&receiveOrganIds=" + receiveOrganIds + "&receiveContactGroupIds=" + receiveContactGroupIds;
     }
 
     $notice_dialog = $('<div/>').dialog({

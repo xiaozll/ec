@@ -20,7 +20,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2017-09-19
  */
-@QuartzJob(name = "SyncOrganToExtend", cronExp = "0 0 0,13 * * ?")
+@QuartzJob(name = "SyncOrganToExtend", cronExp = "0 0 5 * * ?")
 public class SyncOrganToExtend extends QuartzJobBean {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());

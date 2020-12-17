@@ -131,6 +131,7 @@ public class SigarUtil {
             status.setCpuUsage(cpuu);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
+            init = false;
         }
     }
 
@@ -151,6 +152,7 @@ public class SigarUtil {
             status.setFreeSwap(swap.getFree() / (1024 * 1024));
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
+            init = false;
         }
     }
 
@@ -199,6 +201,7 @@ public class SigarUtil {
             }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
+            init = false;
         }
     }
 }

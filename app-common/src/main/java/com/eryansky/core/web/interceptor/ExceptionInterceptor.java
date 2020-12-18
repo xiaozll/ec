@@ -65,8 +65,10 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             sb.append(loginName).append(",");
         }
         sb.append("发生异常:");
-        //Hibernate Validator Bo注解校验异常处理
-        if(Exceptions.isCausedBy(ex, ConstraintViolationException.class)){
+        if("ClientAbortException".equals(ex.getClass().getSimpleName())){
+            return null;
+            //Hibernate Validator Bo注解校验异常处理
+        }else if(Exceptions.isCausedBy(ex, ConstraintViolationException.class)){
             isWarn = true;
             ConstraintViolationException ce = (ConstraintViolationException) ex;
             Set<ConstraintViolation<?>> set =  ce.getConstraintViolations();

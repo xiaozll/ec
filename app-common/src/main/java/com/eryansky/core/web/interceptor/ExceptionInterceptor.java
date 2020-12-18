@@ -13,6 +13,7 @@ import com.eryansky.common.utils.Exceptions;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.SysUtils;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.SecurityUtils;
 import com.google.common.collect.Maps;
@@ -109,7 +110,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         if(isWarn){
             result = new Result(Result.WARN,sb.toString(),obj);
-            logger.warn(SecurityUtils.getCurrentUserLoginName() + ":" + result.toString(), ex);
+            logger.warn(IpUtils.getIpAddr0(request) + " " +SecurityUtils.getCurrentUserLoginName() + ":" + result.toString(), ex);
         }else{
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
@@ -131,8 +132,8 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         Map<String, Object> maps = Maps.newHashMap();
         maps.put("code", result.getCode());
         maps.put("msg", result.getMsg());
-        maps.put("obj", null);
-        maps.put("data", null);
+        maps.put("obj", result.getObj());
+        maps.put("data", result.getData());
         MappingJackson2JsonView mappingJackson2JsonView = new MappingJackson2JsonView();
         mappingJackson2JsonView.setAttributesMap(maps);
         modelAndView.setView(mappingJackson2JsonView);

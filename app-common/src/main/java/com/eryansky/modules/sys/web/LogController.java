@@ -22,6 +22,7 @@ import com.eryansky.core.excelTools.JsGridReportBase;
 import com.eryansky.core.excelTools.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Log;
@@ -79,7 +80,8 @@ public class LogController extends SimpleController {
      * @return
      */
     @Logging(value = "日志管理", logType = LogType.access)
-    @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
+//    @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
+    @RequiresPermissions(value = "sys:log:view")
     @RequestMapping(value = {""})
     public String list(String type,
                        String userInfo,

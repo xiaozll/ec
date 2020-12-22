@@ -17,7 +17,8 @@
                         {field:'id',title:'主键',hidden:true,sortable:true,align:'right',width:80},
                         {field : 'userName', title : '姓名', width : 80},
                         {field : 'organName',title : '部门',width : 260,sortable:true},
-                        {field : 'isReadView',title : '状态',width : 60,sortable:true}
+                        {field : 'isReadView',title : '状态',width : 60,sortable:true},
+                        {field : 'readTime',title : '阅读时间',width : 146,sortable:true}
                     ]]
                 }).datagrid('showTooltip');
     });

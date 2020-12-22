@@ -165,7 +165,7 @@ public class NoticeController extends SimpleController {
         page = noticeReceiveInfoService.findNoticeReceiveInfosByNoticeId(page, id);
         Datagrid<NoticeReceiveInfo> dg = new Datagrid<NoticeReceiveInfo>(page.getTotalCount(), page.getResult());
         String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
-                new String[]{"id", "userName", "organName", "isReadView"});
+                new String[]{"id", "userName", "organName", "isReadView","readTime"});
         return json;
     }
 

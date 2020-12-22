@@ -43,7 +43,7 @@ public class MessageAspect implements InitializingBean, DisposableBean {
      * @param joinPoint 切入点
      */
     @AfterReturning(value = "execution(* com.eryansky.modules.notice.service.MessageService.saveAndSend(..))",returning = "returnObj")
-    public void afterNoticePublish(JoinPoint joinPoint, Message returnObj) {
+    public void afterMessagePublish(JoinPoint joinPoint, Message returnObj) {
         if (null == returnObj) {
             return;
         }

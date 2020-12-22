@@ -18,6 +18,8 @@ import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.disk.mapper.File;
+import com.eryansky.modules.notice._enum.MessageChannel;
+import com.eryansky.modules.notice.utils.NoticeConstants;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.modules.sys.service.UserService;
 import com.google.common.collect.Lists;
@@ -252,6 +254,8 @@ public class NoticeController extends SimpleController {
         modelAndView.addObject("receiveContactGroupIds", _receiveContactGroupIds);
         modelAndView.addObject("operateType", operateType);
         modelAndView.addObject("model", model);
+//        modelAndView.addObject("noticeTipChannels", MessageChannel.values());
+        modelAndView.addObject("noticeTipChannels", NoticeConstants.getNoticeTipChannels());
         return modelAndView;
     }
 

@@ -13,13 +13,13 @@ import com.eryansky.common.orm._enum.IGenericEnum;
  */
 public enum MessageChannel implements IGenericEnum<MessageChannel> {
 
-    Message("Message", "系统提醒"),
-    Mail("Mail", "邮件提醒"),
-    SMS("SMS", "短信提醒"),
-    Weixin("Weixin", "微信提醒"),
-    QYWeixin("QYWeixin", "企业微信提醒"),
-    Dingtalk("Dingtalk", "钉钉提醒"),
-    APP("APP", "APP提醒");
+    Message("Message", "系统"),
+    Mail("Mail", "邮件"),
+    SMS("SMS", "短信"),
+    Weixin("Weixin", "微信"),
+    QYWeixin("QYWeixin", "企业微信"),
+    Dingtalk("Dingtalk", "钉钉"),
+    APP("APP", "APP");
 
     /**
      * 值 String型

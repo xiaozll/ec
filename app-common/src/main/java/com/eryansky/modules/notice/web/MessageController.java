@@ -11,6 +11,7 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.modules.notice.task.MessageTask;
+import com.eryansky.modules.notice.utils.NoticeConstants;
 import com.google.common.collect.Lists;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -97,7 +98,8 @@ public class MessageController extends SimpleController {
         }
         modelAndView.addObject("model", model);
         modelAndView.addObject("messageReceiveObjectTypes", MessageReceiveObjectType.values());
-        modelAndView.addObject("messageChannels", MessageChannel.values());
+//        modelAndView.addObject("messageChannels", MessageChannel.values());
+        modelAndView.addObject("messageChannels", NoticeConstants.getMessageTipChannels());
         return modelAndView;
     }
 

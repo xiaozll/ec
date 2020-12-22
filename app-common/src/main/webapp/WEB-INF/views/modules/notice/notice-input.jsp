@@ -33,6 +33,7 @@
         height : 20px;
         line-height: 20px;
     }
+    #notice_form div label{text-align: right;}
 </style>
 <div>
     <form id="notice_form" class="dialog-form"  method="post" novalidate>
@@ -87,7 +88,7 @@
 
         <table style="border: 0px;width: 100%;">
             <tr>
-                <td style="width: 96px; vertical-align: top;">通知内容：</td>
+                <td style="width: 96px; vertical-align: top;text-align: right;">通知内容：&nbsp;</td>
                 <td><textarea id="editor" name="content">${model.content}</textarea></td>
             </tr>
         </table>
@@ -116,15 +117,17 @@
                       title="设置为0，则永久置顶。" ></span>
             </span>
         </div>
-        <div>
-            <label>提醒：</label>
-            <label style="text-align: left;width: 80px;">
-                <input type="checkbox" class="easyui-checkbox" name="tipMessage" style="width: 20px;" value="SMS" /> 短信
-            </label>
-            <label style="text-align: left;width: 80px;">
-                <input type="checkbox" class="easyui-checkbox" name="tipMessage" style="width: 20px;" value="APP" /> APP
-            </label>
-        </div>
+        <c:if test="${not empty noticeTipChannels}">
+            <div>
+                <label>提醒方式：</label>
+                <c:forEach items="${noticeTipChannels}" var="item">
+                    <label style="text-align: left;width: 100px;">
+                        <input type="checkbox" class="easyui-checkbox" name="tipMessage" style="width: 20px;" value="${item.value}" /> ${item.description}
+                    </label>
+                </c:forEach>
+            </div>
+        </c:if>
+
         <div>
             <label>附件：</label>
             <div style="margin-left: 96px;">

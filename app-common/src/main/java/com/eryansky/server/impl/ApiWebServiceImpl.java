@@ -104,9 +104,9 @@ public class ApiWebServiceImpl implements IApiWebService {
             User senderUser = null;
             if (StringUtils.isNotBlank(senderId)) {
                 senderUser = Static.userService.getUserByIdOrLoginName(senderId);
-                if (senderUser == null) {
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + ",无相关账号信息");
-                }
+//                if (senderUser == null) {
+//                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + ",无相关账号信息");
+//                }
             }
             if (senderUser == null) {
                 senderUser = Static.userService.getSuperUser();
@@ -117,8 +117,8 @@ public class ApiWebServiceImpl implements IApiWebService {
             for (String localLoginName : receiveIds) {
                 User recevieUser = Static.userService.getUserByIdOrLoginName(localLoginName);
                 if (recevieUser == null) {
-                    logger.error("账号[" + localLoginName + "],无相关账号信息");
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],无相关账号信息");
+                    logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
+                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
                 }
                 receiveObjectIds.add(recevieUser.getId());
             }
@@ -202,9 +202,9 @@ public class ApiWebServiceImpl implements IApiWebService {
             User senderUser = null;
             if (StringUtils.isNotBlank(senderId)) {
                 senderUser = Static.userService.getUserByLoginName(senderId);
-                if (senderUser == null) {
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + ",应用集成平台无相关账号映射信息");
-                }
+//                if (senderUser == null) {
+//                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "senderId:" + senderId + ",统一平台无相关账号映射信息");
+//                }
             }
             if (senderUser == null) {
                 senderUser = Static.userService.getSuperUser();
@@ -214,7 +214,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             for (String companyCode : receiveIds) {
                 Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {
-                    logger.error("机构[" + companyCode + "],无相关账号信息");
+                    logger.error("机构[" + companyCode + "],统一平台无相关账号信息");
                     return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
                 }
                 List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());

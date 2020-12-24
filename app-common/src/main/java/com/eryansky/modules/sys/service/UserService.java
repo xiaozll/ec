@@ -435,7 +435,7 @@ public class UserService extends CrudService<UserDao, User> {
 
 
     /**
-     * 获得所有集成用户（包括已删除）
+     * 获得所有统一用户（包括已删除）
      *
      * @return
      */
@@ -444,7 +444,7 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
-     * 获得所有集成用户（正常）
+     * 获得所有统一用户（正常）
      *
      * @return
      */

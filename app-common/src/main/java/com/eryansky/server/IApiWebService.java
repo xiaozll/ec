@@ -30,8 +30,8 @@ public interface IApiWebService {
 	 *   receiveIds:["loginName1","loginName2",...]
 	 *   tipType:["Message","QYWeixin"]
 	 * }
-	 * appId      :应用集成的应用编码   必选
-	 * serviceId  :应用集成服务ID  必选
+	 * appId      :应用编码   必选
+	 * serviceId  :服务ID  必选
 	 * senderId   :发送者账号(第三方系统账号，需在统一平台做账号映射) 可选
 	 * sendTime   :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
 	 * title      :消息标题    可选
@@ -62,8 +62,8 @@ public interface IApiWebService {
 	 *   receiveIds:["loginName1","loginName2",...]
 	 *   tipType:["message","weixin"]
 	 * }
-	 * clientId   :应用集成的应用编码   必选
-	 * serviceId  :应用集成服务ID  必选
+	 * clientId   :应用编码   必选
+	 * serviceId  :服务ID  必选
 	 * senderId   :发布账号 必选
 	 * sendTime       :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
 	 * senderOrganCode   :发布部门编码 可选

@@ -7093,7 +7093,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Creator>eryan</a:Creator>
 <a:ModificationDate>1536218063</a:ModificationDate>
 <a:Modifier>eryan</a:Modifier>
-<a:Comment>用户类型 （0：系统；1：员工；2：应用集成平台）</a:Comment>
+<a:Comment>用户类型 （0：系统；1：员工；2：统一平台）</a:Comment>
 <a:DataType>VARCHAR2(36)</a:DataType>
 <a:Length>36</a:Length>
 </o:Column>

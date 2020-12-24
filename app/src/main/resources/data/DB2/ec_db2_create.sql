@@ -1632,7 +1632,7 @@ comment on column T_SYS_USER.PASSWORD is
 '登录密码';
 
 comment on column T_SYS_USER.USER_TYPE is
-'用户类型 （0：系统；1：员工；2：应用集成平台）';
+'用户类型 （0：系统；1：员工；2：统一平台）';
 
 comment on column T_SYS_USER."NAME" is
 '姓名';

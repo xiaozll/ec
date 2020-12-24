@@ -7332,7 +7332,7 @@ DAT 1536285883</a:History>
 <a:Creator>eryan</a:Creator>
 <a:ModificationDate>1536285883</a:ModificationDate>
 <a:Modifier>eryan</a:Modifier>
-<a:Comment>用户类型 （0：系统；1：员工；2：应用集成平台）</a:Comment>
+<a:Comment>用户类型 （0：系统；1：员工；2：统一平台）</a:Comment>
 <a:History>ORG {D26A821E-A0D2-43DF-936D-82C1835E4478}
 DAT 1536285883</a:History>
 <a:DataType>VARCHAR(36)</a:DataType>

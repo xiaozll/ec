@@ -122,10 +122,9 @@ public class MessageReceiveController extends SimpleController {
      */
     @RequestMapping(value = "setReadAll")
     @ResponseBody
-    public Result setReadAll() {
+    public Result setReadAll(String appId) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-//        messageTask.setReadAll(sessionInfo.getUserId());
-        messageReceiveService.setReadAll(sessionInfo.getLoginName(), null);
+        messageReceiveService.setReadAll(appId,sessionInfo.getUserId(), YesOrNo.YES.getValue());
         return Result.successResult();
     }
 

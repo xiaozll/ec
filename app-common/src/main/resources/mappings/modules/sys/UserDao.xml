@@ -118,7 +118,7 @@
             <if test="status != null and status !=''">
                 AND a.status = #{status}
             </if>
-            AND (a.id = #{idOrMobile} OR a.mobile = #{idOrMobile})
+            AND (a.id = #{idOrMobile} OR a.login_name = #{idOrMobile} OR a.mobile = #{idOrMobile})
         </where>
     </select>
 
@@ -143,6 +143,26 @@
                 AND a.status = #{status}
             </if>
             AND a.code = #{code}
+        </where>
+    </select>
+
+
+    <select id="findByName" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        LEFT JOIN t_sys_organ_extend o ON o.id = a.default_organ_id
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND a.name = #{name}
+            <if test="compnayId != null and compnayId !=''">
+                AND o.compnay_id = #{compnayId}
+            </if>
+            <if test="homeCompnayId != null and homeCompnayId !=''">
+                AND o.home_compnay_id = #{homeCompnayId}
+            </if>
         </where>
     </select>
 

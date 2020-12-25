@@ -386,6 +386,36 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
+     * 根据编号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param name 名称
+     * @return
+     */
+    public List<User> findByName(String name) {
+        return findByName(name, DataEntity.STATUS_NORMAL,null,null);
+    }
+
+    /**
+     * 根据编号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param name 编号
+     * @param status
+     * @return
+     */
+    public List<User> findByName(String name, String status,String companyId,String homeCompanyId) {
+        Assert.notNull(name, "参数[name]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("name", name);
+        parameter.put("companyId", companyId);
+        parameter.put("homeCompanyId", homeCompanyId);
+        return dao.findByName(parameter);
+    }
+
+    /**
      * 根据账号或编号查找.
      * <br>注：排除已删除的对象
      *

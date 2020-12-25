@@ -84,7 +84,7 @@ public class UserUtils {
     /**
      * 根据ID或手机号查找用户
      *
-     * @param idOrMobile ID或手机号
+     * @param idOrMobile ID、账号或手机号
      * @return
      */
     public static User getUserByIdOrMobile(String idOrMobile) {
@@ -103,6 +103,20 @@ public class UserUtils {
     public static List<User> findByCode(String code) {
         if (StringUtils.isNotBlank(code)) {
             return Static.userService.findByCode(code);
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
+     * 根据姓名查找用户
+     *
+     * @param name 姓名
+     * @return
+     */
+    public static List<User> findByName(String name) {
+        if (StringUtils.isNotBlank(name)) {
+            return Static.userService.findByName(name);
         }
         return Collections.emptyList();
     }
@@ -396,6 +410,18 @@ public class UserUtils {
             return null;
         }
         return Static.organService.findOrganIdsByUserId(userId);
+    }
+
+    /**
+     * 查找部门用户IDS
+     * @param organId 机构ID
+     * @return
+     */
+    public static List<String> findUserIdsByOrganId(String organId){
+        if(StringUtils.isBlank(organId)){
+            return Collections.emptyList();
+        }
+        return Static.organService.findOrganUserIds(organId);
     }
 
     /**

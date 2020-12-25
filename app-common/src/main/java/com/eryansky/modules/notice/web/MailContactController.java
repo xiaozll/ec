@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author 尔演@Eryan eryanwcp@gmail.com
@@ -229,7 +230,13 @@ public class MailContactController extends SimpleController {
 
         } else {
             //系统用户
-            List<User> users = StringUtils.isNotBlank(postCode) ? userService.findUsersByPostCode(postCode) : userService.findWithInclude(includeUserIds, query);
+            List<User> users = null;
+            if(StringUtils.isNotBlank(postCode) && StringUtils.isNotBlank(query)){
+                users = userService.findUsersByPostCode(postCode);
+                users = users.stream().filter(v->StringUtils.contains(v.getName(),query)).collect(Collectors.toList());
+            }else{
+                users = userService.findWithInclude(includeUserIds, query);
+            }
             if (Collections3.isNotEmpty(includeUserIds)) {
                 List<User> includeUsers = userService.findByIds(includeUserIds);
                 users = Collections3.aggregate(users, includeUsers);

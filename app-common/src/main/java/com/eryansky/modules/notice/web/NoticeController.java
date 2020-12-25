@@ -274,6 +274,10 @@ public class NoticeController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY.getValue()))) {
             list = userService.findUsersByCompanyId(sessionInfo.getLoginCompanyId());
+            if (Collections3.isNotEmpty(includeIds)) {
+                List<User> includeUsers = userService.findByIds(includeIds);
+                list = Collections3.aggregate(list, includeUsers);
+            }
         } else {
             list = userService.findWithInclude(includeIds, query);
         }

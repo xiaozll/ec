@@ -1,4 +1,5 @@
 var modelIsTop = modelIsTop;
+var modelIsReply = modelIsReply;
 var modelTipMessage = modelTipMessage;
 var modelType = modelType;
 var dictionaryTypeCode = dictionaryTypeCode;
@@ -21,6 +22,9 @@ $(function () {
     $("input[name=isTop]").bind("click", function () {
         toggoleIsTop($(this).val());
     });
+    var $isReply = $("input[name=isReply]:eq(" + modelIsReply + ")");
+    $isReply.prop("checked", 'checked');
+
     if (modelTipMessage) {
         var val = modelTipMessage.split(",");
         var boxes = document.getElementsByName("tipMessage");

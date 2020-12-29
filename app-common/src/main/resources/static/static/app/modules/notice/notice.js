@@ -14,6 +14,8 @@ var isSuperUser = isSuperUser;
 var $notice_datagrid;
 var $notice_dialog;
 var $notice_form;
+var $notice_reply_dialog;
+var $notice_reply_form;
 var $form_noticeUser_MultiSelect;//notice-input.jsp
 
 var $notice_search_form;
@@ -76,7 +78,7 @@ function mymessage() {
 
 function initReadDatagrid() {
     $notice_datagrid = $('#notice_datagrid').datagrid({
-        url: ctxAdmin + '/notice/readDatagrid',
+        url: ctxAdmin + '/notice/noticeReceiveInfo/readInfoDatagrid',
         fit: true,
         pagination: true,//底部分页
         rownumbers: true,//显示行数
@@ -90,7 +92,7 @@ function initReadDatagrid() {
             {
                 field: 'title', title: '标题', width: 360,
                 formatter: function (value, rowData, rowIndex) {
-                    return "<a href='#' onclick='view(\"" + rowData["noticeId"] + "\"," + hasRepeatPermission + ")' >" + value + "</a>";
+                    return "<a href='#' onclick='view(\"" + rowData["noticeId"] + "\"," + hasRepeatPermission + ",\"" + rowData["id"] + "\",\"" + rowData["isNeedReply"] + "\",\"" + rowData["isReply"] + "\")' >" + value + "</a>";
                 }
             }
         ]],
@@ -110,6 +112,16 @@ function initReadDatagrid() {
             title: '发布时间',
             sortable: true,
             width: 146
+        }, {
+            field: 'isNeedReplyView',
+            title: '是否需要回复',
+            sortable: true,
+            width: 100
+        }, {
+            field: 'isReplyView',
+            title: '是否回复',
+            sortable: true,
+            width: 100
         }, {
             field: 'isReadView',
             title: '通知状态',
@@ -178,6 +190,11 @@ function initDatagrid() {
                 title: '终止时间',
                 width: 136,
                 sortable: true
+            }, {
+                field: 'isReplyView',
+                title: '是否需要回复',
+                sortable: true,
+                width: 100
             },
             {
                 field: 'modeView',
@@ -197,7 +214,7 @@ function initDatagrid() {
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
                     }
                     if (rowData["isRecordRead"] === "1" && rowData["bizMode"] !== "0" && rowData["bizMode"] !== "3") {//记录查看情况
-                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_find\"'  onclick='readInfo(\"" + rowData["id"] + "\");' >查看阅读情况</a>";
+                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_find\"'  onclick='readInfo(\"" + rowData["id"] + "\");' >阅读情况</a>";
                     }
 
                     return operateHtml;
@@ -254,7 +271,7 @@ function initDatagrid() {
     }).datagrid("showTooltip");
 }
 
-function view(noticeId, isRepeat) {
+function view(noticeId, isRepeat,noticeReceiveInfoId,isNeedReply,isReply) {
     var inputUrl = ctxAdmin + '/notice/view/' + noticeId;
     var toolbar = [];
     var closeToolbar = {
@@ -266,6 +283,19 @@ function view(noticeId, isRepeat) {
             refreshMessage();
         }
     };
+
+    // if ("1" === isNeedReply && !("1" === isReply)) {
+    if ("1" === isNeedReply) {
+        var replyToolbar = {
+            text: '回复',
+            iconCls: 'eu-icon-mail_reply_sender',
+            handler: function () {
+                notice_view_dialog.dialog('destroy');
+                editReply(noticeId,noticeReceiveInfoId);
+            }
+        };
+        toolbar.push(replyToolbar);
+    }
 
     if (isRepeat !== undefined && isRepeat === true) {
         var repeatToolbar = {
@@ -300,10 +330,14 @@ function view(noticeId, isRepeat) {
 
 function readInfo(noticeId) {
     var inputUrl = ctxAdmin + '/notice/readInfo/' + noticeId;
+    var thisHeight = document.body.clientHeight - 50;
+    var thisWidth = document.body.clientWidth * 0.9 - 50;
     var _dialog = $('<div/>').dialog({
         title: '查看状态',
-        width: 600,
-        height: 400,
+        // width: 600,
+        // height: 400,
+        width: thisWidth,
+        height: thisHeight,
         modal: true,
         maximizable: true,
         href: inputUrl,
@@ -357,6 +391,34 @@ function formInit() {
                     }
                 });
             } else {
+                eu.showAlertMsg(json.msg, 'error');
+            }
+        }
+    });
+}
+
+function replyFormInit() {
+    $notice_reply_form = $('#notice_reply_form').form({
+        url: ctxAdmin + '/notice/noticeReceiveInfo/replySave',
+        onSubmit: function (param) {
+            $.messager.progress({
+                title: '提示信息！',
+                text: '数据处理中，请稍后....'
+            });
+            var isValid = $(this).form('validate');
+            if (!isValid) {
+                $.messager.progress('close');
+            }
+            return isValid;
+        },
+        success: function (data) {
+            $.messager.progress('close');
+            var json = $.parseJSON(data);
+            if (json.code === 1) {
+                $notice_reply_dialog.dialog('destroy');//销毁对话框
+                $notice_datagrid.datagrid('reload');//重新加载列表数据
+                eu.showMsg(json.msg);//操作结果提示
+            }  else {
                 eu.showAlertMsg(json.msg, 'error');
             }
         }
@@ -418,6 +480,44 @@ function edit(noticeId, operateType, objectType, objectId, title, content, fileI
 
 
 }
+
+//新增 编辑 转发
+function editReply(noticeId, noticeReceiveInfoId) {
+    var inputUrl = ctxAdmin + '/notice/noticeReceiveInfo/replyInput?id='+noticeReceiveInfoId+"&noticeId="+noticeId;
+
+    $notice_reply_dialog = $('<div/>').dialog({
+        title: '回复信息',
+        width: document.body.clientWidth,
+        height: document.body.clientHeight,
+        modal: true,
+        maximizable: true,
+        href: inputUrl,
+        buttons: [{
+            text: '回复',
+            iconCls: 'easyui-icon-save',
+            handler: function () {
+                $notice_reply_form.submit();
+            }
+        }, {
+            text: '关闭',
+            iconCls: 'easyui-icon-cancel',
+            handler: function () {
+                $notice_reply_dialog.dialog('destroy');
+            }
+        }
+        ],
+        onClose: function () {
+            $(this).dialog('destroy');
+        },
+        onLoad: function () {
+            replyFormInit();
+        }
+    });
+
+
+}
+
+
 
 /**
  * 发布

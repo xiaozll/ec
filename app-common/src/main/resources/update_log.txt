@@ -1,4 +1,16 @@
-﻿2020-10-08
+﻿20201229
+1、通知公告支持回复
+ALTER TABLE t_notice
+ADD COLUMN is_reply char(1) COMMENT '是否需要回复 是：1 否：0';
+
+ALTER TABLE t_notice_receive_info ADD COLUMN  is_reply char(1) COMMENT '是否已回复 是：1 否：0'；
+ALTER TABLE t_notice_receive_info ADD COLUMN  reply_time datatime COMMENT '回复时间'；
+ALTER TABLE t_notice_receive_info ADD COLUMN  reply_content text COMMENT '回复内容'；
+ALTER TABLE t_notice_receive_info ADD COLUMN  reply_file_ids varchar(255) COMMENT '回复附件'；
+
+
+
+2020-10-08
 1、序列号生成器支持多分类划分
 增加支持自定义参数(n个),示例："CustomStr@param1#Str@字符串"
 mybatis-config.xml添加如下配置：

@@ -95,27 +95,55 @@ public class NoticeController extends SimpleController {
      */
     @RequestMapping(value = {""})
     public ModelAndView list(String noticeId,
-                             @RequestParam(value = "objectType",required = false) String objectType,
-                             @RequestParam(value = "objectId",required = false) String objectId,
-                             @RequestParam(value = "title",required = false) String title,
-                             @RequestParam(value = "content",required = false) String content,
-                             @RequestParam(value = "fileIds",required = false) List<String> fileIds,
-                             @RequestParam(value = "receiveUserIds",required = false) List<String> receiveUserIds,
-                             @RequestParam(value = "receiveOrganIds",required = false) List<String> receiveOrganIds,
-                             @RequestParam(value = "receiveContactGroupIds",required = false) List<String> receiveContactGroupIds) {
+                             @RequestParam(value = "objectType", required = false) String objectType,
+                             @RequestParam(value = "objectId", required = false) String objectId,
+                             @RequestParam(value = "title", required = false) String title,
+                             @RequestParam(value = "content", required = false) String content,
+                             @RequestParam(value = "fileIds", required = false) List<String> fileIds,
+                             @RequestParam(value = "receiveUserIds", required = false) List<String> receiveUserIds,
+                             @RequestParam(value = "receiveOrganIds", required = false) List<String> receiveOrganIds,
+                             @RequestParam(value = "receiveContactGroupIds", required = false) List<String> receiveContactGroupIds) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice");
         modelAndView.addObject("noticeId", noticeId);
         modelAndView.addObject("objectType", objectType);
         modelAndView.addObject("objectId", objectId);
         modelAndView.addObject("title", title);
         modelAndView.addObject("content", content);
-        modelAndView.addObject("fileIds", Collections3.isNotEmpty(fileIds) ? Collections3.convertToString(fileIds,","):"");
-        modelAndView.addObject("receiveUserIds", Collections3.isNotEmpty(receiveUserIds) ? Collections3.convertToString(receiveUserIds,","):"");
-        modelAndView.addObject("receiveOrganIds", Collections3.isNotEmpty(receiveOrganIds) ? Collections3.convertToString(receiveOrganIds,","):"");
-        modelAndView.addObject("receiveContactGroupIds", Collections3.isNotEmpty(receiveContactGroupIds) ? Collections3.convertToString(receiveContactGroupIds,","):"");
+        modelAndView.addObject("fileIds", Collections3.isNotEmpty(fileIds) ? Collections3.convertToString(fileIds, ",") : "");
+        modelAndView.addObject("receiveUserIds", Collections3.isNotEmpty(receiveUserIds) ? Collections3.convertToString(receiveUserIds, ",") : "");
+        modelAndView.addObject("receiveOrganIds", Collections3.isNotEmpty(receiveOrganIds) ? Collections3.convertToString(receiveOrganIds, ",") : "");
+        modelAndView.addObject("receiveContactGroupIds", Collections3.isNotEmpty(receiveContactGroupIds) ? Collections3.convertToString(receiveContactGroupIds, ",") : "");
         return modelAndView;
     }
 
+    /**
+     * 通知查看
+     *
+     * @param noticeId 通知ID
+     * @return
+     */
+    @RequestMapping(value = {"receive"})
+    public ModelAndView receive(String noticeId,
+                                @RequestParam(value = "objectType", required = false) String objectType,
+                                @RequestParam(value = "objectId", required = false) String objectId,
+                                @RequestParam(value = "title", required = false) String title,
+                                @RequestParam(value = "content", required = false) String content,
+                                @RequestParam(value = "fileIds", required = false) List<String> fileIds,
+                                @RequestParam(value = "receiveUserIds", required = false) List<String> receiveUserIds,
+                                @RequestParam(value = "receiveOrganIds", required = false) List<String> receiveOrganIds,
+                                @RequestParam(value = "receiveContactGroupIds", required = false) List<String> receiveContactGroupIds) {
+        ModelAndView modelAndView = new ModelAndView("modules/notice/notice-receive");
+        modelAndView.addObject("noticeId", noticeId);
+        modelAndView.addObject("objectType", objectType);
+        modelAndView.addObject("objectId", objectId);
+        modelAndView.addObject("title", title);
+        modelAndView.addObject("content", content);
+        modelAndView.addObject("fileIds", Collections3.isNotEmpty(fileIds) ? Collections3.convertToString(fileIds, ",") : "");
+        modelAndView.addObject("receiveUserIds", Collections3.isNotEmpty(receiveUserIds) ? Collections3.convertToString(receiveUserIds, ",") : "");
+        modelAndView.addObject("receiveOrganIds", Collections3.isNotEmpty(receiveOrganIds) ? Collections3.convertToString(receiveOrganIds, ",") : "");
+        modelAndView.addObject("receiveContactGroupIds", Collections3.isNotEmpty(receiveContactGroupIds) ? Collections3.convertToString(receiveContactGroupIds, ",") : "");
+        return modelAndView;
+    }
 
     /**
      * 发布通知列表
@@ -154,23 +182,6 @@ public class NoticeController extends SimpleController {
         return modelAndView;
     }
 
-    /**
-     * 通知阅读情况
-     *
-     * @param id 通知ID
-     * @return
-     */
-    @RequestMapping(value = {"readInfoDatagrid/{id}"})
-    @ResponseBody
-    public String readInfoDatagrid(@PathVariable String id) {
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
-        page = noticeReceiveInfoService.findNoticeReceiveInfosByNoticeId(page, id);
-        Datagrid<NoticeReceiveInfo> dg = new Datagrid<NoticeReceiveInfo>(page.getTotalCount(), page.getResult());
-        String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
-                new String[]{"id", "userName", "organName", "isReadView","readTime"});
-        return json;
-    }
-
 
     /**
      * 查看通知
@@ -189,9 +200,7 @@ public class NoticeController extends SimpleController {
         if (sessionInfo != null) {
             NoticeReceiveInfo receiveInfo = noticeReceiveInfoService.getUserNotice(sessionInfo.getUserId(), id);
             if (receiveInfo != null) {
-                receiveInfo.setIsRead(YesOrNo.YES.getValue());
-                receiveInfo.setReadTime(Calendar.getInstance().getTime());
-                noticeReceiveInfoService.save(receiveInfo);
+                noticeReceiveInfoService.updateReadById(receiveInfo.getId());
             }
         }
         modelAndView.addObject("files", files);
@@ -207,10 +216,10 @@ public class NoticeController extends SimpleController {
      */
     @RequestMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Notice model,
-                              @RequestParam(value = "receiveUserIds",required = false) List<String> fileIds,
-                              @RequestParam(value = "receiveUserIds",required = false) List<String> receiveUserIds,
-                              @RequestParam(value = "receiveOrganIds",required = false) List<String> receiveOrganIds,
-                              @RequestParam(value = "receiveContactGroupIds",required = false) List<String> receiveContactGroupIds,
+                              @RequestParam(value = "receiveUserIds", required = false) List<String> fileIds,
+                              @RequestParam(value = "receiveUserIds", required = false) List<String> receiveUserIds,
+                              @RequestParam(value = "receiveOrganIds", required = false) List<String> receiveOrganIds,
+                              @RequestParam(value = "receiveContactGroupIds", required = false) List<String> receiveContactGroupIds,
                               OperateType operateType) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-input");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -235,14 +244,14 @@ public class NoticeController extends SimpleController {
             _receiveOrganIds = noticeSendInfoService.findOrganIdsByNoticeId(model.getId());
             _receiveContactGroupIds = noticeSendInfoService.findContactGroupIdsByNoticeId(model.getId());
 
-        }else if (model.getIsNewRecord()) {//新增
+        } else if (model.getIsNewRecord()) {//新增
             _fileIds = fileIds;
             model.setFileIds(fileIds);
             files = DiskUtils.findFilesByIds(fileIds);
             _receiveUserIds = receiveUserIds;
             _receiveOrganIds = receiveOrganIds;
             _receiveContactGroupIds = receiveContactGroupIds;
-            if(StringUtils.isNotBlank(model.getObjectId())){
+            if (StringUtils.isNotBlank(model.getObjectId())) {
                 model.setReceiveScope(NoticeReceiveScope.CUSTOM.getValue());
             }
 
@@ -310,8 +319,8 @@ public class NoticeController extends SimpleController {
             model.setOrganId(sessionInfo.getLoginOrganId());
         }
         boolean isPub = OperateType.Publish.equals(operateType);
-        noticeService.saveNoticeAndFiles(model, null, noticeUserIds, noticeOrganIds,noticeContactGroupIds, fileIds);
-        if(isPub){
+        noticeService.saveNoticeAndFiles(model, null, noticeUserIds, noticeOrganIds, noticeContactGroupIds, fileIds);
+        if (isPub) {
             noticeService.publish(model);
         }
         result = Result.successResult();
@@ -420,7 +429,7 @@ public class NoticeController extends SimpleController {
             result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
         } finally {
             if (exception != null) {
-                logger.error(exception.getMessage(),exception);
+                logger.error(exception.getMessage(), exception);
                 if (file != null) {
                     DiskUtils.deleteFile(file.getId());
                 }
@@ -429,7 +438,6 @@ public class NoticeController extends SimpleController {
         return result;
 
     }
-
 
 
     /**
@@ -483,24 +491,6 @@ public class NoticeController extends SimpleController {
         return modelAndView;
     }
 
-    /**
-     * 我的通知
-     *
-     * @param noticeQueryVo 查询条件
-     * @return
-     */
-    @RequestMapping(value = {"readDatagrid"})
-    @ResponseBody
-    public String noticeReadDatagrid(NoticeQueryVo noticeQueryVo) {
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
-        noticeQueryVo.syncEndTime();
-        page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), noticeQueryVo);
-        Datagrid<NoticeReceiveInfo> dg = new Datagrid<NoticeReceiveInfo>(page.getTotalCount(), page.getResult());
-        String json = JsonMapper.getInstance().toJson(dg, Notice.class,
-                new String[]{"id", "noticeId", "title", "type", "typeView", "publishUserName", "publishTime", "isReadView"});
-        return json;
-    }
 
     /**
      * 通知数量
@@ -572,6 +562,7 @@ public class NoticeController extends SimpleController {
 
     /**
      * 明细信息
+     *
      * @param model
      * @return
      */

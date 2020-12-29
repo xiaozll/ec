@@ -80,6 +80,10 @@ public class Notice extends DataEntity<Notice> {
      * 结束置顶天数
      */
     private Integer endTopDay;
+    /**
+     * 是否需要回复 {@link YesOrNo}
+     */
+    private String isReply;
 
     /**
      * 状态 默认：未发布 {@link NoticeMode}
@@ -213,6 +217,13 @@ public class Notice extends DataEntity<Notice> {
         return this.endTopDay;
     }
 
+    public String getIsReply() {
+        return isReply;
+    }
+
+    public void setIsReply(String isReply) {
+        this.isReply = isReply;
+    }
 
     public void setBizMode(String bizMode) {
         this.bizMode = bizMode;
@@ -298,21 +309,18 @@ public class Notice extends DataEntity<Notice> {
     }
 
     public String getIsTopView() {
-        IsTop s = IsTop.getByValue(isTop);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        IsTop e = IsTop.getByValue(isTop);
+        return null != e ? e.getDescription():isTop;
+    }
+
+    public String getIsReplyView() {
+        YesOrNo e = YesOrNo.getByValue(isReply);
+        return null != e ? e.getDescription():isReply;
     }
 
     public String getModeView() {
-        NoticeMode s = NoticeMode.getByValue(bizMode);
-        String str = "";
-        if (s != null) {
-            str = s.getDescription();
-        }
-        return str;
+        NoticeMode e = NoticeMode.getByValue(bizMode);
+        return null != e ? e.getDescription():bizMode;
     }
 
     /**

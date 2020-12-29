@@ -8,7 +8,11 @@
 		a.user_id AS "userId",
 		a.is_send AS "isSend",
 		a.is_read AS "isRead",
-		a.read_time AS "readTime"
+		a.read_time AS "readTime",
+		a.is_reply AS "isReply",
+		a.reply_time AS "replyTime",
+		a.reply_content AS "replyContent",
+		a.reply_file_ids AS "replyFileIds"
 	</sql>
 
 	<sql id="noticeJoins">
@@ -76,6 +80,9 @@
 
 			<if test="isRead != null and isRead != ''">
 				AND a.is_read = #{isRead}
+			</if>
+			<if test="isReply != null and isReply != ''">
+				AND a.is_reply = #{isReply}
 			</if>
 			<choose>
 				<when test="types != null and types.sze() !=0">
@@ -196,17 +203,34 @@
 		user_id,
 		is_send,
 		is_read,
-		read_time
+		read_time,
+		is_reply,
+		reply_time,
+		reply_content,
+		reply_file_ids
 		) VALUES (
 		#{id},
 		#{noticeId},
 		#{userId},
 		#{isSend},
 		#{isRead},
-		#{readTime}
+		#{readTime},
+		#{isReply},
+		#{replyTime},
+		#{replyContent},
+		#{replyFileIds}
 		)
 	</insert>
 
+
+	<update id="updateReadById">
+		UPDATE t_notice_receive_info SET
+		is_read = #{isRead},
+		read_time = #{readTime}
+		<where>
+			id = #{id}
+		</where>
+	</update>
 
 	<update id="updateUserNotices">
 		UPDATE t_notice_receive_info SET
@@ -228,7 +252,11 @@
 		user_id = #{userId},
 		is_send = #{isSend},
 		is_read = #{isRead},
-		read_time = #{readTime}
+		read_time = #{readTime},
+		is_reply = #{isReply},
+		reply_time = #{replyTime},
+		reply_content = #{replyContent},
+		reply_file_ids = #{replyFileIds}
 		WHERE id = #{id}
 	</update>
 

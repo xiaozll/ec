@@ -57,6 +57,10 @@ public class NoticeQueryVo implements Serializable {
      */
     private String isRead;
     /**
+     * 是否需要回复 {@link com.eryansky.modules.sys._enum.YesOrNo}
+     */
+    private String isReply;
+    /**
      * 通知发布人
      */
     private List<String> publishUserIds = new ArrayList<String>(0);
@@ -123,6 +127,14 @@ public class NoticeQueryVo implements Serializable {
 
     public void setIsTop(String isTop) {
         this.isTop = isTop;
+    }
+
+    public String getIsReply() {
+        return isReply;
+    }
+
+    public void setIsReply(String isReply) {
+        this.isReply = isReply;
     }
 
     public String getIsRead() {

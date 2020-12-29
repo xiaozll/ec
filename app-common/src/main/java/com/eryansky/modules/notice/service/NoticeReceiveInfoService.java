@@ -21,10 +21,13 @@ import com.eryansky.modules.notice.dao.NoticeReceiveInfoDao;
 import com.eryansky.modules.notice.mapper.Notice;
 import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.vo.NoticeQueryVo;
+import com.eryansky.modules.sys._enum.YesOrNo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +48,28 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
      * 我的通知 分页查询.
      *
      * @param page
+     * @param userId    用户ID
+     * @param isRead    是否阅读
+     * @param isReply   是否回复
+     * @param type      分类
+     * @param startTime 通知发布开始时间
+     * @param endTime   通知发布截止时间
+     * @return
+     */
+    public Page<NoticeReceiveInfo> findNoticePageByUserId(Page<NoticeReceiveInfo> page, String userId, String type, String isRead, String isReply, Date startTime, Date endTime) {
+        NoticeQueryVo noticeQueryVo = new NoticeQueryVo();
+        noticeQueryVo.setType(type);
+        noticeQueryVo.setIsRead(isRead);
+        noticeQueryVo.setIsReply(isReply);
+        noticeQueryVo.setStartTime(startTime);
+        noticeQueryVo.setEndTime(endTime);
+        return findReadNoticePage(page, new NoticeReceiveInfo(), userId, noticeQueryVo);
+    }
+
+    /**
+     * 我的通知 分页查询.
+     *
+     * @param page
      * @param userId        用户ID
      * @param noticeQueryVo 查询条件
      * @return
@@ -52,8 +77,7 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
      * @throws ServiceException
      * @throws DaoException
      */
-    public Page<NoticeReceiveInfo> findReadNoticePage(Page<NoticeReceiveInfo> page, NoticeReceiveInfo entity, String userId, NoticeQueryVo noticeQueryVo) throws SystemException,
-            ServiceException, DaoException {
+    public Page<NoticeReceiveInfo> findReadNoticePage(Page<NoticeReceiveInfo> page, NoticeReceiveInfo entity, String userId, NoticeQueryVo noticeQueryVo) {
         Assert.notNull(userId, "参数[userId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
@@ -66,6 +90,7 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
             parameter.put("isTop", noticeQueryVo.getIsTop());
             parameter.put("type", noticeQueryVo.getType());
             parameter.put("isRead", noticeQueryVo.getIsRead());
+            parameter.put("isReply", noticeQueryVo.getIsReply());
             parameter.put("title", noticeQueryVo.getTitle());
             parameter.put("content", noticeQueryVo.getContent());
 //            if (Collections3.isNotEmpty(noticeQueryVo.getPublishUserIds())) {
@@ -103,7 +128,7 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
     /**
      * 设置用户通知为已读状态
      *
-     * @param userId    用户ID
+     * @param userId 用户ID
      * @return
      */
     public int markUserNoticeReaded(String userId) {
@@ -126,6 +151,7 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
      *
      * @param userId    用户ID
      * @param noticeIds 通知IDS
+     * @param isRead    是否读
      * @return
      */
     public int updateUserNotices(String userId, Collection<String> noticeIds, String isRead) {
@@ -133,11 +159,29 @@ public class NoticeReceiveInfoService extends CrudService<NoticeReceiveInfoDao, 
         parameter.put("userId", userId);
         parameter.put("noticeIds", noticeIds);
         parameter.put("isRead", isRead);
+        if (YesOrNo.YES.getValue().equals(isRead)) {
+            parameter.put("readTime", Calendar.getInstance().getTime());
+        }
         return dao.updateUserNotices(parameter);
     }
 
     /**
+     * 设置用户通知为已读状态
+     *
+     * @param id 接收ID
+     * @return
+     */
+    public int updateReadById(String id) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("isRead", YesOrNo.YES.getValue());
+        parameter.put("readTime", Calendar.getInstance().getTime());
+        return dao.updateReadById(parameter);
+    }
+
+    /**
      * 根据通知ID查看
+     *
      * @param page
      * @param noticeId
      * @return

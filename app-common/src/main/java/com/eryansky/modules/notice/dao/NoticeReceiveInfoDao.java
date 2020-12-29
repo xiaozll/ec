@@ -35,4 +35,6 @@ public interface NoticeReceiveInfoDao extends CrudDao<NoticeReceiveInfo> {
      * @return
      */
     int updateUserNotices(Parameter parameter);
+
+    int updateReadById(Parameter parameter);
 }

@@ -3,6 +3,7 @@
 <%@ include file="/common/taglibs.jsp" %>
 <script type="text/javascript">
     var modelIsTop = '${model.isTop}';
+    var modelIsReply = '${model.isReply}';
     var modelTipMessage = '${model.tipMessage}';
     var modelType = '${model.type}';
     var dictionaryTypeCode = '<%=NoticeUtils.DIC_NOTICE%>';
@@ -103,10 +104,10 @@
         </div>
         <div>
             <label>置顶：</label>
-            <label style="text-align: left;width: 80px;">
+            <label style="text-align: left;width: 100px;">
                 <input type="radio" name="isTop" style="width: 20px;" value="0" /> 不置顶
             </label>
-            <label style="text-align: left;width: 80px;">
+            <label style="text-align: left;width: 100px;">
                 <input type="radio" name="isTop" style="width: 20px;" value="1" /> 置顶
             </label>
             <span id="endTopDay_span">
@@ -116,6 +117,15 @@
                 <span class="tree-icon tree-file easyui-icon-tip easyui-tooltip"
                       title="设置为0，则永久置顶。" ></span>
             </span>
+        </div>
+        <div>
+            <label>回复：</label>
+            <label style="text-align: left;width: 100px;">
+                <input type="radio" name="isReply" style="width: 20px;" value="0" /> 无需回复
+            </label>
+            <label style="text-align: left;width: 100px;">
+                <input type="radio" name="isReply" style="width: 20px;" value="1" /> 需要回复
+            </label>
         </div>
         <c:if test="${not empty noticeTipChannels}">
             <div>

@@ -20,6 +20,7 @@ import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.notice._enum.*;
 import com.eryansky.modules.notice.mapper.NoticeSendInfo;
 import com.eryansky.modules.notice.utils.NoticeUtils;
+import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
@@ -220,6 +221,10 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         if (Collections3.isNotEmpty(receiveUserIds)) {
             Sets.newHashSet(receiveUserIds).forEach(v->{
                 NoticeReceiveInfo receiveInfo = new NoticeReceiveInfo(v, notice.getId());
+//                receiveInfo.setIsSend(YesOrNo.YES.getValue());
+                if(YesOrNo.YES.getValue().equals(notice.getIsReply())){
+                    receiveInfo.setIsReply(YesOrNo.NO.getValue());
+                }
                 checkReceiveInfoAdd(receiveInfos, receiveInfo);
             });
         }

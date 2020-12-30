@@ -34,9 +34,20 @@ $(function () {
     initSelectUser();
 
     if (noticeId !== "" && objectId === '') {
-        window.setTimeout(function () {
-            view(noticeId, hasRepeatPermission);
-        }, 500);
+        $.ajax({
+            url: ctxAdmin + '/notice/noticeReceiveInfo/detail?noticeId='+noticeId,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 1) {
+                    var m = data['obj'];
+                    window.setTimeout(function () {
+                        view(noticeId, hasRepeatPermission,m['id'],m['isNeedReply'],m['isReply']);
+                    }, 500);
+                }
+            }
+        });
+
     } else if (objectId) {
         window.setTimeout(function () {
             edit(noticeId, undefined, objectType, objectId, title, content, fileIds, receiveUserIds, receiveOrganIds, receiveContactGroupIds);

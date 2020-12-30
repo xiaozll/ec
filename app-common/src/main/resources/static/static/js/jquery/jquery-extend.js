@@ -770,9 +770,10 @@ $.keepToTwoDecimal = function(num) {
  * 四舍五入保留2位小数（不够位数，则用0替补）
  * @param num
  * @param fractionalLength 长度 默认：2
+ * @param fill 补位 默认：0
  * @returns {string|boolean}
  */
-$.keepToDecimalFull = function(num,fractionalLength) {
+$.keepToDecimalFull = function(num,fractionalLength,fill) {
 	var result = parseFloat(num);
 	if (isNaN(result)) {
 		console.error('传递参数错误，请检查！');
@@ -791,7 +792,7 @@ $.keepToDecimalFull = function(num,fractionalLength) {
 
 	// 当数字的长度< 小数点索引+2时，补0
 	while (s_x.length <= pos_decimal + (fractionalLength || 2)) {
-		s_x += '0';
+		s_x += fill || '0';
 	}
 	return s_x;
 };

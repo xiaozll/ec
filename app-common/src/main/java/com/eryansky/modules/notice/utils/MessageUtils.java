@@ -184,7 +184,8 @@ public class MessageUtils {
             throw new SystemException("[" + sender + "]用户不存在");
         }
         if (Collections3.isEmpty(messageChannels)) {
-            model.setTipMessage(MessageChannel.Message.getValue() + "," + MessageChannel.QYWeixin.getValue() + "," + MessageChannel.APP.getValue());
+//            model.setTipMessage(MessageChannel.Message.getValue() + "," + MessageChannel.QYWeixin.getValue() + "," + MessageChannel.APP.getValue());
+            model.setTipMessage(NoticeConstants.getMessageDefaultTipChannel());
         } else {
             model.setTipMessage(Collections3.extractToString(messageChannels, "value", ","));
         }

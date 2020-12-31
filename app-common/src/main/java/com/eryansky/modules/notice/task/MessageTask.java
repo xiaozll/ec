@@ -54,7 +54,7 @@ public class MessageTask {
         } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
             return saveAndSend(message, messageReceiveObjectType, receiveObjectIds);
         }else{
-            logger.warn("[receiveObjectType]未实现的类型",receiveObjectType);
+            logger.warn("参数[receiveObjectType]未定义对应类型，{}",receiveObjectType);
         }
         return CompletableFuture.completedFuture(null);
     }

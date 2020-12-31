@@ -153,7 +153,7 @@ public class NoticeConstants extends AppConstants {
      * @return
      */
     public static List<MessageChannel> getNoticeDefaultTipChannels() {
-        List<String> list = getNoticeTipDefaultChannelList();
+        List<String> list = getNoticeDefaultTipChannelList();
         return getMessageChannels(list);
     }
 }

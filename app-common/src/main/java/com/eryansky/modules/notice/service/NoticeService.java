@@ -254,7 +254,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         notice.setType(type);
         notice.setTitle(title);
         notice.setContent(content);
-        notice.setPublishTime(sendTime);
+        notice.setPublishTime(null != sendTime ? sendTime:Calendar.getInstance().getTime());
         notice.setReceiveScope(NoticeReceiveScope.CUSTOM.getValue());
         notice.setUserId(userId);
         notice.setOrganId(organId);

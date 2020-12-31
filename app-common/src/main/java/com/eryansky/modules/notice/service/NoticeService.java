@@ -19,6 +19,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.notice._enum.*;
 import com.eryansky.modules.notice.mapper.NoticeSendInfo;
+import com.eryansky.modules.notice.utils.NoticeConstants;
 import com.eryansky.modules.notice.utils.NoticeUtils;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.modules.sys.service.UserService;
@@ -258,7 +259,8 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         notice.setUserId(userId);
         notice.setOrganId(organId);
         if(Collections3.isEmpty(messageChannels)){
-            notice.setTipMessage(MessageChannel.Message.getValue()+","+MessageChannel.QYWeixin.getValue()+","+MessageChannel.APP.getValue());
+//            notice.setTipMessage(MessageChannel.Message.getValue()+","+MessageChannel.QYWeixin.getValue()+","+MessageChannel.APP.getValue());
+            notice.setTipMessage(NoticeConstants.getNoticeDefaultTipChannel());
         }else{
             notice.setTipMessage(Collections3.extractToString(messageChannels,"value",","));
         }

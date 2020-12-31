@@ -96,7 +96,7 @@ public class NoticeConstants extends AppConstants {
 
 
     /**
-     * 通知提醒方式，多个之间以“,”分割 {@link MessageChannel}
+     * 通知提醒支持方式，多个之间以“,”分割 {@link MessageChannel}
      * @return
      */
     public static String getNoticeTipChannel() {
@@ -105,7 +105,7 @@ public class NoticeConstants extends AppConstants {
     }
 
     /**
-     * 通知提醒方式，多个之间以“,”分割 {@link MessageChannel}
+     * 通知提醒支持方式，多个之间以“,”分割 {@link MessageChannel}
      * @return
      */
     public static List<String> getNoticeTipChannelList() {
@@ -117,11 +117,43 @@ public class NoticeConstants extends AppConstants {
     }
 
     /**
-     * 通知提醒方式，多个之间以“,”分割 {@link MessageChannel}
+     * 通知提醒支持方式，多个之间以“,”分割 {@link MessageChannel}
      * @return
      */
     public static List<MessageChannel> getNoticeTipChannels() {
         List<String> list = getNoticeTipChannelList();
+        return getMessageChannels(list);
+    }
+
+
+
+    /**
+     * 通知提醒默认方式，多个之间以“,”分割 {@link MessageChannel}
+     * @return
+     */
+    public static String getNoticeDefaultTipChannel() {
+        String code = "system.notice.tipChannel.default";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 通知提醒默认方式，多个之间以“,”分割 {@link MessageChannel}
+     * @return
+     */
+    public static List<String> getNoticeDefaultTipChannelList() {
+        String value = getNoticeDefaultTipChannel();
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 通知提醒默认方式，多个之间以“,”分割 {@link MessageChannel}
+     * @return
+     */
+    public static List<MessageChannel> getNoticeDefaultTipChannels() {
+        List<String> list = getNoticeTipDefaultChannelList();
         return getMessageChannels(list);
     }
 }

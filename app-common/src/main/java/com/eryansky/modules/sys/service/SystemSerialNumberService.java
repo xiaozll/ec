@@ -213,21 +213,21 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         String queueRegion = SystemSerialNumberUtils.getQueueRegion(app, moduleCode);
         CacheUtils.getCacheChannel().queueClear(queueRegion);
         //存在子项
-        SystemSerialNumber systemSerialNumber = getByCode(app, moduleCode);
-        if (null != systemSerialNumber) {
-            MaxSerial maxSerial = systemSerialNumber.getMaxSerial();
-            if (null != maxSerial) {
-                maxSerial.getItems().forEach(v -> {
-                    String key = StringUtils.substringAfter(v.getKey(), SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_");
-                    if (StringUtils.isNotBlank(key)) {
-                        String _queueRegion = SystemSerialNumberUtils.getQueueRegion(app, moduleCode + "_" + key);
-                        CacheUtils.getCacheChannel().queueClear(_queueRegion);
-                    }
-
-                });
-            }
-
-        }
+//        SystemSerialNumber systemSerialNumber = getByCode(app, moduleCode);
+//        if (null != systemSerialNumber) {
+//            MaxSerial maxSerial = systemSerialNumber.getMaxSerial();
+//            if (null != maxSerial) {
+//                maxSerial.getItems().forEach(v -> {
+//                    String key = StringUtils.substringAfter(v.getKey(), SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_");
+//                    if (StringUtils.isNotBlank(key)) {
+//                        String _queueRegion = SystemSerialNumberUtils.getQueueRegion(app, moduleCode + "_" + key);
+//                        CacheUtils.getCacheChannel().queueClear(_queueRegion);
+//                    }
+//
+//                });
+//            }
+//
+//        }
     }
 
     /**

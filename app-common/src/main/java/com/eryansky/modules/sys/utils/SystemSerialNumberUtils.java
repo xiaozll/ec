@@ -9,6 +9,7 @@ import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.lock.DefaultLockCallback;
+import com.eryansky.j2cache.lock.LockInsideExecutedException;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
 import com.eryansky.modules.sys.sn.MaxSerialItem;
@@ -192,6 +193,12 @@ public class SystemSerialNumberUtils {
                     }
                     return true;
                 }
+
+                @Override
+                public Boolean handleException(LockInsideExecutedException e) {
+                    logger.error(e.getMessage(),e);
+                    return super.handleException(e);
+                }
             });
             if (!flag) {
                 logger.error("生成序列号失败，锁超时，{}",new Object[]{queueRegion});
@@ -201,6 +208,10 @@ public class SystemSerialNumberUtils {
             return value;
         }
 
+    }
+
+    public static void resetSerialNumber(){
+        Static.systemSerialNumberService.resetSerialNumber();
     }
 
 }

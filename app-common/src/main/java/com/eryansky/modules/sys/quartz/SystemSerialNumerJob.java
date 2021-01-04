@@ -7,6 +7,7 @@ package com.eryansky.modules.sys.quartz;
 
 import com.eryansky.core.quartz.QuartzJob;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
+import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;

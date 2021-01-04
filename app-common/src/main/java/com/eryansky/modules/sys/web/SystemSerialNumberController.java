@@ -23,6 +23,7 @@ import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
 import com.eryansky.modules.sys.sn.MaxSerial;
+import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.utils.AppConstants;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +141,24 @@ public class SystemSerialNumberController extends SimpleController {
         return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";
     }
 
+
+    /**
+     * 重置序列号
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("sys:systemSerialNumber:edit")
+    @RequestMapping(value = {"resetSerialNumber"})
+    @ResponseBody
+    public Result resetSerialNumber(String id) {
+        if(StringUtils.isNotBlank(id)){
+            systemSerialNumberService.resetSerialNumber(id);
+        }else{
+            systemSerialNumberService.resetSerialNumber();
+        }
+        return Result.successResult();
+    }
 
     /**
      * 详细信息

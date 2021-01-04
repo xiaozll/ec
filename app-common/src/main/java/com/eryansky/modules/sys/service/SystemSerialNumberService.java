@@ -22,6 +22,7 @@ import com.eryansky.modules.sys.sn.SNGenerateApp;
 import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.utils.AppDateUtils;
 import com.eryansky.utils.CacheUtils;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -62,20 +63,20 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @return
      */
     public SystemSerialNumber getByCode(String moduleCode) {
-        return getByCode(SystemSerialNumber.DEFAULT_ID,moduleCode);
+        return getByCode(SystemSerialNumber.DEFAULT_ID, moduleCode);
     }
 
 
     /**
      * 根据模块编码查找
      *
-     * @param app APP标识
+     * @param app        APP标识
      * @param moduleCode
      * @return
      */
-    public SystemSerialNumber getByCode(String app,String moduleCode) {
+    public SystemSerialNumber getByCode(String app, String moduleCode) {
         SystemSerialNumber entity = new SystemSerialNumber();
-        entity.setApp(StringUtils.isNotBlank(app) ? app: VersionLog.DEFAULT_ID);
+        entity.setApp(StringUtils.isNotBlank(app) ? app : VersionLog.DEFAULT_ID);
         entity.setModuleCode(moduleCode);
         return dao.getByCode(entity);
     }
@@ -87,36 +88,38 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         SystemSerialNumber entity = new SystemSerialNumber();
         return dao.findAllList(entity);
     }
+
     /**
      * 根据模块code生成预数量的序列号存放到Map中
      *
      * @param moduleCode 模块code
      * @return
      */
-    public List<String> generatePrepareSerialNumbers(String app,String moduleCode) {
-        return generatePrepareSerialNumbers(app,moduleCode,null,null);
+    public List<String> generatePrepareSerialNumbers(String app, String moduleCode) {
+        return generatePrepareSerialNumbers(app, moduleCode, null, null);
     }
+
     /**
      * 根据模块code生成预数量的序列号存放到Map中
      *
      * @param moduleCode 模块code
      * @return
      */
-    public List<String> generatePrepareSerialNumbers(String app,String moduleCode,String customCategory, Map<String,String> params) {
-        String _moduleCode = null == customCategory ? moduleCode:moduleCode+"_"+customCategory;
-        String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL:SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL+"_"+customCategory;
-        SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app:VersionLog.DEFAULT_ID,moduleCode);
+    public List<String> generatePrepareSerialNumbers(String app, String moduleCode, String customCategory, Map<String, String> params) {
+        String _moduleCode = null == customCategory ? moduleCode : moduleCode + "_" + customCategory;
+        String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL : SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_" + customCategory;
+        SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app : VersionLog.DEFAULT_ID, moduleCode);
         /** 预生成数量 */
         int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;
         /** 数据库存储的当前最大序列号 **/
-        if(null == entity.getMaxSerial()){
+        if (null == entity.getMaxSerial()) {
             entity.setMaxSerial(new MaxSerial());
         }
         MaxSerialItem maxSerialItem = null;
-        if(Collections3.isNotEmpty(entity.getMaxSerial().getItems())){
-            maxSerialItem = entity.getMaxSerial().getItems().stream().filter(v->v.getKey().equals(maxSerialKey)).findFirst().orElse(null);
+        if (Collections3.isNotEmpty(entity.getMaxSerial().getItems())) {
+            maxSerialItem = entity.getMaxSerial().getItems().stream().filter(v -> v.getKey().equals(maxSerialKey)).findFirst().orElse(null);
         }
-        if(null == maxSerialItem){
+        if (null == maxSerialItem) {
             maxSerialItem = new MaxSerialItem().setKey(maxSerialKey);
         }
         long maxSerialInt = maxSerialItem.getValue();
@@ -125,7 +128,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         SNGenerateApp snGenerateApp = new SNGenerateApp();
         Map map = new HashMap(); //设定参数
         map.put(GeneratorConstants.PARAM_MODULE_CODE, _moduleCode);
-        if(null != params){
+        if (null != params) {
             map.putAll(params);
         }
         map.put(GeneratorConstants.PARAM_CUSTOM_CATEGORY, customCategory);
@@ -137,8 +140,8 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         }
         //更新数据
         maxSerialItem.setValue(maxSerialInt);
-        entity.getMaxSerial().addIfNotExist(maxSerialItem.getKey(),maxSerialItem.getValue());
-        entity.getMaxSerial().update(maxSerialItem.getKey(),maxSerialItem.getValue());
+        entity.getMaxSerial().addIfNotExist(maxSerialItem.getKey(), maxSerialItem.getValue());
+        entity.getMaxSerial().update(maxSerialItem.getKey(), maxSerialItem.getValue());
         updateByVersion(entity);
         return resultList;
     }
@@ -148,55 +151,127 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * 年度重置序列号
      */
     public void resetSerialNumber() {
-        List<SystemSerialNumber> numberList = this.findAll();
+        List<SystemSerialNumber> list = this.findAll();
+        list.forEach(v -> {
+            resetSerialNumber(v.getId());
+        });
+    }
+
+    /**
+     * 年度重置序列号
+     */
+    public void resetSerialNumber(String id) {
+        SystemSerialNumber systemSerialNumber = this.get(id);
         Date now = null;
         try {
             now = DateUtils.parseDate(DateUtils.getDate(), DateUtils.DATE_FORMAT);
         } catch (ParseException e) {
             logger.error(e.getMessage());
         }
-        for (SystemSerialNumber systemSerialNumber : numberList) {
-            boolean flag = false;
-            if (ResetType.Day.getValue().equals(systemSerialNumber.getResetType())) {
-                flag = true;
-            } else if (ResetType.Month.getValue().equals(systemSerialNumber.getResetType())) {
-                flag = AppDateUtils.getCurrentMonthStartTime().equals(now);
-            }
+        boolean flag = false;
+        if (ResetType.Day.getValue().equals(systemSerialNumber.getResetType())) {
+            flag = true;
+        } else if (ResetType.Month.getValue().equals(systemSerialNumber.getResetType())) {
+            flag = AppDateUtils.getCurrentMonthStartTime().equals(now);
+        }
 //            else if(ResetType.Quarter.getValue().equals(systemSerialNumber.getResetType())){
 //                flag = AppDateUtils.getCurrentQuarterStartTime().equals(now);
 //            }
-            else if (ResetType.Year.getValue().equals(systemSerialNumber.getResetType())) {
-                flag = AppDateUtils.getCurrentYearStartTime().equals(now);
+        else if (ResetType.Year.getValue().equals(systemSerialNumber.getResetType())) {
+            flag = AppDateUtils.getCurrentYearStartTime().equals(now);
+        }
+        if (flag) {
+            MaxSerial maxSerial = systemSerialNumber.getMaxSerial();
+            //子项序列号
+            List<String> cs = Lists.newArrayList();
+            if (null != maxSerial) {
+                maxSerial.getItems().forEach(v -> {
+                    String key = StringUtils.substringAfter(v.getKey(), SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_");
+                    if (StringUtils.isNotBlank(key)) {
+                        cs.add(systemSerialNumber.getModuleCode() + "_" + key);
+                    }
+                });
             }
-            if (flag) {
-                systemSerialNumber.setMaxSerial(new MaxSerial());
-                systemSerialNumber.setVersion(0);
-                this.save(systemSerialNumber);
-                //清空缓存
-                String queueRegion = SystemSerialNumberUtils.getQueueRegion(systemSerialNumber.getApp(),systemSerialNumber.getModuleCode());
-                CacheUtils.getCacheChannel().queueClear(queueRegion);
-            }
+
+            logger.info("重置序列号，{}：{}", new Object[]{systemSerialNumber.getApp(), systemSerialNumber.getModuleCode()});
+            systemSerialNumber.setMaxSerial(new MaxSerial());
+            systemSerialNumber.setVersion(0);
+            this.save(systemSerialNumber);
+            //清空缓存
+            clearCacheQueueByModuleCode(systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
+            cs.forEach(v -> {
+                clearCacheQueueByModuleCode(systemSerialNumber.getApp(), v);
+            });
         }
     }
 
+    /**
+     * 清空队列缓存(指定key)
+     */
+    public void clearCacheQueueByModuleCode(String app, String moduleCode) {
+        //单项
+        String queueRegion = SystemSerialNumberUtils.getQueueRegion(app, moduleCode);
+        CacheUtils.getCacheChannel().queueClear(queueRegion);
+        //存在子项
+        SystemSerialNumber systemSerialNumber = getByCode(app, moduleCode);
+        if (null != systemSerialNumber) {
+            MaxSerial maxSerial = systemSerialNumber.getMaxSerial();
+            if (null != maxSerial) {
+                maxSerial.getItems().forEach(v -> {
+                    String key = StringUtils.substringAfter(v.getKey(), SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_");
+                    if (StringUtils.isNotBlank(key)) {
+                        String _queueRegion = SystemSerialNumberUtils.getQueueRegion(app, moduleCode + "_" + key);
+                        CacheUtils.getCacheChannel().queueClear(_queueRegion);
+                    }
+
+                });
+            }
+
+        }
+    }
+
+    /**
+     * 清空队列缓存
+     */
+    public void clearAllCacheQueue() {
+        List<SystemSerialNumber> numberList = this.findAll();
+        for (SystemSerialNumber systemSerialNumber : numberList) {
+            clearCacheQueueByModuleCode(systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
+            MaxSerial maxSerial = systemSerialNumber.getMaxSerial();
+            //子项序列号
+            List<String> cs = Lists.newArrayList();
+            if (null != maxSerial) {
+                maxSerial.getItems().forEach(v -> {
+                    String key = StringUtils.substringAfter(v.getKey(), SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_");
+                    if (StringUtils.isNotBlank(key)) {
+                        cs.add(systemSerialNumber.getModuleCode() + "_" + key);
+                    }
+                });
+            }
+            cs.forEach(v -> {
+                clearCacheQueueByModuleCode(systemSerialNumber.getApp(), v);
+            });
+
+        }
+    }
 
     /**
      * 清空缓存(指定key)
      */
-    public void clearCacheByModuleCode(String app,String moduleCode) {
-        String queueRegion = SystemSerialNumberUtils.getQueueRegion(app,moduleCode);
-        CacheUtils.getCacheChannel().queueClear(queueRegion);
+    public void clearCacheByModuleCode(String app, String moduleCode) {
+        String lockRegion = SystemSerialNumberUtils.getLockRegion(app, moduleCode);
+        CacheUtils.getCacheChannel().clear(lockRegion);
     }
+
 
     /**
      * 清空缓存
      */
-    public void clearCache() {
+    public void clearAllCache() {
         List<SystemSerialNumber> numberList = this.findAll();
         for (SystemSerialNumber systemSerialNumber : numberList) {
-            //清空缓存
-            String queueRegion = SystemSerialNumberUtils.getQueueRegion(systemSerialNumber.getApp(),systemSerialNumber.getModuleCode());
-            CacheUtils.getCacheChannel().queueClear(queueRegion);
+            clearCacheByModuleCode(systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
         }
     }
+
 }

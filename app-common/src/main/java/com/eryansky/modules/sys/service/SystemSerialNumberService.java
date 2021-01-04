@@ -255,23 +255,4 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         }
     }
 
-    /**
-     * 清空缓存(指定key)
-     */
-    public void clearCacheByModuleCode(String app, String moduleCode) {
-        String lockRegion = SystemSerialNumberUtils.getLockRegion(app, moduleCode);
-        CacheUtils.getCacheChannel().clear(lockRegion);
-    }
-
-
-    /**
-     * 清空缓存
-     */
-    public void clearAllCache() {
-        List<SystemSerialNumber> numberList = this.findAll();
-        for (SystemSerialNumber systemSerialNumber : numberList) {
-            clearCacheByModuleCode(systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
-        }
-    }
-
 }

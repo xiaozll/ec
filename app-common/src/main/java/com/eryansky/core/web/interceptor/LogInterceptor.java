@@ -37,6 +37,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -144,7 +145,9 @@ public class LogInterceptor implements HandlerInterceptor {
 						Object value = resolver.resolveArgument(parameter, mavContainer, webRequest, webDataBinderFactory);
 						parameterValues[i] = value;
 					} catch (Exception e) {
-						logger.warn(e.getMessage() + "\n" + requestUrl);
+						if(!(e instanceof IOException)){
+							logger.warn(e.getMessage() + "\n" + requestUrl);
+						}
 					}
 				}
 

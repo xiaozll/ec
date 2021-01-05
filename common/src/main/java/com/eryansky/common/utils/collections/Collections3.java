@@ -6,6 +6,7 @@
 package com.eryansky.common.utils.collections;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -143,6 +144,22 @@ public class Collections3 {
 		return collection.iterator().next();
 	}
 
+	/**
+	 * 查找并删除第一个元素
+	 * @param collection
+	 * @param test
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> T findAndRemoveFirst(Iterable<? extends T> collection, Predicate<? super T> test) {
+		T value = null;
+		for (Iterator<? extends T> it = collection.iterator(); it.hasNext();)
+			if (test.test(value = it.next())) {
+				it.remove();
+				return value;
+			}
+		return null;
+	}
 	/**
 	 * 获取Collection的最后一个元素 ，如果collection为空返回null.
 	 */

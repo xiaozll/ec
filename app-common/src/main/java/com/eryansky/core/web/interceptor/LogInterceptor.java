@@ -146,7 +146,7 @@ public class LogInterceptor implements HandlerInterceptor {
 						parameterValues[i] = value;
 					} catch (Exception e) {
 						if(!(e instanceof IOException)){
-							logger.warn(e.getMessage() + "\n" + requestUrl);
+							logger.error(e.getMessage() + ",{}" ,requestUrl);
 						}
 					}
 				}

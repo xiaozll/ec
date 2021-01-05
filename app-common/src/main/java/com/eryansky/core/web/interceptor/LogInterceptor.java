@@ -151,7 +151,7 @@ public class LogInterceptor implements HandlerInterceptor {
 					}
 				}
 
-				if (logging != null && Boolean.valueOf(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
+				if (logging != null && Boolean.parseBoolean(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
 					flag = true;
 					_flag = true;
 					logType = logging.logType().getValue();
@@ -163,7 +163,7 @@ public class LogInterceptor implements HandlerInterceptor {
 					if (StringUtils.isNotBlank(logging.remark())) {
 						remark = SpringUtils.parseSpel(logging.remark(), handlerMethod.getMethod(), parameterValues);
 					}
-				} else if (logging != null && !Boolean.valueOf(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
+				} else if (logging != null && !Boolean.parseBoolean(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
 					_flag = false;
 				}
 			}
@@ -214,9 +214,9 @@ public class LogInterceptor implements HandlerInterceptor {
 		// 打印JVM信息。
 		if (logger.isDebugEnabled()) {
 			logger.debug("计时结束：{}  耗时：{}  URI: {}  最大内存: {}m  已分配内存: {}m  已分配内存中的剩余空间: {}m  最大可用内存: {}m",
-					new Object[]{new SimpleDateFormat("hh:mm:ss.SSS").format(endTime), DateUtils.formatDateTime(endTime - beginTime),
-							request.getRequestURI(), Runtime.getRuntime().maxMemory() / 1024 / 1024, Runtime.getRuntime().totalMemory() / 1024 / 1024, Runtime.getRuntime().freeMemory() / 1024 / 1024,
-							(Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime().freeMemory()) / 1024 / 1024});
+					new SimpleDateFormat("hh:mm:ss.SSS").format(endTime), DateUtils.formatDateTime(endTime - beginTime),
+					request.getRequestURI(), Runtime.getRuntime().maxMemory() / 1024 / 1024, Runtime.getRuntime().totalMemory() / 1024 / 1024, Runtime.getRuntime().freeMemory() / 1024 / 1024,
+					(Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() + Runtime.getRuntime().freeMemory()) / 1024 / 1024);
 		}
 
 	}

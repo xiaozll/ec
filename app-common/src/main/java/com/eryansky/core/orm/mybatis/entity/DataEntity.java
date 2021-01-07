@@ -81,16 +81,16 @@ public abstract class DataEntity<T> extends BaseEntity<T>  implements IDataEntit
 			setId(Identities.uuid2());
 		}
 		String user = SecurityUtils.getCurrentUserId();
-		this.createUser = user;
-		this.createTime = Calendar.getInstance().getTime();
-		this.updateUser = user;
-		this.updateTime = this.createTime;
+		this.createUser = null != this.createUser ? this.createUser:user;
+		this.createTime = null != this.createTime ? this.createTime:Calendar.getInstance().getTime();
+		this.updateUser = null != this.updateUser ? this.updateUser:user;
+		this.updateTime = null != updateTime ? this.updateTime:this.createTime;
 	}
 
 	@Override
 	public void preUpdate() {
 		String user = SecurityUtils.getCurrentUserId();
-		this.updateUser = user;
+		this.updateUser = null != user ? user:this.updateUser;
 		this.updateTime = Calendar.getInstance().getTime();
 	}
 

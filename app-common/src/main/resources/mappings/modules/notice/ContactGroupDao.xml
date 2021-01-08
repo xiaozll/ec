@@ -118,6 +118,9 @@
         FROM t_notice_contact_group a
         <where>
             a.status = #{status}
+            <if test="userId != null and userId !=''">
+                AND a.user_id = #{userId}
+            </if>
             <if test="contactGroupType != null and contactGroupType !=''">
                 AND a.contact_group_type = #{contactGroupType}
             </if>

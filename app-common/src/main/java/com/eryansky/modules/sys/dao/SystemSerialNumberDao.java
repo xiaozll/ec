@@ -26,6 +26,13 @@ public interface SystemSerialNumberDao extends CrudDao<SystemSerialNumber> {
      */
     int updateByVersion(SystemSerialNumber entity);
 
+    /**
+     * 重置序列号
+     * @param entity
+     * @return
+     */
+    int updateSerialNumber(SystemSerialNumber entity);
+
     SystemSerialNumber getByCode(SystemSerialNumber entity);
 }
 

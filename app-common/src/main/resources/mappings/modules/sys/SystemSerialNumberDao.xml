@@ -160,6 +160,15 @@
 		WHERE id = #{id} AND version = #{version}
 	</update>
 
+	<update id="updateSerialNumber">
+		UPDATE t_sys_serial_number SET
+		version = #{version},
+		update_user = #{updateUser},
+		update_time = #{updateTime},
+		max_serial = #{maxSerial}
+		WHERE id = #{id}
+	</update>
+
 	<update id="delete">
 		UPDATE t_sys_serial_number SET
 		status = #{STATUS_DELETE}

@@ -23,6 +23,7 @@ import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.utils.AppDateUtils;
 import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -126,7 +127,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         //临时List变量
         List<String> resultList = new ArrayList<>(prepare);
         SNGenerateApp snGenerateApp = new SNGenerateApp();
-        Map map = new HashMap(); //设定参数
+        Map<String,Object> map = Maps.newHashMap(); //设定参数
         map.put(GeneratorConstants.PARAM_MODULE_CODE, _moduleCode);
         if (null != params) {
             map.putAll(params);
@@ -155,6 +156,15 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         list.forEach(v -> {
             resetSerialNumber(v.getId());
         });
+    }
+
+    /**
+     * 重置序列号
+     * @param entity
+     * @return
+     */
+    public int updateSerialNumber(SystemSerialNumber entity){
+        return dao.updateSerialNumber(entity);
     }
 
     /**
@@ -196,7 +206,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
             logger.info("重置序列号，{}：{}", new Object[]{systemSerialNumber.getApp(), systemSerialNumber.getModuleCode()});
             systemSerialNumber.setMaxSerial(new MaxSerial());
             systemSerialNumber.setVersion(0);
-            this.save(systemSerialNumber);
+            this.updateSerialNumber(systemSerialNumber);
             //清空缓存
             clearCacheQueueByModuleCode(systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
             cs.forEach(v -> {

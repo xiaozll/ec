@@ -145,7 +145,7 @@ public class LogInterceptor implements HandlerInterceptor {
 						Object value = resolver.resolveArgument(parameter, mavContainer, webRequest, webDataBinderFactory);
 						parameterValues[i] = value;
 					} catch (Exception e) {
-						if(!(e instanceof IOException)){
+						if(!(e instanceof org.springframework.http.converter.HttpMessageNotReadableException)){
 							logger.error(e.getMessage() + ",{}" ,requestUrl);
 						}
 					}

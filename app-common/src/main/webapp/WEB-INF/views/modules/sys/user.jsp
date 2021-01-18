@@ -1,3 +1,4 @@
+<%@ page import="com.eryansky.core.security.SecurityUtils" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file="/common/meta.jsp"%>
@@ -7,18 +8,28 @@
 <%--<%@ include file="/common/zTree.jsp"%>--%>
 <script type="text/javascript">
     var sessionInfoUserId = "${sessionInfo.userId}";//当前的登录用户ID
+    var hasPermissionUserAdd = <%= SecurityUtils.isPermitted("sys:user:add")%>;//当前的登录用户ID
+    var hasPermissionUserDelete = <%= SecurityUtils.isPermitted("sys:user:delete")%>;//当前的登录用户ID
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/user${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <%-- 列表右键 --%>
 <div id="user_datagrid_menu" class="easyui-menu" style="width:120px;display: none;">
+    <e:hasPermission name="sys:user:add">
     <div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
-    <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
-    <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
-    <div onclick="editPassword();" data-options="iconCls:'eu-icon-lock'">修改密码</div>
-    <div onclick="editUserOrgan();" data-options="iconCls:'eu-icon-group'">设置机构</div>
-    <div onclick="editUserPost();" data-options="iconCls:'eu-icon-group'">设置岗位</div>
-    <div onclick="editUserRole();" data-options="iconCls:'eu-icon-group'">设置角色</div>
-    <div onclick="editUserResource();" data-options="iconCls:'eu-icon-folder'">设置资源</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:edit">
+        <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:delete">
+        <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:edit">
+        <div onclick="editPassword();" data-options="iconCls:'eu-icon-lock'">修改密码</div>
+        <div onclick="editUserOrgan();" data-options="iconCls:'eu-icon-group'">设置机构</div>
+        <div onclick="editUserPost();" data-options="iconCls:'eu-icon-group'">设置岗位</div>
+        <div onclick="editUserRole();" data-options="iconCls:'eu-icon-group'">设置角色</div>
+        <div onclick="editUserResource();" data-options="iconCls:'eu-icon-folder'">设置资源</div>
+    </e:hasPermission>
 </div>
 <%-- easyui-layout布局 --%>
 <div class="easyui-layout" fit="true" style="margin: 0px;border: 0px;overflow: hidden;width:100%;height:100%;">

@@ -445,7 +445,7 @@ public class AppConstants extends SysConstants {
      */
     public static String getAppProductContact() {
         String code = "app.productContact";
-        return getConfig(code);
+        return getConfigValue(code);
     }
 
 }

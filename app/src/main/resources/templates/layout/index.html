@@ -188,7 +188,8 @@
           <b>V</b> [[${T(com.eryansky.utils.AppConstants).getAppVersion()}]]
         </div>
         <!-- Default to the left -->
-        <strong>版权所有 &copy; 2013-[[${#dates.format(new java.util.Date().getTime(), 'yyyy')}]] <a href="#" th:href="${T(com.eryansky.utils.AppConstants).getAppProductURL()}" th:text="${T(com.eryansky.utils.AppConstants).getAppProductName()}">Company</a>[[${T(com.eryansky.utils.AppConstants).getAppProductContact()}]]</strong>
+<!--        <strong>版权所有 &copy; 2013-[[${#dates.format(new java.util.Date().getTime(), 'yyyy')}]] <a target="_blank" th:href="${T(com.eryansky.utils.AppConstants).getAppProductURL()}" th:text="${T(com.eryansky.utils.AppConstants).getAppProductName()}">Company</a> [[${T(com.eryansky.utils.AppConstants).getAppProductContact()}]]</strong>-->
+        <strong>版权所有 &copy; 2013-[[${#dates.format(new java.util.Date().getTime(), 'yyyy')}]] <a target="_blank" href="#" th:text="${T(com.eryansky.utils.AppConstants).getAppProductName()}">Company</a> [[${T(com.eryansky.utils.AppConstants).getAppProductContact()}]]</strong>
       </footer>
 
       <!-- Control Sidebar -->

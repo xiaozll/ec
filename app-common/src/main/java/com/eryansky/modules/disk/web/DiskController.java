@@ -562,6 +562,7 @@ public class DiskController extends SimpleController {
 
         java.io.File diskFile = file.getDiskFile();
         if (!diskFile.exists() || !diskFile.canRead()) {
+            logger.error("{}:{}",file.getId(),fileNotFoldException.getMessage());
             throw fileNotFoldException;
         }
         String filename = file.getName();

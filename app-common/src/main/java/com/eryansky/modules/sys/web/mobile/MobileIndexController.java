@@ -189,7 +189,7 @@ public class MobileIndexController extends SimpleController {
         }
         ActionException fileNotFoldException = new ActionException("下载的APP文件不存在");
         if (null == versionLog || StringUtils.isBlank(versionLog.getFileId())) {
-            logger.error(null != versionLog ? versionLog.getFileId() : "" + fileNotFoldException.getMessage());
+            logger.error(fileNotFoldException.getMessage() + "," + (null != versionLog ? versionLog.getFileId() : ""));
             throw fileNotFoldException;
         }
         try {
@@ -199,7 +199,7 @@ public class MobileIndexController extends SimpleController {
             }
             java.io.File diskFile = file.getDiskFile();
             if (!diskFile.exists() || !diskFile.canRead()) {
-                logger.error(file.getId() + ":" + diskFile.getAbsolutePath() + "," + fileNotFoldException.getMessage());
+                logger.error(fileNotFoldException.getMessage() + "," + file.getId() + ":" + diskFile.getAbsolutePath());
                 throw fileNotFoldException;
             }
             String filename = file.getName();

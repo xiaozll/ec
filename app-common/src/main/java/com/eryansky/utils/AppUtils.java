@@ -311,7 +311,7 @@ public class AppUtils {
             }
 
             if(StringUtils.isNotBlank(treeNode.getpId())){
-                TreeNode pTreeNode = getParentTreeNode(treeNode.getpId(),(String)treeNode.getAttributes().get("nype"), tempTreeNodes);
+                TreeNode pTreeNode = getParentTreeNode(treeNode.getpId(),(String)treeNode.getAttributes().get("nType"), tempTreeNodes);
                 if(pTreeNode != null){
                     for(TreeNode treeNode2:tempTreeNodes){
                         if(treeNode2.getId().equals(pTreeNode.getId())){

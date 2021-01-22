@@ -11,7 +11,7 @@
 <%@ attribute name="extId" type="java.lang.String" required="false" description="排除掉的编号（不能选择的编号）"%>
 <%@ attribute name="notAllowSelectRoot" type="java.lang.Boolean" required="false" description="不允许选择根节点"%>
 <%@ attribute name="notAllowSelectParent" type="java.lang.Boolean" required="false" description="不允许选择父节点"%>
-<%@ attribute name="allSelectNodeTypes" type="java.lang.String" required="false" description="允许选择的节点类型，多个之间以','分割,node.attributes.nodeType"%>
+<%@ attribute name="allSelectNodeTypes" type="java.lang.String" required="false" description="允许选择的节点类型，多个之间以','分割,node.attributes.nType"%>
 <%@ attribute name="module" type="java.lang.String" required="false" description="过滤栏目模型（只显示指定模型，仅针对CMS的Category树）"%>
 <%@ attribute name="selectScopeModule" type="java.lang.Boolean" required="false" description="选择范围内的模型（控制不能选择公共模型，不能选择本栏目外的模型）（仅针对CMS的Category树）"%>
 <%@ attribute name="allowClear" type="java.lang.Boolean" required="false" description="是否允许清除"%>

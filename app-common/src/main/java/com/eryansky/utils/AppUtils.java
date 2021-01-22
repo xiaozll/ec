@@ -278,13 +278,21 @@ public class AppUtils {
         }
         return t;
     }
-
     /**
      * 按树形结构排列
      * @param treeNodes
      * @return
      */
     public static List<TreeNode> toTreeTreeNodes(List<TreeNode> treeNodes){
+        return toTreeTreeNodes(treeNodes,true);
+    }
+    /**
+     * 按树形结构排列
+     * @param treeNodes
+     * @param sameNodeType
+     * @return
+     */
+    public static List<TreeNode> toTreeTreeNodes(List<TreeNode> treeNodes,boolean sameNodeType){
         if(Collections3.isEmpty(treeNodes)){
             return Collections.emptyList();
         }
@@ -311,7 +319,7 @@ public class AppUtils {
             }
 
             if(StringUtils.isNotBlank(treeNode.getpId())){
-                TreeNode pTreeNode = getParentTreeNode(treeNode.getpId(),(String)treeNode.getAttributes().get("nType"), tempTreeNodes);
+                TreeNode pTreeNode = getParentTreeNode(treeNode.getpId(),sameNodeType ? (String)treeNode.getAttributes().get("nType"):null, tempTreeNodes);
                 if(pTreeNode != null){
                     for(TreeNode treeNode2:tempTreeNodes){
                         if(treeNode2.getId().equals(pTreeNode.getId())){

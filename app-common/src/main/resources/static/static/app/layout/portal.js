@@ -157,9 +157,9 @@ function mymessages(refreshPanel, tipMessage) {
 
                 if (obj["tipPasswordType"] !== undefined) {
                     var tipPasswordMsg = '';
-                    if (obj["tipPasswordType"] === 0) {
+                    if (obj["tipPasswordType"] === 1) {
                         tipPasswordMsg = "您从未修改过用户密码，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
-                    } else if (obj["tipPasswordType"] === 1) {
+                    } else if (obj["tipPasswordType"] === 2) {
                         tipPasswordMsg = "距离上次修改密码已经很长时间了，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
                     }
                     $.messager.show({

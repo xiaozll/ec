@@ -91,7 +91,7 @@ public class UserPasswordService extends CrudService<UserPasswordDao, UserPasswo
             tip.setCode(PasswordTip.CODE_YES);
         } else if (time.compareTo(userPassword.getModifyTime()) > 0) {
             tip.setMsg("您已超过" + userPasswordUpdateCycle + "天没有修改登录密码，请修改登录密码！");
-            tip.setCode(PasswordTip.CODE_YES);
+            tip.setCode(PasswordTip.CODE_TIME_OUT);
         }
         return tip;
     }

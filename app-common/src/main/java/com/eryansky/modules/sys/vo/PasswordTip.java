@@ -12,7 +12,8 @@ package com.eryansky.modules.sys.vo;
 public class PasswordTip {
 
     public static final int CODE_NO = 0;
-    public static final int CODE_YES = 1;
+    public static final int CODE_YES = 1;//从未修改
+    public static final int CODE_TIME_OUT = 2;//超期未修改
 
     private int code;
     private String msg;
@@ -43,7 +44,7 @@ public class PasswordTip {
     }
 
     public boolean isTip() {
-        return CODE_YES == code;
+        return CODE_YES == code || CODE_TIME_OUT == code;
     }
 
 }

@@ -221,7 +221,7 @@ function initDatagrid() {
                     var editHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='edit(\"" + rowData["id"] + "\");' >编辑</a>";
                     if (rowData["bizMode"] === '0') {//未发布
                         operateHtml = editHtml + "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
-                    } else if (rowData["bizMode"] === 1) {//已发布
+                    } else if (rowData["bizMode"] === "1") {//已发布
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
                     }
                     if (rowData["isRecordRead"] === "1" && rowData["bizMode"] !== "0" && rowData["bizMode"] !== "3") {//记录查看情况

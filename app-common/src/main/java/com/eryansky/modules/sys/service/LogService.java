@@ -168,9 +168,9 @@ public class LogService extends CrudService<LogDao, Log> {
         Date now = new Date();
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(now); // 得到gc格式的时间
-        gc.add(5, -day); // 2表示月的加减，年代表1依次类推(３周....5天。。)
+        gc.add(Calendar.DAY_OF_MONTH, -day); // 2表示月的加减，年代表1依次类推(３周....5天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
 
         Parameter parameter = new Parameter();
         parameter.put("createTime", DateUtils.format(gc.getTime(), DateUtils.DATE_FORMAT));

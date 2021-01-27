@@ -35,7 +35,8 @@ public abstract class PTreeService<D extends PTreeDao<T,PK>, T extends PTreeEnti
 		if (entity.getParent() == null){
 			T parentEntity = null;
 			try {
-				parentEntity = entityClass.getConstructor(entity.getId() instanceof Long ? Long.class:String.class).newInstance(entity.getId() instanceof Long ? Long.valueOf(0):"0");
+				Class idType = entity.getPKType();
+				parentEntity = entityClass.getConstructor(Long.class == idType ? Long.class:String.class).newInstance(Long.class == idType ? Long.valueOf(0):"0");
 			} catch (Exception e) {
 				throw new ServiceException(e);
 			}

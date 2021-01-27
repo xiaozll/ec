@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
 /**
@@ -33,6 +34,9 @@ public abstract class PBaseEntity<T, PK extends Serializable> extends AbstractBa
         super(id);
     }
 
+    public Class getPKType() {
+        return ReflectionUtils.getClassGenricType(getClass(), 1);
+    }
 
     @JsonIgnore
     @XmlTransient
@@ -45,11 +49,10 @@ public abstract class PBaseEntity<T, PK extends Serializable> extends AbstractBa
     public void prePersist() {
         // 不限制ID为UUID，调用setIsNewRecord()使用自定义ID
         if (!this.isNewRecord){
-            Class<T> idClass = ReflectionUtils.getClassGenricType(getClass(), 1);
-            String idTypeName = idClass.getSimpleName();
-            if("Long".equals(idTypeName)){
+            Class idType = getPKType();
+            if(Long.class == idType){
                 setId((PK) Identities.uuid3());
-            }else if("String".equals(idTypeName)){
+            }else if(String.class == idType){
                 setId((PK) Identities.uuid2());
             }
         }

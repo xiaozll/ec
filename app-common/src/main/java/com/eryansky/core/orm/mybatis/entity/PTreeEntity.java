@@ -80,7 +80,8 @@ public abstract class PTreeEntity<T, PK extends Serializable> extends PDataEntit
 		if (parent != null){
 			parentId = ReflectionUtils.getFieldValue(parent, "id");
 		}
-		return parentId != null ? parentId : (PK)(getId()  instanceof Long ? Long.valueOf(0):"0");
+		Class idType = getPKType();
+		return parentId != null ? parentId : (PK)(Long.class == idType ? Long.valueOf(0):"0");
 	}
 	
 }

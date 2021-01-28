@@ -15,6 +15,8 @@
  */
 package com.eryansky.j2cache.caffeine;
 
+import com.eryansky.j2cache.util.AntPathMatcher;
+import com.eryansky.j2cache.util.PatternMatcher;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.RemovalCause;
 import com.eryansky.j2cache.*;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +45,7 @@ public class CaffeineProvider implements CacheProvider {
     private final static String DEFAULT_REGION = "default";
     private ConcurrentHashMap<String, CaffeineCache> caches = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, CacheConfig> cacheConfigs = new ConcurrentHashMap<>();
+    private PatternMatcher patternMatcher = new AntPathMatcher();
 
     @Override
     public String name() {
@@ -63,7 +67,7 @@ public class CaffeineProvider implements CacheProvider {
     @Override
     public Cache buildCache(String region, CacheExpiredListener listener) {
         return caches.computeIfAbsent(region, v -> {
-            CacheConfig config = cacheConfigs.get(region);
+            CacheConfig config = findCacheConfig(region);
             if (config == null) {
                 log.warn("Caffeine cache [{}] not defined, using default.", region);
                 config = cacheConfigs.get(DEFAULT_REGION);
@@ -77,7 +81,7 @@ public class CaffeineProvider implements CacheProvider {
     @Override
     public Cache buildCache(String region, long timeToLiveInSeconds, CacheExpiredListener listener) {
         CaffeineCache cache = caches.computeIfAbsent(region, v -> {
-            CacheConfig config = cacheConfigs.get(region);
+            CacheConfig config = findCacheConfig(region);
             if(config != null && config.expire != timeToLiveInSeconds)
                 throw new IllegalArgumentException(String.format("Region [%s] TTL %d not match with %d", region, config.expire, timeToLiveInSeconds));
 
@@ -176,6 +180,15 @@ public class CaffeineProvider implements CacheProvider {
                 }
             }
         }
+    }
+
+    private CacheConfig findCacheConfig(String region){
+        for (Map.Entry<String, CacheConfig> entry : cacheConfigs.entrySet()) {
+            if(patternMatcher.matches(entry.getKey(),region)){
+                return entry.getValue();
+            }
+        }
+        return cacheConfigs.get(region);
     }
 
     private void saveCacheConfig(String region, String region_config) {

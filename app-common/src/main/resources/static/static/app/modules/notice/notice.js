@@ -215,7 +215,7 @@ function initDatagrid() {
             {
                 field: 'operate',
                 title: '操作',
-                width: 150,
+                width: 200,
                 formatter: function (value, rowData, rowIndex) {
                     var operateHtml = "";
                     var editHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='edit(\"" + rowData["id"] + "\");' >编辑</a>";
@@ -551,12 +551,11 @@ function publish(noticeId) {
  */
 function invalid(noticeId) {
     $.post(ctxAdmin + '/notice/invalid/' + noticeId, {}, function (data) {
-        var json = $.parseJSON(data);
-        if (json.code === 1) {
+        if (data.code === 1) {
             $notice_datagrid.datagrid('reload');	// reload the user data
-            eu.showMsg(json.msg);//操作结果提示
+            eu.showMsg(data.msg);//操作结果提示
         } else {
-            eu.showAlertMsg(json.msg, 'error');
+            eu.showAlertMsg(data.msg, 'error');
         }
     });
 }

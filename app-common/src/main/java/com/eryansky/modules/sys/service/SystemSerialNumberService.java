@@ -206,6 +206,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
             logger.info("重置序列号，{}：{}", new Object[]{systemSerialNumber.getApp(), systemSerialNumber.getModuleCode()});
             systemSerialNumber.setMaxSerial(new MaxSerial());
             systemSerialNumber.setVersion(0);
+            systemSerialNumber.setUpdateTime(Calendar.getInstance().getTime());
             this.updateSerialNumber(systemSerialNumber);
             //清空缓存
             clearCacheQueueByModuleCode(systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());

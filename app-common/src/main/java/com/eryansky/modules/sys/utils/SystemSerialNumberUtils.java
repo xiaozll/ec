@@ -201,7 +201,7 @@ public class SystemSerialNumberUtils {
                 }
             });
             if (!flag) {
-                logger.error("生成序列号失败，锁超时，{}",new Object[]{queueRegion});
+                logger.error("生成序列号失败，{}",new Object[]{queueRegion});
                 return null;
             }
             value = cacheChannel.queuePop(queueRegion);

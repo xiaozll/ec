@@ -143,6 +143,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         maxSerialItem.setValue(maxSerialInt);
         entity.getMaxSerial().addIfNotExist(maxSerialItem.getKey(), maxSerialItem.getValue());
         entity.getMaxSerial().update(maxSerialItem.getKey(), maxSerialItem.getValue());
+        entity.setUpdateTime(Calendar.getInstance().getTime());
         updateByVersion(entity);
         return resultList;
     }

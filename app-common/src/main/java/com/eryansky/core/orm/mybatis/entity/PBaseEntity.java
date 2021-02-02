@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
 /**

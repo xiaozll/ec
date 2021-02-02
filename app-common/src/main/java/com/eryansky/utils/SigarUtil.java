@@ -5,6 +5,7 @@
  */
 package com.eryansky.utils;
 
+import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.hyperic.sigar.*;
@@ -158,9 +159,9 @@ public class SigarUtil {
 
     public static void getServerDiskInfo(Sigar sigar, ServerStatus status) {
         try {
-            if(!init){
-                init();
-            }
+//            if(!init){
+//                init();
+//            }
             FileSystem fslist[] = sigar.getFileSystemList();
             FileSystemUsage usage = null;
             for (int i = 0; i < fslist.length; i++) {
@@ -189,6 +190,10 @@ public class SigarUtil {
                         String val = diskWritesAndReadsOnInit.get(fs.getDevName());
                         if (val != null) {
                             long timePeriod = (System.currentTimeMillis() - initTime) / 1000;
+                            if(timePeriod == 0){
+                                ThreadUtils.sleep(1000L);
+                                timePeriod = (System.currentTimeMillis() - initTime) / 1000;
+                            }
                             long origRead = Long.parseLong(val.split("\\|")[0]);
                             long origWrite = Long.parseLong(val.split("\\|")[1]);
                             disk.setDiskReadRate((usage.getDiskReadBytes() - origRead) / timePeriod);

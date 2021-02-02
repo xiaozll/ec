@@ -66,7 +66,7 @@ public class SystemMonitorController extends SimpleController {
                 return renderString(response, Result.successResult().setObj(serverStatus));
             } catch (Exception e) {
                 logger.error(e.getMessage());
-                return renderString(response, Result.errorResult());
+                return renderString(response, Result.errorResult().setMsg(e.getMessage()));
             }
         }
         return "modules/sys/systemMonitor";

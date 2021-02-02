@@ -70,7 +70,7 @@ public class MessageReceiveController extends SimpleController {
      * @return
      */
     @Mobile(value = MobileValue.ALL)
-    @Logging(logType = LogType.access, value = "消息中心")
+    @Logging(logType = LogType.access, value = "消息中心", logging = "!#isAjax")
     @RequestMapping(value = {"", "list"})
     public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<MessageReceive> page = new Page<MessageReceive>(request, response);

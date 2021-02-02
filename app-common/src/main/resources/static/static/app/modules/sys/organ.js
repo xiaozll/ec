@@ -24,7 +24,7 @@ $(function () {
             {field: 'sysCode', title: '机构系统编码', width: 120, hidden: true}
         ]],
         columns: [[
-            {field: 'id', title: '主键', hidden: true, sortable: true, align: 'right', width: 80},
+            {field: 'id', title: '主键', hidden: true, sortable: true, width: 80},
             {field: 'managerUserName', title: '主管', width: 120, sortable: true},
             {field: 'superManagerUserName', title: '分管领导', width: 120, sortable: true},
             {field: 'code', title: '机构编码', width: 120, sortable: true},

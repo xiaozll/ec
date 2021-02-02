@@ -38,6 +38,7 @@ public abstract class PBaseEntity<T, PK extends Serializable> extends AbstractBa
         super(id);
     }
 
+    @JsonIgnore
     public Class getPKType() {
         return ReflectionUtils.getClassGenricType(getClass(), 1);
     }

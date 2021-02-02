@@ -16,11 +16,11 @@
 				cache:false,
 				dataType: 'json',
 				success: function (data) {
-					if (data.code == 1) {
+					if (data.code === 1) {
 						var html = Mustache.render($("#systemList").html(),data['obj']);
 						$("#systemInfo_div").html(html);
 					} else {
-						$("#systemInfo_div").html("加载异常");
+						$("#systemInfo_div").html(data['msg'] || "加载异常");
 					}
 				}
 			});

@@ -841,7 +841,7 @@ public class UserController extends SimpleController {
         Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
         page = userService.findUsersByOrgan(page, organId, query, excludeUserIds);
         Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
-        return JsonMapper.getInstance().toJson(dg, User.class, new String[]{"id", "name", "sexView", "defaultOrganName"});
+        return JsonMapper.getInstance().toJson(dg, User.class, new String[]{"id", "loginName", "name", "sexView", "sort","defaultOrganName","companyName"});
     }
 
 

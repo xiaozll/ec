@@ -28,7 +28,8 @@ $(function () {
             {field: 'markUrl', title: '标识地址', width: 260, hidden: true},
             {field: 'sort', title: '排序', align: 'right', width: 60, sortable: true},
             {field: 'typeView', title: '资源类型', align: 'center', width: 100},
-            {field: 'statusView', title: '状态', align: 'center', width: 60}
+            {field: 'statusView', title: '状态', align: 'center', width: 60},
+            {field: 'remark', title: '备注', width: 260}
         ]],
         toolbar: [{
             text: '新增',

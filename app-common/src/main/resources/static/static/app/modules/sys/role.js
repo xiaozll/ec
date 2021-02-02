@@ -30,9 +30,10 @@ $(function () {
             [
                 {field: 'id', title: '主键', hidden: true, sortable: true, align: 'right', width: 80},
                 {field: 'isSystemView', title: '系统角色', width: 60},
-                {field: 'organName', title: '所属机构', width: 200},
+                {field: 'roleTypeView', title: '权限类型', width: 100},
                 {field: 'dataScopeView', title: '数据范围', width: 200},
-                {field: 'remark', title: '备注', width: 200}
+                {field: 'organName', title: '所属机构', width: 200},
+                {field: 'remark', title: '备注', width: 260}
             ]
         ],
         toolbar: [

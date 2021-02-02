@@ -29,10 +29,12 @@ function initRoleUserDatagrid() {
         ],
         columns: [
             [
-                {field: 'id', title: '主键', hidden: true, sortable: true, align: 'right', width: 80},
-                {field: 'sexView', title: '性别', width: 60},
-                {field: 'sort', title: '排序', width: 60},
-                {field: 'defaultOrganName', title: '部门', width: 260}
+                {field: 'id', title: '主键', hidden: true, sortable: true, width: 80},
+                {field: 'sexView', title: '性别', width: 60, hidden: true, sortable: true},
+                {field: 'loginName', title: '账号', width: 60, hidden: true, sortable: true},
+                {field: 'sort', title: '排序号', width: 60, hidden: true, sortable: true},
+                {field: 'defaultOrganName', title: '部门', width: 200, sortable: true},
+                {field: 'companyName', title: '单位', width: 200, sortable: true}
             ]
         ],
         toolbar: [

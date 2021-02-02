@@ -20,21 +20,22 @@ $(function () {
         idField: 'id',
         treeField: "name",
         frozenColumns: [[
-            {field: 'name', title: '机构名称', width: 200},
+            {field: 'name', title: '机构名称', width: 300},
             {field: 'sysCode', title: '机构系统编码', width: 120, hidden: true}
         ]],
         columns: [[
             {field: 'id', title: '主键', hidden: true, sortable: true, align: 'right', width: 80},
-            {field: 'managerUserName', title: '主管', width: 120},
-            {field: 'superManagerUserName', title: '分管领导', width: 120},
-            {field: 'code', title: '机构编码', width: 120},
-            {field: 'address', title: '地址', width: 120},
-            {field: 'mobile', title: '手机号', width: 120, sortable: true},
-            {field: 'phone', title: '电话号码', width: 120, sortable: true},
-            {field: 'fax', title: '传真', width: 120, sortable: true},
+            {field: 'managerUserName', title: '主管', width: 120, sortable: true},
+            {field: 'superManagerUserName', title: '分管领导', width: 120, sortable: true},
+            {field: 'code', title: '机构编码', width: 120, sortable: true},
+            {field: 'address', title: '地址', width: 120, hidden: true},
+            {field: 'mobile', title: '手机号', width: 120, sortable: true, hidden: true},
+            {field: 'phone', title: '电话号码', width: 120, sortable: true, hidden: true},
+            {field: 'fax', title: '传真', width: 120, sortable: true, hidden: true},
             {field: 'typeView', title: '机构类型', width: 100},
             {field: 'sort', title: '排序', align: 'right', width: 60, sortable: true},
-            {field: 'statusView', title: '状态', align: 'center', width: 60}
+            {field: 'statusView', title: '状态', align: 'center', width: 60},
+            {field: 'remark', title: '备注', width: 260}
         ]],
         toolbar: [{
             text: '新增',

@@ -152,6 +152,10 @@ public class Role extends DataEntity<Role> {
         return GenericEnumUtils.getDescriptionByValue(DataScope.class,dataScope,dataScope);
     }
 
+    public String getRoleTypeView() {
+        return GenericEnumUtils.getDescriptionByValue(RoleType.class,roleType,roleType);
+    }
+
     public String getIsSystemView() {
         return GenericEnumUtils.getDescriptionByValue(YesOrNo.class,isSystem,isSystem);
     }

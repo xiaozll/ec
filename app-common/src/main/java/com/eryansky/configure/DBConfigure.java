@@ -114,6 +114,7 @@ public class DBConfigure {
         return cfg;
     }
 
+    @Order(2)
     @Bean("txManager")
     public TransactionManager annotationDrivenTransactionManager(@Qualifier("dataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);

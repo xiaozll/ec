@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Component;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2018-05-10
  */
+@Order(1)
 @Component
 @Aspect
 public class SystemAspect implements InitializingBean, DisposableBean {

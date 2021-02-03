@@ -820,6 +820,7 @@ public class SecurityUtils {
                 || StringUtils.contains(sessionInfo.getName(), query)
                 || StringUtils.contains(sessionInfo.getHost(), query)
                 || StringUtils.contains(sessionInfo.getIp(), query)
+                || StringUtils.contains(sessionInfo.getAppVersion(), query)
                 || StringUtils.contains(sessionInfo.getMobile(), query)).collect(Collectors.toList());
     }
 

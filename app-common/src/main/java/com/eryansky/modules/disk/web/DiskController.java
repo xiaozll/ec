@@ -548,7 +548,12 @@ public class DiskController extends SimpleController {
     public ModelAndView fileDownload(HttpServletResponse response,
                                      HttpServletRequest request, @PathVariable String fileId) {
         File file = fileService.get(fileId);
-        return downloadSingleFileUtil(response, request, file);
+        try {
+            return downloadSingleFileUtil(response, request, file);
+        } catch (Exception e) {
+            logger.error("{},{}",fileId,e.getMessage());
+            throw e;
+        }
 
     }
 
@@ -663,7 +668,12 @@ public class DiskController extends SimpleController {
         if (Collections3.isNotEmpty(fileIds)) {
             if (fileIds.size() == 1) {
                 File file = fileService.get(fileIds.get(0));
-                downloadSingleFileUtil(response, request, file);
+                try {
+                    return downloadSingleFileUtil(response, request, file);
+                } catch (Exception e) {
+                    logger.error("{},{}",fileIds.get(0),e.getMessage());
+                    throw e;
+                }
             } else {
                 List<File> fileList = fileService.findFilesByIds(fileIds);
                 downloadMultiFileUtil(response, request, fileList);

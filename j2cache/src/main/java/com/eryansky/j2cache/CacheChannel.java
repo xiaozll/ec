@@ -397,6 +397,19 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param cacheNullObject if allow cache null object
 	 */
 	public void set(String region, String key, Object value, boolean cacheNullObject) {
+		set(region, key, value, cacheNullObject,null);
+    }
+
+	/**
+	 * Write data to J2Cache
+	 *
+	 * @param region: Cache Region name
+	 * @param key: Cache key
+	 * @param value: Cache value
+	 * @param cacheNullObject if allow cache null object
+	 * @param level1Cache 仅限一级缓存
+	 */
+	public void set(String region, String key, Object value, boolean cacheNullObject,Boolean level1Cache) {
 		if (!cacheNullObject && value == null)
 			return ;
 
@@ -404,16 +417,19 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 
 		try {
 			Level1Cache level1 = holder.getLevel1Cache(region);
-			level1.put(key, (value==null && cacheNullObject)?newNullObject():value);
+			level1.put(key, (value == null && cacheNullObject) ? newNullObject() : value);
+			if (null != level1Cache && level1Cache) {
+				return;
+			}
 			Level2Cache level2 = holder.getLevel2Cache(region);
-			if(config.isSyncTtlToRedis())
-				level2.put(key, (value==null && cacheNullObject)?newNullObject():value, level1.ttl());
+			if (config.isSyncTtlToRedis())
+				level2.put(key, (value == null && cacheNullObject) ? newNullObject() : value, level1.ttl());
 			else
-				level2.put(key, (value==null && cacheNullObject)?newNullObject():value);
+				level2.put(key, (value == null && cacheNullObject) ? newNullObject() : value);
 		} finally {
 			this.sendEvictCmd(region, key);//清除原有的一级缓存的内容
 		}
-    }
+	}
 
 
 	/**
@@ -427,7 +443,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param timeToLiveInSeconds cache expired in second
 	 */
 	public void set(String region, String key, Object value, long timeToLiveInSeconds ) {
-		set(region, key, value, timeToLiveInSeconds, defaultCacheNullObject);
+		set(region, key, value, timeToLiveInSeconds, defaultCacheNullObject,null);
 	}
 
 	/**
@@ -440,8 +456,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param value Cache value
 	 * @param timeToLiveInSeconds cache expired in second
 	 * @param cacheNullObject if allow cache null object
+	 * @param level1Cache 仅限一级缓存
 	 */
-    public void set(String region, String key, Object value, long timeToLiveInSeconds, boolean cacheNullObject) {
+    public void set(String region, String key, Object value, long timeToLiveInSeconds, boolean cacheNullObject,Boolean level1Cache) {
 
 		assertNotClose();
 
@@ -453,6 +470,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
     	else {
 			try {
 				holder.getLevel1Cache(region, timeToLiveInSeconds).put(key, (value==null && cacheNullObject)?newNullObject():value);
+				if (null != level1Cache && level1Cache) {
+					return;
+				}
 				Level2Cache level2 = holder.getLevel2Cache(region);
 				if(config.isSyncTtlToRedis())
 					level2.put(key, (value==null && cacheNullObject)?newNullObject():value, timeToLiveInSeconds);
@@ -470,7 +490,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param elements Cache Elements
 	 */
 	public void set(String region, Map<String, Object> elements){
-    	set(region, elements, defaultCacheNullObject);
+    	set(region, elements, defaultCacheNullObject,null);
 	}
 
 	/**
@@ -478,8 +498,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param region Cache Region name
 	 * @param elements Cache Elements
 	 * @param cacheNullObject if allow cache null object
+	 * @param level1Cache 仅限一级缓存
 	 */
-	public void set(String region, Map<String, Object> elements, boolean cacheNullObject)  {
+	public void set(String region, Map<String, Object> elements, boolean cacheNullObject,Boolean level1Cache)  {
 
 		assertNotClose();
 
@@ -492,6 +513,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 				});
 				Level1Cache level1 = holder.getLevel1Cache(region);
 				level1.put(newElems);
+				if (null != level1Cache && level1Cache) {
+					return;
+				}
 				if(config.isSyncTtlToRedis())
 					holder.getLevel2Cache(region).put(newElems, level1.ttl());
 				else
@@ -500,6 +524,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			else {
 				Level1Cache level1 = holder.getLevel1Cache(region);
 				level1.put(elements);
+				if (null != level1Cache && level1Cache) {
+					return;
+				}
 				if(config.isSyncTtlToRedis())
 					holder.getLevel2Cache(region).put(elements, level1.ttl());
 				else
@@ -522,7 +549,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param timeToLiveInSeconds cache expired in second
 	 */
 	public void set(String region, Map<String, Object> elements, long timeToLiveInSeconds){
-		set(region, elements, timeToLiveInSeconds, defaultCacheNullObject);
+		set(region, elements, timeToLiveInSeconds, defaultCacheNullObject,null);
 	}
 
 	/**
@@ -534,13 +561,14 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param elements Cache Elements
 	 * @param timeToLiveInSeconds cache expired in second
 	 * @param cacheNullObject if allow cache null object
+	 * @param level1Cache 仅限一级缓存
 	 */
-	public void set(String region, Map<String, Object> elements, long timeToLiveInSeconds, boolean cacheNullObject)  {
+	public void set(String region, Map<String, Object> elements, long timeToLiveInSeconds, boolean cacheNullObject,Boolean level1Cache)  {
 
 		assertNotClose();
 
 		if(timeToLiveInSeconds <= 0)
-			set(region, elements, cacheNullObject);
+			set(region, elements, cacheNullObject,level1Cache);
 		else {
 			try {
 				if (cacheNullObject && elements.containsValue(null)) {
@@ -550,6 +578,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 							newElems.put(k, newNullObject());
 					});
 					holder.getLevel1Cache(region, timeToLiveInSeconds).put(newElems);
+					if (null != level1Cache && level1Cache) {
+						return;
+					}
 					if(config.isSyncTtlToRedis())
 						holder.getLevel2Cache(region).put(newElems, timeToLiveInSeconds);
 					else
@@ -557,6 +588,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 				}
 				else {
 					holder.getLevel1Cache(region, timeToLiveInSeconds).put(elements);
+					if (null != level1Cache && level1Cache) {
+						return;
+					}
 					if(config.isSyncTtlToRedis())
 						holder.getLevel2Cache(region).put(elements, timeToLiveInSeconds);
 					else
@@ -873,6 +907,24 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	/**
 	 * 锁定对象（自动释放锁）
 	 * @param region 锁对象
+	 * @param timeoutInSecond 获取锁超时时间 单位：秒
+	 * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
+	 * @param lockCallback 回调函数
+	 * @param level1 仅限本地锁
+	 * @param <T>
+	 * @return
+	 * @throws LockInsideExecutedException
+	 * @throws LockCantObtainException
+	 */
+	public <T> T lock(String region, int timeoutInSecond, long keyExpireSeconds,
+					  LockCallback<T> lockCallback,Boolean level1) throws LockInsideExecutedException, LockCantObtainException {
+		return lock(region,LockRetryFrequency.NORMAL,timeoutInSecond,keyExpireSeconds,lockCallback,level1);
+	}
+
+
+	/**
+	 * 锁定对象（自动释放锁）
+	 * @param region 锁对象
 	 * @param frequency {@link LockRetryFrequency}
 	 * @param timeoutInSecond 获取锁超时时间 单位：秒
 	 * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
@@ -884,8 +936,27 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public <T> T lock(String region, LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds,
 						LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
+		return lock(region, frequency, timeoutInSecond, keyExpireSeconds, lockCallback,false);
+	}
+
+
+	/**
+	 * 锁定对象（自动释放锁）
+	 * @param region 锁对象
+	 * @param frequency {@link LockRetryFrequency}
+	 * @param timeoutInSecond 获取锁超时时间 单位：秒
+	 * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
+	 * @param lockCallback 回调函数
+	 * @param level1 仅限本地锁
+	 * @param <T>
+	 * @return
+	 * @throws LockInsideExecutedException
+	 * @throws LockCantObtainException
+	 */
+	public <T> T lock(String region, LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds,
+					  LockCallback<T> lockCallback,Boolean level1) throws LockInsideExecutedException, LockCantObtainException {
 		Level2Cache level2Cache = holder.getLevel2Cache(region);
-		if(!(level2Cache instanceof NullCache)){
+		if((null == level1 || !level1) && !(level2Cache instanceof NullCache)){
 			return level2Cache.lock(frequency,timeoutInSecond, keyExpireSeconds,lockCallback);
 		}else{
 			ReentrantLock lock  = mLockMap.computeIfAbsent(region, k -> {return new ReentrantLock();});

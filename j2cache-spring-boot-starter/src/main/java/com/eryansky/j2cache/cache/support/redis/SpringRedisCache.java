@@ -11,11 +11,13 @@ import com.eryansky.j2cache.lock.LockInsideExecutedException;
 import com.eryansky.j2cache.lock.LockRetryFrequency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.eryansky.j2cache.Level2Cache;
+import org.springframework.data.redis.core.types.Expiration;
 
 /**
  * 重新实现二级缓存
@@ -169,10 +171,12 @@ public class SpringRedisCache implements Level2Cache {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 
 		for (int i = 0; i < retryCount; i++) {
-			boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
-			if(flag) {
+//			boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
+			Boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.set(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes(), Expiration.from(keyExpireSeconds, TimeUnit.SECONDS), RedisStringCommands.SetOption.SET_IF_ABSENT));
+
+			if(null != flag && flag) {
 				try {
-					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
+//					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
 					return lockCallback.handleObtainLock();
 				} catch (Exception e) {
 					log.error(e.getMessage(),e);

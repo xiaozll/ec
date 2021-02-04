@@ -61,7 +61,7 @@ public class J2CacheCmd {
 				if("set".equalsIgnoreCase(cmds[0])){
 					if("null".equalsIgnoreCase(cmds[3]))
 						cmds[3] = null;
-					cache.set(cmds[1], cmds[2], cmds[3], TTL, true); //数据写入缓存
+					cache.set(cmds[1], cmds[2], cmds[3], TTL, true,null); //数据写入缓存
 					System.out.printf("[%s,%s]<=%s(TTL:%d)%n",cmds[1], cmds[2], cmds[3], TTL);
 				}
 				else
@@ -74,7 +74,7 @@ public class J2CacheCmd {
 							obj[1] = null;
 						objs.put(obj[0], obj[1]);
 					}
-					cache.set(cmds[1], objs, TTL, true); //批量写入数据到缓存
+					cache.set(cmds[1], objs, TTL, true,null); //批量写入数据到缓存
 					objs.forEach((k,v)->System.out.printf("[%s,%s]<=%s(TTL:%d)%n",region, k, v, TTL));
 				}
 				else

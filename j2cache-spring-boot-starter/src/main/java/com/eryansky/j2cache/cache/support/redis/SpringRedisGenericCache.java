@@ -17,10 +17,12 @@ import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.eryansky.j2cache.Level2Cache;
+import org.springframework.data.redis.core.types.Expiration;
 
 public class SpringRedisGenericCache implements Level2Cache {
 
@@ -176,11 +178,12 @@ public class SpringRedisGenericCache implements Level2Cache {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 
 		for (int i = 0; i < retryCount; i++) {
-			Boolean flag = redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
-
+//			Boolean flag = redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
+			Boolean flag = redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.set(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes(), Expiration.from(keyExpireSeconds, TimeUnit.SECONDS), RedisStringCommands.SetOption.SET_IF_ABSENT));
+//			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(keyExpireSeconds).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);
 			if(null != flag && flag) {
 				try {
-					redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
+//					redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
 					return lockCallback.handleObtainLock();
 				} catch (Exception e) {
 					log.error(e.getMessage(),e);

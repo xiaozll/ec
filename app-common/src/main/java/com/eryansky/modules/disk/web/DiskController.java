@@ -551,7 +551,7 @@ public class DiskController extends SimpleController {
         try {
             return downloadSingleFileUtil(response, request, file);
         } catch (Exception e) {
-            logger.error("{},{}",fileId,e.getMessage());
+            logger.error("{},{},{}",SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
             throw e;
         }
 

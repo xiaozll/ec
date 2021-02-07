@@ -24,6 +24,8 @@ public class J2CacheCacheManger extends AbstractTransactionSupportingCacheManage
 	private boolean dynamic = true;
 	
 	private CacheChannel cacheChannel;
+
+	private boolean localCache;
 	
 	public J2CacheCacheManger(CacheChannel cacheChannel){
 		this.cacheChannel = cacheChannel;
@@ -34,7 +36,7 @@ public class J2CacheCacheManger extends AbstractTransactionSupportingCacheManage
 	protected Collection<? extends Cache> loadCaches() {
 		Collection<Cache> caches = new LinkedHashSet<>(cacheNames.size());
 		for (String name : cacheNames) {
-			J2CacheCache cache = new J2CacheCache(name, cacheChannel, allowNullValues);
+			J2CacheCache cache = new J2CacheCache(name, cacheChannel, allowNullValues,localCache);
 			caches.add(cache);
 		}
 		return caches;
@@ -69,5 +71,13 @@ public class J2CacheCacheManger extends AbstractTransactionSupportingCacheManage
 
 	public CacheChannel getCacheChannel() {
 		return cacheChannel;
+	}
+
+	public boolean isLocalCache() {
+		return localCache;
+	}
+
+	public void setLocalCache(boolean localCache) {
+		this.localCache = localCache;
 	}
 }

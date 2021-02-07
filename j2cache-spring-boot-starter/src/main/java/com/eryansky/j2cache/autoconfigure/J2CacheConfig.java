@@ -43,7 +43,10 @@ public class J2CacheConfig {
 	 * 是否开启二级缓存
 	 */
 	private boolean l2CacheOpen = true;
-
+	/**
+	 * 仅限本地缓存 非缓存一致性
+	 */
+	private boolean localCache = false;
 
 
 	public String getConfigLocation() {
@@ -92,5 +95,13 @@ public class J2CacheConfig {
 
 	public void setL2CacheOpen(boolean l2CacheOpen) {
 		this.l2CacheOpen = l2CacheOpen;
+	}
+
+	public boolean isLocalCache() {
+		return localCache;
+	}
+
+	public void setLocalCache(boolean localCache) {
+		this.localCache = localCache;
 	}
 }

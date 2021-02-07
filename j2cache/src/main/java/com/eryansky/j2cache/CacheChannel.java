@@ -110,7 +110,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 				}else {
 					boolean cacheNull = (cacheNullObject.length > 0) ? cacheNullObject[0] : defaultCacheNullObject;
 					if (cacheNull)
-						set(region, key, newNullObject(), true);
+						set(region, key, newNullObject(), true,null);
 				}
 			} finally {
 				_g_keyLocks.remove(lock_key);
@@ -147,7 +147,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			try {
 				Object obj = loader.apply(key);
 				boolean cacheNull = (cacheNullObject.length>0)?cacheNullObject[0]: defaultCacheNullObject;
-				set(region, key, obj, cacheNull);
+				set(region, key, obj, cacheNull,null);
 				cache = new CacheObject(region, key, CacheObject.LEVEL_OUTER, obj);
 			} finally {
 				_g_keyLocks.remove(lock_key);
@@ -206,7 +206,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 					try {
 						Object obj = loader.apply(e.getKey());
 						boolean cacheNull = (cacheNullObject.length>0)?cacheNullObject[0]: defaultCacheNullObject;
-						set(region, e.getKey(), obj, cacheNull);
+						set(region, e.getKey(), obj, cacheNull,null);
 						e.getValue().setValue(obj);
 						e.getValue().setLevel(CacheObject.LEVEL_OUTER);
 					} finally {
@@ -385,7 +385,19 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param value: Cache value
 	 */
 	public void set(String region, String key, Object value) {
-		set(region, key, value, defaultCacheNullObject);
+		set(region, key, value, defaultCacheNullObject,null);
+	}
+
+	/**
+	 * Write data to J2Cache
+	 *
+	 * @param region: Cache Region name
+	 * @param key: Cache key
+	 * @param value: Cache value
+	 * @param level1Cache 仅限一级缓存
+	 */
+	public void set(String region, String key, Object value,Boolean level1Cache) {
+		set(region, key, value, defaultCacheNullObject,level1Cache);
 	}
 
 	/**
@@ -396,9 +408,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param value: Cache value
 	 * @param cacheNullObject if allow cache null object
 	 */
-	public void set(String region, String key, Object value, boolean cacheNullObject) {
-		set(region, key, value, cacheNullObject,null);
-    }
+//	public void set(String region, String key, Object value, boolean cacheNullObject) {
+//		set(region, key, value, cacheNullObject,null);
+//    }
 
 	/**
 	 * Write data to J2Cache
@@ -455,6 +467,21 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 * @param key Cache Key
 	 * @param value Cache value
 	 * @param timeToLiveInSeconds cache expired in second
+	 * @param level1Cache 仅限一级缓存
+	 */
+	public void set(String region, String key, Object value, long timeToLiveInSeconds,Boolean level1Cache) {
+		set(region, key, value, timeToLiveInSeconds, defaultCacheNullObject,level1Cache);
+	}
+
+	/**
+	 * Write data to j2cache with expired setting
+	 *
+	 * <strong>注意：强烈不推荐使用带 TTL 的 set 方法，所有的缓存 TTL 都应该预先配置好，避免多个节点的缓存 Region 配置不同步</strong>
+	 *
+	 * @param region Cache Region name
+	 * @param key Cache Key
+	 * @param value Cache value
+	 * @param timeToLiveInSeconds cache expired in second
 	 * @param cacheNullObject if allow cache null object
 	 * @param level1Cache 仅限一级缓存
 	 */
@@ -466,7 +493,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			return ;
 
     	if(timeToLiveInSeconds <= 0)
-    		set(region, key, value, cacheNullObject);
+    		set(region, key, value, cacheNullObject,null);
     	else {
 			try {
 				holder.getLevel1Cache(region, timeToLiveInSeconds).put(key, (value==null && cacheNullObject)?newNullObject():value);
@@ -491,6 +518,16 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void set(String region, Map<String, Object> elements){
     	set(region, elements, defaultCacheNullObject,null);
+	}
+
+	/**
+	 * 批量插入数据
+	 * @param region Cache Region name
+	 * @param elements Cache Elements
+	 * @param level1Cache 仅限一级缓存
+	 */
+	public void set(String region, Map<String, Object> elements,Boolean level1Cache){
+		set(region, elements, defaultCacheNullObject,level1Cache);
 	}
 
 	/**
@@ -550,6 +587,21 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	 */
 	public void set(String region, Map<String, Object> elements, long timeToLiveInSeconds){
 		set(region, elements, timeToLiveInSeconds, defaultCacheNullObject,null);
+	}
+
+
+	/**
+	 * 带失效时间的批量缓存数据插入
+	 *
+	 * <strong>注意：强烈不推荐使用带 TTL 的 set 方法，所有的缓存 TTL 都应该预先配置好，避免多个节点的缓存 Region 配置不同步</strong>
+	 *
+	 * @param region Cache Region name
+	 * @param elements Cache Elements
+	 * @param timeToLiveInSeconds cache expired in second
+	 * @param level1Cache 仅限一级缓存
+	 */
+	public void set(String region, Map<String, Object> elements, long timeToLiveInSeconds,Boolean level1Cache){
+		set(region, elements, timeToLiveInSeconds, defaultCacheNullObject,level1Cache);
 	}
 
 	/**

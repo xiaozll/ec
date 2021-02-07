@@ -21,6 +21,7 @@ public class J2CacheAdapter implements Cache {
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private String id;
     private boolean encodeKey;
+    private boolean localCache;
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -38,13 +39,11 @@ public class J2CacheAdapter implements Cache {
 
         /**
          * 重新加载
-         * @return
          */
-        private static CacheChannel reload(){
+        private static void reload(){
             if(null == cache){
                 cache = getChannel();
             }
-            return cache;
         }
     }
 
@@ -72,7 +71,7 @@ public class J2CacheAdapter implements Cache {
             return;
         }
         String mKey = encodeKey ? Encrypt.md5(key.toString()):key.toString();
-        Static.cache.set(this.id, mKey, value);
+        Static.cache.set(this.id, mKey, value, localCache);
     }
 
     @Override
@@ -128,5 +127,13 @@ public class J2CacheAdapter implements Cache {
 
     public void setEncodeKey(Boolean encodeKey) {
         this.encodeKey = encodeKey;
+    }
+
+    public boolean isLocalCache() {
+        return localCache;
+    }
+
+    public void setLocalCache(boolean localCache) {
+        this.localCache = localCache;
     }
 }

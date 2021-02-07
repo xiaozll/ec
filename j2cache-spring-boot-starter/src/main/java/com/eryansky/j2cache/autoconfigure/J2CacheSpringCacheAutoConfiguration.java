@@ -44,6 +44,7 @@ public class J2CacheSpringCacheAutoConfiguration {
 		J2CacheCacheManger cacheCacheManger = new J2CacheCacheManger(cacheChannel);
 		cacheCacheManger.setAllowNullValues(j2CacheConfig.isAllowNullValues());
 		cacheCacheManger.setCacheNames(cacheNames);
+		cacheCacheManger.setLocalCache(j2CacheConfig.isLocalCache());
 		return cacheCacheManger;
 	}
 

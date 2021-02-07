@@ -6,23 +6,16 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import com.eryansky.j2cache.Cache;
 import com.eryansky.j2cache.lock.LockCallback;
 import com.eryansky.j2cache.lock.LockCantObtainException;
 import com.eryansky.j2cache.lock.LockInsideExecutedException;
 import com.eryansky.j2cache.lock.LockRetryFrequency;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.sync.RedisCommands;
-import io.lettuce.core.cluster.RedisClusterClient;
-import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.eryansky.j2cache.Level2Cache;
-import org.springframework.data.redis.core.types.Expiration;
 
 public class SpringRedisGenericCache implements Level2Cache {
 

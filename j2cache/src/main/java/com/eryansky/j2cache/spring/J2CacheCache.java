@@ -22,16 +22,22 @@ public class J2CacheCache extends AbstractValueAdaptingCache {
 
 	private String j2CacheName = "j2cache";
 	private boolean allowNullValues;
+	private boolean localCache;
 
 	public J2CacheCache(String cacheName, CacheChannel cacheChannel) {
         this(cacheName,cacheChannel, true);
 	}
 
 	public J2CacheCache(String cacheName, CacheChannel cacheChannel, boolean allowNullValues) {
+		this(cacheName, cacheChannel,allowNullValues,false);
+	}
+
+	public J2CacheCache(String cacheName, CacheChannel cacheChannel, boolean allowNullValues,boolean localCache) {
 		super(allowNullValues);
 		j2CacheName = cacheName;
 		this.allowNullValues = allowNullValues;
 		this.cacheChannel = cacheChannel;
+		this.localCache = localCache;
 	}
 
 	@Override
@@ -69,7 +75,7 @@ public class J2CacheCache extends AbstractValueAdaptingCache {
 
 	@Override
 	public void put(Object key, Object value) {
-		cacheChannel.set(j2CacheName, String.valueOf(key), value, super.isAllowNullValues());
+		cacheChannel.set(j2CacheName, String.valueOf(key), value, super.isAllowNullValues(),localCache);
 	}
 
 	@Override

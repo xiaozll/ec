@@ -178,7 +178,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 		for (int i = 0; i < retryCount; i++) {
 			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(now).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);// 对应setnx命令
 			// 判断锁超时 - 防止原来的操作异常，没有运行解锁操作  防止死锁
-			if(null == flag || !flag &&  keyExpireSeconds > 0) {
+			if((null == flag || !flag) &&  keyExpireSeconds > 0) {
 				Long expire = redisTemplate.getExpire(region, TimeUnit.SECONDS);
 				if(null != expire  && expire < 0) {
 					// 对应getset，如果key存在返回当前key的值，并重新设置新的值 redis是单线程处理，即使并发存在，这里的getAndSet也是单个执行

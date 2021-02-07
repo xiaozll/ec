@@ -130,15 +130,13 @@ public abstract class LettuceCache implements Level2Cache {
     @Override
     public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
         long now = System.currentTimeMillis();
+        long expireSecond = now / 1000L + keyExpireSeconds;//设置加锁过期时间
+        long expireMillisSecond = now + keyExpireSeconds * 1000L;//作为值存入锁中(记录这把锁持有最终时限)
+        int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
         if(redisClient instanceof RedisClient){
             RedisCommands cmd = ((RedisClient)redisClient).connect().sync();
-//            long curentTime = System.currentTimeMillis();
-//            long expireSecond = curentTime / 1000 + keyExpireSeconds;
-//            long expireMillisSecond = curentTime + keyExpireSeconds * 1000;
-
-            int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
             for (int i = 0; i < retryCount; i++) {
-                boolean flag = cmd.setnx(region,String.valueOf(now));
+                boolean flag = cmd.setnx(region,String.valueOf(expireMillisSecond));
                 if(flag) {
                     try {
                         cmd.expire(region, keyExpireSeconds);
@@ -161,14 +159,8 @@ public abstract class LettuceCache implements Level2Cache {
             return lockCallback.handleNotObtainLock();
         }else if(redisClient instanceof RedisClusterClient){
             RedisAdvancedClusterCommands cmd = ((RedisClusterClient)redisClient).connect().sync();
-//            long curentTime = System.currentTimeMillis();
-//            long expireSecond = curentTime / 1000 + keyExpireSeconds;
-//            long expireMillisSecond = curentTime + keyExpireSeconds * 1000;
-
-            int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-
             for (int i = 0; i < retryCount; i++) {
-                boolean flag = cmd.setnx(region,String.valueOf(now));
+                boolean flag = cmd.setnx(region,String.valueOf(expireMillisSecond));
                 if(flag) {
                     try {
                         cmd.expire(region, keyExpireSeconds);

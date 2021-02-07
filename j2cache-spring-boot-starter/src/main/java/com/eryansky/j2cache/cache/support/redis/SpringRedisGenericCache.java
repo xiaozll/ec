@@ -166,17 +166,19 @@ public class SpringRedisGenericCache implements Level2Cache {
 
 	@Override
 	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
-		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 		long now = System.currentTimeMillis();
+		long expireSecond = now / 1000L + keyExpireSeconds;//设置加锁过期时间
+		long expireMillisSecond = now + keyExpireSeconds * 1000L;//作为值存入锁中(记录这把锁持有最终时限)
+		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 		for (int i = 0; i < retryCount; i++) {
-			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(now).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);// 对应setnx命令
+			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(expireMillisSecond).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);// 对应setnx命令
 			// 判断锁超时 - 防止原来的操作异常，没有运行解锁操作  防止死锁
 			if((null == flag || !flag) &&  keyExpireSeconds > 0) {
 				Long expire = redisTemplate.getExpire(region, TimeUnit.SECONDS);
 				if(null != expire  && expire < 0) {
 					// 对应getset，如果key存在返回当前key的值，并重新设置新的值 redis是单线程处理，即使并发存在，这里的getAndSet也是单个执行
 					byte[] currentValue = (byte[])redisTemplate.opsForValue().get(region);
-					byte[] oldValue = (byte[])redisTemplate.opsForValue().getAndSet(region,String.valueOf(now).getBytes());
+					byte[] oldValue = (byte[])redisTemplate.opsForValue().getAndSet(region,String.valueOf(expireMillisSecond).getBytes());
 					flag = (null != currentValue && null != oldValue && new String(oldValue).equals(new String(currentValue)));
 				}
 			}

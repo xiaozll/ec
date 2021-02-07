@@ -3,6 +3,7 @@ package com.eryansky.j2cache.autoconfigure;
 import java.util.List;
 
 import com.eryansky.j2cache.spring.J2CacheCacheManger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.J2Cache;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 
 /**
  * 开启对spring cache支持的配置入口
@@ -48,5 +51,9 @@ public class J2CacheSpringCacheAutoConfiguration {
 		return cacheCacheManger;
 	}
 
+	@Bean(destroyMethod = "destroy")
+	public RedisLockRegistry redisLockRegistry(@Qualifier("j2CahceRedisConnectionFactory")RedisConnectionFactory redisConnectionFactory) {
+		return new RedisLockRegistry(redisConnectionFactory, "lock");
+	}
 
 }

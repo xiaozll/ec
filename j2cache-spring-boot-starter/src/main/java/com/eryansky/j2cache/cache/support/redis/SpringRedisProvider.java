@@ -11,6 +11,7 @@ import com.eryansky.j2cache.autoconfigure.J2CacheConfig;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.eryansky.j2cache.cache.support.util.SpringUtil;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 
 /**
  * spring redis缓存
@@ -20,6 +21,7 @@ import com.eryansky.j2cache.cache.support.util.SpringUtil;
 public class SpringRedisProvider implements CacheProvider {
 
 	private RedisTemplate<String, Serializable> redisTemplate;
+	private RedisLockRegistry redisLockRegistry;
 
 	private J2CacheConfig config;
 
@@ -56,9 +58,9 @@ public class SpringRedisProvider implements CacheProvider {
 				cache = caches.get(region);
 				if (cache == null) {
 	                if("hash".equalsIgnoreCase(this.storage))
-	                    cache = new SpringRedisCache(this.namespace, region, redisTemplate);
+	                    cache = new SpringRedisCache(this.namespace, region, redisTemplate,redisLockRegistry);
 	                else {
-	                	cache = new SpringRedisGenericCache(this.namespace, region, redisTemplate);
+	                	cache = new SpringRedisGenericCache(this.namespace, region, redisTemplate,redisLockRegistry);
 					}
 					caches.put(region, cache);
 				}
@@ -82,6 +84,7 @@ public class SpringRedisProvider implements CacheProvider {
 			return;
 		}
 		this.redisTemplate = SpringUtil.getBean("j2CacheRedisTemplate", RedisTemplate.class);
+		this.redisLockRegistry = SpringUtil.getBean("redisLockRegistry", RedisLockRegistry.class);
 	}
 
 	@Override

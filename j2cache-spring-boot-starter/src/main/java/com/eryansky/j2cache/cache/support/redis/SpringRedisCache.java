@@ -3,6 +3,7 @@ package com.eryansky.j2cache.cache.support.redis;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 
 import com.eryansky.j2cache.lock.LockCallback;
@@ -18,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import com.eryansky.j2cache.Level2Cache;
 import org.springframework.data.redis.core.types.Expiration;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 
 /**
  * 重新实现二级缓存
@@ -34,13 +36,15 @@ public class SpringRedisCache implements Level2Cache {
 	private String region;
 
 	private RedisTemplate<String, Serializable> redisTemplate;
+	private RedisLockRegistry redisLockRegistry;
 
-	public SpringRedisCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate) {
+	public SpringRedisCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate,RedisLockRegistry redisLockRegistry) {
 		if (region == null || region.isEmpty()) {
 			region = "_"; // 缺省region
 		}
 		this.namespace = namespace;
 		this.redisTemplate = redisTemplate;
+		this.redisLockRegistry = redisLockRegistry;
 		this.region = getRegionName(region);
 	}
 
@@ -169,11 +173,15 @@ public class SpringRedisCache implements Level2Cache {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 		long now = System.currentTimeMillis();
 		for (int i = 0; i < retryCount; i++) {
-//			boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
-			Boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.set(region.getBytes(), String.valueOf(now).getBytes(), Expiration.from(keyExpireSeconds, TimeUnit.SECONDS), RedisStringCommands.SetOption.SET_IF_ABSENT));
-			if(null != flag && flag) {
+			Lock lock = redisLockRegistry.obtain(region);
+			boolean flag = false;
+			try {
+				flag = lock.tryLock(keyExpireSeconds, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				log.error(e.getMessage(),e);
+			}
+			if(flag) {
 				try {
-//					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
 					return lockCallback.handleObtainLock();
 				} catch (Exception e) {
 					log.error(e.getMessage(),e);

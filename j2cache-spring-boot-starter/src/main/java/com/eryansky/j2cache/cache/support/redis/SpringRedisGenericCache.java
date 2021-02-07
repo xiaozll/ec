@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 
 import com.eryansky.j2cache.lock.LockCallback;
@@ -16,6 +17,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import com.eryansky.j2cache.Level2Cache;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 
 public class SpringRedisGenericCache implements Level2Cache {
 
@@ -26,13 +28,15 @@ public class SpringRedisGenericCache implements Level2Cache {
 	private String region;
 
 	private RedisTemplate<String, Serializable> redisTemplate;
+	private RedisLockRegistry redisLockRegistry;
 
-	public SpringRedisGenericCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate) {
+	public SpringRedisGenericCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate,RedisLockRegistry redisLockRegistry) {
 		if (region == null || region.isEmpty()) {
 			region = "_"; // 缺省region
 		}
 		this.namespace = namespace;
 		this.redisTemplate = redisTemplate;
+		this.redisLockRegistry = redisLockRegistry;
 		this.region = getRegionName(region);
 	}
 
@@ -171,18 +175,14 @@ public class SpringRedisGenericCache implements Level2Cache {
 		long expireMillisSecond = now + keyExpireSeconds * 1000L;//作为值存入锁中(记录这把锁持有最终时限)
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 		for (int i = 0; i < retryCount; i++) {
-			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(expireMillisSecond).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);// 对应setnx命令
-			// 判断锁超时 - 防止原来的操作异常，没有运行解锁操作  防止死锁
-			if((null == flag || !flag) &&  keyExpireSeconds > 0) {
-				Long expire = redisTemplate.getExpire(region, TimeUnit.SECONDS);
-				if(null != expire  && expire < 0) {
-					// 对应getset，如果key存在返回当前key的值，并重新设置新的值 redis是单线程处理，即使并发存在，这里的getAndSet也是单个执行
-					byte[] currentValue = (byte[])redisTemplate.opsForValue().get(region);
-					byte[] oldValue = (byte[])redisTemplate.opsForValue().getAndSet(region,String.valueOf(expireMillisSecond).getBytes());
-					flag = (null != currentValue && null != oldValue && new String(oldValue).equals(new String(currentValue)));
-				}
+			Lock lock = redisLockRegistry.obtain(region);
+			boolean flag = false;
+			try {
+				flag = lock.tryLock(keyExpireSeconds, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				log.error(e.getMessage(),e);
 			}
-			if(null != flag && flag) {
+			if(flag) {
 				try {
 					return lockCallback.handleObtainLock();
 				} catch (Exception e) {
@@ -190,7 +190,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 					LockInsideExecutedException ie = new LockInsideExecutedException(e);
 					return lockCallback.handleException(ie);
 				} finally {
-					redisTemplate.opsForValue().getOperations().delete(region);// 删除key
+					lock.unlock();
 				}
 			} else {
 				try {

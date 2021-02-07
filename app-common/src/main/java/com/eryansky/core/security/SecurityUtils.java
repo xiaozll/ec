@@ -868,7 +868,7 @@ public class SecurityUtils {
      */
     public static Collection<String> findServerHosts() {
         List<SessionInfo> list = findSessionInfoList();
-        return list.stream().map(SessionInfo::getHost).filter(Objects::nonNull).collect(Collectors.toSet());
+        return list.parallelStream().map(SessionInfo::getHost).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
 }

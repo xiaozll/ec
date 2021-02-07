@@ -35,10 +35,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -862,6 +859,16 @@ public class SecurityUtils {
      */
     public static String getNoSuffixSessionId(HttpSession session) {
         return null == session ? null : StringUtils.substringBefore(session.getId(), ".");
+    }
+
+    /**
+     * 获取Host列表（服务器有登录后才能获取相关服务器信息）
+     *
+     * @return
+     */
+    public static Collection<String> findServerHosts() {
+        List<SessionInfo> list = findSessionInfoList();
+        return list.stream().map(SessionInfo::getHost).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
 }

@@ -84,7 +84,7 @@ public class SpringRedisProvider implements CacheProvider {
 			return;
 		}
 		this.redisTemplate = SpringUtil.getBean("j2CacheRedisTemplate", RedisTemplate.class);
-		this.redisLockRegistry = SpringUtil.getBean("redisLockRegistry", RedisLockRegistry.class);
+		this.redisLockRegistry = SpringUtil.getBean("j2CacheRedisLockRegistry", RedisLockRegistry.class);
 	}
 
 	@Override

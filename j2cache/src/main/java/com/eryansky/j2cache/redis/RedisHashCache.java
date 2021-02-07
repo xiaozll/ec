@@ -217,11 +217,11 @@ public class RedisHashCache implements Level2Cache {
         long expireMillisSecond = curentTime + keyExpireSeconds * 1000L;
 
         int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-
+        long now = System.currentTimeMillis();
         try {
             BinaryJedisCommands cmd = client.get();
             for (int i = 0; i < retryCount; i++) {
-                Long result = cmd.setnx(regionBytes,String.valueOf(expireMillisSecond).getBytes());
+                Long result = cmd.setnx(regionBytes,String.valueOf(now).getBytes());
                 boolean flag = 1L == result;
                 if(flag) {
                     try {

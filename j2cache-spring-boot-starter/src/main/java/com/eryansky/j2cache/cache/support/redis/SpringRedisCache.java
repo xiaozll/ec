@@ -150,9 +150,7 @@ public class SpringRedisCache implements Level2Cache {
 
 	@Override
 	public Collection<String> queueList() {
-		Long length = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> {
-			return redis.lLen(region.getBytes());
-		});
+		Long length = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Long>) redis -> redis.lLen(region.getBytes()));
 		if(null == length || length == 0){
 			return Collections.emptyList();
 		}
@@ -169,11 +167,10 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-
+		long now = System.currentTimeMillis();
 		for (int i = 0; i < retryCount; i++) {
 //			boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
-			Boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.set(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes(), Expiration.from(keyExpireSeconds, TimeUnit.SECONDS), RedisStringCommands.SetOption.SET_IF_ABSENT));
-
+			Boolean flag = redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.set(region.getBytes(), String.valueOf(now).getBytes(), Expiration.from(keyExpireSeconds, TimeUnit.SECONDS), RedisStringCommands.SetOption.SET_IF_ABSENT));
 			if(null != flag && flag) {
 				try {
 //					redisTemplate.opsForHash().getOperations().execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));

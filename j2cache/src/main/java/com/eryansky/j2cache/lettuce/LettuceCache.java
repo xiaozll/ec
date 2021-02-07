@@ -129,6 +129,7 @@ public abstract class LettuceCache implements Level2Cache {
 
     @Override
     public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
+        long now = System.currentTimeMillis();
         if(redisClient instanceof RedisClient){
             RedisCommands cmd = ((RedisClient)redisClient).connect().sync();
 //            long curentTime = System.currentTimeMillis();
@@ -136,9 +137,8 @@ public abstract class LettuceCache implements Level2Cache {
 //            long expireMillisSecond = curentTime + keyExpireSeconds * 1000;
 
             int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-
             for (int i = 0; i < retryCount; i++) {
-                boolean flag = cmd.setnx(region,String.valueOf(keyExpireSeconds));
+                boolean flag = cmd.setnx(region,String.valueOf(now));
                 if(flag) {
                     try {
                         cmd.expire(region, keyExpireSeconds);
@@ -168,7 +168,7 @@ public abstract class LettuceCache implements Level2Cache {
             int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 
             for (int i = 0; i < retryCount; i++) {
-                boolean flag = cmd.setnx(region,String.valueOf(keyExpireSeconds));
+                boolean flag = cmd.setnx(region,String.valueOf(now));
                 if(flag) {
                     try {
                         cmd.expire(region, keyExpireSeconds);

@@ -313,9 +313,11 @@ public class RedisGenericCache implements Level2Cache {
         long expireMillisSecond = curentTime + keyExpireSeconds * 1000L;
 
         int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
+
+        long now = System.currentTimeMillis();
         try {
             for (int i = 0; i < retryCount; i++) {
-                Long result = client.get().setnx(region.getBytes(),String.valueOf(expireMillisSecond).getBytes());
+                Long result = client.get().setnx(region.getBytes(),String.valueOf(now).getBytes());
                 boolean flag = 1L == result;
                 if(flag) {
                     try {

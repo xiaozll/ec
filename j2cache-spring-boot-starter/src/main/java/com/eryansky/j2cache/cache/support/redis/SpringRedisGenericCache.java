@@ -161,9 +161,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 		if(null == length || length == 0){
 			return Collections.emptyList();
 		}
-		List<byte[]> result = redisTemplate.execute((RedisCallback<List<byte[]>>) redis -> {
-			return redis.lRange(region.getBytes(),0,length-1);
-		});
+		List<byte[]> result = redisTemplate.execute((RedisCallback<List<byte[]>>) redis -> redis.lRange(region.getBytes(),0,length-1));
 
 		return null == result ? Collections.emptyList() : result.stream().map(String::new).collect(Collectors.toList());
 	}
@@ -176,21 +174,28 @@ public class SpringRedisGenericCache implements Level2Cache {
 	@Override
 	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-
+		long now = System.currentTimeMillis();
 		for (int i = 0; i < retryCount; i++) {
-//			Boolean flag = redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.setNX(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes()));
-			Boolean flag = redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.set(region.getBytes(), String.valueOf(keyExpireSeconds).getBytes(), Expiration.from(keyExpireSeconds, TimeUnit.SECONDS), RedisStringCommands.SetOption.SET_IF_ABSENT));
-//			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(keyExpireSeconds).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);
+			Boolean flag = redisTemplate.opsForValue().setIfAbsent(region,String.valueOf(now).getBytes(),keyExpireSeconds, TimeUnit.SECONDS);// 对应setnx命令
+			// 判断锁超时 - 防止原来的操作异常，没有运行解锁操作  防止死锁
+			if(null == flag || !flag &&  keyExpireSeconds > 0) {
+				Long expire = redisTemplate.getExpire(region, TimeUnit.SECONDS);
+				if(null != expire  && expire < 0) {
+					// 对应getset，如果key存在返回当前key的值，并重新设置新的值 redis是单线程处理，即使并发存在，这里的getAndSet也是单个执行
+					byte[] currentValue = (byte[])redisTemplate.opsForValue().get(region);
+					byte[] oldValue = (byte[])redisTemplate.opsForValue().getAndSet(region,String.valueOf(now).getBytes());
+					flag = (null != currentValue && null != oldValue && new String(oldValue).equals(new String(currentValue)));
+				}
+			}
 			if(null != flag && flag) {
 				try {
-//					redisTemplate.execute((RedisCallback<Boolean>) redis -> redis.expire(region.getBytes(),keyExpireSeconds));
 					return lockCallback.handleObtainLock();
 				} catch (Exception e) {
 					log.error(e.getMessage(),e);
 					LockInsideExecutedException ie = new LockInsideExecutedException(e);
 					return lockCallback.handleException(ie);
 				} finally {
-					redisTemplate.execute((RedisCallback<Long>) redis -> redis.del(region.getBytes()));
+					redisTemplate.opsForValue().getOperations().delete(region);// 删除key
 				}
 			} else {
 				try {

@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Configuration;
 
 import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.J2Cache;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.integration.redis.util.RedisLockRegistry;
 
 /**
  * 开启对spring cache支持的配置入口
@@ -49,11 +47,6 @@ public class J2CacheSpringCacheAutoConfiguration {
 		cacheCacheManger.setCacheNames(cacheNames);
 		cacheCacheManger.setLocalCache(j2CacheConfig.isLocalCache());
 		return cacheCacheManger;
-	}
-
-	@Bean(destroyMethod = "destroy")
-	public RedisLockRegistry redisLockRegistry(@Qualifier("j2CahceRedisConnectionFactory")RedisConnectionFactory redisConnectionFactory) {
-		return new RedisLockRegistry(redisConnectionFactory, "lock");
 	}
 
 }

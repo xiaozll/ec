@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -37,6 +38,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.util.StringUtils;
 
 import com.eryansky.j2cache.cache.support.util.J2CacheSerializer;
@@ -237,6 +239,7 @@ public class J2CacheSpringRedisAutoConfiguration {
 		return template;
 	}
 
+
 	@Bean("j2CacheValueSerializer")
 	@ConditionalOnMissingBean(name = "j2CacheValueSerializer")
 	public RedisSerializer<Object> j2CacheValueSerializer() {
@@ -249,6 +252,12 @@ public class J2CacheSpringRedisAutoConfiguration {
 		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(j2CahceRedisConnectionFactory);
 		return container;
+	}
+
+	@Bean(destroyMethod = "destroy")
+	@DependsOn({"j2CahceRedisConnectionFactory"})
+	public RedisLockRegistry redisLockRegistry(@Qualifier("j2CahceRedisConnectionFactory")RedisConnectionFactory redisConnectionFactory) {
+		return new RedisLockRegistry(redisConnectionFactory, "lock");
 	}
 
 	private GenericObjectPoolConfig getGenericRedisPool(Properties props, String prefix) {

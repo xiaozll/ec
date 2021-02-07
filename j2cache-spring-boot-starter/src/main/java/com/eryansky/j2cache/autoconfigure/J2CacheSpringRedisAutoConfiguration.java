@@ -254,8 +254,7 @@ public class J2CacheSpringRedisAutoConfiguration {
 		return container;
 	}
 
-	@Bean(destroyMethod = "destroy")
-	@DependsOn({"j2CahceRedisConnectionFactory"})
+	@Bean(value = "j2CacheRedisLockRegistry",destroyMethod = "destroy")
 	public RedisLockRegistry redisLockRegistry(@Qualifier("j2CahceRedisConnectionFactory")RedisConnectionFactory redisConnectionFactory) {
 		return new RedisLockRegistry(redisConnectionFactory, "lock");
 	}

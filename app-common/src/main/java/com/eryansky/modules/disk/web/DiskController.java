@@ -666,23 +666,23 @@ public class DiskController extends SimpleController {
             HttpServletRequest request,
             @RequestParam(value = "fileIds", required = false) List<String> fileIds)
             throws Exception {
-        if (Collections3.isNotEmpty(fileIds)) {
-            if (fileIds.size() == 1) {
-                File file = fileService.get(fileIds.get(0));
-                try {
-                    return downloadSingleFileUtil(response, request, file);
-                } catch (Exception e) {
-                    logger.error("{},{}",fileIds.get(0),e.getMessage());
-                    throw e;
-                }
-            } else {
-                List<File> fileList = fileService.findFilesByIds(fileIds);
-                downloadMultiFileUtil(response, request, fileList);
-            }
-        } else {
+        if (Collections3.isEmpty(fileIds)) {
             throw new ActionException("下载链接失效。");
         }
-        return null;
+        if (fileIds.size() == 1) {
+            File file = fileService.get(fileIds.get(0));
+            try {
+                return downloadSingleFileUtil(response, request, file);
+            } catch (Exception e) {
+                logger.error("{},{}",fileIds.get(0),e.getMessage());
+                throw e;
+            }
+        }
+        List<File> fileList = fileService.findFilesByIds(fileIds);
+        if (Collections3.isEmpty(fileList)) {
+            throw new ActionException("下载链接失效。");
+        }
+        return downloadMultiFileUtil(response, request, fileList);
     }
 
     /**
@@ -695,21 +695,19 @@ public class DiskController extends SimpleController {
      */
     private ModelAndView downloadMultiFileUtil(HttpServletResponse response,
                                                HttpServletRequest request, List<File> fileList) throws Exception {
-        if (Collections3.isNotEmpty(fileList)) {
-            java.io.File tempZipFile = null;
-            try {
-                // 创建一个临时压缩文件， 文件流全部注入到这个文件中
-                tempZipFile = new java.io.File(Identities.uuid() + "_temp.zip");
-                DiskUtils.makeZip(fileList, tempZipFile.getAbsolutePath());
-                String dName = "【批量下载】" + fileList.get(0).getName() + ".zip";
-                DownloadUtils.download(request, response, new FileInputStream(
-                        tempZipFile), dName);
-            } catch (Exception e) {
-                throw e;
-            } finally {
-                if (tempZipFile != null && tempZipFile.isFile()) {
-                    tempZipFile.delete();//删除临时Zip文件
-                }
+        java.io.File tempZipFile = null;
+        try {
+            // 创建一个临时压缩文件， 文件流全部注入到这个文件中
+            tempZipFile = new java.io.File(Identities.uuid() + "_temp.zip");
+            DiskUtils.makeZip(fileList, tempZipFile.getAbsolutePath());
+            String dName = "【批量下载】" + fileList.get(0).getName() + ".zip";
+            DownloadUtils.download(request, response, new FileInputStream(
+                    tempZipFile), dName);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (tempZipFile != null && tempZipFile.isFile()) {
+                tempZipFile.delete();//删除临时Zip文件
             }
         }
         return null;

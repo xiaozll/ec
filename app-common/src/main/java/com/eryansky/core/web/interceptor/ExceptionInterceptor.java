@@ -45,12 +45,6 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         requestUrl = requestUrl.replaceAll("//","/");
 
         Result result = null;
-        //开发模式下打印堆栈信息
-        if(SysConstants.isdevMode()){
-            ex.printStackTrace();
-        }else{
-            logger.error(ex.getMessage(),ex);
-        }
         //非Ajax请求 将跳转到500错误页面
 //        if(!WebUtils.isAjaxRequest(request)){
 //            throw ex;
@@ -104,18 +98,17 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }else{
-                logger.error(emsg);
                 sb.append("未知异常，请联系管理员！");
             }
         }
         if(isWarn){
             result = new Result(Result.WARN,sb.toString(),obj);
-            logger.warn(IpUtils.getIpAddr0(request) + " " +SecurityUtils.getCurrentUserLoginName() + ":" + result.toString(), ex);
+            logger.warn(IpUtils.getIpAddr0(request) + " " +loginName + ":" + result.toString(), ex);
         }else{
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
             }
-            logger.error(result.toString(), ex);
+            logger.error(IpUtils.getIpAddr0(request) + " " +loginName + ":" + result.toString(), ex);
         }
 //        Map<String, Object> model = Maps.newHashMap();
 //        model.put("ex", ex);

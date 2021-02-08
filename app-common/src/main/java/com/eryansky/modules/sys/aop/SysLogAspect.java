@@ -70,7 +70,6 @@ public class SysLogAspect {
             methodName = joinPoint.getSignature().getName();
             className = joinPoint.getTarget().getClass().getSimpleName();
         }
-        String user = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         HttpServletRequest request = null;
         try {

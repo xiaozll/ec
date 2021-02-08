@@ -81,8 +81,8 @@ public class SecurityLogAspect {
      * @see SecurityType
      */
     public void saveLog(SessionInfo sessionInfo, JoinPoint joinPoint, SecurityType securityType) {
-        Long start = System.currentTimeMillis();
-        Long end = 0L;
+        long start = System.currentTimeMillis();
+        long end = 0L;
         // 执行方法名
         String methodName = null;
         String className = null;

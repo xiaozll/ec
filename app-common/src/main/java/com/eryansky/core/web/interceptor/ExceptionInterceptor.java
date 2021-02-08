@@ -103,12 +103,12 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         if(isWarn){
             result = new Result(Result.WARN,sb.toString(),obj);
-            logger.warn(IpUtils.getIpAddr0(request) + " " +loginName + ":" + result.toString(), ex);
+            logger.warn(IpUtils.getIpAddr0(request) +" " + request.getRequestURI()+ " " +loginName + ":" + result.toString(), ex);
         }else{
             if(result == null){
                 result = new Result(Result.ERROR,sb.toString(),obj);
             }
-            logger.error(IpUtils.getIpAddr0(request) + " " +loginName + ":" + result.toString(), ex);
+            logger.error(IpUtils.getIpAddr0(request) +" " + request.getRequestURI()+ " " +loginName + ":" + result.toString(), ex);
         }
 //        Map<String, Object> model = Maps.newHashMap();
 //        model.put("ex", ex);

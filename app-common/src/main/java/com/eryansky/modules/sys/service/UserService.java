@@ -51,14 +51,6 @@ import static com.eryansky.modules.sys.service.OrganService.*;
 @Service
 public class UserService extends CrudService<UserDao, User> {
 
-    //    @Transactional
-    public void aop() {
-        boolean flag = true;
-        if (flag) {
-            throw new ServiceException("aop");
-        }
-    }
-
     /**
      * 清空缓存 非Manager调用
      */

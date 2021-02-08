@@ -17,6 +17,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.io.IoUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.DownloadUtils;
@@ -551,7 +552,7 @@ public class DiskController extends SimpleController {
         try {
             return downloadSingleFileUtil(response, request, file);
         } catch (Exception e) {
-            logger.error("{},{},{}",SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
+            logger.error("{},{},{},{}", IpUtils.getIpAddr0(request),SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
             throw e;
         }
 

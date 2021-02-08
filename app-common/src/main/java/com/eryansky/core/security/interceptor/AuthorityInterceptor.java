@@ -8,6 +8,7 @@ package com.eryansky.core.security.interceptor;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.google.common.collect.Lists;
 import com.eryansky.core.security.SecurityConstants;
@@ -192,7 +193,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
         String loginName = null;
         if(sessionInfo != null){
             loginName = sessionInfo.getLoginName();
-            logger.warn("用户[{}]无权访问URL:{}，未被授权资源:{}", new Object[]{loginName, requestUrl,permission});
+            logger.warn("用户[{},{}]无权访问URL:{}，未被授权资源:{}", new Object[]{loginName,SpringMVCHolder.getIp(), requestUrl,permission});
         }
         request.getRequestDispatcher(SecurityConstants.SESSION_UNAUTHORITY_PAGE).forward(request, response);
     }
@@ -259,7 +260,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
 
             return true;
         }else{
-            logger.warn("[{}]未授权[{}]",new Object[]{request.getSession().getId(),requestUrl});
+            logger.warn("[{},{}]未授权[{}]",new Object[]{SpringMVCHolder.getIp(),request.getSession().getId(),requestUrl});
             //返回校验不通过页面
             try {
                 if(!response.isCommitted()){
@@ -292,10 +293,9 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter {
      */
     private void notPermittedRole(HttpServletRequest request,HttpServletResponse response,
                                   SessionInfo sessionInfo,String requestUrl,String role) throws ServletException, IOException {
-        String loginName = null;
         if(sessionInfo != null){
-            loginName = sessionInfo.getLoginName();
-            logger.warn("用户[{}]无权访问URL:{}，未被授权角色:{}", new Object[]{loginName, requestUrl,role});
+            String loginName = sessionInfo.getLoginName();
+            logger.warn("用户[{},{}]无权访问URL:{}，未被授权角色:{}", new Object[]{loginName,SpringMVCHolder.getIp(), requestUrl,role});
         }
         request.getRequestDispatcher(SecurityConstants.SESSION_UNAUTHORITY_PAGE).forward(request, response);
     }

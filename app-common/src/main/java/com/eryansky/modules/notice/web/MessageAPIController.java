@@ -55,7 +55,7 @@ public class MessageAPIController extends SimpleController {
      * msg 提示信息
      * obj 返回的数据信息
      */
-    @Logging(value = "消息接口-发送消息",logType = LogType.API)
+    @Logging(value = "消息接口-发送消息",logType = LogType.REST)
     @RequiresUser(required = false)
     @RequestMapping(value = { "sendMessage"},method = RequestMethod.POST)
     @ResponseBody

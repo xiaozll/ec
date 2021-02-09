@@ -407,7 +407,7 @@ public class UserUtils {
      */
     public static List<String> findOrganIdsByUserId(String userId){
         if(StringUtils.isBlank(userId)){
-            return null;
+            return Collections.emptyList();
         }
         return Static.organService.findOrganIdsByUserId(userId);
     }
@@ -431,7 +431,7 @@ public class UserUtils {
      */
     public static List<Organ> findOrgansByUserId(String userId){
         if(StringUtils.isBlank(userId)){
-            return null;
+            return Collections.emptyList();
         }
         return Static.organService.findOrgansByUserId(userId);
     }

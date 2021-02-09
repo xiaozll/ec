@@ -84,7 +84,7 @@ public class OrganController extends SimpleController {
         List<Organ> list = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(parentId)) {
-            if (SecurityUtils.isCurrentUserAdmin()) {
+            if (sessionInfo.isSuperUser()) {
                 list = organService.findDataByParent(null, null);
             } else {
                 String organId = sessionInfo.getLoginCompanyId();
@@ -144,7 +144,7 @@ public class OrganController extends SimpleController {
         String excludeOrganId = organ.getId();
         String organId = null;
         TreeNode parentTreeNode = null;
-        if (SecurityUtils.isCurrentUserAdmin()) {
+        if (sessionInfo.isSuperUser()) {
             organId = null;
         } else {
             OrganExtend o = OrganUtils.getOrganExtendByUserId(sessionInfo.getUserId());
@@ -259,7 +259,7 @@ public class OrganController extends SimpleController {
         String _parentId = parentId;
         if (StringUtils.isBlank(parentId)) {
             String organId = sessionInfo != null ? sessionInfo.getLoginOrganId() : null;
-            if (SecurityUtils.isCurrentUserAdmin() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
+            if (sessionInfo.isSuperUser() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
                 organId = null;
             } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) && sessionInfo != null) {
                 organId = UserUtils.getCompanyId(sessionInfo.getUserId());

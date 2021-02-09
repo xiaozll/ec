@@ -111,7 +111,7 @@ public class UserController extends SimpleController {
         Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(organId)) {
-            organId = sessionInfo.getLoginOrganId();
+            organId = (sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()) ? sessionInfo.getLoginHomeCompanyId():sessionInfo.getLoginOrganId();
         }
 
         page = userService.findPage(page, organId, query, userType);
@@ -129,7 +129,9 @@ public class UserController extends SimpleController {
         List<Combobox> userTypes = Lists.newArrayList();
         Arrays.asList(UserType.values()).forEach(v->userTypes.add(new Combobox(v.getValue(),v.getDescription())));
         List<DictionaryItem> dictionaryItems = DictionaryUtils.getDictList(User.DIC_USER_TYPE);
-        dictionaryItems.forEach(v->userTypes.add(new Combobox(v.getCode(),v.getName())));
+        dictionaryItems.forEach(v-> {
+            userTypes.add(new Combobox(v.getCode(), v.getName()));
+        });
         modelAndView.addObject("userTypes", userTypes);
         return modelAndView;
     }
@@ -182,8 +184,8 @@ public class UserController extends SimpleController {
             user.setPassword(Encrypt.e(user.getPassword()));
         } else {// 修改
             User superUser = userService.getSuperUser();
-            User sessionUser = SecurityUtils.getCurrentUser();
-            if (superUser.getId().equals(user.getId()) && null != sessionUser && !sessionUser.getId().equals(superUser.getId())) {
+            SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+            if (superUser.getId().equals(user.getId()) && null != sessionInfo && !sessionInfo.getUserId().equals(superUser.getId())) {
                 result = new Result(Result.ERROR, "超级用户信息仅允许自己修改!", null);
                 logger.debug(result.toString());
                 return result;
@@ -345,13 +347,7 @@ public class UserController extends SimpleController {
         List<Combobox> defaultOrganCombobox = Lists.newArrayList();
         if (model.getId() != null) {
             List<Organ> organs = organService.findOrgansByUserId(model.getId());
-            Combobox combobox;
-            if (!Collections3.isEmpty(organs)) {
-                for (Organ organ : organs) {
-                    combobox = new Combobox(organ.getId(), organ.getName());
-                    defaultOrganCombobox.add(combobox);
-                }
-            }
+            defaultOrganCombobox = organs.parallelStream().map(organ -> new Combobox(organ.getId(), organ.getName())).collect(Collectors.toList());
         }
         String defaultOrganComboboxData = JsonMapper.nonDefaultMapper().toJson(defaultOrganCombobox);
         logger.debug(defaultOrganComboboxData);
@@ -664,7 +660,7 @@ public class UserController extends SimpleController {
             if(null != post){
                 List<String> postOrganIds = organService.findAssociationOrganIdsByPostId(post.getId());
                 List<String> postUserIds = userService.findUserIdsByPostCode(postCode);
-                return treeNodes.stream().filter(v->{
+                return treeNodes.parallelStream().filter(v->{
                     String nType = v.getAttribute("nType");
                     if("o".equals(nType)){
                         return postOrganIds.contains(v.getId());
@@ -874,7 +870,7 @@ public class UserController extends SimpleController {
 
         String title = "用户信息导出示例";
         JsGridReportBase report = new JsGridReportBase(request, response);
-        report.exportToExcel(title, SecurityUtils.getCurrentSessionInfo().getName(), tds);
+        report.exportToExcel(title, SecurityUtils.getCurrentUserName(), tds);
 
     }
 
@@ -888,7 +884,7 @@ public class UserController extends SimpleController {
                                           HttpServletResponse response) {
         User model = UserUtils.getUser(userId);
         if(WebUtils.isAjaxRequest(request)){
-            List<Resource> list = resourceService.findResourcesWithPermissions(model.getId());
+            List<Resource> list = resourceService.findResourcesWithPermissions(userId);
             return renderString(response, new Datagrid<>(list.size(), list));
         }
         uiModel.addAttribute("model", model);

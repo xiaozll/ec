@@ -934,7 +934,7 @@ public class UserService extends CrudService<UserDao, User> {
      */
     public List<String> findUserIdsByOrganIds(Collection<String> organIds) {
         if (Collections3.isEmpty(organIds)) {
-            return null;
+            return Collections.emptyList();
         }
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);

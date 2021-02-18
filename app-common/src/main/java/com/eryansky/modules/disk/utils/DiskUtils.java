@@ -190,6 +190,20 @@ public class DiskUtils {
 
 
     /**
+     * 根据编码获取 获取系统文件夹 <br/>
+     * 如果不存在则自动创建
+     *
+     * @param code 系统文件夹编码
+     * @param userId 用户ID
+     * @param folderType {@link FolderType}
+     * @return
+     */
+    public static Folder checkAndSaveSystemFolderByCode(String code, String userId,String folderType) {
+        return Static.folderService.checkAndSaveSystemFolderByCode(code, userId,folderType);
+    }
+
+
+    /**
      * 保存系统文件
      *
      * @param folderCode
@@ -207,7 +221,7 @@ public class DiskUtils {
                                       MultipartFile multipartFile) throws InvalidExtensionException,
             FileUploadBase.FileSizeLimitExceededException,
             FileNameLengthLimitExceededException, IOException {
-        return saveSystemFile(folderCode, userId, multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+        return saveSystemFile(folderCode,FolderType.HIDE.getValue(), userId, multipartFile.getInputStream(), multipartFile.getOriginalFilename());
     }
 
     /**
@@ -225,13 +239,13 @@ public class DiskUtils {
      * @throws FileNameLengthLimitExceededException
      * @throws IOException
      */
-    public static File saveSystemFile(String folderCode, String userId,
+    public static File saveSystemFile(String folderCode,String folderType, String userId,
                                       InputStream inputStream, String fileName) throws InvalidExtensionException,
             FileUploadBase.FileSizeLimitExceededException,
             FileNameLengthLimitExceededException, IOException {
         String _userId = StringUtils.isBlank(userId) ? User.SUPERUSER_ID : userId;
         String code = FileUploadUtils.encodingFilenamePrefix(_userId + "", fileName);
-        Folder folder = checkAndSaveSystemFolderByCode(folderCode, _userId);
+        Folder folder = checkAndSaveSystemFolderByCode(folderCode, _userId,folderType);
         String storeFilePath = Static.iFileManager.getStorePath(folder, _userId, fileName);
         File file = new File();
         file.setFolderId(folder.getId());

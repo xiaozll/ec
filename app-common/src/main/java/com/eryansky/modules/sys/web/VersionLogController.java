@@ -24,6 +24,7 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
+import com.eryansky.modules.disk._enum.FolderType;
 import com.eryansky.modules.disk.mapper.File;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.LogType;
@@ -170,7 +171,7 @@ public class VersionLogController extends SimpleController {
         Exception exception = null;
         File file = null;
         try {
-            file = DiskUtils.saveSystemFile(VersionLog.FOLDER_VERSIONLOG, sessionInfo.getUserId(), multipartFile);
+            file = DiskUtils.saveSystemFile(VersionLog.FOLDER_VERSIONLOG, FolderType.NORMAL.getValue(), sessionInfo.getUserId(), multipartFile.getInputStream(),multipartFile.getOriginalFilename());
             result = Result.successResult().setObj(file).setMsg("文件上传成功！");
         } catch (InvalidExtensionException e) {
             exception = e;

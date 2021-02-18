@@ -19,6 +19,7 @@ import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
+import com.eryansky.modules.disk._enum.FolderType;
 import com.eryansky.modules.disk.mapper.File;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.LogType;
@@ -355,7 +356,7 @@ public class MobileIndexController extends SimpleController {
                 return Result.errorResult().setMsg("图片上传失败,解析异常！");
             }
 
-            file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), new ByteArrayInputStream(bs), tempFileName);
+            file = DiskUtils.saveSystemFile("IMAGE", FolderType.NORMAL.getValue(), sessionInfo.getUserId(), new ByteArrayInputStream(bs), tempFileName);
             file.setStatus(StatusState.LOCK.getValue());
             DiskUtils.saveFile(file);
             result = Result.successResult().setObj(file).setMsg("文件上传成功！");

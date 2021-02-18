@@ -104,7 +104,7 @@
                     AND a.parent_id = #{id}
                 </when>
                 <otherwise>
-                    AND a.parent_id IS null or a.parent_id == ''
+                    AND (a.parent_id IS NULL OR a.parent_id = '')
                 </otherwise>
             </choose>
         </where>
@@ -209,7 +209,7 @@
                 AND a.type = #{type}
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY a.user_id,a.sort ASC
     </select>
 
     <select id="findFoldersByUserId" resultType="Folder">

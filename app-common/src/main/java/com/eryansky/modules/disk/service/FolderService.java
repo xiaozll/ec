@@ -56,6 +56,18 @@ public class FolderService extends TreeService<FolderDao, Folder> {
      * @return
      */
     public Folder checkAndSaveSystemFolderByCode(String code, String userId) {
+        return checkAndSaveSystemFolderByCode(code,userId,FolderType.HIDE.getValue());
+    }
+
+    /**
+     * 根据编码获取 获取用户的系统文件夹
+     * <br/>如果不存在则自动创建
+     * @param code 系统文件夹编码
+     * @param userId 用户ID
+     * @param type {@link FolderType}
+     * @return
+     */
+    public Folder checkAndSaveSystemFolderByCode(String code, String userId,String type) {
         Validate.notBlank(code, "参数[code]不能为null.");
         List<Folder> list = findFoldersByUserId(userId, null, FolderAuthorize.SysTem.getValue(), code);
         Folder folder = list.isEmpty() ? null : list.get(0);
@@ -63,7 +75,7 @@ public class FolderService extends TreeService<FolderDao, Folder> {
             folder = new Folder();
             folder.setName(code);
             folder.setCode(code);
-            folder.setType(FolderType.HIDE.getValue());
+            folder.setType(null != type ? type:FolderType.HIDE.getValue());
             folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());
             folder.setUserId(userId);
             save(folder);
@@ -85,7 +97,7 @@ public class FolderService extends TreeService<FolderDao, Folder> {
         if (folder == null) {
             folder = new Folder();// 创建默认文件夹
             folder.setUserId(userId);
-            folder.setName(FolderAuthorize.SysTem.getValue()+"_"+FolderType.HIDE.getDescription());
+            folder.setName(FolderAuthorize.SysTem.getDescription()+"_"+FolderType.HIDE.getDescription());
             folder.setCode(FolderAuthorize.SysTem.getValue());
             folder.setType(FolderType.HIDE.getValue());
             folder.setFolderAuthorize(FolderAuthorize.SysTem.getValue());

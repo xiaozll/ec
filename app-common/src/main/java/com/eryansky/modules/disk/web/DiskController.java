@@ -53,6 +53,7 @@ import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 我的云盘 管理 包含：文件夹的管理 文件的管理
@@ -244,7 +245,9 @@ public class DiskController extends SimpleController {
             if (null != folderAuthorize) {
                 treeNode.setpId(folderAuthorize.getValue());
             }
-
+            if (FolderAuthorize.SysTem.equals(folderAuthorize)) {
+                treeNode.setText(treeNode.getText()+"_"+folder.getUserName());
+            }
         }
         return treeNode;
     }
@@ -278,11 +281,7 @@ public class DiskController extends SimpleController {
 
         List<Folder> userFolders = isAdmin ? folderService.findNormalTypeAndSystemFoldersByUserId(loginUserId) : folderService.findNormalTypeFoldersByUserId(loginUserId);
 
-        List<TreeNode> userFolderTreeNodes = Lists.newArrayList();
-        for (Folder folder : userFolders) {
-            userFolderTreeNodes.add(this.folderToTreeNode(folder));
-        }
-
+        List<TreeNode> userFolderTreeNodes = userFolders.parallelStream().map(this::folderToTreeNode).collect(Collectors.toList());
         treeNodes.addAll(userFolderTreeNodes);
         return AppUtils.toTreeTreeNodes(treeNodes);
     }

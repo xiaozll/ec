@@ -3,9 +3,10 @@ package com.eryansky.core.security;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.utils.CacheUtils;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 应用Session上下文
@@ -13,6 +14,7 @@ import java.util.List;
 public class ApplicationSessionContext {
 
 	public final static String CACHE_SESSION = "sessionCache";
+	public final static String CACHE_SESSION_SERVLET = "session";
 
 	/**
 	 * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -46,16 +48,12 @@ public class ApplicationSessionContext {
 
 	public SessionInfo getSession(String sessionId) {
 		if (sessionId == null) return null;
-		return (SessionInfo) CacheUtils.get(CACHE_SESSION,sessionId);
+		return CacheUtils.get(CACHE_SESSION,sessionId);
 	}
 
 	public List<SessionInfo> findSessionInfoDataRemoveDuplicate() {
 		List<SessionInfo> list = findSessionInfoData();
-		LinkedHashSet<SessionInfo> set = new LinkedHashSet<>(list.size());
-		set.addAll(list);
-		list.clear();
-		list.addAll(set);
-		return list;
+		return list.parallelStream().collect(Collectors.toSet()).parallelStream().collect(Collectors.toList());
 	}
 
 	public List<SessionInfo> findSessionInfoData() {
@@ -90,12 +88,30 @@ public class ApplicationSessionContext {
 
 	public <T> T getSession(String cacheName, String key) {
 		if (key == null) return null;
-		return (T) CacheUtils.get(cacheName, key);
+		return CacheUtils.get(cacheName, key);
 	}
 
 	public List<Object> findSessionData(String cacheName) {
 		Collection<String> keys = CacheUtils.keys(cacheName);
 		return CacheUtils.get(CACHE_SESSION,keys);
 	}
+
+
+//	public void addServletSession(String sessionId, HttpSession session) {
+//		CacheUtils.put(CACHE_SESSION_SERVLET, sessionId,session);
+//	}
+//
+//	public HttpSession getServletSession(String sessionId) {
+//		if (sessionId == null) return null;
+//		return CacheUtils.get(CACHE_SESSION_SERVLET,sessionId);
+//	}
+//
+//	public void removeServletSession(String sessionId) {
+//		if (sessionId != null) {
+//			CacheUtils.remove(CACHE_SESSION_SERVLET, sessionId);
+//		}
+//	}
+
+
 
 }

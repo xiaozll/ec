@@ -416,6 +416,7 @@ public class SecurityUtils {
         initPermission(sessionInfo);
 
         Static.applicationSessionContext.addSession(sessionInfo);
+//        Static.applicationSessionContext.addServletSession(sessionInfo.getSessionId(),session);
         request.getSession().setAttribute("loginUser", sessionInfo.getName() + "[" + sessionInfo.getLoginName() + "]");
         return sessionInfo;
     }
@@ -440,6 +441,10 @@ public class SecurityUtils {
         initPermission(sessionInfo);
 
         Static.applicationSessionContext.addSession(sessionInfo);
+//        HttpSession session = Static.applicationSessionContext.getServletSession(sessionId);
+//        if(null != session){
+//            Static.applicationSessionContext.addServletSession(sessionInfo.getSessionId(),session);
+//        }
         return sessionInfo;
     }
 
@@ -697,7 +702,7 @@ public class SecurityUtils {
             try {
 
                 HttpSession httpSession = SpringMVCHolder.getSession();
-                if (httpSession != null && getNoSuffixSessionId(httpSession).equals(sessionId)) {
+                if (httpSession != null && SecurityUtils.getNoSuffixSessionId(httpSession).equals(sessionId)) {
                     httpSession.invalidate();
                 }
             } catch (Exception e) {

@@ -182,7 +182,7 @@ public abstract class Receiver {
 
 	public static String decodeText(String text) throws UnsupportedEncodingException {
 		if (text == null) return null;
-		if (text.startsWith("=?GB") || text.startsWith("=?gb")) text = MimeUtility.decodeText(text);
+		if (text.startsWith("=?GB") || text.startsWith("=?gb")|| text.startsWith("=?UTF")|| text.startsWith("=?utf")) text = MimeUtility.decodeText(text);
 		else text = new String(text.getBytes("ISO8859_1"));
 		return text;
 	}

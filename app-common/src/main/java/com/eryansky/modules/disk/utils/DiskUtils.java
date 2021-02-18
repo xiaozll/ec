@@ -271,7 +271,7 @@ public class DiskUtils {
                         .append(folderName)
                         .append("[")
                         .append(userName)
-                        .append("[");
+                        .append("]");
             }
 
         }

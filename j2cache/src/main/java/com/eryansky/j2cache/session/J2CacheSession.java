@@ -137,6 +137,10 @@ public class J2CacheSession implements HttpSession {
         }
     }
 
+    public boolean isInvalid() {
+        return invalid;
+    }
+
     @Deprecated
     @Override
     public Object getValue(String name) {

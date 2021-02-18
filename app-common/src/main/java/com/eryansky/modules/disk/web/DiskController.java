@@ -245,9 +245,9 @@ public class DiskController extends SimpleController {
             if (null != folderAuthorize) {
                 treeNode.setpId(folderAuthorize.getValue());
             }
-            if (FolderAuthorize.SysTem.equals(folderAuthorize)) {
-                treeNode.setText(treeNode.getText()+"_"+folder.getUserName());
-            }
+//            if (FolderAuthorize.SysTem.equals(folderAuthorize)) {
+//                treeNode.setText(treeNode.getText()+"_"+folder.getUserName());
+//            }
         }
         return treeNode;
     }

@@ -391,16 +391,14 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             TreeNode treeNode = this.organToTreeNode(organ, addUser,null,shortName);
             if (cascade && addUser) {
                 List<User> organUsers = userService.findOrganDefaultUsers(organ.getId());
-                if (Collections3.isNotEmpty(organUsers)) {
-                    for (User organUser : organUsers) {
-                        TreeNode userTreeNode = userToTreeNode(organUser);
-                        if (Collections3.isNotEmpty(checkedUserIds)) {
-                            if (checkedUserIds.contains(userTreeNode.getId())) {
-                                userTreeNode.setChecked(true);
-                            }
+                for (User organUser : organUsers) {
+                    TreeNode userTreeNode = userToTreeNode(organUser);
+                    if (Collections3.isNotEmpty(checkedUserIds)) {
+                        if (checkedUserIds.contains(userTreeNode.getId())) {
+                            userTreeNode.setChecked(true);
                         }
-                        treeNode.addChild(userTreeNode);
                     }
+                    treeNode.addChild(userTreeNode);
                 }
             }
             tempTreeNodes.add(treeNode);
@@ -413,17 +411,15 @@ public class OrganService extends TreeService<OrganDao, Organ> {
                 Organ parentOrgan = this.get(parentId);
                 if (parentOrgan != null) {
                     List<User> parentOrganUsers = userService.findOrganDefaultUsers(parentOrgan.getId());
-                    if (Collections3.isNotEmpty(parentOrganUsers)) {
-                        for (User parentOrganUser : parentOrganUsers) {
-                            TreeNode parentUserTreeNode = userToTreeNode(parentOrganUser);
-                            if (Collections3.isNotEmpty(checkedUserIds)) {
-                                if (checkedUserIds.contains(parentUserTreeNode.getId())) {
-                                    parentUserTreeNode.setChecked(true);
-                                }
+                    for (User parentOrganUser : parentOrganUsers) {
+                        TreeNode parentUserTreeNode = userToTreeNode(parentOrganUser);
+                        if (Collections3.isNotEmpty(checkedUserIds)) {
+                            if (checkedUserIds.contains(parentUserTreeNode.getId())) {
+                                parentUserTreeNode.setChecked(true);
                             }
-                            tempTreeNodes.add(parentUserTreeNode);
-                            tempMap.put(parentOrganUser.getId(), parentUserTreeNode);
                         }
+                        tempTreeNodes.add(parentUserTreeNode);
+                        tempMap.put(parentOrganUser.getId(), parentUserTreeNode);
                     }
                 }
             }

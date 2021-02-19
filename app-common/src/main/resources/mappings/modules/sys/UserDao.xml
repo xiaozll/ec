@@ -322,8 +322,13 @@
 
     <select id="findWithInclude" resultType="User">
         SELECT
-        <include refid="userColumns"/>
+        <include refid="userColumns"/>,
+         o.name AS "defaultOrganName",
+         o.company_id AS "companyId",
+         o.home_company_id AS "homeCompanyId"
         FROM t_sys_user a
+        LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             AND a.status = '0'
             <if test="query != null and query !=''">
@@ -351,13 +356,18 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY o.code,a.sort ASC
     </select>
 
-    <select id="findAllNormalWithExclude" resultType="java.lang.String">
+    <select id="findAllNormalWithExclude" resultType="User">
         SELECT
-        <include refid="userColumns"/>
+        <include refid="userColumns"/>,
+        o.name AS "defaultOrganName",
+        o.company_id AS "companyId",
+        o.home_company_id AS "homeCompanyId"
         FROM t_sys_user a
+        LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             AND a.status = '0'
             <if test="userIds != null and userIds.size() !=0">
@@ -367,7 +377,7 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY o.code,a.sort ASC
     </select>
 
     <select id="findUsersByIds" resultType="User">
@@ -386,7 +396,7 @@
         <include refid="userColumns"/>
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             a.status = #{status}
             AND (o.id = #{organId}  OR o.parent_ids LIKE
@@ -431,7 +441,7 @@
         <include refid="userColumns"/>
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             a.status = #{status}
             AND o.id IN <foreach collection="organIds" item="item" open="(" separator="," close=")">#{item}</foreach>
@@ -444,7 +454,7 @@
         a.id
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             a.status = #{status}
             AND o.id IN <foreach collection="organIds" item="item" open="(" separator="," close=")">#{item}</foreach>
@@ -457,7 +467,7 @@
         a.login_name
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             a.status = #{status}
             AND o.id IN <foreach collection="organIds" item="item" open="(" separator="," close=")">#{item}</foreach>
@@ -467,7 +477,10 @@
 
     <select id="findOwnerAndChildsUsers" resultType="User">
         SELECT
-        <include refid="userColumns"/>
+        <include refid="userColumns"/>,
+        o.name AS "defaultOrganName",
+        o.company_id AS "companyId",
+        o.home_company_id AS "homeCompanyId"
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
         LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
@@ -494,7 +507,7 @@
                 </foreach>
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY o.code,a.sort ASC
     </select>
 
 
@@ -536,7 +549,7 @@
         <include refid="userColumns"/>
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             AND a.status = '0'
             AND o.id = #{organId}
@@ -560,7 +573,7 @@
         a.id
         FROM t_sys_user a
         LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
-        LEFT JOIN t_sys_organ o ON o.id = uo.organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
         <where>
             AND a.status = '0'
             AND o.id = #{organId}
@@ -572,7 +585,7 @@
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
-        LEFT JOIN t_sys_organ o ON o.id = a.default_organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = a.default_organ_id
         <where>
             AND a.status = '0'
             AND o.id = #{organId}
@@ -584,7 +597,7 @@
         SELECT
         a.id
         FROM t_sys_user a
-        LEFT JOIN t_sys_organ o ON o.id = a.default_organ_id
+        LEFT JOIN t_sys_organ_extend o ON o.id = a.default_organ_id
         <where>
             AND a.status = '0'
             AND o.id = #{organId}

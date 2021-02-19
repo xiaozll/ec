@@ -128,6 +128,16 @@ public class User extends DataEntity<User> implements IUser {
      * 脱敏后的手机号码
      */
     private String mobileSensitive;
+    /**
+     * 默认部门名称
+     */
+    private String defaultOrganName;
+    private String companyId;
+    private String companyCode;
+    private String companyName;
+    private String homeCompanyId;
+    private String homeCompanyCode;
+    private String homeCompanyName;
 
     public User() {
     }
@@ -316,15 +326,36 @@ public class User extends DataEntity<User> implements IUser {
     }
 
     public String getCompanyId() {
+        if(null != companyId){
+            return companyId;
+        }
         return UserUtils.getCompanyId(this.id);
     }
 
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
     public String getCompanyName() {
+        if(null != companyName){
+            return companyName;
+        }
         return UserUtils.getCompanyName(this.id);
     }
 
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public String getDefaultOrganName() {
+        if(null != defaultOrganName){
+            return defaultOrganName;
+        }
         return UserUtils.getDefaultOrganName(this.id);
+    }
+
+    public void setDefaultOrganName(String defaultOrganName) {
+        this.defaultOrganName = defaultOrganName;
     }
 
     public boolean isAdmin() {

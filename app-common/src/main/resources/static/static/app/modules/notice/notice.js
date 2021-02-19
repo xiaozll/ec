@@ -658,6 +658,8 @@ function initSelectUser() {
     $query_PublishUser_MultiSelect = $("#publishUserIds").kendoMultiSelect({
         dataTextField: "name",
         dataValueField: "id",
+        groupTemplate: "#: data #",
+        maxSelectedItems: 1,
         dataSource: {
             transport: {
                 read: {
@@ -670,7 +672,7 @@ function initSelectUser() {
                     }
                 }
             },
-            serverFiltering: true,
+            serverFiltering: false,
             group: {field: "defaultOrganName"}
         }
     }).data("kendoMultiSelect");

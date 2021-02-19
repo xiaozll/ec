@@ -507,7 +507,6 @@ public class UserController extends SimpleController {
 
         String json = JsonMapper.getInstance().toJson(list, User.class,
                 new String[]{"id", "name", "defaultOrganName"});
-        WebUtils.setExpiresHeader(response, 5 * 60 * 1000);
         return json;
     }
 
@@ -529,7 +528,6 @@ public class UserController extends SimpleController {
         List<User> list = userService.findWithInclude(includeUserIds, query);
         String json = JsonMapper.getInstance().toJson(list, User.class,
                 new String[]{"id", "name", "defaultOrganName"});
-        WebUtils.setExpiresHeader(response, 5 * 60 * 1000);
         return json;
     }
 
@@ -696,7 +694,6 @@ public class UserController extends SimpleController {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             _parentId = SecurityUtils.isPermittedMaxRoleDataScope() ? null:sessionInfo.getLoginCompanyId();
         }
-        WebUtils.setExpiresHeader(response, 5 * 60 * 1000);
         List<TreeNode> treeNodes = organService.findOrganUserTree(_parentId, checkedUserIds,cascade);
         return treeNodes;
     }

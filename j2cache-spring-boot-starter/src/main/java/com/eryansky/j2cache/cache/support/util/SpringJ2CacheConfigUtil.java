@@ -1,6 +1,7 @@
 package com.eryansky.j2cache.cache.support.util;
 
 import org.springframework.core.env.CompositePropertySource;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
 
@@ -47,10 +48,15 @@ public class SpringJ2CacheConfigUtil {
 		//配置在 nacos 中时，上面那段代码无法获取配置
 		if (config.getL1CacheProperties().isEmpty() || config.getL2CacheProperties().isEmpty() || config.getBroadcastProperties().isEmpty()) {
 			environment.getPropertySources().forEach(a -> {
+				String[] propertyNames = new String[0];
 				if (a instanceof CompositePropertySource) {
 					CompositePropertySource c = (CompositePropertySource) a;
-					String[] propertyNames = c.getPropertyNames();
-
+					propertyNames = c.getPropertyNames();
+				} else if (a instanceof EnumerablePropertySource){
+					EnumerablePropertySource c = (EnumerablePropertySource) a;
+					propertyNames = c.getPropertyNames();
+				}
+				if (propertyNames.length > 0){
 					for (String key : propertyNames) {
 						if (key.startsWith(config.getBroadcast() + ".")) {
 							config.getBroadcastProperties().setProperty(key.substring((config.getBroadcast() + ".").length()),

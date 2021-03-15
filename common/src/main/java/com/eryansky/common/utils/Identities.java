@@ -5,8 +5,10 @@
  */
 package com.eryansky.common.utils;
 
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.id.SnowFlake;
 
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.UUID;
 
@@ -61,6 +63,50 @@ public class Identities {
 	}
 
 	/**
+	 * 基于Base62编码的SecureRandom随机生成bytes.
+	 */
+	public static String randomBase62(int length) {
+		byte[] randomBytes = new byte[length];
+		random.nextBytes(randomBytes);
+		return EncodeUtils.encodeBase62(randomBytes);
+	}
+
+	/**
+	 * 使用SecureRandom随机生成指定范围的Integer.
+	 */
+	public static int randomInt(int min, int max) {
+		return random.nextInt(max) % (max - min + 1) + min;
+	}
+
+	/**
+	 * 获取新代码编号
+	 */
+	public static String nextCode(String code){
+		if (code != null){
+			String str = code.trim();
+			int lastNotNumIndex = -1;
+			int len = str.length() - 1;
+			for (int i = len; i >= 0; i--) {
+				if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
+					lastNotNumIndex = i;
+				}else{
+					break;
+				}
+			}
+			String prefix = str;
+			String prevNum = "000";
+			if (lastNotNumIndex != -1){
+				prefix = str.substring(0, lastNotNumIndex);
+				prevNum = str.substring(lastNotNumIndex, str.length());
+			}
+			String nextNum = new BigDecimal(prevNum).add(BigDecimal.ONE).toString();
+			str = prefix + StringUtils.leftPad(nextNum, prevNum.length(), "0");
+			return str;
+		}
+		return null;
+	}
+
+	/**
 	 * 基于Base62编码的随机生成Long.
 	 */
 	/*public static String randomBase62() {
@@ -71,5 +117,6 @@ public class Identities {
 		for(int i=0;i<1000;i++){
 			System.out.println(randomLong());
 		}
+		System.out.println(nextCode("A00001"));
 	}
 }

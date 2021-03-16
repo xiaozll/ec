@@ -24,7 +24,7 @@
         <sitemesh.version>2.4.2</sitemesh.version>
         <commons-csv.version>1.8</commons-csv.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
-        <batik.version>1.10</batik.version>
+        <batik.version>1.14</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -160,7 +160,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.0-jre</version>
+            <version>30.1-jre</version>
         </dependency>
 
         <dependency>

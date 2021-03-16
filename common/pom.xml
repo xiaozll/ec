@@ -16,23 +16,25 @@
 
     <properties>
         <commons-cli.version>1.4</commons-cli.version>
-        <commons-io.version>2.7</commons-io.version>
+        <commons-io.version>2.8.0</commons-io.version>
         <commons-fileupload.version>1.4</commons-fileupload.version>
         <commons-text.version>1.8</commons-text.version>
-        <commons-lang3.version>3.10</commons-lang3.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
         <commons-email.version>1.5</commons-email.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <commons-net.version>3.6</commons-net.version>
-        <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-net.version>3.8.0</commons-net.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
         <commons-math3.version>3.6.1</commons-math3.version>
-        <commons-codec.version>1.12</commons-codec.version>
+        <commons-codec.version>1.15</commons-codec.version>
         <commons-logging.version>1.2</commons-logging.version>
-
+        <pinyin4j.version>2.5.1</pinyin4j.version>
+        <jsqlparser.version>4.0</jsqlparser.version>
+        <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
 
-        <guava.version>30.0-jre</guava.version>
-        <joda-time.version>2.10.6</joda-time.version>
+        <guava.version>30.1-jre</guava.version>
+        <joda-time.version>2.10.10</joda-time.version>
         <dozer.version>5.5.1</dozer.version>
         <freemarker.version>2.3.28</freemarker.version>
 
@@ -93,9 +95,9 @@
             <version>${commons-codec.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>${commons-collections.version}</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -177,12 +179,12 @@
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
-            <version>3.2.5</version>
+            <version>${cglib-nodep.version}</version>
         </dependency>
         <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
-            <version>2.5.0</version>
+            <version>${pinyin4j.version}</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -191,7 +193,7 @@
         <dependency>
             <groupId>com.github.jsqlparser</groupId>
             <artifactId>jsqlparser</artifactId>
-            <version>3.2</version>
+            <version>${jsqlparser.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
         <dependency>
@@ -225,7 +227,7 @@
         <dependency>
             <groupId>org.mybatis.dynamic-sql</groupId>
             <artifactId>mybatis-dynamic-sql</artifactId>
-            <version>1.1.4</version>
+            <version>1.2.1</version>
         </dependency>
     </dependencies>
 

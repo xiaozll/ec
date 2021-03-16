@@ -12,9 +12,10 @@ import java.util.List;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2011-7-22 上午12:37:10
  */
-public class ListUtils extends org.apache.commons.collections.ListUtils{
+public class ListUtils {
 
     private static final String defaultSeparator = ",";
+
 
     /**
      * 判断list是否为空或大小为0

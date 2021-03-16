@@ -5,6 +5,7 @@
  */
 package com.eryansky.common.orm.mybatis.interceptor;
 
+import com.alibaba.druid.DbType;
 import com.alibaba.druid.sql.PagerUtils;
 import com.alibaba.druid.util.JdbcConstants;
 import com.eryansky.common.orm.Page;
@@ -118,7 +119,7 @@ public class SQLHelper {
         String dbName = BaseInterceptor.convertDbNameParameter(parameterObject);
         String countSql = null;
         if(BaseInterceptor.PARAM_COUNT_TYPE_DRUID.equals(convertCountTypeParameter)){
-            countSql = PagerUtils.count(sql,dbName);//dbName 与JdbcConstants.*(MYSQL) 对应
+            countSql = PagerUtils.count(sql, DbType.of(dbName));//dbName 与JdbcConstants.*(MYSQL) 对应
         }else if(BaseInterceptor.PARAM_COUNT_TYPE_NORMAL.equals(convertCountTypeParameter)){
             countSql = Static.countSqlParser.getSimpleCountSql(sql,"1");
         }else{

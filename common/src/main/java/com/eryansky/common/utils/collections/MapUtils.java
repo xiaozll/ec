@@ -15,7 +15,7 @@ import com.eryansky.common.utils.StringUtils;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date   2012-1-9下午2:54:34
  */
-public class MapUtils extends org.apache.commons.collections.MapUtils{
+public class MapUtils{
 
     /**
      * 向map中put key和value对，key必须非null，并且为非空字符串
@@ -121,7 +121,7 @@ public class MapUtils extends org.apache.commons.collections.MapUtils{
      * @return
      */
     public static <V> String getKeyByValue(Map<String, V> map, V value) {
-        if (isEmpty(map)) {
+        if (org.apache.commons.collections4.MapUtils.isEmpty(map)) {
             return null;
         }
 

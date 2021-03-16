@@ -32,7 +32,6 @@ import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -268,7 +267,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
         notice.setCreateTime(Calendar.getInstance().getTime());
         dao.insert(notice);
 
-        if (CollectionUtils.isNotEmpty(organIds)) {
+        if (Collections3.isNotEmpty(organIds)) {
             //去重
             for (String _organId : organIds) {
                 //保存到notice send表

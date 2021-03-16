@@ -20,7 +20,7 @@ import com.eryansky.modules.sys.service.DictionaryItemService;
 import com.eryansky.modules.sys.service.DictionaryService;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

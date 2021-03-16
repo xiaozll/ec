@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>ec-app</artifactId>
-    <version>1.0.0.20210118</version>
+    <version>1.0.0.20210315</version>
     <packaging>${project.packaging}</packaging>
     <name>ec-app</name>
     <description>web</description>
@@ -24,8 +24,8 @@
         <ckfinder.version>2.3</ckfinder.version>
         <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
-        <fop.version>2.3</fop.version>
-        <batik.version>1.10</batik.version>
+        <fop.version>2.6</fop.version>
+        <batik.version>1.14</batik.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -213,7 +213,7 @@
         <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
-            <version>2.5.0</version>
+            <version>2.5.1</version>
         </dependency>
 
         <!-- CKFinder begin -->

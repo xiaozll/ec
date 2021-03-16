@@ -34,16 +34,16 @@
         <java.version>1.8</java.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
-        <spring-boot.version>2.2.13.RELEASE</spring-boot.version>
-        <spring-integration-redis.version>5.2.11.RELEASE</spring-integration-redis.version>
-        <logback.version>6.3</logback.version>
+        <spring-boot.version>2.4.3</spring-boot.version>
+        <spring-integration-redis.version>5.4.4</spring-integration-redis.version>
+        <logback.version>6.6</logback.version>
 
-        <tomcat.version>9.0.41</tomcat.version>
+        <tomcat.version>9.0.43</tomcat.version>
         <jstl.version>1.2</jstl.version>
 
         <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
         <commons-pool2.version>2.9.0</commons-pool2.version>
-        <druid-version>1.1.24</druid-version>
+        <druid-version>1.2.5</druid-version>
         <mariadb.driver.version>2.7.2</mariadb.driver.version>
         <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>
         <db2.driver.version>10.1</db2.driver.version>
@@ -52,14 +52,15 @@
         <httpcomponents.version>4.5.13</httpcomponents.version>
         <commons-codec.version>1.12</commons-codec.version>
 
-        <ec-common.version>4.2.20210118.26</ec-common.version>
-        <ec-app-common.version>4.2.20210118.26</ec-app-common.version>
-        <ec-client-common.version>4.2.20210118.26</ec-client-common.version>
-        <ec-j2cache.version>4.2.20210118.26</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20210118.26</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20210118.26</ec-fastweixin.version>
 
-        <jackson.version>2.10.5</jackson.version>
+        <ec-common.version>4.2.20210315.01</ec-common.version>
+        <ec-app-common.version>4.2.20210315.01</ec-app-common.version>
+        <ec-client-common.version>4.2.20210315.01</ec-client-common.version>
+        <ec-j2cache.version>4.2.20210315.01</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20210315.01</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20210315.01</ec-fastweixin.version>
+
+        <jackson.version>2.12.2</jackson.version>
         <swagger2.version>2.9.2</swagger2.version>
     </properties>
 
@@ -118,6 +119,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
             <version>${spring-boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mchange</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -152,6 +159,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
 
@@ -207,7 +219,7 @@
         <dependency>
             <groupId>org.tmatesoft.svnkit</groupId>
             <artifactId>svnkit</artifactId>
-            <version>1.10.1</version>
+            <version>1.10.3</version>
             <scope>test</scope>
         </dependency>
 

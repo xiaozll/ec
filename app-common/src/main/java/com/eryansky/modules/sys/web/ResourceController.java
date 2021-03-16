@@ -23,7 +23,7 @@ import com.eryansky.modules.sys.mapper.Resource;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

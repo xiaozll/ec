@@ -8,4 +8,7 @@
 - MariaDB/MySQL
 
 
-mvnw.cmd spring-boot:build-image -Dspring-boot.build-image.imageName=eryansky/ec
+Docker发布
+
+
+    mvn package com.google.cloud.tools:jib-maven-plugin:2.8.0:build -DsendCredentialsOverHttp=true

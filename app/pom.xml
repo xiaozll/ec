@@ -337,15 +337,19 @@
                     </to>
                     <allowInsecureRegistries>true</allowInsecureRegistries>
                     <container>
-                        <jvmFlags>
-                            <jvmFlag>-Dspring.profiles.active=dev</jvmFlag>
-                        </jvmFlags>
                         <mainClass>com.eryansky.Application</mainClass>
+                        <jvmFlags>
+                            <jvmFlag>-Dspring.profiles.active=${profileActive}</jvmFlag>
+                        </jvmFlags>
                         <args>
                         </args>
+                        <volumes>
+                            <volume>/data</volume>
+                        </volumes>
                         <ports>
                             <port>8080</port>
                         </ports>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
                 </configuration>
 <!--                <executions>-->

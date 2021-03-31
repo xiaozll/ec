@@ -854,7 +854,10 @@ public class ExcelUtils {
 				// 遍历该行所有列
 				for (short j = 0; j < cols; j++) {
 					cell = row.getCell(j);
-					if(null == cell) continue;	// 为空时，下一列
+					if(null == cell){
+						map.put(keys[j], value);
+						continue;	// 为空时，下一列
+					}
 
 					// 根据poi返回的类型，做相应的get处理
 					if(Cell.CELL_TYPE_STRING == cell.getCellType()) {
@@ -948,7 +951,10 @@ public class ExcelUtils {
 				// 遍历该行所有列
 				for (short j = 0; j < cols; j++) {
 					cell = row.getCell(j);
-					if(null == cell) continue;	// 为空时，下一列
+					if(null == cell){
+						rowData.add(value);
+						continue;	// 为空时，下一列
+					}
 
 					// 根据poi返回的类型，做相应的get处理
 					if(Cell.CELL_TYPE_STRING == cell.getCellType()) {

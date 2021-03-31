@@ -855,7 +855,7 @@ public class ExcelUtils {
 				for (short j = 0; j < cols; j++) {
 					cell = row.getCell(j);
 					if(null == cell){
-						map.put(keys[j], value);
+						map.put(keys[j], null);
 						continue;	// 为空时，下一列
 					}
 
@@ -952,7 +952,7 @@ public class ExcelUtils {
 				for (short j = 0; j < cols; j++) {
 					cell = row.getCell(j);
 					if(null == cell){
-						rowData.add(value);
+						rowData.add(null);
 						continue;	// 为空时，下一列
 					}
 

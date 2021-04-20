@@ -75,7 +75,8 @@ public class MvcConfigure implements WebMvcConfigurer {
    public void addCorsMappings(CorsRegistry registry) {
 //      registry.addMapping("/api/**");
       registry.addMapping("/**")
-              .allowedOrigins("*")
+//              .allowedOrigins("*")
+              .allowedOriginPatterns("*")
               .allowedMethods("GET","POST","OPTIONS","PUT", "DELETE")
               .allowedHeaders("Origin","Content-Type","X-Amz-Date","Authorization","X-Api-Key","X-Amz-Security-Token")
               .allowCredentials(true);

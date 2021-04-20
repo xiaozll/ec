@@ -76,7 +76,7 @@ public class MvcConfigure implements WebMvcConfigurer {
 //      registry.addMapping("/api/**");
       registry.addMapping("/**")
               .allowedOrigins("*")
-              .allowedMethods("GET","POST","OPTIONS")
+              .allowedMethods("GET","POST","OPTIONS","PUT", "DELETE")
               .allowedHeaders("Origin","Content-Type","X-Amz-Date","Authorization","X-Api-Key","X-Amz-Security-Token")
               .allowCredentials(true);
    }

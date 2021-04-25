@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -73,14 +76,31 @@ public class MvcConfigure implements WebMvcConfigurer {
     */
    @Override
    public void addCorsMappings(CorsRegistry registry) {
-//      registry.addMapping("/api/**");
-      registry.addMapping("/**")
-//              .allowedOrigins("*")
-              .allowedOriginPatterns("*")
-              .allowedMethods("GET","POST","OPTIONS","PUT", "DELETE")
-              .allowedHeaders("Origin","Content-Type","X-Amz-Date","Authorization","X-Api-Key","X-Amz-Security-Token")
-              .allowCredentials(true);
+//      registry.addMapping("/**")
+//              .allowedOriginPatterns("*")
+//              .allowedMethods("GET","POST","OPTIONS","PUT", "DELETE")
+//              .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
+//                      "Access-Control-Request-Headers","Authorization","Content-Type")
+//              .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+//              .allowCredentials(true).maxAge(3600);;
    }
+
+   private CorsConfiguration buildConfig() {
+      CorsConfiguration corsConfiguration = new CorsConfiguration();
+      corsConfiguration.addAllowedOrigin("*");
+      corsConfiguration.addAllowedHeader("*");
+      corsConfiguration.addAllowedMethod("*");
+      corsConfiguration.setAllowCredentials(true);
+      return corsConfiguration;
+   }
+
+   @Bean
+   public CorsFilter corsFilter() {
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", buildConfig());
+      return new CorsFilter(source);
+   }
+
 
    /**
     * Json解析

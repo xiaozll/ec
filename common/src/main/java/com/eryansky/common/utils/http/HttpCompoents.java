@@ -22,6 +22,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.util.PublicSuffixMatcher;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.cookie.*;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.*;
@@ -413,6 +415,52 @@ public class HttpCompoents {
                 }
                 httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
             }
+            httpPost.setConfig(requestConfig);
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                HttpEntity entity = response.getEntity();
+                return EntityUtils.toString(entity, useCharset);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * POST请求
+     *
+     * @param url     请求地址
+     * @param data  请求json数据
+     * @return
+     */
+    public String post(String url, String data) {
+        return  post(url, data,null,null);
+    }
+    /**
+     * POST请求
+     *
+     * @param url     请求地址
+     * @param data  请求json数据
+     * @param headers 自定义Header
+     * @param charset 编码
+     * @return
+     */
+    public String post(String url, String data,
+                       Map<String, String> headers, String charset) {
+        String useCharset = charset;
+        if (charset == null) {
+            useCharset = _DEFLAUT_CHARSET;
+        }
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            if (headers != null) {
+                for (String key : headers.keySet()) {
+                    httpPost.setHeader(key, headers.get(key));
+                }
+            }
+            // Create request data
+            StringEntity requestEntity = new StringEntity(data, ContentType.APPLICATION_JSON);
+            httpPost.setEntity(requestEntity);
             httpPost.setConfig(requestConfig);
             try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 HttpEntity entity = response.getEntity();

@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -40,7 +41,7 @@ import java.util.List;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-01-21 12:23
  */
-public class AuthorityInterceptor extends HandlerInterceptorAdapter {
+public class AuthorityInterceptor implements AsyncHandlerInterceptor {
 
 
     protected Logger logger = LoggerFactory.getLogger(getClass());

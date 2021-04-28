@@ -77,19 +77,18 @@ public class MvcConfigure implements WebMvcConfigurer {
    @Override
    public void addCorsMappings(CorsRegistry registry) {
 //      registry.addMapping("/**")
-//              .allowedOriginPatterns("*")
-//              .allowedMethods("GET","POST","OPTIONS","PUT", "DELETE")
-//              .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-//                      "Access-Control-Request-Headers","Authorization","Content-Type")
-//              .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
-//              .allowCredentials(true).maxAge(3600);;
+//              .allowedOriginPatterns(CorsConfiguration.ALL)
+//              .allowCredentials(true)
+//              .allowedHeaders(CorsConfiguration.ALL)
+//              .allowedMethods(CorsConfiguration.ALL)
+//              .maxAge(3600);
    }
 
    private CorsConfiguration buildConfig() {
       CorsConfiguration corsConfiguration = new CorsConfiguration();
-      corsConfiguration.addAllowedOrigin("*");
-      corsConfiguration.addAllowedHeader("*");
-      corsConfiguration.addAllowedMethod("*");
+      corsConfiguration.setAllowedOriginPatterns(Collections.singletonList(CorsConfiguration.ALL));
+      corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+      corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
       corsConfiguration.setAllowCredentials(true);
       return corsConfiguration;
    }

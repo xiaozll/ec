@@ -226,6 +226,7 @@ public abstract class SimpleController{
     protected String renderString(HttpServletResponse response, String string, String type) {
         try {
             response.reset();
+            response.setHeader("Access-Control-Allow-Origin", "*");
             response.setContentType(type);
             response.setCharacterEncoding(WebUtils.DEFAULT_ENCODING);
             response.getWriter().print(string);

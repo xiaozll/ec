@@ -541,6 +541,9 @@ public class SecurityUtils {
             sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session), session.getId());
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
+                if(StringUtils.isBlank(token)){
+                    token = request.getParameter("Authorization");
+                }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
                 }
@@ -573,6 +576,9 @@ public class SecurityUtils {
             sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session), session.getId());
             if (sessionInfo == null) {
                 String token = SpringMVCHolder.getRequest().getHeader("Authorization");
+                if(StringUtils.isBlank(token)){
+                    token = SpringMVCHolder.getRequest().getParameter("Authorization");
+                }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
                 }

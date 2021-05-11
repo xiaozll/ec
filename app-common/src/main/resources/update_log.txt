@@ -1,4 +1,11 @@
-﻿20201229
+﻿20210511-V4.2.20210415.08
+1、添加Quartz定时任务管理
+菜单：/a/sys/job
+权限（查看）：sys:job:view
+权限（编辑）：sys:job:edit
+2、修复版本管理选择错误bug
+
+20201229
 1、通知公告支持回复
 ALTER TABLE t_notice
 ADD COLUMN is_reply char(1) COMMENT '是否需要回复 是：1 否：0';

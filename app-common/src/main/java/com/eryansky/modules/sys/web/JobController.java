@@ -26,7 +26,9 @@ import java.rmi.ServerException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Quartz定时任务管理
+ */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/job")
 public class JobController extends SimpleController {

@@ -8,6 +8,7 @@ import com.eryansky.core.excelTools.ExcelUtils;
 import com.eryansky.core.excelTools.JsGridReportBase;
 import com.eryansky.core.excelTools.TableData;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.JobState;
 import com.eryansky.modules.sys.mapper.JobDetails;
 import com.eryansky.modules.sys.service.JobService;
@@ -44,6 +45,7 @@ public class JobController extends SimpleController {
 	 * @param response
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:view")
 	@RequestMapping(value={"getJobList",""})
 	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export,JobDetails model,
 							 Model uiModel, HttpServletRequest request, HttpServletResponse response) {
@@ -82,6 +84,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:edit")
 	@RequestMapping(value = "triggerJob")
 	@ResponseBody
 	public Result triggerJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
@@ -105,6 +108,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:edit")
 	@RequestMapping(value = "pauseJob")
 	@ResponseBody
 	public Result pauseJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
@@ -127,6 +131,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:edit")
 	@RequestMapping(value = "resumeJob")
 	@ResponseBody
 	public Result resumeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
@@ -149,6 +154,7 @@ public class JobController extends SimpleController {
 	 * @param cronExpression
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:edit")
 	@RequestMapping(value = "addJob")
 	@ResponseBody
 	public Result addJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
@@ -193,6 +199,7 @@ public class JobController extends SimpleController {
 	 * @param cronExpression
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:edit")
 	@RequestMapping(value = "rescheduleJob")
 	@ResponseBody
 	public Result rescheduleJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
@@ -226,6 +233,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
+	@RequiresPermissions("sys:job:edit")
 	@RequestMapping(value = "removeJob")
 	@ResponseBody
 	public Result removeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {

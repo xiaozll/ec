@@ -44,7 +44,7 @@ public class JobController extends SimpleController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="/getJobList")
+	@RequestMapping(value={"getJobList",""})
 	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export,JobDetails model,
 							 Model uiModel, HttpServletRequest request, HttpServletResponse response) {
 		Page<JobDetails> page = new Page<JobDetails>(request, response);
@@ -82,7 +82,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "/triggerJob")
+	@RequestMapping(value = "triggerJob")
 	@ResponseBody
 	public Result triggerJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -105,7 +105,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "/pauseJob")
+	@RequestMapping(value = "pauseJob")
 	@ResponseBody
 	public Result pauseJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -127,7 +127,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "/resumeJob")
+	@RequestMapping(value = "resumeJob")
 	@ResponseBody
 	public Result resumeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -149,7 +149,7 @@ public class JobController extends SimpleController {
 	 * @param cronExpression
 	 * @return
 	 */
-	@RequestMapping(value = "/addJob")
+	@RequestMapping(value = "addJob")
 	@ResponseBody
 	public Result addJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -193,7 +193,7 @@ public class JobController extends SimpleController {
 	 * @param cronExpression
 	 * @return
 	 */
-	@RequestMapping(value = "/rescheduleJob")
+	@RequestMapping(value = "rescheduleJob")
 	@ResponseBody
 	public Result rescheduleJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -226,7 +226,7 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "/removeJob")
+	@RequestMapping(value = "removeJob")
 	@ResponseBody
 	public Result removeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, String> returnData = new HashMap<String, String>();

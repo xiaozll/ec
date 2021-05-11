@@ -68,7 +68,11 @@ function initDatagrid() {
             handler: function () {
                 delAll()
             }
-        }]
+        }],
+        onLoadSuccess: function () {
+            $(this).datagrid('clearSelections');//取消所有的已选择项
+            $(this).datagrid('unselectAll');//取消全选按钮为全选状态
+        }
     }).datagrid("showTooltip");
 }
 

@@ -7,7 +7,7 @@
     <link href="${ctxStatic}/js/toastr/toastr.min.css" type="text/css" rel="stylesheet" />
     <script src="${ctxStatic}/js/toastr/toastr.min.js" type="text/javascript"></script>
     <!-- bootstrap条件框的收缩和展开 -->
-    <link rel="stylesheet" href="${ctxStatic}/app/modules/biz/css/bootstrap_query_fold.css">
+    <link rel="stylesheet" href="${ctxStatic}/app/modules/sys/css/bootstrap_query_fold.min.css">
     <script type="text/javascript">
         $(function(){
             loadData();

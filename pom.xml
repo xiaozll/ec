@@ -43,8 +43,8 @@
 
         <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
         <commons-pool2.version>2.9.0</commons-pool2.version>
-        <druid-version>1.2.5</druid-version>
-        <mariadb.driver.version>2.7.2</mariadb.driver.version>
+        <druid-version>1.2.6</druid-version>
+        <mariadb.driver.version>2.7.3</mariadb.driver.version>
         <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>
         <db2.driver.version>10.1</db2.driver.version>
         <oscar.driver.version>4.0.2</oscar.driver.version>
@@ -53,12 +53,12 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20210415.08</ec-common.version>
-        <ec-app-common.version>4.2.20210415.08</ec-app-common.version>
-        <ec-client-common.version>4.2.20210415.08</ec-client-common.version>
-        <ec-j2cache.version>4.2.20210415.08</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20210415.08</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20210415.08</ec-fastweixin.version>
+        <ec-common.version>4.2.20210415.09</ec-common.version>
+        <ec-app-common.version>4.2.20210415.09</ec-app-common.version>
+        <ec-client-common.version>4.2.20210415.09</ec-client-common.version>
+        <ec-j2cache.version>4.2.20210415.09</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20210415.09</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20210415.09</ec-fastweixin.version>
 
         <jackson.version>2.11.4</jackson.version>
         <swagger2.version>2.9.2</swagger2.version>

@@ -38,7 +38,7 @@
         <spring-integration-redis.version>5.4.7</spring-integration-redis.version>
         <logback.version>6.6</logback.version>
 
-        <tomcat.version>9.0.45</tomcat.version>
+        <tomcat.version>9.0.46</tomcat.version>
         <jstl.version>1.2</jstl.version>
 
         <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>

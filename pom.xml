@@ -34,8 +34,8 @@
         <java.version>1.8</java.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
-        <spring-boot.version>2.4.5</spring-boot.version>
-        <spring-integration-redis.version>5.4.4</spring-integration-redis.version>
+        <spring-boot.version>2.4.6</spring-boot.version>
+        <spring-integration-redis.version>5.4.7</spring-integration-redis.version>
         <logback.version>6.6</logback.version>
 
         <tomcat.version>9.0.45</tomcat.version>

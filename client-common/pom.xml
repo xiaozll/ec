@@ -32,7 +32,7 @@
         <repository>
             <id>jfit-nexus</id>
             <name>Team Nexus ReposiDtory</name>
-            <url>http://www.jfit.com.cn/nexus/repository/maven-public/</url>
+            <url>http:/www.eryansky.com/nexus/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -92,12 +92,12 @@
         <repository>
             <id>jfit-nexus-releases</id>
             <name>发布版本仓库</name>
-            <url>http://www.jfit.com.cn/nexus/repository/releases/</url>
+            <url>http:/www.eryansky.com/nexus/repository/releases/</url>
         </repository>
         <snapshotRepository>
             <id>jfit-nexus-snapshots</id>
             <name>快照版本仓库</name>
-            <url>http://www.jfit.com.cn/nexus/repository/snapshots/</url>
+            <url>http:/www.eryansky.com/nexus/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

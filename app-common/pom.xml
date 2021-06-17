@@ -34,7 +34,7 @@
 
     <repositories>
         <repository>
-            <id>jfit-nexus</id>
+            <id>nexus</id>
             <name>Team Nexus ReposiDtory</name>
             <url>http:/www.eryansky.com/nexus/repository/maven-public/</url>
         </repository>

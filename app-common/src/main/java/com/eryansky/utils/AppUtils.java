@@ -16,11 +16,12 @@ import com.eryansky.modules.sys._enum.YesOrNo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +31,8 @@ import java.util.regex.Pattern;
  * @date 2015-10-19 
  */
 public class AppUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppUtils.class);
 
     private static ServletContext servletContext;
 
@@ -497,6 +500,47 @@ public class AppUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public static String execCommand(String command){
+        Runtime runtime = Runtime.getRuntime();
+        String errorMSG = "";
+
+        try {
+            String[] args = new String[]{"cmd","/c",command};
+            //String[] args = new String[]{"sh","-?/c",command};
+
+            Process pro = runtime.exec(command);
+            //Process pro = runtime.exec("c://///////.exe");
+
+            InputStream in = pro.getErrorStream();
+            InputStreamReader isr = new InputStreamReader(in);
+
+            BufferedReader br = new BufferedReader(isr);
+
+            String line = null;
+
+            while ( (line = br.readLine()) != null){
+                errorMSG += line+"\n";
+                logger.error(errorMSG);
+            }
+
+            //检查命令是否失败
+            try {
+                if(pro.waitFor()!=0){
+                    logger.error("exit value:" + pro.exitValue());
+                }
+            } catch (InterruptedException e) {
+                logger.error(e.getMessage(),e);
+            }
+
+        } catch (IOException e) {
+            logger.error(e.getMessage(),e);
+        } finally{
+            return errorMSG;
+        }
+
     }
 
 }

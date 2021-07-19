@@ -16,6 +16,7 @@ import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Response;
@@ -100,6 +101,14 @@ public class ProxyController extends SimpleController {
             if (entity.getContentLength() > 0) {
                 response.setContentLength((int) entity.getContentLength());
             }
+            Header[] allHeaders = httpResponse.getAllHeaders();
+            if(null != allHeaders){
+                for(Header h:allHeaders){
+                    if("content-disposition".equalsIgnoreCase(h.getName())){
+                        response.setHeader(h.getName(),h.getValue());
+                    }
+                }
+            }
             // 输出内容
             InputStream input = entity.getContent();
             OutputStream output = response.getOutputStream();
@@ -168,6 +177,14 @@ public class ProxyController extends SimpleController {
             response.setContentType(entity.getContentType().getValue());
             if (entity.getContentLength() > 0) {
                 response.setContentLength((int) entity.getContentLength());
+            }
+            Header[] allHeaders = httpResponse.getAllHeaders();
+            if(null != allHeaders){
+                for(Header h:allHeaders){
+                    if("content-disposition".equalsIgnoreCase(h.getName())){
+                        response.setHeader(h.getName(),h.getValue());
+                    }
+                }
             }
             // 输出内容
             InputStream input = entity.getContent();

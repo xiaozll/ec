@@ -97,14 +97,16 @@ public class ProxyController extends SimpleController {
 
 
             // 设置Header
-            response.setContentType(entity.getContentType().getValue());
+            if(null != entity.getContentType()){
+                response.setContentType(entity.getContentType().getValue());
+            }
             if (entity.getContentLength() > 0) {
                 response.setContentLength((int) entity.getContentLength());
             }
             Header[] allHeaders = httpResponse.getAllHeaders();
             if(null != allHeaders){
                 for(Header h:allHeaders){
-                    if("content-disposition".equalsIgnoreCase(h.getName())){
+                    if("Content-Disposition".equalsIgnoreCase(h.getName())){
                         response.setHeader(h.getName(),h.getValue());
                     }
                 }
@@ -174,14 +176,16 @@ public class ProxyController extends SimpleController {
 
 
             // 设置Header
-            response.setContentType(entity.getContentType().getValue());
+            if(null != entity.getContentType()){
+                response.setContentType(entity.getContentType().getValue());
+            }
             if (entity.getContentLength() > 0) {
                 response.setContentLength((int) entity.getContentLength());
             }
             Header[] allHeaders = httpResponse.getAllHeaders();
             if(null != allHeaders){
                 for(Header h:allHeaders){
-                    if("content-disposition".equalsIgnoreCase(h.getName())){
+                    if("Content-Disposition".equalsIgnoreCase(h.getName())){
                         response.setHeader(h.getName(),h.getValue());
                     }
                 }

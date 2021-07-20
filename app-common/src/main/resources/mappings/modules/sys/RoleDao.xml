@@ -134,13 +134,13 @@
     </select>
 
 
-    <select id="findOrganRolesAndSystemRoles" resultType="Role">
+    <select id="findOrganRolesAndSystemNormalRoles" resultType="Role">
         SELECT
         <include refid="roleColumns"/>
         FROM t_sys_role a
         <where>
             a.status = '0'
-            AND (a.organ_id = #{organId} OR a.is_system = #{isSystem})
+            AND (a.organ_id = #{organId} OR (a.is_system = #{isSystem} AND a.role_type = #{roleType}))
         </where>
     </select>
 

@@ -24,7 +24,7 @@ public interface RoleDao extends CrudDao<Role> {
 
     List<Role> findRolesByIds(Parameter parameter);
 
-    List<Role> findOrganRolesAndSystemRoles(Parameter parameter);
+    List<Role> findOrganRolesAndSystemNormalRoles(Parameter parameter);
 
     Role getByCode(Parameter parameter);
 

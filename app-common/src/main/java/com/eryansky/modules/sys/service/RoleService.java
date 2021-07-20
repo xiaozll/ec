@@ -157,7 +157,7 @@ public class RoleService extends CrudService<RoleDao, Role> {
      * @param organId 机构ID
      * @return
      */
-    public List<Role> findOrganRolesAndSystemRoles(String organId) {
+    public List<Role> findOrganRolesAndSystemNormalRoles(String organId) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("organId", organId);

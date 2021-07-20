@@ -321,7 +321,7 @@ public class RoleController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String organId = sessionInfo.getLoginCompanyId();
 
-        List<Role> list = SecurityUtils.isCurrentUserAdmin() ? roleService.findAll() : roleService.findOrganRolesAndSystemRoles(organId);
+        List<Role> list = SecurityUtils.isCurrentUserAdmin() ? roleService.findAll() : roleService.findOrganRolesAndSystemNormalRoles(organId);
 
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);

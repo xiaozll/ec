@@ -54,8 +54,8 @@ public class AppErrorController extends AbstractErrorController {
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
-        Map<String, Object> errorData = Collections
-                .unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
+//        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
+        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
 
         logger.error(JsonMapper.toJsonString(errorData));
         ModelAndView modelAndView = null;

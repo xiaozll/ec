@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -49,17 +50,12 @@ public class AppErrorController extends AbstractErrorController {
     }
 
 
-    @Override
-    public String getErrorPath() {
-        return this.errorProperties.getPath();
-    }
-
     @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
         Map<String, Object> errorData = Collections
-                .unmodifiableMap(getErrorAttributes(request, isIncludeStackTrace(request, MediaType.TEXT_HTML)));
+                .unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
 
         logger.error(JsonMapper.toJsonString(errorData));
         ModelAndView modelAndView = null;
@@ -82,27 +78,10 @@ public class AppErrorController extends AbstractErrorController {
         if (status == HttpStatus.NO_CONTENT) {
             return new ResponseEntity<>(status);
         }
-        Map<String, Object> body = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));
+        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         return new ResponseEntity<>(body, status);
     }
 
-    /**
-     * Determine if the stacktrace attribute should be included.
-     *
-     * @param request  the source request
-     * @param produces the media type produced (or {@code MediaType.ALL})
-     * @return if the stacktrace attribute should be included
-     */
-    protected boolean isIncludeStackTrace(HttpServletRequest request, MediaType produces) {
-        ErrorProperties.IncludeStacktrace include = getErrorProperties().getIncludeStacktrace();
-        if (include == ErrorProperties.IncludeStacktrace.ALWAYS) {
-            return true;
-        }
-        if (include == ErrorProperties.IncludeStacktrace.ON_TRACE_PARAM) {
-            return getTraceParameter(request);
-        }
-        return false;
-    }
 
     /**
      * Provide access to the error properties.

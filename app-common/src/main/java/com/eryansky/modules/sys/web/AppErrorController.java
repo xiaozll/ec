@@ -78,7 +78,8 @@ public class AppErrorController extends AbstractErrorController {
         if (status == HttpStatus.NO_CONTENT) {
             return new ResponseEntity<>(status);
         }
-        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+//        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
+        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE));
         return new ResponseEntity<>(body, status);
     }
 

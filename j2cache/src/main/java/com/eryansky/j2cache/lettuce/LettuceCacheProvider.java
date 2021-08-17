@@ -124,8 +124,20 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
                     .enablePeriodicRefresh(Duration.ofMillis(clusterTopologyRefreshMs))
                     .build();
             ((RedisClusterClient)redisClient).setOptions(ClusterClientOptions.builder().topologyRefreshOptions(topologyRefreshOptions).build());
-        }
-        else {
+        }else if("redis-sentinel".equalsIgnoreCase(scheme)){
+            String[] hostArray = hosts.split(",");
+            RedisURI.Builder builder=RedisURI.builder();
+            if (password != null) {
+                builder.withPassword(password);
+            }
+            builder.withSentinelMasterId(sentinelMasterId);
+            builder.withDatabase(database);
+            for (String host : hostArray) {
+                String[] redisArray = host.split(":");
+                builder.withSentinel(redisArray[0],Integer.valueOf(redisArray[1]));
+            }
+            redisClient = RedisClient.create(builder.build());
+        }else {
             String[] redisArray = hosts.split(":");
             RedisURI uri = RedisURI.create(redisArray[0], Integer.valueOf(redisArray[1]));
             uri.setDatabase(database);

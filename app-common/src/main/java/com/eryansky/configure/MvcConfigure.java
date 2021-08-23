@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -63,7 +64,7 @@ public class MvcConfigure implements WebMvcConfigurer {
       AuthorityInterceptor authorityInterceptor = new AuthorityInterceptor();
       authorityInterceptor.setRedirectURL("/jump.jsp");
       registry.addInterceptor(authorityInterceptor).addPathPatterns("/**")
-              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/static/**","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**"))
+              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**"))
               .order(Ordered.HIGHEST_PRECEDENCE + 200);
       registry.addInterceptor(new MobileInterceptor())
               .addPathPatterns("/**")
@@ -84,21 +85,7 @@ public class MvcConfigure implements WebMvcConfigurer {
 //              .maxAge(3600);
    }
 
-   private CorsConfiguration buildConfig() {
-      CorsConfiguration corsConfiguration = new CorsConfiguration();
-      corsConfiguration.setAllowedOriginPatterns(Collections.singletonList(CorsConfiguration.ALL));
-      corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
-      corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
-      corsConfiguration.setAllowCredentials(true);
-      return corsConfiguration;
-   }
 
-   @Bean
-   public CorsFilter corsFilter() {
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      source.registerCorsConfiguration("/**", buildConfig());
-      return new CorsFilter(source);
-   }
 
 
    /**

@@ -9,6 +9,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Collections;
 
 
 /**
@@ -95,6 +100,32 @@ public class FilterConfiguration {
     @Bean
     public ExceptionInterceptor exceptionInterceptor() {
         ExceptionInterceptor bean = new ExceptionInterceptor();
+        return bean;
+    }
+
+
+    private CorsConfiguration buildConfig() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOriginPatterns(Collections.singletonList(CorsConfiguration.ALL));
+        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+        corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+        corsConfiguration.setAllowCredentials(true);
+        return corsConfiguration;
+    }
+
+
+    /**
+     * 跨域配置
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", buildConfig());
+        CorsFilter filter = new CorsFilter(source);
+        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(filter);
+        bean.setFilter(filter);
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 25);
         return bean;
     }
 

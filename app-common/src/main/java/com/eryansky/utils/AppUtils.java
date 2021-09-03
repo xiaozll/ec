@@ -7,6 +7,7 @@ package com.eryansky.utils;
 
 import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.orm._enum.StatusState;
+import com.eryansky.common.utils.ObjectUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
@@ -117,7 +118,7 @@ public class AppUtils {
             try {
                 while (ite.hasNext()) {
                     Map.Entry<String, Object> entry = (Map.Entry<String, Object>) ite.next();
-                    paras.append(entry.getKey()).append(EQUAL_SIGN).append(StringUtils.utf8Encode((String) entry.getValue()));
+                    paras.append(entry.getKey()).append(EQUAL_SIGN).append(entry.getValue() instanceof String[] ? StringUtils.utf8Encode(StringUtils.join((String[]) entry.getValue())):StringUtils.utf8Encode((String) entry.getValue()));
                     if (ite.hasNext()) {
                         paras.append(PARAMETERS_SEPARATOR);
                     }

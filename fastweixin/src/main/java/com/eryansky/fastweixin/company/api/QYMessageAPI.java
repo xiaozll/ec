@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.company.api;
 import com.eryansky.fastweixin.api.response.BaseResponse;
 import com.eryansky.fastweixin.company.api.config.QYAPIConfig;
 import com.eryansky.fastweixin.company.api.response.GetQYSendMessageResponse;
-import com.eryansky.fastweixin.company.message.QYBaseMsg;
+import com.eryansky.fastweixin.company.message.*;
 import com.eryansky.fastweixin.util.JSONUtil;
 
 /**

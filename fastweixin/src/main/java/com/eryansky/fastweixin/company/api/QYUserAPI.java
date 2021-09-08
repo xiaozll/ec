@@ -2,6 +2,7 @@ package com.eryansky.fastweixin.company.api;
 
 import com.eryansky.fastweixin.api.response.BaseResponse;
 import com.eryansky.fastweixin.company.api.config.QYAPIConfig;
+import com.eryansky.fastweixin.company.api.entity.QYUserOpen;
 import com.eryansky.fastweixin.company.api.response.GetQYUserInfoResponse;
 import com.eryansky.fastweixin.company.api.response.GetQYUserInviteResponse;
 import com.eryansky.fastweixin.util.JSONUtil;
@@ -161,6 +162,23 @@ public class QYUserAPI extends QYBaseAPI {
         BaseResponse r = executeGet(url);
         String jsonResult = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
         response = JSONUtil.toBean(jsonResult, GetOauthUserInfoResponse.class);
+        return response;
+    }
+
+
+    /**
+     * userid与openid互换
+     * @param userid
+     * @return
+     */
+    public QYUserOpen convertToOpenId(String userid) {
+        BeanUtil.requireNonNull(userid, "userid is null");
+        String url = BASE_API_URL + "cgi-bin/user/convert_to_openid?access_token=#";
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("userid", userid);
+        BaseResponse r = executePost(url, JSONUtil.toJson(params));
+        String resultJson = this.isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
+        QYUserOpen response = JSONUtil.toBean(resultJson, QYUserOpen.class);
         return response;
     }
 }

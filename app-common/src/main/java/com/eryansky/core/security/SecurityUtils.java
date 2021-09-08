@@ -11,6 +11,7 @@ import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
@@ -47,6 +48,8 @@ import java.util.stream.Collectors;
 public class SecurityUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
+
+
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -415,7 +418,7 @@ public class SecurityUtils {
 
         initPermission(sessionInfo);
 
-        Static.applicationSessionContext.addSession(sessionInfo);
+        refreshSessionInfo(sessionInfo);
 //        Static.applicationSessionContext.addServletSession(sessionInfo.getSessionId(),session);
         request.getSession().setAttribute("loginUser", sessionInfo.getName() + "[" + sessionInfo.getLoginName() + "]");
         return sessionInfo;
@@ -440,7 +443,7 @@ public class SecurityUtils {
 
         initPermission(sessionInfo);
 
-        Static.applicationSessionContext.addSession(sessionInfo);
+        refreshSessionInfo(sessionInfo);
 //        HttpSession session = Static.applicationSessionContext.getServletSession(sessionId);
 //        if(null != session){
 //            Static.applicationSessionContext.addServletSession(sessionInfo.getSessionId(),session);
@@ -519,6 +522,7 @@ public class SecurityUtils {
      */
     public static SessionInfo getCurrentSessionInfo() {
         SessionInfo sessionInfo = null;
+        boolean syncSession = false;
         try {
             HttpServletRequest request = null;
             try {
@@ -529,6 +533,7 @@ public class SecurityUtils {
             if (null == request) {
                 return null;
             }
+
             HttpSession session = null;
             try {
                 session = request.getSession();
@@ -538,14 +543,21 @@ public class SecurityUtils {
             if (null == session) {
                 return null;
             }
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session), session.getId());
+            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session));
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
                 if(StringUtils.isBlank(token)){
                     token = request.getParameter("Authorization");
+                    syncSession = true;
                 }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
+                    //更新真实的SessionID
+                    if (syncSession && sessionInfo != null && session.getId() != null && !sessionInfo.getSessionId().equals(session.getId())) {
+                        sessionInfo.setId(session.getId());
+                        sessionInfo.setSessionId(session.getId());
+                        refreshSessionInfo(sessionInfo);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -553,7 +565,8 @@ public class SecurityUtils {
         } finally {
             if (null != sessionInfo) {
                 sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
-                Static.applicationSessionContext.addSession(sessionInfo);
+                refreshSessionInfo(sessionInfo);
+
             }
         }
 
@@ -565,6 +578,7 @@ public class SecurityUtils {
      */
     public static SessionInfo getCurrentSessionInfo(HttpServletRequest request) {
         SessionInfo sessionInfo = null;
+        boolean syncSession = false;
         try {
             if (null == request) {
                 return null;
@@ -573,14 +587,21 @@ public class SecurityUtils {
             if (null == session) {
                 return null;
             }
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session), session.getId());
+            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session));
             if (sessionInfo == null) {
-                String token = SpringMVCHolder.getRequest().getHeader("Authorization");
+                String token = request.getHeader("Authorization");
                 if(StringUtils.isBlank(token)){
-                    token = SpringMVCHolder.getRequest().getParameter("Authorization");
+                    token = request.getParameter("Authorization");
+                    syncSession = true;
                 }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
+                    //更新真实的SessionID
+                    if (syncSession && sessionInfo != null && session.getId() != null && !sessionInfo.getSessionId().equals(session.getId())) {
+                        sessionInfo.setId(session.getId());
+                        sessionInfo.setSessionId(session.getId());
+                        refreshSessionInfo(sessionInfo);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -588,7 +609,7 @@ public class SecurityUtils {
         } finally {
             if (null != sessionInfo) {
                 sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
-                Static.applicationSessionContext.addSession(sessionInfo);
+                refreshSessionInfo(sessionInfo);
             }
         }
         return sessionInfo;
@@ -838,25 +859,8 @@ public class SecurityUtils {
      * @return
      */
     public static SessionInfo getSessionInfo(String id) {
-        return getSessionInfo(id, null);
+        return Static.applicationSessionContext.getSession(id);
     }
-
-    /**
-     * 根据SessionId查找对应的SessionInfo信息
-     * @param id
-     * @param sessionId
-     * @return
-     */
-    public static SessionInfo getSessionInfo(String id, String sessionId) {
-        SessionInfo sessionInfo = Static.applicationSessionContext.getSession(id);
-        //更新真实的SessionID
-        if (sessionInfo != null && sessionId != null && !sessionInfo.getSessionId().equals(sessionId)) {
-            sessionInfo.setSessionId(sessionId);
-            Static.applicationSessionContext.addSession(sessionInfo);
-        }
-        return sessionInfo;
-    }
-
 
     public static boolean isMobileLogin() {
         SessionInfo sessionInfo = getCurrentSessionInfo();

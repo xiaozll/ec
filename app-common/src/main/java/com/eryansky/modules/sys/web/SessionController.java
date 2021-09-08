@@ -9,6 +9,7 @@ import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
@@ -110,4 +111,29 @@ public class SessionController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getSessionInfo(id);
         return Result.successResult().setObj(sessionInfo);
     }
+
+    /**
+     * 根据token同步sessionid
+     *
+     * @param token
+     * @param sessionId
+     * @param request
+     * @return
+     */
+    @Logging(value = "同步Token到Session",logType = LogType.access)
+    @RequestMapping(value = {"syncTokenToSession"})
+    @ResponseBody
+    public Result syncTokenToSession(String token,String sessionId,HttpServletRequest request) {
+        SessionInfo sessionInfo = SecurityUtils.getSessionInfoByToken(token);
+        String _sessionId = StringUtils.isNotBlank(sessionId) ? sessionId:request.getSession().getId();
+        //更新真实的SessionID
+        if (sessionInfo != null && _sessionId != null && !sessionInfo.getSessionId().equals(_sessionId)) {
+            sessionInfo.setId(_sessionId);
+            sessionInfo.setSessionId(_sessionId);
+            SecurityUtils.refreshSessionInfo(sessionInfo);
+        }
+        return Result.successResult().setData(sessionInfo);
+    }
+
+
 }

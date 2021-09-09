@@ -2,15 +2,11 @@ package com.eryansky.fastweixin.company.api;
 
 import com.eryansky.fastweixin.api.response.BaseResponse;
 import com.eryansky.fastweixin.company.api.config.QYAPIConfig;
-import com.eryansky.fastweixin.company.api.entity.QYUserOpen;
-import com.eryansky.fastweixin.company.api.response.GetQYUserInfoResponse;
-import com.eryansky.fastweixin.company.api.response.GetQYUserInviteResponse;
+import com.eryansky.fastweixin.company.api.response.*;
 import com.eryansky.fastweixin.util.JSONUtil;
 import com.eryansky.fastweixin.util.StrUtil;
 import com.eryansky.fastweixin.company.api.entity.QYUser;
 import com.eryansky.fastweixin.company.api.enums.QYResultType;
-import com.eryansky.fastweixin.company.api.response.GetOauthUserInfoResponse;
-import com.eryansky.fastweixin.company.api.response.GetQYUserInfo4DepartmentResponse;
 import com.eryansky.fastweixin.util.BeanUtil;
 
 import java.util.HashMap;
@@ -101,12 +97,11 @@ public class QYUserAPI extends QYBaseAPI {
      * 通过部门列表获取部门成员摘要。仅包含userid与name
      * @param departmentId 部门ID
      * @param isLoop 是否递归获取子部门下面的成员
-     * @param status 0获取全部成员，1获取已关注成员列表，2获取禁用成员列表，4获取未关注成员列表。status可叠加，未填写则默认为4
      * @return 部门成员
      */
-    public GetQYUserInfo4DepartmentResponse simpleList(Integer departmentId, boolean isLoop, Integer status){
+    public GetQYUserInfo4DepartmentResponse simpleList(Integer departmentId, boolean isLoop){
         GetQYUserInfo4DepartmentResponse response;
-        String url = BASE_API_URL + "cgi-bin/user/simplelist?access_token=#&department_id=" + departmentId + "&fetch_child=" + (isLoop? 0 : 1) + "&status=" + status;
+        String url = BASE_API_URL + "cgi-bin/user/simplelist?access_token=#&department_id=" + departmentId + "&fetch_child=" + (isLoop? 1 : 0);
         BaseResponse r = executeGet(url);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
         response = JSONUtil.toBean(resultJson, GetQYUserInfo4DepartmentResponse.class);
@@ -117,12 +112,11 @@ public class QYUserAPI extends QYBaseAPI {
      * 通过部门列表获取部门成员信息
      * @param departmentId 部门ID
      * @param isLoop 是否递归获取子部门下面的成员
-     * @param status 0获取全部成员，1获取已关注成员列表，2获取禁用成员列表，4获取未关注成员列表。status可叠加，未填写则默认为4
      * @return 部门成员详情信息
      */
-    public GetQYUserInfo4DepartmentResponse getList(Integer departmentId, boolean isLoop, Integer status){
+    public GetQYUserInfo4DepartmentResponse getList(Integer departmentId, boolean isLoop){
         GetQYUserInfo4DepartmentResponse response;
-        String url = BASE_API_URL + "cgi-bin/user/list?access_token=#&department_id=" + departmentId + "&fetch_child=" + (isLoop? 0 : 1) + "&status=" + status;
+        String url = BASE_API_URL + "cgi-bin/user/list?access_token=#&department_id=" + departmentId + "&fetch_child=" + (isLoop? 1 : 0);
         BaseResponse r = executeGet(url);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
         response = JSONUtil.toBean(resultJson, GetQYUserInfo4DepartmentResponse.class);
@@ -171,14 +165,14 @@ public class QYUserAPI extends QYBaseAPI {
      * @param userid
      * @return
      */
-    public QYUserOpen convertToOpenId(String userid) {
+    public GetUserConvertToOpenidResponse convertToOpenId(String userid) {
         BeanUtil.requireNonNull(userid, "userid is null");
         String url = BASE_API_URL + "cgi-bin/user/convert_to_openid?access_token=#";
         final Map<String, String> params = new HashMap<String, String>();
         params.put("userid", userid);
         BaseResponse r = executePost(url, JSONUtil.toJson(params));
         String resultJson = this.isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
-        QYUserOpen response = JSONUtil.toBean(resultJson, QYUserOpen.class);
+        GetUserConvertToOpenidResponse response = JSONUtil.toBean(resultJson, GetUserConvertToOpenidResponse.class);
         return response;
     }
 }

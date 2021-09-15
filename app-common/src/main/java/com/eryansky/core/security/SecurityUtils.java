@@ -522,7 +522,6 @@ public class SecurityUtils {
      */
     public static SessionInfo getCurrentSessionInfo() {
         SessionInfo sessionInfo = null;
-        boolean syncSession = false;
         try {
             HttpServletRequest request = null;
             try {
@@ -546,18 +545,8 @@ public class SecurityUtils {
             sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session));
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
-                if(StringUtils.isBlank(token)){
-                    token = request.getParameter("Authorization");
-                    syncSession = true;
-                }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
-                    //更新真实的SessionID
-                    if (syncSession && sessionInfo != null && session.getId() != null && !sessionInfo.getSessionId().equals(session.getId())) {
-                        sessionInfo.setId(session.getId());
-                        sessionInfo.setSessionId(session.getId());
-                        refreshSessionInfo(sessionInfo);
-                    }
                 }
             }
         } catch (Exception e) {
@@ -578,7 +567,6 @@ public class SecurityUtils {
      */
     public static SessionInfo getCurrentSessionInfo(HttpServletRequest request) {
         SessionInfo sessionInfo = null;
-        boolean syncSession = false;
         try {
             if (null == request) {
                 return null;
@@ -590,18 +578,8 @@ public class SecurityUtils {
             sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session));
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
-                if(StringUtils.isBlank(token)){
-                    token = request.getParameter("Authorization");
-                    syncSession = true;
-                }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
-                    //更新真实的SessionID
-                    if (syncSession && sessionInfo != null && session.getId() != null && !sessionInfo.getSessionId().equals(session.getId())) {
-                        sessionInfo.setId(session.getId());
-                        sessionInfo.setSessionId(session.getId());
-                        refreshSessionInfo(sessionInfo);
-                    }
                 }
             }
         } catch (Exception e) {

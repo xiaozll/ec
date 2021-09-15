@@ -3,6 +3,7 @@ package com.eryansky.configure;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
+import com.eryansky.core.security.interceptor.AuthorityOauth2Interceptor;
 import com.eryansky.core.web.interceptor.LogInterceptor;
 import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
@@ -61,11 +62,19 @@ public class MvcConfigure implements WebMvcConfigurer {
               .addPathPatterns("/**")
               .excludePathPatterns("/static/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 100);
+
+      registry.addInterceptor(new AuthorityOauth2Interceptor()).addPathPatterns("/**")
+              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**"))
+              .order(Ordered.HIGHEST_PRECEDENCE + 195);
+
       AuthorityInterceptor authorityInterceptor = new AuthorityInterceptor();
       authorityInterceptor.setRedirectURL("/jump.jsp");
       registry.addInterceptor(authorityInterceptor).addPathPatterns("/**")
               .excludePathPatterns(Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**"))
               .order(Ordered.HIGHEST_PRECEDENCE + 200);
+
+
+
       registry.addInterceptor(new MobileInterceptor())
               .addPathPatterns("/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 300);

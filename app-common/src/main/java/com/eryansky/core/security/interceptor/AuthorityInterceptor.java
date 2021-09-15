@@ -46,8 +46,8 @@ public class AuthorityInterceptor implements AsyncHandlerInterceptor {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String ATTR_SESSIONINFO = "sessionInfo";
-    private static final String ATTR_AUTHORIZATION = "Authorization";
+    public static final String ATTR_SESSIONINFO = "sessionInfo";
+    public static final String ATTR_AUTHORIZATION = "Authorization";
 
 
     /**

@@ -1,6 +1,6 @@
 /*!
  * 包含easyui的扩展和常用的jQuery方法扩展.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author 尔演&Eryan
  * @version 2013-05-26
  */
 
@@ -474,7 +474,7 @@ $.extend($.fn.tabs.methods, {
 /**
  * 使panel和datagrid在加载时提示
  * 
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author 尔演@Eryan
  * 
  * @requires jQuery,EasyUI
  * 
@@ -591,7 +591,7 @@ $.fn.window.defaults.onMove = easyuiPanelOnMove;
 $.fn.panel.defaults.onMove = easyuiPanelOnMove;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author 尔演@Eryan
  * 
  * @requires jQuery,EasyUI
  * 

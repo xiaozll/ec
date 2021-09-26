@@ -12,8 +12,8 @@
     <link rel="shortcut icon" href="${ctxStatic}/img/favicon.ico"/>
 
     <%-- 引入jQuery --%>
-    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.10.2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.2.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.12.4.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.4.1.min.js" charset="utf-8"></script>
     <link href="${ctxStatic}/js/toastr/toastr.min.css" type="text/css" rel="stylesheet" />
     <script src="${ctxStatic}/js/toastr/toastr.min.js" type="text/javascript"></script>
     <script type="text/javascript">

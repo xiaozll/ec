@@ -5,8 +5,11 @@
  */
 package com.eryansky.common.mail.receiver;
 
+import com.eryansky.common.orm.mybatis.MapperLoader;
 import com.sun.mail.pop3.POP3Folder;
 import com.sun.mail.pop3.POP3Store;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.Flags.Flag;
@@ -20,6 +23,9 @@ import javax.mail.search.FlagTerm;
  * @date 2015-09-14
  */
 public class POP3Receiver extends Receiver {
+
+	private static Logger logger = LoggerFactory.getLogger(POP3Receiver.class);
+
 	private POP3Store store;
 
 	private POP3Folder folder;
@@ -41,7 +47,8 @@ public class POP3Receiver extends Receiver {
 			// 打开文件夹对象
 			flag = this.switchFolder(mode);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			flag = false;
 			this.close();
 		}

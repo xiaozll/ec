@@ -8,6 +8,8 @@ package com.eryansky.common.mail.receiver;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.Flags.Flag;
@@ -21,6 +23,9 @@ import javax.mail.search.FlagTerm;
  * @date 2015-09-14
  */
 public class IMAPReceiver extends Receiver {
+
+	private static Logger logger = LoggerFactory.getLogger(IMAPReceiver.class);
+
 	private IMAPStore store;
 	private IMAPFolder folder;
 
@@ -43,7 +48,8 @@ public class IMAPReceiver extends Receiver {
 			// 打开文件夹对象
 			flag = this.switchFolder(mode);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			flag = false;
 			this.close();
 		}

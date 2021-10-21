@@ -16,6 +16,8 @@
 package com.eryansky.j2cache;
 
 import jline.console.ConsoleReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
  * @author Winter Lau(javayou@gmail.com)
  */
 public class J2CacheCmd {
+
+	private static Logger logger = LoggerFactory.getLogger(J2CacheCmd.class);
 
 	private static long TTL = 0;
 
@@ -122,11 +126,11 @@ public class J2CacheCmd {
 				}
 			}
 			catch(ArrayIndexOutOfBoundsException e) {
-				System.out.println("Wrong arguments.");
+				logger.info("Wrong arguments.");
 				printHelp();
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 		}while(true);
 

@@ -62,7 +62,8 @@ public class ExcelUtils {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			mLogger.error(e.getMessage(),e);
 		}
 		return params;
 	}
@@ -194,13 +195,14 @@ public class ExcelUtils {
 			response.setHeader("Content-Disposition", "attachment;filename="
 					.concat(String.valueOf(URLEncoder.encode(zipName + ".zip", "UTF-8"))));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			mLogger.error(e.getMessage(),e);
 		}
 		OutputStream os = null;
 		try {
 			os = response.getOutputStream();
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			mLogger.error(e.getMessage(),e);
 		}
 		return new ZipOutputStream(os);
 	}
@@ -694,7 +696,7 @@ public class ExcelUtils {
 				bool = true;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			mLogger.error(e.getMessage(),e);
 		}finally {
 			if(null != fis){
 				try {
@@ -773,6 +775,7 @@ public class ExcelUtils {
 			Double d = (Double) engine.eval(ex);
 			return d;
 		} catch (ScriptException e) {
+			mLogger.error(e.getMessage());
 			return null;
 		}
 	}
@@ -1702,15 +1705,15 @@ public class ExcelUtils {
 							cell.setCellValue(StringUtils.EMPTY);
 						}
 					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
+						mLogger.error(e.getMessage(),e);
 					} catch (SecurityException e) {
-						e.printStackTrace();
+						mLogger.error(e.getMessage(),e);
 					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+						mLogger.error(e.getMessage(),e);
 					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
+						mLogger.error(e.getMessage(),e);
 					} catch (InvocationTargetException e) {
-						e.printStackTrace();
+						mLogger.error(e.getMessage(),e);
 					}
 
 				}
@@ -1749,7 +1752,7 @@ public class ExcelUtils {
 			toClient.flush();
 			toClient.close();
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			mLogger.error(ex.getMessage(),ex);
 		}
 	}
 

@@ -654,7 +654,7 @@ public class DiskUtils {
             is = new BufferedInputStream(inputStream);
             IOUtils.copy(is, os);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             IOUtils.closeQuietly(is);
         }

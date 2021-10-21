@@ -67,7 +67,6 @@ public class MailUtils {
 			try {
 				// 判断是邮件内容实体是否是复合式
 				Object content = message.getContent();
-				System.out.println(content);
 				if (content instanceof MimeMultipart) {
 					parts = (MimeMultipart) message.getContent();
 					result.setContent(parseMailContent(parts));
@@ -93,9 +92,6 @@ public class MailUtils {
 			for (int i = 0; i < parts.getCount(); ++i) {
 				MimeBodyPart part = (MimeBodyPart) parts.getBodyPart(i);
 				String disposition = part.getDisposition();
-				
-				System.out.println(part.getContent());
-
 				if (!MimeBodyPart.ATTACHMENT.equals(disposition) && part instanceof MimeBodyPart) {
 					if (part.getContent() instanceof MimeMultipart) {
 						return parseMailContent((MimeMultipart) part

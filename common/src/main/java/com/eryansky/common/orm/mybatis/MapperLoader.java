@@ -87,9 +87,9 @@ public class MapperLoader implements DisposableBean, InitializingBean, Applicati
 		@Override
 		public void run() {
 			try { if (scanner.isChanged()) {
-					System.out.println("*Mapper.xml文件改变,重新加载.");
+					logger.info("*Mapper.xml文件改变,重新加载.");
 					scanner.reloadXML();
-					System.out.println("加载完毕.");
+					logger.info("加载完毕.");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

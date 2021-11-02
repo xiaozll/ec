@@ -59,7 +59,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         if(null != loginName){
             sb.append(loginName).append(",");
         }
-        sb.append("发生异常:");
+        sb.append("访问出现异常:");
         if("ClientAbortException".equals(ex.getClass().getSimpleName())){
             return null;
         }
@@ -70,7 +70,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         //空指针异常
         else if(Exceptions.isCausedBy(ex, NullPointerException.class)){
-            sb.append("空指针异常，请联系管理员！");
+            sb.append("空指针异常，请刷新后重试或者联系管理员！");
 //            sb.append("空指针异常！");
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
@@ -98,7 +98,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }else{
-                sb.append("未知异常，请联系管理员！");
+                sb.append("未知异常，请刷新后重试或者联系管理员！");
             }
         }
         if(isWarn){

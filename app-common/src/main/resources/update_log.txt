@@ -1,5 +1,6 @@
 ﻿20211103
 1、增加内部应用单点登录跳转
+SSORedirctController
 
 20211012-4.2.20210924.04
 1、升级My97DatePicker 4.8.5

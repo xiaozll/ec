@@ -43,7 +43,7 @@ public class SSORedirctController extends SimpleController {
         if (StringUtils.isNotBlank(param)) {
             url += "?" + param;
         }
-        url += (StringUtils.containsAny(requestUrl, "?") ? "&" : "?") + AuthorityInterceptor.ATTR_AUTHORIZATION + "=" + "Bearer " + sessionInfo.getToken();
+        url += (StringUtils.containsAny(url, "?") ? "&" : "?") + AuthorityInterceptor.ATTR_AUTHORIZATION + "=" + "Bearer " + sessionInfo.getToken();
         return "redirect:"+ url;
     }
 

@@ -47,6 +47,9 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
         }
         //自动登录
         String authorization = request.getParameter(AuthorityInterceptor.ATTR_AUTHORIZATION);
+        if(StringUtils.isBlank(authorization)){
+            authorization = request.getHeader("Authorization");
+        }
         if(StringUtils.isNotBlank(authorization)){
             boolean verify = false;
             String token = StringUtils.replaceOnce(authorization, "Bearer ", "");

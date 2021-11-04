@@ -8,16 +8,19 @@ package com.eryansky.core.security.interceptor;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 
@@ -40,11 +43,25 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        //登录用户
+        //已登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if(null != sessionInfo){
             return true;
         }
+        //注解处理 满足设置不拦截
+        HandlerMethod handler = null;
+        try {
+            handler = (HandlerMethod) o;
+            Object bean = handler.getBean();
+            PrepareOauth2 prepareOauth2Method = handler.getMethodAnnotation(PrepareOauth2.class);
+            PrepareOauth2 prepareOauth2Class = this.getAnnotation(bean.getClass(), PrepareOauth2.class);
+            if ((prepareOauth2Method != null && !prepareOauth2Method.enable()) || (prepareOauth2Class != null && !prepareOauth2Class.enable())) {
+                return true;
+            }
+        } catch (ClassCastException e) {
+            logger.error(e.getMessage());
+        }
+
         //自动登录
         String authorization = request.getParameter(AuthorityInterceptor.ATTR_AUTHORIZATION);
         if(StringUtils.isBlank(authorization)){
@@ -95,6 +112,20 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
     public AuthorityOauth2Interceptor addExcludeUrl(String excludeUrl) {
         this.excludeUrls.add(excludeUrl);
         return this;
+    }
+
+    private <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> annotationType) {
+        T result = clazz.getAnnotation(annotationType);
+        if (result == null) {
+            Class<?> superclass = clazz.getSuperclass();
+            if (superclass != null) {
+                return getAnnotation(superclass, annotationType);
+            } else {
+                return null;
+            }
+        } else {
+            return result;
+        }
     }
 
 }

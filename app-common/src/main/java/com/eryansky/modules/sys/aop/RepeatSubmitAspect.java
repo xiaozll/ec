@@ -63,7 +63,7 @@ public class RepeatSubmitAspect {
             return result;
         } else {
             // 获取锁失败，认为是重复提交的请求。
-            Result result = Result.errorResult().setMsg("重复请求，请稍后再试!").setData(key);
+            Result result = Result.errorResult().setMsg("操作过于频繁，请稍后再试！").setData(key);
             logger.warn(result.toString());
             return result;
         }

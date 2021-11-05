@@ -41,8 +41,6 @@ public class SystemAspect implements InitializingBean, DisposableBean {
 
     @Autowired
     private SystemService systemService;
-    @Autowired
-    private UserPasswordService userPasswordService;
 
     /**
      * 同步到扩展机构表

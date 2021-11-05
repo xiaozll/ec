@@ -21,10 +21,10 @@ public @interface NoRepeatSubmit {
      *
      * @return
      */
-    String region() default "lock_no_repeat_submit";
+    String region() default "lock_no_repeat_submit_default";
 
     /*
-     * 设置请求锁定时间(武侠片配置请在缓存中配置caffeine.properties) 单位：秒
+     * 设置请求锁定时间(无效配置，请在缓存中配置caffeine.properties) 单位：秒
      * @return
      */
     @Deprecated

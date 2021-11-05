@@ -1,6 +1,8 @@
 ﻿20211105
 1、增加防重复提交支持
-在Controller返回值为Result的方法上增加注解@NoRepeatSubmit
+在Controller的方法上增加注解@NoRepeatSubmit（返回值为Result）
+2、API访问频率限制
+在Controller的方法上增加注解@LimitApi（返回值为Result）
 
 20211103
 1、增加内部应用单点登录跳转

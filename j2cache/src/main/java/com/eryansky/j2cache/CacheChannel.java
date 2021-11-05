@@ -38,9 +38,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	private final Logger logger = LoggerFactory.getLogger(CacheChannel.class);
 
 	private static final Map<String, Object> _g_keyLocks = new ConcurrentHashMap<>();
-	private J2CacheConfig config;
-	private CacheProviderHolder holder;
-    private boolean defaultCacheNullObject ;
+	private final J2CacheConfig config;
+	private final CacheProviderHolder holder;
+    private final boolean defaultCacheNullObject ;
 	private boolean closed;
 	private static final Map<String, LinkedBlockingQueue<String>> mQueueMap = new ConcurrentHashMap<>();
 	private static final Map<String, ReentrantLock> mLockMap = new ConcurrentHashMap<>();
@@ -1036,6 +1036,20 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			}
 			return lockCallback.handleNotObtainLock();
 		}
+	}
+
+
+	/**
+	 * 尝试锁
+	 * @param region 锁对象
+	 * @param key
+	 * @return
+	 * @throws LockInsideExecutedException
+	 * @throws LockCantObtainException
+	 */
+	public boolean  tryLock(String region, String key) throws LockInsideExecutedException, LockCantObtainException {
+		CacheObject cacheObject = get(region,key);
+		return null == cacheObject || null == cacheObject.getValue();
 	}
 
 }

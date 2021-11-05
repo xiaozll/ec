@@ -66,4 +66,8 @@
     <cache name="sysCache" maxEntriesLocalHeap="1000" eternal="false" overflowToDisk="true">
     </cache>
 
+    <!-- 防重复提交默认配置-->
+    <cache name="lock_no_repeat_submit_default" maxEntriesLocalHeap="10000" eternal="false" overflowToDisk="true" timeToIdleSeconds="5" timeToLiveSeconds="5">
+    </cache>
+
 </ehcache>

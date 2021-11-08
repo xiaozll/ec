@@ -75,7 +75,7 @@ public class LimitAspect {
             if (l > 0) {
                 cacheChannel.set(limitApi.region(), key.toString(), --l);
             } else {
-                Result result = Result.errorApiResult().setMsg("接口访问频率限制！");
+                Result result = Result.errorApiResult().setMsg("接口访问频率限制！").setObj(key);
                 log.warn(result.toString());
                 return result;
             }

@@ -68,6 +68,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
             authorization = request.getHeader("Authorization");
         }
         if(StringUtils.isNotBlank(authorization)){
+            String requestUrl = request.getRequestURI();
             boolean verify = false;
             String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
             String loginName = null;
@@ -75,13 +76,13 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 loginName = JWTUtils.getUsername(token);
                 verify = JWTUtils.verify(token,loginName,loginName);
             } catch (Exception e) {
-                logger.error("{},{},Token校验失败,{}", token,loginName,e.getMessage());
+                logger.error("{},Token校验失败,{},{}",loginName,requestUrl, token,e.getMessage());
             }
             if(verify){
                 SecurityUtils.putUserToSession(request, UserUtils.getUserByLoginName(loginName));
-                logger.warn("header|Authorization:{},自动登录成功",loginName);
+                logger.warn("{},自动登录成功,{}",loginName,requestUrl);
             }else{
-                logger.warn("header|Authorization:{},自动登录失败",authorization);
+                logger.warn("自动登录失败,{}",authorization);
             }
         }
         return true;

@@ -72,6 +72,7 @@ public class LoginController extends SimpleController {
      *
      * @return
      */
+    @PrepareOauth2(enable = false)
     @Mobile(value = MobileValue.ALL)
     @RequiresUser(required = false)
     @RequestMapping(value = {"welcome", ""})
@@ -225,6 +226,7 @@ public class LoginController extends SimpleController {
      * @param request
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequestMapping(value = {"logout"}, method = RequestMethod.POST)
     @ResponseBody
     public Result postlogout(HttpServletRequest request) {
@@ -246,6 +248,7 @@ public class LoginController extends SimpleController {
      * @param request
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequestMapping(value = {"logout"}, method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -268,6 +271,7 @@ public class LoginController extends SimpleController {
      * @param uiModel
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = {"autoLogin"})

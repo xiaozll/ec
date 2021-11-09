@@ -21,7 +21,7 @@ public @interface LimitApi {
 	 *
 	 * @return
 	 */
-	String region() default "lock_limit_key_default";
+	String region() default "lock_limit_key_timeout_default";
 
 	/**
 	 * 访问次数

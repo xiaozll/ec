@@ -81,7 +81,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
             }
             if (verify) {
                 SecurityUtils.putUserToSession(request, UserUtils.getUserByLoginName(loginName));
-                logger.warn("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
+                logger.info("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
             } else {
 //                logger.warn("自动登录失败,{}",authorization);
             }

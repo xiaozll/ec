@@ -9,8 +9,11 @@ import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.eryansky.modules.sys.utils.UserUtils;
 //import com.eryansky.modules.weixin.utils.WeixinUtils;
 import com.eryansky.utils.AppConstants;
@@ -29,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,16 +51,18 @@ public class MessageService extends CrudService<MessageDao, Message> {
     private UserService userService;
 
 
-    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, boolean isDataScopeFilter) {
+    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, Date startTime, Date endTime, boolean isDataScopeFilter) {
         Parameter parameter = Parameter.newParameter();
         if(isDataScopeFilter){
-            parameter.put("sqlMap.dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+            parameter.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
         }
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put("appId",appId);
         parameter.put("userId",userId);
-        parameter.put("status",status);
+        parameter.put("status",StringUtils.isBlank(status) ? DataEntity.STATUS_NORMAL:status);
+        parameter.put("startTime", DateUtils.format(startTime,DateUtils.DATE_TIME_FORMAT));
+        parameter.put("endTime", DateUtils.format(endTime,DateUtils.DATE_TIME_FORMAT));
         page.setResult(dao.findQueryList(parameter));
         return page;
     }
@@ -66,16 +72,22 @@ public class MessageService extends CrudService<MessageDao, Message> {
      * @param page
      * @param appId
      * @param userId 分级授权用户ID
+     * @param startTime
+     * @param endTime
      * @param params
      * @return
      */
-    public Page<Message> findPage(Page<Message> page,String appId,String userId,Map<String,Object> params) {
+    public Page<Message> findPage(Page<Message> page, String appId, String userId, Date startTime, Date endTime, Map<String,Object> params) {
         Parameter parameter = Parameter.newParameter();
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("appId",appId);
+        parameter.put("startTime", DateUtils.format(startTime,DateUtils.DATE_TIME_FORMAT));
+        parameter.put("endTime", DateUtils.format(endTime,DateUtils.DATE_TIME_FORMAT));
+        parameter.put("userId",userId);
         if(StringUtils.isNotBlank(userId) ){
-            parameter.put("sqlMap.dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+            parameter.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
         }
 
         if (null != params) {

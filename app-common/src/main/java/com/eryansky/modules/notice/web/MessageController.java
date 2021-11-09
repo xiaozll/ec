@@ -83,7 +83,7 @@ public class MessageController extends SimpleController {
             userId = null;
         }
 //        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),_appId,userId,model.getStatus(),true);
-        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),null,userId,model.getStatus(),true);
+        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),null,userId,model.getStatus(),null,null,true);
         modelAndView.addObject("page", page);
         modelAndView.addObject("model", model);
         return modelAndView;

@@ -28,6 +28,7 @@ import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.notice.mapper.MessageSender;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.modules.sys.service.UserService;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,9 +54,13 @@ public class MessageService extends CrudService<MessageDao, Message> {
 
     public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, Date startTime, Date endTime, boolean isDataScopeFilter, Map<String,Object> params) {
         Parameter parameter = Parameter.newParameter();
+        Map<String, String> sqlMap = Maps.newHashMap();
+        parameter.put("sqlMap", sqlMap);
+        sqlMap.put("dsf", "");
         if(isDataScopeFilter){
-            parameter.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+            sqlMap.put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
         }
+        parameter.put("sqlMap", sqlMap);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put("appId",appId);

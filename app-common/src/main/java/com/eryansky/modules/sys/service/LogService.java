@@ -18,6 +18,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.dao.LogDao;
 import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -76,9 +77,12 @@ public class LogService extends CrudService<LogDao, Log> {
         parameter.put("query", query);
         parameter.put("startTime", null != startTime ? DateUtils.formatDate(startTime) : null);
         parameter.put("endTime", null != endTime ? DateUtils.formatDate(endTime) : null);
+        Map<String, String> sqlMap = Maps.newHashMap();
+        sqlMap.put("dsf", "");
         if (isDataScopeFilter) {
             parameter.put("dsf", dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
         }
+        parameter.put("sqlMap", sqlMap);
         page.setResult(dao.findQueryList(parameter));
         return page;
     }

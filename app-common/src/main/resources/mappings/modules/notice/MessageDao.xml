@@ -151,7 +151,7 @@
 					AND a.send_time <![CDATA[<=]]> #{endTime}
 				</when>
 			</choose>
-			${dsf}
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">

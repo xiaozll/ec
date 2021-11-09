@@ -14,6 +14,7 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.core.web.annotation.MobileValue;
@@ -121,6 +122,7 @@ public class MobileIndexController extends SimpleController {
      * @param app 应用标识 默认值: {@link VersionLog#DEFAULT_ID}
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = {"getNewVersion/{versionLogType}"})
@@ -136,6 +138,7 @@ public class MobileIndexController extends SimpleController {
      * @param app 应用标识 默认值: {@link VersionLog#DEFAULT_ID}
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = {"getNewVersion"})

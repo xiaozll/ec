@@ -18,6 +18,7 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.CookieUtils;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.ResourceService;
@@ -138,6 +139,7 @@ public class LoginController extends SimpleController {
      * @param request
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(value = {"login"})

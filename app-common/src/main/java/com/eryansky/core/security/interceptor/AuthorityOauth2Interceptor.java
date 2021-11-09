@@ -1,11 +1,12 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2020 http://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.core.security.interceptor;
 
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.PrepareOauth2;
@@ -45,7 +46,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         //已登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if(null != sessionInfo){
+        if (null != sessionInfo) {
             return true;
         }
         //注解处理 满足设置不拦截
@@ -64,24 +65,24 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
 
         //自动登录
         String authorization = request.getParameter(AuthorityInterceptor.ATTR_AUTHORIZATION);
-        if(StringUtils.isBlank(authorization)){
+        if (StringUtils.isBlank(authorization)) {
             authorization = request.getHeader("Authorization");
         }
-        if(StringUtils.isNotBlank(authorization)){
+        if (StringUtils.isNotBlank(authorization)) {
             String requestUrl = request.getRequestURI();
             boolean verify = false;
             String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
             String loginName = null;
             try {
                 loginName = JWTUtils.getUsername(token);
-                verify = JWTUtils.verify(token,loginName,loginName);
+                verify = JWTUtils.verify(token, loginName, loginName);
             } catch (Exception e) {
-                logger.error("{},Token校验失败,{},{},{}",loginName,requestUrl, token,e.getMessage());
+                logger.error("{},Token校验失败,{},{},{}", loginName, requestUrl, token, e.getMessage());
             }
-            if(verify){
+            if (verify) {
                 SecurityUtils.putUserToSession(request, UserUtils.getUserByLoginName(loginName));
-                logger.warn("{},自动登录成功,{}",loginName,requestUrl);
-            }else{
+                logger.warn("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
+            } else {
 //                logger.warn("自动登录失败,{}",authorization);
             }
         }
@@ -95,7 +96,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        if(e != null){
+        if (e != null) {
 
         }
     }

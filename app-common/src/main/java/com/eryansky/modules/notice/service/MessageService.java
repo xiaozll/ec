@@ -51,7 +51,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
     private UserService userService;
 
 
-    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, Date startTime, Date endTime, boolean isDataScopeFilter) {
+    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, Date startTime, Date endTime, boolean isDataScopeFilter, Map<String,Object> params) {
         Parameter parameter = Parameter.newParameter();
         if(isDataScopeFilter){
             parameter.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
@@ -63,6 +63,9 @@ public class MessageService extends CrudService<MessageDao, Message> {
         parameter.put("status",StringUtils.isBlank(status) ? DataEntity.STATUS_NORMAL:status);
         parameter.put("startTime", DateUtils.format(startTime,DateUtils.DATE_TIME_FORMAT));
         parameter.put("endTime", DateUtils.format(endTime,DateUtils.DATE_TIME_FORMAT));
+        if (null != params) {
+            params.forEach(parameter::putIfAbsent);
+        }
         page.setResult(dao.findQueryList(parameter));
         return page;
     }

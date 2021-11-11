@@ -55,7 +55,7 @@ public class AppErrorController extends AbstractErrorController {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
 //        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
-        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
+        Map<String, Object> errorData = new java.util.HashMap<>(getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
 
         logger.error(JsonMapper.toJsonString(errorData));
         ModelAndView modelAndView = null;
@@ -67,6 +67,7 @@ public class AppErrorController extends AbstractErrorController {
         } else {
             modelAndView = new ModelAndView("commons/error.html");
         }
+        errorData.putIfAbsent("path",request.getRequestURI());
         modelAndView.addObject("errorData", errorData);
         return modelAndView;
 

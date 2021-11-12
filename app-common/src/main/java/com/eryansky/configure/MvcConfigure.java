@@ -1,5 +1,6 @@
 package com.eryansky.configure;
 
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
@@ -14,12 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -63,9 +60,14 @@ public class MvcConfigure implements WebMvcConfigurer {
               .excludePathPatterns("/static/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 100);
 
-      registry.addInterceptor(new AuthorityOauth2Interceptor()).addPathPatterns("/**")
-              .excludePathPatterns(Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**"))
-              .order(Ordered.HIGHEST_PRECEDENCE + 195);
+      if(AppConstants.isOauth2Enable()){
+         List<String> dList = Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**");
+         List<String> cList = AppConstants.getOauth2ExcludePathList();
+         registry.addInterceptor(new AuthorityOauth2Interceptor()).addPathPatterns("/**")
+                 .excludePathPatterns(Collections3.aggregate(dList,cList))
+                 .order(Ordered.HIGHEST_PRECEDENCE + 195);
+      }
+
 
       AuthorityInterceptor authorityInterceptor = new AuthorityInterceptor();
       authorityInterceptor.setRedirectURL("/jump.jsp");

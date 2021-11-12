@@ -11,9 +11,13 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.io.FileUtils;
 import com.eryansky.common.utils.io.PropertiesLoader;
+import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.sys.service.ConfigService;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 系统使用的静态变量.
@@ -176,6 +180,41 @@ public class AppConstants extends SysConstants {
         }
         return value;
     }
+
+
+    /**
+     * Oauth2拦截器是否启用
+     *
+     * @return
+     */
+    public static Boolean isOauth2Enable() {
+        String code = "system.security.oauth2.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+
+    /**
+     * oauth2 排除URL 多个之间以“,”分割
+     * @return
+     */
+    public static String getOauth2ExcludePaths() {
+        String code = "system.security.oauth2.excludePaths";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 消     * oauth2 排除URL 多个之间以“,”分割
+     * @return
+     */
+    public static List<String> getOauth2ExcludePathList() {
+        String value = getOauth2ExcludePaths();
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
 
     /**
      * 应用文件 磁盘绝对路径

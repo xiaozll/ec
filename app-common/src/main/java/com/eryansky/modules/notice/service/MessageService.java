@@ -55,7 +55,6 @@ public class MessageService extends CrudService<MessageDao, Message> {
     public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, Date startTime, Date endTime, boolean isDataScopeFilter, Map<String,Object> params) {
         Parameter parameter = Parameter.newParameter();
         Map<String, String> sqlMap = Maps.newHashMap();
-        parameter.put("sqlMap", sqlMap);
         sqlMap.put("dsf", "");
         if(isDataScopeFilter){
             sqlMap.put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));

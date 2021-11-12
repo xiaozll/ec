@@ -93,9 +93,12 @@ public class MessageService extends CrudService<MessageDao, Message> {
         parameter.put("startTime", DateUtils.format(startTime,DateUtils.DATE_TIME_FORMAT));
         parameter.put("endTime", DateUtils.format(endTime,DateUtils.DATE_TIME_FORMAT));
         parameter.put("userId",userId);
+        Map<String, String> sqlMap = Maps.newHashMap();
+        sqlMap.put("dsf", "");
         if(StringUtils.isNotBlank(userId) ){
-            parameter.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+            sqlMap.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
         }
+        parameter.put("sqlMap", sqlMap);
 
         if (null != params) {
             params.forEach(parameter::putIfAbsent);

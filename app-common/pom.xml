@@ -26,6 +26,7 @@
         <commons-dbutils.version>1.7</commons-dbutils.version>
         <batik.version>1.14</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
+        <jwt.version>3.18.2</jwt.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -204,7 +205,7 @@
         <dependency>
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
-            <version>3.11.0</version>
+            <version>${jwt.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-dbutils</groupId>

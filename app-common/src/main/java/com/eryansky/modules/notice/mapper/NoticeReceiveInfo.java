@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.notice.mapper;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
@@ -184,7 +185,7 @@ public class NoticeReceiveInfo extends BaseEntity<NoticeReceiveInfo> {
     }
 
     private Notice getNotice() {
-        if (this.notice == null) {
+        if (this.notice == null && StringUtils.isNotBlank(this.noticeId)) {
             return NoticeUtils.getNotice(this.noticeId);
         }
         return this.notice;

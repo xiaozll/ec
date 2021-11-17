@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.notice.mapper;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.modules.notice._enum.ReceiveObjectType;
 import com.eryansky.modules.notice.utils.NoticeUtils;
@@ -50,7 +51,7 @@ public class NoticeSendInfo extends BaseEntity<NoticeSendInfo> {
     }
 
     private Notice getNotice() {
-        if (this.notice == null) {
+        if (this.notice == null && StringUtils.isNotBlank(this.noticeId)) {
             return NoticeUtils.getNotice(this.noticeId);
         }
         return this.notice;

@@ -192,7 +192,7 @@ public abstract class SimpleController{
                 setValue(DateUtils.parseDate(text));
             }
         });
-//        xss(binder);
+        xss(binder);
     }
 
     /**

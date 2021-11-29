@@ -185,7 +185,22 @@
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
-        WHERE a.status = '0' AND (a.login_name = #{loginName} OR a.mobile = #{loginName}) AND a.password = #{password}
+        WHERE a.status = '0' AND (a.login_name = #{loginName} OR a.mobile = #{loginName})
+        AND
+          <choose>
+              <when test="securityToken != null and securityToken != ''">
+                  <choose>
+                      <when test="dbName == 'db2'">md5(#{a.password}||#{securityToken})</when>
+                      <when test="dbName == 'mysql'">md5(CONCAT(a.password, #{securityToken}))</when>
+                      <when test="dbName == 'oracle'">md5(#{a.password}||#{securityToken})</when>
+                      <otherwise>md5(#{a.password}||#{securityToken})</otherwise>
+                  </choose>
+              </when>
+              <otherwise>
+                  a.password
+              </otherwise>
+          </choose>
+        = #{password}
     </select>
 
 

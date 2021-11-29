@@ -217,6 +217,7 @@ public class UserService extends CrudService<UserDao, User> {
         return userId.equals(superUser.getId());
     }
 
+
     /**
      * 根据登录名、密码查找用户.
      * <br/>排除已删除的用户
@@ -227,6 +228,19 @@ public class UserService extends CrudService<UserDao, User> {
      */
     @SuppressWarnings("unchecked")
     public User getUserByLP(String loginName, String password) {
+        return getUserByLP(loginName,password,null);
+    }
+
+    /**
+     * 根据登录名、密码查找用户.
+     * <br/>排除已删除的用户
+     *
+     * @param loginName 登录名
+     * @param password  密码
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLP(String loginName, String password,String securityToken) {
         Assert.notNull(loginName, "参数[loginName]为空!");
         Assert.notNull(password, "参数[password]为空!");
         Parameter parameter = new Parameter();
@@ -234,9 +248,11 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("loginName", loginName);
         parameter.put("password", password);
+        parameter.put("securityToken", securityToken);
         List<User> list = dao.findLoginUser(parameter);
         return list.isEmpty() ? null : list.get(0);
     }
+
 
     /**
      * 根据手机号和密码验证

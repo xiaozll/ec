@@ -1,6 +1,8 @@
 package com.eryansky.configure;
 
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.jackson.XssDefaultJsonDeserializer;
+import com.eryansky.common.utils.jackson.XssDefaultJsonSerializer;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
@@ -10,6 +12,7 @@ import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
 import com.eryansky.modules.disk.extend.IFileManager;
 import com.eryansky.utils.AppConstants;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -108,7 +111,17 @@ public class MvcConfigure implements WebMvcConfigurer {
       final MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
       //设置日期格式
       JsonMapper objectMapper = new JsonMapper();
+
+      SimpleModule module = new SimpleModule();
+      // XSS反序列化
+      module.addDeserializer(String.class, new XssDefaultJsonDeserializer());
+      // XSS序列化
+      module.addSerializer(String.class, new XssDefaultJsonSerializer());
+      // 注册自定义的序列化和反序列化器
+      objectMapper.registerModule(module);
+
       mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+
       /**
        * 序列换成json时,将所有的long变成string
        * 因为js中得数字类型不能包含所有的java long值

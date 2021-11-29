@@ -24,7 +24,6 @@ public class SeneitiveStringSerializer extends JsonSerializer<String> implements
     private SensitiveType type;
 
     public SeneitiveStringSerializer() {
-        System.out.println(1);
     }
 
     public SeneitiveStringSerializer(final SensitiveType type) {

@@ -217,6 +217,28 @@ public class AppConstants extends SysConstants {
 
 
     /**
+     * 允许跨站 多个之间以“,”分割
+     * @return
+     */
+    public static String getCorsAllowedOrigins() {
+        String code = "system.security.cors.allowedOrigins";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 允许跨站
+     * @return
+     */
+    public static List<String> getCorsAllowedOriginList() {
+        String value = getCorsAllowedOrigins();
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
      * 应用文件 磁盘绝对路径
      *
      * @return

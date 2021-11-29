@@ -164,7 +164,7 @@ public class LoginController extends SimpleController {
     @RequestMapping(value = {"login"})
     public Result login(@RequestParam(required = true) String loginName,
                         @RequestParam(required = true) String password,
-                        @RequestParam(defaultValue = "false") Boolean encrypt,
+                        @RequestParam(defaultValue = "true") Boolean encrypt,
                         String validateCode,
                         String theme, HttpServletRequest request, Model uiModel) {
         //登录限制
@@ -201,7 +201,7 @@ public class LoginController extends SimpleController {
         }
         if (msg != null) {
             isValidateCodeLogin = isValidateCodeLogin(loginName, true, false);
-            if (isValidateCodeLogin) {
+            if (isValidateCodeLogin && UserAgentUtils.isComputer(request)){
                 msg += VALIDATECODE_TIP;
             }
             result = new Result(Result.ERROR, msg, isValidateCodeLogin);

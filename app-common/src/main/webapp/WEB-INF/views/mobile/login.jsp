@@ -24,6 +24,7 @@
     <script type="text/javascript" charset="utf-8" src="${ctxStatic}/mobile/af/appframework.ui.js"></script>
 
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/app/mobile/login.mobile${yuicompressor}.css?_=${sysInitTime}" />
+    <script src="${ctxStatic}/js/md5/md5.min.js"></script>
     <script type="text/javascript">
         var lPassword = window.localStorage.getItem("password");
         var needEncrypt = null != lPassword;

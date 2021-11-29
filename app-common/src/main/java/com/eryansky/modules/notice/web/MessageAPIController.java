@@ -1,4 +1,4 @@
-package com.eryansky.modules.notice.web.rest;
+package com.eryansky.modules.notice.web;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.web.springmvc.SimpleController;

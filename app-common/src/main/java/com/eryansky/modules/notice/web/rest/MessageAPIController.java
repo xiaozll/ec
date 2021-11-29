@@ -1,4 +1,4 @@
-package com.eryansky.modules.notice.web;
+package com.eryansky.modules.notice.web.rest;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.web.springmvc.SimpleController;
@@ -8,6 +8,7 @@ import com.eryansky.listener.SystemInitListener;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.server.result.WSResult;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = {"api/message","rest/message"})
 public class MessageAPIController extends SimpleController {
+
+
+    @Override
+    protected void initBinder(WebDataBinder binder) {
+        super.defaultWebDataBinder(binder);
+    }
 
     /**
      * 发送消息

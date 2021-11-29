@@ -9,6 +9,7 @@ import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.model.*;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm._enum.StatusState;
+import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
@@ -76,11 +77,14 @@ public class LoginController extends SimpleController {
     @Mobile(value = MobileValue.ALL)
     @RequiresUser(required = false)
     @RequestMapping(value = {"welcome", ""})
-    public ModelAndView welcome() {
+    public ModelAndView welcome(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         modelAndView.addObject("isValidateCodeLogin", isValidateCodeLogin);
+        String randomSecurityToken = Identities.randomBase62(64);
+        modelAndView.addObject("securityToken", randomSecurityToken);
+        CacheUtils.put("securityToken:"+request.getSession().getId(),randomSecurityToken);
         return modelAndView;
     }
 
@@ -130,6 +134,20 @@ public class LoginController extends SimpleController {
     }
 
     /**
+     * 预登录信息获取 动态登录码
+     *
+     * @return
+     */
+    @RequiresUser(required = false)
+    @RequestMapping(value = {"prepareLogin"})
+    @ResponseBody
+    public Result prepareLogin(HttpServletRequest request){
+        String randomSecurityToken = Identities.randomBase62(64);
+        CacheUtils.put("securityToken:"+request.getSession().getId(),randomSecurityToken);
+        return Result.successResult().setObj(randomSecurityToken);
+    }
+
+    /**
      * 登录验证
      *
      * @param loginName    用户名
@@ -152,6 +170,9 @@ public class LoginController extends SimpleController {
         //登录限制
         checkLoginLimit();
 
+        loginName = StringUtils.trim(loginName);
+        String securityToken = CacheUtils.get("securityToken:"+request.getSession().getId());
+
         Result result = null;
         String msg = null;
         final String VALIDATECODE_TIP = "密码输入错误超过3次，请输入验证码!";
@@ -172,7 +193,7 @@ public class LoginController extends SimpleController {
         }
 
         // 获取用户信息
-        User user = userService.getUserByLP(loginName, _password);
+        User user = userService.getUserByLP(loginName, _password,securityToken);
         if (user == null) {
             msg = "用户名或密码不正确!";
         } else if (user.getStatus().equals(StatusState.LOCK.getValue())) {
@@ -197,6 +218,7 @@ public class LoginController extends SimpleController {
             //将用户信息放入session中
             SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
             userService.login(sessionInfo.getUserId());
+            CacheUtils.remove("securityToken:"+request.getSession().getId());
             logger.info("用户{}登录系统,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
 
             //设置调整URL 如果session中包含未被授权的URL 则跳转到该页面

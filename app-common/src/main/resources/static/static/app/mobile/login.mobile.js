@@ -2,6 +2,9 @@ $.afui.useOSThemes = false;
 var $loginName;
 var $password;
 var $rememberMe;
+var needEncrypt = needEncrypt;
+var SALT;
+var securityToken;
 $(function () {
     $loginName = $("#loginName");
     $password = $("#password");
@@ -16,12 +19,19 @@ $(function () {
         $loginName.focus();
     }
 
+    $password.change(function(){
+        needEncrypt = true;
+    });
 
     $rememberMe.click(function () {
         var checked = $(this).prop('checked');
+        var _password = $password.val();
+        if(needEncrypt){
+            _password = md5(md5(_password+SALT)+securityToken);
+        }
         if (checked) {
             window.localStorage.setItem("loginName", $loginName.val());
-            window.localStorage.setItem("password", $password.val());
+            window.localStorage.setItem("password", _password);
             window.localStorage.setItem("rememberMe", checked);
         } else {
             window.localStorage.setItem("password", "");
@@ -41,7 +51,8 @@ function login() {
         });
         return;
     }
-    if (!$password.val()) {
+    var _password = $password.val();
+    if (!_password) {
         $.afui.toast({
             message: "密码不能为空!",
             position: "tc",
@@ -50,11 +61,14 @@ function login() {
         });
         return;
     }
+    if(needEncrypt){
+        _password = md5(md5(_password+SALT)+securityToken);
+    }
 
     $.ajax({
         url: ctxAdmin + '/login/login',
         type: 'post',
-        data: {loginName: $loginName.val(), password: $password.val(), checkDevice: false},
+        data: {loginName: $loginName.val(), password: _password, checkDevice: false},
         traditional: true,
         async: false,
         dataType: 'json',

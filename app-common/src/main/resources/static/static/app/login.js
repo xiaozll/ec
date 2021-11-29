@@ -6,6 +6,7 @@ var isValidateCodeLogin = isValidateCodeLogin;
 var rememberMeCookieValue = rememberMeCookieValue;
 var needEncrypt = needEncrypt;
 var SALT = SALT;
+var securityToken = securityToken;
 var homePage = homePage;
 
 
@@ -58,7 +59,7 @@ $(function () {
         var checked = $(this).prop('checked');
         var _password = $password.val();
         if(needEncrypt){
-            _password = md5(_password+SALT);
+            _password = md5(md5(_password+SALT)+securityToken);
         }
         if (checked) {
             $.cookie('_password', _password, {
@@ -94,7 +95,7 @@ function login() {
     });
     var _password = $password.val();
     if(needEncrypt){
-        _password = md5(_password+SALT);
+        _password = md5(md5(_password+SALT)+securityToken);
     }
     if ($rememberMe.prop("checked")) {
         $.cookie('_password', _password, {

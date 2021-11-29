@@ -59,6 +59,7 @@
         var rememberMeCookieValue = "${cookie.rememberMe.value}";
         var needEncrypt = ${empty cookie._password.value};
         var SALT = "<%=Encrypt.SALT%>";
+        var securityToken = "${securityToken}";
         var homePage = "<%=request.getContextPath() + AppConstants.getAppHomePage()%>";
     </script>
     <script type="text/javascript" src="${ctxStatic}/app/login${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>

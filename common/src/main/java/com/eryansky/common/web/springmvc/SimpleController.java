@@ -185,6 +185,15 @@ public abstract class SimpleController{
      */
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
+        defaultWebDataBinder(binder);
+        xss(binder);
+    }
+
+    /**
+     * 默认数据绑定
+     * @param binder
+     */
+    protected void defaultWebDataBinder(WebDataBinder binder) {
         // Date 类型转换
         binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
             @Override
@@ -192,7 +201,7 @@ public abstract class SimpleController{
                 setValue(DateUtils.parseDate(text));
             }
         });
-        xss(binder);
+
     }
 
     /**

@@ -1,0 +1,43 @@
+package com.eryansky.core.security;
+
+import com.alibaba.druid.util.DruidPasswordCallback;
+import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.encode.Encryption;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
+
+/**
+ * 解密数据库密码回调
+ *
+ * @author 尔演@Eryan
+ * @since 2021-11-30
+ */
+public class CustomDruidPasswordCallback extends DruidPasswordCallback {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomDruidPasswordCallback.class);
+
+    @Override
+    public void setProperties(Properties properties) {
+        super.setProperties(properties);
+        //获取配置文件中的已经加密的密码
+        String ePassword = (String) properties.get("password");
+        String cKey = (String) properties.get("key");
+        if (StringUtils.isNotEmpty(ePassword)) {
+            try {
+                //这里的代码是将密码进行解密，并设置
+                String password = StringUtils.isNotBlank(cKey) ?  Encryption.decrypt(ePassword,cKey ): Encryption.decrypt(ePassword);
+                setPassword(password.toCharArray());
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        String password = "password";
+        String key = "";
+        System.out.println(Encryption.encrypt(password));
+    }
+}

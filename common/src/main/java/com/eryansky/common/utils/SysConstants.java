@@ -103,7 +103,7 @@ public class SysConstants {
                 e.printStackTrace();
             }
         }
-        return ePassword;
+        return getJdbcPassword();
     }
 
 

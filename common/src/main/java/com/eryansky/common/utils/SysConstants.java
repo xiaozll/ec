@@ -6,6 +6,7 @@
 package com.eryansky.common.utils;
 
 import com.eryansky.common.spring.SpringContextHolder;
+import com.eryansky.common.utils.encode.Encryption;
 import org.springframework.core.env.StandardEnvironment;
 
 
@@ -82,6 +83,27 @@ public class SysConstants {
      */
     public static String getJdbcPassword(){
         return SysConstants.getAppConfig().getProperty("spring.datasource.password","");
+    }
+
+
+    /**
+     * jdbc 密码
+     * @return
+     */
+    public static String getDruidJdbcPassword(){
+        //获取配置文件中的已经加密的密码
+        String ePassword = getAppConfig().getProperty("spring.datasource.druid.connect-properties.password","");
+        String cKey = getAppConfig().getProperty("spring.datasource.druid.connect-properties.key","");
+        if (StringUtils.isNotEmpty(ePassword)) {
+            try {
+                //这里的代码是将密码进行解密，并设置
+                String password = StringUtils.isNotBlank(cKey) ?  Encryption.decrypt(ePassword,cKey ): Encryption.decrypt(ePassword);
+                return password;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return ePassword;
     }
 
 

@@ -73,11 +73,11 @@ public class HttpCompoents {
     /**
      * 设置整个连接池最大连接数
      */
-    private static int POOL_MAX_CONN = 800;
+    private static int POOL_MAX_CONN = 500;
     /**
      * 设置单个路由默认连接数
      */
-    private static int POOL_MAX_PER_CONN = 300;
+    private static int POOL_MAX_PER_CONN = 200;
 
     /**
      * 连接丢失后,重试次数

@@ -67,11 +67,11 @@ public class HttpCompoents {
     /**
      * 设置整个连接池最大连接数
      */
-    private static int MAX_CONN = 2048;
+    private static int POOL_MAX_CONN = 800;
     /**
      * 设置单个路由默认连接数
      */
-    private static int SINGLE_ROUTE_MAX_CONN = 300;
+    private static int POOL_MAX_PER_CONN = 300;
 
     /**
      * 连接丢失后,重试次数
@@ -191,8 +191,8 @@ public class HttpCompoents {
                     .build();
 
             connectionManager = new PoolingHttpClientConnectionManager(registry);
-            connectionManager.setMaxTotal(MAX_CONN);// 连接池最大并发连接数
-            connectionManager.setDefaultMaxPerRoute(SINGLE_ROUTE_MAX_CONN);// 单路由最大并发数
+            connectionManager.setMaxTotal(POOL_MAX_CONN);// 连接池最大并发连接数
+            connectionManager.setDefaultMaxPerRoute(POOL_MAX_PER_CONN);// 单路由最大并发数
 
 
             httpClient = HttpClients.custom()

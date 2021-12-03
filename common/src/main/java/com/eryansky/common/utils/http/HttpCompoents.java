@@ -36,19 +36,15 @@ import org.apache.http.impl.cookie.RFC6265CookieSpecProvider;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
-import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -144,7 +140,7 @@ public class HttpCompoents {
     }
 
 
-    public CloseableHttpClient getHttpClient() throws Exception {
+    public CloseableHttpClient createHttpClient() throws Exception {
         // 保持连接时长
         ConnectionKeepAliveStrategy keepAliveStrat = new DefaultConnectionKeepAliveStrategy() {
             @Override
@@ -310,7 +306,7 @@ public class HttpCompoents {
             }
         }
         httpGet.setConfig(requestConfig);
-        try(CloseableHttpClient httpClient = getHttpClient()) {
+        try(CloseableHttpClient httpClient = createHttpClient()) {
             try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 HttpEntity entity = response.getEntity();
                 return EntityUtils.toString(entity, useCharset);
@@ -373,7 +369,7 @@ public class HttpCompoents {
         if (charset == null) {
             useCharset = _DEFLAUT_CHARSET;
         }
-        try (CloseableHttpClient httpClient = getHttpClient()){
+        try (CloseableHttpClient httpClient = createHttpClient()){
             HttpPost httpPost = new HttpPost(url);
             if (headers != null) {
                 for (String key : headers.keySet()) {
@@ -423,7 +419,7 @@ public class HttpCompoents {
         if (charset == null) {
             useCharset = _DEFLAUT_CHARSET;
         }
-        try(CloseableHttpClient httpClient = getHttpClient()) {
+        try(CloseableHttpClient httpClient = createHttpClient()) {
             HttpPost httpPost = new HttpPost(url);
             if (headers != null) {
                 for (String key : headers.keySet()) {
@@ -540,7 +536,7 @@ public class HttpCompoents {
      * @return
      */
     public Executor getExecutor() throws Exception {
-        return Executor.newInstance(getHttpClient());
+        return Executor.newInstance(createHttpClient());
     }
 
 

@@ -13,6 +13,7 @@ import com.eryansky.modules.disk.extend.DISKManager;
 import com.eryansky.modules.disk.extend.IFileManager;
 import com.eryansky.utils.AppConstants;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -117,22 +118,19 @@ public class MvcConfigure implements WebMvcConfigurer {
       module.addDeserializer(String.class, new XssDefaultJsonDeserializer());
       // XSS序列化
       module.addSerializer(String.class, new XssDefaultJsonSerializer());
+
+      //序列换成json时,将所有的long变成string 因为js中得数字类型不能包含所有的java long值
+//      module.addSerializer(Long.class, ToStringSerializer.instance);
+//      module.addSerializer(Long.TYPE, ToStringSerializer.instance);
+
       // 注册自定义的序列化和反序列化器
       objectMapper.registerModule(module);
 
       mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
 
-      /**
-       * 序列换成json时,将所有的long变成string
-       * 因为js中得数字类型不能包含所有的java long值
-       */
-//      SimpleModule simpleModule = new SimpleModule();
-//      simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-//      simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-//      objectMapper.registerModule(simpleModule);
       //设置中文编码格式
-      List<MediaType> list = new ArrayList<MediaType>();
-      list.add(MediaType.APPLICATION_JSON_UTF8);
+      List<MediaType> list = new ArrayList<>();
+      list.add(MediaType.APPLICATION_JSON);
       list.add(MediaType.TEXT_PLAIN);
       list.add(MediaType.TEXT_HTML);
       mappingJackson2HttpMessageConverter.setSupportedMediaTypes(list);

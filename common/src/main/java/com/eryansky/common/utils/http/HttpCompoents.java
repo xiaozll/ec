@@ -24,9 +24,15 @@ import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.cookie.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.*;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.cookie.*;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.impl.cookie.BrowserCompatSpec;
+import org.apache.http.impl.cookie.DefaultCookieSpecProvider;
+import org.apache.http.impl.cookie.RFC6265CookieSpecProvider;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -79,7 +85,6 @@ public class HttpCompoents {
     private static int MAX_EXECUT_COUNT = 3;
 
     private final String _DEFLAUT_CHARSET = "utf-8";
-    private CloseableHttpClient httpClient;
     /**
      * 设置超时，毫秒级别
      */
@@ -93,151 +98,6 @@ public class HttpCompoents {
      */
     private BasicCookieStore cookieStore = new BasicCookieStore();;
 
-    {
-        try {
-            // 保持连接时长
-            ConnectionKeepAliveStrategy keepAliveStrat = new DefaultConnectionKeepAliveStrategy() {
-                @Override
-                public long getKeepAliveDuration(HttpResponse response,
-                                                 HttpContext context) {
-                    long keepAlive = super.getKeepAliveDuration(response,
-                            context);
-                    if (keepAlive == -1) {// 如果服务器没有设置keep-alive这个参数，我们就把它设置成5秒
-                        keepAlive = 5*1000;
-                    }
-                    return keepAlive;
-                }
-            };
-            // 重试机制
-            HttpRequestRetryHandler retryHandler = new HttpRequestRetryHandler() {
-                public boolean retryRequest(IOException exception,
-                                            int executionCount, HttpContext context) {
-                    if (executionCount >= MAX_EXECUT_COUNT) {// 如果已经重试了3次，就放弃
-                        return false;
-                    }
-                    if (exception instanceof NoHttpResponseException) {
-                        // 如果服务器丢掉了连接，那么就重试
-                        return true;
-                    }
-                    if (exception instanceof InterruptedIOException) {// 超时
-                        return false;
-                    }
-                    if (exception instanceof UnknownHostException) {// 目标服务器不可达
-                        return false;
-                    }
-                    if (exception instanceof ConnectTimeoutException) {// 连接被拒绝
-                        return false;
-                    }
-                    if (exception instanceof SSLException) {// ssl握手异常
-                        return false;
-                    }
-                    HttpClientContext clientContext = HttpClientContext
-                            .adapt(context);
-                    HttpRequest request = clientContext.getRequest();
-                    boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
-                    if (idempotent) {// 如果请求是幂等的，就再次尝试
-                        return true;
-                    }
-                    return false;
-                }
-            };
-
-            CookieSpecProvider easySpecProvider = new CookieSpecProvider() {
-                public CookieSpec create(HttpContext context) {
-
-                    return new BrowserCompatSpec() {
-                        @Override
-                        public void validate(Cookie cookie, CookieOrigin origin)
-                                throws MalformedCookieException {
-                            // Oh, I am easy
-                        }
-                    };
-                }
-
-            };
-
-            PublicSuffixMatcher publicSuffixMatcher = PublicSuffixMatcherLoader.getDefault();
-            RFC6265CookieSpecProvider cookieSpecProvider = new RFC6265CookieSpecProvider(publicSuffixMatcher);
-            Registry<CookieSpecProvider> r = RegistryBuilder
-                    .<CookieSpecProvider> create()
-                    .register(CookieSpecs.DEFAULT,
-                            new DefaultCookieSpecProvider(publicSuffixMatcher))
-                    .register(CookieSpecs.STANDARD,cookieSpecProvider)
-                    .register(CookieSpecs.STANDARD_STRICT, cookieSpecProvider)
-                    .register("easy", easySpecProvider).build();
-
-            requestConfig = RequestConfig.custom()
-                    .setCookieSpec("easy")
-                    .setSocketTimeout(MAX_TIME_OUT)
-                    .setConnectTimeout(MAX_TIME_OUT)
-                    .setConnectionRequestTimeout(MAX_TIME_OUT)
-                    .setRedirectsEnabled(true).build();
-
-            SSLContext sslContext;
-            sslContext = new SSLContextBuilder().loadTrustMaterial(null,
-                    new TrustStrategy() {
-                        // 信任所有
-                        public boolean isTrusted(X509Certificate[] chain,
-                                                 String authType) throws CertificateException {
-                            return true;
-                        }
-                    }).build();
-            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
-            // 创建SSLSocketFactory
-            // 定义socket工厂类 指定协议（Http、Https）
-            Registry registry = RegistryBuilder.create()
-                    .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                    .register("https", sslsf)//SSLConnectionSocketFactory.getSocketFactory()
-                    .build();
-
-            connectionManager = new PoolingHttpClientConnectionManager(registry);
-            connectionManager.setMaxTotal(POOL_MAX_CONN);// 连接池最大并发连接数
-            connectionManager.setDefaultMaxPerRoute(POOL_MAX_PER_CONN);// 单路由最大并发数
-
-
-            httpClient = HttpClients.custom()
-                    .setKeepAliveStrategy(keepAliveStrat)
-                    .setRetryHandler(retryHandler)
-                    .setDefaultCookieSpecRegistry(r)
-                    .setDefaultRequestConfig(requestConfig)
-                    .setDefaultCookieStore(cookieStore)
-                    .setConnectionManager(connectionManager)
-                    .addInterceptorFirst(new HttpRequestInterceptor() {
-                        //增加gzip压缩请求
-                        public void process(
-                                final HttpRequest request,
-                                final HttpContext context) throws HttpException, IOException {
-                            if (!request.containsHeader("Accept-Encoding")) {
-                                request.addHeader("Accept-Encoding", "gzip");
-                            }
-                        }
-                    })
-                    .addInterceptorFirst(new HttpResponseInterceptor() {
-                        //拦截器：返回增加gzip解压
-                        public void process(final HttpResponse response,
-                                            final HttpContext context) throws HttpException, IOException {
-                            HttpEntity entity = response.getEntity();
-                            if (entity != null) {
-                                Header ceheader = entity.getContentEncoding();
-                                if (ceheader != null) {
-                                    HeaderElement[] codecs = ceheader.getElements();
-                                    for (int i = 0; i < codecs.length; i++) {
-                                        if (codecs[i].getName().equalsIgnoreCase("gzip")) {
-                                            response.setEntity(new GzipDecompressingEntity(response.getEntity()));
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    })
-//                    .setSslcontext(sslContext)
-                    .build();
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
-
     /**
      * @see #getInstance()
      */
@@ -246,11 +106,9 @@ public class HttpCompoents {
 
     /**
      * @param requestConfig
-     * @param httpClient
      */
-    private HttpCompoents(RequestConfig requestConfig,CloseableHttpClient httpClient) {
+    private HttpCompoents(RequestConfig requestConfig) {
         this.requestConfig = requestConfig;
-        this.httpClient = httpClient;
     }
 
     /**
@@ -265,11 +123,10 @@ public class HttpCompoents {
     /**
      * 创建新实例
      * @param requestConfig
-     * @param httpClient
      * @return
      */
-    public static HttpCompoents newInstance(RequestConfig requestConfig,CloseableHttpClient httpClient) {
-        return new HttpCompoents(requestConfig,httpClient);
+    public static HttpCompoents newInstance(RequestConfig requestConfig) {
+        return new HttpCompoents(requestConfig);
     }
 
 
@@ -286,6 +143,121 @@ public class HttpCompoents {
         return HttpCompoentsHolder.httpCompoents;
     }
 
+
+    public CloseableHttpClient getHttpClient() throws Exception {
+        // 保持连接时长
+        ConnectionKeepAliveStrategy keepAliveStrat = new DefaultConnectionKeepAliveStrategy() {
+            @Override
+            public long getKeepAliveDuration(HttpResponse response,
+                                             HttpContext context) {
+                long keepAlive = super.getKeepAliveDuration(response,
+                        context);
+                if (keepAlive == -1) {// 如果服务器没有设置keep-alive这个参数，我们就把它设置成5秒
+                    keepAlive = 5*1000;
+                }
+                return keepAlive;
+            }
+        };
+        // 重试机制
+        HttpRequestRetryHandler retryHandler = (exception, executionCount, context) -> {
+            if (executionCount >= MAX_EXECUT_COUNT) {// 如果已经重试了3次，就放弃
+                return false;
+            }
+            if (exception instanceof NoHttpResponseException) {
+                // 如果服务器丢掉了连接，那么就重试
+                return true;
+            }
+            if (exception instanceof InterruptedIOException) {// 超时
+                return false;
+            }
+            if (exception instanceof UnknownHostException) {// 目标服务器不可达
+                return false;
+            }
+            if (exception instanceof ConnectTimeoutException) {// 连接被拒绝
+                return false;
+            }
+            if (exception instanceof SSLException) {// ssl握手异常
+                return false;
+            }
+            HttpClientContext clientContext = HttpClientContext
+                    .adapt(context);
+            HttpRequest request = clientContext.getRequest();
+            boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
+            // 如果请求是幂等的，就再次尝试
+            return idempotent;
+        };
+
+        CookieSpecProvider easySpecProvider = context -> new BrowserCompatSpec() {
+            @Override
+            public void validate(Cookie cookie, CookieOrigin origin)
+                    throws MalformedCookieException {
+                // Oh, I am easy
+            }
+        };
+
+        PublicSuffixMatcher publicSuffixMatcher = PublicSuffixMatcherLoader.getDefault();
+        RFC6265CookieSpecProvider cookieSpecProvider = new RFC6265CookieSpecProvider(publicSuffixMatcher);
+        Registry<CookieSpecProvider> r = RegistryBuilder
+                .<CookieSpecProvider> create()
+                .register(CookieSpecs.DEFAULT,
+                        new DefaultCookieSpecProvider(publicSuffixMatcher))
+                .register(CookieSpecs.STANDARD,cookieSpecProvider)
+                .register(CookieSpecs.STANDARD_STRICT, cookieSpecProvider)
+                .register("easy", easySpecProvider).build();
+
+        requestConfig = RequestConfig.custom()
+                .setCookieSpec("easy")
+                .setSocketTimeout(MAX_TIME_OUT)
+                .setConnectTimeout(MAX_TIME_OUT)
+                .setConnectionRequestTimeout(MAX_TIME_OUT)
+                .setRedirectsEnabled(true).build();
+
+        SSLContext sslContext;
+        // 信任所有
+        sslContext = new SSLContextBuilder().loadTrustMaterial(null,
+                (chain, authType) -> true).build();
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+        // 创建SSLSocketFactory
+        // 定义socket工厂类 指定协议（Http、Https）
+        Registry registry = RegistryBuilder.create()
+                .register("http", PlainConnectionSocketFactory.getSocketFactory())
+                .register("https", sslsf)//SSLConnectionSocketFactory.getSocketFactory()
+                .build();
+
+        connectionManager = new PoolingHttpClientConnectionManager(registry);
+        connectionManager.setMaxTotal(POOL_MAX_CONN);// 连接池最大并发连接数
+        connectionManager.setDefaultMaxPerRoute(POOL_MAX_PER_CONN);// 单路由最大并发数
+        //拦截器：返回增加gzip解压
+        //增加gzip压缩请求
+        return HttpClients.custom().setKeepAliveStrategy(keepAliveStrat)
+                .setRetryHandler(retryHandler)
+                .setDefaultCookieSpecRegistry(r)
+                .setDefaultRequestConfig(requestConfig)
+                .setDefaultCookieStore(cookieStore)
+                .setConnectionManager(connectionManager)
+                .addInterceptorFirst((HttpRequestInterceptor) (request, context) -> {
+                    if (!request.containsHeader("Accept-Encoding")) {
+                        request.addHeader("Accept-Encoding", "gzip");
+                    }
+                })
+                .addInterceptorFirst((HttpResponseInterceptor) (response, context) -> {
+                    HttpEntity entity = response.getEntity();
+                    if (entity != null) {
+                        Header ceheader = entity.getContentEncoding();
+                        if (ceheader != null) {
+                            HeaderElement[] codecs = ceheader.getElements();
+                            for (int i = 0; i < codecs.length; i++) {
+                                if (codecs[i].getName().equalsIgnoreCase("gzip")) {
+                                    response.setEntity(new GzipDecompressingEntity(response.getEntity()));
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                })
+                //                    .setSslcontext(sslContext)
+                .build();
+    }
     /**
      * 设置超时
      *
@@ -338,13 +310,13 @@ public class HttpCompoents {
             }
         }
         httpGet.setConfig(requestConfig);
-        try {
+        try(CloseableHttpClient httpClient = getHttpClient()) {
             try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
                 HttpEntity entity = response.getEntity();
                 return EntityUtils.toString(entity, useCharset);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage(),e);
         }
         return null;
     }
@@ -401,7 +373,7 @@ public class HttpCompoents {
         if (charset == null) {
             useCharset = _DEFLAUT_CHARSET;
         }
-        try {
+        try (CloseableHttpClient httpClient = getHttpClient()){
             HttpPost httpPost = new HttpPost(url);
             if (headers != null) {
                 for (String key : headers.keySet()) {
@@ -451,7 +423,7 @@ public class HttpCompoents {
         if (charset == null) {
             useCharset = _DEFLAUT_CHARSET;
         }
-        try {
+        try(CloseableHttpClient httpClient = getHttpClient()) {
             HttpPost httpPost = new HttpPost(url);
             if (headers != null) {
                 for (String key : headers.keySet()) {
@@ -533,7 +505,7 @@ public class HttpCompoents {
      * @param url
      * @return
      */
-    public Response getResponse(String url) {
+    public Response getResponse(String url) throws Exception {
         return getResponse(url, null);
     }
 
@@ -544,7 +516,7 @@ public class HttpCompoents {
      * @param headers 自定义Header
      * @return
      */
-    public Response getResponse(String url, Map<String, String> headers) {
+    public Response getResponse(String url, Map<String, String> headers) throws Exception {
         Executor executor = getExecutor();
         try {
             Request request = Request.Get(url);
@@ -567,13 +539,10 @@ public class HttpCompoents {
      *
      * @return
      */
-    public Executor getExecutor() {
-        return Executor.newInstance(httpClient);
+    public Executor getExecutor() throws Exception {
+        return Executor.newInstance(getHttpClient());
     }
 
-    public CloseableHttpClient getHttpClient() {
-        return httpClient;
-    }
 
     public RequestConfig getRequestConfig() {
         return requestConfig;

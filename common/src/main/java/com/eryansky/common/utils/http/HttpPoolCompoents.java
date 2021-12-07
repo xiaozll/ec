@@ -22,7 +22,10 @@ import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.util.PublicSuffixMatcher;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
-import org.apache.http.cookie.*;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.cookie.CookieOrigin;
+import org.apache.http.cookie.CookieSpecProvider;
+import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -30,10 +33,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.impl.cookie.BrowserCompatSpec;
-import org.apache.http.impl.cookie.DefaultCookieSpecProvider;
-import org.apache.http.impl.cookie.RFC6265CookieSpecProvider;
+import org.apache.http.impl.cookie.*;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -59,9 +59,9 @@ import java.util.Map;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-12-14
  */
-public class HttpCompoents {
+public class HttpPoolCompoents {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpCompoents.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpPoolCompoents.class);
 
     /**
      * 连接超时时间 可以配到配置文件 （单位毫秒）
@@ -93,18 +93,29 @@ public class HttpCompoents {
     /**
      * Cookie存储
      */
-    private BasicCookieStore cookieStore = new BasicCookieStore();;
+    private BasicCookieStore cookieStore = new BasicCookieStore();
+    /**
+     * 默认连接
+     */
+    private CloseableHttpClient httpClient;
+    {
+        try {
+            httpClient = createHttpClient();
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+    }
 
     /**
      * @see #getInstance()
      */
-    private HttpCompoents() {
+    private HttpPoolCompoents() {
     }
 
     /**
      * @param requestConfig
      */
-    private HttpCompoents(RequestConfig requestConfig) {
+    private HttpPoolCompoents(RequestConfig requestConfig) {
         this.requestConfig = requestConfig;
     }
 
@@ -113,8 +124,8 @@ public class HttpCompoents {
      *
      * @return
      */
-    public static HttpCompoents newInstance() {
-        return new HttpCompoents();
+    public static HttpPoolCompoents newInstance() {
+        return new HttpPoolCompoents();
     }
 
     /**
@@ -122,13 +133,13 @@ public class HttpCompoents {
      * @param requestConfig
      * @return
      */
-    public static HttpCompoents newInstance(RequestConfig requestConfig) {
-        return new HttpCompoents(requestConfig);
+    public static HttpPoolCompoents newInstance(RequestConfig requestConfig) {
+        return new HttpPoolCompoents(requestConfig);
     }
 
 
     private static class HttpCompoentsHolder {
-        private static final HttpCompoents httpCompoents = new HttpCompoents();
+        private static final HttpPoolCompoents HTTP_POOL_COMPOENTS = new HttpPoolCompoents();
     }
 
     /**
@@ -136,8 +147,8 @@ public class HttpCompoents {
      *
      * @return
      */
-    public static HttpCompoents getInstance() {
-        return HttpCompoentsHolder.httpCompoents;
+    public static HttpPoolCompoents getInstance() {
+        return HttpCompoentsHolder.HTTP_POOL_COMPOENTS;
     }
 
 
@@ -179,12 +190,11 @@ public class HttpCompoents {
             HttpClientContext clientContext = HttpClientContext
                     .adapt(context);
             HttpRequest request = clientContext.getRequest();
-            boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
             // 如果请求是幂等的，就再次尝试
-            return idempotent;
+            return !(request instanceof HttpEntityEnclosingRequest);
         };
 
-        CookieSpecProvider easySpecProvider = context -> new BrowserCompatSpec() {
+        CookieSpecProvider easySpecProvider = context -> new DefaultCookieSpec() {
             @Override
             public void validate(Cookie cookie, CookieOrigin origin)
                     throws MalformedCookieException {
@@ -233,7 +243,7 @@ public class HttpCompoents {
                 .setDefaultRequestConfig(requestConfig)
                 .setDefaultCookieStore(cookieStore)
                 .setDefaultSocketConfig(socketConfig)
-//                .setConnectionManager(connectionManager)
+                .setConnectionManager(connectionManager)
                 .addInterceptorFirst((HttpRequestInterceptor) (request, context) -> {
                     if (!request.containsHeader("Accept-Encoding")) {
                         request.addHeader("Accept-Encoding", "gzip");
@@ -245,8 +255,8 @@ public class HttpCompoents {
                         Header ceheader = entity.getContentEncoding();
                         if (ceheader != null) {
                             HeaderElement[] codecs = ceheader.getElements();
-                            for (int i = 0; i < codecs.length; i++) {
-                                if (codecs[i].getName().equalsIgnoreCase("gzip")) {
+                            for (HeaderElement codec : codecs) {
+                                if (codec.getName().equalsIgnoreCase("gzip")) {
                                     response.setEntity(new GzipDecompressingEntity(response.getEntity()));
                                     return;
                                 }
@@ -309,12 +319,12 @@ public class HttpCompoents {
             }
         }
         httpGet.setConfig(requestConfig);
-        try (CloseableHttpClient httpClient = createHttpClient();
-             CloseableHttpResponse response = httpClient.execute(httpGet)) {
-            HttpEntity entity = response.getEntity();
+        HttpEntity entity= null;
+        try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
+            entity = response.getEntity();
             return EntityUtils.toString(entity, useCharset);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage(),e);
         }
         return null;
     }
@@ -371,25 +381,26 @@ public class HttpCompoents {
         if (charset == null) {
             useCharset = _DEFLAUT_CHARSET;
         }
-
-        HttpPost httpPost = new HttpPost(url);
-        if (headers != null) {
-            for (String key : headers.keySet()) {
-                httpPost.setHeader(key, headers.get(key));
+        try{
+            HttpPost httpPost = new HttpPost(url);
+            if (headers != null) {
+                for (String key : headers.keySet()) {
+                    httpPost.setHeader(key, headers.get(key));
+                }
             }
-        }
-        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-        if (params != null) {
-            for (String key : params.keySet()) {
-                nvps.add(new BasicNameValuePair(key, params.get(key)));
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            if (params != null) {
+                for (String key : params.keySet()) {
+                    nvps.add(new BasicNameValuePair(key, params.get(key)));
+                }
+                httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
             }
-            httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
-        }
-        httpPost.setConfig(requestConfig);
-        try (CloseableHttpClient httpClient = createHttpClient();
-             CloseableHttpResponse response = httpClient.execute(httpPost)) {
-            HttpEntity entity = response.getEntity();
-            return EntityUtils.toString(entity, useCharset);
+            httpPost.setConfig(requestConfig);
+            HttpEntity entity = null;
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                entity = response.getEntity();
+                return EntityUtils.toString(entity, useCharset);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -421,20 +432,22 @@ public class HttpCompoents {
         if (charset == null) {
             useCharset = _DEFLAUT_CHARSET;
         }
-        HttpPost httpPost = new HttpPost(url);
-        if (headers != null) {
-            for (String key : headers.keySet()) {
-                httpPost.setHeader(key, headers.get(key));
+        try{
+            HttpPost httpPost = new HttpPost(url);
+            if (headers != null) {
+                for (String key : headers.keySet()) {
+                    httpPost.setHeader(key, headers.get(key));
+                }
             }
-        }
-        // Create request data
-        StringEntity requestEntity = new StringEntity(data, ContentType.APPLICATION_JSON);
-        httpPost.setEntity(requestEntity);
-        httpPost.setConfig(requestConfig);
-        try (CloseableHttpClient httpClient = createHttpClient();
-             CloseableHttpResponse response = httpClient.execute(httpPost)) {
-            HttpEntity entity = response.getEntity();
-            return EntityUtils.toString(entity, useCharset);
+            // Create request data
+            StringEntity requestEntity = new StringEntity(data, ContentType.APPLICATION_JSON);
+            httpPost.setEntity(requestEntity);
+            httpPost.setConfig(requestConfig);
+            HttpEntity entity= null;
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                 entity = response.getEntity();
+                return EntityUtils.toString(entity, useCharset);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -495,15 +508,14 @@ public class HttpCompoents {
         }
     }
 
-
     /**
      * GET请求 FluentAPI
      *
-     * @param url
+     * @param url     请求地址
      * @return
      */
     public Response getResponse(String url) throws Exception {
-        return getResponse(url, null);
+        return getResponse(url,null);
     }
 
     /**
@@ -514,8 +526,8 @@ public class HttpCompoents {
      * @return
      */
     public Response getResponse(String url, Map<String, String> headers) throws Exception {
-        Executor executor = getExecutor();
         try {
+            Executor executor = getExecutor();
             Request request = Request.Get(url);
             if (headers != null) {
                 for (String key : headers.keySet()) {
@@ -529,17 +541,18 @@ public class HttpCompoents {
         return null;
     }
 
-
-
     /**
      * 获取执行器 FluentAPI
      *
      * @return
      */
-    public Executor getExecutor() throws Exception {
-        return Executor.newInstance(createHttpClient());
+    public Executor getExecutor() {
+        return Executor.newInstance(httpClient);
     }
 
+    public CloseableHttpClient getHttpClient() {
+        return httpClient;
+    }
 
     public RequestConfig getRequestConfig() {
         return requestConfig;

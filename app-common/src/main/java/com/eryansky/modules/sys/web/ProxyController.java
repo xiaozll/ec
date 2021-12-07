@@ -7,7 +7,7 @@ package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.StringUtils;
-import com.eryansky.common.utils.http.HttpCompoents;
+import com.eryansky.common.utils.http.HttpPoolCompoents;
 import com.eryansky.common.web.filter.CustomHttpServletRequestWrapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;
@@ -56,7 +56,7 @@ public class ProxyController extends SimpleController {
 
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
-        HttpCompoents httpCompoents = HttpCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
+        HttpPoolCompoents httpPoolCompoents = HttpPoolCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
         String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request, null));//请求参数
         String url = contentUrl + "?" + param;
         logger.debug("proxy url：{}", url);
@@ -66,8 +66,10 @@ public class ProxyController extends SimpleController {
             String header = enumeration.nextElement();
             headers.put(header,request.getHeader(header));
         }
-        Response remoteResponse = httpCompoents.getResponse(url,headers);
-        try {
+        Response remoteResponse= null;
+        HttpEntity entity = null;
+        try{
+            remoteResponse = httpPoolCompoents.getResponse(url,headers);
             // 判断返回值
             if (remoteResponse == null) {
                 String errorMsg = "代理访问异常：" + contentUrl;
@@ -80,7 +82,7 @@ public class ProxyController extends SimpleController {
                 return;
             }
             HttpResponse httpResponse = remoteResponse.returnResponse();
-            HttpEntity entity = httpResponse.getEntity();
+            entity = httpResponse.getEntity();
             // 判断返回值
             if (httpResponse.getStatusLine().getStatusCode() >= 400) {
                 String errorMsg = "代理访问异常：" + contentUrl;
@@ -118,6 +120,15 @@ public class ProxyController extends SimpleController {
             IOUtils.copy(input, output);
             output.flush();
         } finally {
+            //回收链接到连接池
+//            try {
+//                EntityUtils.consume(entity);
+//                if (null != remoteResponse) {
+//                    remoteResponse.discardContent();
+//                }
+//            } catch (IOException e) {
+//                logger.error(e.getMessage(), e);
+//            }
         }
     }
 
@@ -138,15 +149,17 @@ public class ProxyController extends SimpleController {
         String url = contentUrl + "?" + param;
         logger.debug("proxy url：{}", url);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
-        HttpCompoents httpCompoents = HttpCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
+        HttpPoolCompoents httpCompoents = HttpPoolCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
         Map<String,String> headers = Maps.newHashMap();
         Enumeration<String> enumeration = request.getHeaderNames();
         while (enumeration.hasMoreElements()){
             String header = enumeration.nextElement();
             headers.put(header,request.getHeader(header));
         }
-        Response remoteResponse = httpCompoents.getResponse(url,headers);
+        Response remoteResponse= null;
+        HttpEntity entity = null;
         try {
+            remoteResponse = httpCompoents.getResponse(url,headers);
             // 判断返回值
             if (remoteResponse == null) {
                 String errorMsg = "代理访问异常：" + contentUrl;
@@ -159,7 +172,7 @@ public class ProxyController extends SimpleController {
                 return null;
             }
             HttpResponse httpResponse = remoteResponse.returnResponse();
-            HttpEntity entity = httpResponse.getEntity();
+            entity = httpResponse.getEntity();
             // 判断返回值
             if (httpResponse.getStatusLine().getStatusCode() >= 400) {
                 String errorMsg = "代理访问异常：" + contentUrl;
@@ -199,6 +212,15 @@ public class ProxyController extends SimpleController {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            //回收链接到连接池
+//            try {
+//                EntityUtils.consume(entity);
+//                if (null != remoteResponse) {
+//                    remoteResponse.discardContent();
+//                }
+//            } catch (IOException e) {
+//                logger.error(e.getMessage(), e);
+//            }
         }
         return null;
     }

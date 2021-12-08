@@ -53,7 +53,7 @@ public class FileUploadUtils {
             "swf", "flv", "mp3", "wav", "wma", "wmv", "mid", "avi", "mpg", "asf", "rm", "rmvb"
     };
 
-    public static final String[] DEFAULT_ALLOWED_EXTENSION = {
+    protected static final String[] DEFAULT_ALLOWED_EXTENSION = {
             //图片
             "bmp", "gif", "jpg", "jpeg", "png",
             //word excel powerpoint

@@ -686,8 +686,8 @@ public class ExcelUtils {
 		// String suffix =
 		// file.getName().substring(file.getName().lastIndexOf(".") + 1);
 
+		byte[] b = new byte[3];
 		try (FileInputStream fis = new FileInputStream(file)){
-			byte[] b = new byte[3];
 			fis.read(b, 0, b.length);
 			if ("d0cf11".equalsIgnoreCase(bytesToHexString(b))
 					|| "504b03".equalsIgnoreCase(bytesToHexString(b))) {

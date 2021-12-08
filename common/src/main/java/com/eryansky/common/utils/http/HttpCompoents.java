@@ -1,6 +1,7 @@
 package com.eryansky.common.utils.http;
 
 import org.apache.http.*;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -502,8 +503,8 @@ public class HttpCompoents {
      * @param url
      * @return
      */
-    public Response getResponse(String url) throws Exception {
-        return getResponse(url, null);
+    public Response getResponse(HttpClient httpClient, String url) throws Exception {
+        return getResponse(httpClient,url, null);
     }
 
     /**
@@ -513,9 +514,9 @@ public class HttpCompoents {
      * @param headers 自定义Header
      * @return
      */
-    public Response getResponse(String url, Map<String, String> headers) throws Exception {
-        Executor executor = getExecutor();
+    public Response getResponse(HttpClient httpClient, String url, Map<String, String> headers) throws Exception {
         try {
+            Executor executor = Executor.newInstance(httpClient);
             Request request = Request.Get(url);
             if (headers != null) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -530,15 +531,6 @@ public class HttpCompoents {
     }
 
 
-
-    /**
-     * 获取执行器 FluentAPI
-     *
-     * @return
-     */
-    public Executor getExecutor() throws Exception {
-        return Executor.newInstance(createHttpClient());
-    }
 
 
     public RequestConfig getRequestConfig() {

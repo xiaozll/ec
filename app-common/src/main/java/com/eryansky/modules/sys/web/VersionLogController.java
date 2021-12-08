@@ -52,6 +52,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -319,8 +321,9 @@ public class VersionLogController extends SimpleController {
             File file = DiskUtils.getFile(model.getFileId());
             WebUtils.setDownloadableHeader(request, response, file.getName());
             java.io.File tempFile = file.getDiskFile();
-            try {
-                FileCopyUtils.copy(new FileInputStream(tempFile), response.getOutputStream());
+            try(InputStream inputStream = new FileInputStream(tempFile);
+                OutputStream outputStream = response.getOutputStream()){
+                FileCopyUtils.copy(inputStream,outputStream);
             } catch (IOException e) {
                 logger.error(e.getMessage(),e);
             }

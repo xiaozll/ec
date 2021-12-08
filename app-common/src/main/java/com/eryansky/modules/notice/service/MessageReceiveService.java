@@ -256,7 +256,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @return
      */
     public Page<MessageReceive> findPageByMessageId(Page<MessageReceive> page, String messageId) {
-        return findPageByMessageId(page, messageId);
+        return findPageByMessageId(page, messageId,null,null);
     }
 
     /**

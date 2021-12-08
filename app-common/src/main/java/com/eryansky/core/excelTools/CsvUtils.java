@@ -23,20 +23,19 @@ public class CsvUtils {
         //初始化csvformat
         CSVFormat formator = CSVFormat.DEFAULT.withRecordSeparator("\n");
         //创建FileWriter对象
-        FileWriter fileWriter = new FileWriter(filePath, true);
-        //创建CSVPrinter对象
-        CSVPrinter printer = new CSVPrinter(fileWriter, formator);
-        //写入列头数据
-        printer.printRecord(headers);
-        if (null != data) {
-            //循环写入数据
-            for (Object[] lineData : data) {
-                printer.printRecord(lineData);
+        try(FileWriter fileWriter = new FileWriter(filePath, true);
+            //创建CSVPrinter对象
+            CSVPrinter printer = new CSVPrinter(fileWriter, formator)){
+            //写入列头数据
+            printer.printRecord(headers);
+            if (null != data) {
+                //循环写入数据
+                for (Object[] lineData : data) {
+                    printer.printRecord(lineData);
+                }
             }
+            fileWriter.flush();
         }
-        fileWriter.flush();
-        printer.close(true);
-        fileWriter.close();
     }
 
 
@@ -52,21 +51,22 @@ public class CsvUtils {
         outputStream.write(bytes);
         //初始化csvformat
         CSVFormat formator = CSVFormat.DEFAULT.withRecordSeparator("\n");
-        //创建FileWriter对象
-        Writer outputStreamWriter = new OutputStreamWriter(outputStream);
-        //创建CSVPrinter对象
-        CSVPrinter printer = new CSVPrinter(outputStreamWriter, formator);
-        //写入列头数据
-        printer.printRecord(headers);
-        if (null != data) {
-            //循环写入数据
-            for (Object[] lineData : data) {
-                printer.printRecord(lineData);
+        try(//创建FileWriter对象
+            Writer outputStreamWriter = new OutputStreamWriter(outputStream);
+            //创建CSVPrinter对象
+            CSVPrinter printer = new CSVPrinter(outputStreamWriter, formator)){
+            //写入列头数据
+            printer.printRecord(headers);
+            if (null != data) {
+                //循环写入数据
+                for (Object[] lineData : data) {
+                    printer.printRecord(lineData);
+                }
             }
+            printer.flush();
+            outputStreamWriter.flush();
         }
-        outputStreamWriter.flush();
-        printer.close(true);
-        outputStreamWriter.close();
+
     }
 
 
@@ -89,21 +89,21 @@ public class CsvUtils {
         outputStream.write(bytes);
         //初始化csvformat
         CSVFormat formator = CSVFormat.DEFAULT.withRecordSeparator("\n");
-        //创建FileWriter对象
-        Writer outputStreamWriter = new OutputStreamWriter(outputStream);
-        //创建CSVPrinter对象
-        CSVPrinter printer = new CSVPrinter(outputStreamWriter, formator);
-        //写入列头数据
-        printer.printRecord(headers);
-        if (null != data) {
-            //循环写入数据
-            for (Object[] lineData : data) {
-                printer.printRecord(lineData);
+        try(//创建FileWriter对象
+            Writer outputStreamWriter = new OutputStreamWriter(outputStream);
+            //创建CSVPrinter对象
+            CSVPrinter printer = new CSVPrinter(outputStreamWriter, formator)){
+            //写入列头数据
+            printer.printRecord(headers);
+            if (null != data) {
+                //循环写入数据
+                for (Object[] lineData : data) {
+                    printer.printRecord(lineData);
+                }
             }
+            printer.flush();
+            outputStreamWriter.flush();
         }
-        outputStreamWriter.flush();
-        printer.close(true);
-        outputStreamWriter.close();
     }
 
     /**
@@ -125,21 +125,22 @@ public class CsvUtils {
         outputStream.write(bytes);
         //初始化csvformat
         CSVFormat formator = CSVFormat.DEFAULT.withRecordSeparator("\n");
-        //创建FileWriter对象
-        Writer outputStreamWriter = new OutputStreamWriter(outputStream,charsetName);
-        //创建CSVPrinter对象
-        CSVPrinter printer = new CSVPrinter(outputStreamWriter, formator);
-        //写入列头数据
-        printer.printRecord(headers);
-        if (null != data) {
-            //循环写入数据
-            for (Object[] lineData : data) {
-                printer.printRecord(lineData);
+        try(
+            //创建FileWriter对象
+            Writer outputStreamWriter = new OutputStreamWriter(outputStream,charsetName);
+            //创建CSVPrinter对象
+            CSVPrinter printer = new CSVPrinter(outputStreamWriter, formator)){
+            //写入列头数据
+            printer.printRecord(headers);
+            if (null != data) {
+                //循环写入数据
+                for (Object[] lineData : data) {
+                    printer.printRecord(lineData);
+                }
             }
+            printer.flush();
+            outputStreamWriter.flush();
         }
-        outputStreamWriter.flush();
-        printer.close(true);
-        outputStreamWriter.close();
     }
 
 

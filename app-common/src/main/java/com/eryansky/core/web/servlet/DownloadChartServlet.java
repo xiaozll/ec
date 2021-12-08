@@ -5,6 +5,7 @@
  */
 package com.eryansky.core.web.servlet;
 
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
@@ -85,7 +86,7 @@ public class DownloadChartServlet extends HttpServlet {
 			} else if (type.equals("image/svg+xml"))
 				ext = "svg";
             WebUtils.setDownloadableHeader(request,response,filename + "." + ext);
-			response.addHeader("Content-Type", type);
+			response.addHeader("Content-Type", EncodeUtils.xssFilter(type));
 			if (null != t) {
 				TranscoderInput input = new TranscoderInput(new StringReader(svg));
 				TranscoderOutput output = new TranscoderOutput(out);

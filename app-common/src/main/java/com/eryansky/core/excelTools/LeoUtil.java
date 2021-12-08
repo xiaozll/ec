@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * @author : 尔演&Eryan eryanwcp@gmail.com
  * @date : 2014-07-31 20:36
  */
-public class leoUtil {
+public class LeoUtil {
 
 	/**
 	 * 验证字符串
@@ -73,7 +73,7 @@ public class leoUtil {
 	 * @param cell
 	 * @return
 	 */
-	public static String ConvertCellToStr(Cell cell) {
+	public static String convertCellToStr(Cell cell) {
 		String cellStr = null;
 		if (cell!= null) {
 			switch (cell.getCellType()) {
@@ -106,7 +106,7 @@ public class leoUtil {
 	}
 	
 	
-	public static Double ConvertCellToDouble(Cell cell) {
+	public static Double convertCellToDouble(Cell cell) {
 		Double cellDouble=null;
 		if (cell!= null) {
 			switch (cell.getCellType()) {
@@ -134,7 +134,7 @@ public class leoUtil {
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
-	public static Date ConvertCellToDate(Cell cell) {
+	public static Date convertCellToDate(Cell cell) {
 		Date cellDate = new Date();
 		if (DateUtil.isCellDateFormatted(cell)) {
 			// 读取日期格式
@@ -169,9 +169,8 @@ public class leoUtil {
 		// String suffix =
 		// file.getName().substring(file.getName().lastIndexOf(".") + 1);
 
-		FileInputStream fis = new FileInputStream(file);
 		byte[] b = new byte[3];
-		try {
+		try (FileInputStream fis = new FileInputStream(file)){
 			fis.read(b, 0, b.length);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -179,11 +178,6 @@ public class leoUtil {
 		if ("d0cf11".equalsIgnoreCase(bytesToHexString(b))
 				|| "504b03".equalsIgnoreCase(bytesToHexString(b))) {
 			bool = true;
-		}
-		try {
-			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return bool;
 	}

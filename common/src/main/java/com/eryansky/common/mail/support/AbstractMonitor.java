@@ -21,7 +21,7 @@ import javax.mail.event.MessageCountListener;
  * @date 2015-09-14
  */
 public abstract class AbstractMonitor implements Runnable, MessageCountListener {
-    public static int DEFAUL_INTERVAL = 3000;
+    public static final int DEFAUL_INTERVAL = 3000;
 
     private boolean enabled;
 

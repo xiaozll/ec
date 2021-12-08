@@ -11,10 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * 查看CK上传的图片
@@ -50,8 +47,9 @@ public class CKFinderFilesServlet extends HttpServlet {
         }
         File file = new File(AppConstants.getAppBasePath()+"/cms"+userfilesPath + filepath);
         Exception exception = null;
-        try {
-            FileCopyUtils.copy(new FileInputStream(file), resp.getOutputStream());
+        try (InputStream inputStream = new FileInputStream(file);
+             OutputStream outputStream = resp.getOutputStream()){
+            FileCopyUtils.copy(inputStream, outputStream);
             return;
         } catch (FileNotFoundException e) {
 //			exception = new FileNotFoundException("请求的文件不存在");
@@ -61,8 +59,9 @@ public class CKFinderFilesServlet extends HttpServlet {
             String path = this.getServletConfig().getServletContext().getRealPath("/");
 //            String ctx = req.getContextPath();
             File errorFile = new File(path+"/static/img/image_error.png");
-            try {
-                FileCopyUtils.copy(new FileInputStream(errorFile), resp.getOutputStream());
+            try (InputStream inputStream = new FileInputStream(errorFile);
+                 OutputStream outputStream = resp.getOutputStream()){
+                FileCopyUtils.copy(inputStream, outputStream);
             } catch (IOException e1) {
                 if(!CLIENT_ABORTEXCEPTION.equals(e1.getClass().getSimpleName())){//Tomcat日志过大 不输出该类型日志
                     if(logger.isErrorEnabled()) {

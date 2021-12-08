@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.sql.Blob;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -40,8 +41,10 @@ import java.util.zip.Inflater;
  * @date 2011-12-30下午2:31:16
  */
 public class SysUtils {
+
 	private static final int DEF_DIV_SCALE = 2;
 	public static final int BUFFER_SIZE = 16 * 1024;
+	private static final SecureRandom random = new SecureRandom();
 
 
 	/**
@@ -390,7 +393,6 @@ public class SysUtils {
 				"r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C",
 				"D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P",
 				"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-		Random random = new Random();
 		while (bu.length() < length) {
 			String temp = arr[random.nextInt(57)];
 			if (bu.indexOf(temp) == -1) {
@@ -412,9 +414,6 @@ public class SysUtils {
 	 * @return 整数
 	 */
 	public static int getRandomInt(int sek, int min, int max) {
-
-		Random random = new Random();
-
 		int temp = 0;
 
 		do {

@@ -54,7 +54,7 @@ public abstract class BaseFilter implements Filter {
     protected FilterConfig config = null;
 
     private final String[] NULL_STRING_ARRAY = new String[0];
-    private final String URL_SPLIT_PATTERN = "[, ;\r\n]";//逗号  空格 分号  换行
+    private static final String URL_SPLIT_PATTERN = "[, ;\r\n]";//逗号  空格 分号  换行
 
     private final PathMatcher pathMatcher = new AntPathMatcher();
 

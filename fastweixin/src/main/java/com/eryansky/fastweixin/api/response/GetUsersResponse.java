@@ -48,7 +48,7 @@ public class GetUsersResponse extends BaseResponse {
         this.nextOpenid = nextOpenid;
     }
 
-    public class Openid implements Serializable {
+    public static class Openid {
         private String[] openid;
 
         public String[] getOpenid() {

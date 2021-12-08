@@ -121,7 +121,7 @@ public class RedisClient implements Closeable, AutoCloseable {
      */
     private RedisClient(String mode, String hosts, String password, String cluster_name, int database, JedisPoolConfig poolConfig, boolean ssl) {
         password = (password != null && password.trim().length() > 0)? password.trim(): null;
-        this.clients = new ThreadLocal<BinaryJedisCommands>();
+        this.clients = new ThreadLocal<>();
         switch(mode){
             case "sentinel":
                 Set<String> nodes = new HashSet<String>();

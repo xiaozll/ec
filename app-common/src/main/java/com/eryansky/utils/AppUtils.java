@@ -514,21 +514,16 @@ public class AppUtils {
 
             Process pro = runtime.exec(command);
             //Process pro = runtime.exec("c://///////.exe");
-
-            InputStream in = pro.getErrorStream();
-            InputStreamReader isr = new InputStreamReader(in);
-
-            BufferedReader br = new BufferedReader(isr);
-
-            String line = null;
-
-            while ( (line = br.readLine()) != null){
-                errorMSG += line+"\n";
-                logger.error(errorMSG);
-            }
-
             //检查命令是否失败
-            try {
+            try (InputStream in = pro.getErrorStream();
+                 InputStreamReader isr = new InputStreamReader(in);
+                 BufferedReader br = new BufferedReader(isr)){
+                String line = null;
+
+                while ( (line = br.readLine()) != null){
+                    errorMSG += line+"\n";
+                    logger.error(errorMSG);
+                }
                 if(pro.waitFor()!=0){
                     logger.error("exit value:" + pro.exitValue());
                 }

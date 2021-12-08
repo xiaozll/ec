@@ -21,7 +21,7 @@ public class QYVideoMsg extends QYBaseMsg {
         return this;
     }
 
-    public class Video{
+    public static class Video{
         @JSONField(name = "media_id")
         private String mediaId;
         @JSONField(name = "title")

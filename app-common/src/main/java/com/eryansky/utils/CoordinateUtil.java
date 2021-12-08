@@ -184,7 +184,7 @@ public class CoordinateUtil {
 		return new double[]{tx_lon,tx_lat};
 	}
 
-	public static double EARTH_RADIUS = 6378137;
+	public static final double EARTH_RADIUS = 6378137;
 	private static double rad(double d) {
 		return d * Math.PI / 180.0;
 	}

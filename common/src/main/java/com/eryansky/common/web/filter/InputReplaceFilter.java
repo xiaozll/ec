@@ -7,6 +7,7 @@ package com.eryansky.common.web.filter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.servlet.FilterChain;
@@ -30,9 +31,9 @@ public class InputReplaceFilter extends BaseFilter {
 		String file = config.getInitParameter("file");
 		// 文件实际位置
 		String realPath = config.getServletContext().getRealPath(file);
-		try {
+		try (InputStream inputStream = new FileInputStream(realPath)){
 			// 加载非法词
-			pp.load(new FileInputStream(realPath));
+			pp.load(inputStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

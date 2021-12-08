@@ -51,14 +51,15 @@ public class Command implements java.io.Serializable{
 
 	private static Serializer serializer;
 
+	private static final SecureRandom random = new SecureRandom();
+
 	static {
 		serializer = new FstJSONSerializer(null);
 	}
 
 	public static int genRandomSrc() {
 		long ct = System.currentTimeMillis();
-		SecureRandom rndSeed  = new SecureRandom ();
-		return (int)(rndSeed .nextInt(10000) * 1000 + ct % 1000);
+		return (int)(random.nextInt(10000) * 1000 + ct % 1000);
 	}
 
 	public Command(){}//just for json deserialize , dont remove it.

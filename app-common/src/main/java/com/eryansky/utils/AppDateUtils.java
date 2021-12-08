@@ -88,12 +88,6 @@ public class AppDateUtils extends DateUtils {
         return cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" +
                 cal.get(Calendar.DAY_OF_MONTH);
     }
-    /**
-     * 获取  当前年、半年、季度、月、日、小时 开始结束时间
-     */
-    private static final SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat longHourSdf = new SimpleDateFormat("yyyy-MM-dd HH");
-    private static final SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 获得本周的第一天，周一
@@ -105,7 +99,7 @@ public class AppDateUtils extends DateUtils {
         try {
             int weekday = c.get(Calendar.DAY_OF_WEEK) - 2;
             c.add(Calendar.DATE, -weekday);
-            c.setTime(longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00"));
+            c.setTime(parse(format(c.getTime(), DATE_FORMAT) + " 00:00:00", DATE_TIME_FORMAT));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,7 +116,7 @@ public class AppDateUtils extends DateUtils {
         try {
             int weekday = c.get(Calendar.DAY_OF_WEEK);
             c.add(Calendar.DATE, 8 - weekday);
-            c.setTime(longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59"));
+            c.setTime(parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +131,7 @@ public class AppDateUtils extends DateUtils {
     public static Date getCurrentDayStartTime() {
         Date now = new Date();
         try {
-            now = shortSdf.parse(shortSdf.format(now));
+            now = parse(format(now,DATE_FORMAT),DATE_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,7 +146,7 @@ public class AppDateUtils extends DateUtils {
     public static Date getCurrentDayEndTime() {
         Date now = new Date();
         try {
-            now = longSdf.parse(shortSdf.format(now) + " 23:59:59");
+            now = parse(format(now,DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -167,7 +161,7 @@ public class AppDateUtils extends DateUtils {
     public static Date getCurrentHourStartTime() {
         Date now = new Date();
         try {
-            now = longHourSdf.parse(longHourSdf.format(now));
+            now = parse(format(now,DATE_TIME_HOUR_FORMAT),DATE_TIME_HOUR_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,7 +176,7 @@ public class AppDateUtils extends DateUtils {
     public static Date getCurrentHourEndTime() {
         Date now = new Date();
         try {
-            now = longSdf.parse(longHourSdf.format(now) + ":59:59");
+            now = parse(format(now,DATE_TIME_HOUR_FORMAT) + ":59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,7 +193,7 @@ public class AppDateUtils extends DateUtils {
         Date now = null;
         try {
             c.set(Calendar.DATE, 1);
-            now = shortSdf.parse(shortSdf.format(c.getTime()));
+            now = parse(format(c.getTime(),DATE_FORMAT),DATE_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -218,7 +212,7 @@ public class AppDateUtils extends DateUtils {
             c.set(Calendar.DATE, 1);
             c.add(Calendar.MONTH, 1);
             c.add(Calendar.DATE, -1);
-            now = longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59");
+            now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -236,7 +230,7 @@ public class AppDateUtils extends DateUtils {
         try {
             c.set(Calendar.MONTH, 0);
             c.set(Calendar.DATE, 1);
-            now = shortSdf.parse(shortSdf.format(c.getTime()));
+            now = parse(format(c.getTime(),DATE_FORMAT),DATE_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -254,7 +248,7 @@ public class AppDateUtils extends DateUtils {
         try {
             c.set(Calendar.MONTH, 11);
             c.set(Calendar.DATE, 31);
-            now = longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59");
+            now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -280,7 +274,7 @@ public class AppDateUtils extends DateUtils {
             else if (currentMonth >= 10 && currentMonth <= 12)
                 c.set(Calendar.MONTH, 9);
             c.set(Calendar.DATE, 1);
-            now = longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00");
+            now = parse(format(c.getTime(),DATE_FORMAT) + " 00:00:00",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -310,7 +304,7 @@ public class AppDateUtils extends DateUtils {
                 c.set(Calendar.MONTH, 11);
                 c.set(Calendar.DATE, 31);
             }
-            now = longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59");
+            now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -333,7 +327,7 @@ public class AppDateUtils extends DateUtils {
                 c.set(Calendar.MONTH, 6);
             }
             c.set(Calendar.DATE, 1);
-            now = longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00");
+            now = parse(format(c.getTime(),DATE_FORMAT) + " 00:00:00",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -358,7 +352,7 @@ public class AppDateUtils extends DateUtils {
                 c.set(Calendar.MONTH, 11);
                 c.set(Calendar.DATE, 31);
             }
-            now = longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59");
+            now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
             e.printStackTrace();
         }

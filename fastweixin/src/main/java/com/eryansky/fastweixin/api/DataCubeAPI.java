@@ -23,7 +23,7 @@ public class DataCubeAPI extends BaseAPI {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataCubeAPI.class);
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     public DataCubeAPI(ApiConfig config) {
         super(config);
@@ -42,8 +42,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUserSummaryResponse response = null;
         String url = BASE_API_URL + "datacube/getusersummary?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -64,8 +64,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUserCumulateResponse response = null;
         String url = BASE_API_URL + "datacube/getusercumulate?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -84,8 +84,8 @@ public class DataCubeAPI extends BaseAPI {
         GetArticleSummaryResponse response = null;
         String url = BASE_API_URL + "datacube/getarticlesummary?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(day));
-        param.put("end_date", DATE_FORMAT.format(day));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(day));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(day));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -104,8 +104,8 @@ public class DataCubeAPI extends BaseAPI {
         GetArticleTotalResponse response = null;
         String url = BASE_API_URL + "datacube/getarticletotal?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(day));
-        param.put("end_date", DATE_FORMAT.format(day));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(day));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(day));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -126,8 +126,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUserReadResponse response = null;
         String url = BASE_API_URL + "datacube/getuserread?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -146,8 +146,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUserReadHourResponse response = null;
         String url = BASE_API_URL + "datacube/getuserreadhour?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(day));
-        param.put("end_date", DATE_FORMAT.format(day));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(day));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(day));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -168,8 +168,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUserShareResponse response = null;
         String url = BASE_API_URL + "datacube/getusershare?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -188,8 +188,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUserShareHourResponse response = null;
         String url = BASE_API_URL + "datacube/getusersharehour?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(day));
-        param.put("end_date", DATE_FORMAT.format(day));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(day));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(day));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -210,8 +210,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsg?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -230,8 +230,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgHourResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsghour?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(day));
-        param.put("end_date", DATE_FORMAT.format(day));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(day));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(day));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -252,8 +252,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgWeekResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsgweek?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -274,8 +274,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgMonthResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsgmonth?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -296,8 +296,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgDistResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsgdist?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -318,8 +318,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgDistWeekResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsgdistweek?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -340,8 +340,8 @@ public class DataCubeAPI extends BaseAPI {
         GetUpstreamMsgDistMonthResponse response = null;
         String url = BASE_API_URL + "datacube/getupstreammsgdistmonth?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -362,8 +362,8 @@ public class DataCubeAPI extends BaseAPI {
         GetInterfaceSummaryResponse response = null;
         String url = BASE_API_URL + "datacube/getinterfacesummary?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(beginDate));
-        param.put("end_date", DATE_FORMAT.format(endDate));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(beginDate));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(endDate));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();
@@ -382,8 +382,8 @@ public class DataCubeAPI extends BaseAPI {
         GetInterfaceSummaryHourResponse response = null;
         String url = BASE_API_URL + "datacube/getinterfacesummaryhour?access_token=#";
         Map<String, String> param = new HashMap<String, String>();
-        param.put("begin_date", DATE_FORMAT.format(day));
-        param.put("end_date", DATE_FORMAT.format(day));
+        param.put("begin_date", new SimpleDateFormat(DATE_FORMAT).format(day));
+        param.put("end_date", new SimpleDateFormat(DATE_FORMAT).format(day));
         String json = JSONUtil.toJson(param);
         BaseResponse r = executePost(url, json);
         String resultJson = isSuccess(r.getErrcode()) ? r.getErrmsg() : r.toJsonString();

@@ -81,10 +81,11 @@ public class QYMediaAPI extends QYBaseAPI {
                     response.setContent(inputStream, Integer.valueOf(length.getValue()));
                     response.setFileName(headers[0].getElements()[0].getParameterByName("filename").getValue());
                 } else {
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    StreamUtil.copy(inputStream, out);
-                    String json = out.toString();
-                    response = JSONUtil.toBean(json, DownloadMediaResponse.class);
+                    try(ByteArrayOutputStream out = new ByteArrayOutputStream()){
+                        StreamUtil.copy(inputStream, out);
+                        String json = out.toString();
+                        response = JSONUtil.toBean(json, DownloadMediaResponse.class);
+                    }
                 }
             }
         } catch (Exception e) {

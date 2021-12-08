@@ -98,11 +98,9 @@ public abstract class WeixinSupport {
      */
     public void bindServer(HttpServletRequest request, HttpServletResponse response) {
         if (isLegal(request)) {
-            try {
-                PrintWriter pw = response.getWriter();
+            try (PrintWriter pw = response.getWriter()){
                 pw.write(request.getParameter("echostr"));
                 pw.flush();
-                pw.close();
             } catch (Exception e) {
                 LOG.error("绑定服务器异常", e);
             }

@@ -21,9 +21,9 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 public class OperatiuonTag extends TagSupport {
 
-    public static String LINKBUTTON = "linkbutton";
-    public static String IMAGEBUTTON = "imagebutton";
-    public static String MENUITEM = "menuItem";
+    public static final String LINKBUTTON = "linkbutton";
+    public static final String IMAGEBUTTON = "imagebutton";
+    public static final String MENUITEM = "menuItem";
     /**
      * 按钮显示的操作名称
      */

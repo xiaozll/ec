@@ -7,6 +7,7 @@ package com.eryansky.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,6 +34,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
     public static final String defaultValueEntitySeparator = ",";
     public static final String defaultKeyOrValueQuote      = "\"";
     private static final char SEPARATOR = '_';
+    private static final SecureRandom random = new SecureRandom();
 
     /**
      * 判断字符串是否为空或长度为0
@@ -245,7 +247,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      */
     public static String toDoubleDigit(int number) {
         if (number >= 0 && number < 10) {
-            return "0" + ((Integer)number).toString();
+            return "0" + ((Integer)number);
         }
         return ((Integer)number).toString();
     }
@@ -376,7 +378,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             return null;
         }
         StringBuilder str = new StringBuilder("");
-        Random random = new Random();
         for (int i = 0; i < length; i++) {
             str.append(sourceChar[random.nextInt(sourceChar.length)]);
         }
@@ -453,9 +454,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
                     seperator = valueEntity.indexOf(keyAndValueSeparator);
                     if (seperator != -1 && seperator < valueEntity.length()) {
                         MapUtils.putMapNotEmptyKey(keyAndValueMap,
-                                RemoveBothSideSymbol(valueEntity.substring(0, seperator).trim(),
+                                removeBothSideSymbol(valueEntity.substring(0, seperator).trim(),
                                         keyOrValueQuote),
-                                RemoveBothSideSymbol(valueEntity.substring(seperator + 1).trim(),
+                                removeBothSideSymbol(valueEntity.substring(seperator + 1).trim(),
                                         keyOrValueQuote));
                     }
                 }
@@ -486,7 +487,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      * @param symbol 符号
      * @return
      */
-    public static String RemoveBothSideSymbol(String source, String symbol) {
+    public static String removeBothSideSymbol(String source, String symbol) {
         if (isEmpty(source) || isEmpty(symbol)) {
             return source;
         }

@@ -590,7 +590,7 @@ public class ExcelUtils {
 	 * @param cell
 	 * @return
 	 */
-	public static String ConvertCellToStr(Cell cell) {
+	public static String convertCellToStr(Cell cell) {
 		String cellStr = null;
 		if (cell!= null) {
 			switch (cell.getCellType()) {
@@ -623,7 +623,7 @@ public class ExcelUtils {
 	}
 
 
-	public static Double ConvertCellToDouble(Cell cell) {
+	public static Double convertCellToDouble(Cell cell) {
 		Double cellDouble=null;
 		if (cell!= null) {
 			switch (cell.getCellType()) {
@@ -651,7 +651,7 @@ public class ExcelUtils {
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
-	public static Date ConvertCellToDate(Cell cell) {
+	public static Date convertCellToDate(Cell cell) {
 		Date cellDate = new Date();
 		if (DateUtil.isCellDateFormatted(cell)) {
 			// 读取日期格式
@@ -686,9 +686,7 @@ public class ExcelUtils {
 		// String suffix =
 		// file.getName().substring(file.getName().lastIndexOf(".") + 1);
 
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream(file);
+		try (FileInputStream fis = new FileInputStream(file)){
 			byte[] b = new byte[3];
 			fis.read(b, 0, b.length);
 			if ("d0cf11".equalsIgnoreCase(bytesToHexString(b))
@@ -697,14 +695,6 @@ public class ExcelUtils {
 			}
 		} catch (IOException e) {
 			mLogger.error(e.getMessage(),e);
-		}finally {
-			if(null != fis){
-				try {
-					fis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
 		return bool;

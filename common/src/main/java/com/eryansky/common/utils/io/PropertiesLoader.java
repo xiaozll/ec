@@ -143,10 +143,9 @@ public class PropertiesLoader {
      * @param value         值
      */
     public void modifyProperties(String resourcesPath, String key, String value) {
-        try {
+        try (FileOutputStream outputFile = new FileOutputStream(resourcesPath)){
             // 从输入流中读取属性列表（键和元素对）
             properties.setProperty(key, value);
-            FileOutputStream outputFile = new FileOutputStream(resourcesPath);
             properties.store(outputFile, "modify");
             outputFile.close();
             outputFile.flush();

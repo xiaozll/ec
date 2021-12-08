@@ -50,12 +50,10 @@ public final class MessageUtil {
      */
     public static Map<String, Object> parseXml(HttpServletRequest request, String token, String appId, String aesKey) {
         Map<String, Object> map = new HashMap<String, Object>();
-
         InputStream inputStream = null;
-        try {
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             inputStream = request.getInputStream();
             if (StrUtil.isNotBlank(aesKey)) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 StreamUtil.copy(inputStream, outputStream);
                 String body = outputStream.toString();
                 LOG.debug("收到的消息密文:{}", body);

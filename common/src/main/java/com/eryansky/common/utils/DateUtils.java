@@ -32,6 +32,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String DATE_TIME_FORMAT_SHORT = "yyyyMMddHHmmss";
 
+    public static final String DATE_TIME_HOUR_FORMAT = "yyyy-MM-dd HH";
+
     public static final String DATE_TIME_SHORT_FORMAT = "yyyy-MM-dd HH:mm";
 
     public static final String DATE_TIME_SHORT_FORMAT_SHORT = "yyyyMMddHHmm";

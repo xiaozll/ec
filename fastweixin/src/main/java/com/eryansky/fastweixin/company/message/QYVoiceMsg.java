@@ -21,7 +21,7 @@ public class QYVoiceMsg extends QYBaseMsg {
         return this;
     }
 
-    public class Voice{
+    public static class Voice{
         @JSONField(name = "media_id")
         private String mediaId;
 

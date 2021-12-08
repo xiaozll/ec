@@ -88,37 +88,38 @@ public class JdkZipUtils {
 			storeDir.mkdir();
 			storeDir.mkdirs();
 		}
-		ZipFile zip = new ZipFile(zipFile);
-		Enumeration<? extends ZipEntry> entries = zip.entries();
-		while (entries.hasMoreElements()) {
-			ZipEntry zipEntry = entries.nextElement();
+		try(ZipFile zip = new ZipFile(zipFile)){
+			Enumeration<? extends ZipEntry> entries = zip.entries();
+			while (entries.hasMoreElements()) {
+				ZipEntry zipEntry = entries.nextElement();
 
-			if (zipEntry.isDirectory()) {
-			} else {
-				String zipEntryName = zipEntry.getName();
-				if (zipEntryName.indexOf(File.separator) > 0) {
-					String zipEntryDir = zipEntryName.substring(0, zipEntryName
-							.lastIndexOf(File.separator) + 1);
-					String unzipFileDir = storePath + File.separator
-							+ zipEntryDir;
-					File unzipFileDirFile = new File(unzipFileDir);
-					if (!unzipFileDirFile.exists()) {
-						unzipFileDirFile.mkdirs();
+				if (zipEntry.isDirectory()) {
+				} else {
+					String zipEntryName = zipEntry.getName();
+					if (zipEntryName.indexOf(File.separator) > 0) {
+						String zipEntryDir = zipEntryName.substring(0, zipEntryName
+								.lastIndexOf(File.separator) + 1);
+						String unzipFileDir = storePath + File.separator
+								+ zipEntryDir;
+						File unzipFileDirFile = new File(unzipFileDir);
+						if (!unzipFileDirFile.exists()) {
+							unzipFileDirFile.mkdirs();
+						}
 					}
-				}
+					try (InputStream is = zip.getInputStream(zipEntry);
+						 FileOutputStream fos = new FileOutputStream(new File(storePath
+								 + File.separator + zipEntryName))){
+						byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
+						int size;
+						while ((size = is.read(buff)) > 0) {
+							fos.write(buff, 0, size);
+						}
+						fos.flush();
+					}
 
-				InputStream is = zip.getInputStream(zipEntry);
-				FileOutputStream fos = new FileOutputStream(new File(storePath
-						+ File.separator + zipEntryName));
-				byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
-				int size;
-				while ((size = is.read(buff)) > 0) {
-					fos.write(buff, 0, size);
 				}
-				fos.flush();
-				fos.close();
-				is.close();
 			}
 		}
+
 	}
 }

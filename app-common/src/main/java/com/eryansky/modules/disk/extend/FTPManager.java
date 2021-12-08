@@ -28,7 +28,7 @@ import org.springframework.util.StreamUtils;
  */
 public class FTPManager implements IFileManager {
 
-    protected static Logger logger = LoggerFactory.getLogger(FTPManager.class);
+    protected static final Logger logger = LoggerFactory.getLogger(FTPManager.class);
     /**
      * 服务器地址
      */
@@ -132,12 +132,12 @@ public class FTPManager implements IFileManager {
                 logger.info("本地文件大于远程文件，下载中止");
                 return DownloadStatus.Local_Bigger_Remote;
             }
-
-            //进行断点续传，并记录状态 
-            FileOutputStream out = new FileOutputStream(f, true);
-            ftpClient.setRestartOffset(localSize);
-            InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
-            StreamUtils.copy(in, out);
+            //进行断点续传，并记录状态
+            try(FileOutputStream out = new FileOutputStream(f, true);
+                InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1))){
+                ftpClient.setRestartOffset(localSize);
+                StreamUtils.copy(in, out);
+            }
 
 //            byte[] bytes = new byte[1024];
 //            long step = lRemoteSize / 100;
@@ -163,28 +163,28 @@ public class FTPManager implements IFileManager {
                 result = DownloadStatus.Download_From_Break_Failed;
             }
         } else {
-            OutputStream out = new FileOutputStream(f);
-            InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
-//            StreamUtils.copy(in,out);
+            try (OutputStream out = new FileOutputStream(f);
+                 InputStream in = ftpClient.retrieveFileStream(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1))) {
+                //            StreamUtils.copy(in,out);
 
-            byte[] bytes = new byte[1024];
-            long step = lRemoteSize / 100;
-            long process = 0;
-            long localSize = 0L;
-            int c;
-            while ((c = in.read(bytes)) != -1) {
-                out.write(bytes, 0, c);
-                localSize += c;
-                long nowProcess = localSize / step;
-                if (nowProcess > process) {
-                    process = nowProcess;
-                    if (process % 10 == 0)
-                        logger.info("下载进度：" + process);
-                    //TODO 更新文件下载进度,值存放在process变量中
+                byte[] bytes = new byte[1024];
+                long step = lRemoteSize / 100;
+                long process = 0;
+                long localSize = 0L;
+                int c;
+                while ((c = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, c);
+                    localSize += c;
+                    long nowProcess = localSize / step;
+                    if (nowProcess > process) {
+                        process = nowProcess;
+                        if (process % 10 == 0)
+                            logger.info("下载进度：" + process);
+                        //TODO 更新文件下载进度,值存放在process变量中
+                    }
                 }
             }
-            in.close();
-            out.close();
+
             boolean upNewStatus = ftpClient.completePendingCommand();
             if (upNewStatus) {
                 result = DownloadStatus.Download_New_Success;
@@ -520,11 +520,11 @@ public class FTPManager implements IFileManager {
                     init = true;
                     try {
                         connect(url, port, username, password);
-                        logger.info("连接FTP服务器成功,{},{}",new Object[]{url,port});
+                        logger.info("连接FTP服务器成功,{},{}", new Object[]{url, port});
                         isconnect = true;
                     } catch (IOException e) {
                         isconnect = false;
-                        logger.error("连接FTP服务器失败,{},{}",new Object[]{url,port});
+                        logger.error("连接FTP服务器失败,{},{}", new Object[]{url, port});
                         try {
                             Thread.sleep(connectTime);
                         } catch (InterruptedException e1) {
@@ -542,7 +542,7 @@ public class FTPManager implements IFileManager {
         try {
             disconnect();
         } catch (IOException e) {
-            logger.error(e.getMessage()+",断开FTP服务器失败.");
+            logger.error(e.getMessage() + ",断开FTP服务器失败.");
         }
     }
 

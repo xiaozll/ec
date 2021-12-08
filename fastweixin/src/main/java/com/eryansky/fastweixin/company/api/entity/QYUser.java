@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class QYUser extends BaseModel {
 
-    public final class Gender{
+    public static final class Gender{
         public static final String NO_DEF = "0";  // 0表示未定义
         public static final String MAN = "1";
         public static final String WOMAN = "2";

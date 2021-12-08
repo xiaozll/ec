@@ -52,7 +52,7 @@ import java.io.*;
  */
 public class DiskUtils {
 
-    protected static Logger logger = LoggerFactory.getLogger(DiskUtils.class);
+    protected static final Logger logger = LoggerFactory.getLogger(DiskUtils.class);
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式

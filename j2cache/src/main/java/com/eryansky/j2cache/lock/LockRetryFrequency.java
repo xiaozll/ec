@@ -17,7 +17,7 @@ public enum LockRetryFrequency {
      * @param retryInterval 重试间隔 单位：毫秒
      */
     LockRetryFrequency(int retryInterval) {
-        retryInterval = retryInterval;
+        this.retryInterval = retryInterval;
     }
 
     public int getRetryInterval() {

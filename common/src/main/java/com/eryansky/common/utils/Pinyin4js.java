@@ -84,7 +84,7 @@ public class Pinyin4js {
                     temp[i] = new String[]{""};
                 }
             }
-            String[] pingyinArray = Exchange(temp);
+            String[] pingyinArray = exchange(temp);
             Set<String> pinyinSet = new HashSet<String>();
             for(int i=0;i<pingyinArray.length;i++){
                 pinyinSet.add(pingyinArray[i]);
@@ -100,8 +100,8 @@ public class Pinyin4js {
      * @param strJaggedArray
      * @return
      */
-    public static String[] Exchange(String[][] strJaggedArray){
-        String[][] temp = DoExchange(strJaggedArray);
+    public static String[] exchange(String[][] strJaggedArray){
+        String[][] temp = doExchange(strJaggedArray);
         return temp[0];
     }
 
@@ -111,7 +111,7 @@ public class Pinyin4js {
      * @param strJaggedArray
      * @return
      */
-    private static String[][] DoExchange(String[][] strJaggedArray){
+    private static String[][] doExchange(String[][] strJaggedArray){
         int len = strJaggedArray.length;
         if(len >= 2){
             int len1 = strJaggedArray[0].length;
@@ -130,7 +130,7 @@ public class Pinyin4js {
                 newArray[i-1] = strJaggedArray[i];
             }
             newArray[0] = temp;
-            return DoExchange(newArray);
+            return doExchange(newArray);
         }else{
             return strJaggedArray;
         }

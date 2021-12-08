@@ -59,11 +59,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 */
 	public static void copyFile(File src, File dst) {
 		try {
-			FileInputStream in = null;
-			FileOutputStream out = null;
-			try {
-				out = new FileOutputStream(dst);
-				in = new FileInputStream(src);
+			try (FileOutputStream out = new FileOutputStream(dst);
+				 FileInputStream in = new FileInputStream(src)){
 				byte[] buffer = new byte[1024];
 				int len = 0;
 				while ((len = in.read(buffer)) > 0) {
@@ -81,13 +78,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 				}
 				createDirectory(dstpath);
 				copyFile(src, dst);
-			} finally {
-				if (null != in) {
-					in.close();
-				}
-				if (null != out) {
-					out.close();
-				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,7 +103,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @param dir
 	 */
 	public static String checkSaveDir(String dir) {
-
 		File dirFile = new File(dir);
 		boolean flag = true;
 		if (!dirFile.exists()) {
@@ -362,27 +351,30 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 */
 	public static String checkFileCodeString(File file) throws Exception {
 		if (file == null || !file.exists()) {
-			throw  new ServiceException("文件["+file.getAbsolutePath()+"]不存在");
+			throw new ServiceException("文件[" + (null == file ? "" : file.getAbsolutePath()) + "]不存在");
 		}
-		BufferedInputStream bin = new BufferedInputStream(new FileInputStream(file));
-		int p = (bin.read() << 8) + bin.read();
 		String code = null;
-		//其中的 0xefbb、0xfffe、0xfeff、0x5c75这些都是这个文件的前面两个字节的16进制数
-		switch (p) {
-			case 0xefbb:
-				code = "UTF-8";
-				break;
-			case 0xfffe:
-				code = "Unicode";
-				break;
-			case 0xfeff:
-				code = "UTF-16BE";
-				break;
-			case 0x5c75:
-				code = "ANSI|ASCII";
-				break;
-			default:
-				code = "GBK";
+		try (InputStream inputStream = new FileInputStream(file);
+			 BufferedInputStream bin = new BufferedInputStream(inputStream)){
+			int p = (bin.read() << 8) + bin.read();
+
+			//其中的 0xefbb、0xfffe、0xfeff、0x5c75这些都是这个文件的前面两个字节的16进制数
+			switch (p) {
+				case 0xefbb:
+					code = "UTF-8";
+					break;
+				case 0xfffe:
+					code = "Unicode";
+					break;
+				case 0xfeff:
+					code = "UTF-16BE";
+					break;
+				case 0x5c75:
+					code = "ANSI|ASCII";
+					break;
+				default:
+					code = "GBK";
+			}
 		}
 		return code;
 

@@ -54,8 +54,8 @@ public class LogService extends CrudService<LogDao, Log> {
      * @param endTime   结束时间
      * @return
      */
-    public Page<Log> findQueryPage(Page<Log> page, String type, String query, String userInfo, Date startTime, Date endTime) {
-        return findQueryPage(page, type, query, userInfo, startTime, endTime);
+    public Page<Log> findQueryPage(Page<Log> page,String type, String userInfo, String query, Date startTime, Date endTime) {
+        return findQueryPage(page, type,userInfo, query, startTime, endTime,true);
     }
 
     /**

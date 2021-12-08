@@ -393,10 +393,10 @@ public class FtpFactory {
                     // 根据绝对路径初始化文件
                     File localFile = new File(localPath + File.separator + ff.getName());
                     // 输出流
-                    OutputStream is = new FileOutputStream(localFile);
-                    // 下载文件
-                    ftp.retrieveFile(ff.getName(), is);
-                    is.close();
+                    try(OutputStream is = new FileOutputStream(localFile)){
+                        // 下载文件
+                        ftp.retrieveFile(ff.getName(), is);
+                    }
                     success = true;
                 }
             }

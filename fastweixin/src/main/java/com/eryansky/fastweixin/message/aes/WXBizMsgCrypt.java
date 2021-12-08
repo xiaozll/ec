@@ -18,7 +18,10 @@ import org.apache.commons.codec.binary.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.Closeable;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -37,14 +40,14 @@ import java.util.Random;
  * <li>如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</li>
  * </ol>
  */
-public class WXBizMsgCrypt {
+public class WXBizMsgCrypt implements Closeable {
 
     static Charset CHARSET = Charset.forName("utf-8");
     Base64 base64 = new Base64();
     byte[] aesKey;
     String token;
     String appId;
-
+    private static final SecureRandom random = new SecureRandom();
     /**
      * 构造函数
      *
@@ -86,7 +89,6 @@ public class WXBizMsgCrypt {
     // 随机生成16位字符串
     String getRandomStr() {
         String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < 16; i++) {
             int number = random.nextInt(base.length());
@@ -282,5 +284,10 @@ public class WXBizMsgCrypt {
 
         String result = decrypt(echoStr);
         return result;
+    }
+
+    @Override
+    public void close() throws IOException {
+
     }
 }

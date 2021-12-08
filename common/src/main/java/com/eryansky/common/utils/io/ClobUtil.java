@@ -30,17 +30,12 @@ public class ClobUtil {
 	public static String getString(Clob c) {
 		StringBuffer s = new StringBuffer();
 		if (c != null) {
-			try {
-				BufferedReader bufferRead = new BufferedReader(c.getCharacterStream());
-				try {
-					String str;
-					while ((str = bufferRead.readLine()) != null) {
-						s.append(str);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+			try (BufferedReader bufferRead = new BufferedReader(c.getCharacterStream())){
+				String str;
+				while ((str = bufferRead.readLine()) != null) {
+					s.append(str);
 				}
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

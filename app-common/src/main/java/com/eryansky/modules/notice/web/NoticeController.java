@@ -470,7 +470,7 @@ public class NoticeController extends SimpleController {
      */
     @RequestMapping(value = {"isTopCombobox"})
     @ResponseBody
-    public List<Combobox> IsTopCombobox(String selectType) {
+    public List<Combobox> isTopCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
         Combobox titleCombobox = SelectType.combobox(selectType);
         if (titleCombobox != null) {

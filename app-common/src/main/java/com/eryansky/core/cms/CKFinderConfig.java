@@ -47,9 +47,9 @@ public class CKFinderConfig extends Configuration {
 			}
 		}
 
-		boolean isView = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:view");
-		boolean isUpload = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:upload");
-		boolean isEdit = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:edit");
+		boolean isView = null != sessionInfo && SecurityUtils.isPermitted(sessionInfo.getUserId(), "cms:ckfinder:view");
+		boolean isUpload = null != sessionInfo && SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:upload");
+		boolean isEdit = null != sessionInfo && SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:edit");
 		AccessControlLevel alc = this.getAccessConrolLevels().get(0);
 		alc.setFolderView(isView);
 		alc.setFolderCreate(isEdit);

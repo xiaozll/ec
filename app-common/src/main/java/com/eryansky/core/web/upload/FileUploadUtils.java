@@ -39,17 +39,17 @@ public class FileUploadUtils {
     private static String defaultBaseDir = "disk";
 
     //默认的文件名最大长度
-    public static final int DEFAULT_FILE_NAME_LENGTH = 200;
+    protected static final int DEFAULT_FILE_NAME_LENGTH = 200;
 
-    public static final String[] IMAGE_EXTENSION = {
+    protected static final String[] IMAGE_EXTENSION = {
             "bmp", "gif", "jpg", "jpeg", "png"
     };
 
-    public static final String[] FLASH_EXTENSION = {
+    protected static final String[] FLASH_EXTENSION = {
             "swf", "flv"
     };
 
-    public static final String[] MEDIA_EXTENSION = {
+    protected static final String[] MEDIA_EXTENSION = {
             "swf", "flv", "mp3", "wav", "wma", "wmv", "mid", "avi", "mpg", "asf", "rm", "rmvb"
     };
 

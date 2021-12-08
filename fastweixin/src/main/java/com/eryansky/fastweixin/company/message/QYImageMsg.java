@@ -28,7 +28,7 @@ public class QYImageMsg extends QYBaseMsg{
         return this;
     }
 
-    public class Image{
+    public static class Image{
         @JSONField(name = "media_id")
         private String mediaId;
 

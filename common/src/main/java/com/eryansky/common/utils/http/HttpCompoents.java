@@ -304,8 +304,8 @@ public class HttpCompoents {
         }
         HttpGet httpGet = new HttpGet(url);
         if (headers != null) {
-            for (String key : headers.keySet()) {
-                httpGet.setHeader(key, headers.get(key));
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                httpGet.setHeader(entry.getKey(), entry.getValue());
             }
         }
         httpGet.setConfig(requestConfig);
@@ -374,14 +374,14 @@ public class HttpCompoents {
 
         HttpPost httpPost = new HttpPost(url);
         if (headers != null) {
-            for (String key : headers.keySet()) {
-                httpPost.setHeader(key, headers.get(key));
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                httpPost.setHeader(entry.getKey(), entry.getValue());
             }
         }
         List<NameValuePair> nvps = new ArrayList<NameValuePair>();
         if (params != null) {
-            for (String key : params.keySet()) {
-                nvps.add(new BasicNameValuePair(key, params.get(key)));
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
         }
@@ -423,8 +423,8 @@ public class HttpCompoents {
         }
         HttpPost httpPost = new HttpPost(url);
         if (headers != null) {
-            for (String key : headers.keySet()) {
-                httpPost.setHeader(key, headers.get(key));
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                httpPost.setHeader(entry.getKey(), entry.getValue());
             }
         }
         // Create request data
@@ -518,8 +518,8 @@ public class HttpCompoents {
         try {
             Request request = Request.Get(url);
             if (headers != null) {
-                for (String key : headers.keySet()) {
-                    request.setHeader(key, headers.get(key));
+                for (Map.Entry<String, String> entry : headers.entrySet()) {
+                    request.setHeader(entry.getKey(), entry.getValue());
                 }
             }
             return executor.execute(request);

@@ -221,9 +221,9 @@ public class HttpCompoents {
                 .register("https", sslsf)//SSLConnectionSocketFactory.getSocketFactory()
                 .build();
 
-        connectionManager = new PoolingHttpClientConnectionManager(registry);
-        connectionManager.setMaxTotal(POOL_MAX_CONN);// 连接池最大并发连接数
-        connectionManager.setDefaultMaxPerRoute(POOL_MAX_PER_CONN);// 单路由最大并发数
+//        connectionManager = new PoolingHttpClientConnectionManager(registry);
+//        connectionManager.setMaxTotal(POOL_MAX_CONN);// 连接池最大并发连接数
+//        connectionManager.setDefaultMaxPerRoute(POOL_MAX_PER_CONN);// 单路由最大并发数
         SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(3000).build();
         //拦截器：返回增加gzip解压
         //增加gzip压缩请求

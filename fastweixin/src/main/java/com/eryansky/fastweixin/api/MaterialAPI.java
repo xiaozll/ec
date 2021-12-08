@@ -103,14 +103,11 @@ public class MaterialAPI extends BaseAPI {
         DownloadMaterialResponse response = new DownloadMaterialResponse();
         String url = BASE_API_URL + "cgi-bin/material/get_material?access_token=" + config.getAccessToken();
         RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(NetWorkCenter.CONNECT_TIMEOUT).setConnectTimeout(NetWorkCenter.CONNECT_TIMEOUT).setSocketTimeout(NetWorkCenter.CONNECT_TIMEOUT).build();
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
         HttpPost request = new HttpPost(url);
         StringEntity mediaEntity = new StringEntity("{\"media_id\":\"" + mediaId + "\"}", ContentType.APPLICATION_JSON);
         request.setEntity(mediaEntity);
-
-        CloseableHttpResponse httpResponse = null;
-        try{
-            httpResponse = client.execute(request);
+        try(CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            CloseableHttpResponse httpResponse = client.execute(request)){
             if(HttpStatus.SC_OK == httpResponse.getStatusLine().getStatusCode()){
                 HttpEntity entity;
                 String resultJson;

@@ -40,11 +40,11 @@ public class Command implements Serializable {
 	private int operator;
 	private String session;
 	private String key;
-	private static final SecureRandom random = new SecureRandom();
 
 	private static int genRandomSrc() {
 		long ct = System.currentTimeMillis();
-		return (int)(random.nextInt(10000) * 1000 + ct % 1000);
+		SecureRandom rnd_seed = new SecureRandom();
+		return (int)(rnd_seed.nextInt(10000) * 1000 + ct % 1000);
 	}
 
 	public Command(byte operator, String session, String key) {

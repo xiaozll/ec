@@ -51,15 +51,14 @@ public class Command implements java.io.Serializable{
 	private String[] keys;
 
 	private static final Serializer serializer;
-	private static final SecureRandom random;
 
 	static {
 		serializer = new FstJSONSerializer(null);
-		random = new SecureRandom();
 	}
 
 	public static int genRandomSrc() {
 		long ct = System.currentTimeMillis();
+		SecureRandom random = new SecureRandom();
 		return (int)(random.nextInt(10000) * 1000 + ct % 1000);
 	}
 

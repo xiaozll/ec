@@ -7,10 +7,10 @@ package com.eryansky.fastweixin.company.message.req;
  */
 public final class QYBatchJobType {
 
-    private String SYNCUSER     = "sync_user";// 增量更新成员
-    private String REPLACEUSER  = "replace_user";// 全量覆盖成员
-    private String INVITEUSER   = "invite_user";// 邀请成员关注
-    private String REPLACEPARTY = "replace_party";// 全量覆盖部门
+    private final String SYNCUSER     = "sync_user";// 增量更新成员
+    private final String REPLACEUSER  = "replace_user";// 全量覆盖成员
+    private final String INVITEUSER   = "invite_user";// 邀请成员关注
+    private final String REPLACEPARTY = "replace_party";// 全量覆盖部门
 
     private QYBatchJobType() {
     }

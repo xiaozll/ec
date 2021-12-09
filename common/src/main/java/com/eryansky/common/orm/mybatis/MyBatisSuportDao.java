@@ -66,7 +66,7 @@ public class MyBatisSuportDao extends SqlSessionDaoSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T get(String key, Object params) {
-		return (T) getSqlSession().selectOne(key, params);
+		return getSqlSession().selectOne(key, params);
 	}
 
 	/**

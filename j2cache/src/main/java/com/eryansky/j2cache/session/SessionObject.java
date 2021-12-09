@@ -39,7 +39,7 @@ public class SessionObject implements Serializable {
      */
     private String host;
     private int maxInactiveInterval;
-    private ConcurrentHashMap<String, Object> attributes = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Object> attributes = new ConcurrentHashMap<>();
 
     public SessionObject(){}
 

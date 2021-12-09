@@ -52,7 +52,7 @@ public class JdkZipUtils {
 	}
 
 	private static void doZipFile(ZipOutputStream zipOut, File file,
-			String dirPath) throws FileNotFoundException, IOException {
+			String dirPath) throws IOException {
 		if (file.isFile()) {
 			BufferedInputStream bis = new BufferedInputStream(
 					new FileInputStream(file));

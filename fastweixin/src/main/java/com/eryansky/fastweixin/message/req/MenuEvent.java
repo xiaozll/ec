@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.message.req;
 
 public final class MenuEvent extends BaseEvent {
 
-    private String eventKey;
+    private final String eventKey;
 
     public MenuEvent(String eventKey) {
         super();

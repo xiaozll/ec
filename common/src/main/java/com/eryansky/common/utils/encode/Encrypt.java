@@ -8,6 +8,7 @@ package com.eryansky.common.utils.encode;
 import com.eryansky.common.utils.StringUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -113,16 +114,14 @@ public class Encrypt {
 		String encryptText = null;
 		try {
 			MessageDigest m = MessageDigest.getInstance(algorithmName);
-			m.update(inputText.getBytes("UTF-8"));
-			byte s[] = m.digest();
+			m.update(inputText.getBytes(StandardCharsets.UTF_8));
+			byte[] s = m.digest();
 			// m.digest(inputText.getBytes("UTF-8"));
 			return hex(s);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		}
-		return encryptText;
+        return encryptText;
 	}
 
 	/**
@@ -134,7 +133,7 @@ public class Encrypt {
 	private static String hex(byte[] arr) {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < arr.length; ++i) {
-			sb.append(Integer.toHexString((arr[i] & 0xFF) | 0x100).substring(1, 3));
+			sb.append(Integer.toHexString((arr[i] & 0xFF) | 0x100), 1, 3);
 		}
 		return sb.toString();
 	}

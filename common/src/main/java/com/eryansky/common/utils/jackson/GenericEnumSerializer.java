@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class GenericEnumSerializer extends JsonSerializer<IGenericEnum> {
     @Override
-    public void serialize(IGenericEnum value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(IGenericEnum value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         if (value != null) {
             jsonGenerator.writeStartObject();
             jsonGenerator.writeStringField("value",value.getValue());

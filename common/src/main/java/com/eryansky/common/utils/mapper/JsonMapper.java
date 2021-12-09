@@ -32,7 +32,7 @@ import java.util.TimeZone;
  */
 public class JsonMapper  extends ObjectMapper{
 
-	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
+	private static final Logger logger = LoggerFactory.getLogger(JsonMapper.class);
 
     public JsonMapper() {
         this(null);
@@ -235,7 +235,7 @@ public class JsonMapper  extends ObjectMapper{
 		}
 
 		try {
-			return (T) this.readValue(jsonString, javaType);
+			return this.readValue(jsonString, javaType);
 		} catch (IOException e) {
 			logger.warn("parse json string error:" + jsonString, e);
 			return null;
@@ -259,7 +259,7 @@ public class JsonMapper  extends ObjectMapper{
     @SuppressWarnings("unchecked")
     public <T> T update(String jsonString, T object) {
         try {
-            return (T) this.readerForUpdating(object).readValue(jsonString);
+            return this.readerForUpdating(object).readValue(jsonString);
         } catch (JsonProcessingException e) {
             logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
         } catch (IOException e) {

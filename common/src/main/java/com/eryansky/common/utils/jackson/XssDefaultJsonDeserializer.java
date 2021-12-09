@@ -21,7 +21,7 @@ public class XssDefaultJsonDeserializer extends StdDeserializer<String> {
     }
 
     @Override
-    public String deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public String deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
         //return StringEscapeUtils.escapeEcmaScript(jsonParser.getText());
         return EncodeUtils.htmlUnescape(jsonParser.getText());
     }

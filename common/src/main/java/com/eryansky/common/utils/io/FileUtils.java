@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 文件工具类.
@@ -179,11 +180,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		} else if (null != agent && -1 != agent.indexOf("firefox")) {
 			codedfilename = "=?UTF-8?B?"
 					+ (new String(Base64.encodeBase64(fileName
-							.getBytes("UTF-8")))) + "?=";
+							.getBytes(StandardCharsets.UTF_8)))) + "?=";
 		} else if (null != agent && -1 != agent.indexOf("safari")) {
-			codedfilename = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+			codedfilename = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");
 		} else if (null != agent && -1 != agent.indexOf("applewebkit")) {
-			codedfilename = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+			codedfilename = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");
 		} else {
 			codedfilename = URLEncoder.encode(fileName, "UTF-8").replace('+',
 					' ');

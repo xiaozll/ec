@@ -40,7 +40,7 @@ public class Command implements Serializable {
 	private int operator;
 	private String session;
 	private String key;
-	private static SecureRandom random;
+	private static final SecureRandom random;
 
 	static {
 		random = new SecureRandom();

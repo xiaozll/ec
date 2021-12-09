@@ -24,17 +24,17 @@ public class IdcardUtils extends StringUtils {
 	public static final int CHINA_ID_MAX_LENGTH = 18;
 
 	/** 省、直辖市代码表 */
-	public static final String cityCode[] = { "11", "12", "13", "14", "15",
+	public static final String[] cityCode = { "11", "12", "13", "14", "15",
 			"21", "22", "23", "31", "32", "33", "34", "35", "36", "37", "41",
 			"42", "43", "44", "45", "46", "50", "51", "52", "53", "54", "61",
 			"62", "63", "64", "65", "71", "81", "82", "91" };
 
 	/** 每位加权因子 */
-	protected static final int power[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9,
+	protected static final int[] power = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9,
 			10, 5, 8, 4, 2 };
 
 	/** 第18位校检码 */
-	protected static final String verifyCode[] = { "1", "0", "X", "9", "8", "7",
+	protected static final String[] verifyCode = { "1", "0", "X", "9", "8", "7",
 			"6", "5", "4", "3", "2" };
 	/** 最低年限 */
 	public static final int MIN = 1930;
@@ -177,9 +177,7 @@ public class IdcardUtils extends StringUtils {
 		}
 		String[] cardval = validateIdCard10(card);
 		if (cardval != null) {
-			if (cardval[2].equals("true")) {
-				return true;
-			}
+            return cardval[2].equals("true");
 		}
 		return false;
 	}
@@ -244,16 +242,13 @@ public class IdcardUtils extends StringUtils {
 			if (birthDate != null) {
 				cal.setTime(birthDate);
 			}
-			if (!valiDate(cal.get(Calendar.YEAR),
-					Integer.valueOf(birthCode.substring(2, 4)),
-					Integer.valueOf(birthCode.substring(4, 6)))) {
-				return false;
-			}
+            return valiDate(cal.get(Calendar.YEAR),
+                    Integer.valueOf(birthCode.substring(2, 4)),
+                    Integer.valueOf(birthCode.substring(4, 6)));
 		} else {
 			return false;
 		}
-		return true;
-	}
+    }
 
 	/**
 	 * 验证10位身份编码是否合法
@@ -321,8 +316,7 @@ public class IdcardUtils extends StringUtils {
 			sum = sum + Integer.valueOf(c + "") * iflag;
 			iflag--;
 		}
-		return (sum % 10 == 0 ? 0 : (10 - sum % 10)) == Integer.valueOf(end) ? true
-				: false;
+		return (sum % 10 == 0 ? 0 : (10 - sum % 10)) == Integer.valueOf(end);
 	}
 
 	/**
@@ -361,12 +355,12 @@ public class IdcardUtils extends StringUtils {
 			sum = sum + Integer.valueOf(c + "") * iflag;
 			iflag--;
 		}
-		if (end.toUpperCase().equals("A")) {
+		if (end.equalsIgnoreCase("A")) {
 			sum = sum + 10;
 		} else {
 			sum = sum + Integer.valueOf(end);
 		}
-		return (sum % 11 == 0) ? true : false;
+		return sum % 11 == 0;
 	}
 
 	/**
@@ -588,7 +582,7 @@ public class IdcardUtils extends StringUtils {
 	 * @return 提取的数字。
 	 */
 	public static boolean isNum(String val) {
-		return val == null || "".equals(val) ? false : val.matches("^[0-9]*$");
+		return val != null && !"".equals(val) && val.matches("^[0-9]*$");
 	}
 
 	/**

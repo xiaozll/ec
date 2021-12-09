@@ -19,11 +19,11 @@ public class ServerConfig implements Configuration {
 		SMTP, POP3, IMAP
 	}
 
-	public static enum EncryptionType {
+	public enum EncryptionType {
 		NONE, TLS, SSL
 	}
 
-	public static enum ContentType {
+	public enum ContentType {
 		TEXT, HTML
 	}
 

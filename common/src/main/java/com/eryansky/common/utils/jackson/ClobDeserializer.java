@@ -27,7 +27,7 @@ public class ClobDeserializer extends JsonDeserializer<Clob> {
 	private static final Logger logger = LoggerFactory.getLogger(ClobDeserializer.class);
 
 	@Override
-	public Clob deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+	public Clob deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 		String value = p.getText();
 		try {
 			return value == null ? null : ClobUtil.getClob(value);

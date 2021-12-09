@@ -27,7 +27,7 @@ import java.util.Properties;
  * @date 2015-09-14
  */
 public abstract class Receiver {
-	public static enum SearchType {
+	public enum SearchType {
 		ALL, UNREAD, READ
 	}
 

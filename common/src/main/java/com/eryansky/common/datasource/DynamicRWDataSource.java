@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class DynamicRWDataSource extends AbstractRoutingDataSource {
 
-    private Logger logger = LoggerFactory.getLogger(DynamicRWDataSource.class);
-    private AtomicInteger counter = new AtomicInteger();
+    private final Logger logger = LoggerFactory.getLogger(DynamicRWDataSource.class);
+    private final AtomicInteger counter = new AtomicInteger();
 
     private DataSource master;
 

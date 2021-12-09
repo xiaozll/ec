@@ -62,25 +62,25 @@ import java.util.Map;
  */
 public class HttpCompoents {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpCompoents.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpCompoents.class);
 
     /**
      * 连接超时时间 可以配到配置文件 （单位毫秒）
      */
-    private static int MAX_TIME_OUT = 30*1000;
+    private static final int MAX_TIME_OUT = 30*1000;
     /**
      * 设置整个连接池最大连接数
      */
-    private static int POOL_MAX_CONN = 1024;
+    private static final int POOL_MAX_CONN = 1024;
     /**
      * 设置单个路由默认连接数
      */
-    private static int POOL_MAX_PER_CONN = 256;
+    private static final int POOL_MAX_PER_CONN = 256;
 
     /**
      * 连接丢失后,重试次数
      */
-    private static int MAX_EXECUT_COUNT = 3;
+    private static final int MAX_EXECUT_COUNT = 3;
 
     private final String _DEFLAUT_CHARSET = "utf-8";
     /**
@@ -94,7 +94,7 @@ public class HttpCompoents {
     /**
      * Cookie存储
      */
-    private BasicCookieStore cookieStore = new BasicCookieStore();;
+    private final BasicCookieStore cookieStore = new BasicCookieStore();
 
     /**
      * @see #getInstance()

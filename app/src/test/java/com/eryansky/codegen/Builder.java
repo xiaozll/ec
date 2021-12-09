@@ -146,7 +146,7 @@ public class Builder {
             table.getColumns().remove(column);
 	}
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 
 	}
 

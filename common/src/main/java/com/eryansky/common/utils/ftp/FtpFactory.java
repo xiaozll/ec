@@ -204,7 +204,7 @@ public class FtpFactory {
         String directory = remote + File.separator;
         // String directory = remote.substring(0, remote.lastIndexOf("/") + 1);
         // 如果远程目录不存在，则递归创建远程服务器目录
-        if (!directory.equalsIgnoreCase(File.separator) && !changeWorkingDirectory(new String(directory), ftp)) {
+        if (!directory.equalsIgnoreCase(File.separator) && !changeWorkingDirectory(directory, ftp)) {
             int start = 0;
             int end = 0;
             if (directory.startsWith(File.separator)) {

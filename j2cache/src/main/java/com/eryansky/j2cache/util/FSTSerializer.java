@@ -31,7 +31,7 @@ import org.nustaq.serialization.FSTObjectOutput;
  */
 public class FSTSerializer implements Serializer {
 
-	private FSTConfiguration fstConfiguration ;
+	private final FSTConfiguration fstConfiguration ;
 
 	public FSTSerializer() {
 		fstConfiguration = FSTConfiguration.getDefaultConfiguration();

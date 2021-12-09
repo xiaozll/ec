@@ -40,10 +40,10 @@ public class RedisHashCache implements Level2Cache {
 
     private final static Logger log = LoggerFactory.getLogger(RedisHashCache.class);
 
-    private String namespace;
-    private String region;
-    private byte[] regionBytes;
-    private RedisClient client;
+    private final String namespace;
+    private final String region;
+    private final byte[] regionBytes;
+    private final RedisClient client;
 
     /**
      * 缓存构造

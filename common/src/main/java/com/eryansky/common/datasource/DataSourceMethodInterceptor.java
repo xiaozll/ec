@@ -24,7 +24,7 @@ import java.lang.reflect.Proxy;
  */
 public class DataSourceMethodInterceptor implements MethodInterceptor, InitializingBean {
 
-    private Logger logger = LoggerFactory.getLogger(DataSourceMethodInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(DataSourceMethodInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {

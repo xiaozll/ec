@@ -8,7 +8,7 @@ package com.eryansky.fastweixin.company.message.req;
  */
 public class QYTextReqMsg extends QYBaseReqMsg {
 
-    private String content;
+    private final String content;
 
     public QYTextReqMsg(String content) {
         super();

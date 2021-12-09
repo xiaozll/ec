@@ -51,7 +51,7 @@ public class QYOauthAPI extends QYBaseAPI {
         StringBuffer stringBuffer = new StringBuffer("https://open.weixin.qq.com/connect/oauth2/authorize?");
         stringBuffer.append("appid=").append(this.config.getCorpid())
                 .append("&redirect_uri=").append(url)
-                .append("&response_type=code&scope=").append(scope.toString())
+                .append("&response_type=code&scope=").append(scope)
                 .append("&state=").append(userstate)
                 .append("#wechat_redirect");
         return stringBuffer.toString();

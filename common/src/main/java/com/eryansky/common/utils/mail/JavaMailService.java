@@ -33,7 +33,7 @@ import freemarker.template.TemplateException;
  */
 public class JavaMailService {
 
-	private static Logger logger = LoggerFactory.getLogger(JavaMailService.class);
+	private static final Logger logger = LoggerFactory.getLogger(JavaMailService.class);
 
 	//spring邮件发送器
 	private JavaMailSender mailSender;

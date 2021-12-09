@@ -50,8 +50,8 @@ public class Command implements java.io.Serializable{
 	private String region;
 	private String[] keys;
 
-	private static Serializer serializer;
-	private static SecureRandom random;
+	private static final Serializer serializer;
+	private static final SecureRandom random;
 
 	static {
 		serializer = new FstJSONSerializer(null);

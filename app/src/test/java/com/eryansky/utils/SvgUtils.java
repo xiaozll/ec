@@ -18,6 +18,7 @@ import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class SvgUtils {
             jsonList.add(map);
         }
         try {
-            StreamUtils.copy(JsonMapper.toJsonString(jsonList), Charset.forName("utf-8"),new FileOutputStream("app/src/main/resources/static/js/json/icon-app.json"));
+            StreamUtils.copy(JsonMapper.toJsonString(jsonList), StandardCharsets.UTF_8,new FileOutputStream("app/src/main/resources/static/js/json/icon-app.json"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,10 +80,7 @@ public class SvgUtils {
                 return true;
             else {
                 String name = pathname.getName();
-                if ((name.endsWith(".svg")))
-                    return true;
-                else
-                    return false;
+                return name.endsWith(".svg");
             }
         }
     }

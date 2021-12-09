@@ -16,7 +16,7 @@ public class AesException extends Exception {
     //public final static int DecodeBase64Error = -40010;
     //public final static int GenReturnXmlError = -40011;
 
-    private int code;
+    private final int code;
 
     AesException(int code) {
         super(getMessage(code));

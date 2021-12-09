@@ -77,7 +77,7 @@ public class TimeUtils {
     /**
      * 时间数据容器
      */
-    private int[] fields = new int[4];
+    private final int[] fields = new int[4];
 
     /**
      * 无参构造，将各字段置为 0
@@ -317,10 +317,7 @@ public class TimeUtils {
         if (getClass() != obj.getClass())
             return false;
         final TimeUtils other = (TimeUtils) obj;
-        if (!Arrays.equals(fields, other.fields)) {
-            return false;
-        }
-        return true;
+        return Arrays.equals(fields, other.fields);
     }
     
 }

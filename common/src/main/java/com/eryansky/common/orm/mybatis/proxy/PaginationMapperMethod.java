@@ -95,7 +95,7 @@ public class PaginationMapperMethod {
      * @return 查询的总记录数
      */
     private long executeForCount(Object param) {
-        Number result = (Number) sqlSession.selectOne(commandCountName, param);
+        Number result = sqlSession.selectOne(commandCountName, param);
         return result.longValue();
     }
 

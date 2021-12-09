@@ -41,10 +41,10 @@ import java.util.concurrent.TimeUnit;
 //@Lazy(false)
 public class MapperLoader implements DisposableBean, InitializingBean, ApplicationContextAware {
 
-    private static Logger logger = LoggerFactory.getLogger(MapperLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(MapperLoader.class);
 
 	private ConfigurableApplicationContext context = null;
-	private HashMap<String, String> fileMapping = new HashMap<String, String>();
+	private final HashMap<String, String> fileMapping = new HashMap<String, String>();
 	private Scanner scanner = null;
 	private ScheduledExecutorService service = null;
 	private Resource[] mapperLocationResources = null;
@@ -101,7 +101,7 @@ public class MapperLoader implements DisposableBean, InitializingBean, Applicati
 	@SuppressWarnings({ "rawtypes" })
 	class Scanner {
 		
-		private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+		private final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 		public Scanner() {
 		}

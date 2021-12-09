@@ -19,7 +19,7 @@ import org.apache.http.HttpStatus;
  */
 public final class ClusterQYAPIConfig extends QYAPIConfig {
 
-    private IAccessTokenCacheService accessTokenCacheService;
+    private final IAccessTokenCacheService accessTokenCacheService;
 
     /**
      * 构造方法一，实现同时获取AccessToken。不启用jsApi

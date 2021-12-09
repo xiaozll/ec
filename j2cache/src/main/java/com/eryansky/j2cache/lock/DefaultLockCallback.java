@@ -9,8 +9,8 @@ package com.eryansky.j2cache.lock;
  */
 public abstract class DefaultLockCallback<T> implements LockCallback<T> {
 
-    private T handleNotObtainLock;
-    private T handleException;
+    private final T handleNotObtainLock;
+    private final T handleException;
 
     /**
      * @param handleNotObtainLock

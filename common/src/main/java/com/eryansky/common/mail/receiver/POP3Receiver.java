@@ -24,7 +24,7 @@ import javax.mail.search.FlagTerm;
  */
 public class POP3Receiver extends Receiver {
 
-	private static Logger logger = LoggerFactory.getLogger(POP3Receiver.class);
+	private static final Logger logger = LoggerFactory.getLogger(POP3Receiver.class);
 
 	private POP3Store store;
 

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  */
 public class J2CacheCmd {
 
-	private static Logger logger = LoggerFactory.getLogger(J2CacheCmd.class);
+	private static final Logger logger = LoggerFactory.getLogger(J2CacheCmd.class);
 
 	private static long TTL = 0;
 

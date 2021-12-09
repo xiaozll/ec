@@ -31,7 +31,7 @@ public abstract class SpringMVCHolder {
      * @return Object
      */
     public static <T> T getRequestAttribute(String name) {
-        return (T) getAttribute(name, RequestAttributes.SCOPE_REQUEST);
+        return getAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class SpringMVCHolder {
      * @return Object
      */
     public static <T> T getSessionAttribute(String name) {
-        return (T) getAttribute(name, RequestAttributes.SCOPE_SESSION);
+        return getAttribute(name, RequestAttributes.SCOPE_SESSION);
     }
 
     /**

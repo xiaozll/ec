@@ -31,12 +31,12 @@ public class SpringRedisCache implements Level2Cache {
 
 	private final static Logger log = LoggerFactory.getLogger(SpringRedisCache.class);
 
-	private String namespace;
+	private final String namespace;
 
-	private String region;
+	private final String region;
 
-	private RedisTemplate<String, Serializable> redisTemplate;
-	private RedisLockRegistry redisLockRegistry;
+	private final RedisTemplate<String, Serializable> redisTemplate;
+	private final RedisLockRegistry redisLockRegistry;
 
 	public SpringRedisCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate,RedisLockRegistry redisLockRegistry) {
 		if (region == null || region.isEmpty()) {

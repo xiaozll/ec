@@ -19,7 +19,7 @@
     <div data-options="region:'west',title:'我的云盘',split:true,collapsed:false,border:false"
          style="width:180px; text-align: left;padding:5px;">
            <div style="padding: 5px;">
-            <a onclick="javascript:try {
+            <a onclick="try {
                         parent.addTabs({id:'diskSearch',title: '文件检索',close: true,url: '${ctxAdmin}/disk/search',urlType: ''});
                     } catch(e) {
                         eu.addTab(window.parent.layout_center_tabs, '文件检索','${ctxAdmin}/disk/search', true,'eu-icon-disk_search','',false);
@@ -49,7 +49,7 @@
                     &nbsp;&nbsp;文件名：<input type="text" id="fileName" name="fileName" placeholder="文件名..." class="easyui-validatebox textbox eu-input"
                                            onkeydown="if(event.keyCode==13)search()"  maxLength="25" style="width: 160px"/>
                     <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
-                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$user_search_form.form('reset');">重置</a>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="$user_search_form.form('reset');">重置</a>
                 </form>
             </div>
         </div>

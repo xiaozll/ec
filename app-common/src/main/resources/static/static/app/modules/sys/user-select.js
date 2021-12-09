@@ -100,7 +100,7 @@ function addSelectUser(rows) {
             $("#selectUser option").each(function () {
                 if ($(this).val() === row.id) {
                     isSame = true;
-                    return;
+
                 }
             });
             if (!isSame) {

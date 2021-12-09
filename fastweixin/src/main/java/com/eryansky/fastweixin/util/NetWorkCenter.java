@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public final class NetWorkCenter {
      * 日志输出组件
      */
     private static final Logger  LOG             = LoggerFactory.getLogger(NetWorkCenter.class);
-    private static final Charset UTF_8           = Charset.forName("UTF-8");
+    private static final Charset UTF_8           = StandardCharsets.UTF_8;
 
     /**
      * 私有化构造器
@@ -245,14 +246,14 @@ public final class NetWorkCenter {
             case PUT:
             case DELETE:
             default:
-                LOG.warn("-----------------请求类型:{} 暂不支持-----------------", method.toString());
+                LOG.warn("-----------------请求类型:{} 暂不支持-----------------", method);
                 break;
         }
         try (CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
-             CloseableHttpResponse response =  client.execute(request);){
+             CloseableHttpResponse response =  client.execute(request)){
             long start = System.currentTimeMillis();
             long time = System.currentTimeMillis() - start;
-            LOG.debug("本次请求'{}'耗时:{}ms", url.substring(url.lastIndexOf("/") + 1, url.length()), time);
+            LOG.debug("本次请求'{}'耗时:{}ms", url.substring(url.lastIndexOf("/") + 1), time);
             int resultCode = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
             //此流不是操作系统资源，不用关闭，ByteArrayOutputStream源码里close也是个空方法-0_0-

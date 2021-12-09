@@ -38,9 +38,9 @@ public enum JavaType {
     NUMBER("Integer"),
     VARCHAR2("String");
 
-	private String typeName;
+	private final String typeName;
 
-	private JavaType(String typeName) {
+	JavaType(String typeName) {
 		this.typeName = typeName;
 	}
 

@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.sql.Blob;
 import java.text.DecimalFormat;
@@ -190,12 +191,8 @@ public class SysUtils {
 	 */
 	public static byte[] zip_Str(String in_str) {
 		byte[] input = new byte[0];
-		try {
-			input = in_str.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		ArrayList<Byte> al = new ArrayList<Byte>();
+        input = in_str.getBytes(StandardCharsets.UTF_8);
+        ArrayList<Byte> al = new ArrayList<Byte>();
 
 		byte[] output;
 		Deflater compresser = new Deflater();
@@ -245,12 +242,8 @@ public class SysUtils {
 		}
 		decompresser.end();
 
-		try {
-			return new String(result, 0, count, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-	}
+        return new String(result, 0, count, StandardCharsets.UTF_8);
+    }
 
 	/**
 	 * 判断是否为INT
@@ -551,10 +544,8 @@ public class SysUtils {
 	public static boolean checkEmail(String email) {
 		Pattern pattern = Pattern.compile("\\w+(\\.\\w+)*@\\w+(\\.\\w+)+");
 		Matcher matcher = pattern.matcher(email);
-		if (matcher.matches())
-			return true;
-		return false;
-	}
+        return matcher.matches();
+    }
 
 	/**
 	 * 转换字符串为指定编码格式
@@ -625,8 +616,8 @@ public class SysUtils {
 			boolean caseInsensetive) {
 		for (int i = 0; i < stringArray.length; i++) {
 			if (caseInsensetive) {
-				if (strSearch.toLowerCase()
-						.equals(stringArray[i].toLowerCase())) {
+				if (strSearch
+						.equalsIgnoreCase(stringArray[i])) {
 					return i;
 				}
 			} else {
@@ -1219,12 +1210,12 @@ public class SysUtils {
 			len = asc.length();
 		}
 
-		byte abt[] = new byte[len];
+		byte[] abt = new byte[len];
 		if (len >= 2) {
 			len = len / 2;
 		}
 
-		byte bbt[] = new byte[len];
+		byte[] bbt = new byte[len];
 		abt = asc.getBytes();
 		int j, k;
 
@@ -1362,8 +1353,8 @@ public class SysUtils {
      * @return
      */
     public static final byte[] decodeHex(String hex) {
-        char chars[] = hex.toCharArray();
-        byte bytes[] = new byte[chars.length / 2];
+        char[] chars = hex.toCharArray();
+        byte[] bytes = new byte[chars.length / 2];
         int byteCount = 0;
         for(int i = 0; i < chars.length; i += 2){
             int newByte = 0;
@@ -1381,7 +1372,7 @@ public class SysUtils {
      * @param bytes
      * @return
      */
-    public static final String encodeHex(byte bytes[]) {
+    public static final String encodeHex(byte[] bytes) {
         StringBuffer buf = new StringBuffer(bytes.length * 2);
         for(int i = 0; i < bytes.length; i++) {
             if((bytes[i] & 0xff) < 16)

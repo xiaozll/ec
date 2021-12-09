@@ -62,7 +62,7 @@ public class DB2Dialect implements Dialect {
         int startOfSelect = sql.toLowerCase().indexOf("select");
 
         StringBuilder pagingSelect = new StringBuilder(sql.length() + 100)
-                .append(sql.substring(0, startOfSelect)) //add the comment
+                .append(sql, 0, startOfSelect) //add the comment
                 .append("select * from ( select ") //nest the main query in an outer select
                 .append(getRowNumber(sql)); //add the rownnumber bit into the outer query select list
 

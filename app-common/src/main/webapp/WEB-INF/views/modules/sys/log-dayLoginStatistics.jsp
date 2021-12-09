@@ -18,7 +18,7 @@
                 dataType:'json',
                 success: function (data) {
                     var a = data["obj"];
-                    var jsonArray=new Array();
+                    var jsonArray=[];
                     for(var o in a){
                         jsonArray.push([a[o].loginDate,a[o].count]);
                     }

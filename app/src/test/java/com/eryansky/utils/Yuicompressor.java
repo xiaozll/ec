@@ -81,10 +81,7 @@ public class Yuicompressor {
                 return true;
             else {
                 String name = pathname.getName();
-                if ((name.endsWith(".js") && !name.endsWith(".min.js")) || (name.endsWith(".css") && !name.endsWith(".min.css")))
-                    return true;
-                else
-                    return false;
+                return (name.endsWith(".js") && !name.endsWith(".min.js")) || (name.endsWith(".css") && !name.endsWith(".min.css"));
             }
         }
     }

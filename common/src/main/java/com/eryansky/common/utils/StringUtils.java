@@ -377,7 +377,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
         if (sourceChar == null || sourceChar.length == 0 || length < 0) {
             return null;
         }
-        StringBuilder str = new StringBuilder("");
+        StringBuilder str = new StringBuilder();
         for (int i = 0; i < length; i++) {
             str.append(sourceChar[random.nextInt(sourceChar.length)]);
         }

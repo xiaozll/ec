@@ -9,7 +9,7 @@ import java.io.*;
  * @version 1.0
  */
 public class FileUtil {
-	public static void create(String dir, String fileName, String content) throws FileNotFoundException, IOException, Exception {
+	public static void create(String dir, String fileName, String content) throws Exception {
 		File dirFile = new File(dir);
 		if (!dirFile.isDirectory())
 			dirFile.mkdirs();

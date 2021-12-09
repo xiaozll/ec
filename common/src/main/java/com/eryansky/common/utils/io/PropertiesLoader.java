@@ -32,11 +32,11 @@ public class PropertiesLoader {
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     private static final class Static {
-        private static ResourceLoader resourceLoader = new DefaultResourceLoader();
+        private static final ResourceLoader resourceLoader = new DefaultResourceLoader();
     }
 
 
-    private static Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
 
     private final Properties properties;
 

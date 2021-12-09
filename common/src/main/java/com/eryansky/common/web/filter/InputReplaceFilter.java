@@ -8,6 +8,7 @@ package com.eryansky.common.web.filter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.servlet.FilterChain;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class InputReplaceFilter extends BaseFilter {
 
-	private Properties pp = new Properties();
+	private final Properties pp = new Properties();
 
 	// 非法词、敏感词、特殊字符、配置在初始化参数中
 	private void initConfig() {
@@ -51,7 +52,7 @@ public class InputReplaceFilter extends BaseFilter {
 				String[] params = (String[]) its.next();
 				int len = params.length;
 				for (int i = 0; i < len; i++) {
-					params[i] = new String(params[i].getBytes("utf-8"), "utf-8");
+					params[i] = new String(params[i].getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 				}
 			}
 		}

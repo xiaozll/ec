@@ -43,7 +43,7 @@
         _initEvents(target);
         //初始化验证
         _initializeValidate(target);
-    };
+    }
     //获取ueditor的ID。
     function _getTargetId(target){
         var t =  $(target),name =  t.attr('name');
@@ -112,12 +112,12 @@
                 }
             }
         }));
-    };
+    }
     //获取内容
     function _getValue(target){
         var state = $.data(target,'ueditor');
         return state.editor.getContent();
-    };
+    }
     //获取文本内容（无格式）
     function _getValueTxt(target){
         if(target && $(target).attr('id')){
@@ -126,7 +126,7 @@
                 return editor.getContentTxt();
             });
         }
-    };
+    }
     //设置内容
     function _setValue(target,value){
         //alert('_setValue_id=' + $(target).attr('id'));
@@ -136,14 +136,14 @@
                 editor.setContent(value);
             });
         }
-    };
+    }
     //同步数据
     function _sync(target){
         var state = $.data(target,'ueditor');
         if(state && state.editor){
             state.editor.sync();
         }
-    };
+    }
     //销毁编辑器对象
     function _destroy(target){
         if(!target) return;
@@ -152,7 +152,7 @@
             state.editor.destroy();
             $(target).remove();
         }
-    };
+    }
     //方法定义
     $.fn.ueditor.methods = {
         //获取配置选项

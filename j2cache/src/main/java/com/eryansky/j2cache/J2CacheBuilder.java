@@ -35,8 +35,8 @@ public class J2CacheBuilder {
     private CacheChannel channel;
     private CacheProviderHolder holder;
     private ClusterPolicy policy; //不同的广播策略
-    private AtomicBoolean opened = new AtomicBoolean(false);
-    private J2CacheConfig config;
+    private final AtomicBoolean opened = new AtomicBoolean(false);
+    private final J2CacheConfig config;
 
     private J2CacheBuilder(J2CacheConfig config) {
         this.config = config;

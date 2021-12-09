@@ -318,7 +318,7 @@ function downloadFile(pageId) {
         $("#annexFrame").attr("src", url);
     } else {
         eu.showMsg("请选择要操作的对象！");
-        return;
+
     }
 }
 

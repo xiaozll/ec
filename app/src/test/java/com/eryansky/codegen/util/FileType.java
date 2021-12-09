@@ -20,13 +20,13 @@ public enum FileType {
 	
 	
 	// 成员变量
-	private String type;//文件类型
-	private String pakage;//包声明
-	private String template;//模板
-	private String fileNameExtension;//文件扩展
+	private final String type;//文件类型
+	private final String pakage;//包声明
+	private final String template;//模板
+	private final String fileNameExtension;//文件扩展
 
 	// 构造方法
-	private FileType(String type, String pkage,String template,String fileNameExtension) {
+    FileType(String type, String pkage, String template, String fileNameExtension) {
 		this.type = type;
 		this.pakage = pkage;
 		this.template=template;

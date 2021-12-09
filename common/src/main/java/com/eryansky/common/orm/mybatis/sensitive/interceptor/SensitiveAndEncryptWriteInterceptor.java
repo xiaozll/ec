@@ -39,7 +39,7 @@ public class SensitiveAndEncryptWriteInterceptor implements Interceptor {
     private static final String MAPPEDSTATEMENT = "delegate.mappedStatement";
     private static final String BOUND_SQL = "delegate.boundSql";
 
-    private IEncrypt IEncrypt;
+    private final IEncrypt IEncrypt;
 
     public SensitiveAndEncryptWriteInterceptor() throws NoSuchAlgorithmException {
         this.IEncrypt = new AesSupport();

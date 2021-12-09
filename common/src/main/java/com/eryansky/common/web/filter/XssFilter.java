@@ -21,7 +21,7 @@ public class XssFilter extends BaseFilter{
 
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        XsslHttpServletRequestWrapper xssRequest = new XsslHttpServletRequestWrapper((HttpServletRequest)request);
+        XsslHttpServletRequestWrapper xssRequest = new XsslHttpServletRequestWrapper(request);
         chain.doFilter(xssRequest , response);
     }
 }

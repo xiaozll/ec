@@ -35,9 +35,9 @@ public class MoneyFormat {
     public static final String FEN = "分";
     public static final String DOT = ".";
     private static MoneyFormat formatter = null;
-    private HashMap<String, String> chineseNumberMap = new HashMap<String, String>();
-    private HashMap<String, String> chineseMoneyPattern = new HashMap<String, String>();
-    private NumberFormat numberFormat = NumberFormat.getInstance();
+    private final HashMap<String, String> chineseNumberMap = new HashMap<String, String>();
+    private final HashMap<String, String> chineseMoneyPattern = new HashMap<String, String>();
+    private final NumberFormat numberFormat = NumberFormat.getInstance();
 
     private MoneyFormat() {
         numberFormat.setMaximumFractionDigits(4);

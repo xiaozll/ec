@@ -8,8 +8,8 @@ package com.eryansky.fastweixin.company.message.req;
  */
 public class QYImageReqMsg extends QYBaseReqMsg {
 
-    private String picUrl;
-    private String mediaId;
+    private final String picUrl;
+    private final String mediaId;
 
     public QYImageReqMsg(String picUrl, String mediaId) {
         super();

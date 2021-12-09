@@ -94,9 +94,9 @@ public class ThreadUtils {
      */
     public static class WrapExceptionRunnable implements Runnable {
 
-        private static Logger logger = LoggerFactory.getLogger(WrapExceptionRunnable.class);
+        private static final Logger logger = LoggerFactory.getLogger(WrapExceptionRunnable.class);
 
-        private Runnable runnable;
+        private final Runnable runnable;
 
         public WrapExceptionRunnable(Runnable runnable) {
             this.runnable = runnable;

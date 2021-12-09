@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class MaterialAPI extends BaseAPI {
                 switch (type){
                     case NEWS:
                         entity = httpResponse.getEntity();
-                        resultJson = EntityUtils.toString(entity, Charset.forName("UTF-8"));
+                        resultJson = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                         response = JSONUtil.toBean(resultJson, DownloadMaterialResponse.class);
                         LOG.debug("-----------------请求成功-----------------");
                         LOG.debug("响应结果:");
@@ -126,7 +127,7 @@ public class MaterialAPI extends BaseAPI {
                         break;
                     case VIDEO:
                         entity = httpResponse.getEntity();
-                        resultJson = EntityUtils.toString(entity, Charset.forName("UTF-8"));
+                        resultJson = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                         LOG.debug("-----------------请求成功-----------------");
                         LOG.debug("响应结果:");
                         LOG.debug(resultJson);

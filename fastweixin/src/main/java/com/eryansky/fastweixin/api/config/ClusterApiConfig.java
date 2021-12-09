@@ -21,7 +21,7 @@ import org.apache.http.HttpStatus;
 public class ClusterApiConfig extends ApiConfig {
 
 
-    private IAccessTokenCacheService accessTokenCacheService;
+    private final IAccessTokenCacheService accessTokenCacheService;
 
     public ClusterApiConfig(String appid, String secret, IAccessTokenCacheService accessTokenCacheService) {
         this(appid, secret, false,accessTokenCacheService);

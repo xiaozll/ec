@@ -483,14 +483,13 @@ public class HanziToPinYin {
 		Iterator<String> it = keySet.iterator();
 
 		String spell0 = null;
-		;
-		String spell = null;
+        String spell = null;
 
 		int asciiRang0 = -20319;
 		int asciiRang;
 		while (it.hasNext()) {
 
-			spell = (String) it.next();
+			spell = it.next();
 			Object valObj = spellMap.get(spell);
 			if (valObj instanceof Integer) {
 				asciiRang = ((Integer) valObj).intValue();
@@ -534,7 +533,7 @@ public class HanziToPinYin {
 					retuBuf.append(chars[i]);
 				} else {
 					if(isFirstUpperCase){
-						retuBuf.append(spell.substring(0, 1).toUpperCase() + spell.substring(1,spell.length()));
+						retuBuf.append(spell.substring(0, 1).toUpperCase() + spell.substring(1));
 					}else{
 						retuBuf.append(spell);
 					}
@@ -569,7 +568,7 @@ public class HanziToPinYin {
 					retuBuf.append(chars[i]);
 				} else {
 					// 只取第一个字符。如果是ascii则只有一个字符；如果是汉字则只取了拼音首字母。
-					retuBuf.append(spell.substring(0, 1));
+					retuBuf.append(spell.charAt(0));
 				} // end of if spell == null
 			} // end of if ascii <= -20400
 		} // end of for

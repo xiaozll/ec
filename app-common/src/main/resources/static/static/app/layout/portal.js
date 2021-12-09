@@ -110,7 +110,7 @@ function tipMsg() {
         $jplayer.jPlayer('play');
     }
     var tipMessageHtml = "<span>您有新的消息，请注意查收！</span>";
-    tipMessageHtml += "<div style='margin-top: 10px;'><label><input id='tip_checkbox' type='checkbox' onclick='javascript:setTipMessage(this.checked);' ";
+    tipMessageHtml += "<div style='margin-top: 10px;'><label><input id='tip_checkbox' type='checkbox' onclick='setTipMessage(this.checked);' ";
     if (tipMessage) {
         tipMessageHtml += " checked ";
     }

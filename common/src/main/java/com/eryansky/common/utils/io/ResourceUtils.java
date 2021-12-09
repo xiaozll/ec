@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -93,7 +94,7 @@ public class ResourceUtils {
 		BufferedReader reader = null;
 		try {
 			in = new FileInputStream(resource);
-			reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
+			reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 			return IOUtils.toString(reader);
 		} catch (Exception excp) {
 			throw new RuntimeException(excp);

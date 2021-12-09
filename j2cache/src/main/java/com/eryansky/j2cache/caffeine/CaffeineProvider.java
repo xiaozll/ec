@@ -43,9 +43,9 @@ public class CaffeineProvider implements CacheProvider {
 
     private final static String PREFIX_REGION = "region.";
     private final static String DEFAULT_REGION = "default";
-    private ConcurrentHashMap<String, CaffeineCache> caches = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, CacheConfig> cacheConfigs = new ConcurrentHashMap<>();
-    private PatternMatcher patternMatcher = new AntPathMatcher();
+    private final ConcurrentHashMap<String, CaffeineCache> caches = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, CacheConfig> cacheConfigs = new ConcurrentHashMap<>();
+    private final PatternMatcher patternMatcher = new AntPathMatcher();
 
     @Override
     public String name() {

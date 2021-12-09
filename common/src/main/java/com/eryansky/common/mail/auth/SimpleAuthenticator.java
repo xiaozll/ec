@@ -16,8 +16,8 @@ import javax.mail.PasswordAuthentication;
  * @date 2015-09-14
  */
 public class SimpleAuthenticator extends Authenticator {
-	private String user;
-	private String password;
+	private final String user;
+	private final String password;
 
 	public SimpleAuthenticator(String user, String password) {
 		this.user = user;

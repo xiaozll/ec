@@ -29,9 +29,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class CaffeineCache {
 
-    private Cache<String, Object> cache;
-    private int size ;
-    private int expire ;
+    private final Cache<String, Object> cache;
+    private final int size ;
+    private final int expire ;
 
     public CaffeineCache(int size, int expire, CacheExpiredListener listener) {
         cache = Caffeine.newBuilder()

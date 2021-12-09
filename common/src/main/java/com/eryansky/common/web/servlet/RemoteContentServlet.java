@@ -55,7 +55,7 @@ public class RemoteContentServlet extends HttpServlet {
 
     private static final int POOL_SIZE = 20;
 
-    private static Logger logger = LoggerFactory.getLogger(RemoteContentServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteContentServlet.class);
 
     private static CloseableHttpClient httpClient;
 

@@ -24,7 +24,7 @@ import javax.mail.search.FlagTerm;
  */
 public class IMAPReceiver extends Receiver {
 
-	private static Logger logger = LoggerFactory.getLogger(IMAPReceiver.class);
+	private static final Logger logger = LoggerFactory.getLogger(IMAPReceiver.class);
 
 	private IMAPStore store;
 	private IMAPFolder folder;

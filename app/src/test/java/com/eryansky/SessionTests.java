@@ -27,9 +27,9 @@ public class SessionTests {
 		User user = userService.get(userId);
 		SessionInfo sessionInfo = SecurityUtils.putUserToSession("sessionId",user);
 		System.out.println(JsonMapper.toJsonString(sessionInfo));
-		System.out.println(SecurityUtils.isPermitted(userId,"sys:session:view"));;
+		System.out.println(SecurityUtils.isPermitted(userId,"sys:session:view"));
 
-	}
+    }
 
 
 

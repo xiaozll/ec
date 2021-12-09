@@ -2,8 +2,8 @@ package com.eryansky.fastweixin.message.req;
 
 public final class VideoReqMsg extends BaseReqMsg {
 
-    private String mediaId;
-    private String thumbMediaId;
+    private final String mediaId;
+    private final String thumbMediaId;
 
     public VideoReqMsg(String mediaId, String thumbMediaId) {
         super();

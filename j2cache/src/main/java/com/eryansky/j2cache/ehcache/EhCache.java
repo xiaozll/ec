@@ -33,8 +33,8 @@ import net.sf.ehcache.event.CacheEventListener;
  */
 public class EhCache implements Level1Cache, CacheEventListener {
 	
-	private net.sf.ehcache.Cache cache;
-	private CacheExpiredListener listener;
+	private final net.sf.ehcache.Cache cache;
+	private final CacheExpiredListener listener;
 
 	/**
 	 * Creates a new EhCache instance

@@ -22,7 +22,7 @@ import com.eryansky.j2cache.cache.support.util.SpringUtil;
  */
 public class SpringRedisPubSubPolicy implements ClusterPolicy {
 
-	private int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
+	private final int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
 
 	private RedisTemplate<String, Serializable> redisTemplate;
 

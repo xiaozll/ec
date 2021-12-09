@@ -34,7 +34,7 @@ public class Cryptos {
     private static final int DEFAULT_AES_KEYSIZE = 128;
     private static final int DEFAULT_IVSIZE = 16;
 
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
 
     //-- HMAC-SHA1 funciton --//
     /**

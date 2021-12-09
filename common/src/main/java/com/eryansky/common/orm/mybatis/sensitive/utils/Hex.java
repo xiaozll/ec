@@ -26,7 +26,7 @@ public class Hex {
             return null;
         }
 
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder();
         for (int j : src) {
             int v = j & 0xFF;
             String hv = Integer.toHexString(v);

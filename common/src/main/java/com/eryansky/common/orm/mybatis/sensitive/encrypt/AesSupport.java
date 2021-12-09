@@ -11,6 +11,7 @@ import org.apache.ibatis.logging.LogFactory;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
@@ -28,9 +29,9 @@ public class AesSupport implements IEncrypt {
     private static final String DEFAULT_CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
     public static final String DEFAULT_PASSWORD = "ec";
 
-    private String password;
-    private SecretKeySpec secretKeySpec;
-    private SensitiveTypeHandler sensitiveTypeHandler = SensitiveTypeRegisty.get(SensitiveType.DEFAUL);
+    private final String password;
+    private final SecretKeySpec secretKeySpec;
+    private final SensitiveTypeHandler sensitiveTypeHandler = SensitiveTypeRegisty.get(SensitiveType.DEFAUL);
 
     public AesSupport() throws NoSuchAlgorithmException {
         this.password = DEFAULT_PASSWORD;
@@ -54,7 +55,7 @@ public class AesSupport implements IEncrypt {
             Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
 
-            byte[] content = value.getBytes("UTF-8");
+            byte[] content = value.getBytes(StandardCharsets.UTF_8);
             byte[] encryptData = cipher.doFinal(content);
 
             return Hex.bytesToHexString(encryptData);
@@ -74,7 +75,7 @@ public class AesSupport implements IEncrypt {
             Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
             byte[] content = cipher.doFinal(encryptData);
-            return new String(content, "UTF-8");
+            return new String(content, StandardCharsets.UTF_8);
         } catch (Exception e) {
             log.error("AES解密时出现问题，密钥为:" + sensitiveTypeHandler.handle(password) + ",密文为：" + value);
             throw new IllegalStateException("AES解密时出现问题" + e.getMessage(), e);

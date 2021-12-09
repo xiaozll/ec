@@ -317,7 +317,7 @@ public class LoginController extends SimpleController {
 
         User user = UserUtils.getUserByLoginName(loginName);
         if(null == user){
-            logger.warn("不存在账号[{}],",new Object[]{loginName});
+            logger.warn("不存在账号[{}],", loginName);
             return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
         }
 
@@ -362,7 +362,7 @@ public class LoginController extends SimpleController {
         SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout);
         SessionInfo newSessionInfo = SecurityUtils.putUserToSession(request,user);
         userService.login(newSessionInfo.getUserId());
-        logger.info("{}用户切换账号{},IP:{}.", new Object[]{sessionInfo.getId(),loginName, SpringMVCHolder.getIp()});
+        logger.info("{}用户切换账号{},IP:{}.", sessionInfo.getId(),loginName, SpringMVCHolder.getIp());
         Map<String,Object> data = Maps.newHashMap();
         data.put("sessionInfo",newSessionInfo);
         return Result.successResult().setObj(data);

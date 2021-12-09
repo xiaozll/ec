@@ -2,9 +2,9 @@ package com.eryansky.fastweixin.message.req;
 
 public final class LocationEvent extends BaseEvent {
 
-    private double latitude;
-    private double longitude;
-    private double precision;
+    private final double latitude;
+    private final double longitude;
+    private final double precision;
 
     public LocationEvent(double latitude, double longitude, double precision) {
         super();

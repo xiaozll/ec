@@ -23,8 +23,7 @@ public class ClobSerializer extends JsonSerializer<Clob> {
 
 		@Override
 		public void serialize(Clob arg0, JsonGenerator arg1,
-				SerializerProvider arg2) throws IOException,
-				JsonProcessingException {
+				SerializerProvider arg2) throws IOException {
 			String json = ClobUtil.getString(arg0);
 			arg1.writeString(json);
 		}

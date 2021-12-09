@@ -24,7 +24,7 @@ import java.lang.reflect.Proxy;
  */
 public class SessionFactoryMethodInterceptor implements MethodInterceptor, InitializingBean {
 
-    private Logger logger = LoggerFactory.getLogger(SessionFactoryMethodInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(SessionFactoryMethodInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {

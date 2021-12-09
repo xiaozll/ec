@@ -99,7 +99,7 @@ public class UserAgentUtils {
 	 * @return
 	 */
 	public static boolean isMQQBrowser(HttpServletRequest request) {
-		return getHTTPUserAgent(request).indexOf("MQQBrowser") > 0 ? true : false;
+		return getHTTPUserAgent(request).indexOf("MQQBrowser") > 0;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class UserAgentUtils {
 	 * @return
 	 */
 	public static boolean isIE(HttpServletRequest request) {
-		return (getHTTPUserAgent(request).toLowerCase().indexOf("msie") > 0 || getHTTPUserAgent(request).toLowerCase().indexOf("rv:11.0") > 0) ? true : false;
+		return getHTTPUserAgent(request).toLowerCase().indexOf("msie") > 0 || getHTTPUserAgent(request).toLowerCase().indexOf("rv:11.0") > 0;
 	}
 	
 }

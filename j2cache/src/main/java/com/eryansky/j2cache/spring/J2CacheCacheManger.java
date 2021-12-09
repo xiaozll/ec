@@ -23,7 +23,7 @@ public class J2CacheCacheManger extends AbstractTransactionSupportingCacheManage
 	
 	private boolean dynamic = true;
 	
-	private CacheChannel cacheChannel;
+	private final CacheChannel cacheChannel;
 
 	private boolean localCache;
 	
@@ -58,7 +58,7 @@ public class J2CacheCacheManger extends AbstractTransactionSupportingCacheManage
 	
 	
 	public void setCacheNames(Collection<String> cacheNames) {
-		Set<String> newCacheNames = CollectionUtils.isEmpty(cacheNames) ? Collections.<String> emptySet()
+		Set<String> newCacheNames = CollectionUtils.isEmpty(cacheNames) ? Collections.emptySet()
 				: new HashSet<String>(cacheNames);
 		this.cacheNames = newCacheNames;
 		this.dynamic = newCacheNames.isEmpty();

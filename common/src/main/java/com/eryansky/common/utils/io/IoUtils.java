@@ -140,7 +140,7 @@ public class IoUtils extends IOUtils {
             throw new IOException("skip fail: skipped=" + Long.valueOf(skipped)+ ", start=" + Long.valueOf(start));
         }
         long bytesToRead = end - start + 1;
-        byte buffer[] = new byte[2048];
+        byte[] buffer = new byte[2048];
         int len = buffer.length;
         while ((bytesToRead > 0) && (len >= buffer.length)) {
             try {

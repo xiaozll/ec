@@ -43,7 +43,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static final String TIMEZONE = "GMT+08:00";
     public static final String T_END_TIME = "9999-12-31";
 
-	private static String[] parsePatterns = {"yyyy-MM", "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm",
+	private static final String[] parsePatterns = {"yyyy-MM", "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm",
 		"yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy-MM-dd'T'HH:mm", "yyyy年MM月dd日", "yyyy年MM月"};
 
 	/**
@@ -251,7 +251,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         gc.add(2, 1); // 2表示月的加减，年代表1依次类推(周,天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -294,7 +294,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         gc.add(2, -1); // 2表示月的加减，年代表1依次类推(周,天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -324,7 +324,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         gc.add(5, -1); // 2表示月的加减，年代表1依次类推(３周....5天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -354,7 +354,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         gc.add(5, 1); // 2表示月的加减，年代表1依次类推(３周....5天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -367,7 +367,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static String giveMonthFist(String strdate) {
 
         // 以“－”为分隔符拆分字符串
-        String strArray[] = strdate.split("-");
+        String[] strArray = strdate.split("-");
 
         String tempyear = strArray[0]; // 得到字符串中的年
 
@@ -419,7 +419,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String giveyrmo(String yrmoday) {
         // 以“－”为分隔符拆分字符串
-        String strArray[] = yrmoday.split("-");
+        String[] strArray = yrmoday.split("-");
 
         String tempyear = strArray[0]; // 得到字符串中的年
 
@@ -483,7 +483,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Integer retrunmo(String yrmoday) {
         // 以“－”为分隔符拆分字符串
-        String strArray[] = yrmoday.split("-");
+        String[] strArray = yrmoday.split("-");
 
         String tempmonth = strArray[1]; // 得到字符串中的月
 
@@ -495,7 +495,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Integer retrunyr(String yrmoday) {
         // 以“－”为分隔符拆分字符串
-        String strArray[] = yrmoday.split("-");
+        String[] strArray = yrmoday.split("-");
 
         String tempmonth = strArray[0]; // 得到字符串中的月
 
@@ -510,12 +510,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static boolean boolcompara(String startdate, String enddate)
             throws ParseException {
 
-        if (DateFormat.getDateInstance().parse(startdate)
-                .compareTo(DateFormat.getDateInstance().parse(startdate)) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return DateFormat.getDateInstance().parse(startdate)
+                .compareTo(DateFormat.getDateInstance().parse(startdate)) >= 0;
     }
 
     /**
@@ -614,7 +610,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             // 系统默认月份加一
             longCalendar += 100L;
             // 创建上初始化上下文环境并返回
-            return String.valueOf(strYear + "-" + strMonth + "-" + strDate);
+            return strYear + "-" + strMonth + "-" + strDate;
         } catch (Exception Exp) {
             return "2008-08-08";
         }
@@ -1184,22 +1180,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 longRZ = getNormalDay(longNF, longYF, longRZ);
 
             if (longYF < 10)
-                strYF = "0" + String.valueOf(longYF);
+                strYF = "0" + longYF;
             else
                 strYF = String.valueOf(longYF);
 
             if (longRZ < 10)
-                strRZ = "0" + String.valueOf(longRZ);
+                strRZ = "0" + longRZ;
             else
                 strRZ = String.valueOf(longRZ);
 
             // 判断是８位还是１４位
             if (String.valueOf(longCalendar).length() < 14) {
-                longDate = Long.parseLong(String.valueOf(longNF) + strYF
+                longDate = Long.parseLong(longNF + strYF
                         + strRZ);
             } else {
                 longDate = Long
-                        .parseLong(String.valueOf(longNF) + strYF + strRZ
+                        .parseLong(longNF + strYF + strRZ
                                 + String.valueOf(longCalendar).substring(8, 14));
             }
             // 返回日期

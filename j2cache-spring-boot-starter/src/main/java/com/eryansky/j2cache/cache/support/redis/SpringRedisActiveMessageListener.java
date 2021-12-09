@@ -15,11 +15,11 @@ import com.eryansky.j2cache.cluster.ClusterPolicy;
  */
 public class SpringRedisActiveMessageListener implements MessageListener {
 
-	private static Logger logger = LoggerFactory.getLogger(SpringRedisActiveMessageListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(SpringRedisActiveMessageListener.class);
 
-	private ClusterPolicy clusterPolicy;
+	private final ClusterPolicy clusterPolicy;
 
-	private String namespace;
+	private final String namespace;
 	
 	SpringRedisActiveMessageListener(ClusterPolicy clusterPolicy, String namespace) {
 		this.clusterPolicy = clusterPolicy;

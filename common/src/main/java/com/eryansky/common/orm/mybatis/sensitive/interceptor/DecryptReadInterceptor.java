@@ -35,7 +35,7 @@ public class DecryptReadInterceptor implements Interceptor {
 
     private static final String MAPPED_STATEMENT = "mappedStatement";
 
-    private IEncrypt IEncrypt;
+    private final IEncrypt IEncrypt;
 
     public DecryptReadInterceptor() throws NoSuchAlgorithmException {
         this.IEncrypt = new AesSupport();

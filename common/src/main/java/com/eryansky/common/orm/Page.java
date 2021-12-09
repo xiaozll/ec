@@ -59,9 +59,9 @@ public class Page<T> implements Serializable{
 
 
 	private int length = 8;// 显示页面长度
-	private int slider = 1;// 前后显示页面长度
+	private final int slider = 1;// 前后显示页面长度
 
-	private String funcName = "page"; // 设置点击页码调用的js函数名称，默认为page，在一页有多个分页对象时使用。
+	private final String funcName = "page"; // 设置点击页码调用的js函数名称，默认为page，在一页有多个分页对象时使用。
 
 	private String funcParam = ""; // 函数的附加参数，第三个参数值。
 

@@ -20,7 +20,7 @@ public class J2CacheAccessTokenCacheService implements IAccessTokenCacheService 
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     private static final class Static {
-        private static CacheChannel cache = J2Cache.getChannel();
+        private static final CacheChannel cache = J2Cache.getChannel();
     }
 
     public J2CacheAccessTokenCacheService() {

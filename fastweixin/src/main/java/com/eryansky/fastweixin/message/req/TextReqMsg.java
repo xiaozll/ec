@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.message.req;
 
 public final class TextReqMsg extends BaseReqMsg {
 
-    private String content;
+    private final String content;
 
     public TextReqMsg(String content) {
         super();

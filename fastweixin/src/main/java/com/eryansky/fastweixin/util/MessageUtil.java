@@ -16,6 +16,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +79,7 @@ public final class MessageUtil {
                 String encrypt = nodelist1.item(0).getTextContent();
                 String fromXML = String.format(FORMAT, encrypt);
                 String message = pc.decryptMsg(msgSignature, timeStamp, nonce, fromXML);
-                inputStream = new ByteArrayInputStream(message.getBytes("UTF-8"));
+                inputStream = new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8));
             }
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader reader = factory.createXMLEventReader(inputStream);

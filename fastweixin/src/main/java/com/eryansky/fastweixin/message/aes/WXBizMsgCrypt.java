@@ -21,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
@@ -42,7 +43,7 @@ import java.util.Random;
  */
 public class WXBizMsgCrypt implements Closeable {
 
-    static Charset CHARSET = Charset.forName("utf-8");
+    static Charset CHARSET = StandardCharsets.UTF_8;
     Base64 base64 = new Base64();
     byte[] aesKey;
     String token;

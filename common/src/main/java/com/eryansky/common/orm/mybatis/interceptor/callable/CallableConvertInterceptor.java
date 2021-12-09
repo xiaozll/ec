@@ -29,7 +29,7 @@ import java.util.*;
         args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class CallableConvertInterceptor implements Interceptor {
 
-    private static Logger logger = LoggerFactory.getLogger(CallableConvertInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(CallableConvertInterceptor.class);
 
     static int MAPPED_STATEMENT_INDEX = 0;
     static int PARAMETER_INDEX = 1;

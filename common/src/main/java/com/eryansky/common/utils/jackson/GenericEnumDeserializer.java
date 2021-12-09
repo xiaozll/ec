@@ -31,7 +31,7 @@ public class GenericEnumDeserializer<T extends Enum<T> & IGenericEnum<T>> extend
     }
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String value = p.getText();
         try {
             return GenericEnumUtils.getByValue((Class<T>) type.getRawClass(), value);

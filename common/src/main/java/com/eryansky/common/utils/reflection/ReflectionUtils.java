@@ -39,7 +39,7 @@ public class ReflectionUtils {
 
     private static final String CGLIB_CLASS_SEPARATOR = "$$";
 
-    private static Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
 
 
     /**
@@ -370,7 +370,7 @@ public class ReflectionUtils {
      */
     public static <T> T getAnnotation(Object target, Class annotationClass) {
         Assert.notNull(target, "target不能为空");
-        return (T) getAnnotation(target.getClass(), annotationClass);
+        return getAnnotation(target.getClass(), annotationClass);
     }
 
     /**
@@ -448,7 +448,7 @@ public class ReflectionUtils {
         for (Class<?> superClass = targetClass.getSuperclass(); superClass == null
                 || superClass == Object.class; superClass = superClass
                 .getSuperclass()) {
-            List<T> temp = (List<T>) getAnnotations(superClass, annotationClass);
+            List<T> temp = getAnnotations(superClass, annotationClass);
             if (CollectionUtils.isNotEmpty(temp)) {
                 CollectionUtils.addAll(result, temp.iterator());
             }

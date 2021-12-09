@@ -19,8 +19,8 @@ import java.util.UUID;
  */
 public class Identities {
 
-	private static SecureRandom random = new SecureRandom();
-	private static SnowFlake snowFlake = SnowFlake.getInstance();
+	private static final SecureRandom random = new SecureRandom();
+	private static final SnowFlake snowFlake = SnowFlake.getInstance();
 
 	private Identities() {
 	}
@@ -97,7 +97,7 @@ public class Identities {
 			String prevNum = "000";
 			if (lastNotNumIndex != -1){
 				prefix = str.substring(0, lastNotNumIndex);
-				prevNum = str.substring(lastNotNumIndex, str.length());
+				prevNum = str.substring(lastNotNumIndex);
 			}
 			String nextNum = new BigDecimal(prevNum).add(BigDecimal.ONE).toString();
 			str = prefix + StringUtils.leftPad(nextNum, prevNum.length(), "0");

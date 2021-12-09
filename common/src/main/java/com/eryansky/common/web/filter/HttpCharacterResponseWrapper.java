@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 public class HttpCharacterResponseWrapper extends HttpServletResponseWrapper {
 
-	private CharArrayWriter charArrayWriter = new CharArrayWriter();
+	private final CharArrayWriter charArrayWriter = new CharArrayWriter();
 
 	public HttpCharacterResponseWrapper(HttpServletResponse response) {
 		super(response);

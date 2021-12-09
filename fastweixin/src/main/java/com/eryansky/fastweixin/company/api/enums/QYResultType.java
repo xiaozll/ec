@@ -780,12 +780,12 @@ public enum QYResultType {
     /**
      * 错误码
      */
-    private Integer code;
+    private final Integer code;
 
     /**
      * 结果描述
      */
-    private String description;
+    private final String description;
 
     QYResultType(Integer code, String description){
         this.code = code;

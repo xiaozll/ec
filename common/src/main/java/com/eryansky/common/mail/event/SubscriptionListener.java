@@ -23,5 +23,5 @@ public interface SubscriptionListener {
 	 * 
 	 * @param mailList 被推送给订阅者的电子邮件列表
 	 */
-	public void onDeliver(List<Mail> mailList);
+    void onDeliver(List<Mail> mailList);
 }

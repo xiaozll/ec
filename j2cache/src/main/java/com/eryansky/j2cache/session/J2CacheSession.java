@@ -35,7 +35,7 @@ public class J2CacheSession implements HttpSession {
     private boolean newSession = true;
 
     private final ServletContext servletContext;
-    private CacheFacade cache;
+    private final CacheFacade cache;
 
     private volatile boolean invalid;
 

@@ -178,7 +178,7 @@ public abstract class AbstractBaseEntity<T, PK extends Serializable> implements 
             return false;
         }
         AbstractBaseEntity that = (AbstractBaseEntity) obj;
-        return null == this.getId() ? false : this.getId().equals(that.getId());
+        return null != this.getId() && this.getId().equals(that.getId());
     }
 
     @Override

@@ -49,7 +49,7 @@ public class OauthAPI extends BaseAPI {
         StringBuilder stringBuilder = new StringBuilder("https://open.weixin.qq.com/connect/oauth2/authorize?");
         stringBuilder.append("appid=").append(this.config.getAppid())
                 .append("&redirect_uri=").append(url)
-                .append("&response_type=code&scope=").append(scope.toString())
+                .append("&response_type=code&scope=").append(scope)
                 .append("&state=")
                 .append(userState)
                 .append("#wechat_redirect");

@@ -83,7 +83,7 @@
     <div id="messageBox" class="alert alert-error hide"><button data-dismiss="alert" class="close">×</button>
         <label id="loginError" class="error"></label>
     </div>
-    <div id="messageBox2" class="alert alert-error hide"><button data-dismiss="alert" class="close" onclick="javascript:$('#messageBox2').addClass('hide');">×</button>
+    <div id="messageBox2" class="alert alert-error hide"><button data-dismiss="alert" class="close" onclick="$('#messageBox2').addClass('hide');">×</button>
         <label id="loginError2" class="error"></label>
     </div>
     <div id="login-wraper">

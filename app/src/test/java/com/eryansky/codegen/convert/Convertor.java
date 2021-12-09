@@ -15,5 +15,5 @@ public interface Convertor {
 	 *            TableName,ColumnName
 	 * @return Entity Name,Entity Name Field
 	 */
-	public String convert(String jdbcType);
+    String convert(String jdbcType);
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class SNGeneratorEngine {
 
-    private static Map<String, IGenerator> generatorMap = new HashMap<String, IGenerator>();
+    private static Map<String, IGenerator> generatorMap = new HashMap<>();
     /**
      * 流水号生成规则
      */

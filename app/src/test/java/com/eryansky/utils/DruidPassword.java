@@ -3,7 +3,7 @@ package com.eryansky.utils;
 import com.eryansky.common.utils.encode.Encryption;
 
 /**
- * @author 温春平 jfwencp@jx.tobacco.gov.cn
+ * @author
  * @date 2019-08-07 
  */
 public class DruidPassword {

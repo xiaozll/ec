@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2014-2019 http://www.jfit.com.cn
- * <p>
- * 江西省锦峰软件科技有限公司
- */
 package com.eryansky.utils;
 
 import com.eryansky.common.utils.encode.Encryption;

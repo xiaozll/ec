@@ -94,7 +94,7 @@ public class SysConstants {
         //获取配置文件中的已经加密的密码
         String ePassword = getAppConfig().getProperty("spring.datasource.druid.connect-properties.password","");
         String cKey = getAppConfig().getProperty("spring.datasource.druid.connect-properties.key","");
-        String cdecrypt = getAppConfig().getProperty("spring.datasource.druid.connect-properties.decrypt","false");
+        String cdecrypt = getAppConfig().getProperty("spring.datasource.druid.connect-properties.config.decrypt","false");
         boolean decrypt = Boolean.parseBoolean(cdecrypt);
         if (decrypt && StringUtils.isNotEmpty(ePassword)) {
             try {

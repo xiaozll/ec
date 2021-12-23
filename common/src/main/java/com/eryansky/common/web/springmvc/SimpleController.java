@@ -28,6 +28,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
@@ -233,12 +234,12 @@ public abstract class SimpleController{
      * @return
      */
     protected String renderString(HttpServletResponse response, String string, String type) {
-        try {
+        try (PrintWriter writer = response.getWriter()){
             response.reset();
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setContentType(type);
             response.setCharacterEncoding(WebUtils.DEFAULT_ENCODING);
-            response.getWriter().print(string);
+            writer.print(string);
             return null;
         } catch (IOException e) {
             return null;

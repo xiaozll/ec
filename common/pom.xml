@@ -28,7 +28,7 @@
         <commons-codec.version>1.15</commons-codec.version>
         <commons-logging.version>1.2</commons-logging.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <jsqlparser.version>4.2</jsqlparser.version>
+        <jsqlparser.version>4.3</jsqlparser.version>
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <slf4j.version>1.7.25</slf4j.version>
 
@@ -210,13 +210,13 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.1.0</version>
+            <version>7.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mybatis.dynamic-sql</groupId>
             <artifactId>mybatis-dynamic-sql</artifactId>
-            <version>1.3.0</version>
+            <version>1.3.1</version>
         </dependency>
     </dependencies>
 

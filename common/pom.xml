@@ -31,7 +31,6 @@
         <jsqlparser.version>4.2</jsqlparser.version>
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
 
         <guava.version>31.0.1-jre</guava.version>
         <joda-time.version>2.10.10</joda-time.version>
@@ -115,16 +114,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
         </dependency>
 
         <dependency>

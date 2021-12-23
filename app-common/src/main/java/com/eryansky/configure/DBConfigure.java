@@ -65,7 +65,7 @@ public class DBConfigure {
             return null;
         }
         Properties properties = new Properties();
-        mybatisProperties.forEach(properties::put);
+        properties.putAll(mybatisProperties);
         return properties;
     }
 

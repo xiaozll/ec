@@ -1,4 +1,18 @@
-﻿20211129
+﻿20211223
+1、升级Spring Boot 2.5.8
+2、application.properties调整配置
+旧配置：
+spring.quartz.properties.org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+新配置
+spring.quartz.properties.org.quartz.jobStore.class = org.springframework.scheduling.quartz.LocalDataSourceJobStore
+3、log4j2升级2.17.0
+4、其它升级
+tomcat 9.5.54->9.5.56
+jackson 2.12.5->2.12.6
+logback 6.3.0->7.0.1
+fastjson 1.2.78->1.2.79
+
+20211129
 1、动态加密登录密码
 2、XSS防注入
 

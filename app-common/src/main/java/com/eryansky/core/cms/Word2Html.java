@@ -20,6 +20,7 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.w3c.dom.Document;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -199,6 +200,8 @@ public class Word2Html {
         StreamResult streamResult = new StreamResult(out);
 
         TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         Transformer serializer = tf.newTransformer();
         serializer.setOutputProperty(OutputKeys.ENCODING, ENCODING_UTF8);
         serializer.setOutputProperty(OutputKeys.INDENT, "yes");////是否添加空格

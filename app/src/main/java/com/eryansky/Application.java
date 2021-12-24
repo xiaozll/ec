@@ -27,7 +27,7 @@ import javax.servlet.ServletException;
         },
         exclude = {MybatisAutoConfiguration.class,
                 FreeMarkerAutoConfiguration.class,
-                DataSourceAutoConfiguration.class,
+//                DataSourceAutoConfiguration.class,
 //                DruidDataSourceAutoConfigure.class,
                 DataSourceTransactionManagerAutoConfiguration.class,
                 LiquibaseAutoConfiguration.class

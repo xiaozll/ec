@@ -33,9 +33,9 @@
         <slf4j.version>1.7.32</slf4j.version>
 
         <guava.version>31.0.1-jre</guava.version>
-        <joda-time.version>2.10.10</joda-time.version>
+        <joda-time.version>2.10.13</joda-time.version>
         <dozer.version>5.5.1</dozer.version>
-        <freemarker.version>2.3.28</freemarker.version>
+        <freemarker.version>2.3.31</freemarker.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

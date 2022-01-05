@@ -175,14 +175,14 @@ public class SystemSerialNumberUtils {
         app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
         String _moduleCode = null == customCategory ? moduleCode:moduleCode+"_"+customCategory;
         String queueRegion = getQueueRegion(app,_moduleCode);
-        String lockKey = getLockRegion(app,moduleCode);
+        String lockKey = getLockRegion(app,moduleCode);//单组序列号
         CacheChannel cacheChannel = CacheUtils.getCacheChannel();
         synchronized (lockKey.intern()) {
             String value = cacheChannel.queuePop(queueRegion);
             if (value != null) {
                 return value;
             }
-            String lockRegion = getLockRegion(app,_moduleCode);
+            String lockRegion = getLockRegion(app,_moduleCode);//单组原子序列号
             String finalApp = app;
             boolean flag = cacheChannel.lock(lockRegion, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
                 @Override
@@ -201,7 +201,7 @@ public class SystemSerialNumberUtils {
                 }
             });
             if (!flag) {
-                logger.error("生成序列号失败，{}",new Object[]{queueRegion});
+                logger.error("生成序列号失败，{}", queueRegion);
                 return null;
             }
             value = cacheChannel.queuePop(queueRegion);

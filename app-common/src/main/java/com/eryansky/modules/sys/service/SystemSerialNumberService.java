@@ -111,7 +111,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL : SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_" + customCategory;
         SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app : VersionLog.DEFAULT_ID, moduleCode);
         /** 预生成数量 */
-        int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;
+        int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.parseInt(entity.getPreMaxNum()) : 1;
         /** 数据库存储的当前最大序列号 **/
         if (null == entity.getMaxSerial()) {
             entity.setMaxSerial(new MaxSerial());
@@ -144,7 +144,10 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         entity.getMaxSerial().addIfNotExist(maxSerialItem.getKey(), maxSerialItem.getValue());
         entity.getMaxSerial().update(maxSerialItem.getKey(), maxSerialItem.getValue());
         entity.setUpdateTime(Calendar.getInstance().getTime());
-        updateByVersion(entity);
+        int result = dao.updateByVersion(entity);
+        if (result == 0) {
+            throw new ServiceException("乐观锁更新失败," + entity.toString());
+        }
         return resultList;
     }
 

@@ -21,8 +21,9 @@ import com.eryansky.modules.sys.sn.MaxSerial;
 public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
     public static final String DEFAULT_ID = "1";
-    public static final String QUEUE_KEY = "system_serial_queue";
-    public static final String LOCK_KEY = "system_serial_lock";
+    public static final String QUEUE_KEY = "queue_system_serial";
+    public static final String LOCK_KEY = "lock_system_serial";
+    public static final String LOCK_ITEM_KEY = "lock_system_serial_item";
     public static final String DEFAULT_KEY_MAX_SERIAL = "maxSerial";
     /**
      * APP标识

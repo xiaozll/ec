@@ -8,7 +8,9 @@ package com.eryansky.modules.sys.service;
 import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.DateUtils;
+import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.modules.sys._enum.ResetType;
@@ -25,6 +27,8 @@ import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.*;
@@ -106,6 +110,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @param moduleCode 模块code
      * @return
      */
+    @Transactional(value = DBConfigure.TX_MANAGER_NAME,propagation = Propagation.REQUIRES_NEW)//开启新事务 防止事务嵌套传递
     public List<String> generatePrepareSerialNumbers(String app, String moduleCode, String customCategory, Map<String, String> params) {
         String _moduleCode = null == customCategory ? moduleCode : moduleCode + "_" + customCategory;
         String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL : SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_" + customCategory;
@@ -148,6 +153,11 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         if (result == 0) {
             throw new ServiceException("乐观锁更新失败," + entity.toString());
         }
+        boolean flag = true;
+        if(flag){
+//            throw new ServiceException("1");
+        }
+        ThreadUtils.sleep(Identities.randomInt(1,10)*100L);
         return resultList;
     }
 

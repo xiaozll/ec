@@ -1012,7 +1012,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			return level2Cache.lock(frequency,timeoutInSecond, keyExpireSeconds,lockCallback);
 		}else{
 			ReentrantLock lock  = mLockMap.computeIfAbsent(region, k -> new ReentrantLock());
-			int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
+			int retryCount = Float.valueOf(timeoutInSecond * 1000 / (float)frequency.getRetryInterval()).intValue();
 
 			for (int i = 0; i < retryCount; i++) {
 				boolean flag = lock.tryLock();

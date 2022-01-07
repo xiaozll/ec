@@ -14,6 +14,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -46,6 +48,9 @@ import java.util.Properties;
 @Configuration
 public class DBConfigure {
 
+    private static Logger logger = LoggerFactory.getLogger(DBConfigure.class);
+
+    public static final String TX_MANAGER_NAME = "transactionManager";
 
     // 数据源
     @Bean(name = "dataSource")
@@ -115,7 +120,7 @@ public class DBConfigure {
     }
 
     @Order(2)
-    @Bean("txManager")
+    @Bean(TX_MANAGER_NAME)
     public TransactionManager annotationDrivenTransactionManager(@Qualifier("dataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
@@ -126,7 +131,7 @@ public class DBConfigure {
 
     // 事务的实现Advice
     @Bean
-    public TransactionInterceptor txAdvice(@Qualifier("txManager") TransactionManager m) {
+    public TransactionInterceptor txAdvice(@Qualifier(TX_MANAGER_NAME) TransactionManager m) {
         NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
         RuleBasedTransactionAttribute readOnlyTx = new RuleBasedTransactionAttribute();
         readOnlyTx.setReadOnly(true);
@@ -155,12 +160,16 @@ public class DBConfigure {
     public Advisor txAdviceAdvisor(@Qualifier("txAdvice") TransactionInterceptor txAdvice,
                                    @Value("${spring.dataSource.aopPointcutExpression}")String aopPointcutExpression) {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        StringBuilder sb = new StringBuilder(AOP_POINTCUT_EXPRESSION);
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        sb.append(AOP_POINTCUT_EXPRESSION);
         if(StringUtils.isNotBlank(aopPointcutExpression)){
             sb.append(StringUtils.startsWith(aopPointcutExpression,"||") ? aopPointcutExpression :" || "+ aopPointcutExpression);
         }
-
+        sb.append(" && !@annotation(org.springframework.transaction.annotation.Transactional)");
+        sb.append(")");
         pointcut.setExpression(sb.toString());
+        logger.debug("aop expression:{}",sb);
         return new DefaultPointcutAdvisor(pointcut, txAdvice);
     }
 }

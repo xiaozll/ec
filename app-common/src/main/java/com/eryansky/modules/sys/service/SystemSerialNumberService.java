@@ -12,6 +12,7 @@ import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.configure.DBConfigure;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.dao.SystemSerialNumberDao;
@@ -153,11 +154,6 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         if (result == 0) {
             throw new ServiceException("乐观锁更新失败," + entity.toString());
         }
-        boolean flag = true;
-        if(flag){
-//            throw new ServiceException("1");
-        }
-        ThreadUtils.sleep(Identities.randomInt(1,10)*100L);
         return resultList;
     }
 

@@ -1,9 +1,12 @@
 package com.eryansky.modules.sys._enum;
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.common.orm._enum.IGenericEnum;
+
 /**
  *  任务状态
  */
-public enum JobState {
+public enum JobState implements IGenericEnum<JobState> {
 
 	WAITING("WAITING", "等待"),
 	PAUSED("PAUSED", "暂停"),
@@ -43,27 +46,11 @@ public enum JobState {
 
 
 	public static JobState getByValue(String value) {
-		if (null == value) {
-			return null;
-		}
-		for (JobState _enum : JobState.values()) {
-			if (value.equals(_enum.getValue())) {
-				return _enum;
-			}
-		}
-		return null;
+		return GenericEnumUtils.getByValue(JobState.class,value);
 	}
 
 	public static JobState getByDescription(String description) {
-		if (null == description) {
-			return null;
-		}
-		for (JobState _enum : JobState.values()) {
-			if (description.equals(_enum.getDescription())) {
-				return _enum;
-			}
-		}
-		return null;
+		return GenericEnumUtils.getByDescription(JobState.class,description);
 	}
 
 }

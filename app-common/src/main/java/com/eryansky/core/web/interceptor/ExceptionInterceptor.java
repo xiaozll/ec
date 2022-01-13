@@ -115,7 +115,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
 //        return  new ModelAndView("error-business", model);
 
         //异步方式返回异常信息
-        if(StringUtils.startsWith(requestUrl, request.getContextPath()+"/rest")){
+        if(StringUtils.startsWith(requestUrl, request.getContextPath()+"/rest") || WebUtils.isAjaxRequest(request)){
             result.setCode(Result.ERROR_API);
             WebUtils.renderJson(response, result);
         }

@@ -54,12 +54,12 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20211228.03</ec-common.version>
-        <ec-app-common.version>4.2.20211228.03</ec-app-common.version>
-        <ec-client-common.version>4.2.20211228.03</ec-client-common.version>
-        <ec-j2cache.version>4.2.20211228.03</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20211228.03</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20211228.03</ec-fastweixin.version>
+        <ec-common.version>4.2.20211228.04</ec-common.version>
+        <ec-app-common.version>4.2.20211228.04</ec-app-common.version>
+        <ec-client-common.version>4.2.20211228.04</ec-client-common.version>
+        <ec-j2cache.version>4.2.20211228.04</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20211228.04</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20211228.04</ec-fastweixin.version>
 
         <jackson.version>2.13.1</jackson.version>
         <springfox.version>3.0.0</springfox.version>
@@ -268,6 +268,10 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

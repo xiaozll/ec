@@ -36,7 +36,7 @@ public class AesSupport implements IEncrypt {
     /**
      * 密钥, 256位32个字节
      */
-    public static final String DEFAULT_PASSWORD = "0~!@#$%^&*9";
+    public static final String DEFAULT_PASSWORD = "ec";
 
     private String password;
     private final SensitiveTypeHandler sensitiveTypeHandler = SensitiveTypeRegisty.get(SensitiveType.DEFAUL);

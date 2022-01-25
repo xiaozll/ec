@@ -11,6 +11,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
@@ -27,7 +28,7 @@ import java.util.Arrays;
 public class Cryptos {
 
     private static final String AES = "AES";
-    private static final String AES_CBC = "AES/CBC/PKCS5Padding";
+    private static final String AES_CBC = "AES/GCM/NoPadding";
     private static final String HMACSHA1 = "HmacSHA1";
 
     private static final int DEFAULT_HMACSHA1_KEYSIZE = 160; //RFC2401
@@ -35,7 +36,20 @@ public class Cryptos {
     private static final int DEFAULT_IVSIZE = 16;
 
     private static final SecureRandom random = new SecureRandom();
+    /**
+     * 初始向量IV, 初始向量IV的长度规定为128位16个字节, 初始向量的来源为随机生成.
+     */
+    private static GCMParameterSpec gcMParameterSpec;
+    static {
+        byte[] bytesIV = new byte[16];
+        random.nextBytes(bytesIV);
+        gcMParameterSpec = new GCMParameterSpec(128, bytesIV);
+        java.security.Security.setProperty("crypto.policy", "unlimited");
+    }
 
+    private Cryptos(){
+
+    }
     //-- HMAC-SHA1 funciton --//
     /**
      * 使用HMAC-SHA1进行消息签名, 返回字节数组,长度为20字节.
@@ -92,16 +106,6 @@ public class Cryptos {
         return aes(input, key, Cipher.ENCRYPT_MODE);
     }
 
-    /**
-     * 使用AES加密原始字符串.
-     * 
-     * @param input 原始输入字符数组
-     * @param key 符合AES要求的密钥
-     * @param iv 初始向量
-     */
-    public static byte[] aesEncrypt(byte[] input, byte[] key, byte[] iv) {
-        return aes(input, key, iv, Cipher.ENCRYPT_MODE);
-    }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
@@ -115,18 +119,6 @@ public class Cryptos {
     }
 
     /**
-     * 使用AES解密字符串, 返回原始字符串.
-     * 
-     * @param input Hex编码的加密字符串
-     * @param key 符合AES要求的密钥
-     * @param iv 初始向量
-     */
-    public static String aesDecrypt(byte[] input, byte[] key, byte[] iv) {
-        byte[] decryptResult = aes(input, key, iv, Cipher.DECRYPT_MODE);
-        return new String(decryptResult);
-    }
-
-    /**
      * 使用AES加密或解密无编码的原始字节数组, 返回无编码的字节数组结果.
      * 
      * @param input 原始字节数组
@@ -136,28 +128,8 @@ public class Cryptos {
     private static byte[] aes(byte[] input, byte[] key, int mode) {
         try {
             SecretKey secretKey = new SecretKeySpec(key, AES);
-            Cipher cipher = Cipher.getInstance(AES);
-            cipher.init(mode, secretKey);
-            return cipher.doFinal(input);
-        } catch (GeneralSecurityException e) {
-            throw Exceptions.unchecked(e);
-        }
-    }
-
-    /**
-     * 使用AES加密或解密无编码的原始字节数组, 返回无编码的字节数组结果.
-     * 
-     * @param input 原始字节数组
-     * @param key 符合AES要求的密钥
-     * @param iv 初始向量
-     * @param mode Cipher.ENCRYPT_MODE 或 Cipher.DECRYPT_MODE
-     */
-    private static byte[] aes(byte[] input, byte[] key, byte[] iv, int mode) {
-        try {
-            SecretKey secretKey = new SecretKeySpec(key, AES);
-            IvParameterSpec ivSpec = new IvParameterSpec(iv);
             Cipher cipher = Cipher.getInstance(AES_CBC);
-            cipher.init(mode, secretKey, ivSpec);
+            cipher.init(mode, secretKey, gcMParameterSpec);
             return cipher.doFinal(input);
         } catch (GeneralSecurityException e) {
             throw Exceptions.unchecked(e);

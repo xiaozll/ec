@@ -28,6 +28,8 @@ public class Digests {
 
     private static final SecureRandom random = new SecureRandom();
 
+    private Digests(){}
+
     /**
      * 对输入字符串进行sha1散列.
      */

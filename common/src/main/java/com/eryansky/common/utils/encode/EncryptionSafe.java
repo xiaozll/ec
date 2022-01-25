@@ -6,18 +6,19 @@
 package com.eryansky.common.utils.encode;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.security.SecureRandom;
 
 /**
  * DES对称加密/解密工具类.
  * <br>加密加密字符串采用DEFAULT_CHARSET编码（UTF-8）.
- * @see  EncryptionSafe
+ *
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2011-12-27 上午9:48:31
  */
-@Deprecated
-public class Encryption {
+public class EncryptionSafe {
     /**
      * 密钥
      */
@@ -26,6 +27,17 @@ public class Encryption {
      * 编码方式 默认:UTF-8
      */
     public static final String DEFAULT_CHARSET = "UTF-8";
+    /**
+     * 初始向量IV, 初始向量IV的长度规定为128位16个字节, 初始向量的来源为随机生成.
+     */
+    private static GCMParameterSpec gcMParameterSpec;
+    static {
+        SecureRandom random = new SecureRandom();
+        byte[] bytesIV = new byte[16];
+        random.nextBytes(bytesIV);
+        gcMParameterSpec = new GCMParameterSpec(128, bytesIV);
+        java.security.Security.setProperty("crypto.policy", "unlimited");
+    }
 
     /**
      * 将byte数组转换为表示16进制值的字符串， 如：byte[]{8,18}转换为：0813， 和public static byte[]
@@ -35,10 +47,10 @@ public class Encryption {
      * @return 转换后的字符串
      * @throws Exception 本方法不处理任何异常，所有异常全部抛出
      */
-    private static String byteArr2HexStr(byte[] arrB) throws Exception {
+    private static String byteArr2HexStr(byte[] arrB) {
         int iLen = arrB.length;
         // 每个byte用两个字符才能表示，所以字符串的长度是数组长度的两倍
-        StringBuffer sb = new StringBuffer(iLen * 2);
+        StringBuilder sb = new StringBuilder(iLen * 2);
         for (int i = 0; i < iLen; i++) {
             int intTmp = arrB[i];
             // 把负数转换为正数
@@ -62,7 +74,7 @@ public class Encryption {
      * @return 转换后的byte数组
      * @throws Exception 本方法不处理任何异常，所有异常全部抛出
      */
-    private static byte[] hexStr2ByteArr(String strIn) throws Exception {
+    private static byte[] hexStr2ByteArr(String strIn) {
         byte[] arrB = strIn.getBytes();
         int iLen = arrB.length;
 
@@ -96,8 +108,8 @@ public class Encryption {
      */
     public static byte[] encrypt(byte[] arrB, String ketStr) throws Exception {
         Key key = getKey(ketStr.getBytes());
-        Cipher cipher = Cipher.getInstance("DES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, key,gcMParameterSpec);
         return cipher.doFinal(arrB);
     }
 
@@ -148,8 +160,8 @@ public class Encryption {
      */
     public static byte[] decrypt(byte[] arrB, String keyStr) throws Exception {
         Key key = getKey(keyStr.getBytes());
-        Cipher cipher = Cipher.getInstance("DES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.DECRYPT_MODE, key,gcMParameterSpec);
         return cipher.doFinal(arrB);
     }
 
@@ -183,9 +195,9 @@ public class Encryption {
      * @return 生成的密钥
      * @throws Exception
      */
-    private static Key getKey(byte[] arrBTmp) throws Exception {
+    private static Key getKey(byte[] arrBTmp) {
         // 创建一个空的8位字节数组（默认值为0）
-        byte[] arrB = new byte[8];
+        byte[] arrB = new byte[16];
 
         // 将原始字节数组转换为8位
         for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
@@ -193,17 +205,16 @@ public class Encryption {
         }
 
         // 生成密钥
-        Key key = new SecretKeySpec(arrB, "DES");
-
+        Key key = new SecretKeySpec(arrB, "AES");
         return key;
     }
 
     // 测试
     public static void main(String[] args) throws Exception {
         String str = "中国";
-        String d = Encryption.encrypt(str);//加密字符串
+        String d = EncryptionSafe.encrypt(str);//加密字符串
 
-        String e = Encryption.decrypt(d);//解密字符串
+        String e = EncryptionSafe.decrypt(d);//解密字符串
 
         System.out.println("Encrypt:" + d + " 字节大小：" + d.getBytes().length);
         System.out.println("Dncrypt:" + e + " 字节大小：" + e.getBytes().length);

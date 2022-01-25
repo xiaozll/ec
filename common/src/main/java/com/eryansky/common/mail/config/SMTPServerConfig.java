@@ -34,6 +34,7 @@ public class SMTPServerConfig extends ServerConfig {
 				properties.put("mail.smtp.ssl.enable", "true");
 				properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 				properties.put("mail.smtp.socketFactory.fallback", "false");
+				properties.put("mail.smtp.ssl.checkserveridentity", true); // Compliant
 				break;
 		}
 

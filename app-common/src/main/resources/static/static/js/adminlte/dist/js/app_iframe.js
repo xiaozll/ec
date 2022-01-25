@@ -2462,7 +2462,7 @@ $(function () {
                     var badge = $("<span></span>");
                     // <span class="badge badge-success">1</span>
                     if (item.tip != null && item.tip > 0) {
-                        badge.addClass("label").addClass("label-success").text(item.tip);
+                        badge.addClass("label").addClass(item.tipStyle || "label-success").text(item.tip);
                     }
                     $a.append(badge);
                     li.append($a);

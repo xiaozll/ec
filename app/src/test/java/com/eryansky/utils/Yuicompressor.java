@@ -26,7 +26,8 @@ public class Yuicompressor {
             "app-common/src/main/resources/static/static/js/jquery-validation/1.11.1/jquery.validate.method.js",
             "app-common/src/main/resources/static/static/mobile/ImageUploader/js/",
 //            "app-common/src/main/resources/static/static/js/adminlte/dist/",
-            "app-common/src/main/resources/static/static/js/jquery/jquery-extend.js"
+            "app-common/src/main/resources/static/static/js/jquery/jquery-extend.js",
+            "app-common\\src\\main\\resources\\static\\static\\js\\adminlte\\dist"
     };
 
     //    java -jar yuicompressor-2.4.7.jar --type js --charset utf-8 ../src/main/webapp/static/app/modules/disk/disk.js -o ../src/main/webapp/static/app/modules/disk/disk-min.js

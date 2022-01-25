@@ -55,6 +55,14 @@ public class SiderbarMenu implements Serializable {
 	 */
 	private String urlType;
 	/**
+	 *
+	 */
+	private String tip;
+	/**
+	 *
+	 */
+	private String tipStyle;
+	/**
 	 * 自定义属性
 	 */
 	private Map<String, Object> attributes = Maps.newHashMap();
@@ -221,6 +229,24 @@ public class SiderbarMenu implements Serializable {
 
 	public SiderbarMenu setUrlType(String urlType) {
 		this.urlType = urlType;
+		return this;
+	}
+
+	public String getTip() {
+		return tip;
+	}
+
+	public SiderbarMenu setTip(String tip) {
+		this.tip = tip;
+		return this;
+	}
+
+	public String getTipStyle() {
+		return tipStyle;
+	}
+
+	public SiderbarMenu setTipStyle(String tipStyle) {
+		this.tipStyle = tipStyle;
 		return this;
 	}
 

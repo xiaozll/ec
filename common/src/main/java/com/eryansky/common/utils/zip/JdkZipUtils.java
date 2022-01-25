@@ -5,14 +5,7 @@
  */
 package com.eryansky.common.utils.zip;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -42,13 +35,14 @@ public class JdkZipUtils {
 
 	public static void makeZip(File[] inFiles, String zipFilePath)
 			throws Exception {
-		ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(
-				new FileOutputStream(zipFilePath)));
-		for (int i = 0; i < inFiles.length; i++) {
-			doZipFile(zipOut, inFiles[i], inFiles[i].getParent());
+		try (OutputStream outputStream = new FileOutputStream(zipFilePath);
+			 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+			 ZipOutputStream zipOut = new ZipOutputStream(bufferedOutputStream)) {
+			for (int i = 0; i < inFiles.length; i++) {
+				doZipFile(zipOut, inFiles[i], inFiles[i].getParent());
+			}
+			zipOut.flush();
 		}
-		zipOut.flush();
-		zipOut.close();
 	}
 
 	private static void doZipFile(ZipOutputStream zipOut, File file,
@@ -71,8 +65,10 @@ public class JdkZipUtils {
 			}
 		} else {
 			File[] subFiles = file.listFiles();
-			for (File subFile : subFiles) {
-				doZipFile(zipOut, subFile, dirPath);
+			if(null != subFiles){
+				for (File subFile : subFiles) {
+					doZipFile(zipOut, subFile, dirPath);
+				}
 			}
 		}
 	}

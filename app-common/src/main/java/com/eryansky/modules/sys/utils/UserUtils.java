@@ -12,7 +12,7 @@ import com.eryansky.common.utils.ConvertUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
-import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.encode.EncryptionSafe;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.SecurityUtils;
@@ -536,7 +536,7 @@ public class UserUtils {
 //        Static.userService.updateUserPassword(userIds, password);
         userIds.forEach(userId->{
             try {
-                Static.userService.updatePasswordByUserId(userId,Encrypt.e(password), Encryption.encrypt(password));
+                Static.userService.updatePasswordByUserId(userId,Encrypt.e(password), EncryptionSafe.encrypt(password));
             } catch (Exception e) {
                 throw new ActionException(e);
             }

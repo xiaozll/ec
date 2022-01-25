@@ -6,7 +6,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.encode.Encrypt;
-import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.encode.EncryptionSafe;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;
@@ -131,7 +131,7 @@ public class UserMobileController extends SimpleController {
      * 修改密码 保存
      * @param id
      * @param loginName
-     * @param encrypt 默认密钥： 0~!@#$%^&*9 {@link Encryption#DEFAULT_KEY}
+     * @param encrypt 默认密钥： 0~!@#$%^&*9 {@link EncryptionSafe#DEFAULT_KEY}
      * @param password
      * @param newPassword
      * @return
@@ -157,8 +157,8 @@ public class UserMobileController extends SimpleController {
         String pagePassword= null;//页面输入的原始密码（未加密）
         String _newPassword= null;
         try {
-            pagePassword = encrypt ? Encryption.decrypt(StringUtils.trim(password)) : StringUtils.trim(password);
-            _newPassword = encrypt ? Encryption.decrypt(StringUtils.trim(newPassword)) : StringUtils.trim(newPassword);
+            pagePassword = encrypt ? EncryptionSafe.decrypt(StringUtils.trim(password)) : StringUtils.trim(password);
+            _newPassword = encrypt ? EncryptionSafe.decrypt(StringUtils.trim(newPassword)) : StringUtils.trim(newPassword);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             return Result.errorResult().setMsg("密码解码错误！");

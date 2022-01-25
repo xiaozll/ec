@@ -9,6 +9,6 @@ import com.eryansky.common.utils.encode.Encryption;
 public class DruidPassword {
     public static void main(String[] args) throws Exception {
 
-        System.out.println(Encryption.encrypt("password"));
+        System.out.println(EncryptionSafe.encrypt("password"));
     }
 }

@@ -6,7 +6,7 @@
 package com.eryansky.common.utils;
 
 import com.eryansky.common.spring.SpringContextHolder;
-import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.encode.EncryptionSafe;
 import org.springframework.core.env.StandardEnvironment;
 
 
@@ -99,7 +99,7 @@ public class SysConstants {
         if (decrypt && StringUtils.isNotEmpty(ePassword)) {
             try {
                 //这里的代码是将密码进行解密，并设置
-                String password = StringUtils.isNotBlank(cKey) ?  Encryption.decrypt(ePassword,cKey ): Encryption.decrypt(ePassword);
+                String password = StringUtils.isNotBlank(cKey) ?  EncryptionSafe.decrypt(ePassword,cKey ): EncryptionSafe.decrypt(ePassword);
                 return password;
             } catch (Exception e) {
                 e.printStackTrace();

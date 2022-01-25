@@ -15,7 +15,7 @@ import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
-import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.encode.EncryptionSafe;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityType;
 import com.eryansky.modules.sys._enum.SexType;
@@ -99,7 +99,7 @@ public class UserService extends CrudService<UserDao, User> {
      * 修改密码（AOP切面拦截）
      * @param id 用户ID
      * @param password 密码 {@link Encrypt#e(String)}
-     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @param originalPassword 原始密码 {@link EncryptionSafe#encrypt(String)}
      * @return
      */
     public User updatePasswordByUserId(String id, String password, String originalPassword){
@@ -110,7 +110,7 @@ public class UserService extends CrudService<UserDao, User> {
      * 修改密码（AOP切面拦截）
      * @param loginName 账号
      * @param password 密码 {@link Encrypt#e(String)}
-     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @param originalPassword 原始密码 {@link EncryptionSafe#encrypt(String)}
      * @return
      */
     public User updatePasswordByLoginName(String loginName, String password, String originalPassword){
@@ -122,7 +122,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param id 用户ID
      * @param loginName 账号
      * @param password 密码 {@link Encrypt#e(String)}
-     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @param originalPassword 原始密码 {@link EncryptionSafe#encrypt(String)}
      * @return
      */
     public User updatePassword(String id,String loginName,String password,String originalPassword){
@@ -831,7 +831,7 @@ public class UserService extends CrudService<UserDao, User> {
                     throw new ServiceException("用户[" + userId + "]不存在或已被删除.");
                 }
                 try {
-                    model.setOriginalPassword(Encryption.encrypt(password));
+                    model.setOriginalPassword(EncryptionSafe.encrypt(password));
                 } catch (Exception e) {
                     throw new ServiceException(e);
                 }

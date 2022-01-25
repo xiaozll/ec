@@ -116,9 +116,9 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         String _moduleCode = null == customCategory ? moduleCode : moduleCode + "_" + customCategory;
         String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL : SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_" + customCategory;
         SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app : VersionLog.DEFAULT_ID, moduleCode);
-        /** 预生成数量 */
+        //预生成数量
         int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.parseInt(entity.getPreMaxNum()) : 1;
-        /** 数据库存储的当前最大序列号 **/
+        //数据库存储的当前最大序列号
         if (null == entity.getMaxSerial()) {
             entity.setMaxSerial(new MaxSerial());
         }
@@ -213,7 +213,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
                 });
             }
 
-            logger.info("重置序列号，{}：{}", new Object[]{systemSerialNumber.getApp(), systemSerialNumber.getModuleCode()});
+            logger.info("重置序列号，{}：{}", systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
             systemSerialNumber.setMaxSerial(new MaxSerial());
             systemSerialNumber.setVersion(0);
             systemSerialNumber.setUpdateTime(Calendar.getInstance().getTime());

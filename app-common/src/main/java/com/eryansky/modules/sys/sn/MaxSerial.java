@@ -41,10 +41,7 @@ public class MaxSerial implements Serializable {
     }
 
     public MaxSerial update(String key, Long value) {
-        MaxSerialItem item = this.items.stream().filter(v -> v.equals(key)).findFirst().orElse(null);
-        if (null != item) {
-            item.setValue(value);
-        }
+        this.items.stream().filter(v -> v.getKey().equals(key)).findFirst().ifPresent(item -> item.setValue(value));
         return this;
     }
 

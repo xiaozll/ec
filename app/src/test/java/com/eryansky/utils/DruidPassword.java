@@ -1,6 +1,6 @@
 package com.eryansky.utils;
 
-import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.encode.EncryptionSafe;
 
 /**
  * @author

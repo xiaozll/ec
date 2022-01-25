@@ -737,10 +737,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      * @param target
      * @param source
      */
-    public static void setValueIfNotBlank(String target, String source) {
+    public static String setValueIfNotBlank(String target, String source) {
         if (isNotBlank(source)){
             target = source;
         }
+        return target;
     }
 
     /**

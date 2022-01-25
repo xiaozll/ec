@@ -90,29 +90,23 @@ public abstract class QYWeixinSupport{
      * @param request
      * @param response
      */
-    public void bindServer(HttpServletRequest request, HttpServletResponse response){
-        PrintWriter pw = null;
-        try {
-            pw = response.getWriter();
+    public void bindServer(HttpServletRequest request, HttpServletResponse response) {
+        try (PrintWriter pw = response.getWriter()) {
+            if (StrUtil.isBlank(getToken()) || StrUtil.isBlank(getAESKey()) || StrUtil.isBlank(getCropId())) {
+                pw.write("");
+                pw.flush();
+            }
+            try (WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId())) {
+                String echoStr = pc.verifyUrl(request.getParameter("msg_signature"), request.getParameter("timestamp"), request.getParameter("nonce"), request.getParameter("echostr"));
+                pw.write(echoStr);
+                pw.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+                pw.write("");
+                pw.flush();
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        if(StrUtil.isBlank(getToken()) || StrUtil.isBlank(getAESKey()) || StrUtil.isBlank(getCropId())){
-            pw.write("");
-            pw.flush();
-            pw.close();
-        }
-        try {
-            WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId());
-            String echoStr = pc.verifyUrl(request.getParameter("msg_signature"), request.getParameter("timestamp"), request.getParameter("nonce"), request.getParameter("echostr"));
-            pw.write(echoStr);
-            pw.flush();
-            pw.close();
-        } catch (AesException e) {
-            e.printStackTrace();
-            pw.write("");
-            pw.flush();
-            pw.close();
         }
     }
 

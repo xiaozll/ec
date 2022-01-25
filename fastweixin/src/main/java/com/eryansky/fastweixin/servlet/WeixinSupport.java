@@ -311,11 +311,10 @@ public abstract class WeixinSupport {
             msg.setToUserName(fromUserName);
             result = msg.toXml();
             if (StrUtil.isNotBlank(getAESKey())) {
-                try {
-                    WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getAppId());
+                try (WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getAppId())){
                     result = pc.encryptMsg(result, request.getParameter("timestamp"), request.getParameter("nonce"));
                     LOG.debug("加密后密文:{}", result);
-                } catch (AesException e) {
+                } catch (Exception e) {
                     LOG.error("加密异常", e);
                 }
             }

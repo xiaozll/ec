@@ -3,13 +3,12 @@
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.eryansky.core.excelTools;
+package com.eryansky.core.excels;
 
 import com.eryansky.common.utils.StringUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -62,7 +61,6 @@ public class ExcelUtils {
 				}
 			}
 		} catch (Exception e) {
-//			e.printStackTrace();
 			mLogger.error(e.getMessage(),e);
 		}
 		return params;

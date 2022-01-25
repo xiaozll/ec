@@ -1,6 +1,6 @@
 package com.eryansky.modules.sys.web.demo;
 
-import com.eryansky.core.excelTools.*;
+import com.eryansky.core.excels.*;
 import com.eryansky.modules.sys.web.demo.module.DataCount;
 import com.eryansky.modules.sys.web.demo.module.People;
 import org.springframework.stereotype.Controller;

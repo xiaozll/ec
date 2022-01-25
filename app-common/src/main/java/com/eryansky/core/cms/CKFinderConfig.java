@@ -63,9 +63,9 @@ public class CKFinderConfig extends Configuration {
 
 		try {
 			this.baseDir = AppConstants.getAppBasePath()+"/cms"+CK_BASH_URL+
-					(sessionInfo.getUserId())+"/";
+					(null == sessionInfo ? "temp":sessionInfo.getUserId())+"/";
 			this.baseURL = SpringMVCHolder.getRequest().getContextPath()+ CK_BASH_URL +
-					(sessionInfo.getUserId())+"/";
+					(null == sessionInfo ? "temp":sessionInfo.getUserId())+"/";
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

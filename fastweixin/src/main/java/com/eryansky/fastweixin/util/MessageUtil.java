@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventReader;
@@ -60,6 +61,8 @@ public final class MessageUtil {
                 LOG.debug("收到的消息密文:{}", body);
 
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant
                 DocumentBuilder db = dbf.newDocumentBuilder();
                 StringReader sr = new StringReader(body);
                 InputSource is = new InputSource(sr);
@@ -68,18 +71,19 @@ public final class MessageUtil {
                 Element root = document.getDocumentElement();
                 NodeList nodelist1 = root.getElementsByTagName("Encrypt");
 
+                try (WXBizMsgCrypt pc = new WXBizMsgCrypt(token, aesKey, appId)){
+                    String msgSignature = request.getParameter("msg_signature");
+                    String timeStamp = request.getParameter("timestamp");
+                    String nonce = request.getParameter("nonce");
+                    LOG.debug("msgSignature:{}", msgSignature);
+                    LOG.debug("timeStamp:{}", timeStamp);
+                    LOG.debug("nonce:{}", nonce);
+                    String encrypt = nodelist1.item(0).getTextContent();
+                    String fromXML = String.format(FORMAT, encrypt);
+                    String message = pc.decryptMsg(msgSignature, timeStamp, nonce, fromXML);
+                    inputStream = new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8));
+                }
 
-                WXBizMsgCrypt pc = new WXBizMsgCrypt(token, aesKey, appId);
-                String msgSignature = request.getParameter("msg_signature");
-                String timeStamp = request.getParameter("timestamp");
-                String nonce = request.getParameter("nonce");
-                LOG.debug("msgSignature:{}", msgSignature);
-                LOG.debug("timeStamp:{}", timeStamp);
-                LOG.debug("nonce:{}", nonce);
-                String encrypt = nodelist1.item(0).getTextContent();
-                String fromXML = String.format(FORMAT, encrypt);
-                String message = pc.decryptMsg(msgSignature, timeStamp, nonce, fromXML);
-                inputStream = new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8));
             }
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLEventReader reader = factory.createXMLEventReader(inputStream);

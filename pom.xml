@@ -68,6 +68,7 @@
         <sonar.scm.provider>git</sonar.scm.provider>
         <sonar.scm.provider>git</sonar.scm.provider>
         <sonar.sources>src/main/java</sonar.sources>
+        <sonar.java.binaries>target/classes</sonar.java.binaries>
         <sonar.skip>false</sonar.skip>
     </properties>
 

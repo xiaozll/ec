@@ -25,7 +25,6 @@ import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
-import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityConstants;

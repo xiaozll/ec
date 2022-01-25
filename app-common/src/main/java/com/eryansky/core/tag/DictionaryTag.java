@@ -25,10 +25,7 @@ public class DictionaryTag extends TagSupport {
     public static final String TYPE_COMBOBOX = "combobox";
     public static final String TYPE_COMBOTREE = "combotree";
 
-    /**
-     * 元素id
-     */
-    private String id = "";
+
     /**
      * 元素name
      */
@@ -158,14 +155,6 @@ public class DictionaryTag extends TagSupport {
 
         buffer.append(" />");
         return buffer.toString();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Integer getWidth() {

@@ -447,7 +447,7 @@ public class LoginController extends SimpleController {
                 }
             }
 
-            if (StringUtils.isNotBlank(treeNode.getpId())) {
+            if (null != treeNode && StringUtils.isNotBlank(treeNode.getpId())) {
                 SiderbarMenu pTreeNode = getParentSiderbarMenu(treeNode.getpId(), tempTreeNodes);
                 if (pTreeNode != null) {
                     for (SiderbarMenu treeNode2 : tempTreeNodes) {

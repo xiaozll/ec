@@ -41,7 +41,7 @@ import java.util.Random;
  * <li>如果安装了JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件</li>
  * </ol>
  */
-public class WXBizMsgCrypt implements Closeable {
+public class WXBizMsgCrypt implements AutoCloseable {
 
     static Charset CHARSET = StandardCharsets.UTF_8;
     Base64 base64 = new Base64();

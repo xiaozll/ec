@@ -313,7 +313,7 @@ public class FTPManager implements IFileManager {
         DownloadStatus result;
         //检查远程文件是否存在
         FTPFile[] files = ftpClient.listFiles(new String(StringUtils.substringAfterLast(remote, "/").getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
-        if (files.length != 1) {
+        if (null == files || files.length != 1) {
             logger.error("远程文件不存在");
             return UploadStatus.Delete_Remote_Faild;
         }
@@ -397,33 +397,33 @@ public class FTPManager implements IFileManager {
     public UploadStatus uploadFile(String remoteFile, File localFile, FTPClient ftpClient, long remoteSize) throws IOException {
         UploadStatus status;
         //显示进度的上传 
-        long step = localFile.length() / 100;
-        long process = 0;
-        long localreadbytes = 0L;
-        RandomAccessFile raf = new RandomAccessFile(localFile, "r");
-        OutputStream out = ftpClient.appendFileStream(new String(remoteFile.getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1));
-
-        //断点续传
-        if (remoteSize > 0) {
-            ftpClient.setRestartOffset(remoteSize);
-            process = remoteSize / step;
-            raf.seek(remoteSize);
-            localreadbytes = remoteSize;
+//        long step = localFile.length() / 100;
+//        long process = 0;
+//        long localreadbytes = 0L;
+        try (RandomAccessFile raf = new RandomAccessFile(localFile, "r");
+             OutputStream out = ftpClient.appendFileStream(new String(remoteFile.getBytes(CHARSET_UTF_8), CHARSET_ISO8859_1))){
+            //断点续传
+            if (remoteSize > 0) {
+                ftpClient.setRestartOffset(remoteSize);
+//                process = remoteSize / step;
+                raf.seek(remoteSize);
+//                localreadbytes = remoteSize;
+            }
+            byte[] bytes = new byte[1024];
+            int c;
+            while ((c = raf.read(bytes)) != -1) {
+                out.write(bytes, 0, c);
+    //            localreadbytes += c;
+    //            if (localreadbytes / step != process) {
+    //                process = localreadbytes / step;
+    //                System.out.println("上传进度:" + process);
+    //                //TODO 汇报上传状态
+    //            }
+            }
+            out.flush();
+        } catch (IOException e) {
+            logger.error(e.getMessage(),e);
         }
-        byte[] bytes = new byte[1024];
-        int c;
-        while ((c = raf.read(bytes)) != -1) {
-            out.write(bytes, 0, c);
-//            localreadbytes += c;
-//            if (localreadbytes / step != process) {
-//                process = localreadbytes / step;
-//                System.out.println("上传进度:" + process);
-//                //TODO 汇报上传状态
-//            }
-        }
-        out.flush();
-        raf.close();
-        out.close();
         boolean result = ftpClient.completePendingCommand();
         if (remoteSize > 0) {
             status = result ? UploadStatus.Upload_From_Break_Success : UploadStatus.Upload_From_Break_Failed;

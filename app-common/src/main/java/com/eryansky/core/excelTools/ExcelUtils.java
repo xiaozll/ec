@@ -325,7 +325,7 @@ public class ExcelUtils {
 
 	private static short findColor(short index, HSSFWorkbook srcwb,
 								   HSSFWorkbook destwb) {
-		Integer id = new Integer(index);
+		Integer id = Integer.valueOf(index);
 		if (HSSFColor.getIndexHash().containsKey(id))
 			return index;
 		if (index == HSSFColor.AUTOMATIC.index)
@@ -593,15 +593,15 @@ public class ExcelUtils {
 	public static String convertCellToStr(Cell cell) {
 		String cellStr = null;
 		if (cell!= null) {
-			switch (cell.getCellType()) {
-				case Cell.CELL_TYPE_STRING:
+			switch (cell.getCellTypeEnum()) {
+				case STRING:
 					cellStr = cell.getStringCellValue().toString();
 					break;
-				case Cell.CELL_TYPE_BOOLEAN:
+				case BOOLEAN:
 					// 得到Boolean对象的方法
 					cellStr = String.valueOf(cell.getBooleanCellValue());
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					// 先看是否是日期格式
 					if (DateUtil.isCellDateFormatted(cell)) {
 						// 读取日期格式 2013/2/28
@@ -611,7 +611,7 @@ public class ExcelUtils {
 						cellStr = getValue(String.valueOf(cell.getNumericCellValue()));
 					}
 					break;
-				case Cell.CELL_TYPE_FORMULA:
+				case FORMULA:
 					// 读取公式
 					cellStr = cell.getCellFormula();
 					break;
@@ -626,11 +626,11 @@ public class ExcelUtils {
 	public static Double convertCellToDouble(Cell cell) {
 		Double cellDouble=null;
 		if (cell!= null) {
-			switch (cell.getCellType()) {
-				case Cell.CELL_TYPE_STRING:
+			switch (cell.getCellTypeEnum()) {
+				case STRING:
 					cellDouble = Double.valueOf(cell.getStringCellValue());
 					break;
-				case Cell.CELL_TYPE_NUMERIC:
+				case NUMERIC:
 					// 先看是否是日期格式
 					if (DateUtil.isCellDateFormatted(cell)) {
 						// 读取日期格式 2013/2/28
@@ -652,7 +652,7 @@ public class ExcelUtils {
 	 */
 	@SuppressWarnings("deprecation")
 	public static Date convertCellToDate(Cell cell) {
-		Date cellDate = new Date();
+		Date cellDate = null;
 		if (DateUtil.isCellDateFormatted(cell)) {
 			// 读取日期格式
 			cellDate = cell.getDateCellValue();
@@ -847,22 +847,14 @@ public class ExcelUtils {
 			}
 		}
 
-		File file = null;
-		OutputStream os = null;
-		file = new File(fileNamePath);
-		try {
-			os = new FileOutputStream(file);
+		File file = new File(fileNamePath);
+		try (OutputStream os = new FileOutputStream(file)){
 			wb.write(os);
 		} catch (Exception e) {
 			throw new Exception("write excel file error!", e);
-		} finally {
-			if(null != os) {
-				os.flush();
-				os.close();
-			}
+		}finally {
+			wb.close();
 		}
-
-
 		return file;
 	}
 
@@ -1721,16 +1713,16 @@ public class ExcelUtils {
 	 * @param response
 	 */
 	public static void download(String path, HttpServletResponse response) {
-		try {
+		try (InputStream inputStream = new FileInputStream(path);
+			 InputStream fis = new BufferedInputStream(inputStream)){
 			// path是指欲下载的文件的路径。
 			File file = new File(path);
 			// 取得文件名。
 			String filename = file.getName();
 			// 以流的形式下载文件。
-			InputStream fis = new BufferedInputStream(new FileInputStream(path));
+
 			byte[] buffer = new byte[fis.available()];
 			fis.read(buffer);
-			fis.close();
 			// 清空response
 			response.reset();
 			// 设置response的Header

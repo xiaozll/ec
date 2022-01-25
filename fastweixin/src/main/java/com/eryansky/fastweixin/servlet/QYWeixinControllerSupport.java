@@ -3,6 +3,8 @@ package com.eryansky.fastweixin.servlet;
 import com.eryansky.fastweixin.message.aes.AesException;
 import com.eryansky.fastweixin.util.StrUtil;
 import com.eryansky.fastweixin.message.aes.WXBizMsgCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +23,8 @@ import java.io.IOException;
  */
 @Controller
 public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
+
+    private static final Logger LOG = LoggerFactory.getLogger(QYWeixinControllerSupport.class);
 
     /**
      * 绑定微信服务器
@@ -63,11 +67,10 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
         if(StrUtil.isBlank(getToken()) || StrUtil.isBlank(getAESKey()) || StrUtil.isBlank(getCropId())){
             return echoStr;
         }
-        try {
-            WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId());
+        try (WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId())){
             echoStr = pc.verifyUrl(request.getParameter("msg_signature"), request.getParameter("timestamp"), request.getParameter("nonce"), request.getParameter("echostr"));
-        } catch (AesException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(),e);
         }
         return echoStr;
     }

@@ -275,7 +275,7 @@ public class DiskUtils {
         StringBuilder location = new StringBuilder();
         Folder folder = Static.folderService.get(folderId);
         if (folder != null) {
-            String type = folder.getType();// 文件夹类型
+//            String type = folder.getType();// 文件夹类型
             String userName = folder.getUserName();// 文件夹创建人
             String folderName = folder.getName();// 文件夹名称
             FolderAuthorize folderAuthorize = FolderAuthorize.getByValue(folder.getFolderAuthorize());// 文件夹授权类型
@@ -482,12 +482,12 @@ public class DiskUtils {
         String tempPath = AppConstants.getDiskTempDir() + java.io.File.separator + file.getCode();
         java.io.File tempFile = new java.io.File(tempPath);
         try {
-            if (file != null) {
-                if (!tempFile.exists()) {
-                    Static.iFileManager.loadFile(file.getFilePath(), tempPath);
-                }
-                return tempFile;
+            if (!tempFile.exists()) {
+                Static.iFileManager.loadFile(file.getFilePath(), tempPath);
+            }else{
+                logger.warn("请求的文件不存在：{}", tempFile.getAbsolutePath());
             }
+            return tempFile;
         } catch (IOException e) {
             logger.warn(String.format("请求的文件%s不存在", file.getId()), e.getMessage());
         }
@@ -547,17 +547,17 @@ public class DiskUtils {
                     }
                 }
                 if (file.getDiskFile().isFile()) {
-                    BufferedInputStream bis = new BufferedInputStream(
-                            new FileInputStream(file.getDiskFile()));
-                    ZipEntry entry = new ZipEntry(newName);
-                    zipOut.putNextEntry(entry);
-                    byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
-                    int size;
-                    while ((size = bis.read(buff, 0, buff.length)) != -1) {
-                        zipOut.write(buff, 0, size);
+                    try (InputStream inputStream = new FileInputStream(file.getDiskFile());
+                         BufferedInputStream bis = new BufferedInputStream(inputStream)) {
+                        ZipEntry entry = new ZipEntry(newName);
+                        zipOut.putNextEntry(entry);
+                        byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
+                        int size;
+                        while ((size = bis.read(buff, 0, buff.length)) != -1) {
+                            zipOut.write(buff, 0, size);
+                        }
+                        zipOut.closeEntry();
                     }
-                    zipOut.closeEntry();
-                    bis.close();
                 }
                 countMap.put(name, mapVal);
 

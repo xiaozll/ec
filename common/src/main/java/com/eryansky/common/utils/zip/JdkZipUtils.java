@@ -54,21 +54,21 @@ public class JdkZipUtils {
 	private static void doZipFile(ZipOutputStream zipOut, File file,
 			String dirPath) throws IOException {
 		if (file.isFile()) {
-			BufferedInputStream bis = new BufferedInputStream(
-					new FileInputStream(file));
-			String zipName = file.getPath().substring(dirPath.length());
-			while (zipName.charAt(0) == '\\' || zipName.charAt(0) == '/') {
-				zipName = zipName.substring(1);
+			try (InputStream inputStream = new FileInputStream(file);
+				 BufferedInputStream bis = new BufferedInputStream(inputStream)) {
+				String zipName = file.getPath().substring(dirPath.length());
+				while (zipName.charAt(0) == '\\' || zipName.charAt(0) == '/') {
+					zipName = zipName.substring(1);
+				}
+				ZipEntry entry = new ZipEntry(zipName);
+				zipOut.putNextEntry(entry);
+				byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
+				int size;
+				while ((size = bis.read(buff, 0, buff.length)) != -1) {
+					zipOut.write(buff, 0, size);
+				}
+				zipOut.closeEntry();
 			}
-			ZipEntry entry = new ZipEntry(zipName);
-			zipOut.putNextEntry(entry);
-			byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
-			int size;
-			while ((size = bis.read(buff, 0, buff.length)) != -1) {
-				zipOut.write(buff, 0, size);
-			}
-			zipOut.closeEntry();
-			bis.close();
 		} else {
 			File[] subFiles = file.listFiles();
 			for (File subFile : subFiles) {
@@ -107,8 +107,8 @@ public class JdkZipUtils {
 						}
 					}
 					try (InputStream is = zip.getInputStream(zipEntry);
-						 FileOutputStream fos = new FileOutputStream(new File(storePath
-								 + File.separator + zipEntryName))){
+						 FileOutputStream fos = new FileOutputStream(storePath
+								 + File.separator + zipEntryName)){
 						byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
 						int size;
 						while ((size = is.read(buff)) > 0) {

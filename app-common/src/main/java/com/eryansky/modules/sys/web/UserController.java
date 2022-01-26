@@ -11,7 +11,7 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
-import com.eryansky.common.utils.encode.EncryptionSafe;
+import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
@@ -176,7 +176,7 @@ public class UserController extends SimpleController {
 
         if (StringUtils.isBlank(user.getId())) {// 新增
             try {
-                user.setOriginalPassword(EncryptionSafe.encrypt(user.getPassword()));
+                user.setOriginalPassword(Encryption.encrypt(user.getPassword()));
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
             }
@@ -256,7 +256,7 @@ public class UserController extends SimpleController {
             }
             if (isCheck) {
                 u.setPassword(Encrypt.e(newPassword));
-                u.setOriginalPassword(EncryptionSafe.encrypt(newPassword));
+                u.setOriginalPassword(Encryption.encrypt(newPassword));
                 userService.updatePasswordByUserId(id,u.getPassword(),u.getOriginalPassword());
                 result = Result.successResult();
             } else {
@@ -300,7 +300,7 @@ public class UserController extends SimpleController {
         userService.updateUserPassword(userIds, newPassword);
 //        userIds.forEach(userId->{
 //            try {
-//                userService.updatePasswordByUserId(userId,Encrypt.e(newPassword),EncryptionSafe.encrypt(newPassword));
+//                userService.updatePasswordByUserId(userId,Encrypt.e(newPassword),Encryption.encrypt(newPassword));
 //            } catch (Exception e) {
 //                logger.error(e.getMessage(),e);
 //                throw new ActionException(e);
@@ -777,7 +777,7 @@ public class UserController extends SimpleController {
         Result result = Result.successResult();
         User user = userService.getUserByLoginName(loginName);
         if (user != null && user.getOriginalPassword() != null) {
-            result.setObj(EncryptionSafe.decrypt(user.getOriginalPassword().trim()));
+            result.setObj(Encryption.decrypt(user.getOriginalPassword().trim()));
         }
         return result;
     }

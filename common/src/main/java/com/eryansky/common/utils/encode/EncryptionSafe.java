@@ -16,8 +16,9 @@ import java.security.SecureRandom;
  * <br>加密加密字符串采用DEFAULT_CHARSET编码（UTF-8）.
  *
  * @author 尔演&Eryan eryanwcp@gmail.com
- * @date 2011-12-27 上午9:48:31
+ * @date 2022-01-26
  */
+@Deprecated
 public class EncryptionSafe {
     /**
      * 密钥
@@ -109,7 +110,7 @@ public class EncryptionSafe {
     public static byte[] encrypt(byte[] arrB, String ketStr) throws Exception {
         Key key = getKey(ketStr.getBytes());
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, key,gcMParameterSpec);
+        cipher.init(Cipher.ENCRYPT_MODE, key);
         return cipher.doFinal(arrB);
     }
 
@@ -161,7 +162,7 @@ public class EncryptionSafe {
     public static byte[] decrypt(byte[] arrB, String keyStr) throws Exception {
         Key key = getKey(keyStr.getBytes());
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.DECRYPT_MODE, key,gcMParameterSpec);
+        cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(arrB);
     }
 
@@ -197,7 +198,7 @@ public class EncryptionSafe {
      */
     private static Key getKey(byte[] arrBTmp) {
         // 创建一个空的8位字节数组（默认值为0）
-        byte[] arrB = new byte[16];
+        byte[] arrB = new byte[8];
 
         // 将原始字节数组转换为8位
         for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
@@ -205,16 +206,16 @@ public class EncryptionSafe {
         }
 
         // 生成密钥
-        Key key = new SecretKeySpec(arrB, "AES");
+        Key key = new SecretKeySpec(arrB, "DES");
         return key;
     }
 
     // 测试
     public static void main(String[] args) throws Exception {
         String str = "中国";
-        String d = EncryptionSafe.encrypt(str);//加密字符串
+        String d = Encryption.encrypt(str);//加密字符串
 
-        String e = EncryptionSafe.decrypt(d);//解密字符串
+        String e = Encryption.decrypt(d);//解密字符串
 
         System.out.println("Encrypt:" + d + " 字节大小：" + d.getBytes().length);
         System.out.println("Dncrypt:" + e + " 字节大小：" + e.getBytes().length);

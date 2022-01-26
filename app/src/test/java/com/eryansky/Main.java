@@ -8,7 +8,7 @@ package com.eryansky;
 import com.eryansky.common.orm.mybatis.sensitive.IEncrypt;
 import com.eryansky.common.orm.mybatis.sensitive.encrypt.AesSupport;
 import com.eryansky.common.utils.encode.Cryptos;
-import com.eryansky.common.utils.encode.EncryptionSafe;
+import com.eryansky.common.utils.encode.Encryption;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
@@ -16,7 +16,7 @@ import com.eryansky.common.utils.encode.EncryptionSafe;
  */
 public class Main {
     public static void main(String[] args) throws Exception {
-        EncryptionSafe as = new EncryptionSafe();
+        Encryption as = new Encryption();
         System.out.println(as.encrypt("1"));//7e0cd7be3e66d4a8
         System.out.println(as.decrypt(as.encrypt("1")));
 

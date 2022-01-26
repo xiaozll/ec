@@ -2,7 +2,7 @@ package com.eryansky.core.security;
 
 import com.alibaba.druid.util.DruidPasswordCallback;
 import com.eryansky.common.utils.StringUtils;
-import com.eryansky.common.utils.encode.EncryptionSafe;
+import com.eryansky.common.utils.encode.Encryption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class CustomDruidPasswordCallback extends DruidPasswordCallback {
         }
         try {
             //这里的代码是将密码进行解密，并设置
-            String password = StringUtils.isNotBlank(cKey) ?  EncryptionSafe.decrypt(ePassword,cKey ): EncryptionSafe.decrypt(ePassword);
+            String password = StringUtils.isNotBlank(cKey) ?  Encryption.decrypt(ePassword,cKey ): Encryption.decrypt(ePassword);
             setPassword(password.toCharArray());
             logger.debug("数据库密码加密参数转换成功.");
         } catch (Exception e) {
@@ -42,6 +42,6 @@ public class CustomDruidPasswordCallback extends DruidPasswordCallback {
     public static void main(String[] args) throws Exception {
         String password = "password";
         String key = "";
-        System.out.println(EncryptionSafe.encrypt(password));
+        System.out.println(Encryption.encrypt(password));
     }
 }

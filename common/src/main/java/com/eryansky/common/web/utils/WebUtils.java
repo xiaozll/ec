@@ -9,9 +9,10 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.web.servlet.RemoteContentServlet;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class WebUtils extends org.springframework.web.util.WebUtils {
 
-    private static final Log logger = LogFactory.getLog(WebUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebUtils.class);
 
     //-- header 常量定义 --//
     public static final String HEADER_ENCODING = "encoding";

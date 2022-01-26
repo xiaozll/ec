@@ -1,6 +1,8 @@
 package com.eryansky.utils;
 
-import com.eryansky.common.utils.encode.EncryptionSafe;
+import com.eryansky.common.orm.mybatis.sensitive.encrypt.AesSupport;
+import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.encode.Encryption;
 
 /**
  * @author
@@ -8,7 +10,9 @@ import com.eryansky.common.utils.encode.EncryptionSafe;
  */
 public class DruidPassword {
     public static void main(String[] args) throws Exception {
-
-        System.out.println(EncryptionSafe.encrypt("password"));
+        AesSupport a = new AesSupport();
+        System.out.println(a.encrypt("password"));
+        System.out.println(a.decrypt(a.encrypt("password")));
+        System.out.println(a.decrypt("6c6a6e9194f90785296e0a794dedf34d1f300ec703cf2b4e"));
     }
 }

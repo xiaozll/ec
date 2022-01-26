@@ -115,18 +115,18 @@ public class PortalController extends SimpleController {
 
         if (AppConstants.getIsSecurityOn()) {
             Long tipPasswordType = checkPassword(sessionInfo.getUserId());
-            String tipPasswordMsg = null;
+            String tipMsg = null;
             if (tipPasswordType != null) {
                 int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
                 if (tipPasswordType == 0L) {
-                    tipPasswordMsg = "您从未修改过用户密码，请修改用户密码！";
+                    tipMsg = "您从未修改过用户密码，请修改用户密码！";
                 } else if (tipPasswordType == 1L) {
-                    tipPasswordMsg = "您已超过" + userPasswordUpdateCycle + "天没有修改用户密码，请修改用户密码！";
+                    tipMsg = "您已超过" + userPasswordUpdateCycle + "天没有修改用户密码，请修改用户密码！";
                 }
             }
 
             map.put("tipPasswordType", tipPasswordType);
-            map.put("tipPasswordMsg", tipPasswordMsg);
+            map.put("tipPasswordMsg", tipMsg);
         }
 
         result = Result.successResult().setObj(map);

@@ -6,8 +6,6 @@ import com.eryansky.common.orm.mybatis.sensitive.type.SensitiveTypeRegisty;
 import com.eryansky.common.orm.mybatis.sensitive.utils.Hex;
 import com.eryansky.common.orm.mybatis.sensitive.IEncrypt;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +36,7 @@ public class AesSupport implements IEncrypt {
      */
     public static final String DEFAULT_PASSWORD = "ec";
 
-    private String password;
+    private String key;
     private final SensitiveTypeHandler sensitiveTypeHandler = SensitiveTypeRegisty.get(SensitiveType.DEFAUL);
 
     private SecretKeySpec secretKeySpec;
@@ -55,18 +53,18 @@ public class AesSupport implements IEncrypt {
         java.security.Security.setProperty("crypto.policy", "unlimited");
     }
     public AesSupport() throws NoSuchAlgorithmException {
-        this.password = DEFAULT_PASSWORD;
-        this.secretKeySpec = getSecretKey(password);
+        this.key = DEFAULT_PASSWORD;
+        this.secretKeySpec = getSecretKey(key);
     }
 
-    public AesSupport(String password) throws NoSuchAlgorithmException {
+    public AesSupport(String key) throws NoSuchAlgorithmException {
 
-        if (StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(key)) {
             throw new IllegalArgumentException("password should not be null!");
         }
 
-        this.password = password;
-        this.secretKeySpec = getSecretKey(password);
+        this.key = key;
+        this.secretKeySpec = getSecretKey(key);
     }
 
     @Override
@@ -81,7 +79,7 @@ public class AesSupport implements IEncrypt {
 
             return Hex.bytesToHexString(encryptData);
         } catch (Exception e) {
-            logger.error("AES加密时出现问题，密钥为：" + sensitiveTypeHandler.handle(password));
+            logger.error("AES加密时出现问题，密钥为：" + sensitiveTypeHandler.handle(key));
             throw new IllegalStateException("AES加密时出现问题" + e.getMessage(), e);
         }
     }
@@ -98,19 +96,19 @@ public class AesSupport implements IEncrypt {
             byte[] content = cipher.doFinal(encryptData);
             return new String(content, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            logger.error("AES解密时出现问题，密钥为:" + sensitiveTypeHandler.handle(password) + ",密文为：" + value);
+            logger.error("AES解密时出现问题，密钥为:" + sensitiveTypeHandler.handle(key) + ",密文为：" + value);
             throw new IllegalStateException("AES解密时出现问题" + e.getMessage(), e);
         }
 
     }
 
 
-    private static SecretKeySpec getSecretKey(final String password) throws NoSuchAlgorithmException {
+    private static SecretKeySpec getSecretKey(final String key) throws NoSuchAlgorithmException {
         //返回生成指定算法密钥生成器的 KeyGenerator 对象
         KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM);
         //AES 要求密钥长度为 128
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        random.setSeed(password.getBytes());
+        random.setSeed(key.getBytes());
         kg.init(128, random);
         //生成一个密钥
         SecretKey secretKey = kg.generateKey();

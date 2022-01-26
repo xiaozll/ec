@@ -20,7 +20,6 @@ import java.security.SecureRandom;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2022-01-26
  */
-@Deprecated
 public class EncryptionSafe {
     /**
      * 密钥 16位长度
@@ -36,7 +35,7 @@ public class EncryptionSafe {
         byte[] bytesIV = new byte[16];
         random.nextBytes(bytesIV);
 //        iv = bytesIV;
-        iv = Collections3.toObjects(String.format("%1$"+16+ "s", DEFAULT_KEY).getBytes());//TODO
+        iv = Collections3.toObjects(DEFAULT_KEY.getBytes());//TODO
     }
 
     /**

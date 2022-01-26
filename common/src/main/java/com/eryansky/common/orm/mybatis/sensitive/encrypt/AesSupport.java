@@ -40,13 +40,14 @@ public class AesSupport implements IEncrypt {
     private final SensitiveTypeHandler sensitiveTypeHandler = SensitiveTypeRegisty.get(SensitiveType.DEFAUL);
 
     private SecretKeySpec secretKeySpec;
-    private static SecureRandom random = new SecureRandom();
     /**
      * 初始向量IV, 初始向量IV的长度规定为128位16个字节, 初始向量的来源为随机生成.
      */
     private static GCMParameterSpec gcMParameterSpec;
+    private static SecureRandom random;
 
     static {
+        random = new SecureRandom();
         byte[] bytesIV = new byte[16];
         random.nextBytes(bytesIV);
         gcMParameterSpec = new GCMParameterSpec(128, bytesIV);

@@ -5,6 +5,8 @@
  */
 package com.eryansky.common.utils.encode;
 
+import com.eryansky.common.utils.collections.Collections3;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,23 +23,20 @@ import java.security.SecureRandom;
 @Deprecated
 public class EncryptionSafe {
     /**
-     * 密钥
+     * 密钥 16位长度
      */
-    public static final String DEFAULT_KEY = "0~!@#$%^&*9";
+    public static final String DEFAULT_KEY = "0123456789~!@#$%";
     /**
      * 编码方式 默认:UTF-8
      */
     public static final String DEFAULT_CHARSET = "UTF-8";
-    /**
-     * 初始向量IV, 初始向量IV的长度规定为128位16个字节, 初始向量的来源为随机生成.
-     */
-    private static GCMParameterSpec gcMParameterSpec;
+    private static Byte[] iv;
     static {
         SecureRandom random = new SecureRandom();
         byte[] bytesIV = new byte[16];
         random.nextBytes(bytesIV);
-        gcMParameterSpec = new GCMParameterSpec(128, bytesIV);
-        java.security.Security.setProperty("crypto.policy", "unlimited");
+//        iv = bytesIV;
+        iv = Collections3.toObjects(String.format("%1$"+16+ "s", DEFAULT_KEY).getBytes());//TODO
     }
 
     /**
@@ -48,7 +47,7 @@ public class EncryptionSafe {
      * @return 转换后的字符串
      * @throws Exception 本方法不处理任何异常，所有异常全部抛出
      */
-    private static String byteArr2HexStr(byte[] arrB) {
+    public static String byteArr2HexStr(byte[] arrB) {
         int iLen = arrB.length;
         // 每个byte用两个字符才能表示，所以字符串的长度是数组长度的两倍
         StringBuilder sb = new StringBuilder(iLen * 2);
@@ -75,7 +74,7 @@ public class EncryptionSafe {
      * @return 转换后的byte数组
      * @throws Exception 本方法不处理任何异常，所有异常全部抛出
      */
-    private static byte[] hexStr2ByteArr(String strIn) {
+    public static byte[] hexStr2ByteArr(String strIn) {
         byte[] arrB = strIn.getBytes();
         int iLen = arrB.length;
 
@@ -108,10 +107,7 @@ public class EncryptionSafe {
      * @throws Exception
      */
     public static byte[] encrypt(byte[] arrB, String ketStr) throws Exception {
-        Key key = getKey(ketStr.getBytes());
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        return cipher.doFinal(arrB);
+        return Cryptos.aesEncrypt(arrB,ketStr.getBytes(),iv);
     }
 
     /**
@@ -122,8 +118,7 @@ public class EncryptionSafe {
      * @throws Exception
      */
     public static String encrypt(String strIn) throws Exception {
-//		return byteArr2HexStr(encrypt(strIn.getBytes()));
-        return byteArr2HexStr(encrypt(strIn.getBytes(DEFAULT_CHARSET)));
+        return byteArr2HexStr(encrypt(strIn.getBytes(DEFAULT_CHARSET),DEFAULT_KEY));
     }
 
 
@@ -136,7 +131,6 @@ public class EncryptionSafe {
      * @throws Exception
      */
     public static String encrypt(String strIn, String strKey) throws Exception {
-//		return byteArr2HexStr(encrypt(strIn.getBytes()));
         return byteArr2HexStr(encrypt(strIn.getBytes(DEFAULT_CHARSET), strKey));
     }
 
@@ -160,10 +154,7 @@ public class EncryptionSafe {
      * @throws Exception
      */
     public static byte[] decrypt(byte[] arrB, String keyStr) throws Exception {
-        Key key = getKey(keyStr.getBytes());
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        return cipher.doFinal(arrB);
+        return Cryptos.aes(arrB,keyStr.getBytes(),Cipher.DECRYPT_MODE);
     }
 
     /**
@@ -174,7 +165,7 @@ public class EncryptionSafe {
      * @throws Exception
      */
     public static String decrypt(String strIn) throws Exception {
-        return new String(decrypt(hexStr2ByteArr(strIn)), DEFAULT_CHARSET);
+        return new String(decrypt(hexStr2ByteArr(strIn),DEFAULT_KEY), DEFAULT_CHARSET);
     }
 
     /**
@@ -189,35 +180,17 @@ public class EncryptionSafe {
         return new String(decrypt(hexStr2ByteArr(strIn), strKey), DEFAULT_CHARSET);
     }
 
-    /**
-     * 从指定字符串生成密钥，密钥所需的字节数组长度为8位 不足8位时后面补0，超出8位只取前8位
-     *
-     * @param arrBTmp 构成该字符串的字节数组
-     * @return 生成的密钥
-     * @throws Exception
-     */
-    private static Key getKey(byte[] arrBTmp) {
-        // 创建一个空的8位字节数组（默认值为0）
-        byte[] arrB = new byte[8];
-
-        // 将原始字节数组转换为8位
-        for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
-            arrB[i] = arrBTmp[i];
-        }
-
-        // 生成密钥
-        Key key = new SecretKeySpec(arrB, "DES");
-        return key;
-    }
 
     // 测试
     public static void main(String[] args) throws Exception {
         String str = "中国";
-        String d = Encryption.encrypt(str);//加密字符串
+        String d = EncryptionSafe.encrypt(str);//加密字符串
 
-        String e = Encryption.decrypt(d);//解密字符串
+        String e = EncryptionSafe.decrypt(d);//解密字符串
+        String e2 = EncryptionSafe.decrypt("a3722f749058de4fcec3fae61af54122b7abb60489ac");//解密字符串
 
         System.out.println("Encrypt:" + d + " 字节大小：" + d.getBytes().length);
         System.out.println("Dncrypt:" + e + " 字节大小：" + e.getBytes().length);
+        System.out.println("Dncrypt:" + e2 + " 字节大小：" + e2.getBytes().length);
     }
 }

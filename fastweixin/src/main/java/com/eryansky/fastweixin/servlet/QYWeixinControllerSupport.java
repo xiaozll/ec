@@ -1,6 +1,5 @@
 package com.eryansky.fastweixin.servlet;
 
-import com.eryansky.fastweixin.message.aes.AesException;
 import com.eryansky.fastweixin.util.StrUtil;
 import com.eryansky.fastweixin.message.aes.WXBizMsgCrypt;
 import org.slf4j.Logger;

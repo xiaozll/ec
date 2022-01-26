@@ -51,7 +51,7 @@ public final class MessageUtil {
      * @return 微信消息或者事件Map
      */
     public static Map<String, Object> parseXml(HttpServletRequest request, String token, String appId, String aesKey) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         InputStream inputStream = null;
         try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             inputStream = request.getInputStream();
@@ -146,7 +146,7 @@ public final class MessageUtil {
                         XMLEvent event1 = reader.nextEvent();
                         if(event1.isStartElement() && "PicMd5Sum".equals(event1.asStartElement().getName()
                                 .toString())){
-                            Map<String, String> picMap = new HashMap<String, String>();
+                            Map<String, String> picMap = new HashMap<>();
                             picMap.put("PicMd5Sum", reader.getElementText());
 //                            sb.append(reader.getElementText());
 //                            sb.append(",");

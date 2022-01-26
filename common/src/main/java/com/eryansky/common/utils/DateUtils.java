@@ -415,9 +415,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 给定的日期得到年月 格式为：2009-08-01
+     * @param yrmoday 给定的日期得到年月 格式为：2009-08-01
+     * @return  yyyy-MM
      */
-    public static String giveyrmo(String yrmoday) {
+    public static String giveYrMo(String yrmoday) {
         // 以“－”为分隔符拆分字符串
         String[] strArray = yrmoday.split("-");
 

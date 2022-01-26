@@ -278,11 +278,10 @@ public abstract class QYWeixinSupport{
             msg.setFromUserName(toUserName);
             msg.setToUserName(fromUserName);
             result = msg.toXml();
-            try{
-                WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId());
+            try(WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId())){
                 result = pc.encryptMsg(result, request.getParameter("timestamp"), request.getParameter("nonce"));
                 LOG.debug("加密后密文：{}", result);
-            }catch (AesException e){
+            }catch (Exception e){
                 LOG.error("加密异常", e);
             }
         }

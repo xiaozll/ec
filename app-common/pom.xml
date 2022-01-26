@@ -27,7 +27,7 @@
         <commons-cli.version>1.5.0</commons-cli.version>
         <batik.version>1.14</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
-        <jwt.version>3.18.2</jwt.version>
+        <jwt.version>3.18.3</jwt.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

@@ -11,6 +11,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.security.jwt.JWTUtils;
+import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -76,8 +77,8 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
             User user = null;
             try {
                 loginName = JWTUtils.getUsername(token);
-                user = UserUtils.getUserByLoginName(loginName);
                 verify = JWTUtils.verify(token, loginName, loginName);
+                user = UserUtils.getUserByLoginName(loginName);
             } catch (Exception e) {
                 logger.error("{},Token校验失败,{},{},{}", loginName, requestUrl, token, e.getMessage());
             }

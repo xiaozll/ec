@@ -73,14 +73,16 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
             boolean verify = false;
             String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
             String loginName = null;
+            User user = null;
             try {
                 loginName = JWTUtils.getUsername(token);
+                user = UserUtils.getUserByLoginName(loginName);
                 verify = JWTUtils.verify(token, loginName, loginName);
             } catch (Exception e) {
                 logger.error("{},Token校验失败,{},{},{}", loginName, requestUrl, token, e.getMessage());
             }
-            if (verify) {
-                SecurityUtils.putUserToSession(request, UserUtils.getUserByLoginName(loginName));
+            if (verify && null != user) {
+                SecurityUtils.putUserToSession(request,user);
                 logger.info("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
             } else {
 //                logger.warn("自动登录失败,{}",authorization);

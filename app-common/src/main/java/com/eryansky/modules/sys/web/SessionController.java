@@ -52,7 +52,7 @@ public class SessionController extends SimpleController {
      */
     @RequestMapping(value = {"onLineSessions"})
     @ResponseBody
-    public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) throws Exception {
+    public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) {
         Page<SessionInfo> page = new Page<>(request);
         page = SecurityUtils.findSessionInfoPage(page,null,query);
         return new Datagrid<>(page.getTotalCount(), page.getResult());
@@ -65,7 +65,7 @@ public class SessionController extends SimpleController {
      */
     @RequestMapping(value = {"winthPermissionsOnLineSessions"})
     @ResponseBody
-    public Datagrid<SessionInfo> winthPermissionsOnLineSessions(HttpServletRequest request, String query) throws Exception {
+    public Datagrid<SessionInfo> winthPermissionsOnLineSessions(HttpServletRequest request, String query) {
         Page<SessionInfo> page = new Page<>(request);
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         page = SecurityUtils.findSessionInfoPage(page,(sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()) ? null:sessionInfo.getLoginCompanyId(),query);

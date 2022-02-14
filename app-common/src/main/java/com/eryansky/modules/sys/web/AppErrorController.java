@@ -57,7 +57,7 @@ public class AppErrorController extends AbstractErrorController {
 //        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
         Map<String, Object> errorData = new java.util.HashMap<>(getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
 
-        logger.error(JsonMapper.toJsonString(errorData));
+        logger.error("{}",JsonMapper.toJsonString(errorData));
         ModelAndView modelAndView = null;
         int statusCode = status.value();
         if (statusCode == HttpStatus.NOT_FOUND.value()) {

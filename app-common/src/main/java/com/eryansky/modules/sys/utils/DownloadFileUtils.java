@@ -14,7 +14,10 @@ import java.util.Enumeration;
  */
 public class DownloadFileUtils {
 
+
     private static Logger logger = LoggerFactory.getLogger(DownloadFileUtils.class);
+
+    private DownloadFileUtils(){}
 
     public static void downRangeFile(File downloadFile, HttpServletResponse response, HttpServletRequest request) throws Exception {
         // 文件不存在

@@ -231,27 +231,24 @@ public class SystemMonitorController extends SimpleController {
         }
         if (download) {
             WebUtils.setDownloadableHeader(request, response, file.getName());
-            BufferedInputStream is = null;
-            OutputStream os = null;
-            try {
-                os = response.getOutputStream();
-                is = new BufferedInputStream(new FileInputStream(file));
+            try (OutputStream os = response.getOutputStream();
+                 FileInputStream fileInputStream = new FileInputStream(file);
+                 BufferedInputStream is = new BufferedInputStream(fileInputStream)) {
                 IOUtils.copy(is, os);
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                IOUtils.closeQuietly(is);
             }
             return null;
         }
         if (WebUtils.isAjaxRequest(request)) {
             try {
                 // 读取日志
+                assert file != null;
                 List<String> logs = FileUtils.readLines(file, "utf-8");
                 List<String> showLogs = logs;
-                StringBuffer log = new StringBuffer();
+                StringBuilder log = new StringBuilder();
                 Collections.reverse(logs);
-                Page page = new Page(request, response);
+                Page<String> page = new Page<>(request, response);
                 page.setPageSize(pageSize == null ? 1000 : pageSize);//最大读取行数
                 if (page.getPageSize() != Page.PAGESIZE_ALL) {
                     showLogs = Collections3.getPagedList(logs, page.getPageNo(), page.getPageSize());
@@ -260,7 +257,7 @@ public class SystemMonitorController extends SimpleController {
                 }
                 for (int i = showLogs.size() - 1; i >= 0; i--) {
                     String line = logs.get(i);
-                    log.append(line.replace("\t", "&nbsp;") + "<br>");
+                    log.append(line.replace("\t", "&nbsp;")).append("<br>");
                 }
                 return renderString(response, Result.successResult().setMsg(log.toString()).setObj(page));
             } catch (Exception e) {

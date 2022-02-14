@@ -16,12 +16,14 @@ import com.eryansky.modules.sys.service.PostService;
  */
 public class PostUtils {
 
+    private PostUtils(){}
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
         private static PostService postService = SpringContextHolder.getBean(PostService.class);
+        private Static(){}
     }
 
     /**

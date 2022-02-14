@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
@@ -86,7 +87,7 @@ public abstract class SimpleController{
      * @throws Exception
      */
     @RequestMapping("redirect")
-    public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (StringUtils.isEmpty(prefix)) {
             prefix = "/WEB-INF/views/";
         }
@@ -95,7 +96,7 @@ public abstract class SimpleController{
             response.sendError(404);
         } else {
             if (this.logger.isDebugEnabled()) {
-                this.logger.debug("重定向到页面:" + prefix + toPage);
+                this.logger.debug("重定向到页面:{}" , prefix + toPage);
             }
             request.getRequestDispatcher(prefix + toPage).forward(request, response);
         }
@@ -240,10 +241,10 @@ public abstract class SimpleController{
             response.setContentType(type);
             response.setCharacterEncoding(WebUtils.DEFAULT_ENCODING);
             writer.print(string);
-            return null;
         } catch (IOException e) {
-            return null;
+            logger.error(e.getMessage(),e);
         }
+        return null;
     }
 
 }

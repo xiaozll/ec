@@ -28,14 +28,17 @@ public class DefaultSystemInitListener implements ServletContextListener,
     private static final Logger logger = LoggerFactory.getLogger(DefaultSystemInitListener.class);
 
     public DefaultSystemInitListener() {
+        // TODO document why this constructor is empty
     }
 
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
         Properties props = System.getProperties();
-        logger.info(props.toString());
+        logger.info("{}",props);
         logger.info("系统服务启动.");
     }
 
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
         logger.info("系统服务关闭.");
     }
@@ -43,6 +46,7 @@ public class DefaultSystemInitListener implements ServletContextListener,
     /**
      * session创建
      */
+    @Override
     public void sessionCreated(HttpSessionEvent se) {
         logger.debug("sessionCreated");
     }
@@ -50,18 +54,22 @@ public class DefaultSystemInitListener implements ServletContextListener,
     /**
      * session销毁
      */
+    @Override
     public void sessionDestroyed(HttpSessionEvent evt) {
         logger.debug("sessionDestroyed");
     }
 
+    @Override
     public void attributeAdded(HttpSessionBindingEvent sbe) {
         logger.debug("attributeAdded");
     }
 
+    @Override
     public void attributeRemoved(HttpSessionBindingEvent sbe) {
         logger.debug("attributeRemoved");
     }
 
+    @Override
     public void attributeReplaced(HttpSessionBindingEvent sbe) {
         logger.debug("attributeReplaced");
     }

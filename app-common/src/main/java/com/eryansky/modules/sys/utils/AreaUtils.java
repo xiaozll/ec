@@ -16,11 +16,14 @@ import com.eryansky.modules.sys.service.AreaService;
  */
 public class AreaUtils {
 
+    private AreaUtils(){}
+
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
         private static AreaService areaService = SpringContextHolder.getBean(AreaService.class);
+        private Static(){}
     }
 
     /**

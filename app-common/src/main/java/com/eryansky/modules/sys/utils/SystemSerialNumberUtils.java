@@ -26,6 +26,8 @@ import java.util.Map;
  */
 public class SystemSerialNumberUtils {
 
+    private SystemSerialNumberUtils(){}
+
     private static Logger logger = LoggerFactory.getLogger(SystemSerialNumberUtils.class);
 
     /**
@@ -34,7 +36,7 @@ public class SystemSerialNumberUtils {
     public static final class Static {
         private static SystemSerialNumberService systemSerialNumberService = SpringContextHolder.getBean(SystemSerialNumberService.class);
         private static CacheChannel cacheChannel = CacheUtils.getCacheChannel();
-
+        private Static(){}
     }
 
     /**

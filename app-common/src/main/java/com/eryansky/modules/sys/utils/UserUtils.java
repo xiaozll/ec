@@ -30,6 +30,7 @@ import java.util.List;
  */
 public class UserUtils {
 
+    private UserUtils(){}
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
@@ -39,6 +40,7 @@ public class UserUtils {
         private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
         private static PostService postService = SpringContextHolder.getBean(PostService.class);
         private static UserPasswordService userPasswordService = SpringContextHolder.getBean(UserPasswordService.class);
+
     }
 
     /**

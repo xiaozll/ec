@@ -114,7 +114,7 @@ public class PostController extends SimpleController {
             Post checkPost = postService.getPostByOC(organId, model.getCode());
             if (checkPost != null && !checkPost.getId().equals(model.getId())) {
                 result = new Result(Result.WARN, "编码为[" + model.getCode() + "]已存在,请修正!", "code");
-                logger.debug(result.toString());
+                logger.debug("{}",result);
                 return result;
             }
         }

@@ -12,7 +12,6 @@ import com.eryansky.modules.sys._enum.VersionLogType;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.service.VersionLogService;
 import com.eryansky.utils.AppUtils;
-import eu.bitwalker.useragentutils.DeviceType;
 import eu.bitwalker.useragentutils.OperatingSystem;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +24,14 @@ import static com.eryansky.utils.AppUtils.likeIOS;
  */
 public class VersionLogUtils {
 
+    private VersionLogUtils(){}
+
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
         private static VersionLogService versionLogService = SpringContextHolder.getBean(VersionLogService.class);
+        private Static(){}
     }
     /**
      * 获取当前版本的更新说明

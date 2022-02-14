@@ -67,7 +67,7 @@ public class DBConfigure {
      */
     private Properties mybatisProperties(Map<String, String> mybatisProperties) {
         if(null == mybatisProperties){
-            return null;
+            return new Properties();
         }
         Properties properties = new Properties();
         properties.putAll(mybatisProperties);

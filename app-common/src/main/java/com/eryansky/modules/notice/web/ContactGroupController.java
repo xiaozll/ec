@@ -46,7 +46,7 @@ public class ContactGroupController extends SimpleController {
     @Autowired
     private ContactGroupService contactGroupService;
     @Autowired
-    private MailContactService contactService;
+    private MailContactService mailContactService;
 
     @ModelAttribute("model")
     public ContactGroup get(@RequestParam(required = false) String id) {

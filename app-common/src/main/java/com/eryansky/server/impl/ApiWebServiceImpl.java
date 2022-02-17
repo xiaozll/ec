@@ -64,6 +64,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             String category = (String) map.get("category");
             String content = (String) map.get("content");
             String linkUrl = (String) map.get("linkUrl");
+            String linkSSO = (String) map.get("linkSSO");
             if (StringUtils.isNotBlank(linkUrl)){
                 linkUrl = EncodeUtils.urlDecode(linkUrl);
             }
@@ -113,14 +114,14 @@ public class ApiWebServiceImpl implements IApiWebService {
             }
 
 
-            List<String> receiveObjectIds = new ArrayList<String>();
+            List<String> receiveObjectIds = new ArrayList<>();
             for (String localLoginName : receiveIds) {
-                User recevieUser = Static.userService.getUserByIdOrLoginName(localLoginName);
-                if (recevieUser == null) {
+                User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
+                if (receiveUser == null) {
                     logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
                     return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
                 }
-                receiveObjectIds.add(recevieUser.getId());
+                receiveObjectIds.add(receiveUser.getId());
             }
 
             //微信发送消息

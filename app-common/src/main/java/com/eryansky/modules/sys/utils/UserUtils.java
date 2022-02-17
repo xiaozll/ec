@@ -182,6 +182,20 @@ public class UserUtils {
     }
 
     /**
+     * 根据userId查找用户loginName
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    public static String getLoginNameByUserId(String userId) {
+        User user = getUser(userId);
+        if (null != user) {
+            return user.getLoginName();
+        }
+        return null;
+    }
+
+    /**
      * 根据手机号码查找用户
      *
      * @param mobile 手机号码

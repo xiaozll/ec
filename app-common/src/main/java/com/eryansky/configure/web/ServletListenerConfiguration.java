@@ -19,14 +19,12 @@ public class ServletListenerConfiguration {
 
     @Bean
     public ServletListenerRegistrationBean<IntrospectorCleanupListener> getIntrospectorCleanupListener() {
-        ServletListenerRegistrationBean<IntrospectorCleanupListener> bean = new ServletListenerRegistrationBean<>(new IntrospectorCleanupListener());
-        return bean;
+        return new ServletListenerRegistrationBean<>(new IntrospectorCleanupListener());
     }
 
     @Bean
     public ServletListenerRegistrationBean<RequestContextListener> getRequestContextListener() {
-        ServletListenerRegistrationBean<RequestContextListener> bean = new ServletListenerRegistrationBean<>(new RequestContextListener());
-        return bean;
+        return new ServletListenerRegistrationBean<>(new RequestContextListener());
     }
 
     /**
@@ -36,8 +34,7 @@ public class ServletListenerConfiguration {
     @DependsOn(value = {"springContextHolder"})
     @Bean
     public ServletListenerRegistrationBean<SystemInitListener> getSystemInitListener() {
-        ServletListenerRegistrationBean<SystemInitListener> bean = new ServletListenerRegistrationBean<>(new SystemInitListener());
-        return bean;
+        return new ServletListenerRegistrationBean<>(new SystemInitListener());
     }
 
 }

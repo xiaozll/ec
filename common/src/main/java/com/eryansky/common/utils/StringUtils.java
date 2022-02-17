@@ -637,7 +637,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      * 转换为Long类型
      */
     public static Long toLong(Object val){
-        return toDouble(val).longValue();
+        if (val == null) {
+            return 0L;
+        }
+        try {
+            return Long.valueOf(trim(val.toString()));
+        } catch (Exception e) {
+            return 0L;
+        }
     }
 
     /**

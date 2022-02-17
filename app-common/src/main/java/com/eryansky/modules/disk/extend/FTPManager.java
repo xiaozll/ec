@@ -511,29 +511,26 @@ public class FTPManager implements IFileManager {
 
     @Override
     public void init() {
-        final Thread thread = new Thread() {
-            @Override
-            public void run() {
-                boolean init = false;
-                isconnect = false;
-                while (!init || (!isconnect && reconnect)) {
-                    init = true;
+        final Thread thread = new Thread(() -> {
+            boolean init = false;
+            isconnect = false;
+            while (!init || (!isconnect && reconnect)) {
+                init = true;
+                try {
+                    connect(url, port, username, password);
+                    logger.info("连接FTP服务器成功,{},{}", url, port);
+                    isconnect = true;
+                } catch (IOException e) {
+                    isconnect = false;
+                    logger.error("连接FTP服务器失败,{},{}", url, port);
                     try {
-                        connect(url, port, username, password);
-                        logger.info("连接FTP服务器成功,{},{}", new Object[]{url, port});
-                        isconnect = true;
-                    } catch (IOException e) {
-                        isconnect = false;
-                        logger.error("连接FTP服务器失败,{},{}", new Object[]{url, port});
-                        try {
-                            Thread.sleep(connectTime);
-                        } catch (InterruptedException e1) {
-                        }
+                        Thread.sleep(connectTime);
+                    } catch (InterruptedException e1) {
                     }
                 }
-
             }
-        };
+
+        });
         thread.start();
     }
 
@@ -571,7 +568,7 @@ public class FTPManager implements IFileManager {
     @Override
     public String getStorePath(Folder folder, String userId, String fileName) {
         String path = DiskUtils.getFTPStoreDir(folder, userId);
-        String code = FileUploadUtils.encodingFilenamePrefix(userId.toString(),
+        String code = FileUploadUtils.encodingFilenamePrefix(userId,
                 fileName);
         return path + "/" + code + "_" + fileName;
     }

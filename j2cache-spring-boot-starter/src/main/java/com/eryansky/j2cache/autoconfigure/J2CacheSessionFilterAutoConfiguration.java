@@ -31,9 +31,9 @@ public class J2CacheSessionFilterAutoConfiguration {
         map.put("whiteListURL",filterConfig.getWhiteListURL());
         map.put("blackListURL",filterConfig.getBlackListURL());
 
-        map.put("cookieName",filterConfig.getCookieName());
-        map.put("cookieDomain",filterConfig.getCookieDomain());
-        map.put("cookiePath",filterConfig.getCookiePath());
+        map.put("cookie.name",filterConfig.getCookieName());
+        map.put("cookie.domain",filterConfig.getCookieDomain());
+        map.put("cookie.path",filterConfig.getCookiePath());
 
         map.put("session.maxAge",sessionProperties.getMaxAge());
         map.put("session.maxSizeInMemory",sessionProperties.getMaxSizeInMemory());

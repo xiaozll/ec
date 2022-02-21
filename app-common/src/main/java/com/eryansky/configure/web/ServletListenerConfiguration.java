@@ -1,6 +1,7 @@
 package com.eryansky.configure.web;
 
 import com.eryansky.listener.SystemInitListener;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.*;
 import org.springframework.web.context.request.RequestContextListener;
@@ -32,7 +33,8 @@ public class ServletListenerConfiguration {
      * @return
      */
     @DependsOn(value = {"springContextHolder"})
-    @Bean
+    @Bean("systemInitListener")
+    @ConditionalOnMissingBean(name = "systemInitListener")
     public ServletListenerRegistrationBean<SystemInitListener> getSystemInitListener() {
         return new ServletListenerRegistrationBean<>(new SystemInitListener());
     }

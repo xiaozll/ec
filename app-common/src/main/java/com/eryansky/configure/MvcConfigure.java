@@ -15,13 +15,14 @@ import com.eryansky.utils.AppConstants;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -64,7 +65,7 @@ public class MvcConfigure implements WebMvcConfigurer {
               .excludePathPatterns("/static/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 100);
 
-      if(AppConstants.isOauth2Enable()){
+      if(Boolean.TRUE.equals(AppConstants.isOauth2Enable())){
          List<String> dList = Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**");
          List<String> cList = AppConstants.getOauth2ExcludePathList();
          registry.addInterceptor(new AuthorityOauth2Interceptor()).addPathPatterns("/**")
@@ -90,15 +91,15 @@ public class MvcConfigure implements WebMvcConfigurer {
     * 跨域配置
     * @param registry
     */
-   @Override
-   public void addCorsMappings(CorsRegistry registry) {
+//   @Override
+//   public void addCorsMappings(CorsRegistry registry) {
 //      registry.addMapping("/**")
 //              .allowedOriginPatterns(CorsConfiguration.ALL)
 //              .allowCredentials(true)
 //              .allowedHeaders(CorsConfiguration.ALL)
 //              .allowedMethods(CorsConfiguration.ALL)
 //              .maxAge(3600);
-   }
+//   }
 
 
 
@@ -138,10 +139,11 @@ public class MvcConfigure implements WebMvcConfigurer {
    }
 
 
-   @Bean
+   @Order()
+   @Bean("fileManager")
+   @ConditionalOnMissingBean(name = "fileManager")
    public IFileManager fileManager() {
-      final IFileManager bean = new DISKManager();
-      return bean;
+      return new DISKManager();
    }
 
 //

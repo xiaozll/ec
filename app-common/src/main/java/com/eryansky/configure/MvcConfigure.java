@@ -139,7 +139,6 @@ public class MvcConfigure implements WebMvcConfigurer {
    }
 
 
-   @Order()
    @Bean("fileManager")
    @ConditionalOnMissingBean(name = "fileManager")
    public IFileManager fileManager() {

@@ -46,7 +46,8 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         //已登录用户
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+//        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        SessionInfo sessionInfo = SecurityUtils.getSessionInfo(request.getSession().getId());
         if (null != sessionInfo) {
             return true;
         }

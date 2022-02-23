@@ -484,8 +484,6 @@ public class DiskUtils {
         try {
             if (!tempFile.exists()) {
                 Static.iFileManager.loadFile(file.getFilePath(), tempPath);
-            }else{
-                logger.warn("请求的文件不存在：{}", tempFile.getAbsolutePath());
             }
             return tempFile;
         } catch (IOException e) {

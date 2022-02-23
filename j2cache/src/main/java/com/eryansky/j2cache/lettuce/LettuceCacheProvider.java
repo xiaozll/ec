@@ -100,6 +100,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
         String password = props.getProperty("password");
         int database = Integer.parseInt(props.getProperty("database", "0"));
         String sentinelMasterId = props.getProperty("sentinelMasterId");
+        String sentinelPassword = props.getProperty("sentinelPassword ");
         long clusterTopologyRefreshMs = Long.valueOf(props.getProperty("clusterTopologyRefresh", "3000"));
 
         if("redis-cluster".equalsIgnoreCase(scheme)) {
@@ -124,19 +125,29 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
                     .enablePeriodicRefresh(Duration.ofMillis(clusterTopologyRefreshMs))
                     .build();
             ((RedisClusterClient)redisClient).setOptions(ClusterClientOptions.builder().topologyRefreshOptions(topologyRefreshOptions).build());
-        }else if("redis-sentinel".equalsIgnoreCase(scheme)){
+        } else if("redis-sentinel".equalsIgnoreCase(scheme)) {
+            scheme = "redis";
             String[] hostArray = hosts.split(",");
-            RedisURI.Builder builder=RedisURI.builder();
-            if (password != null) {
-                builder.withPassword(password);
-            }
-            builder.withSentinelMasterId(sentinelMasterId);
-            builder.withDatabase(database);
-            for (String host : hostArray) {
+            RedisURI.Builder builder = null;
+            boolean isFirst = true;
+            for(String host : hostArray) {
                 String[] redisArray = host.split(":");
-                builder.withSentinel(redisArray[0],Integer.valueOf(redisArray[1]));
+                if(isFirst) {
+                    builder = RedisURI.Builder.sentinel(
+                            redisArray[0],
+                            Integer.valueOf(redisArray[1]),
+                            sentinelMasterId,
+                            sentinelPassword);
+                    isFirst = false;
+                }
+                else {
+                    builder.withSentinel(redisArray[0], Integer.valueOf(redisArray[1]));
+                }
             }
-            redisClient = RedisClient.create(builder.build());
+            builder.withDatabase(database).withPassword(password);
+
+            RedisURI uri = builder.build();
+            redisClient = RedisClient.create(uri);
         }else {
             String[] redisArray = hosts.split(":");
             RedisURI uri = RedisURI.create(redisArray[0], Integer.valueOf(redisArray[1]));
@@ -152,7 +163,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
         }
 
         //connection pool configurations
-        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+        GenericObjectPoolConfig<StatefulConnection<String, byte[]>> poolConfig = new GenericObjectPoolConfig<>();
         poolConfig.setMaxTotal(Integer.parseInt(props.getProperty("maxTotal", "100")));
         poolConfig.setMaxIdle(Integer.parseInt(props.getProperty("maxIdle", "10")));
         poolConfig.setMinIdle(Integer.parseInt(props.getProperty("minIdle", "10")));

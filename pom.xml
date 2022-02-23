@@ -42,7 +42,7 @@
         <tomcat.version>9.0.56</tomcat.version>
         <jstl.version>1.2</jstl.version>
 
-        <mybatis-spring-boot.version>2.2.1</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
         <druid-version>1.2.8</druid-version>
         <mariadb.driver.version>2.7.5</mariadb.driver.version>

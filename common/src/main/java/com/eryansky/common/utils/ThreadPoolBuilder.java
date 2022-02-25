@@ -27,6 +27,11 @@ public class ThreadPoolBuilder {
 
 	private static RejectedExecutionHandler defaultRejectHandler = new AbortPolicy();
 
+
+	private ThreadPoolBuilder(){
+
+	}
+
 	/**
 	 * 创建FixedThreadPool.
 	 * 
@@ -78,9 +83,9 @@ public class ThreadPoolBuilder {
 
 			BlockingQueue<Runnable> queue = null;
 			if (queueSize == 0) {
-				queue = new LinkedBlockingQueue<Runnable>();
+				queue = new LinkedBlockingQueue<>();
 			} else {
-				queue = new ArrayBlockingQueue<Runnable>(queueSize);
+				queue = new ArrayBlockingQueue<>(queueSize);
 			}
 
 			if (threadFactory == null) {
@@ -157,7 +162,7 @@ public class ThreadPoolBuilder {
 			}
 
 			return new ThreadPoolExecutor(minSize, maxSize, keepAliveSecs, TimeUnit.SECONDS,
-					new SynchronousQueue<Runnable>(), threadFactory, rejectHandler);
+					new SynchronousQueue<>(), threadFactory, rejectHandler);
 		}
 	}
 }

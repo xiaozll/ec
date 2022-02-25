@@ -92,7 +92,7 @@ public class MultiSqlSessionFactoryMapperLoader implements DisposableBean, Initi
 			service.scheduleAtFixedRate(new Task(), 5, 5, TimeUnit.SECONDS);
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			logger.error(e1.getMessage(),e1);
 		}
 
 	}
@@ -106,7 +106,7 @@ public class MultiSqlSessionFactoryMapperLoader implements DisposableBean, Initi
 					logger.debug("加载完毕.");
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 		}
 

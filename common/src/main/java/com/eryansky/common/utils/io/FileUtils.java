@@ -6,9 +6,12 @@
 package com.eryansky.common.utils.io;
 
 import com.eryansky.common.exception.ServiceException;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URLEncoder;
@@ -20,6 +23,8 @@ import java.nio.charset.StandardCharsets;
  * @date       : 2013-1-19 下午4:41:56
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
 	/**
 	 * 生成随机的文件名 将原始文件名去掉,改为一个UUID的文件名,后缀名以原文件名的后缀为准
@@ -68,7 +73,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 					out.write(buffer, 0, len);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 				String dstpath = dst.getAbsolutePath();
 				if (dstpath.lastIndexOf("/") != -1) {
 					dstpath = dstpath.subSequence(0, dstpath.lastIndexOf("/"))
@@ -81,7 +86,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 				copyFile(src, dst);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 	}
 
@@ -148,7 +153,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			}
 			file.delete();
 		} else {
-			System.out.println("所删除的文件不存在！" + '\n');
+			logger.warn("所删除的文件不存在！" );
 		}
 	}
 
@@ -274,7 +279,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		System.out.println("realPath----->"+realPath);
 		return realPath;
 	}
 	

@@ -5,6 +5,10 @@
  */
 package com.eryansky.common.utils.net;
 
+import com.eryansky.common.orm.mybatis.MultiSqlSessionFactoryMapperLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +19,9 @@ import java.io.InputStreamReader;
  * @author : 尔演&Eryan eryanwcp@gmail.com
  */
 public class MacUtils {
+
+
+	private static final Logger logger = LoggerFactory.getLogger(MacUtils.class);
 
 	/**
 	 * 获取当前操作系统名称. return 操作系统名称 例如:windows,Linux,Unix等.
@@ -58,14 +65,14 @@ public class MacUtils {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		} finally {
 			try {
 				if (bufferedReader != null) {
 					bufferedReader.close();
 				}
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			}
 			bufferedReader = null;
 			process = null;
@@ -106,14 +113,14 @@ public class MacUtils {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		} finally {
 			try {
 				if (bufferedReader != null) {
 					bufferedReader.close();
 				}
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			}
 			bufferedReader = null;
 			process = null;
@@ -160,14 +167,14 @@ public class MacUtils {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		} finally {
 			try {
 				if (bufferedReader != null) {
 					bufferedReader.close();
 				}
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				logger.error(e1.getMessage(),e1);
 			}
 			bufferedReader = null;
 			process = null;

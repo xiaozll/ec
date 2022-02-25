@@ -8,6 +8,8 @@ package com.eryansky.common.utils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.eryansky.common.exception.SystemException;
@@ -42,6 +44,8 @@ import java.util.zip.Inflater;
  * @date 2011-12-30下午2:31:16
  */
 public class SysUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(SysUtils.class);
 
 	private static final int DEF_DIV_SCALE = 2;
 	public static final int BUFFER_SIZE = 16 * 1024;
@@ -230,7 +234,7 @@ public class SysUtils {
 			try {
 				count += decompresser.inflate(result);
 			} catch (DataFormatException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 			for (int i = 0; i < result.length; i++) {
 				al.add(new Byte(result[i]));
@@ -741,7 +745,6 @@ public class SysUtils {
 	 */
 	public static boolean isSafeUserInfoString(String str) {
 		String es = "^\\s*$|^c:\\con\\con$|[%,\\*\\\\s\\t\\<\\>\\&]|游客|^Guest";
-		System.out.println("es = " + es);
 		Pattern pattern = Pattern.compile(es);
 		return !pattern.matcher(str).find();
 	}
@@ -1192,7 +1195,8 @@ public class SysUtils {
 		}
 		if (str.length() > len) {
 			Throwable throwable = new Throwable("数值长度不正确,请检查!");
-			throwable.printStackTrace();
+//			throwable.printStackTrace();
+			logger.error(throwable.getMessage(),throwable);
 		}
 
 		while (str.length() < len) {

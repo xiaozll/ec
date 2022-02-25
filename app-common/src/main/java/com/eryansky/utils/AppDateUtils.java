@@ -6,6 +6,9 @@
 package com.eryansky.utils;
 
 import com.eryansky.common.utils.DateUtils;
+import com.eryansky.core.excels.LeoUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +19,9 @@ import java.util.Date;
  * @date 2014-12-31
  */
 public class AppDateUtils extends DateUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppDateUtils.class);
+
     /**
      * get first date of given month and year
      *
@@ -101,7 +107,7 @@ public class AppDateUtils extends DateUtils {
             c.add(Calendar.DATE, -weekday);
             c.setTime(parse(format(c.getTime(), DATE_FORMAT) + " 00:00:00", DATE_TIME_FORMAT));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return c.getTime();
     }
@@ -118,7 +124,7 @@ public class AppDateUtils extends DateUtils {
             c.add(Calendar.DATE, 8 - weekday);
             c.setTime(parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return c.getTime();
     }
@@ -133,7 +139,7 @@ public class AppDateUtils extends DateUtils {
         try {
             now = parse(format(now,DATE_FORMAT),DATE_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -148,7 +154,7 @@ public class AppDateUtils extends DateUtils {
         try {
             now = parse(format(now,DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -163,7 +169,7 @@ public class AppDateUtils extends DateUtils {
         try {
             now = parse(format(now,DATE_TIME_HOUR_FORMAT),DATE_TIME_HOUR_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -178,7 +184,7 @@ public class AppDateUtils extends DateUtils {
         try {
             now = parse(format(now,DATE_TIME_HOUR_FORMAT) + ":59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -195,7 +201,7 @@ public class AppDateUtils extends DateUtils {
             c.set(Calendar.DATE, 1);
             now = parse(format(c.getTime(),DATE_FORMAT),DATE_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -214,7 +220,7 @@ public class AppDateUtils extends DateUtils {
             c.add(Calendar.DATE, -1);
             now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -232,7 +238,7 @@ public class AppDateUtils extends DateUtils {
             c.set(Calendar.DATE, 1);
             now = parse(format(c.getTime(),DATE_FORMAT),DATE_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -250,7 +256,7 @@ public class AppDateUtils extends DateUtils {
             c.set(Calendar.DATE, 31);
             now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -276,7 +282,7 @@ public class AppDateUtils extends DateUtils {
             c.set(Calendar.DATE, 1);
             now = parse(format(c.getTime(),DATE_FORMAT) + " 00:00:00",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -306,7 +312,7 @@ public class AppDateUtils extends DateUtils {
             }
             now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }
@@ -329,7 +335,7 @@ public class AppDateUtils extends DateUtils {
             c.set(Calendar.DATE, 1);
             now = parse(format(c.getTime(),DATE_FORMAT) + " 00:00:00",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
 
@@ -354,7 +360,7 @@ public class AppDateUtils extends DateUtils {
             }
             now = parse(format(c.getTime(),DATE_FORMAT) + " 23:59:59",DATE_TIME_FORMAT);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return now;
     }

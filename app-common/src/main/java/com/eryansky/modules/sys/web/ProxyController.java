@@ -210,7 +210,7 @@ public class ProxyController extends SimpleController {
             IOUtils.copy(input, output);
             output.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             //回收链接到连接池
 //            try {

@@ -8,6 +8,8 @@ package com.eryansky.common.web.utils;
 import com.eryansky.common.utils.StringUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +21,8 @@ import java.io.*;
  * @date : 2014-05-05 22:50
  */
 public class DownloadUtils {
+
+    private final static Logger logger = LoggerFactory.getLogger(DownloadUtils.class);
 
     /**
      * 下载文件
@@ -97,7 +101,7 @@ public class DownloadUtils {
             is = new BufferedInputStream(inputStream);
             IOUtils.copy(is, os);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             IOUtils.closeQuietly(is);
         }

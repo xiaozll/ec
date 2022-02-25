@@ -2,6 +2,8 @@ package com.eryansky.core.excels;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -22,6 +24,8 @@ import java.util.regex.Pattern;
  * @date : 2014-07-31 20:36
  */
 public class LeoUtil {
+
+	private static final Logger logger = LoggerFactory.getLogger(LeoUtil.class);
 
 	/**
 	 * 验证字符串
@@ -173,7 +177,7 @@ public class LeoUtil {
 		try (FileInputStream fis = new FileInputStream(file)){
 			fis.read(b, 0, b.length);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 		if ("d0cf11".equalsIgnoreCase(bytesToHexString(b))
 				|| "504b03".equalsIgnoreCase(bytesToHexString(b))) {

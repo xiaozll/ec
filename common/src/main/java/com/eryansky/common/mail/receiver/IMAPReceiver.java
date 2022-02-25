@@ -48,7 +48,6 @@ public class IMAPReceiver extends Receiver {
 			// 打开文件夹对象
 			flag = this.switchFolder(mode);
 		} catch (Exception e) {
-//			e.printStackTrace();
 			logger.error(e.getMessage(),e);
 			flag = false;
 			this.close();

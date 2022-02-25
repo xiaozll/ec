@@ -1,6 +1,8 @@
 package com.eryansky.core.excels;
 
 import bsh.Interpreter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.regex.Matcher;
@@ -11,7 +13,9 @@ import java.util.regex.Pattern;
  * @date : 2014-07-31 20:36
  */
 public class FormulaProcessor {
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(FormulaProcessor.class);
+
 	private Pattern pattern = Pattern.compile("\\$(\\d+)");
 
 	/**
@@ -47,7 +51,7 @@ public class FormulaProcessor {
 					cell.setValue(v);
 					computed.add(cell.getColumnIndex());
 				} catch (Exception e){
-					e.printStackTrace();
+					logger.error(e.getMessage(), e);
 					cell.setValue(0);
 					cell.setValue("-");
 					computed.add(cell.getColumnIndex());

@@ -183,7 +183,7 @@ public class OrganController extends SimpleController {
         try {
             organService.saveOrgan(organ);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         result = Result.successResult();
         return result;

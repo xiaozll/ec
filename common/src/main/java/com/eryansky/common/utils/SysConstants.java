@@ -7,6 +7,9 @@ package com.eryansky.common.utils;
 
 import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.ftp.FtpFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.StandardEnvironment;
 
 
@@ -17,6 +20,8 @@ import org.springframework.core.env.StandardEnvironment;
  * @date 2012-8-20 上午11:40:56
  */
 public class SysConstants {
+
+    private static final Logger logger = LoggerFactory.getLogger(SysConstants.class);
     /**
      * session 验证码key
      */
@@ -102,7 +107,7 @@ public class SysConstants {
                 String password = StringUtils.isNotBlank(cKey) ?  Encryption.decrypt(ePassword,cKey ): Encryption.decrypt(ePassword);
                 return password;
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
         return getJdbcPassword();

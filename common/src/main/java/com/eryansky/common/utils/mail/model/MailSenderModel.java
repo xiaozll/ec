@@ -6,8 +6,11 @@
 package com.eryansky.common.utils.mail.model;
 
 import com.eryansky.common.utils.io.FileUtils;
+import com.eryansky.common.utils.mail.MailSender;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
@@ -22,6 +25,9 @@ import java.util.Properties;
  * @date 2012-5-5 下午3:39:55
  */
 public class MailSenderModel {
+
+	private static final Logger logger = LoggerFactory.getLogger(MailSenderModel.class);
+
 	/**
 	 * 发送邮件的服务器的IP或域名
 	 */
@@ -149,7 +155,7 @@ public class MailSenderModel {
 			htmlText = FreeMarkerTemplateUtils
 					.processTemplateIntoString(template, map);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 		return htmlText;
 	}

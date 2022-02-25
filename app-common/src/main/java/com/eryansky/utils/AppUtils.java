@@ -123,7 +123,7 @@ public class AppUtils {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
         return paras.toString();
@@ -497,7 +497,7 @@ public class AppUtils {
                 return file.toString();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return null;
     }

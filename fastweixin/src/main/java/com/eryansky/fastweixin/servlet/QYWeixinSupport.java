@@ -5,7 +5,6 @@ import com.eryansky.fastweixin.company.handle.QYMessageHandle;
 import com.eryansky.fastweixin.company.message.req.*;
 import com.eryansky.fastweixin.company.message.resp.QYBaseRespMsg;
 import com.eryansky.fastweixin.company.message.resp.QYTextRespMsg;
-import com.eryansky.fastweixin.message.aes.AesException;
 import com.eryansky.fastweixin.message.aes.WXBizMsgCrypt;
 import com.eryansky.fastweixin.util.BeanUtil;
 import com.eryansky.fastweixin.util.CollectionUtil;
@@ -28,7 +27,7 @@ import java.util.Map;
  */
 public abstract class QYWeixinSupport{
 
-    private static final Logger LOG = LoggerFactory.getLogger(QYWeixinSupport.class);
+    private static final Logger logger = LoggerFactory.getLogger(QYWeixinSupport.class);
 
     private static final Object LOCK = new Object();
 
@@ -101,12 +100,12 @@ public abstract class QYWeixinSupport{
                 pw.write(echoStr);
                 pw.flush();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
                 pw.write("");
                 pw.flush();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
     }
 
@@ -122,7 +121,7 @@ public abstract class QYWeixinSupport{
         toUserName = (String)reqMap.get("ToUserName");
         String msgType = (String)reqMap.get("MsgType");
 
-        LOG.debug("收到消息，消息类型：{}", msgType);
+        logger.debug("收到消息，消息类型：{}", msgType);
 
         QYBaseRespMsg msg = null;
 
@@ -145,7 +144,7 @@ public abstract class QYWeixinSupport{
                 }
             }else if(QYEventType.CLICK.equalsIgnoreCase(eventType)){
                 String eventKey = (String)reqMap.get("EventKey");
-                LOG.debug("eventKey:{}", eventKey);
+                logger.debug("eventKey:{}", eventKey);
                 QYMenuEvent event = new QYMenuEvent(eventKey);
                 buildBasicEvent(reqMap, event);
                 msg = handleMenuClickEvent(event);
@@ -154,7 +153,7 @@ public abstract class QYWeixinSupport{
                 }
             }else if(QYEventType.VIEW.equalsIgnoreCase(eventType)){
                 String eventKey = (String)reqMap.get("EventKey");
-                LOG.debug("eventKey:{}", eventKey);
+                logger.debug("eventKey:{}", eventKey);
                 QYMenuEvent event = new QYMenuEvent(eventKey);
                 buildBasicEvent(reqMap, event);
                 msg = handleMenuViewEvent(event);
@@ -216,7 +215,7 @@ public abstract class QYWeixinSupport{
         }else{
             if(QYReqType.TEXT.equals(msgType)){
                 String content = (String)reqMap.get("Content");
-                LOG.debug("文本消息内容：{}", content);
+                logger.debug("文本消息内容：{}", content);
                 QYTextReqMsg textReqMsg = new QYTextReqMsg(content);
                 buildBasicReqMsg(reqMap, textReqMsg);
                 msg = handleTextMsg(textReqMsg);
@@ -280,9 +279,9 @@ public abstract class QYWeixinSupport{
             result = msg.toXml();
             try(WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId())){
                 result = pc.encryptMsg(result, request.getParameter("timestamp"), request.getParameter("nonce"));
-                LOG.debug("加密后密文：{}", result);
+                logger.debug("加密后密文：{}", result);
             }catch (Exception e){
-                LOG.error("加密异常", e);
+                logger.error("加密异常", e);
             }
         }
         return result;

@@ -5,8 +5,10 @@
  */
 package com.eryansky.common.utils.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.sql.Clob;
 import java.sql.SQLException;
 
@@ -19,6 +21,8 @@ import javax.sql.rowset.serial.SerialException;
  * @date   2012-12-11 上午10:32:35
  */
 public class ClobUtil {
+
+	private static final Logger logger = LoggerFactory.getLogger(ClobUtil.class);
 
 	/**
 	 * 获得字符串
@@ -36,7 +40,7 @@ public class ClobUtil {
 					s.append(str);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 		}
 		return s.toString();
@@ -56,9 +60,9 @@ public class ClobUtil {
 				c = new SerialClob(s.toCharArray());
 			}
 		} catch (SerialException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 		return c;
 	}

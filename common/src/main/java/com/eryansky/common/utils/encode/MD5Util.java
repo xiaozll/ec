@@ -6,6 +6,8 @@
 package com.eryansky.common.utils.encode;
 
 import com.eryansky.common.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,8 +21,11 @@ import java.security.NoSuchAlgorithmException;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date   2012-1-9下午3:15:25
  */
-public class MD5Util {    
-     /**  
+public class MD5Util {
+
+    private static final Logger logger = LoggerFactory.getLogger(MD5Util.class);
+
+     /**
      * 默认的密码字符串组合，用来将字节转换成 16 进制表示的字符,apache校验下载的文件的正确性用的就是默认的这个组合  
      */    
     protected static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6','7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
@@ -29,7 +34,7 @@ public class MD5Util {
         try {    
             messagedigest = MessageDigest.getInstance("MD5");    
         } catch (NoSuchAlgorithmException e) {    
-            e.printStackTrace();    
+            logger.error(e.getMessage(),e);
         }    
     }    
     /**

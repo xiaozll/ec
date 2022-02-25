@@ -5,6 +5,9 @@
  */
 package com.eryansky.common.web.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class InputReplaceFilter extends BaseFilter {
 
+	private static final Logger logger = LoggerFactory.getLogger(InputReplaceFilter.class);
+
 	private final Properties pp = new Properties();
 
 	// 非法词、敏感词、特殊字符、配置在初始化参数中
@@ -36,7 +41,7 @@ public class InputReplaceFilter extends BaseFilter {
 			// 加载非法词
 			pp.load(inputStream);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -47,9 +52,7 @@ public class InputReplaceFilter extends BaseFilter {
 		if (request.getMethod().equalsIgnoreCase("post")) {
 			request.setCharacterEncoding("utf-8");
 		} else {
-			Iterator its = request.getParameterMap().values().iterator();
-			while (its.hasNext()) {
-				String[] params = (String[]) its.next();
+			for (String[] params : request.getParameterMap().values()) {
 				int len = params.length;
 				for (int i = 0; i < len; i++) {
 					params[i] = new String(params[i].getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
@@ -57,9 +60,7 @@ public class InputReplaceFilter extends BaseFilter {
 			}
 		}
 		// 过滤客户端提交表单中特殊字符
-		Iterator its = request.getParameterMap().values().iterator();
-		while (its.hasNext()) {
-			String[] params = (String[]) its.next();
+		for (String[] params : request.getParameterMap().values()) {
 			for (int i = 0; i < params.length; i++) {
 				//特殊字符Html转译
 //				params[i] = params[i].replaceAll(params[i], EncodeUtils.htmlEscape(params[i]));

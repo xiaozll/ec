@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 身份证工具类
@@ -16,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
  * @version 1.0, 2010-06-17
  */
 public class IdcardUtils extends StringUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(IdcardUtils.class);
 
 	/** 中国公民身份证号码最小长度。 */
 	public static final int CHINA_ID_MIN_LENGTH = 15;
@@ -136,7 +140,7 @@ public class IdcardUtils extends StringUtils {
 			try {
 				birthDate = new SimpleDateFormat("yyMMdd").parse(birthday);
 			} catch (ParseException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 			Calendar cal = Calendar.getInstance();
 			if (birthDate != null) {
@@ -236,7 +240,7 @@ public class IdcardUtils extends StringUtils {
 				birthDate = new SimpleDateFormat("yy").parse(birthCode
 						.substring(0, 2));
 			} catch (ParseException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 			Calendar cal = Calendar.getInstance();
 			if (birthDate != null) {
@@ -269,18 +273,14 @@ public class IdcardUtils extends StringUtils {
 		}
 		if (idCard.matches("^[a-zA-Z][0-9]{9}$")) { // 台湾
 			info[0] = "台湾";
-			System.out.println("11111");
 			String char2 = idCard.substring(1, 2);
 			if (char2.equals("1")) {
 				info[1] = "M";
-				System.out.println("MMMMMMM");
 			} else if (char2.equals("2")) {
 				info[1] = "F";
-				System.out.println("FFFFFFF");
 			} else {
 				info[1] = "N";
 				info[2] = "false";
-				System.out.println("NNNN");
 				return info;
 			}
 			info[2] = validateTWCard(idCard) ? "true" : "false";
@@ -378,7 +378,7 @@ public class IdcardUtils extends StringUtils {
 				iArr[i] = Integer.parseInt(String.valueOf(ca[i]));
 			}
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 		return iArr;
 	}

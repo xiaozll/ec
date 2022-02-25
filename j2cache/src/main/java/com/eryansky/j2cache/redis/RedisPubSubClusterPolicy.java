@@ -134,7 +134,6 @@ public class RedisPubSubClusterPolicy extends JedisPubSub implements ClusterPoli
                         break;
                     } catch (Exception e) {
                         log.error("failed connect redis cluster, reconnect it.", e);
-                        e.printStackTrace();
                         if (cluster != null) {
                             try {
                                 Thread.sleep(1000);

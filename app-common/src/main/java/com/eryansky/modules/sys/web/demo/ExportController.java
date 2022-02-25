@@ -1,5 +1,6 @@
 package com.eryansky.modules.sys.web.demo;
 
+import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.excels.*;
 import com.eryansky.modules.sys.web.demo.module.DataCount;
 import com.eryansky.modules.sys.web.demo.module.People;
@@ -19,7 +20,7 @@ import java.util.zip.ZipOutputStream;
 @Controller
 @RequestMapping("${adminPath}/sys/demo/export")
 @SuppressWarnings("unchecked")
-public class ExportController {
+public class ExportController extends SimpleController {
 
     /**
      * 数组数据样例
@@ -284,7 +285,7 @@ public class ExportController {
             JsGridReportBase report = new JsGridReportBase(request, response);
             report.exportToExcel(zout, bean);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             zout.close();// 关闭压缩输出流
         }

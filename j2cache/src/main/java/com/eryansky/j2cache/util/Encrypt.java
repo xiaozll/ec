@@ -5,6 +5,9 @@
  */
 package com.eryansky.j2cache.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -18,6 +21,8 @@ import java.security.NoSuchAlgorithmException;
  * @date   2012-12-11 上午10:32:05
  */
 public class Encrypt {
+
+	private static final Logger logger = LoggerFactory.getLogger(Encrypt.class);
 
 	/**
 	 * 测试
@@ -99,7 +104,7 @@ public class Encrypt {
 			// m.digest(inputText.getBytes("UTF-8"));
 			return hex(s);
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
         return encryptText;
 	}

@@ -15,7 +15,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.eryansky.common.utils.collections.MapUtils;
+import com.eryansky.common.utils.encode.MD5Util;
 import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 字符串工具类，用于实现一些字符串的常用操作
@@ -23,6 +26,8 @@ import org.apache.commons.text.StringEscapeUtils;
  * @date   2012-1-9下午2:43:26
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils{
+
+    private static final Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
     public static final String NUMBERS_AND_LETTERS         = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String NUMBERS                     = "0123456789";
@@ -110,7 +115,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
                 return null;
             }
         }
@@ -129,6 +134,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
+                logger.error(e.getMessage(),e);
                 return defultReturn;
             }
         }
@@ -596,7 +602,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             }
             return sb.toString();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return "";
     }

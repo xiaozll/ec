@@ -236,7 +236,7 @@ public class SystemMonitorController extends SimpleController {
                  BufferedInputStream is = new BufferedInputStream(fileInputStream)) {
                 IOUtils.copy(is, os);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
             return null;
         }

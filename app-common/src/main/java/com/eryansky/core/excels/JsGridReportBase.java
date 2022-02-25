@@ -6,6 +6,8 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class JsGridReportBase {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsGridReportBase.class);
+
     public SimpleDateFormat timeFormat = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");
 
@@ -99,7 +104,7 @@ public class JsGridReportBase {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         outData.append("]");
         outData.append("}");
@@ -107,7 +112,7 @@ public class JsGridReportBase {
         try {
             IoUtils.write(outData.toString(), out, "utf-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
     }
 
@@ -658,7 +663,7 @@ public class JsGridReportBase {
             buildStyle(wb, src, sheet, 16, ret, "YELLOW_BG");//黄色单元格背景
             buildStyle(wb, src, sheet, 17, ret, "GREEN_BG");//绿色单元格背景
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return ret;
     }
@@ -687,10 +692,9 @@ public class JsGridReportBase {
             return null;
         } else {
             try {
-                String str = new String(string.getBytes("ISO8859-1"), "UTF-8");
-                return str;
+                return new String(string.getBytes("ISO8859-1"), "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
                 return string;
             }
         }
@@ -707,10 +711,9 @@ public class JsGridReportBase {
             return null;
         } else {
             try {
-                String str = new String(string.getBytes("ISO8859-1"), "GBK");
-                return str;
+                return new String(string.getBytes("ISO8859-1"), "GBK");
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
                 return string;
             }
         }

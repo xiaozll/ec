@@ -1,6 +1,8 @@
 package com.eryansky.common.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,6 +15,8 @@ import java.util.GregorianCalendar;
  * 日期工具类, 继承org.apache.commons.lang.time.DateUtils类
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
     public static String DATE_FORMAT = "yyyy-MM-dd";
 
@@ -171,7 +175,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		try {
 			date= sdf.parse(formatDate(date, "yyyy-MM-dd")+" 00:00:00");
 		} catch (ParseException e) {
-			e.printStackTrace();
+            logger.error(e.getMessage(),e);
 		}
 		return date;
 	}
@@ -184,7 +188,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		try {
 			date= sdf.parse(formatDate(date, "yyyy-MM-dd") +" 23:59:59");
 		} catch (ParseException e) {
-			e.printStackTrace();
+            logger.error(e.getMessage(),e);
 		}
 		return date;
 	}
@@ -244,7 +248,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
@@ -266,7 +270,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             DateFormat df = DateFormat.getDateInstance();
             return df.parse(date1).before(df.parse(date2));
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -287,7 +291,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
@@ -317,7 +321,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
@@ -347,7 +351,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
@@ -788,7 +792,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -822,7 +826,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -899,7 +903,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -923,7 +927,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -1305,7 +1309,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return StrCalendarResult;
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }

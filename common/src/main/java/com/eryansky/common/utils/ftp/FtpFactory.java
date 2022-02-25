@@ -258,7 +258,7 @@ public class FtpFactory {
                 logger.warn("创建文件夹" + dir + " 失败！");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return flag;
     }

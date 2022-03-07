@@ -211,7 +211,7 @@ public class MessageUtils {
      * @return
      */
     public static Page<MessageReceive> findUserMessages(String userId, int pageNo, int pageSize, String isRead) {
-        Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
+        Page<MessageReceive> page = new Page<>(pageNo, pageSize);
         return Static.messageReceiveService.findUserPage(page, userId, isRead);
     }
 
@@ -224,7 +224,7 @@ public class MessageUtils {
      * @return
      */
     public static Page<MessageReceive> findUserMessages(String userId, int pageNo, int pageSize, String appId, String isRead, String isSend) {
-        Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
+        Page<MessageReceive> page = new Page<>(pageNo, pageSize);
         return Static.messageReceiveService.findUserPage(page, appId, userId,isRead,null,null);
     }
 }

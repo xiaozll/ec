@@ -73,7 +73,7 @@ public class MessageReceiveController extends SimpleController {
     @Logging(logType = LogType.access, value = "消息中心", logging = "!#isAjax")
     @RequestMapping(value = {"", "list"})
     public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
-        Page<MessageReceive> page = new Page<MessageReceive>(request, response);
+        Page<MessageReceive> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             page = MessageUtils.findUserMessages(sessionInfo.getUserId(),page.getPageNo(), page.getPageSize(),null, model.getIsRead(),null);

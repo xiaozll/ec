@@ -26,13 +26,14 @@
 	<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 </form:form>
 <table id="contentTable" class="table table-striped table-bordered table-condensed">
-	<thead><tr><th>接收人</th><th>所属部门</th><th>状态</th></tr></thead>
+	<thead><tr><th>接收人</th><th>所属部门</th><th>推送状态</th><th>阅读状态</th></tr></thead>
 	<tbody>
 	<c:forEach items="${page.result}" var="model">
 		<tr>
 			<td>${model.userName}</td>
 			<td>${model.organName}</td>
-			<td>${model.isRead eq 1 ? '已阅':'未阅'}</td>
+			<td>${model.isSendView}</td>
+			<td>${model.isReadView}</td>
 		</tr>
 	</c:forEach>
 	</tbody>

@@ -118,4 +118,8 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
     public String getIsReadView() {
         return YesOrNo.YES.getValue().equals(isRead) ? "已阅":"未阅";
     }
+
+    public String getIsSendView() {
+        return YesOrNo.YES.getValue().equals(isSend) ? "成功":"失败";
+    }
 }

@@ -158,7 +158,7 @@ public class MessageController extends SimpleController {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageInfo");
         modelAndView.addObject("model", model);
         //接收信息
-        Page<MessageReceive> page = new Page<MessageReceive>(request, response);
+        Page<MessageReceive> page = new Page<>(request, response);
         MessageReceive messageReceive = new MessageReceive(model.getId());
         page = messageReceiveService.findPage(page, messageReceive);
         modelAndView.addObject("page", page);
@@ -233,8 +233,8 @@ public class MessageController extends SimpleController {
         if (titleCombobox != null) {
             cList.add(titleCombobox);
         }
-        MessageChannel[] _emums = MessageChannel.values();
-        for (MessageChannel column : _emums) {
+        MessageChannel[] _enums = MessageChannel.values();
+        for (MessageChannel column : _enums) {
             Combobox combobox = new Combobox(column.getValue(), column.getDescription());
             cList.add(combobox);
         }

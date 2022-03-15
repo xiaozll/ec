@@ -116,6 +116,12 @@
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>3.4.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>jquery</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -126,6 +132,12 @@
             <groupId>org.webjars</groupId>
             <artifactId>jquery-form</artifactId>
             <version>4.2.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>jquery</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>

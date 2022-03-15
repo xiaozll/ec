@@ -20,7 +20,6 @@
         <xwpf.version>2.0.3</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
 
-        <jstl.version>1.2</jstl.version>
         <sitemesh.version>2.4.2</sitemesh.version>
         <commons-csv.version>1.9.0</commons-csv.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>

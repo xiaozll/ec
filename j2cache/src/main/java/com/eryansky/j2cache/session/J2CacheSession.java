@@ -168,7 +168,7 @@ public class J2CacheSession implements HttpSession {
 
     @Deprecated
     public HttpSessionContext getSessionContext() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }

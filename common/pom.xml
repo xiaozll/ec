@@ -30,9 +30,9 @@
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <jsqlparser.version>4.3</jsqlparser.version>
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
-        <slf4j.version>1.7.33</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
 
-        <guava.version>31.0.1-jre</guava.version>
+        <guava.version>31.1-jre</guava.version>
         <joda-time.version>2.10.13</joda-time.version>
         <dozer.version>5.5.1</dozer.version>
         <freemarker.version>2.3.31</freemarker.version>
@@ -228,7 +228,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.4.0</version>
+            <version>7.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>

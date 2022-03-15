@@ -16,7 +16,7 @@
     <description>web</description>
 
     <properties>
-        <poi.version>3.17</poi.version>
+        <poi.version>5.2.1</poi.version>
         <xwpf.version>2.0.3</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
         <velocity.version>2.3</velocity.version>
@@ -25,7 +25,7 @@
         <sitemesh.version>2.4.2</sitemesh.version>
         <fop.version>2.7</fop.version>
         <batik.version>1.14</batik.version>
-        <liquibase.version>4.7.1</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <commons-cli.version>1.5.0</commons-cli.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,12 +116,12 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>3.4.1</version>
+            <version>5.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.5.1</version>
+            <version>3.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -187,7 +187,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
-            <version>${poi.version}</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
@@ -221,7 +221,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.16</version>
+            <version>0.4.17</version>
         </dependency>
         <!-- <dependency>
              <groupId>com.ckfinder</groupId>

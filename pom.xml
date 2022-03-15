@@ -37,7 +37,7 @@
         <spring-boot.version>2.6.4</spring-boot.version>
         <spring-integration-redis.version>5.5.9</spring-integration-redis.version>
         <logback.version>7.0.1</logback.version>
-        <byte-buddy.version>1.11.19</byte-buddy.version>
+        <byte-buddy.version>1.12.8</byte-buddy.version>
 
         <tomcat.version>9.0.58</tomcat.version>
         <jstl.version>1.2</jstl.version>
@@ -54,12 +54,12 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20220225.05</ec-common.version>
-        <ec-app-common.version>4.2.20220225.05</ec-app-common.version>
-        <ec-client-common.version>4.2.20220225.05</ec-client-common.version>
-        <ec-j2cache.version>4.2.20220225.05</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20220225.05</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20220225.05</ec-fastweixin.version>
+        <ec-common.version>4.2.20220225.06</ec-common.version>
+        <ec-app-common.version>4.2.20220225.06</ec-app-common.version>
+        <ec-client-common.version>4.2.20220225.06</ec-client-common.version>
+        <ec-j2cache.version>4.2.20220225.06</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20220225.06</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20220225.06</ec-fastweixin.version>
 
         <jackson.version>2.13.1</jackson.version>
         <springfox.version>3.0.0</springfox.version>
@@ -209,7 +209,7 @@
         <dependency>
             <groupId>org.tmatesoft.svnkit</groupId>
             <artifactId>svnkit</artifactId>
-            <version>1.10.3</version>
+            <version>1.10.4</version>
             <scope>test</scope>
         </dependency>
 

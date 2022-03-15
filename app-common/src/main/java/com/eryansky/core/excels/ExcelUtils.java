@@ -327,7 +327,7 @@ public class ExcelUtils {
         Integer id = Integer.valueOf(index);
         if (HSSFColor.getIndexHash().containsKey(id))
             return index;
-        if (index == HSSFColor.AUTOMATIC.index)
+        if (index == HSSFColor.HSSFColorPredefined.AUTOMATIC.getIndex())
             return index;
         HSSFColor color = srcwb.getCustomPalette().getColor(index);
         if (color == null) {
@@ -405,16 +405,16 @@ public class ExcelUtils {
                                      HSSFWorkbook srcwb, HSSFCellStyle src) {
         if (src == null || dest == null)
             return;
-        dest.setAlignment(src.getAlignmentEnum());
-        dest.setBorderBottom(src.getBorderBottomEnum());
-        dest.setBorderLeft(src.getBorderLeftEnum());
-        dest.setBorderRight(src.getBorderRightEnum());
-        dest.setBorderTop(src.getBorderTopEnum());
+        dest.setAlignment(src.getAlignment());
+        dest.setBorderBottom(src.getBorderBottom());
+        dest.setBorderLeft(src.getBorderLeft());
+        dest.setBorderRight(src.getBorderRight());
+        dest.setBorderTop(src.getBorderTop());
         dest.setBottomBorderColor(findColor(src.getBottomBorderColor(), srcwb,
                 destwb));
         dest.setDataFormat(destwb.createDataFormat().getFormat(
                 srcwb.createDataFormat().getFormat(src.getDataFormat())));
-        dest.setFillPattern(src.getFillPatternEnum());
+        dest.setFillPattern(src.getFillPattern());
         dest.setFillForegroundColor(findColor(src.getFillForegroundColor(),
                 srcwb, destwb));
         dest.setFillBackgroundColor(findColor(src.getFillBackgroundColor(),
@@ -430,7 +430,7 @@ public class ExcelUtils {
         dest
                 .setTopBorderColor(findColor(src.getTopBorderColor(), srcwb,
                         destwb));
-        dest.setVerticalAlignment(src.getVerticalAlignmentEnum());
+        dest.setVerticalAlignment(src.getVerticalAlignment());
         dest.setWrapText(src.getWrapText());
 
         HSSFFont f = srcwb.getFontAt(src.getFontIndex());
@@ -499,7 +499,7 @@ public class ExcelUtils {
     public static void copyCell(HSSFWorkbook destwb, HSSFCell dest,
                                 HSSFWorkbook srcwb, HSSFCell src) {
         if (src == null) {
-            dest.setCellType(HSSFCell.CELL_TYPE_BLANK);
+            dest.setCellType(CellType.BLANK);
             return;
         }
 
@@ -516,19 +516,19 @@ public class ExcelUtils {
         dest.setCellType(src.getCellType());
 
         switch (src.getCellType()) {
-            case HSSFCell.CELL_TYPE_BLANK:
+            case BLANK:
 
                 break;
-            case HSSFCell.CELL_TYPE_BOOLEAN:
+            case BOOLEAN:
                 dest.setCellValue(src.getBooleanCellValue());
                 break;
-            case HSSFCell.CELL_TYPE_FORMULA:
+            case FORMULA:
                 dest.setCellFormula(src.getCellFormula());
                 break;
-            case HSSFCell.CELL_TYPE_ERROR:
+            case ERROR:
                 dest.setCellErrorValue(src.getErrorCellValue());
                 break;
-            case HSSFCell.CELL_TYPE_NUMERIC:
+            case NUMERIC:
                 dest.setCellValue(src.getNumericCellValue());
                 break;
             default:
@@ -592,7 +592,7 @@ public class ExcelUtils {
     public static String convertCellToStr(Cell cell) {
         String cellStr = null;
         if (cell != null) {
-            switch (cell.getCellTypeEnum()) {
+            switch (cell.getCellType()) {
                 case STRING:
                     cellStr = cell.getStringCellValue().toString();
                     break;
@@ -625,7 +625,7 @@ public class ExcelUtils {
     public static Double convertCellToDouble(Cell cell) {
         Double cellDouble = null;
         if (cell != null) {
-            switch (cell.getCellTypeEnum()) {
+            switch (cell.getCellType()) {
                 case STRING:
                     cellDouble = Double.valueOf(cell.getStringCellValue());
                     break;
@@ -1354,7 +1354,7 @@ public class ExcelUtils {
      */
     public static Object getCellValue(Workbook wb, Cell cell) {
         if (cell == null
-                || (cell.getCellTypeEnum().equals(CellType.STRING) && StringUtils.isBlank(cell.getStringCellValue()))) {
+                || (cell.getCellType().equals(CellType.STRING) && StringUtils.isBlank(cell.getStringCellValue()))) {
             return null;
         }
         /*if (cell == null) {
@@ -1371,7 +1371,7 @@ public class ExcelUtils {
         // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");// 格式化日期字符串
         DecimalFormat nf = new DecimalFormat("0");// 格式化数字
 
-        switch (cell.getCellTypeEnum()) {
+        switch (cell.getCellType()) {
             case BLANK:
                 // return "";
                 return null;

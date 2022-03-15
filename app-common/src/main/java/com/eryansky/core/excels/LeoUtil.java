@@ -81,14 +81,14 @@ public class LeoUtil {
 		String cellStr = null;
 		if (cell!= null) {
 			switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING:
+				case STRING:
 				cellStr = cell.getStringCellValue().toString();
 				break;
-			case Cell.CELL_TYPE_BOOLEAN:
+			case BOOLEAN:
 				// 得到Boolean对象的方法
 				cellStr = String.valueOf(cell.getBooleanCellValue());
 				break;
-			case Cell.CELL_TYPE_NUMERIC:
+			case NUMERIC:
 				// 先看是否是日期格式
 				if (DateUtil.isCellDateFormatted(cell)) {
 					// 读取日期格式 2013/2/28
@@ -98,7 +98,7 @@ public class LeoUtil {
 					cellStr = getValue(String.valueOf(cell.getNumericCellValue()));
 				}
 				break;
-			case Cell.CELL_TYPE_FORMULA:
+			case FORMULA:
 				// 读取公式
 				cellStr = cell.getCellFormula().toString();
 				break;
@@ -114,10 +114,10 @@ public class LeoUtil {
 		Double cellDouble=null;
 		if (cell!= null) {
 			switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_STRING:
+			case STRING:
 				cellDouble =Double.valueOf(cell.getStringCellValue().toString());
 				break;
-			case Cell.CELL_TYPE_NUMERIC:
+			case NUMERIC:
 				// 先看是否是日期格式
 				if (DateUtil.isCellDateFormatted(cell)) {
 					// 读取日期格式 2013/2/28

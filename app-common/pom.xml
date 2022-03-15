@@ -16,7 +16,7 @@
 
     <properties>
         <!--<essm.j2cache.version>2.8.20181224</essm.j2cache.version>-->
-        <poi.version>3.17</poi.version>
+        <poi.version>5.2.1</poi.version>
         <xwpf.version>2.0.3</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
 
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
-            <version>${poi.version}</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>fr.opensagres.xdocreport</groupId>
@@ -162,7 +162,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>31.1-jre</version>
         </dependency>
 
         <dependency>
@@ -176,7 +176,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.16</version>
+            <version>0.4.17</version>
         </dependency>
         <!-- <dependency>
              <groupId>com.ckfinder</groupId>

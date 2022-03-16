@@ -80,6 +80,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 loginName = JWTUtils.getUsername(token);
                 user = UserUtils.getUserByLoginName(loginName);
                 if(null == user){
+                    logger.warn("{},Token校验失败（用户不存在）,{},{}", loginName, requestUrl, token);
                     return true;
                 }
                 verify = JWTUtils.verify(token, loginName, user.getPassword());

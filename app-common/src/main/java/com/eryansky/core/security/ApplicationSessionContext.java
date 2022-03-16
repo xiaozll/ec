@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class ApplicationSessionContext {
 
 	public final static String CACHE_SESSION = "sessionCache";
+	public final static String CACHE_SESSION_EXTEND = "sessionExtendCache";
 	public final static String CACHE_SESSION_SERVLET = "session";
 
 	/**
@@ -39,6 +40,8 @@ public class ApplicationSessionContext {
 			CacheUtils.put(CACHE_SESSION, StringUtils.isNotBlank(sessionId) ? sessionId:sessionInfo.getId(),sessionInfo);
 		}
 	}
+
+
 
 	public void removeSession(String sessionId) {
 		if (sessionId != null) {
@@ -111,6 +114,15 @@ public class ApplicationSessionContext {
 //			CacheUtils.remove(CACHE_SESSION_SERVLET, sessionId);
 //		}
 //	}
+
+	public void addExtendSession(String sessionId,String sessionInfoId) {
+		CacheUtils.put(CACHE_SESSION_EXTEND, sessionId,sessionInfoId);
+	}
+
+	public String getExtendSession(String sessionId) {
+		return CacheUtils.get(CACHE_SESSION_EXTEND, sessionId);
+	}
+
 
 
 

@@ -7,6 +7,7 @@ package com.eryansky.core.security.interceptor;
 
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.net.IpUtils;
+import com.eryansky.core.security.ApplicationSessionContext;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.PrepareOauth2;
@@ -46,11 +47,12 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         //已登录用户
-//        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        SessionInfo sessionInfo = SecurityUtils.getSessionInfo(SecurityUtils.getNoSuffixSessionId(request.getSession()));
-        if (null != sessionInfo) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        String sessionInfoId = SecurityUtils.getFixedSessionId(request.getSession().getId());
+        if (null != sessionInfo && request.getSession().getId().equals(sessionInfo.getId())) {
             return true;
         }
+
         //注解处理 满足设置不拦截
         HandlerMethod handler = null;
         try {
@@ -88,8 +90,14 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 logger.error("{},Token校验失败,{},{},{}", loginName, requestUrl, token, e.getMessage());
             }
             if (verify && null != user) {
-                SecurityUtils.putUserToSession(request,user);
-                logger.info("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
+                if(null != sessionInfo){
+                    SecurityUtils.addExtendSession(request.getSession().getId(),sessionInfo.getId());
+                    logger.debug("{},{},自动跳过登录,{},{},{}", loginName, IpUtils.getIpAddr0(request), requestUrl,request.getSession().getId(),sessionInfo.getId());
+                }else{
+                    SecurityUtils.putUserToSession(request,user);
+                    logger.debug("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
+                }
+
             } else {
 //                logger.warn("自动登录失败,{}",authorization);
             }

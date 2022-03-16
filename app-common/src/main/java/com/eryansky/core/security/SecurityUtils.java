@@ -11,7 +11,6 @@ import com.eryansky.common.spring.SpringContextHolder;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
-import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
@@ -27,7 +26,6 @@ import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
 import com.google.common.net.InetAddresses;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -542,7 +540,7 @@ public class SecurityUtils {
             if (null == session) {
                 return null;
             }
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session));
+            sessionInfo = getSessionInfo(getFixedSessionId(getNoSuffixSessionId(session)));
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
                 if (StringUtils.isNotBlank(token)) {
@@ -575,7 +573,7 @@ public class SecurityUtils {
             if (null == session) {
                 return null;
             }
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session));
+            sessionInfo = getSessionInfo(getFixedSessionId(getNoSuffixSessionId(session)));
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
                 if (StringUtils.isNotBlank(token)) {
@@ -863,6 +861,34 @@ public class SecurityUtils {
         List<SessionInfo> list = findSessionInfoList();
         return list.parallelStream().map(SessionInfo::getHost).filter(Objects::nonNull).collect(Collectors.toSet());
     }
+
+    public static void addExtendSession(String sessionId,String sessionInfoId) {
+       Static.applicationSessionContext.addExtendSession(sessionId,sessionInfoId);
+    }
+
+    public static String getExtendSessionId(String sessionId) {
+        return Static.applicationSessionContext.getExtendSession(sessionId);
+    }
+
+    public static String getFixedSessionId(String sessionId) {
+        String sessionInfoId = getExtendSessionId(sessionId);
+        return null != sessionInfoId ? sessionInfoId:sessionId;
+    }
+
+    public static String getAndAddExtendSessionId(String sessionId) {
+        String _sessionInfoId = getExtendSessionId(sessionId);
+        if(null != _sessionInfoId){
+            return _sessionInfoId;
+        }
+        SessionInfo sessionInfo = getCurrentSessionInfo();
+        if(null == sessionInfo){
+            //TODO 创建session
+            return sessionId;
+        }
+        addExtendSession(sessionId,sessionInfo.getId());
+        return sessionInfo.getId();
+    }
+
 
 }
 

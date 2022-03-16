@@ -305,19 +305,19 @@ public class LoginController extends SimpleController {
         Result result = null;
 
         boolean verify = false;
+        User user = UserUtils.getUserByLoginName(loginName);
+        if(null == user){
+            logger.warn("不存在账号[{}],", loginName);
+            return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
+        }
+
         try {
-            verify = JWTUtils.verify(token,loginName,loginName);
+            verify = JWTUtils.verify(token,loginName,user.getPassword());
         } catch (Exception e) {
             logger.error("{},{},Token校验失败,{}", token,loginName,e.getMessage());
         }
         if(!verify){
             return Result.errorResult().setMsg("Token校验失败！");
-        }
-
-        User user = UserUtils.getUserByLoginName(loginName);
-        if(null == user){
-            logger.warn("不存在账号[{}],", loginName);
-            return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
         }
 
         SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);

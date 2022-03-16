@@ -173,7 +173,7 @@ public class VersionLogController extends SimpleController {
         Exception exception = null;
         File file = null;
         try {
-            file = DiskUtils.saveSystemFile(VersionLog.FOLDER_VERSIONLOG, FolderType.NORMAL.getValue(), sessionInfo.getUserId(), multipartFile.getInputStream(),multipartFile.getOriginalFilename());
+            file = DiskUtils.saveSystemFile(VersionLog.FOLDER_VERSIONLOG, FolderType.NORMAL.getValue(), sessionInfo.getUserId(), multipartFile.getInputStream(),DiskUtils.getMultipartOriginalFilename(multipartFile));
             result = Result.successResult().setObj(file).setMsg("文件上传成功！");
         } catch (InvalidExtensionException e) {
             exception = e;

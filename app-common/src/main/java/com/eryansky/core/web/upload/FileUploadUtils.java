@@ -10,6 +10,7 @@ import com.eryansky.common.utils.encode.MD5Util;
 import com.eryansky.core.security.LogUtils;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
+import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.utils.AppConstants;
 import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.io.FileUtils;
@@ -143,11 +144,11 @@ public class FileUploadUtils {
                                       boolean needDatePathAndRandomName, String _prefix)
             throws InvalidExtensionException, FileSizeLimitExceededException,
             IOException, FileNameLengthLimitExceededException {
-
-        int fileNamelength = file.getOriginalFilename().length();
+        String originalFilename = DiskUtils.getMultipartOriginalFilename(file);
+        int fileNamelength = originalFilename.length();
         if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(
-                    file.getOriginalFilename(), fileNamelength,
+                    originalFilename, fileNamelength,
                     FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
         }
         File desc = null;
@@ -288,7 +289,7 @@ public class FileUploadUtils {
     public static final String extractFilename(MultipartFile file,
                                                String baseDir, boolean needDatePathAndRandomName, String _prefix)
             throws UnsupportedEncodingException {
-        String fileAllName = file.getOriginalFilename();
+        String fileAllName = DiskUtils.getMultipartOriginalFilename(file);
 
         return extractFilename(fileAllName, baseDir, needDatePathAndRandomName,
                 _prefix);
@@ -378,8 +379,8 @@ public class FileUploadUtils {
     public static final void assertAllowed(MultipartFile file, String[] allowedExtension, long maxSize)
             throws InvalidExtensionException, FileSizeLimitExceededException {
 
-        String filename = file.getOriginalFilename();
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String filename = DiskUtils.getMultipartOriginalFilename(file);
+        String extension = FilenameUtils.getExtension(filename);
 
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
             if (allowedExtension == IMAGE_EXTENSION) {

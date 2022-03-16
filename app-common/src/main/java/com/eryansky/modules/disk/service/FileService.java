@@ -147,9 +147,9 @@ public class FileService extends CrudService<FileDao, File> {
         /*		Exception exception = null;
          */
         java.io.File tempFile = null;
-        String fullName = uploadFile.getOriginalFilename();
+        String fullName = DiskUtils.getMultipartOriginalFilename(uploadFile);
         String code = FileUploadUtils.encodingFilenamePrefix(sessionInfo.getUserId(), fullName);
-        String storePath = iFileManager.getStorePath(folder, sessionInfo.getUserId(), uploadFile.getOriginalFilename());
+        String storePath = iFileManager.getStorePath(folder, sessionInfo.getUserId(), fullName);
 
         String fileTemp = AppConstants.getDiskTempDir() + java.io.File.separator + code;
         tempFile = new java.io.File(fileTemp);

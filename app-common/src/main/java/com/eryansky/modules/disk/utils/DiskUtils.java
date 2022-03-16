@@ -221,7 +221,7 @@ public class DiskUtils {
                                       MultipartFile multipartFile) throws InvalidExtensionException,
             FileUploadBase.FileSizeLimitExceededException,
             FileNameLengthLimitExceededException, IOException {
-        return saveSystemFile(folderCode,FolderType.HIDE.getValue(), userId, multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+        return saveSystemFile(folderCode,FolderType.HIDE.getValue(), userId, multipartFile.getInputStream(), DiskUtils.getMultipartOriginalFilename(multipartFile));
     }
 
     /**
@@ -656,5 +656,28 @@ public class DiskUtils {
         } finally {
             IOUtils.closeQuietly(is);
         }
+    }
+
+
+    /**
+     * 获取文件名 兼容IE、Chrome
+     * @param file
+     * @return
+     */
+    public static String getMultipartOriginalFilename(MultipartFile file) {
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        //判断是否为IE浏览器的文件名，IE浏览器下文件名会带有盘符信息
+        // Check for Unix-style path
+        int unixSep = fileName.lastIndexOf('/');
+        // Check for Windows-style path
+        int winSep = fileName.lastIndexOf('\\');
+        // Cut off at latest possible point
+        int pos = (winSep > unixSep ? winSep : unixSep);
+        if (pos != -1) {
+            // Any sort of path separator found...
+            fileName = fileName.substring(pos + 1);
+        }
+        return fileName;
     }
 }

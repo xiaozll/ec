@@ -115,10 +115,21 @@ public class ApplicationSessionContext {
 //		}
 //	}
 
+
+	/**
+	 * APP与Webview session同步兼容 添加关联已有sessionId
+	 * @param sessionId
+	 * @return
+	 */
 	public void addExtendSession(String sessionId,String sessionInfoId) {
 		CacheUtils.put(CACHE_SESSION_EXTEND, sessionId,sessionInfoId);
 	}
 
+	/**
+	 * APP与Webview session同步兼容 查找关联已有sessionId
+	 * @param sessionId
+	 * @return
+	 */
 	public String getExtendSession(String sessionId) {
 		return CacheUtils.get(CACHE_SESSION_EXTEND, sessionId);
 	}

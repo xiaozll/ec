@@ -862,33 +862,32 @@ public class SecurityUtils {
         return list.parallelStream().map(SessionInfo::getHost).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
+    /**
+     * APP与Webview session同步兼容 添加关联已有sessionId
+     * @param sessionId
+     * @return
+     */
     public static void addExtendSession(String sessionId,String sessionInfoId) {
        Static.applicationSessionContext.addExtendSession(sessionId,sessionInfoId);
     }
 
+    /**
+     * APP与Webview session同步兼容 查找关联已有sessionId
+     * @param sessionId
+     * @return
+     */
     public static String getExtendSessionId(String sessionId) {
         return Static.applicationSessionContext.getExtendSession(sessionId);
     }
 
+    /**
+     * APP与Webview session同步兼容
+     * @param sessionId
+     * @return
+     */
     public static String getFixedSessionId(String sessionId) {
         String sessionInfoId = getExtendSessionId(sessionId);
         return null != sessionInfoId ? sessionInfoId:sessionId;
     }
-
-    public static String getAndAddExtendSessionId(String sessionId) {
-        String _sessionInfoId = getExtendSessionId(sessionId);
-        if(null != _sessionInfoId){
-            return _sessionInfoId;
-        }
-        SessionInfo sessionInfo = getCurrentSessionInfo();
-        if(null == sessionInfo){
-            //TODO 创建session
-            return sessionId;
-        }
-        addExtendSession(sessionId,sessionInfo.getId());
-        return sessionInfo.getId();
-    }
-
-
 }
 

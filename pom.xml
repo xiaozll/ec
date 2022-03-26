@@ -60,7 +60,7 @@
         <ec-j2cache-spring-boot-starter.version>4.2.20220326.01</ec-j2cache-spring-boot-starter.version>
         <ec-fastweixin.version>4.2.20220326.01</ec-fastweixin.version>
 
-        <jackson.version>2.13.2</jackson.version>
+        <jackson.version>2.13.2.1</jackson.version>
         <springfox.version>3.0.0</springfox.version>
 
         <sonar.login>877815028b87ae3ae25fc78f60122bdd3caf73d0</sonar.login>

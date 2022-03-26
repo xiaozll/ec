@@ -34,12 +34,12 @@
         <java.version>1.8</java.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
-        <spring-boot.version>2.6.4</spring-boot.version>
-        <spring-integration-redis.version>5.5.9</spring-integration-redis.version>
+        <spring-boot.version>2.6.5</spring-boot.version>
+        <spring-integration-redis.version>5.5.10</spring-integration-redis.version>
         <logback.version>7.0.1</logback.version>
         <byte-buddy.version>1.12.8</byte-buddy.version>
 
-        <tomcat.version>9.0.58</tomcat.version>
+        <tomcat.version>9.0.60</tomcat.version>
 
         <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
@@ -53,14 +53,14 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20220225.12</ec-common.version>
-        <ec-app-common.version>4.2.20220225.12</ec-app-common.version>
-        <ec-client-common.version>4.2.20220225.12</ec-client-common.version>
-        <ec-j2cache.version>4.2.20220225.12</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20220225.12</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20220225.12</ec-fastweixin.version>
+        <ec-common.version>4.2.20220326.01</ec-common.version>
+        <ec-app-common.version>4.2.20220326.01</ec-app-common.version>
+        <ec-client-common.version>4.2.20220326.01</ec-client-common.version>
+        <ec-j2cache.version>4.2.20220326.01</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20220326.01</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20220326.01</ec-fastweixin.version>
 
-        <jackson.version>2.13.1</jackson.version>
+        <jackson.version>2.13.2</jackson.version>
         <springfox.version>3.0.0</springfox.version>
 
         <sonar.login>877815028b87ae3ae25fc78f60122bdd3caf73d0</sonar.login>

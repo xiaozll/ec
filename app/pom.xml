@@ -16,7 +16,7 @@
     <description>web</description>
 
     <properties>
-        <poi.version>5.2.1</poi.version>
+        <poi.version>5.2.2</poi.version>
         <xwpf.version>2.0.3</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
         <velocity.version>2.3</velocity.version>
@@ -24,7 +24,7 @@
         <sitemesh.version>2.4.2</sitemesh.version>
         <fop.version>2.7</fop.version>
         <batik.version>1.14</batik.version>
-        <liquibase.version>4.8.0</liquibase.version>
+        <liquibase.version>4.9.0</liquibase.version>
         <commons-cli.version>1.5.0</commons-cli.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -188,6 +188,7 @@ public abstract class SimpleController{
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         defaultWebDataBinder(binder);
+        setAllowedFields(binder);
         xss(binder);
     }
 
@@ -215,6 +216,15 @@ public abstract class SimpleController{
         // String类型转换，将所有传递进来的String进行HTML编码，防止XSS攻击
         binder.registerCustomEditor(String.class, new StringEscapeEditor(true, false));
 
+    }
+
+    /**
+     * 漏洞修读 CNVD-2022-23942
+     * @param dataBinder
+     */
+    public void setAllowedFields(WebDataBinder dataBinder) {
+        String[] denylist = new String[]{"class.*", "Class.*", "*.class.*", "*.Class.*"};
+        dataBinder.setDisallowedFields(denylist);
     }
 
     /**

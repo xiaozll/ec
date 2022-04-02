@@ -139,7 +139,7 @@ public class MessageController extends SimpleController {
         }
 
         addMessage(redirectAttributes, "消息正在发送...请稍候！");
-        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message/?repage");
+        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message?repage");
         return modelAndView;
     }
 

@@ -171,7 +171,7 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-		long now = System.currentTimeMillis();
+//		long now = System.currentTimeMillis();
 		for (int i = 0; i < retryCount; i++) {
 			Lock lock = redisLockRegistry.obtain(region);
 			boolean flag = false;

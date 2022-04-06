@@ -387,7 +387,7 @@ public class SecurityUtils {
         sessionInfo.setAppVersion(appVersion_s);
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword()));
-        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword(), 7 * 24 * 60 * 60 * 1000));
+        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword(), 7 * 24 * 60 * 60 * 1000L));
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
 //        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号

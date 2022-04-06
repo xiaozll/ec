@@ -102,7 +102,7 @@ public class DictionaryTag extends TagSupport {
     private String createTagHtml() {
         String contextPath = pageContext.getServletContext().getContextPath(); //上下文路径
         String method = null;
-        StringBuffer buffer = new StringBuffer("<input ");
+        StringBuilder buffer = new StringBuilder("<input ");
         if (TYPE_COMBOBOX.equals(type)) {
             buffer.append(" class=\"easyui-combobox\"");
             method = TYPE_COMBOBOX;
@@ -111,7 +111,7 @@ public class DictionaryTag extends TagSupport {
             method = TYPE_COMBOTREE;
         }
         if (!"".equals(this.id)) {
-            buffer.append(" id=\"" + this.id + "\" ");
+            buffer.append(" id=\"").append(this.id).append("\" ");
         }
 
         if (this.name != null && !"".equals(this.name)) {

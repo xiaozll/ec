@@ -61,19 +61,17 @@ public class OperatiuonTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        if (!"".equals(this.permission)) {
-            if (SecurityUtils.isPermitted(this.permission)) {
-                try {
-                    if (LINKBUTTON.equals(type)) {
-                        pageContext.getOut().print(createEasyuiButton());
-                    } else if (IMAGEBUTTON.equals(type)) {
-                        pageContext.getOut().print(createImageButton());
-                    }else if (MENUITEM.equals(type)) {
-                        pageContext.getOut().print(createMenuItem());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if (!"".equals(this.permission) && (Boolean.TRUE.equals(SecurityUtils.isPermitted(this.permission)))) {
+            try {
+                if (LINKBUTTON.equals(type)) {
+                    pageContext.getOut().print(createEasyuiButton());
+                } else if (IMAGEBUTTON.equals(type)) {
+                    pageContext.getOut().print(createImageButton());
+                }else if (MENUITEM.equals(type)) {
+                    pageContext.getOut().print(createMenuItem());
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

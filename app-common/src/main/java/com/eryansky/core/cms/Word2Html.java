@@ -89,7 +89,7 @@ public class Word2Html {
      * @return
      * @throws Exception
      */
-    public static String docxToHtml(final HttpServletRequest request, InputStream inputStream, String outPutFile) throws Exception {
+    public static String docxToHtml(final HttpServletRequest request, InputStream inputStream, String outPutFile) throws IOException {
         XWPFDocument document = new XWPFDocument(inputStream);
         XHTMLOptions options = XHTMLOptions.create();
         String diskPath = null;

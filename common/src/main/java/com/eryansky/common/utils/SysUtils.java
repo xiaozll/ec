@@ -1346,7 +1346,7 @@ public class SysUtils {
 				    is = null;
                 }
 			} catch (IOException e) {
-				return null;
+				logger.error(e.getMessage(),e);
 			}
 		}
 	}

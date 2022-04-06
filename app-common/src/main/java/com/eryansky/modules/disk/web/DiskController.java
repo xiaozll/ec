@@ -24,7 +24,6 @@ import com.eryansky.common.web.utils.DownloadUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.disk.mapper.Folder;
-import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

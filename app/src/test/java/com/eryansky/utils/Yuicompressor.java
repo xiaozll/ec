@@ -121,13 +121,11 @@ public class Yuicompressor {
                 e.printStackTrace();
 
             }
-
         } catch (IOException e) {
             System.out.println("error Message:"+e.getMessage());
             e.printStackTrace();
-        } finally{
-            return errorMSG;
         }
+        return errorMSG;
 
     }
 

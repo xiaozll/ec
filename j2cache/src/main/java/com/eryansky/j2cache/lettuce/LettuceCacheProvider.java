@@ -144,6 +144,7 @@ public class LettuceCacheProvider extends RedisPubSubAdapter<String, String> imp
                     builder.withSentinel(redisArray[0], Integer.valueOf(redisArray[1]));
                 }
             }
+            assert builder != null;
             builder.withDatabase(database).withPassword(password);
 
             RedisURI uri = builder.build();

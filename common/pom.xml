@@ -34,7 +34,7 @@
 
         <guava.version>31.1-jre</guava.version>
         <joda-time.version>2.10.14</joda-time.version>
-        <dozer.version>5.5.1</dozer.version>
+        <dozer.version>6.5.2</dozer.version>
         <freemarker.version>2.3.31</freemarker.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -149,15 +149,9 @@
             <version>1.21</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
+            <groupId>com.github.dozermapper</groupId>
+            <artifactId>dozer-core</artifactId>
             <version>${dozer.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>

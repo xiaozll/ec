@@ -5,8 +5,9 @@
  */
 package com.eryansky.common.utils.mapper;
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import com.google.common.collect.Lists;
-import org.dozer.DozerBeanMapper;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +29,7 @@ public class BeanMapper {
 	/**
 	 * 持有Dozer单例, 避免重复创建DozerMapper消耗资源.
 	 */
-	private static final DozerBeanMapper dozer = new DozerBeanMapper();
+	private static final Mapper dozer = DozerBeanMapperBuilder.buildDefault();
 
 	/**
 	 * 基于Dozer转换对象的类型.

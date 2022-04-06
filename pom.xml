@@ -53,12 +53,12 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20220401.02</ec-common.version>
-        <ec-app-common.version>4.2.20220401.02</ec-app-common.version>
-        <ec-client-common.version>4.2.20220401.02</ec-client-common.version>
-        <ec-j2cache.version>4.2.20220401.02</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20220401.02</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20220401.02</ec-fastweixin.version>
+        <ec-common.version>4.2.20220401.03</ec-common.version>
+        <ec-app-common.version>4.2.20220401.03</ec-app-common.version>
+        <ec-client-common.version>4.2.20220401.03</ec-client-common.version>
+        <ec-j2cache.version>4.2.20220401.03</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20220401.03</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20220401.03</ec-fastweixin.version>
 
         <jackson.version>2.13.2</jackson.version>
         <springfox.version>3.0.0</springfox.version>
@@ -307,6 +307,32 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.9.1.2184</version>
+            </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <version>2.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <projectType>library</projectType>
+                    <schemaVersion>1.3</schemaVersion>
+                    <includeBomSerialNumber>true</includeBomSerialNumber>
+                    <includeCompileScope>true</includeCompileScope>
+                    <includeProvidedScope>true</includeProvidedScope>
+                    <includeRuntimeScope>true</includeRuntimeScope>
+                    <includeSystemScope>true</includeSystemScope>
+                    <includeTestScope>false</includeTestScope>
+                    <includeLicenseText>false</includeLicenseText>
+                    <outputFormat>all</outputFormat>
+                    <outputName>bom</outputName>
+                </configuration>
             </plugin>
         </plugins>
     </build>

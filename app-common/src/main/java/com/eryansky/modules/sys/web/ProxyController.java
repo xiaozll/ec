@@ -52,7 +52,7 @@ public class ProxyController extends SimpleController {
      * @throws IOException
      */
     @RequestMapping(value = {""})
-    public void getProxy(NativeWebRequest nativeWebRequest, String contentUrl) throws Exception {
+    public void getHttpProxy(NativeWebRequest nativeWebRequest, String contentUrl) throws Exception {
 
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);

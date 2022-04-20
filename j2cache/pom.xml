@@ -67,13 +67,6 @@
             <artifactId>snappy-java</artifactId>
             <version>${snappy.version}</version>
         </dependency>
-        <dependency>
-            <groupId>jline</groupId>
-            <artifactId>jline</artifactId>
-            <version>${jline.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>

@@ -15,7 +15,7 @@
  */
 package com.eryansky.j2cache;
 
-import jline.console.ConsoleReader;
+import java.io.Console;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,13 +36,13 @@ public class J2CacheCmd {
 	public static void main(String[] args) throws IOException {
 
 		CacheChannel cache = J2Cache.getChannel(); //获取 J2Cache 操作接口
-		ConsoleReader reader = new ConsoleReader();
+		Console con = System.console();
 
 		String line;
 
 		do{
 			try {
-				line = reader.readLine("> ");
+				line = con.readLine("> ");
 
 				if(line == null || line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit"))
 					break;
@@ -135,7 +135,7 @@ public class J2CacheCmd {
 		}while(true);
 
 		cache.close();	//关闭 J2Cache 缓存
-		reader.shutdown();
+
 
 		System.exit(0);
 	}

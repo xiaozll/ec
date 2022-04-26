@@ -187,12 +187,12 @@ public class RedisClient implements Closeable, AutoCloseable {
      * 释放当前 Redis 连接
      */
     public void release() {
-        BinaryJedisCommands client = clients.get();
+        Closeable client = (Closeable) clients.get();
         if(client != null) {
             //JedisCluster 会自动释放连接
-            if(client instanceof Closeable && !(client instanceof JedisCluster)) {
+            if(!(client instanceof JedisCluster)) {
                 try {
-                    ((Closeable) client).close();
+                    client.close();
                 } catch(IOException e) {
                     log.error("Failed to release jedis connection.", e);
                 }

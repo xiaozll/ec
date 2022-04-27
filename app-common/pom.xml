@@ -234,6 +234,8 @@
                     <exclude>static/static/js/jquery-validation/1.11.1/test/**</exclude>
                     <exclude>static/static/js/jquery-validation/1.11.1/lib/**</exclude>
                     <exclude>static/static/js/jquery-validation/1.11.1/localization/**</exclude>
+                    <exclude>static/static/js/jquery-validation/1.11.1/*.json</exclude>
+                    <exclude>static/static/js/jquery-validation/1.11.1/*.md</exclude>
                     <exclude>static/static/js/fancyBox/lib/**</exclude>
                     <exclude>static/static/js/fancyBox/demo/**</exclude>
                     <exclude>static/static/js/jquery-jbox/2.3/docs/**</exclude>

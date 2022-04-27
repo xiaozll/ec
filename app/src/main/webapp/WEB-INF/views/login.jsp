@@ -28,9 +28,9 @@
     <%-- jQuery方法扩展 --%>
     <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-extend${yuicompressor}.js" charset="utf-8"></script>
 
-    <link href="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css" rel="stylesheet" />
-    <script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.method.min.js" type="text/javascript"></script>
+    <link href="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend.min.css" type="text/css" rel="stylesheet" />
+    <script src="${ctxStatic}/js/jquery-validation-1.19.3/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend-methods.min.js" type="text/javascript"></script>
     <script src="${ctxStatic}/js/jquery/qrcode/jquery.qrcode.min.js" type="text/javascript"></script>
 
     <link rel="stylesheet" href="${ctxStatic}/js/common/typica-login.css?_=${sysInitTime}">
@@ -104,8 +104,7 @@
                     <%--<label for="password" class="control-label">密码</label>--%>
                     <div class="controls">
                         <input type="password" id="password" name="password"  value="${cookie._password.value}"
-                               class="required" style="width: 210px;height:36px;padding: 5px;" placeholder="密码"
-                               onkeydown="if(event.keyCode==13)login()" />
+                               class="required" style="width: 210px;height:36px;padding: 5px;" placeholder="密码"/>
                         <i class="icon-lock" title="密码"></i>
                     </div>
                 </div>

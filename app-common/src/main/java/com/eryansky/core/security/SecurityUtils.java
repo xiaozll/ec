@@ -512,6 +512,7 @@ public class SecurityUtils {
      * @return
      */
     public static void refreshSessionInfo(SessionInfo sessionInfo) {
+        sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
         Static.applicationSessionContext.addSession(sessionInfo);
         //syncExtendSession(sessionInfo);
     }
@@ -552,7 +553,6 @@ public class SecurityUtils {
             logger.error(e.getMessage());
         } finally {
             if (null != sessionInfo) {
-                sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
                 refreshSessionInfo(sessionInfo);
 
             }
@@ -585,7 +585,6 @@ public class SecurityUtils {
             logger.error(e.getMessage());
         } finally {
             if (null != sessionInfo) {
-                sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
                 refreshSessionInfo(sessionInfo);
             }
         }

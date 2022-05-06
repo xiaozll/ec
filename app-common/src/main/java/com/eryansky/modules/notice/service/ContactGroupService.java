@@ -1,5 +1,5 @@
 /**
-*  Copyright (c) 2012-2020 http://www.eryansky.com
+*  Copyright (c) 2012-2022 https://www.eryansky.com
 *
 */
 package com.eryansky.modules.notice.service;

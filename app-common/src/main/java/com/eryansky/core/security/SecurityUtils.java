@@ -513,6 +513,7 @@ public class SecurityUtils {
      */
     public static void refreshSessionInfo(SessionInfo sessionInfo) {
         Static.applicationSessionContext.addSession(sessionInfo);
+        //syncExtendSession(sessionInfo);
     }
 
     /**
@@ -888,6 +889,15 @@ public class SecurityUtils {
     public static String getFixedSessionId(String sessionId) {
         String sessionInfoId = getExtendSessionId(sessionId);
         return null != sessionInfoId ? sessionInfoId:sessionId;
+    }
+
+    /**
+     * APP与Webview 同步刷新关联信息
+     * @param sessionInfo
+     */
+    public static void syncExtendSession(SessionInfo sessionInfo) {
+        Collection<String> sessionInfoIds = Static.applicationSessionContext.findSessionExtendKes();
+        sessionInfoIds.parallelStream().filter(v -> sessionInfo.getId().equals(getExtendSessionId(v))).forEach(v -> addExtendSession(v, sessionInfo.getSessionId()));
     }
 }
 

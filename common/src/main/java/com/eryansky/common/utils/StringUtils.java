@@ -15,10 +15,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.eryansky.common.utils.collections.MapUtils;
-import com.eryansky.common.utils.encode.MD5Util;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static java.util.regex.Pattern.compile;
 
 /**
  * 字符串工具类，用于实现一些字符串的常用操作
@@ -290,7 +291,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
         }
         // String hrefReg = "[^(<a)]*<[\\s]*a[\\s]*[^(a>)]*>(.+?)<[\\s]*/a[\\s]*>.*";
         String hrefReg = ".*<[\\s]*a[\\s]*.*>(.+?)<[\\s]*/a[\\s]*>.*";
-        Pattern hrefPattern = Pattern.compile(hrefReg, Pattern.CASE_INSENSITIVE);
+        Pattern hrefPattern = compile(hrefReg, Pattern.CASE_INSENSITIVE);
         Matcher hrefMatcher = hrefPattern.matcher(href);
         if (hrefMatcher.matches()) {
             return hrefMatcher.group(1);
@@ -572,7 +573,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             return "";
         }
         String regEx = "<.+?>";
-        Pattern p = Pattern.compile(regEx);
+        Pattern p = compile(regEx);
         Matcher m = p.matcher(html);
         String s = m.replaceAll("");
         return s;

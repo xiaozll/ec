@@ -387,7 +387,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public static void setCookie(HttpServletResponse response, String name,
                                  String value, String path) {
         if (logger.isDebugEnabled()) {
-            logger.debug("设置Cookie '" + name + "',位置: '" + path + "'");
+            logger.debug("设置Cookie {},位置: {}",name,path);
         }
 
         Cookie cookie = new Cookie(name, value);

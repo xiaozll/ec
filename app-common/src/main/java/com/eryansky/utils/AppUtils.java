@@ -532,9 +532,8 @@ public class AppUtils {
 
         } catch (IOException e) {
             logger.error(e.getMessage(),e);
-        } finally{
-            return errorMSG;
         }
+        return errorMSG;
 
     }
 

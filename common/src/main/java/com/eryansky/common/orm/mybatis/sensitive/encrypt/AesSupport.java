@@ -80,7 +80,7 @@ public class AesSupport implements IEncrypt {
 
             return Hex.bytesToHexString(encryptData);
         } catch (Exception e) {
-            logger.error("AES加密时出现问题，密钥为：" + sensitiveTypeHandler.handle(key));
+            logger.error("AES加密时出现问题，密钥为：{}",sensitiveTypeHandler.handle(key));
             throw new IllegalStateException("AES加密时出现问题" + e.getMessage(), e);
         }
     }
@@ -93,14 +93,13 @@ public class AesSupport implements IEncrypt {
         try {
             byte[] encryptData = Hex.hexStringToBytes(value);
             Cipher cipher = Cipher.getInstance(DEFAULT_CIPHER_ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec,gcMParameterSpec);
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, gcMParameterSpec);
             byte[] content = cipher.doFinal(encryptData);
             return new String(content, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            logger.error("AES解密时出现问题，密钥为:" + sensitiveTypeHandler.handle(key) + ",密文为：" + value);
+            logger.error("AES解密时出现问题，密钥为：{}，密文为：{}", sensitiveTypeHandler.handle(key), value);
             throw new IllegalStateException("AES解密时出现问题" + e.getMessage(), e);
         }
-
     }
 
 

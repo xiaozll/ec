@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.sys.web;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.model.*;
 import com.eryansky.common.orm.Page;
@@ -314,7 +315,9 @@ public class LoginController extends SimpleController {
         try {
             verify = JWTUtils.verify(token,loginName,user.getPassword());
         } catch (Exception e) {
-            logger.error("{},{},Token校验失败,{}", token,loginName,e.getMessage());
+            if(!(e instanceof TokenExpiredException)){
+                logger.error("{}-{},Token校验失败,{},{}", SpringMVCHolder.getIp(),loginName,  token, e.getMessage());
+            }
         }
         if(!verify){
             return Result.errorResult().setMsg("Token校验失败！");

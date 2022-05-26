@@ -5,8 +5,10 @@
  */
 package com.eryansky.core.security.interceptor;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.net.IpUtils;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.security.ApplicationSessionContext;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -86,7 +88,9 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 }
                 verify = JWTUtils.verify(token, loginName, user.getPassword());
             } catch (Exception e) {
-                logger.error("{},Token校验失败,{},{},{}", loginName, requestUrl, token, e.getMessage());
+                if(!(e instanceof TokenExpiredException)){
+                    logger.error("{}-{},Token校验失败,{},{},{}", SpringMVCHolder.getIp(),loginName, requestUrl, token, e.getMessage());
+                }
             }
             if (verify && null != user) {
                 if(null != sessionInfo){

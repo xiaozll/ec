@@ -347,21 +347,22 @@ public class LoginController extends SimpleController {
     public Result toggleLogin(HttpServletRequest request,@RequestParam(value = "loginName") String loginName) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo == null) {
-            return Result.errorResult().setMsg("未登录");
+            return Result.errorResult().setMsg("未登录！");
         }
         if(!sessionInfo.getLoginNames().contains(loginName)){
-            return Result.errorResult().setMsg("未授权账号【"+loginName+"】");
+            return Result.errorResult().setMsg("未授权账号【"+loginName+"】！");
         }
 
         User user = UserUtils.getUserByLoginName(loginName);
         if(null == user){
-            return Result.errorResult().setMsg("账号不存在【"+loginName+"】");
+            return Result.errorResult().setMsg("账号不存在【"+loginName+"】！");
         }
 
-        SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout);
+        SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout,false);
         SessionInfo newSessionInfo = SecurityUtils.putUserToSession(request,user);
         userService.login(newSessionInfo.getUserId());
-        logger.info("{}用户切换账号{},IP:{}.", sessionInfo.getId(),loginName, SpringMVCHolder.getIp());
+
+        logger.info("{}，切换账号：{} -> {}，IP：{}.", sessionInfo.getId(),sessionInfo.getLoginName(),newSessionInfo.getLoginName(), SpringMVCHolder.getIp());
         Map<String,Object> data = Maps.newHashMap();
         data.put("sessionInfo",newSessionInfo);
         return Result.successResult().setObj(data);

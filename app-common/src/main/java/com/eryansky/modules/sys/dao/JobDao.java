@@ -9,7 +9,7 @@ import java.util.List;
 @MyBatisDao
 public interface JobDao extends BaseDao {
 
-	List<QuartzJobDetail> getJobList(Parameter parameter);
+	List<QuartzJobDetail> findJobList(Parameter parameter);
 
 	int updateTriggersInstanceName(Parameter parameter);
 }

@@ -15,11 +15,11 @@ public class JobService extends BaseService {
     @Autowired
     private JobDao dao;
 
-    public Page<QuartzJobDetail> getJobList(Page<QuartzJobDetail> page, String jobName, String jobState) {
+    public Page<QuartzJobDetail> findJobList(Page<QuartzJobDetail> page, String jobName, String jobState) {
         Parameter parameter = Parameter.newPageParameter(page, AppConstants.getJdbcType());
         parameter.put("jobName", jobName);
         parameter.put("jobState", jobState);
-        page.setResult(dao.getJobList(parameter));
+        page.setResult(dao.findJobList(parameter));
         return page;
     }
 

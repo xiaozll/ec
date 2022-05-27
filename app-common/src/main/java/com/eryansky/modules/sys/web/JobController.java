@@ -48,7 +48,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:view")
-	@RequestMapping(value={"getJobList",""})
+	@RequestMapping(value={"list",""})
 	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export, QuartzJobDetail model,
                              Model uiModel, HttpServletRequest request, HttpServletResponse response) {
 		Page<QuartzJobDetail> page = new Page<>(request, response);
@@ -56,7 +56,7 @@ public class JobController extends SimpleController {
 			if(export){
 				page.setPageSize(Page.PAGESIZE_ALL);
 			}
-			page = jobAndTriggerService.getJobList(page,model.getJobName(),model.getTriggerState());
+			page = jobAndTriggerService.findJobList(page,model.getJobName(),model.getTriggerState());
 			if(export){
 				String title = "定时任务列表";
 				String[] hearders = new String[] {"任务名", "任务状态","时间表达式","上一次执行时间","下一次执行时间"};//表头数组

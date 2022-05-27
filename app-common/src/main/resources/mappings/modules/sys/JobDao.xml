@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.eryansky.modules.sys.dao.JobDao">
     
-    <select id="getJobList" resultType="com.eryansky.modules.sys.mapper.QuartzJobDetail">
+    <select id="findJobList" resultType="com.eryansky.modules.sys.mapper.QuartzJobDetail">
 		SELECT
 			a.JOB_NAME AS 'jobName',
 			a.JOB_GROUP AS 'jobGroup',

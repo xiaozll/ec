@@ -1,17 +1,22 @@
 package com.eryansky.modules.sys.mapper;
 
-import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.common.orm._enum.GenericEnumUtils;
+import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.modules.sys._enum.JobState;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
-public class JobDetails extends DataEntity<JobDetails> {
+/**
+ * Quartz job任务信息
+ */
+public class QuartzJobDetail extends BaseEntity<QuartzJobDetail> {
+
 	private String jobName;
 	private String jobGroup;
 	private String jobClassName;
 	private String triggerName;
 	private String triggerGroup;
+	private String instanceName;
 	private String cronExpression;
 	private String timeZoneId;
 	private Date nextFireTime;
@@ -58,6 +63,14 @@ public class JobDetails extends DataEntity<JobDetails> {
 		this.triggerGroup = triggerGroup;
 	}
 
+	public String getInstanceName() {
+		return instanceName;
+	}
+
+	public void setInstanceName(String instanceName) {
+		this.instanceName = instanceName;
+	}
+
 	public String getCronExpression() {
 		return cronExpression;
 	}
@@ -99,9 +112,6 @@ public class JobDetails extends DataEntity<JobDetails> {
 	}
 
 	public String getTriggerStateView(){
-		if (StringUtils.isNotBlank(this.triggerState)){
-			return JobState.getByValue(this.triggerState).getDescription();
-		}
-		return null;
+		return GenericEnumUtils.getDescriptionByValue(JobState.class,triggerState,triggerState);
 	}
 }

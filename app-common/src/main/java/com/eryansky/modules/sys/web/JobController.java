@@ -10,7 +10,7 @@ import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.JobState;
-import com.eryansky.modules.sys.mapper.JobDetails;
+import com.eryansky.modules.sys.mapper.QuartzJobDetail;
 import com.eryansky.modules.sys.service.JobService;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +49,9 @@ public class JobController extends SimpleController {
 	 */
 	@RequiresPermissions("sys:job:view")
 	@RequestMapping(value={"getJobList",""})
-	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export,JobDetails model,
-							 Model uiModel, HttpServletRequest request, HttpServletResponse response) {
-		Page<JobDetails> page = new Page<JobDetails>(request, response);
+	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export, QuartzJobDetail model,
+                             Model uiModel, HttpServletRequest request, HttpServletResponse response) {
+		Page<QuartzJobDetail> page = new Page<>(request, response);
 		if(WebUtils.isAjaxRequest(request) || export){
 			if(export){
 				page.setPageSize(Page.PAGESIZE_ALL);

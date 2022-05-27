@@ -11,11 +11,18 @@ import java.lang.annotation.*;
 //@Scope("prototype")
 public @interface QuartzJob {
 
+    String DEFAULT_INSTANCE_NAME = "AUTO";
 	/**
 	 * 是否启用
 	 * @return
 	 */
     boolean enable() default true;
+
+    /**
+     *
+     * @return
+     */
+    String instanceName() default DEFAULT_INSTANCE_NAME;
 
     String name();
 

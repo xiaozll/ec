@@ -31,9 +31,9 @@ public class NoticeJob extends QuartzJobBean {
      * 轮询通知
      */
     public void execute() {
-        logger.debug("轮询任务开始...");
+        logger.info("通知公告-轮询任务开始...");
         noticeService.pollNotice();
-        logger.debug("轮询任务开始...");
+        logger.info("通知公告-轮询任务结束.");
     }
 
     @Override

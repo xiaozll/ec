@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.eryansky.modules.sys.dao.JobDao">
     
-    <select id="getJobList" resultType="com.eryansky.modules.sys.mapper.JobDetails">
+    <select id="getJobList" resultType="com.eryansky.modules.sys.mapper.QuartzJobDetail">
 		SELECT
 			a.JOB_NAME AS 'jobName',
 			a.JOB_GROUP AS 'jobGroup',
@@ -10,6 +10,7 @@
 			b.TRIGGER_NAME AS 'triggerName',
 			b.TRIGGER_GROUP AS 'triggerGroup',
 			b.TRIGGER_STATE AS 'triggerState',
+			b.INSTACE_NAME AS 'instanceName',
 			c.CRON_EXPRESSION AS 'cronExpression',
 			c.TIME_ZONE_ID AS 'timeZoneId',
 			FROM_UNIXTIME(b.NEXT_FIRE_TIME/1000,'%Y-%m-%d %H:%i:%S') AS 'nextFireTime',
@@ -26,5 +27,14 @@
 			AND b.TRIGGER_STATE = #{jobState}
 		</if>
     </select>
+
+
+	<update id="updateTriggersInstanceName">
+		UPDATE qrtz_triggers
+		SET INSTANCE_NAME = #{instanceName}
+		WHERE sched_name = #{schedName}
+		  AND trigger_name = #{triggerName}
+		  AND trigger_group = #{triggerGroup}
+	</update>
     
 </mapper>

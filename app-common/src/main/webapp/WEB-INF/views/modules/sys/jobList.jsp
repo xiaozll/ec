@@ -16,6 +16,11 @@
                 loadData();
             });
 
+            $("#btnReset").click(function(){
+                $('#searchForm').find("input[type=hidden]").val("");
+                $('#searchForm').find("select").val(null).trigger("change");
+            });
+
             $("#btnExport").click(function(){
                 var param = $.serializeObject($("#searchForm"));
                 $('#annexFrame').attr('src', '${ctxAdmin}/sys/job/getJobList?export=true&'+ $.param(param));
@@ -171,7 +176,8 @@
                         <div class="span4">
                             <div class="span3"></div>
                             <div class="span9">
-                                <input id="btnSubmit" class="btn btn-primary" type="button" value="查 询"/>&nbsp;
+                                <input id="btnSubmit" class="btn btn-primary" type="button" value="查 询"/>&nbsp;&nbsp;
+                                <input id="btnReset" class="btn btn-warning" type="reset" value="重 置"/>&nbsp;&nbsp;
                                 <button id="btnExport" type="button" class="btn btn-primary" >导 出</button>
                             </div>
                         </div>

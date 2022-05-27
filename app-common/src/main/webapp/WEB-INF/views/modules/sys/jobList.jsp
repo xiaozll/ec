@@ -26,7 +26,7 @@
             $("#btnSubmit").attr("disabled",true);
             $.ajax({
                 url: ctxAdmin + '/sys/job/list',
-                type: 'get',
+                type: 'post',
                 dataType: "json",
                 cache:false,
                 data:queryParam,

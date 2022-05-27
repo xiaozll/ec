@@ -25,7 +25,7 @@
             var queryParam = $.serializeObject($("#searchForm"));
             $("#btnSubmit").attr("disabled",true);
             $.ajax({
-                url: ctxAdmin + '/sys/job/getJobList',
+                url: ctxAdmin + '/sys/job/list',
                 type: 'get',
                 dataType: "json",
                 cache:false,
@@ -103,6 +103,7 @@
                 <th>任务状态</th>
                 <%--<th>任务组名</th>
                 <th>所属类名</th>--%>
+                <th>实例</th>
                 <th>时间表达式</th>
                 <th>上一次执行时间</th>
                 <th>下一次执行时间</th>
@@ -116,6 +117,7 @@
                 <td>{{triggerStateView}}</td>
                 <%--<td>{{jobGroup}}</td>
                 <td>{{jobClassName}}</td>--%>
+                <td>{{instanceName}}</td>
                 <td>{{cronExpression}}</td>
                 <td>{{prevFireTime}}</td>
                 <td>{{nextFireTime}}</td>

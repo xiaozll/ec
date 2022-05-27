@@ -19,7 +19,7 @@ public @interface QuartzJob {
     boolean enable() default true;
 
     /**
-     *
+     * 执行实例名称
      * @return
      */
     String instanceName() default DEFAULT_INSTANCE_NAME;

@@ -61,7 +61,11 @@ public class QuartJobSchedulingListener implements ApplicationListener<ContextRe
                     if(exist){
                         scheduler.deleteJob(jobKey);
                     }
-                    scheduler.scheduleJob(job, cronTrigger);
+                    if(quartzJobAnnotation.enable()){
+                        scheduler.scheduleJob(job, cronTrigger);
+                    }else{
+                        logger.warn("定时任务未启用：{} {}",object.getClass().getName(),quartzJobAnnotation.cronExp());
+                    }
                 } else {
                     String errorMsg = object.getClass() + " doesn't implemented " + Job.class.getName();
                     logger.error(errorMsg);

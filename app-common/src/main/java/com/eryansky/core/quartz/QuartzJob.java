@@ -9,12 +9,17 @@ import java.lang.annotation.*;
 @Documented
 @Component
 //@Scope("prototype")
-public @interface QuartzJob
-{
+public @interface QuartzJob {
 
-	String name();
+	/**
+	 * 是否启用
+	 * @return
+	 */
+    boolean enable() default true;
 
-	String group() default "DEFAULT_GROUP";
+    String name();
 
-	String cronExp();
+    String group() default "DEFAULT_GROUP";
+
+    String cronExp();
 }

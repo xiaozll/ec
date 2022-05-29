@@ -79,4 +79,10 @@
     <cache name="lock_limit_key_timeout_default" maxEntriesLocalHeap="10000" eternal="false" overflowToDisk="true" timeToIdleSeconds="60" timeToLiveSeconds="60">
     </cache>
 
+    <!-- IP访问限制-->
+    <cache name="lock_ip_limit" maxEntriesLocalHeap="10000" eternal="false" overflowToDisk="true" timeToIdleSeconds="0" timeToLiveSeconds="0">
+    </cache>
+    <!-- IP访问限制 白名单-->
+    <cache name="lock_ip_limit_whitelist" maxEntriesLocalHeap="10000" eternal="false" overflowToDisk="true" timeToIdleSeconds="0" timeToLiveSeconds="0">
+    </cache>
 </ehcache>

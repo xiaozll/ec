@@ -4,6 +4,7 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.jackson.XssDefaultJsonDeserializer;
 import com.eryansky.common.utils.jackson.XssDefaultJsonSerializer;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.core.aop.interceptor.IpLimitInterceptor;
 import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
 import com.eryansky.core.security.interceptor.AuthorityOauth2Interceptor;
@@ -20,7 +21,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -53,6 +53,10 @@ public class MvcConfigure implements WebMvcConfigurer {
               .resourceChain(false);
    }
 
+//   @Bean
+//   public IpLimitInterceptor getIpUrlLimitInterceptor(){
+//      return new IpLimitInterceptor();
+//   }
 
    /**
     * 配置拦截器
@@ -60,6 +64,11 @@ public class MvcConfigure implements WebMvcConfigurer {
     */
    @Override
    public void addInterceptors(InterceptorRegistry registry) {
+//      registry.addInterceptor(getIpUrlLimitInterceptor())
+//              .addPathPatterns("/**")
+//              .order(Ordered.HIGHEST_PRECEDENCE + 90);
+
+
       registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter))
               .addPathPatterns("/**")
               .excludePathPatterns("/static/**")

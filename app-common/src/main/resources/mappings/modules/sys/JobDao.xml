@@ -10,7 +10,6 @@
 			b.TRIGGER_NAME AS 'triggerName',
 			b.TRIGGER_GROUP AS 'triggerGroup',
 			b.TRIGGER_STATE AS 'triggerState',
-			b.INSTANCE_NAME AS 'instanceName',
 			c.CRON_EXPRESSION AS 'cronExpression',
 			c.TIME_ZONE_ID AS 'timeZoneId',
 			FROM_UNIXTIME(b.NEXT_FIRE_TIME/1000,'%Y-%m-%d %H:%i:%S') AS 'nextFireTime',
@@ -28,13 +27,4 @@
 		</if>
     </select>
 
-
-	<update id="updateTriggersInstanceName">
-		UPDATE qrtz_triggers
-		SET INSTANCE_NAME = #{instanceName}
-		WHERE sched_name = #{schedName}
-		  AND trigger_name = #{triggerName}
-		  AND trigger_group = #{triggerGroup}
-	</update>
-    
 </mapper>

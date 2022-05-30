@@ -56,7 +56,7 @@ public class QuartJobSchedulingListener implements ApplicationListener<ContextRe
                             .build();
                     CronTrigger cronTrigger = TriggerBuilder
                             .newTrigger()
-                            .withIdentity(quartzJobAnnotation.name() + "_trigger", quartzJobAnnotation.group())
+                            .withIdentity(object.getClass().getName(), quartzJobAnnotation.group())
                             .withSchedule(CronScheduleBuilder.cronSchedule(quartzJobAnnotation.cronExp()))
                             .build();
                     boolean exist = scheduler.checkExists(jobKey);
@@ -66,7 +66,7 @@ public class QuartJobSchedulingListener implements ApplicationListener<ContextRe
                     if(quartzJobAnnotation.enable()){
                         scheduler.scheduleJob(job, cronTrigger);
                         //指定执行实例
-                        jobService.updateTriggersInstanceName(scheduler.getSchedulerName(),cronTrigger.getKey().getName(),cronTrigger.getKey().getGroup(),QuartzJob.DEFAULT_INSTANCE_NAME.equals(quartzJobAnnotation.instanceName()) ? null:quartzJobAnnotation.instanceName());
+//                        jobService.updateTriggersInstanceName(scheduler.getSchedulerName(),cronTrigger.getKey().getName(),cronTrigger.getKey().getGroup(),QuartzJob.DEFAULT_INSTANCE_NAME.equals(quartzJobAnnotation.instanceName()) ? null:quartzJobAnnotation.instanceName());
                     }else{
                         logger.warn("定时任务未启用：{} {}",object.getClass().getName(),quartzJobAnnotation.cronExp());
                     }

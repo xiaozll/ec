@@ -10,6 +10,4 @@ import java.util.List;
 public interface JobDao extends BaseDao {
 
 	List<QuartzJobDetail> findJobList(Parameter parameter);
-
-	int updateTriggersInstanceName(Parameter parameter);
 }

@@ -6,14 +6,14 @@ V4.2.50220522.04
     quartz.properties配置如下：
     #集群是否开启
     spring.quartz.properties.org.quartz.jobStore.isClustered = true
-    #quartz集群实例名称自动生成
+    #quartz集群实例名称 “AUTO”为系统自动生成
     spring.quartz.properties.org.quartz.scheduler.instanceId = AUTO
-    #quartz集群实例名称生成器 linux为IP地址；win、macos为机器名
+    #quartz集群实例名称生成器 linux为IP地址；windows、macos为机器名
     spring.quartz.properties.org.quartz.scheduler.instanceIdGenerator.class=com.eryansky.core.quartz.extend.QuartzSchedulerInstanceIdGenerator
     #JDBC代理类（增加指定实例执行）
     spring.quartz.properties.org.quartz.jobStore.driverDelegateClass = com.eryansky.core.quartz.extend.StdJDBCDelegate
 
-    #代码使用，instanceName指定实例名称，默认为“AUTO” linux为IP地址；win、macos为机器名
+    #代码使用，instanceName指定实例名称，默认为“AUTO” linux为IP地址；windows、macos为机器名
     @QuartzJob(instanceName = "AUTO")
 
 20220427

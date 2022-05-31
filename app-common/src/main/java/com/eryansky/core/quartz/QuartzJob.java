@@ -19,7 +19,7 @@ public @interface QuartzJob {
     boolean enable() default true;
 
     /**
-     * 执行实例名称 默认为在所有节点执行
+     * 执行实例名称（仅集群模式下有效org.quartz.jobStore.isClustered = true），默认为在所有节点随机执行
      * 对应参数org.quartz.scheduler.instanceId 指定名称或根据系统自动生成（AUTO） linux为IP地址；windows、macos为机器名
      * @return
      */

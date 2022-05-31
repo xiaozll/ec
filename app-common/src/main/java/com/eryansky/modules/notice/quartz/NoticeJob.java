@@ -20,7 +20,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @author 尔演&Eryan eryanwcp@gmail.com
  * @date 2015-2-4 上午09:08:18
  */
-//@QuartzJob(name = "NoticeJob", cronExp = "0 0/1 * * * ?",instanceName = "ERYAN")
+//@QuartzJob(name = "NoticeJob", cronExp = "0 0/1 * * * ?",instanceId = "ERYAN")
 @QuartzJob(name = "NoticeJob", cronExp = "0 0/10 * * * ?")
 public class NoticeJob extends QuartzJobBean {
 

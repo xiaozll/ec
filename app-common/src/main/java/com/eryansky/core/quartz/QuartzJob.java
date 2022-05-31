@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 //@Scope("prototype")
 public @interface QuartzJob {
 
-    String DEFAULT_INSTANCE_NAME = "AUTO";
+    String AUTO_GENERATE_INSTANCE_ID = "AUTO";
 	/**
 	 * 是否启用
 	 * @return
@@ -23,7 +23,7 @@ public @interface QuartzJob {
      * 对应参数org.quartz.scheduler.instanceId 指定名称或根据系统自动生成（AUTO） linux为IP地址；windows、macos为机器名
      * @return
      */
-    String instanceName() default DEFAULT_INSTANCE_NAME;
+    String instanceId() default AUTO_GENERATE_INSTANCE_ID;
 
     /**
      * 任务名称

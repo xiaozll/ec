@@ -24,7 +24,7 @@ public class JobService extends BaseService {
         page.setResult(dao.findJobList(parameter));
         page.getResult().forEach(v->{
             QuartzJob quartzJob = getAnnotationByTriggerName(v.getTriggerName());
-            v.setInstanceName(null != quartzJob ? quartzJob.instanceName():null);
+            v.setInstanceName(null != quartzJob ? quartzJob.instanceId():null);
         });
         return page;
     }

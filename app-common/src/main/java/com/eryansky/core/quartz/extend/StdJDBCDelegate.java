@@ -2,6 +2,7 @@ package com.eryansky.core.quartz.extend;
 
 import com.eryansky.core.quartz.QuartzJob;
 import org.quartz.TriggerKey;
+import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -34,14 +35,14 @@ public class StdJDBCDelegate extends org.quartz.impl.jdbcjobstore.StdJDBCDelegat
     public List<TriggerKey> selectTriggerToAcquire(Connection conn, long noLaterThan, long noEarlierThan, int maxCount)
             throws SQLException {
         List<TriggerKey> triggerKeys = super.selectTriggerToAcquire(conn, noLaterThan, noEarlierThan, maxCount);
-        if (null != triggerKeys && triggerKeys.size() > 0) {
+        if (!StdSchedulerFactory.DEFAULT_INSTANCE_ID.equals(instanceId) && null != triggerKeys && triggerKeys.size() > 0) {
             return triggerKeys.stream().filter(k -> {
                 Class clazz = null;
                 try {
                     clazz = Class.forName(k.getName());
                     QuartzJob quartzJobAnnotation = AnnotationUtils.findAnnotation(clazz, QuartzJob.class);
-                    if (null != quartzJobAnnotation && !QuartzJob.DEFAULT_INSTANCE_NAME.equals(quartzJobAnnotation.instanceName()) && !quartzJobAnnotation.instanceName().equals(instanceId)) {
-                        logger.debug("跳过本机实例：{} 指定执行实例:{}.{} {}", instanceId, k.getGroup(), k.getName(), quartzJobAnnotation.instanceName());
+                    if (null != quartzJobAnnotation && !QuartzJob.AUTO_GENERATE_INSTANCE_ID.equals(quartzJobAnnotation.instanceId()) && !quartzJobAnnotation.instanceId().equals(instanceId)) {
+                        logger.info("跳过本机实例：{} 指定执行实例:{}.{} {}", instanceId, k.getGroup(), k.getName(), quartzJobAnnotation.instanceId());
                         return false;
                     }
                 } catch (ClassNotFoundException e) {

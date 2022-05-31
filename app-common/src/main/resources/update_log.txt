@@ -13,8 +13,8 @@ V4.2.50220522.04
     #JDBC代理类（增加指定实例执行）
     spring.quartz.properties.org.quartz.jobStore.driverDelegateClass = com.eryansky.core.quartz.extend.StdJDBCDelegate
 
-    #代码使用，instanceName指定实例名称，默认为“AUTO” linux为IP地址；windows、macos为机器名
-    @QuartzJob(instanceName = "AUTO")
+    #代码使用，instanceId指定实例名称，默认为“AUTO” linux为IP地址；windows、macos为机器名
+    @QuartzJob(instanceId = "AUTO")
 
 20220427
 V4.2.20220422.02

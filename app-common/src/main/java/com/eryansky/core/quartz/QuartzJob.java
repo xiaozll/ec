@@ -20,13 +20,26 @@ public @interface QuartzJob {
 
     /**
      * 执行实例名称 默认为在所有节点执行
+     * 对应参数org.quartz.scheduler.instanceId 指定名称或根据系统自动生成（AUTO） linux为IP地址；windows、macos为机器名
      * @return
      */
     String instanceName() default DEFAULT_INSTANCE_NAME;
 
+    /**
+     * 任务名称
+     * @return
+     */
     String name();
 
+    /**
+     * 任务分组
+     * @return
+     */
     String group() default "DEFAULT_GROUP";
 
+    /**
+     * cron表达式
+     * @return
+     */
     String cronExp();
 }

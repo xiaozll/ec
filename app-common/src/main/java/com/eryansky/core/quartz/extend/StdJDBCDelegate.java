@@ -41,7 +41,7 @@ public class StdJDBCDelegate extends org.quartz.impl.jdbcjobstore.StdJDBCDelegat
                     clazz = Class.forName(k.getName());
                     QuartzJob quartzJobAnnotation = AnnotationUtils.findAnnotation(clazz, QuartzJob.class);
                     if (null != quartzJobAnnotation && !QuartzJob.DEFAULT_INSTANCE_NAME.equals(quartzJobAnnotation.instanceName()) && !quartzJobAnnotation.instanceName().equals(instanceId)) {
-                        logger.info("跳过本机实例：{} 指定执行实例:{}.{} {}", instanceId, k.getGroup(), k.getName(), quartzJobAnnotation.instanceName());
+                        logger.debug("跳过本机实例：{} 指定执行实例:{}.{} {}", instanceId, k.getGroup(), k.getName(), quartzJobAnnotation.instanceName());
                         return false;
                     }
                 } catch (ClassNotFoundException e) {

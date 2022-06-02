@@ -74,8 +74,18 @@ public class IpLimitInterceptor implements HandlerInterceptor {
         if(AppConstants.isLimitIpWhiteEnable()){
             return true;
         }else{
+            //黑名单 缓存
             Boolean value = CacheUtils.get(LOCK_IP_LIMIT_REGION, ip);
-            return null != value;
+            if(null != value){
+                return  true;
+            }
+
+            //黑名单 配置文件
+            Collection<String> blackWhiteList = AppConstants.getLimitIpBlackList();
+            if (null != blackWhiteList && null != blackWhiteList.stream().filter(v->com.eryansky.j2cache.util.IpUtils.checkIPMatching(v,ip)).findAny().orElse(null)) {
+                return true;
+            }
+            return false;
         }
 
 

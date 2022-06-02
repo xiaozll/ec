@@ -237,16 +237,16 @@ public class AppConstants extends SysConstants {
     }
 
     /**
-     * #不通过账号验证的账号 每个之间以"，"分割
+     * 登录账号白名单 不受“最大登录用户数限制” 每行一个或多个之间以";"分割
      * 自动转换成小写
      *
      * @return
      */
-    public static List<String> getNoLimitLoginUsers() {
-        String code = "system.security.limit.users";
+    public static List<String> getLimitUserWhiteList() {
+        String code = "system.security.limit.user.whitelist";
         String value = getConfigValue(code);
         if(StringUtils.isNotBlank(value)){
-            return Arrays.asList(StringUtils.split(value.toUpperCase().replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value.toUpperCase()).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
         }
         return Collections.emptyList();
     }
@@ -274,7 +274,7 @@ public class AppConstants extends SysConstants {
     }
 
     /**
-     * #不通过应用集成账号验证的账号 每个之间以"，"分割
+     * #不通过应用集成账号验证的账号 每行一个或多个之间以";"分割
      * 自动转换成小写
      *
      * @return
@@ -289,7 +289,7 @@ public class AppConstants extends SysConstants {
     }
 
     /**
-     * #不通过应用集成账号验证的账号 每个之间以"，"分割
+     * #不通过应用集成账号验证的账号 每行一个或多个之间以";"分割
      * 自动转换成小写
      *
      * @return

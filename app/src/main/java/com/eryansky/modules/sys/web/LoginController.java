@@ -122,6 +122,13 @@ public class LoginController extends SimpleController {
      * 登录用户数校验
      */
     private void checkLoginLimit() {
+        String loginName = SpringMVCHolder.getRequest().getParameter("loginName");
+        if(StringUtils.isBlank(loginName)){
+            return;
+        }
+        if(AppConstants.getLimitUserWhiteList().contains(loginName.toUpperCase())){
+            return;
+        }
         int maxSize = AppConstants.getSessionUserMaxSize();
         if (maxSize < 0) {//系统维护
             throw new SystemException("系统正在维护，请稍后再试！");

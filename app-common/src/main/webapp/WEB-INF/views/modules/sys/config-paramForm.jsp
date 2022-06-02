@@ -143,7 +143,7 @@
         <label class="control-label">登录账号白名单：</label>
         <div class="controls">
             <textarea name="system.security.limit.user.whitelist" class="input-xxlarge"></textarea>
-            <span class="help-inline">不受“最大登录用户数限制”，每行一个或多个之间以";"分割</span>
+            <span class="help-inline">不受“最大登录用户数限制”，每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
 
@@ -167,14 +167,14 @@
         <label class="control-label">IP白名单：</label>
         <div class="controls">
             <textarea name="system.security.limit.ip.whitelist" class="input-xxlarge"></textarea>
-            <span class="help-inline">系统访问IP白名单，本机无需配置，每行一个或多个之间以";"分割</span>
+            <span class="help-inline">系统访问IP白名单，本机无需配置，每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label">IP黑名单：</label>
         <div class="controls">
             <textarea name="system.security.limit.ip.blacklist" class="input-xxlarge"></textarea>
-            <span class="help-inline">系统访问IP黑名单，每行一个或多个之间以";"分割</span>
+            <span class="help-inline">系统访问IP黑名单，每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
 

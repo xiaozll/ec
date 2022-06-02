@@ -1,7 +1,7 @@
 /**
- *  Copyright (c) 2012-2022 https://www.eryansky.com
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright (c) 2012-2022 https://www.eryansky.com
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.j2cache.util;
 
@@ -22,7 +22,7 @@ public class IpUtils {
     private IpUtils() {
     }
 
-    public static String getActivityLocalIp(){
+    public static String getActivityLocalIp() {
         InetAddress inetAddress;
         String local = null;
         try {
@@ -30,7 +30,7 @@ public class IpUtils {
             local = InetAddresses.toAddrString(inetAddress);
         } catch (Exception e) {
         }
-        return "127.0.0.1".equals(local) ? "":local;
+        return "127.0.0.1".equals(local) ? "" : local;
     }
 
     /**
@@ -55,5 +55,43 @@ public class IpUtils {
         return InetAddresses.toAddrString(address);
     }
 
+
+    /**
+     * 检测IP是否匹配
+     *
+     * @param pattern *.*.*.* , 192.168.1.0-255 , *
+     * @param address
+     *            - 192.168.1.1<BR>
+     *            <code>address = 10.2.88.12  pattern = *.*.*.*   result: true<BR>
+     *                address = 10.2.88.12  pattern = *   result: true<BR>
+     *                address = 10.2.88.12  pattern = 10.2.88.12-13   result: true<BR>
+     *                address = 10.2.88.12  pattern = 10.2.88.13-125   result: false<BR></code>
+     * @return true if address match pattern
+     */
+    public static boolean checkIPMatching(String pattern, String address) {
+        if (pattern.equals("*.*.*.*") || pattern.equals("*"))
+            return true;
+
+        String[] mask = pattern.split("\\.");
+        String[] ip_address = address.split("\\.");
+        for (int i = 0; i < mask.length; i++) {
+            if (mask[i].equals("*") || mask[i].equals(ip_address[i]))
+                continue;
+            else if (mask[i].contains("-")) {
+                int min = Integer.parseInt(mask[i].split("-")[0]);
+                int max = Integer.parseInt(mask[i].split("-")[1]);
+                // if (max > 255) max = 255;
+                int ip = Integer.parseInt(ip_address[i]);
+                if (ip < min || ip > max)
+                    return false;
+            } else
+                return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(IpUtils.checkIPMatching("192.168.1","192.168.1.1"));
+    }
 
 }

@@ -126,7 +126,7 @@ public class LoginController extends SimpleController {
         if(StringUtils.isBlank(loginName)){
             return;
         }
-        if(AppConstants.getLimitUserWhiteList().contains(loginName.toUpperCase())){
+        if(null != AppConstants.getLimitUserWhiteList().stream().filter(v->StringUtils.simpleWildcardMatch(v,loginName.toUpperCase())).findAny().orElse(null)){
             return;
         }
         int maxSize = AppConstants.getSessionUserMaxSize();

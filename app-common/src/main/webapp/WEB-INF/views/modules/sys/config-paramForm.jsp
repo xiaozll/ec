@@ -174,7 +174,7 @@
         <label class="control-label">IP黑名单：</label>
         <div class="controls">
             <textarea name="system.security.limit.ip.blacklist" class="input-xxlarge"></textarea>
-            <span class="help-inline">系统访问IP黑名单，多个之间以"，"分割</span>
+            <span class="help-inline">系统访问IP黑名单，每行一个或多个之间以";"分割</span>
         </div>
     </div>
 

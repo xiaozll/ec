@@ -167,7 +167,7 @@
         <label class="control-label">IP白名单：</label>
         <div class="controls">
             <textarea name="system.security.limit.ip.whitelist" class="input-xxlarge"></textarea>
-            <span class="help-inline">系统访问IP白名单，本机无需配置，每行一个或多个之间以";"分割，支持"*"通配符</span>
+            <span class="help-inline">系统访问IP白名单（本机无需配置），每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
     <div class="control-group">

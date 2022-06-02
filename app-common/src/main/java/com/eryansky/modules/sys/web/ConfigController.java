@@ -139,7 +139,7 @@ public class ConfigController extends SimpleController {
             "password.updateCycle",
             "password.repeatCount",
             "system.logKeepTime",
-            "system.security.limit.users",
+            "system.security.limit.user.whitelist",
             "system.security.limit.ip.enable",
             "system.security.limit.ip.whiteEnable",
             "system.security.limit.ip.whitelist",

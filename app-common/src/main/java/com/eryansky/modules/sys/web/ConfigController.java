@@ -15,17 +15,22 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Config;
 import com.eryansky.modules.sys.service.ConfigService;
+import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 尔演&Eryan eryanwcp@gmail.com
@@ -119,5 +124,70 @@ public class ConfigController extends SimpleController {
         return Result.successResult();
     }
 
+
+
+    private static final String[] CONFIGS = {"app.version",
+            "app.name",
+            "app.fullName",
+            "app.shortName",
+            "app.productName",
+            "app.productURL",
+            "app.productContact",
+            "security.on",
+            "sessionUser.MaxSize",
+            "sessionUser.UserSessionSize",
+            "password.updateCycle",
+            "password.repeatCount",
+            "system.logKeepTime",
+            "system.security.limit.users",
+            "system.security.limit.ip.enable",
+            "system.security.limit.ip.whiteEnable",
+            "system.security.limit.ip.whitelist",
+            "system.security.limit.ip.blacklist"
+    };
+
+    /**
+     * 部分系统参数配置 表单
+     * @param uiModel
+     * @return
+     */
+    @Logging(value = "参数配置",logType = LogType.access)
+    @RequiresPermissions("biz:biz:paramConfig:view")
+    @RequestMapping(value = {"paramForm"})
+    public String paramForm(Model uiModel) {
+        Map<String,Object> data = Maps.newHashMap();
+        for(String configCode:CONFIGS){
+            Config config = configService.getConfigByCode(configCode);
+//            data.put(configCode,config != null ? config.getValue():null);
+            data.put(configCode,config != null ? config.getValue():AppConstants.getConfig(configCode,null));
+        }
+        uiModel.addAttribute("data",data);
+        return "modules/sys/config-paramForm";
+    }
+
+
+    /**
+     * 保存
+     * @param request
+     * @param redirectAttributes
+     * @param uiModel
+     * @return
+     */
+    @Logging(value = "参数配置-保存",logType = LogType.access)
+    @RequiresPermissions("biz:biz:paramConfig:edit")
+    @RequestMapping(value = {"saveParam"})
+    public String saveParam(HttpServletRequest request, RedirectAttributes redirectAttributes, Model uiModel) {
+        for(String configCode:CONFIGS){
+            String configValue = request.getParameter(configCode);
+            Config config = configService.getConfigByCode(configCode);
+            if(config == null){
+                config = new Config();
+            }
+            config.setCode(configCode);
+            config.setValue(configValue);
+            configService.save(config);
+        }
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/config/paramForm?repage";
+    }
 
 }

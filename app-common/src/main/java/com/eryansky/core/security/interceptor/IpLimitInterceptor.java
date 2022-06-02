@@ -1,9 +1,10 @@
-package com.eryansky.core.aop.interceptor;
+package com.eryansky.core.security.interceptor;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.CacheUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,13 +26,16 @@ public class IpLimitInterceptor implements HandlerInterceptor {
     public static final String LOCK_IP_LIMIT_WHITELIST_REGION = "lock_ip_limit_whitelist";
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        String ip = IpUtils.getIpAddr(httpServletRequest);
-        log.debug("request请求地址uri={},ip={}", httpServletRequest.getRequestURI(), ip);
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        if(!AppConstants.isLimitIpEnable()){
+            return true;
+        }
+        String ip = IpUtils.getIpAddr(request);
+        log.debug("request请求地址URL={},IP={}", request.getRequestURI(), ip);
         if (ipIsLock(ip)) {
-            log.warn("ip访问被禁止={}", ip);
-            Result result = Result.errorResult().setMsg("IP访问被禁止=" + ip);
-            WebUtils.renderJson(httpServletResponse, JsonMapper.toJsonString(result));
+            log.warn("访问被禁止：{} {}", ip,request.getRequestURI());
+            Result result = Result.noPermissionResult().setMsg("访问被禁止：" + ip);
+            WebUtils.renderJson(response, JsonMapper.toJsonString(result));
             return false;
         }
         return true;
@@ -53,13 +57,28 @@ public class IpLimitInterceptor implements HandlerInterceptor {
      * @param ip
      */
     private Boolean ipIsLock(String ip) {
-        //白名单
+        //默认白名单 本机不限制
+        if("127.0.0.1".equals(ip) || "localhost".equals(ip)){
+            return false;
+        }
+        //白名单 缓存
         Collection<String> whiteList = CacheUtils.keys(LOCK_IP_LIMIT_WHITELIST_REGION);
         if (null != whiteList && whiteList.contains(ip)) {
             return false;
         }
-        Boolean value = CacheUtils.get(LOCK_IP_LIMIT_REGION, ip);
-        return null != value;
+        //白名单 配置文件
+        Collection<String> configWhiteList = AppConstants.getLimitIpWhiteList();
+        if (null != configWhiteList && configWhiteList.contains(ip)) {
+            return false;
+        }
+        if(AppConstants.isLimitIpWhiteEnable()){
+            return true;
+        }else{
+            Boolean value = CacheUtils.get(LOCK_IP_LIMIT_REGION, ip);
+            return null != value;
+        }
+
+
     }
 
 

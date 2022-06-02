@@ -4,10 +4,10 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.jackson.XssDefaultJsonDeserializer;
 import com.eryansky.common.utils.jackson.XssDefaultJsonSerializer;
 import com.eryansky.common.utils.mapper.JsonMapper;
-import com.eryansky.core.aop.interceptor.IpLimitInterceptor;
 import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
 import com.eryansky.core.security.interceptor.AuthorityOauth2Interceptor;
+import com.eryansky.core.security.interceptor.IpLimitInterceptor;
 import com.eryansky.core.web.interceptor.LogInterceptor;
 import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
@@ -53,10 +53,10 @@ public class MvcConfigure implements WebMvcConfigurer {
               .resourceChain(false);
    }
 
-//   @Bean
-//   public IpLimitInterceptor getIpUrlLimitInterceptor(){
-//      return new IpLimitInterceptor();
-//   }
+   @Bean
+   public IpLimitInterceptor getIpUrlLimitInterceptor(){
+      return new IpLimitInterceptor();
+   }
 
    /**
     * 配置拦截器
@@ -64,9 +64,9 @@ public class MvcConfigure implements WebMvcConfigurer {
     */
    @Override
    public void addInterceptors(InterceptorRegistry registry) {
-//      registry.addInterceptor(getIpUrlLimitInterceptor())
-//              .addPathPatterns("/**")
-//              .order(Ordered.HIGHEST_PRECEDENCE + 90);
+      registry.addInterceptor(getIpUrlLimitInterceptor())
+              .addPathPatterns("/**")
+              .order(Ordered.HIGHEST_PRECEDENCE + 90);
 
 
       registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter))

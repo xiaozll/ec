@@ -11,7 +11,6 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.SysConstants;
 import com.eryansky.common.utils.io.FileUtils;
 import com.eryansky.common.utils.io.PropertiesLoader;
-import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.sys.service.ConfigService;
 
 import java.io.File;
@@ -233,6 +232,73 @@ public class AppConstants extends SysConstants {
         String value = getCorsAllowedOrigins();
         if(StringUtils.isNotBlank(value)){
             return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * #不通过账号验证的账号 每个之间以"，"分割
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getNoLimitLoginUsers() {
+        String code = "system.security.limit.users";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(value.toUpperCase().replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 仅限IP白名单访问
+     *
+     * @return
+     */
+    public static Boolean isLimitIpEnable() {
+        String code = "system.security.limit.ip.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+    /**
+     * 仅限IP白名单访问
+     *
+     * @return
+     */
+    public static Boolean isLimitIpWhiteEnable() {
+        String code = "system.security.limit.ip.whiteEnable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+    /**
+     * #不通过应用集成账号验证的账号 每个之间以"，"分割
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getLimitIpWhiteList() {
+        String code = "system.security.limit.ip.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * #不通过应用集成账号验证的账号 每个之间以"，"分割
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getLimitIpBlackList() {
+        String code = "system.security.limit.ip.blacklist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(value.toUpperCase().replaceAll("，", ","), ","));
         }
         return Collections.emptyList();
     }

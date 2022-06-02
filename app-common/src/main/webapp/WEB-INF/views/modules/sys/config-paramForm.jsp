@@ -140,7 +140,7 @@
 
 
     <div class="control-group">
-        <label class="control-label">登录账号白名单：</label>
+        <label class="control-label">账号白名单：</label>
         <div class="controls">
             <textarea name="system.security.limit.user.whitelist" class="input-xxlarge"></textarea>
             <span class="help-inline">不受“最大登录用户数限制”，每行一个或多个之间以";"分割，支持"*"通配符</span>

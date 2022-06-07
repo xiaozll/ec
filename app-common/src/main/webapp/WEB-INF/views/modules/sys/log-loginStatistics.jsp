@@ -16,6 +16,7 @@
             striped: true,//显示条纹
             pageSize: 20,//每页记录数
             singleSelect: false,//单选模式
+            remoteSort: false,//是否通过远程服务器对数据排序
             checkbox: true,
             nowrap: true,
             border: false,
@@ -25,7 +26,7 @@
                 {field: 'organName', title: '部门', width: 235, hidden: false},
                 {field: 'name', title: '姓名', width: 100},
                 {field: 'userName', title: '账号', width: 120, hidden: false},
-                {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false}
+                {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false, sortable: true}
             ]]
         }).datagrid("showTooltip");
 

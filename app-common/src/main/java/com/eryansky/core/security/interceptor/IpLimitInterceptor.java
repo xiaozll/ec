@@ -31,7 +31,7 @@ public class IpLimitInterceptor implements HandlerInterceptor {
             return true;
         }
         String ip = IpUtils.getIpAddr(request);
-        log.debug("request请求地址URL={},IP={}", request.getRequestURI(), ip);
+        log.debug("请求IP={},URL={}", ip,request.getRequestURI());
         if (ipIsLock(ip)) {
             log.warn("禁止访问：{} {}", ip,request.getRequestURI());
             Result result = Result.noPermissionResult().setMsg("禁止访问：" + ip);

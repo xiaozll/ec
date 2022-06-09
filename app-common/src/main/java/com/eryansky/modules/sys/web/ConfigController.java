@@ -152,7 +152,7 @@ public class ConfigController extends SimpleController {
      * @return
      */
     @Logging(value = "参数配置",logType = LogType.access)
-    @RequiresPermissions("biz:biz:paramConfig:view")
+    @RequiresPermissions("sys:config:view")
     @RequestMapping(value = {"paramForm"})
     public String paramForm(Model uiModel) {
         Map<String,Object> data = Maps.newHashMap();
@@ -173,19 +173,24 @@ public class ConfigController extends SimpleController {
      * @param uiModel
      * @return
      */
-    @Logging(value = "参数配置-保存",logType = LogType.access)
-    @RequiresPermissions("biz:biz:paramConfig:edit")
+    @Logging(value = "参数配置-保存", logType = LogType.access)
+    @RequiresPermissions("sys:config:edit")
     @RequestMapping(value = {"saveParam"})
     public String saveParam(HttpServletRequest request, RedirectAttributes redirectAttributes, Model uiModel) {
-        for(String configCode:CONFIGS){
+        if (AppConstants.isdevMode()) {
+            addMessage(uiModel,"系统处于开发模式，无效操作！");
+            return paramForm(uiModel);
+        }
+        for (String configCode : CONFIGS) {
             String configValue = request.getParameter(configCode);
             Config config = configService.getConfigByCode(configCode);
-            if(config == null){
+            if (config == null) {
                 config = new Config();
             }
             config.setCode(configCode);
             config.setValue(configValue);
             configService.save(config);
+            addMessage(redirectAttributes, "操作成功！");
         }
         return "redirect:" + AppConstants.getAdminPath() + "/sys/config/paramForm?repage";
     }

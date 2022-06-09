@@ -1,6 +1,7 @@
 package com.eryansky.core.security.interceptor;
 
 import com.eryansky.common.model.Result;
+import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.utils.WebUtils;
@@ -33,7 +34,7 @@ public class IpLimitInterceptor implements HandlerInterceptor {
         String ip = IpUtils.getIpAddr(request);
         log.debug("请求IP={},URL={}", ip,request.getRequestURI());
         if (ipIsLock(ip)) {
-            log.warn("禁止访问：{} {}", ip,request.getRequestURI());
+            log.warn("禁止访问：{} {} {}", ip,request.getRequestURI(), UserAgentUtils.getHTTPUserAgent(request));
             Result result = Result.noPermissionResult().setMsg("禁止访问：" + ip);
             WebUtils.renderJson(response, JsonMapper.toJsonString(result));
             return false;

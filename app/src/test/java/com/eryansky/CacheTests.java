@@ -78,6 +78,16 @@ public class CacheTests {
 		System.out.println(cacheChannel.queueList(region));
 	}
 
+
+	@Test
+	public void queueThread() {
+		String region = "QUEUE_01";
+		String region2 = "QUEUE_02";
+		for(int i=0;i<1000;i++){
+			cacheChannel.queuePush(region,String.valueOf(i));
+		}
+	}
+
 	@Test
 	public void ttl(){
 		String region = "default0";

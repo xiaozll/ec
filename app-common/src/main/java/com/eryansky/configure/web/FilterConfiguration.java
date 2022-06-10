@@ -56,7 +56,7 @@ public class FilterConfiguration {
     public FilterRegistrationBean<CustomHttpServletRequestFilter> customHttpServletRequestFilterFilterRegistrationBean() {
         CustomHttpServletRequestFilter filter = new CustomHttpServletRequestFilter();
         FilterRegistrationBean<CustomHttpServletRequestFilter> bean = new FilterRegistrationBean<>(filter);
-        bean.addInitParameter("blackListURL", "/static/**;/api/**");
+        bean.addInitParameter("blackListURL", "/static/**;/api/**;/rest/**");
         bean.addInitParameter("whiteListURL", "/a/sys/proxy/**");
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 200);
         return bean;

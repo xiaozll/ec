@@ -40,7 +40,7 @@ public class FilterConfiguration {
     public FilterRegistrationBean<MySiteMeshFilter> mySiteMeshFilterFilterRegistrationBean() {
         MySiteMeshFilter filter = new MySiteMeshFilter();
         FilterRegistrationBean<MySiteMeshFilter> bean = new FilterRegistrationBean<>(filter);
-        bean.addInitParameter("blackListURL", "/static/**;/api/**");
+        bean.addInitParameter("blackListURL", "/static/**;/api/**;/rest/**");
         bean.addInitParameter("whiteListURL", "/**");
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 300);
         return bean;

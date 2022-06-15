@@ -297,7 +297,6 @@ public class DiskController extends SimpleController {
     @ResponseBody
     public String folderFileDatagrid(String folderId, String folderAuthorize, String fileName) {
         String json = null;
-        long totalSize = 0L; // 分页总大小
         List<Map<String, Object>> footer = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String loginUserId = sessionInfo.getUserId(); // 登录人Id
@@ -320,11 +319,7 @@ public class DiskController extends SimpleController {
 
             Datagrid<File> dg = new Datagrid<>(page.getTotalCount(),
                     page.getResult());
-            if (Collections3.isNotEmpty(page.getResult())) {
-                for (File file : page.getResult()) {
-                    totalSize += file.getFileSize();
-                }
-            }
+            long totalSize = page.getResult().parallelStream().mapToLong(File::getFileSize).sum();
             Map<String, Object> map = Maps.newHashMap();
             map.put("name", "总大小");
             map.put("prettyFileSize", PrettyMemoryUtils.prettyByteSize(totalSize));

@@ -20,6 +20,7 @@
             checkbox: true,
             nowrap: true,
             border: false,
+            showFooter: true,
             //idField: 'id',
             columns: [ [
                 {field: 'companyName', title: '单位', width: 235, hidden: false},

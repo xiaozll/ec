@@ -4,11 +4,14 @@ import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.DateUtils;
+import com.eryansky.common.utils.PrettyMemoryUtils;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.excels.CsvUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
+import com.eryansky.modules.disk.mapper.File;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.core.excels.ExcelUtils;
 import com.eryansky.core.excels.JsGridReportBase;
@@ -21,6 +24,7 @@ import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppDateUtils;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,6 +70,13 @@ public class LogReportController extends SimpleController {
         Page<Map<String, Object>> page = new Page<>(request);
         page = logService.getLoginStatistics(page, name, startTime, endTime);
         Datagrid<Map<String, Object>> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
+        List<Map<String, Object>> footer = Lists.newArrayList();
+        long totalSize = page.getResult().parallelStream().mapToLong(r-> (Long) r.get("count")).sum();
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("name", "总计");
+        map.put("count", totalSize);
+        footer.add(map);
+        dg.setFooter(footer);
         return dg;
     }
 

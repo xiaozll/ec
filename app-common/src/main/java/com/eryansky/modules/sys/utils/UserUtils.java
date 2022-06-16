@@ -701,7 +701,7 @@ public class UserUtils {
 
 
     /**
-     * 记录登录日志
+     * 记录注销日志
      * @param userId 用户ID
      * @param securityType 操作类型 {@link  SecurityType}
      */

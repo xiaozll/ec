@@ -36,7 +36,7 @@ public class IpLimitInterceptor implements HandlerInterceptor {
         if (ipIsLock(ip)) {
             log.warn("禁止访问：{} {} {}", ip,request.getRequestURL(), UserAgentUtils.getHTTPUserAgent(request));
             Result result = Result.noPermissionResult().setMsg("禁止访问：" + ip);
-            WebUtils.renderJson(response, JsonMapper.toJsonString(result));
+            WebUtils.renderJson(response, result);
             return false;
         }
         return true;

@@ -15,6 +15,7 @@ import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.SecurityType;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.*;
@@ -686,6 +687,26 @@ public class UserUtils {
 
         Static.postService.deletePostUsersByPostIdAndOrganIdAndUserIds(post.getId(),organId,Lists.newArrayList(userId));
         SecurityUtils.reloadSessionPermission(userId);
+    }
+
+
+
+    /**
+     * 记录登录日志
+     * @param userId 用户ID
+     */
+    public static void recordLogin(String userId) {
+        Static.userService.login(userId);
+    }
+
+
+    /**
+     * 记录登录日志
+     * @param userId 用户ID
+     * @param securityType 操作类型 {@link  SecurityType}
+     */
+    public static void recordLogout(String userId, SecurityType securityType) {
+        Static.userService.logout(userId,securityType);
     }
 
 }

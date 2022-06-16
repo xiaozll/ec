@@ -80,7 +80,7 @@ public class PortalController extends SimpleController {
         // 当前登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         long noticeReceiveInfos = 0;
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(request);
+        Page<NoticeReceiveInfo> page = new Page<>(request);
         page = noticeReceiveInfoService.findUserUnreadNotices(page, sessionInfo.getLoginName());
         if (Collections3.isNotEmpty(page.getResult())) {
             noticeReceiveInfos = page.getTotalCount();
@@ -165,7 +165,7 @@ public class PortalController extends SimpleController {
         ModelAndView modelAnView = new ModelAndView("layout/portal-notice");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
-            Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
+            Page<NoticeReceiveInfo> page = new Page<>(SpringMVCHolder.getRequest());
             page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), null);
             modelAnView.addObject("page", page);
 

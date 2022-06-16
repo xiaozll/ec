@@ -28,14 +28,14 @@ public class SystemSerialNumberUtils {
 
     private SystemSerialNumberUtils(){}
 
-    private static Logger logger = LoggerFactory.getLogger(SystemSerialNumberUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(SystemSerialNumberUtils.class);
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static SystemSerialNumberService systemSerialNumberService = SpringContextHolder.getBean(SystemSerialNumberService.class);
-        private static CacheChannel cacheChannel = CacheUtils.getCacheChannel();
+        private static final SystemSerialNumberService systemSerialNumberService = SpringContextHolder.getBean(SystemSerialNumberService.class);
+        private static final CacheChannel cacheChannel = CacheUtils.getCacheChannel();
         private Static(){}
     }
 

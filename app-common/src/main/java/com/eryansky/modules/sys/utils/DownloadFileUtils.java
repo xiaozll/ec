@@ -19,6 +19,13 @@ public class DownloadFileUtils {
 
     private DownloadFileUtils(){}
 
+    /**
+     * 文件下载 支持断点续传
+     * @param downloadFile
+     * @param response
+     * @param request
+     * @throws Exception
+     */
     public static void downRangeFile(File downloadFile, HttpServletResponse response, HttpServletRequest request) throws Exception {
         // 文件不存在
         if (!downloadFile.exists()) {

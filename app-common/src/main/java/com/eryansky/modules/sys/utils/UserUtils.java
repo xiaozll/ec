@@ -35,11 +35,11 @@ public class UserUtils {
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static UserService userService = SpringContextHolder.getBean(UserService.class);
-        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
-        private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
-        private static PostService postService = SpringContextHolder.getBean(PostService.class);
-        private static UserPasswordService userPasswordService = SpringContextHolder.getBean(UserPasswordService.class);
+        private static final UserService userService = SpringContextHolder.getBean(UserService.class);
+        private static final OrganService organService = SpringContextHolder.getBean(OrganService.class);
+        private static final RoleService roleService = SpringContextHolder.getBean(RoleService.class);
+        private static final PostService postService = SpringContextHolder.getBean(PostService.class);
+        private static final UserPasswordService userPasswordService = SpringContextHolder.getBean(UserPasswordService.class);
 
     }
 
@@ -274,7 +274,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getCompanyId();
         }
         return null;
@@ -291,7 +291,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getHomeCompanyId();
         }
         return null;
@@ -308,7 +308,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getCompanyCode();
         }
         return null;
@@ -325,7 +325,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getHomeCompanyCode();
         }
         return null;
@@ -342,7 +342,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getSysCode();
         }
         return null;
@@ -409,7 +409,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if(organExtend != null){
+        if(null != organExtend){
             return organExtend.getCode();
         }
         return null;
@@ -464,7 +464,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getName();
         }
         return null;
@@ -481,7 +481,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getShortName();
         }
         return null;

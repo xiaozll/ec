@@ -100,9 +100,7 @@ public class LogController extends SimpleController {
             page = logService.findQueryPage(page, type, userInfo, query, _startTime, endTime, true);
             if (export) {
                 List<Object[]> data = Lists.newArrayList();
-                page.getResult().forEach(o -> {
-                    data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(), o.getIp(), o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()});
-                });
+                page.getResult().forEach(o -> data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(), o.getIp(), o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()}));
 
 
                 String title = "审计日志-" + DateUtils.getCurrentDate();

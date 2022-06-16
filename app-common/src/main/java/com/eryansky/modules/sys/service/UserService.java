@@ -1529,7 +1529,7 @@ public class UserService extends CrudService<UserDao, User> {
             }
 
             OrganExtend _userOrganExtend = userOrganExtend;
-            while (_userOrganExtend != null) {
+            while (null != _userOrganExtend) {
                 List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
                 if (Collections3.isEmpty(organs)) {
                     organs = Lists.newArrayList();
@@ -1573,7 +1573,7 @@ public class UserService extends CrudService<UserDao, User> {
         unionUsers.forEach(u->{
             //补漏(中间漏了的机构)
             OrganExtend _userOrganExtend = OrganUtils.getOrganExtendByUserId(u.getId());
-            while (_userOrganExtend != null) {
+            while (null != _userOrganExtend) {
                 if (_userOrganExtend.getTreeLevel() >= finalMinLevel && !organTempMap.containsKey(_userOrganExtend.getId())) {
                     List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
                     if (Collections3.isEmpty(organs)) {

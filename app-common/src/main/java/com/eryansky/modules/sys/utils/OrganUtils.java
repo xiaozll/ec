@@ -28,7 +28,7 @@ public class OrganUtils {
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
+        private static final OrganService organService = SpringContextHolder.getBean(OrganService.class);
         private Static(){}
     }
 
@@ -166,7 +166,7 @@ public class OrganUtils {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getId();
         }
         return null;
@@ -183,7 +183,7 @@ public class OrganUtils {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getName();
         }
         return null;
@@ -200,7 +200,7 @@ public class OrganUtils {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getShortName();
         }
         return null;

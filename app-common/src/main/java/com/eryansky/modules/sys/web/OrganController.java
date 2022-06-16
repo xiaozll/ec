@@ -88,7 +88,7 @@ public class OrganController extends SimpleController {
                 list = organService.findDataByParent(null, null);
             } else {
                 String organId = sessionInfo.getLoginCompanyId();
-                list = new ArrayList<Organ>(1);
+                list = new ArrayList<>(1);
                 list.add(organService.get(organId));
             }
 

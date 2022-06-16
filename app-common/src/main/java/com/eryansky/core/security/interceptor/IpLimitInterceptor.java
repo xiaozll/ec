@@ -2,7 +2,6 @@ package com.eryansky.core.security.interceptor;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.UserAgentUtils;
-import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.utils.AppConstants;
@@ -21,7 +20,7 @@ import java.util.Collection;
  **/
 public class IpLimitInterceptor implements HandlerInterceptor {
 
-    private static Logger log = LoggerFactory.getLogger(IpLimitInterceptor.class);
+    private static final Logger log = LoggerFactory.getLogger(IpLimitInterceptor.class);
 
     public static final String LOCK_IP_LIMIT_REGION = "lock_ip_limit";
     public static final String LOCK_IP_LIMIT_WHITELIST_REGION = "lock_ip_limit_whitelist";

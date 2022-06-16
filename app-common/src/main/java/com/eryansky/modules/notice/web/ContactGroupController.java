@@ -223,9 +223,9 @@ public class ContactGroupController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String json = "[]";
         if (StringUtils.isNotBlank(id)) {
-            Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
+            Page<User> page = new Page<>(SpringMVCHolder.getRequest());
             page = contactGroupService.findContactGroupUsers(page, id, query);
-            Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
+            Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
             json = JsonMapper.getInstance().toJson(dg, User.class,
                     new String[]{"id", "loginName", "name", "sexView", "defaultOrganName", "email", "mobile", "tel"});
         }

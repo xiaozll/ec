@@ -139,7 +139,7 @@ public class LeoUtil {
 	 */
 	@SuppressWarnings("deprecation")
 	public static Date convertCellToDate(Cell cell) {
-		Date cellDate = new Date();
+		Date cellDate = null;
 		if (DateUtil.isCellDateFormatted(cell)) {
 			// 读取日期格式
 			cellDate = cell.getDateCellValue();

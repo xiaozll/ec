@@ -26,7 +26,7 @@ public class DictionaryUtils {
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static DictionaryItemService dictionaryItemService = SpringContextHolder.getBean(DictionaryItemService.class);
+        private static final DictionaryItemService dictionaryItemService = SpringContextHolder.getBean(DictionaryItemService.class);
         private Static(){}
     }
 
@@ -82,9 +82,9 @@ public class DictionaryUtils {
      */
     public static String getDictionaryValue(String dictionaryName, String dictionaryCode, String defaultName) {
         if (StringUtils.isNotBlank(dictionaryCode) && StringUtils.isNotBlank(dictionaryName)) {
-            for (DictionaryItem dict : getDictList(dictionaryCode)) {
-                if (dictionaryName.equals(dict.getName())) {
-                    return dict.getValue();
+            for (DictionaryItem item : getDictList(dictionaryCode)) {
+                if (dictionaryName.equals(item.getName())) {
+                    return item.getValue();
                 }
             }
         }

@@ -26,6 +26,7 @@
                 {field: 'companyName', title: '单位', width: 235, hidden: false},
                 {field: 'organName', title: '部门', width: 235, hidden: false},
                 {field: 'name', title: '姓名', width: 100},
+                {field: 'userId', title: '用户标识', width: 235, hidden: false},
                 {field: 'userName', title: '账号', width: 120, hidden: false},
                 {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false, sortable: true}
             ]]

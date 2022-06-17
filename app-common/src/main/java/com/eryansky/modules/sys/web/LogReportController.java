@@ -89,8 +89,8 @@ public class LogReportController extends SimpleController {
         String fileName = "登录次数统计";
         Page<Map<String, Object>> pageMap = logService.getLoginStatistics(page.pageSize(-1), name, startTime, endTime);
         List<Map<String, Object>> result = pageMap.getResult();
-        String[] hearders = {"单位/部门", "部门", "姓名", "账号", "登录次数"};//表头数组
-        String[] fields = new String[]{"company", "department", "name", "userName", "count"};//People对象属性数组
+        String[] hearders = {"单位/部门", "部门", "姓名", "用户ID", "账号", "登录次数"};//表头数组
+        String[] fields = new String[]{"company", "department", "name", "userId", "userName", "count"};//People对象属性数组
 
         if (page.getResult().size() < 65531) {
             //导出Excel
@@ -106,7 +106,7 @@ public class LogReportController extends SimpleController {
             try {
                 List<Object[]> data = Lists.newArrayList();
                 page.getResult().forEach(o -> {
-                    data.add(new Object[]{o.get(fields[0]), o.get(fields[1]), o.get(fields[2]), o.get(fields[3]), o.get(fields[4])});
+                    data.add(new Object[]{o.get(fields[0]), o.get(fields[1]), o.get(fields[2]), o.get(fields[3]), o.get(fields[4]), o.get(fields[5])});
                 });
                 CsvUtils.exportToCsv(fileName, hearders, data, request, response);
             } catch (IOException e) {

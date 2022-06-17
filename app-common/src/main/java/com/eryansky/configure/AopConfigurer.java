@@ -52,7 +52,7 @@ public class AopConfigurer implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (throwable, method, objects) -> logger.error("线程池执行任务发生未知异常,"+method.getName() +":"+throwable.getMessage(), throwable);
+        return (throwable, method, objects) -> logger.error("线程池执行任务发生未知异常,{} {}:{}",method.getName(),throwable.getMessage(), throwable);
     }
 
 }

@@ -39,7 +39,7 @@
         <logback.version>7.2</logback.version>
         <byte-buddy.version>1.12.10</byte-buddy.version>
 
-        <tomcat.version>9.0.63</tomcat.version>
+        <tomcat.version>9.0.64</tomcat.version>
 
         <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>

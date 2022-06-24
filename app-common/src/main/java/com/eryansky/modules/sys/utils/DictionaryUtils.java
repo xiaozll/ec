@@ -77,10 +77,10 @@ public class DictionaryUtils {
      *
      * @param dictionaryName 字典项显示名称
      * @param dictionaryCode 类型编码
-     * @param defaultName    默认显示名称
+     * @param defaultValue    默认值
      * @return
      */
-    public static String getDictionaryValue(String dictionaryName, String dictionaryCode, String defaultName) {
+    public static String getDictionaryValue(String dictionaryName, String dictionaryCode, String defaultValue) {
         if (StringUtils.isNotBlank(dictionaryCode) && StringUtils.isNotBlank(dictionaryName)) {
             for (DictionaryItem item : getDictList(dictionaryCode)) {
                 if (dictionaryName.equals(item.getName())) {
@@ -88,7 +88,7 @@ public class DictionaryUtils {
                 }
             }
         }
-        return defaultName;
+        return defaultValue;
     }
 
 }

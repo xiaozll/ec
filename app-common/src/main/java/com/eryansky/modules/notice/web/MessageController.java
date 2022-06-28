@@ -148,7 +148,7 @@ public class MessageController extends SimpleController {
     public ModelAndView delete(@ModelAttribute("model") Message model, @RequestParam(required = false) Boolean isRe, RedirectAttributes redirectAttributes) {
         messageService.delete(model, isRe);
         addMessage(redirectAttributes, (isRe != null && isRe ? "恢复" : "") + "删除消息成功");
-        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message?repage");
+        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message");
         return modelAndView;
     }
 

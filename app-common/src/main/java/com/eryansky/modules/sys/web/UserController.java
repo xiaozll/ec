@@ -175,6 +175,11 @@ public class UserController extends SimpleController {
         }
 
         if (StringUtils.isBlank(user.getId())) {// 新增
+            if(!SecurityUtils.isPermitted("sys:user:add")){
+                result = new Result(Result.ERROR, "未授权新增账号权限!", null);
+                logger.warn(result.toString());
+                return result;
+            }
             try {
                 user.setOriginalPassword(Encryption.encrypt(user.getPassword()));
             } catch (Exception e) {

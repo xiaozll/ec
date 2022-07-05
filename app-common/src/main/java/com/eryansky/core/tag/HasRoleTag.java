@@ -14,7 +14,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * 判断是否具有某个角色编码权限
- * User: 尔演&Eryan eryanwcp@gmail.com
+ * User: eryan
  * Date: 13-11-17 下午7:54
  */
 @SuppressWarnings("serial")

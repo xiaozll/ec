@@ -11,7 +11,7 @@ import com.eryansky.modules.sys.mapper.Area;
 import com.eryansky.modules.sys.service.AreaService;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-05-12
  */
 public class AreaUtils {

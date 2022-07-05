@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * 请求响应结果模型.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2020-07-21
  */
 @SuppressWarnings("serial")

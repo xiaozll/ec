@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * API访问频率限制
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2021-11-05
 */
 @Target(ElementType.METHOD)

@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * A dialect compatible with the H2 database.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class H2Dialect implements Dialect {

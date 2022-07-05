@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * 单游标结果集
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-09-21
  */
 public class SimpleResultHandler implements CallableResultHandler {

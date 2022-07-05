@@ -15,7 +15,7 @@ import com.eryansky.modules.sys.service.RoleService;
 import java.util.List;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2014-11-25
  */
 public class RoleUtils {

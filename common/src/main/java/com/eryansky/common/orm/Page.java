@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  *
  * @param <T> Page中记录的类型.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public class Page<T> implements Serializable{
 	//-- 公共变量 --//
@@ -443,7 +443,7 @@ public class Page<T> implements Serializable{
 	/**
 	 * 设置总页数
 	 * @param totalPage
-	 * @author 尔演&Eryan eryanwcp@gmail.com
+	 * @author eryan
 	 * @date   2012-7-29 上午3:46:25
 	 */
 	public Page<T> setTotalPage(int totalPage) {

@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * easyui动态列column模型.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-11-23 下午2:11:50
  */
 public class Column implements Serializable{

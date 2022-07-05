@@ -13,7 +13,7 @@ import java.security.Key;
  * DES对称加密/解密工具类.
  * <br>加密加密字符串采用DEFAULT_CHARSET编码（UTF-8）.
  * @see EncryptionSafe
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2011-12-27 上午9:48:31
  */
 @Deprecated

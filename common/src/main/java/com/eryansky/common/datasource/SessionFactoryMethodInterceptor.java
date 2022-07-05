@@ -19,7 +19,7 @@ import java.lang.reflect.Proxy;
 /**
  * 多数据源动态配置拦截器
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2014-08-13
  */
 public class SessionFactoryMethodInterceptor implements MethodInterceptor, InitializingBean {

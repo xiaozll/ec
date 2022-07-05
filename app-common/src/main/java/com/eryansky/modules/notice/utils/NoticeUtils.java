@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-08-01 17:44
  */
 public class NoticeUtils {

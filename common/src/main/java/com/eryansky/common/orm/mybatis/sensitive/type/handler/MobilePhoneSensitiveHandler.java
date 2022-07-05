@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  * 手机号脱敏处理类
  * 18233583070 脱敏后: 182****3030
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-12-13
  */
 public class MobilePhoneSensitiveHandler implements SensitiveTypeHandler {

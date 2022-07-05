@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.exception;
 /**
  * 微信API处理异常
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class WeixinException extends RuntimeException {

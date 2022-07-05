@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * 服务器状态
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  *
  */
 public class ServerStatus implements Serializable{

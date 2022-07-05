@@ -45,7 +45,7 @@ import static com.eryansky.modules.sys.service.OrganService.*;
 /**
  * 用户表 service
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-05-08
  */
 @Service

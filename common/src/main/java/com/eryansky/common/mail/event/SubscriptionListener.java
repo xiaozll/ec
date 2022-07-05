@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 可订阅类接口，实现订阅接口的规范
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 @Deprecated

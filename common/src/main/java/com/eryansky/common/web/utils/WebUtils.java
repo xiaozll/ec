@@ -27,7 +27,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Http与Servlet工具类.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public class WebUtils extends org.springframework.web.util.WebUtils {
 

@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.util;
 /**
  * 对象常用方法工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public final class BeanUtil {

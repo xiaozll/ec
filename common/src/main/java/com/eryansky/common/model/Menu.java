@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * easyui树形节点Menu模型.
  * 
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2013-9-11 下午10:01:30
  */
 @SuppressWarnings("serial")

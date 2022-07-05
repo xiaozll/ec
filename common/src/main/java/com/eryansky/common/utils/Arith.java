@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * 进行BigDecimal对象的加减乘除，四舍五入等运算的工具类
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * 
  */
 public class Arith {

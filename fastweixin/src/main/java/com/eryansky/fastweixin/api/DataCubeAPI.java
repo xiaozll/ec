@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 数据分析API
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class DataCubeAPI extends BaseAPI {

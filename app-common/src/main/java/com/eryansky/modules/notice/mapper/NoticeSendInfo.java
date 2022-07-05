@@ -11,7 +11,7 @@ import com.eryansky.modules.notice._enum.ReceiveObjectType;
 import com.eryansky.modules.notice.utils.NoticeUtils;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-10-15
  */
 public class NoticeSendInfo extends BaseEntity<NoticeSendInfo> {

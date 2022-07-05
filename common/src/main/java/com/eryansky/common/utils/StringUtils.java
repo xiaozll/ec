@@ -23,7 +23,7 @@ import static java.util.regex.Pattern.compile;
 
 /**
  * 字符串工具类，用于实现一些字符串的常用操作
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date   2012-1-9下午2:43:26
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils{

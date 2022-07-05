@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 /**
  * MAC地址工具
  * 
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  */
 public class MacUtils {
 

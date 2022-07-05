@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-06-26
  */
 @Controller

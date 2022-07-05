@@ -11,7 +11,7 @@ import static com.eryansky.fastweixin.util.BeanUtil.requireNonNull;
 /**
  * json操作工具类，基于fastjson封装
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public final class JSONUtil {

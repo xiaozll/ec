@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 列表List工具类，用于实现一些list的常用操作
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2011-7-22 上午12:37:10
  */
 public class ListUtils {

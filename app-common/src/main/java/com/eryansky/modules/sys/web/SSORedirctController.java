@@ -21,7 +21,7 @@ import java.io.IOException;
 
 /**
  * 内部应用单点跳转
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2021-11-03
  */
 @Controller

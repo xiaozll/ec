@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
  * 加密工具类.
  * <br>md5加密 32位
  * <br>sha加密 40位
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date   2012-12-11 上午10:32:05
  */
 public class Encrypt {

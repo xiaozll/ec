@@ -6,7 +6,7 @@
 package com.eryansky.common.utils;
 
 /**
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-04-19 17:38
  */
 public class PrettyMemoryUtils {

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 系统使用的静态变量.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-03-17 上午8:25:36
  */
 public class AppConstants extends SysConstants {

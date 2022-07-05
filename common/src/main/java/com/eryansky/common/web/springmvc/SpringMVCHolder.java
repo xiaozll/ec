@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 /**
  * spring mvc 上下文持有者，类似Struts2的ServletActionContext,
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-05-17 20:39
  */
 @SuppressWarnings("unchecked")

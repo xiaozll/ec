@@ -47,7 +47,7 @@ import java.util.List;
  * <p/>
  * 过滤器介绍：
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public abstract class BaseFilter implements Filter {
 

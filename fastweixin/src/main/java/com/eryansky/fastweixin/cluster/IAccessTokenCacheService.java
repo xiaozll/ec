@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.cluster;
 
 /**
  * AccessToken 刷新接口
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-10-31
  */
 public interface IAccessTokenCacheService {

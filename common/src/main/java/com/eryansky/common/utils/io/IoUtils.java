@@ -22,7 +22,7 @@ import java.net.URL;
 /**
  * IO操作工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-8-16 下午1:31:16
  */
 public class IoUtils extends IOUtils {

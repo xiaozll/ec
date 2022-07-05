@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * 权限拦截器
  * 优先级：注解>数据库权限配置
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-01-21 12:23
  */
 public class AuthorityInterceptor implements AsyncHandlerInterceptor {

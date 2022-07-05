@@ -20,7 +20,7 @@ import java.util.*;
 
 /**
  * 存储过程调用规则
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-09-21
  */
 @Intercepts({@Signature(

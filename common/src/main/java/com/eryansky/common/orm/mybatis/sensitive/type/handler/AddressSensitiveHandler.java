@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  * 地址只显示到地区，不显示详细地址；我们要对个人信息增强保护
  * 例子：北京市海淀区****
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-12-13
  */
 public class AddressSensitiveHandler implements SensitiveTypeHandler {

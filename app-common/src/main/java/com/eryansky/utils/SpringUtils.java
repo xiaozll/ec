@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 
 /**
  * Spring工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-04-13
  */
 public class SpringUtils {

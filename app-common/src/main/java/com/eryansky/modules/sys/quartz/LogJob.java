@@ -18,7 +18,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 /**
  * 日志管理任务调度
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date: 13-12-28 下午6:06
  */
 @QuartzJob(name = "LogJob", cronExp = "0 0 0 * * ?")

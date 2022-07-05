@@ -13,7 +13,7 @@ import com.eryansky.modules.notice.mapper.NoticeSendInfo;
 import java.util.List;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-10-15
  */
 @MyBatisDao

@@ -13,7 +13,7 @@ import java.io.Reader;
 
 /**
  * Command
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date   2018-11-11
  */
 public class CommandUtils {

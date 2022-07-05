@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author: 尔演&Eryan eryanwcp@gmail.com
+ * @author: eryan
  * @date: 2013-11-27 下午9:01
  */
 public class SigarUtil {

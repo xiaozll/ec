@@ -9,7 +9,7 @@ package com.eryansky.core.security;
  * 
  * 用户安全日志类型 枚举类型.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-8-11 下午10:48:23
  * 
  */

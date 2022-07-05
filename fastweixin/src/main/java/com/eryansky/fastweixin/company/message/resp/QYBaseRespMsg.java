@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  *  微信企业号被动响应消息基类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class QYBaseRespMsg implements Serializable {

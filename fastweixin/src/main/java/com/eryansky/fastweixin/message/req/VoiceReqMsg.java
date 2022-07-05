@@ -1,7 +1,7 @@
 package com.eryansky.fastweixin.message.req;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public final class VoiceReqMsg extends BaseReqMsg {

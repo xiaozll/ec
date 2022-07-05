@@ -14,7 +14,7 @@ import javax.mail.SendFailedException;
 /**
  * 实现使用SMTP协议发送邮件
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public class SMTPSender extends Sender {

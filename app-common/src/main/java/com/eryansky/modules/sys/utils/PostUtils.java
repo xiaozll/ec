@@ -11,7 +11,7 @@ import com.eryansky.modules.sys.mapper.Post;
 import com.eryansky.modules.sys.service.PostService;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2014-11-25
  */
 public class PostUtils {

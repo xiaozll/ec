@@ -17,7 +17,7 @@ import javax.mail.event.MessageCountListener;
 /**
  * 实现新邮件提醒的核心类 (示例程序)
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public abstract class AbstractMonitor implements Runnable, MessageCountListener {

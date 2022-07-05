@@ -23,7 +23,7 @@ import java.util.Properties;
 /**
  * 抽象类，接收服务器通道实现与邮件接收服务器直接通讯完成收取邮件、删除邮件、标记邮件、搜索邮件等操作
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public abstract class Receiver {

@@ -18,7 +18,7 @@ import java.util.Properties;
 /**
  * 抽象类，发送服务器通道实现与邮件发送服务器直接通讯完成发送邮件操作
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public abstract class Sender {

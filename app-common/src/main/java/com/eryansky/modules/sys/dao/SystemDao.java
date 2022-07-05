@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * 系统DAO接口
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2017-09-19
  */
 @MyBatisDao

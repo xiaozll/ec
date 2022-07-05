@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 导出Excel的信息
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-07-31 20:36
  * 
  */

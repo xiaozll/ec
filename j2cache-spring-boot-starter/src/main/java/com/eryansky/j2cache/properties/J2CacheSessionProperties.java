@@ -9,7 +9,7 @@ package com.eryansky.j2cache.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2019-02-11
  */
 @ConfigurationProperties("j2cache.session")

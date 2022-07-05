@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 
 /**
  * SQL工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class SQLHelper {

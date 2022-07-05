@@ -23,7 +23,7 @@ import java.util.List;
  * 先将字符串传换为byte[]再用InetAddress.getByAddress(byte[])，避免了InetAddress.getByName(ip)可能引起的DNS访问.
  *
  * InetAddress与String的转换其实消耗不小，如果是有限的地址，建议进行缓存.
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-04-19 17:38
  */
 public class IpUtils {

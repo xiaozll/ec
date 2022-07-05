@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * 手机端视图拦截器
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2015-07-10
  */
 public class MobileInterceptor implements HandlerInterceptor {

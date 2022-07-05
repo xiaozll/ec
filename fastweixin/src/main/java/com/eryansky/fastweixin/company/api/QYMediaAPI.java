@@ -26,7 +26,7 @@ import java.io.InputStream;
 /**
  *
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class QYMediaAPI extends QYBaseAPI {

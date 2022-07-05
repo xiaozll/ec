@@ -9,7 +9,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 
 /**
  * Postgre Sql的方言实现
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class PostgreSQLDialect implements Dialect {

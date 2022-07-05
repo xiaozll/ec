@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-12-13
  */
 public class Hex {

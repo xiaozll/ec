@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 /**
  * 我的云盘 管理 包含：文件夹的管理 文件的管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2014-11-22
  */
 @Controller

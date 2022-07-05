@@ -7,7 +7,7 @@ package com.eryansky.utils;
 
 /**
  * 缓存静态变量.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-3-19 下午6:45:50 
  *
  */

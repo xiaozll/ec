@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * 代理访问服务
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-12-14
  */
 @RequiresUser(required = false)

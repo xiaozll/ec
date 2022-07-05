@@ -6,7 +6,7 @@
 package com.eryansky.common.utils;
 /**
  * Object工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date   2012-1-9下午2:44:48
  */
 public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils{

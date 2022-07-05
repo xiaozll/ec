@@ -16,7 +16,7 @@ import org.springframework.core.env.StandardEnvironment;
 /**
  * 项目中用到的静态变量.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-8-20 上午11:40:56
  */
 public class SysConstants {

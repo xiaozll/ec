@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * EasyUI treegrid模型.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-3-18 下午8:26:12
  * 
  */

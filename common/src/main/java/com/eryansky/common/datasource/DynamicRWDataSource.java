@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 读写分离动态数据源
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2014-08-13
  */
 public class DynamicRWDataSource extends AbstractRoutingDataSource {

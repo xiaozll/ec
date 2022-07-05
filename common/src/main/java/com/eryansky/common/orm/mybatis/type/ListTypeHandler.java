@@ -12,7 +12,7 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2020-02-12
  */
 public abstract class ListTypeHandler<T> extends BaseTypeHandler<List<T>> {

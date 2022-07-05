@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.api.entity;
 /**
  *  分组信息
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class Group extends BaseModel {

@@ -11,7 +11,7 @@ import java.text.MessageFormat;
 /**
  * 分页SQL工具类.
  * <br>支持MySQL、Oracle、Postgresql分页查询.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-4-16 下午9:00:59 
  * @version 1.0
  */

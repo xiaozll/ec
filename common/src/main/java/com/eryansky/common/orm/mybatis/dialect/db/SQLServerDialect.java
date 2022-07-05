@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * MSSQLServer 数据库实现分页方言
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class SQLServerDialect implements Dialect {

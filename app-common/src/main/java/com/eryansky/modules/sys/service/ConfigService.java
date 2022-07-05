@@ -21,7 +21,7 @@ import java.util.Properties;
 /**
  * 系统配置参数
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2014-12-18
  */
 @Service

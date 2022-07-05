@@ -19,7 +19,7 @@ import java.util.Map;
  * freemarker模板引擎工具类.
  * Utilities of <a href="http://www.freemarker.org">FreeMarker</a>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public class FreeMarkers {
 

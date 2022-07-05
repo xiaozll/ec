@@ -34,7 +34,7 @@ import java.util.List;
  * <p/>
  * web层拦截参考 @see com.eryansky.core.web.interceptor.LogInterceptor
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2016-04-13
  */
 public class LogMethodInterceptor implements MethodInterceptor, InitializingBean {

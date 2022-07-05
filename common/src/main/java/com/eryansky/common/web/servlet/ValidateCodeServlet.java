@@ -24,7 +24,7 @@ import java.util.Random;
 /**
  *  生成随机验证码.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-3-4 下午9:00:06
  */
 @SuppressWarnings("serial")

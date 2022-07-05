@@ -15,7 +15,7 @@ import java.io.IOException;
 
 /**
  * 权限操作标签
- * User: 尔演&Eryan eryanwcp@gmail.com
+ * User: eryan
  * Date: 13-11-16 下午9:43
  */
 @SuppressWarnings("serial")

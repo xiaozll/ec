@@ -3,7 +3,7 @@ package com.eryansky.codegen.util;
 
 /**
  * JDBC Types转换Java Types
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-7-15 下午1:37:32 
  * @version 1.0
  */

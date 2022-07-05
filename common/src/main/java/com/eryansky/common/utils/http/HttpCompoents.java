@@ -57,7 +57,7 @@ import java.util.Map;
  * 2、同一实例自动维护Cookie信息.
  * 3、支持gzip压缩
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-12-14
  */
 public class HttpCompoents {

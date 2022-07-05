@@ -12,7 +12,7 @@ import com.eryansky.fastweixin.util.BeanUtil;
 /**
  *
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class QYDepartmentAPI extends QYBaseAPI {

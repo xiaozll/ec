@@ -11,7 +11,7 @@ import java.io.StringWriter;
 /**
  * 关于异常的工具类.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public class Exceptions {
 

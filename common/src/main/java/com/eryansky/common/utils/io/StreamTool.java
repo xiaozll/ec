@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 /**
  * 数据流工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date   2011-12-30下午2:30:28
  */
 public class StreamTool {

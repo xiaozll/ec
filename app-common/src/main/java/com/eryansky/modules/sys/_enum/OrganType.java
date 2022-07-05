@@ -11,7 +11,7 @@ import com.eryansky.common.orm._enum.IGenericEnum;
 /**
  * 机构类型
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 1.0
  * @date 2013-9-9 下午8:09:38
  */

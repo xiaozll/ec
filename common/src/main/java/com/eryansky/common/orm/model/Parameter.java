@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 /**
  * 查询参数类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-6-26
  */
 public class Parameter extends HashMap<String, Object> {

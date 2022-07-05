@@ -8,7 +8,7 @@ package com.eryansky.core.excels;
 import java.text.DecimalFormat;
 
 /**
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-07-31 20:36
  */
 public class TableDataCell {

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * Oauth2注解
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2021-11-04
  */
 @Target({ElementType.TYPE, ElementType.METHOD,ElementType.PACKAGE})

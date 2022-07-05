@@ -32,7 +32,7 @@ import java.util.Date;
 /**
  * 用户
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-05-08
  */
 @JsonFilter(" ")

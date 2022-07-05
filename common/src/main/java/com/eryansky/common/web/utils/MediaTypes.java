@@ -11,7 +11,7 @@ package com.eryansky.common.web.utils;
  * Jax-RS和Spring的MediaType没有UTF-8的版本，
  * Google的MediaType必须再调用toString()函数而不是常量，不能用于Restful方法的annotation。
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public class MediaTypes {
 

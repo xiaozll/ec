@@ -9,7 +9,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 
 /**
  * Oscar的方言实现 参考Oracle
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-9-9
  */
 public class OscarDialect implements Dialect {

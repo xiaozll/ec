@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  * 座机信息脱敏
  * 座机的前2位和后4位保留，其余的隐藏。
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-12-13
  */
 public class FixedPhoneSensitiveHandler implements SensitiveTypeHandler {

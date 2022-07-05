@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 文件工具类.
- * @author     : 尔演&Eryan eryanwcp@gmail.com
+ * @author     : eryan
  * @date       : 2013-1-19 下午4:41:56
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {

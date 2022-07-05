@@ -19,7 +19,7 @@ import javax.mail.search.FlagTerm;
 /**
  * 实现使用POP3协议接收邮件
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public class POP3Receiver extends Receiver {

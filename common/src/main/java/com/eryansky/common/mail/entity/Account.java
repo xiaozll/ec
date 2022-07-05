@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * 维护存储用户账户信息，这些信息包括用户名、密码、电子邮件地址、接收服务器配置、发送服务器配置等
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public class Account {

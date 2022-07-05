@@ -41,7 +41,7 @@ import java.util.Set;
 /**
  * 岗位管理 Controller
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-06-09 14:07
  */
 @Controller

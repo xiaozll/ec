@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  * 公司开户银行联号
  * 前四位明文，后面脱敏
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-12-13
  */
 public class CnapsSensitiveHandler implements SensitiveTypeHandler {

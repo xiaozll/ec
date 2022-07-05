@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * 树形Entity基类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-05-16
  */
 public abstract class TreeEntity<T> extends DataEntity<T> {

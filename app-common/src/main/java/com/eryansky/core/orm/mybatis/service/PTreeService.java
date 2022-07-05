@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Service基类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-05-16
  */
 public abstract class PTreeService<D extends PTreeDao<T,PK>, T extends PTreeEntity<T,PK>,PK extends Serializable> extends PCrudService<D, T,PK> {

@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * 汇总一些对于Properties的快捷操作
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public class PropertiesUtil {

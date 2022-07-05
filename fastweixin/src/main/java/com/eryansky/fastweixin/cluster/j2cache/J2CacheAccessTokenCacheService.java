@@ -9,7 +9,7 @@ import com.eryansky.j2cache.J2Cache;
 /**
  * Token缓存 J2Cache实现
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-10-31
  */
 public class J2CacheAccessTokenCacheService implements IAccessTokenCacheService {

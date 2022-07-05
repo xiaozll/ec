@@ -12,7 +12,7 @@ import javax.mail.PasswordAuthentication;
 /**
  * 简单的用户名/密码认证方式
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public class SimpleAuthenticator extends Authenticator {

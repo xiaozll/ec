@@ -19,7 +19,7 @@ import java.util.List;
  * FTP 使用Resource方式注解 <br>
  * 例如：@Resource(name = "payFtp")
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-3-20 下午1:30:39
  */
 public class FtpFactory {

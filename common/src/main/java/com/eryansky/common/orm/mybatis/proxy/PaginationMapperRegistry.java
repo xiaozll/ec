@@ -15,7 +15,7 @@ import org.apache.ibatis.session.SqlSession;
  * .
  * </p>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class PaginationMapperRegistry extends MapperRegistry {

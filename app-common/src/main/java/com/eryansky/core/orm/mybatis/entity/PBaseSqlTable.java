@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 /**
  * SqlTable支持类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2020-03-03
  */
 public abstract class PBaseSqlTable<T, PK extends Serializable> extends SqlTable {

@@ -28,7 +28,7 @@ import freemarker.template.TemplateException;
 /**
  * 借助spring {@link JavaMailSender} 来做邮件发送器的Java邮件服务类
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  *
  */
 public class JavaMailService {

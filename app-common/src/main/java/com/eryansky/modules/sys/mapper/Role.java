@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * 角色表
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-05-08
  */
 @JsonFilter(" ")

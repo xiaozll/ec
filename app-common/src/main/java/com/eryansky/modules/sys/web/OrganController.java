@@ -44,7 +44,7 @@ import java.util.List;
 /**
  * 机构Organ管理 Controller层.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-09-09 下午21:36:24
  */
 @SuppressWarnings("serial")

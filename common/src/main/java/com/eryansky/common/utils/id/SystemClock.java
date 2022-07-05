@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * 1000万：480,12,40.0%<p>
  * 100万：50,10,5.0%<p>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2019-01-02
  */
 public class SystemClock {

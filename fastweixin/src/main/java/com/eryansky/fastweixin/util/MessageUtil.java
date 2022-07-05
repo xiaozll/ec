@@ -26,7 +26,7 @@ import java.util.Map;
  * 消息工具类
  * 用于解析微信平台消息xml报文
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public final class MessageUtil {

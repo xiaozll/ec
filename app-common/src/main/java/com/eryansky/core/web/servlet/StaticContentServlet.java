@@ -33,7 +33,7 @@ import java.io.*;
  * static-content?contentPath=img/logo.jpg
  * static-content?contentPath=img/logo.jpg&download=true   下载
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  */
 public class StaticContentServlet extends HttpServlet {
 

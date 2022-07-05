@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 日志DAO接口
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2015-9-26
  */
 @MyBatisDao

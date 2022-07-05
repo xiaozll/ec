@@ -22,7 +22,7 @@ import java.util.Set;
  * .
  * </p>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class PaginationMapperProxy implements InvocationHandler {

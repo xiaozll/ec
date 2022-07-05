@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 版本更新日志
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2015-9-26
  */
 @MyBatisDao

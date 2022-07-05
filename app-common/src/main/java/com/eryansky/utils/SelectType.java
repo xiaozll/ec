@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * combobox、combotree功能类型 全部、请选择  枚举类型.
  * <br>全部("all") 请选择("select")
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-01-28 上午10:48:23
  * 
  */

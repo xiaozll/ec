@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * Service基类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-05-16
  */
 public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEntity<T,PK>,PK extends Serializable> extends BaseService {

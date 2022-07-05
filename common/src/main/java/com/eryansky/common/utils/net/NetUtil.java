@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  *
  * 2. 查找空闲端口
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-06-12 
  */
 public class NetUtil {

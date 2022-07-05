@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * 用于数据库操作。主要包括读取数据库表相关信息
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-7-15 下午1:38:27 
  * @version 1.0
  */

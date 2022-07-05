@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /**
  * 微信js-sdk相关API
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class JsAPI extends BaseAPI {

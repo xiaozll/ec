@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 用户密码修改记录
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-05-08
  */
 @MyBatisDao

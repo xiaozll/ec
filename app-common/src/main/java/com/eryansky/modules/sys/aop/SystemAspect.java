@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 /**
  * 切面
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-05-10
  */
 @Order(1)

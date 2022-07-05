@@ -10,7 +10,7 @@ import java.io.*;
 
 /**
  * 静态文件css/js文件压缩
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14 
  */
 public class Yuicompressor {

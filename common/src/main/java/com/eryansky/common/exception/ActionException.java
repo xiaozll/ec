@@ -8,7 +8,7 @@ package com.eryansky.common.exception;
 /**
  * Action层异常, 继承自BaseException.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-43-10 上午12:08:55
  */
 @SuppressWarnings("serial")

@@ -12,7 +12,7 @@ import com.eryansky.common.orm._enum.IGenericEnum;
  * 资源类型标识 枚举类型.
  * <br>菜单(0) 功能(1)
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-01-28 上午10:48:23
  */
 public enum ResourceType implements IGenericEnum<ResourceType> {

@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Service基类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-05-16
  */
 public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>> extends BaseService {

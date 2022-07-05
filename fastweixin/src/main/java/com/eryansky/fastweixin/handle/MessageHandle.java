@@ -6,7 +6,7 @@ import com.eryansky.fastweixin.message.BaseMsg;
 /**
  * 微信消息处理器接口
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public interface MessageHandle<M extends BaseReqMsg> {

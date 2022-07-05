@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * easyui分页组件datagrid、combogrid数据模型.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-10-16 上午9:57:59
  */
 @SuppressWarnings("serial")

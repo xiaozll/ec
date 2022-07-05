@@ -9,7 +9,7 @@ package com.eryansky.common.mail.entity;
 /**
  * 搜索条件的实体类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 @Deprecated

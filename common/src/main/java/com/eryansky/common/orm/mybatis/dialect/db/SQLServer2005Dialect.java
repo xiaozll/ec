@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Sql 2005的方言实现
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public class SQLServer2005Dialect implements Dialect {

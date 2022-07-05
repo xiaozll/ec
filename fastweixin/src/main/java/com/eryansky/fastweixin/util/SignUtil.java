@@ -14,7 +14,7 @@ import static com.eryansky.fastweixin.util.StrUtil.hasBlank;
 /**
  * 绑定服务器工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public final class SignUtil {

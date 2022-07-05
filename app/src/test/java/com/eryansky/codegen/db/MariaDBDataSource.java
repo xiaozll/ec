@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * MariaDB Metadata读取
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2020-04-09
  */
 public class MariaDBDataSource extends DataSource {

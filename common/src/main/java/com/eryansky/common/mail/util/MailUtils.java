@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 /**
  * 关于邮件消息的常用方法封装
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public class MailUtils {

@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 /**
  * 用户User管理 Controller层.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-3-21 上午12:20:13
  */
 @SuppressWarnings("serial")

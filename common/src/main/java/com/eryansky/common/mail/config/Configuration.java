@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 存储用户配置对于系统配置信息
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-14
  */
 public interface Configuration {

@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 /**
  * json字段中需要脱敏的key字段以及key脱敏类型
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2019-12-13
  */
 @Target({ElementType.FIELD, ElementType.METHOD})

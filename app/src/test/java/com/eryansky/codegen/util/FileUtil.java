@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * 文件操作工具类.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2013-7-15 下午1:37:21 
  * @version 1.0
  */

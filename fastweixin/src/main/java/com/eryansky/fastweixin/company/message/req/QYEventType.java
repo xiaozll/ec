@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  微信企业号事件消息类型
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public final class QYEventType {

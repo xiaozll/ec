@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * 数据字典项管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2015-09-27
  */
 @Service

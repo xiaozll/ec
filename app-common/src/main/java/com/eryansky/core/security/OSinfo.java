@@ -8,7 +8,7 @@ package com.eryansky.core.security;
 /**
  * 操作系统类：
  * 获取System.getProperty("os.name")对应的操作系统
- * Author: 尔演&Eryan eryanwcp@gmail.com
+ * Author: eryan
  * Date: 2014-02-19 10:33
  */
 public class OSinfo {

@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * 客户端访问日志打印工具类.
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author : eryan
  * @date : 2014-04-19 17:38
  */
 public class LogUtils {

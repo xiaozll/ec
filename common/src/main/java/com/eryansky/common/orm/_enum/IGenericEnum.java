@@ -9,7 +9,7 @@ package com.eryansky.common.orm._enum;
  *
  * 枚举接口.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2020-02-12
  *
  */

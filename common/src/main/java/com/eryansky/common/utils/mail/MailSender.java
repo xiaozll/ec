@@ -21,7 +21,7 @@ import java.util.Date;
  * 简单邮件发送器. <br>
  * 支持文本邮件、HTML邮件、带附件的HTML邮件
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2012-5-5 下午3:40:06
  */
 public class MailSender {

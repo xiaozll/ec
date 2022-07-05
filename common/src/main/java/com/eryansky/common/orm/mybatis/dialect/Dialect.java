@@ -8,7 +8,7 @@ package com.eryansky.common.orm.mybatis.dialect;
 /**
  * 类似hibernate的Dialect,但只精简出分页部分
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @version 2014-7-16
  */
 public interface Dialect {

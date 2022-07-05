@@ -7,7 +7,7 @@ import com.eryansky.fastweixin.api.response.BaseResponse;
 
 /**
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class GetQYSendMessageResponse extends BaseResponse {

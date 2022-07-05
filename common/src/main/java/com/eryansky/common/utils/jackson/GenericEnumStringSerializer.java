@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * IGenericEnum 类型枚举类序列化String value
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2020-02-12
  *
  */

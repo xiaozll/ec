@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.api.entity;
 /**
  * 标签对象
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-05-14
  */
 public class Tag extends BaseModel {

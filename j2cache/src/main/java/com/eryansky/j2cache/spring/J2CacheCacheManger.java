@@ -11,7 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * {@link Cache} implementation for J2Cache.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2018-07-24
  *
  */

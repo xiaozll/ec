@@ -11,7 +11,7 @@ import java.util.List;
 /**
  *  微信企业号被动响应事件新闻消息
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-03-15
  */
 public class QYNewsRespMsg extends QYBaseRespMsg {

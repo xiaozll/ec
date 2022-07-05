@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
 
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2016-07-14
  */
 @MyBatisDao

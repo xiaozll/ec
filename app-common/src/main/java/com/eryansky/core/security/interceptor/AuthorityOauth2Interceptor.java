@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * 模拟Outho2认证拦截器
  * 优先级：注解>数据库权限配置
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date 2021-09-09
  */
 public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {

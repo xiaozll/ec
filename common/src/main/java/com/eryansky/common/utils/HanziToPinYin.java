@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * 汉字转化为全拼.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author eryan
  * @date   2011-12-30下午2:29:38
  */
 public class HanziToPinYin {

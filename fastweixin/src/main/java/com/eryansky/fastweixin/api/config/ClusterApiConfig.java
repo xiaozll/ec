@@ -15,7 +15,7 @@ import org.apache.http.HttpStatus;
  * API配置类，项目中请保证其为单例
  * 实现观察者模式，用于监控token变化
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-10-31
  */
 public class ClusterApiConfig extends ApiConfig {

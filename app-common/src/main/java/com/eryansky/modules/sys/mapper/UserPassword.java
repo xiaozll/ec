@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * 用户密码修改记录
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-05-08
  */
 public class UserPassword extends DataEntity<UserPassword> {

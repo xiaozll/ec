@@ -21,7 +21,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2013-1-19 下午4:36:03
  */
 public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {

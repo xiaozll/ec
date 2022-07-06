@@ -15,7 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2014-12-31
  */
 public class AppDateUtils extends DateUtils {

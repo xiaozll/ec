@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * 邮件联系人
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-08-13
  */
 public class MailContact extends DataEntity<MailContact> {

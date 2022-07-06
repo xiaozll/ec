@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * 消息、通知发布切面，由系统参照本示例实现
  *
- * @author eryan
+ * @author Eryan
  * @date 2020-03-04
  */
 //@Component

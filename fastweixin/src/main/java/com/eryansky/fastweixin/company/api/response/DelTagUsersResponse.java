@@ -7,7 +7,7 @@ import java.util.List;
 /**
  *  Response -- 删除标签内成员
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class DelTagUsersResponse extends BaseResponse {

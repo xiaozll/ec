@@ -14,7 +14,7 @@ import org.apache.ibatis.session.SqlSession;
  * 自定义Mybatis的配置，扩展.
  * </p>
  *
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class PageConfiguration extends Configuration {

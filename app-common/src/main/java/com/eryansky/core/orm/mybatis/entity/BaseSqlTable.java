@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * SqlTable支持类
- * @author eryan
+ * @author Eryan
  * @version 2020-03-03
  */
 public abstract class BaseSqlTable<T> extends SqlTable {

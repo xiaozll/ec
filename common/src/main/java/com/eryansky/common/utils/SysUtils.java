@@ -40,7 +40,7 @@ import java.util.zip.Inflater;
 /**
  * java工具类
  * 
- * @author eryan
+ * @author Eryan
  * @date 2011-12-30下午2:31:16
  */
 public class SysUtils {
@@ -1321,7 +1321,7 @@ public class SysUtils {
 	 * 
 	 * @param blob
 	 * @return
-	 * @author eryan
+	 * @author Eryan
 	 */
 	public static byte[] blobToBytes(Blob blob) {
 		BufferedInputStream is = null;

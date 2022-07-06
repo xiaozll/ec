@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * 提供公共方法的Controller.
  *
- * @author eryan
+ * @author Eryan
  * @date 2013-2-25 下午1:59:38
  */
 @Controller

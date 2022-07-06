@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * 资源权限Resource管理 Controller层.
  *
- * @author eryan
+ * @author Eryan
  * @date 2012-10-11 下午4:36:24
  */
 @SuppressWarnings("serial")

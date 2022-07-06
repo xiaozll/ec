@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户代理字符串识别工具
- * @author eryan
+ * @author Eryan
  * @version 2016-05-03
  */
 public class UserAgentUtils {

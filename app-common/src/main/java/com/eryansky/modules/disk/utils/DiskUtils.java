@@ -47,7 +47,7 @@ import java.io.*;
 /**
  * 云盘公共接口 以及相关工具类
  *
- * @author eryan
+ * @author Eryan
  * @date 2014-12-10
  */
 public class DiskUtils {

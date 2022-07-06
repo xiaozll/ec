@@ -1,7 +1,7 @@
 /*!
  * jQuery方法扩展
  * 
- * @author 尔演@Eryan
+ * @author Eryan
  * 
  * @version 2013-05-26
  */

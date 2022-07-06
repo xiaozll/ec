@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * GZIP拦截器.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2013-3-30 下午9:32:59
  * 
  */

@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.api.enums;
 /**
  * Oauth授权作用域枚举
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public enum OauthScope {

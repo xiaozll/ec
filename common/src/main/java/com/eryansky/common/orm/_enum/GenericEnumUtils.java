@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 泛型枚举工具类
- * @author eryan
+ * @author Eryan
  * @version 2020-02-12
  */
 public class GenericEnumUtils {

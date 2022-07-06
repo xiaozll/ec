@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2020-10-08
  */
 public class MaxSerialItem implements Serializable {

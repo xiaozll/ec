@@ -14,7 +14,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * 判断是否不具备某个角色编码权限
- * @author eryan
+ * @author Eryan
  * @date 2016-03-18
  */
 @SuppressWarnings("serial")

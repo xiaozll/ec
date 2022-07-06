@@ -19,7 +19,7 @@ import java.util.Date;
 /**
  * 通知接收信息
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-10-15
  */
 @JsonFilter(" ")

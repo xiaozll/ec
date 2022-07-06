@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * 邮件联系人 service
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-03-05
  */
 @Service

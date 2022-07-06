@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * 工作日
- * @author eryan
+ * @author Eryan
  * @version 2016-05-03
  */
 public class WorkDayUtils {

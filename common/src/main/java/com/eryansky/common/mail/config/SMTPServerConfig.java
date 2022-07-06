@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 实现存储基于SMTP协议的发送服务器的配置信息
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 public class SMTPServerConfig extends ServerConfig {

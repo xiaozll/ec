@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * Dialect for HSQLDB
  *
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class HSQLDialect implements Dialect {

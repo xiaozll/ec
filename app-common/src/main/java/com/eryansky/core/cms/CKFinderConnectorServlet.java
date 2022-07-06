@@ -20,7 +20,7 @@ import java.io.IOException;
 
 /**
  * CKFinderConnectorServlet
- * @author eryan
+ * @author Eryan
  * @version 2013-01-15
  */
 public class CKFinderConnectorServlet extends ConnectorServlet {

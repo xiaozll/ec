@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * 标注在字段上，用以说明字段上那些类型需要脱敏
  * 脱敏后，插件在写请求后对数据脱敏后存在数据库，对读请求不拦截
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 @Target({ElementType.FIELD, ElementType.METHOD})

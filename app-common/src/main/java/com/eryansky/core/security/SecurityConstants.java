@@ -9,7 +9,7 @@ package com.eryansky.core.security;
 /**
  * 项目中用到的静态变量.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2012-8-20 上午11:40:56
  */
 public class SecurityConstants {

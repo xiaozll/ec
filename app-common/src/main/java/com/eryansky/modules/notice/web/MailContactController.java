@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-08-19
  */
 @Controller

@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  * svg
- * @author eryan
+ * @author Eryan
  * @date 2020-01-03
  */
 public class SvgUtils {

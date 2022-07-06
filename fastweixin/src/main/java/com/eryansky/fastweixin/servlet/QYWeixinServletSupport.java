@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  *  微信企业平台交互操作基类，提供几乎所有微信企业平台交互方式
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public abstract class QYWeixinServletSupport extends HttpServlet {

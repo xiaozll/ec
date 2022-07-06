@@ -2,7 +2,7 @@ package com.eryansky.codegen.convert;
 
 /**
  * 
- * @author eryan
+ * @author Eryan
  * @date 2013-7-15 下午1:38:50 
  * @version 1.0
  */

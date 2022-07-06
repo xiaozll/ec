@@ -15,7 +15,7 @@ import java.io.IOException;
 
 /**
  * 数据字典标签
- * @author eryan
+ * @author Eryan
  * @date 2014-3-29 下午8:02:39
  */
 @SuppressWarnings("serial")

@@ -6,7 +6,7 @@ import com.eryansky.common.orm.mybatis.sensitive.type.SensitiveTypeHandler;
 /**
  * 不脱敏
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public class NoneSensitiveHandler implements SensitiveTypeHandler {

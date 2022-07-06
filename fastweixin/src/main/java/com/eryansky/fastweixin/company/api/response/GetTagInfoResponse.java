@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  *  Response -- 标签信息
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class GetTagInfoResponse extends BaseResponse {

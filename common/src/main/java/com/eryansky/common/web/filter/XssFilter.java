@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * 防止XSS漏洞注入
- * @author eryan
+ * @author Eryan
  * @date 2018-4-18
  */
 public class XssFilter extends BaseFilter{

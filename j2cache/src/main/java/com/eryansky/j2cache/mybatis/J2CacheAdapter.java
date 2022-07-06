@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 实现了 MyBatis 的缓存接口
- * @author eryan
+ * @author Eryan
  * @date 2018-07-24
  */
 public class J2CacheAdapter implements Cache {

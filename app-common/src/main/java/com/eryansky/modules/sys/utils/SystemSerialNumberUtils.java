@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-05-12
  */
 public class SystemSerialNumberUtils {

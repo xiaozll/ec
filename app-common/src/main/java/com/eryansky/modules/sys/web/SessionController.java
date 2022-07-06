@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * 在线用户管理
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-05-18
  */
 @Controller

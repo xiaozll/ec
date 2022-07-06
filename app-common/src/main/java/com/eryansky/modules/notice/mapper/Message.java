@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 消息表
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 public class Message extends DataEntity<Message> {

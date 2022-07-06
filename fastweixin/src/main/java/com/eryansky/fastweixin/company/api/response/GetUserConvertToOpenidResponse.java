@@ -6,7 +6,7 @@ import com.eryansky.fastweixin.api.response.BaseResponse;
 /**
  * userid与openid互换
  *
- * @author eryan
+ * @author Eryan
  * @date 2019-09-08
  */
 public class GetUserConvertToOpenidResponse extends BaseResponse {

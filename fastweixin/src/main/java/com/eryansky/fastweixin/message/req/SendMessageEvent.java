@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.message.req;
 
 /**
  * 发生消息事件
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class SendMessageEvent extends BaseEvent {

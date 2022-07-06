@@ -6,7 +6,7 @@
 package com.eryansky.client.common.utils;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2019-07-29 
  */
 public class Constants {

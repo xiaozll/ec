@@ -6,7 +6,7 @@
 package com.eryansky.modules.sys.sn;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-07-14
  */
 public class GeneratorConstants {

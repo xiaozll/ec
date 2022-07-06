@@ -15,7 +15,7 @@ import com.eryansky.common.orm.Page;
 /**
  * MyBatis的Dao基类.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2012-7-28 下午7:38:46
  */
 public class MyBatisSuportDao extends SqlSessionDaoSupport {

@@ -17,7 +17,7 @@ import com.eryansky.common.utils.reflection.ReflectionUtils;
  * Collections工具集.
  * 在JDK的Collections和Guava的Collections2后, 命名为Collections3.
  * 
- * @author eryan
+ * @author Eryan
  */
 public class Collections3 {
 

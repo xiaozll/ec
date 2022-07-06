@@ -15,7 +15,7 @@ import java.io.PrintWriter;
  * 微信公众平台交互操作基类，提供几乎所有微信公众平台交互方式
  * 基于springmvc框架，方便使用此框架的项目集成
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 @Controller

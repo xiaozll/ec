@@ -9,7 +9,7 @@ package com.eryansky.common.orm._enum;
  *
  * 状态标识 枚举类型.
  *
- * @author eryan
+ * @author Eryan
  * @date 2012-8-11 下午10:48:23
  *
  */

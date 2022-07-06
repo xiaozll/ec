@@ -6,7 +6,7 @@
 package com.eryansky.common.mail.entity;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 public class TipMessage {

@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 脱敏处理注册表
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 @SuppressWarnings("unused")

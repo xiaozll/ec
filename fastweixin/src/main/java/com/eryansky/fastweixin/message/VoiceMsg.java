@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.message;
 import com.eryansky.fastweixin.message.util.MessageBuilder;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class VoiceMsg extends BaseMsg {

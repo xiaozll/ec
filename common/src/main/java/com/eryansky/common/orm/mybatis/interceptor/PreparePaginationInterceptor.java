@@ -22,7 +22,7 @@ import java.util.Properties;
 
 /**
  * Mybatis数据库分页插件，拦截StatementHandler的prepare方法
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 @Intercepts({

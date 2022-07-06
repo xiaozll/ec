@@ -8,7 +8,7 @@ package com.eryansky.common.exception;
 /**
  * 系统异常,继承自BaseException.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2012-4-30 上午12:08:55
  */
 @SuppressWarnings("serial")

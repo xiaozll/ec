@@ -12,7 +12,7 @@ import org.springframework.cache.support.NullValue;
 
 /**
  * {@link CacheManager} implementation for J2Cache.
- * @author eryan
+ * @author Eryan
  * @date 2018-07-24
  *
  */

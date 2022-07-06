@@ -3,7 +3,7 @@ package com.eryansky.codegen.convert;
 /**
  * 1、Table Name 转换为 Entity Name
  * 2、Column Name 转换为 Field
- * @author eryan
+ * @author Eryan
  * @date 2013-7-15 下午1:38:40 
  * @version 1.0
  */

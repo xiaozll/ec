@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import static com.eryansky.utils.AppUtils.likeIOS;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2019-11-21
  */
 public class VersionLogUtils {

@@ -4,7 +4,7 @@ package com.eryansky.codegen.util;
  * 
  * 数据库类型 枚举类型.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2014-5-22 下午10:48:23
  * 
  */

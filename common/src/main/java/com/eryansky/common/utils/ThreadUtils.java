@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 线程相关的Utils函数集合.
  * 
- * @author eryan
+ * @author Eryan
  */
 public class ThreadUtils {
 

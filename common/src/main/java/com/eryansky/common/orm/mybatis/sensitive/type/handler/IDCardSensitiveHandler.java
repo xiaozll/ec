@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  * 前3位，后4位
  * 130722199102323232 脱敏后: 130*************3232
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public class IDCardSensitiveHandler implements SensitiveTypeHandler {

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 累计用户数据
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class UserCumulate extends BaseDataCube {

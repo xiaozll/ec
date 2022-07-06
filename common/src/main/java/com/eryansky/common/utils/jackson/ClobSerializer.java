@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.Clob;
 /**
  * 自定义Jackson Clob类型转换.
- * @author eryan
+ * @author Eryan
  * @date 2013-4-1 下午2:49:07 
  *
  */

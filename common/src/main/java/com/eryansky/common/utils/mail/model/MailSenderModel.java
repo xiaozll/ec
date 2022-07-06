@@ -21,7 +21,7 @@ import java.util.Properties;
 /**
  * 发送邮件需要使用的基本信息entity.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2012-5-5 下午3:39:55
  */
 public class MailSenderModel {

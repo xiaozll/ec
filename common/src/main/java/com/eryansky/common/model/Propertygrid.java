@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * easyui propertygrid.
- * @author eryan
+ * @author Eryan
  */
 @SuppressWarnings("serial")
 public class Propertygrid implements Serializable {

@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * Portal主页门户管理
  *
- * @author eryan
+ * @author Eryan
  * @date 2014-07-31 12:30
  */
 @Controller

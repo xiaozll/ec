@@ -13,7 +13,7 @@ import com.eryansky.modules.notice.mapper.MessageSender;
 import org.springframework.stereotype.Service;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 @Service

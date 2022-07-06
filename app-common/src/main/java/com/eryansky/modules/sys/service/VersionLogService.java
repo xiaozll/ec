@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 /**
  * 版本更新日志
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-29
  */
 @Service

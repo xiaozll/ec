@@ -5,7 +5,7 @@ import com.eryansky.fastweixin.util.BeanUtil;
 /**
  * 微信接口全局返回码枚举
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public enum ResultType {

@@ -21,7 +21,7 @@ import java.util.*;
 /**
  * 实现可订阅提醒的邮件服务器的综合应用
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 @Deprecated

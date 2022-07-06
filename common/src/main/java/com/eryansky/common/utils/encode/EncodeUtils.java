@@ -24,7 +24,7 @@ import org.apache.commons.text.StringEscapeUtils;
  * 
  * 集成Commons-Codec,Commons-Lang及JDK提供的编解码方法.
  * 
- * @author eryan
+ * @author Eryan
  */
 public class EncodeUtils {
 

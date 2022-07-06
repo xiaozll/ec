@@ -9,7 +9,7 @@ import java.util.List;
 /**
  *  微信完整菜单
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYMenu extends BaseModel {

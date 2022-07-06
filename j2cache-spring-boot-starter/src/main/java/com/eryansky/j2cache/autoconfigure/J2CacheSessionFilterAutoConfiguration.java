@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * J2Cache Session 自动注入配置
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2019-02-11
  */
 @ConditionalOnWebApplication

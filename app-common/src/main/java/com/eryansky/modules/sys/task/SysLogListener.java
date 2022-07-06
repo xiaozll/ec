@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2020-03-16
  */
 @Component

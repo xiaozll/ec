@@ -24,7 +24,7 @@ import javax.xml.ws.Endpoint;
 /**
  * 系统初始化监听 继承默认系统启动监听器.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2012-12-11 下午4:56:54
  */
 public class SystemInitListener extends DefaultSystemInitListener{

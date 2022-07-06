@@ -9,7 +9,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 
 /**
  * Oracle的方言实现
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class OracleDialect implements Dialect {

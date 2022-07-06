@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 解密数据库密码回调
  *
- * @author 尔演@Eryan
+ * @author Eryan
  * @since 2021-11-30
  */
 public class CustomDruidPasswordCallback extends DruidPasswordCallback {

@@ -28,7 +28,7 @@ import java.util.Enumeration;
  * <url-pattern>/img/*</url-pattern>
  * </filter-mapping>
  *
- * @author eryan
+ * @author Eryan
  */
 public class ResponseHeaderFilter extends BaseFilter {
 

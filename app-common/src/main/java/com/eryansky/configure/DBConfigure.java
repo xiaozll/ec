@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2019-01-23
  */
 @Configuration

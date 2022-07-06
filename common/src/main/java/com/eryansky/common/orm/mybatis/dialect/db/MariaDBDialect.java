@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * Maria方言的实现
  *
- * @author eryan
+ * @author Eryan
  * @version 2018-12-28
  */
 public class MariaDBDialect implements Dialect {

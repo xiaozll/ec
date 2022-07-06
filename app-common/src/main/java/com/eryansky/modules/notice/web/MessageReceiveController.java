@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 消息接收 个人消息中心
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-04-14
  */
 @Controller

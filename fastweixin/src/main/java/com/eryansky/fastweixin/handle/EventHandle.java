@@ -6,7 +6,7 @@ import com.eryansky.fastweixin.message.req.BaseEvent;
 /**
  * 微信事件处理器接口
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public interface EventHandle<E extends BaseEvent> {

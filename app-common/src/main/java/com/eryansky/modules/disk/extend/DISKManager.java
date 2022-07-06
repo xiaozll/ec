@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2015-06-24
  */
 public class DISKManager implements IFileManager {

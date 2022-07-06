@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2015-01-30
  */
 public class NoticeQueryVo implements Serializable {

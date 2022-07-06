@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.util;
 /**
  * 字符串常用方法工具类
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public final class StrUtil {

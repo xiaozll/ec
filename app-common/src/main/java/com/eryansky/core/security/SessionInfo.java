@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * session登录用户对象.
  *
- * @author eryan
+ * @author Eryan
  * @date 2013-3-24 下午2:53:59
  */
 @SuppressWarnings("serial")

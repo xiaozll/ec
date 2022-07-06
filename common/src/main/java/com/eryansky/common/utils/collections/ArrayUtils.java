@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 /**
  * array工具类
- * @author eryan
+ * @author Eryan
  * @date 2012-1-9下午2:55:08
  */
 public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {

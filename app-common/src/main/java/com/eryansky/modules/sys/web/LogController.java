@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 /**
  * 日志
  *
- * @author eryan
+ * @author Eryan
  * @date 2013-12-8 下午5:13
  */
 @Controller

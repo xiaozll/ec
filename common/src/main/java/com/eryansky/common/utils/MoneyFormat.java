@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 /**
  * 将数字金额转换为中国大写金额
- * @author eryan
+ * @author Eryan
  * @date   2011-12-27 上午9:39:57
  */
 public class MoneyFormat {

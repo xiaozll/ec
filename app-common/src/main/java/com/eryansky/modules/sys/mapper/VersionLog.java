@@ -19,7 +19,7 @@ import java.util.Date;
 /**
  * 系统更新日志
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-01-09
  */
 public class VersionLog extends DataEntity<VersionLog> {

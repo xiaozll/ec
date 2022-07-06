@@ -6,7 +6,7 @@
 package com.eryansky.modules.sys.vo;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2018-06-14 
  */
 public class PasswordTip {

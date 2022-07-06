@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 /**
  * 系统使用的特殊工具类 简化代码编写.
  *
- * @author eryan
+ * @author Eryan
  * @date 2012-10-18 上午8:25:36
  */
 public class SecurityUtils {

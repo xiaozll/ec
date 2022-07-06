@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * 消息
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-24
  */
 @Controller

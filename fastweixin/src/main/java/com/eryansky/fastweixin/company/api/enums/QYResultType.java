@@ -4,7 +4,7 @@ import com.eryansky.fastweixin.util.BeanUtil;
 
 /**
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public enum QYResultType {

@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  * 数据Entity类
- * @author eryan
+ * @author Eryan
  * @date 2019-01-02
  */
 public abstract class PDataEntity<T, PK extends Serializable> extends PBaseEntity<T,PK>  implements IDataEntity {

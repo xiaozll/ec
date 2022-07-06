@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * 使用AspectJ实现登录登出日志AOP
  *
- * @author 尔演&Eryan
+ * @author Eryan
  */
 //@Component
 //@Aspect

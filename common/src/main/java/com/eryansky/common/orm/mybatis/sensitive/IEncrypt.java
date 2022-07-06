@@ -3,7 +3,7 @@ package com.eryansky.common.orm.mybatis.sensitive;
 /**
  * 加解密接口
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public interface IEncrypt {

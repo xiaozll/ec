@@ -6,7 +6,7 @@ import com.eryansky.common.orm.mybatis.sensitive.type.SensitiveTypeHandler;
 /**
  * 默认脱敏处理类
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public class DafaultSensitiveHandler implements SensitiveTypeHandler {

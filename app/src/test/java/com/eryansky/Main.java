@@ -11,7 +11,7 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.*;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2020-06-17 
  */
 public class Main {

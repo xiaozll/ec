@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  *
- * @author eryan
+ * @author Eryan
  * @date 2021-09-08
  */
 public class QYTemplateCardMsg extends QYBaseMsg {

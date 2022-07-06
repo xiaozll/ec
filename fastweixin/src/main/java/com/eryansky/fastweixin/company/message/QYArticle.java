@@ -4,7 +4,7 @@ import com.eryansky.fastweixin.message.Article;
 
 /**
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYArticle extends Article {

@@ -25,7 +25,7 @@ import java.util.Properties;
  * 共享数据库的多租户系统实现
  * TODO 白名单模式
  * TODO 黑名单模式
- * @author eryan
+ * @author Eryan
  * @date 2016-06-29
  */
 @Intercepts({

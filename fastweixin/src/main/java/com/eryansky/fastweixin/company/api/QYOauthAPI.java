@@ -13,7 +13,7 @@ import java.net.URLEncoder;
 /**
  * 企业号身份授权
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYOauthAPI extends QYBaseAPI {

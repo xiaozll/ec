@@ -11,7 +11,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * DB2的分页数据库方言实现
  *
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class DB2Dialect implements Dialect {

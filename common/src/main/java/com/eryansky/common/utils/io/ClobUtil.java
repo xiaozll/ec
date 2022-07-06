@@ -17,7 +17,7 @@ import javax.sql.rowset.serial.SerialException;
 
 /**
  * Clob工具类.
- * @author eryan
+ * @author Eryan
  * @date   2012-12-11 上午10:32:35
  */
 public class ClobUtil {

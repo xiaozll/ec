@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Mysql Metadata读取
- * @author eryan
+ * @author Eryan
  * @date 2013-7-15 下午1:39:48 
  * @version 1.0
  */

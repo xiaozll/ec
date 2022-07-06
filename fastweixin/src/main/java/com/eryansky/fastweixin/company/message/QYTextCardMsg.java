@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.company.message;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYTextCardMsg extends QYBaseMsg {

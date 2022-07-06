@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * Mysql方言的实现
  *
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class MySQLDialect implements Dialect {

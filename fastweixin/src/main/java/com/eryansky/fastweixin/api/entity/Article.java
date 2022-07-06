@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 群发图文信息时Article实体
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class Article extends BaseModel {

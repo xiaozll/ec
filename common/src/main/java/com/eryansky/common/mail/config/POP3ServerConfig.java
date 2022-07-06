@@ -10,7 +10,7 @@ import java.util.Properties;
 /**
  * 实现存储基于POP3协议的发送服务器的配置信息
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 public class POP3ServerConfig extends ServerConfig {

@@ -5,7 +5,7 @@ import com.eryansky.codegen.Resources;
 
 /**
  * 生成文件的文件类型.
- * @author eryan
+ * @author Eryan
  * @date 2013-7-15 下午1:33:01 
  * @version 1.0
  */

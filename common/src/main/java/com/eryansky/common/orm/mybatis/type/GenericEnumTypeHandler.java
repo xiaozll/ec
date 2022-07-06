@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 /**
  * 泛型美剧类型数据处理
- * @author eryan
+ * @author Eryan
  * @version 2020-02-12
  */
 public class GenericEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends BaseTypeHandler<T> {

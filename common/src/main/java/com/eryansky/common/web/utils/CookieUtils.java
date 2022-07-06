@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Cookie工具类
- * @author eryan
+ * @author Eryan
  * @version 2013-01-15
  */
 public class CookieUtils {

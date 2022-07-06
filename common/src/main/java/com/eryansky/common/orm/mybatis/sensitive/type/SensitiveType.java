@@ -3,7 +3,7 @@ package com.eryansky.common.orm.mybatis.sensitive.type;
 /**
  * 脱敏类型
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public enum SensitiveType {

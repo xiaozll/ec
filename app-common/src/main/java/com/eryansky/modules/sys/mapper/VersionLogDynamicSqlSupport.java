@@ -8,7 +8,7 @@ import org.mybatis.dynamic.sql.SqlColumn;
 
 /**
  * 版本更新动态SQL支持类
- * @author eryan
+ * @author Eryan
  * @date 2020-03-03
  */
 public final class VersionLogDynamicSqlSupport {

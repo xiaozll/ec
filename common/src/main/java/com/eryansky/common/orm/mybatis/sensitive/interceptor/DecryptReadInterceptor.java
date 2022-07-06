@@ -25,7 +25,7 @@ import java.util.*;
  * SQL样例：
  * 1. UPDATE tbl SET x=?, y =
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 @Intercepts({

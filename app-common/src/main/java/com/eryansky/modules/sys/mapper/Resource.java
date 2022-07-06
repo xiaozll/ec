@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * 资源/权限（菜单、功能）
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-05-08
  */
 public class Resource extends TreeEntity<Resource> {

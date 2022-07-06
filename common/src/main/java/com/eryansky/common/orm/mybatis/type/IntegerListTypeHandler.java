@@ -1,7 +1,7 @@
 package com.eryansky.common.orm.mybatis.type;
 
 /**
- * @author eryan
+ * @author Eryan
  * @version 2020-02-12
  */
 public class IntegerListTypeHandler extends ListTypeHandler<Integer> {

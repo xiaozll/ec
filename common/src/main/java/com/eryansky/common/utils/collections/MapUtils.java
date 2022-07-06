@@ -12,7 +12,7 @@ import com.eryansky.common.utils.StringUtils;
 
 /**
  * map工具类，用于实现一些map的常用操作
- * @author eryan
+ * @author Eryan
  * @date   2012-1-9下午2:54:34
  */
 public class MapUtils{

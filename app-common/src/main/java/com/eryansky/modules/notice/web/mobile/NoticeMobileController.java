@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2015-09-01
  */
 @Mobile

@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Entity支持类
- * @author eryan
+ * @author Eryan
  * @date 2019-01-02
  */
 public abstract class PBaseEntity<T, PK extends Serializable> extends AbstractBaseEntity<T,PK> {

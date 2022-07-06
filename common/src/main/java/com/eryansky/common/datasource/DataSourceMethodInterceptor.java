@@ -19,7 +19,7 @@ import java.lang.reflect.Proxy;
 /**
  * 多数据源动态配置拦截器
  *
- * @author eryan
+ * @author Eryan
  * @date 2014-08-13
  */
 public class DataSourceMethodInterceptor implements MethodInterceptor, InitializingBean {

@@ -36,7 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-07
  */
 @Controller

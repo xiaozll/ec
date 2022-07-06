@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * 结果处理器
- * @author eryan
+ * @author Eryan
  * @date 2016-09-21
  */
 public interface CallableResultHandler {

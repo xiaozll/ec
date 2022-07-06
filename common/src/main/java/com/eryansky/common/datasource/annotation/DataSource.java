@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * 数据源注解
- * @author eryan
+ * @author Eryan
  * @date 2014-08-13
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="Cache-Control" content="no-store" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />
-<meta name="author" content="尔演&Eryan"/><meta http-equiv="X-UA-Compatible" content="IE=7,IE=9,IE=10" />
+<meta name="author" content="Eryan"/><meta http-equiv="X-UA-Compatible" content="IE=7,IE=9,IE=10" />
 <script src="${ctxStatic}/js/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
 <script src="${ctxStatic}/js/jquery/jquery-migrate-1.4.1.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend.min.css" type="text/css" rel="stylesheet" />

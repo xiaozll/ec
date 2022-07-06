@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * 版本更新日志
  *
- * @author eryan
+ * @author Eryan
  * @version 2015-9-26
  */
 @MyBatisDao

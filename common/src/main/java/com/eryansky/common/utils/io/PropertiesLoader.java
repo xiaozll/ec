@@ -24,7 +24,7 @@ import org.springframework.core.io.ResourceLoader;
  * 本类有两种使用方法:
  * 1.
  *
- * @author eryan
+ * @author Eryan
  */
 public class PropertiesLoader {
 

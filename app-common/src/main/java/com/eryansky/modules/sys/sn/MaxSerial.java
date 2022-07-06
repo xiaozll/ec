@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2018-06-14
  */
 public class MaxSerial implements Serializable {

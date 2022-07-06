@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * DAO支持类实现
- * @author eryan
+ * @author Eryan
  * @version 2014-05-16
  * @param <T>
  */

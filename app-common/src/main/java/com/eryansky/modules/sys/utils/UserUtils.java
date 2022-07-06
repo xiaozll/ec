@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2014-11-25
  */
 public class UserUtils {

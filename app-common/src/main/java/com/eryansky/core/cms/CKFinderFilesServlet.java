@@ -15,7 +15,7 @@ import java.io.*;
 
 /**
  * 查看CK上传的图片
- * @author eryan
+ * @author Eryan
  * @date 2015-01-21
  *
  */

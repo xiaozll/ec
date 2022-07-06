@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 订阅配置信息
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 @Deprecated

@@ -18,7 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 /**
  * MD5工具类.
- * @author eryan
+ * @author Eryan
  * @date   2012-1-9下午3:15:25
  */
 public class MD5Util {

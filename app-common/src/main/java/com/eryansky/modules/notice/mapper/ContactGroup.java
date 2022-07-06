@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * 自定义联系人组
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-05
  */
 public class ContactGroup extends DataEntity<ContactGroup> {

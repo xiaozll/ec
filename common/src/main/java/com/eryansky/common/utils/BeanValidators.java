@@ -25,7 +25,7 @@ import com.google.common.collect.Maps;
  * 2. List<String>, String内容为propertyPath + separator + message
  * 3. Map<propertyPath, message>
  * 
- * @author eryan
+ * @author Eryan
  */
 public class BeanValidators {
 

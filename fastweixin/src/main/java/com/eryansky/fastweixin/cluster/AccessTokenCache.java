@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Token 缓存
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-10-31
  */
 public class AccessTokenCache implements Serializable {

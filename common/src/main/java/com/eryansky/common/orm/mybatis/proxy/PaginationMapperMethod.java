@@ -25,7 +25,7 @@ import java.util.Map;
  * 执行代理类，扩展Mybatis的方式来让其Mapper接口来支持.
  * </p>
  *
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class PaginationMapperMethod {

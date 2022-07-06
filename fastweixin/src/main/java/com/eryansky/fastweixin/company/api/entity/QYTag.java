@@ -5,7 +5,7 @@ import com.eryansky.fastweixin.api.entity.BaseModel;
 /**
  *  企业通讯录-标签
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYTag extends BaseModel {

@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * WebService返回结果基类,定义所有返回码.
- * @author eryan
+ * @author Eryan
  * @date 2013-3-11 下午9:25:48 
  *
  */

@@ -19,7 +19,7 @@ import java.security.SecureRandom;
 /**
  * 数据脱敏用到的AES加解密类
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public class AesSupport implements IEncrypt {

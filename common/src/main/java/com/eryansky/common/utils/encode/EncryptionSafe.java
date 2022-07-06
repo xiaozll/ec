@@ -17,7 +17,7 @@ import java.security.SecureRandom;
  * DES对称加密/解密工具类.
  * <br>加密加密字符串采用DEFAULT_CHARSET编码（UTF-8）.
  *
- * @author eryan
+ * @author Eryan
  * @date 2022-01-26
  */
 public class EncryptionSafe {

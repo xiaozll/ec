@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CKFinder配置
- * @author eryan
+ * @author Eryan
  * @version 2013-01-15
  */
 public class CKFinderConfig extends Configuration {

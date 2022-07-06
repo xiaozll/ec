@@ -5,7 +5,7 @@ import com.eryansky.fastweixin.api.entity.Tag;
 import java.util.List;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-05-14
  */
 public class GetAllTagsResponse extends BaseResponse {

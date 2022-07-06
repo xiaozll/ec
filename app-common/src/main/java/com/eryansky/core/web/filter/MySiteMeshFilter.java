@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * 以com.opensymphony.sitemesh.webapp.SiteMeshFilter为原型改造而来
  * <br/>支持黑名单、白名单 {@link BaseFilter}
- * @author eryan
+ * @author Eryan
  * @date 2015-09-07 
  */
 public class MySiteMeshFilter extends BaseFilter {

@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * 		<filter-name>cacheControlHeaderFilter</filter-name>
  * 		<url-pattern>/img/*</url-pattern>
  * 	</filter-mapping>
- * @author eryan
+ * @author Eryan
  * @date 2013-3-31 下午9:09:35 
  *
  */

@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * 消息接收表
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 public class MessageReceive extends BaseEntity<MessageReceive> {

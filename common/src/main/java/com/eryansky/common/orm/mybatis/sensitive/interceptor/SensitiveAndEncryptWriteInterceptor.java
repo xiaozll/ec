@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * 拦截写请求的插件。插件生效仅支持预编译的sql
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 @Intercepts({

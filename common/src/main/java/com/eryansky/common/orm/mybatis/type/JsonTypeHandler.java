@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * json类型数据处理
- * @author eryan
+ * @author Eryan
  * @version 2020-02-12
  * @param <T>
  */

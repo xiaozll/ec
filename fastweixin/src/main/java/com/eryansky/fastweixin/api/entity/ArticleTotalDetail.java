@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import java.util.Date;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class ArticleTotalDetail extends BaseModel {

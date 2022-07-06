@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 消息DAO接口
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 @MyBatisDao

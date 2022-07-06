@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * 主页管理
  *
- * @author eryan
+ * @author Eryan
  * @date 2014-09-16 10:30
  */
 @Controller

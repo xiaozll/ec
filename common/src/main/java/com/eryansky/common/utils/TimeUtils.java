@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * 时间计算工具类
- * @author eryan
+ * @author Eryan
  * @version 2016-05-03
  */
 public class TimeUtils {

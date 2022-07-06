@@ -11,7 +11,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
  * Sybase数据库分页方言实现。
  * 还未实现
  *
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 public class SybaseDialect implements Dialect {

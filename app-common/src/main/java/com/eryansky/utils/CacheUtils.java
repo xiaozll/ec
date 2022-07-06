@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Cache工具类
  *
- * @author eryan
+ * @author Eryan
  * @version 2013-5-29
  */
 @SuppressWarnings("unchecked")

@@ -4,7 +4,7 @@
 <meta http-equiv="Cache-Control" content="no-store"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="author" content="尔演&Eryan" />
+<meta name="author" content="Eryan" />
 <link rel="shortcut icon" href="${ctxStatic}/img/favicon.ico" />
 <script type="text/javascript" charset="utf-8">
     var ctx = "${ctx}";

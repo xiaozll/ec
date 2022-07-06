@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * 客服帐号对象
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class CustomAccount extends BaseModel {

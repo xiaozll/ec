@@ -23,7 +23,7 @@ import java.util.Arrays;
  *
  * 支持Hex与Base64两种编码方式.
  *
- * @author eryan
+ * @author Eryan
  */
 public class Cryptos {
 

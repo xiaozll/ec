@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
 /**
  * 插件工具类，获取到对象的真实对象，可能存在多层代理
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public final class SensitiveUtils {

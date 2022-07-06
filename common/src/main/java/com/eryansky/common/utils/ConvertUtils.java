@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 /**
  * 转换工具类.
- * @author eryan
+ * @author Eryan
  * @date   2012-9-5 上午11:12:27
  */
 public class ConvertUtils  extends org.apache.commons.beanutils.ConvertUtils{

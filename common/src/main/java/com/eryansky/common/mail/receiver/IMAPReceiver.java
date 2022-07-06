@@ -19,7 +19,7 @@ import javax.mail.search.FlagTerm;
 /**
  * 实现使用IMAP协议接收邮件
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 public class IMAPReceiver extends Receiver {

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  * 只留前四位和后四位
  * 6227 0383 3938 3938 393 脱敏结果: 6227 **** **** ***8 393
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public class BandCardSensitiveHandler implements SensitiveTypeHandler {

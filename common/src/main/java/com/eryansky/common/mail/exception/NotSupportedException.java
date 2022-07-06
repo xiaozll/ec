@@ -10,7 +10,7 @@ package com.eryansky.common.mail.exception;
 /**
  * 不支持的类型、不支持的操作等异常操作
  *
- * @author eryan
+ * @author Eryan
  * @date 2015-09-14
  */
 public class NotSupportedException extends Exception {

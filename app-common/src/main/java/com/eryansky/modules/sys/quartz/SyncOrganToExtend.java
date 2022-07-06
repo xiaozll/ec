@@ -17,7 +17,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 /**
  * 同步organ扩展表
  *
- * @author eryan
+ * @author Eryan
  * @date 2017-09-19
  */
 @QuartzJob(name = "SyncOrganToExtend", cronExp = "0 0 5 * * ?")

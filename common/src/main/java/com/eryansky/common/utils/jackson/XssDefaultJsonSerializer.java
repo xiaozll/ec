@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Xss序列化
  *
- * @author eryan
+ * @author Eryan
  * @date 2021-11-29
  */
 public class XssDefaultJsonSerializer extends JsonSerializer<String> {

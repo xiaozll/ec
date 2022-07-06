@@ -6,7 +6,7 @@ import com.eryansky.fastweixin.message.util.MessageBuilder;
 /**
  *  微信企业号被动响应图片消息
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYImageRespMsg extends QYBaseRespMsg {

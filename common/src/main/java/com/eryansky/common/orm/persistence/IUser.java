@@ -6,7 +6,7 @@
 package com.eryansky.common.orm.persistence;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2015-09-27
  */
 public interface IUser {

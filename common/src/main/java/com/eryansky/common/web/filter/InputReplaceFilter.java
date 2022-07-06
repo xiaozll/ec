@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 特殊字符输入过滤拦截器.
  * 
- * @author eryan
+ * @author Eryan
  * @date 2013-2-22 下午1:51:52
  */
 public class InputReplaceFilter extends BaseFilter {

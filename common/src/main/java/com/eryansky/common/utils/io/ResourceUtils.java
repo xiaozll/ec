@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 
 /**
  * 国际化资源工具类.
- * @author eryan
+ * @author Eryan
  * @date   2012-12-15 上午8:43:52
  */
 public class ResourceUtils {

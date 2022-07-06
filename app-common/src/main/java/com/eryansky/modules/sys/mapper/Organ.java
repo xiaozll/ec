@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * 机构
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-05-08
  */
 @JsonFilter(" ")

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * SessionFactory
- * @author eryan
+ * @author Eryan
  * @date 2014-08-13
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

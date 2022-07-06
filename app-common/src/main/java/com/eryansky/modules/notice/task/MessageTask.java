@@ -23,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * 消息发送异步任务
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 @Component

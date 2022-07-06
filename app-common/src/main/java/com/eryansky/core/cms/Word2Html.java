@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * word转html 支持doc、docx 自动导入图片
  * 更新：2016-06-30 支持docx格式
- * @author eryan
+ * @author Eryan
  * @date 2015-01-09
  */
 public class Word2Html {

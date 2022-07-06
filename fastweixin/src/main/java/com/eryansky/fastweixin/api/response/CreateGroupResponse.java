@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.api.response;
 import com.eryansky.fastweixin.api.entity.Group;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class CreateGroupResponse extends BaseResponse {

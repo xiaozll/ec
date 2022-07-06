@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * 微信企业平台交互操作基类
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 @Controller

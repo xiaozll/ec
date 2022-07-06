@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  * 例子：李**
  * 张三丰 ：张**
  *
- * @author eryan
+ * @author Eryan
  * @version 2019-12-13
  */
 public class NameSensitiveHandler implements SensitiveTypeHandler {

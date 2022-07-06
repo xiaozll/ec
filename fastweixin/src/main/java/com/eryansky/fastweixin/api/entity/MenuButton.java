@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 菜单按钮对象
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class MenuButton extends BaseModel {

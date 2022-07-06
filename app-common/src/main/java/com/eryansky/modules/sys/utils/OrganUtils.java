@@ -17,7 +17,7 @@ import com.eryansky.modules.sys.service.OrganService;
 import java.util.List;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2014-11-25
  */
 public class OrganUtils {

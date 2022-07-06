@@ -18,7 +18,7 @@ import java.sql.Clob;
 
 /**
  * 自定义Jackson Clob类型转换.
- * @author eryan
+ * @author Eryan
  * @date 2020-02-12
  *
  */

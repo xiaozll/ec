@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  微信企业号文本消息事件
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYTextReqMsg extends QYBaseReqMsg {

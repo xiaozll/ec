@@ -15,7 +15,7 @@ import com.eryansky.modules.sys.sn.MaxSerial;
 /**
  * 序列号生成器
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-07-14
  */
 public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {

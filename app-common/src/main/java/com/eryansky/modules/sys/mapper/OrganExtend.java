@@ -9,7 +9,7 @@ package com.eryansky.modules.sys.mapper;
 /**
  * 机构扩展
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-05-08
  */
 public class OrganExtend extends Organ {

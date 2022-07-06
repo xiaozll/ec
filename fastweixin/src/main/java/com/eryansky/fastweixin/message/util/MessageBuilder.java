@@ -1,7 +1,7 @@
 package com.eryansky.fastweixin.message.util;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class MessageBuilder {

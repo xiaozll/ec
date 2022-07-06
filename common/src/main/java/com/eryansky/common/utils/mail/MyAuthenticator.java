@@ -10,7 +10,7 @@ import javax.mail.PasswordAuthentication;
 
 /**
  * 如果需要身份认证，则创建一个密码验证器
- * @author eryan
+ * @author Eryan
  * @date   2012-5-5 下午3:39:45
  */
 public class MyAuthenticator extends Authenticator{  

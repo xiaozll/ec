@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  微信企业号进入应用事件消息
  *
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYEnterAgentEvent extends QYMenuEvent {

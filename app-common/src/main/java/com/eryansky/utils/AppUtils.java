@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2015-10-19 
  */
 public class AppUtils {

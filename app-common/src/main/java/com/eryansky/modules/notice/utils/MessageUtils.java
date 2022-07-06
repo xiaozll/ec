@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * 消息工具类
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 public class MessageUtils {

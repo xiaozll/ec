@@ -29,7 +29,7 @@ import java.util.Date;
 /**
  * 使用AspectJ实现登录登出日志AOP
  *
- * @author 尔演&Eryan
+ * @author Eryan
  */
 @Order(1)
 @Component

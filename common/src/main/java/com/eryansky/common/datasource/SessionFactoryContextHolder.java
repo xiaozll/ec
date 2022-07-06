@@ -6,7 +6,7 @@
 package com.eryansky.common.datasource;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2014-08-13
  */
 public abstract class SessionFactoryContextHolder {

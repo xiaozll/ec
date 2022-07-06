@@ -17,7 +17,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * 通知 后台定时任务..
- * @author eryan
+ * @author Eryan
  * @date 2015-2-4 上午09:08:18
  */
 //@QuartzJob(name = "NoticeJob", cronExp = "0 0/1 * * * ?",instanceId = "ERYAN")

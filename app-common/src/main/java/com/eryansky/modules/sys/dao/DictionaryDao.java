@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 日志DAO接口
  *
- * @author eryan
+ * @author Eryan
  * @version 2015-9-26
  */
 @MyBatisDao

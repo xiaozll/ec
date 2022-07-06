@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 机构表
  *
- * @author eryan
+ * @author Eryan
  * @date 2018-05-08
  */
 @MyBatisDao

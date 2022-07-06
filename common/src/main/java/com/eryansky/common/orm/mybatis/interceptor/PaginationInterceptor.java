@@ -26,7 +26,7 @@ import java.util.Properties;
 
 /**
  * 数据库分页插件，只拦截查询语句.
- * @author eryan
+ * @author Eryan
  * @version 2014-7-16
  */
 @Intercepts({@Signature(type = Executor.class, method = "query",

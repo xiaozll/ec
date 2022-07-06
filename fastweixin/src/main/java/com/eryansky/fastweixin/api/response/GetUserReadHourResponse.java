@@ -5,7 +5,7 @@ import com.eryansky.fastweixin.api.entity.UserReadHour;
 import java.util.List;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2016-03-15
  */
 public class GetUserReadHourResponse extends BaseResponse {

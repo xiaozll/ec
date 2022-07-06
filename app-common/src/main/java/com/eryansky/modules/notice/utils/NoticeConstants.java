@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 系统使用的静态变量.
  *
- * @author eryan
+ * @author Eryan
  * @date 2020-12-22
  */
 public class NoticeConstants extends AppConstants {

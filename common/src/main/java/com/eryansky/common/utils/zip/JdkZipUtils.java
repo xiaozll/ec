@@ -18,7 +18,7 @@ import java.util.zip.ZipOutputStream;
  * 存在问题：压缩时如果目录或文件名含有中文，压缩后会变成乱码
  * </pre>
  * 
- * @author 尔演&Eryan
+ * @author Eryan
  */
 public class JdkZipUtils {
 

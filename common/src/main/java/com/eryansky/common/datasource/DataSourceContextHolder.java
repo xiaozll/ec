@@ -8,7 +8,7 @@ package com.eryansky.common.datasource;
 import javax.sql.DataSource;
 
 /**
- * @author eryan
+ * @author Eryan
  * @date 2014-08-13
  */
 public abstract class DataSourceContextHolder {

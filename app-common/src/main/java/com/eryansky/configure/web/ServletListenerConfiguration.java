@@ -11,7 +11,7 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 /**
  * Servlet注册 配置
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2019-01-23
  */
 @Configuration

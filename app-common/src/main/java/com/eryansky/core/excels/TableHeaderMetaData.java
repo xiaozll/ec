@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * 表头对象，用于创建excel表头，支持多层表头
- * @author : eryan
+ * @author Eryan
  * @date : 2014-07-31 20:36
  */
 public class TableHeaderMetaData {

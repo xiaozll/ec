@@ -13,7 +13,7 @@ import java.util.List;
 
 /**数据行对象 Excel导出工具<br>
  * 封装了数据导出到excel中的行对象，包括行中列数据对象的操作方法等<br>
- * @author : eryan
+ * @author Eryan
  * @date : 2014-07-31 20:36
  */
 public class TableDataRow {

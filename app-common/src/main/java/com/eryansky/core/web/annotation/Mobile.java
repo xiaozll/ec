@@ -15,7 +15,7 @@ import static com.eryansky.core.web.annotation.MobileValue.MOBILE;
 
 /**
  * 移动端支持
- * @author : eryan
+ * @author Eryan
  * @date : 2015-07-20 15:06
  */
 @Target({ElementType.TYPE, ElementType.METHOD,ElementType.PACKAGE})

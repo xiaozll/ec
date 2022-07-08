@@ -12,7 +12,7 @@ import java.net.InetAddress;
 /**
  *
  * IP地址.
- * @author : eryan
+ * @author Eryan
  * @date : 2018-09-13
  */
 public class IpUtils {

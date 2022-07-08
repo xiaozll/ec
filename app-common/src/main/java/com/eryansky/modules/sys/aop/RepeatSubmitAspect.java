@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 对标记了@NoRepeatSubmit的方法进行拦截 防止重复提交
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2021-11-05
  */
 @Order(1)

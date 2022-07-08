@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 树形节点Menu模型.
  * 
- * @author : eryan
+ * @author Eryan
  * @date : 2019-4-1
  */
 @SuppressWarnings("serial")

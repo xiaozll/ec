@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author : eryan
+ * @author Eryan
  * @date : 2014-05-22 22:35
  */
 public class DB2DataSource extends DataSource {

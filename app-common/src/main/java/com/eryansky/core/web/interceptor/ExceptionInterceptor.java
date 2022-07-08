@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author : eryan
+ * @author Eryan
  * @date : 2014-05-05 12:59
  */
 public class ExceptionInterceptor implements HandlerExceptionResolver {

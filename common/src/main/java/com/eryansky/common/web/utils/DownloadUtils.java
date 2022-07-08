@@ -17,7 +17,7 @@ import java.io.*;
 
 /**
  * 文件下载工具类
- * @author : eryan
+ * @author Eryan
  * @date : 2014-05-05 22:50
  */
 public class DownloadUtils {

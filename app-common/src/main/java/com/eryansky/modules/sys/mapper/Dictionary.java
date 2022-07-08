@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * 数据字典
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2013-1-23 下午9:08:36
  */
 

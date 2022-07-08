@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * easyui可装载组合框combobox模型.
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2013-1-11 下午10:13:25
  */
 public class Combobox implements Serializable{

@@ -13,7 +13,7 @@ import static com.eryansky.core.security._enum.Logical.*;
 
 /**
  * 需要的权限
- * @author : eryan
+ * @author Eryan
  * @date : 2014-06-11 20:06
  */
 @Target({ElementType.TYPE, ElementType.METHOD,ElementType.PACKAGE})

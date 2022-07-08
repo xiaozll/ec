@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Filter注册配置
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2019-01-23
  */
 @Configuration

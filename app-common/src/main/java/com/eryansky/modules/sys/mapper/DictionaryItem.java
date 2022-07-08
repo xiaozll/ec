@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * 数据字典项
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2013-1-23 下午9:08:36
  */
 @SuppressWarnings("serial")

@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author : eryan
+ * @author Eryan
  * @date : 2014-07-31 20:36
  */
 public class LeoUtil {

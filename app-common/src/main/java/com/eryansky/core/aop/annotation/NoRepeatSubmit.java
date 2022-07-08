@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * 防止重复提交标记注解
  * 仅限作用在返回值为{@link com.eryansky.common.model.Result}的Controller方法上
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2021-11-05
  */
 @Target(ElementType.METHOD)

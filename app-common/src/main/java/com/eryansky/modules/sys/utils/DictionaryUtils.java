@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 数据字典工具类
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2014-05-17 21:22
  */
 public class DictionaryUtils {

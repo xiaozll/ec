@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * API访问频率限制切面
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2021-11-05
  */
 @Component

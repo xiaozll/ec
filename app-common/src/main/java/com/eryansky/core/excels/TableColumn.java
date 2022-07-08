@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author : eryan
+ * @author Eryan
  * @date : 2014-07-31 20:36
  */
 public class TableColumn {

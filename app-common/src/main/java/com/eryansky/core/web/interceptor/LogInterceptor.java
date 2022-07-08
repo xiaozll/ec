@@ -46,7 +46,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 日志拦截器
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2015-07-10
  */
 public class LogInterceptor implements HandlerInterceptor {

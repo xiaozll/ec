@@ -56,7 +56,7 @@ import java.util.*;
 /**
  * 用户登录/注销等前端交互入口
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2014-05-02 19:50
  */
 @Controller

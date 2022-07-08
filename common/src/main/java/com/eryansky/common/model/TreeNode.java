@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * easyui树形节点TreeNode模型.
  * 
- * @author : eryan
+ * @author Eryan
  * @date : 2013-1-11 下午10:01:30
  */
 @SuppressWarnings("serial")

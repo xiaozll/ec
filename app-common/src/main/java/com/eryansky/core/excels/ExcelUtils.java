@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @author : eryan
+ * @author Eryan
  * @date : 2014-07-31 20:36
  */
 public class ExcelUtils {

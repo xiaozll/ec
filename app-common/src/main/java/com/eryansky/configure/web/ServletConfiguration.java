@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Servlet注册 配置
  *
- * @author : eryan
+ * @author Eryan
  * @date : 2019-01-23
  */
 @Configuration

@@ -1055,7 +1055,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-        parameter.put("parentId", id);
+        parameter.put("id", id);
         parameter.put("types", types);
         return dao.findOwnerAndChildIds(parameter);
     }

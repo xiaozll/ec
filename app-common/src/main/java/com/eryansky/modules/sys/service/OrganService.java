@@ -1033,6 +1033,33 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         return findOwnerAndChildsIds(id, types);
     }
 
+
+    /**
+     * 查询本机以及下级机构IDS
+     *
+     * @param id    机构ID
+     * @return
+     */
+    public List<String> findOwnerAndChildIds(String id) {
+        return findOwnerAndChildIds(id,null);
+    }
+
+    /**
+     * 查询本机以及下级机构IDS
+     *
+     * @param id    机构ID
+     * @param types 机构类型
+     * @return
+     */
+    public List<String> findOwnerAndChildIds(String id, Collection<String> types) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("parentId", id);
+        parameter.put("types", types);
+        return dao.findOwnerAndChildIds(parameter);
+    }
+
     /**
      * 快速查找方法
      *

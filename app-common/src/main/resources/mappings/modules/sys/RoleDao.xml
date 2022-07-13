@@ -119,6 +119,7 @@
             a.status = '0'
             AND u.id = #{userId}
         </where>
+        ORDER BY a.data_scope ASC
     </select>
 
     <select id="findRoleIdsByUserId" resultType="java.lang.String">

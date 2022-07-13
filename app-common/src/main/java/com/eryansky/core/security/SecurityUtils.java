@@ -18,10 +18,7 @@ import com.eryansky.core.security._enum.DeviceType;
 import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys.mapper.*;
-import com.eryansky.modules.sys.service.PostService;
-import com.eryansky.modules.sys.service.ResourceService;
-import com.eryansky.modules.sys.service.RoleService;
-import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
@@ -55,6 +52,7 @@ public class SecurityUtils {
     public static final class Static {
         private static ResourceService resourceService = SpringContextHolder.getBean(ResourceService.class);
         private static UserService userService = SpringContextHolder.getBean(UserService.class);
+        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
         private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
         private static PostService postService = SpringContextHolder.getBean(PostService.class);
         private static ApplicationSessionContext applicationSessionContext = ApplicationSessionContext.getInstance();
@@ -264,6 +262,66 @@ public class SecurityUtils {
             }
         }
         return String.valueOf(dataScopeInteger);
+    }
+
+
+    /**
+     * 是否有某机构权限
+     * @param organId 机构ID
+     * @return
+     */
+    public static boolean isPermittedOrganDataScope(String organId) {
+        return isPermittedOrganDataScope(getCurrentUserId(),organId);
+    }
+
+    /**
+     * 是否有某机构权限
+     * @param userId 用户ID
+     * @param organId 机构ID
+     * @return
+     */
+    public static boolean isPermittedOrganDataScope(String userId,String organId) {
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(organId)){
+            return false;
+        }
+        User user = UserUtils.getUser(userId);
+        if(null == user){
+            return false;
+        }
+        List<Role> roles = Static.roleService.findRolesByUserId(userId);
+        for (Role r : roles) {
+            if (StringUtils.isBlank(r.getDataScope())) {
+                continue;
+            }
+            if (DataScope.ALL.getValue().equals(r.getDataScope())) {
+                return true;
+            }else if (DataScope.COMPANY_AND_CHILD.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.organService.findOwnerAndChildsIds(user.getCompanyId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.COMPANY.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.organService.findOwnerAndChildIds(user.getCompanyId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.OFFICE_AND_CHILD.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.organService.findOwnerAndChildIds(user.getDefaultOrganId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.OFFICE.getValue().equals(r.getDataScope())) {
+                if(organId.equals(user.getDefaultOrganId())){
+                    return true;
+                }
+            }else if (DataScope.CUSTOM.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.roleService.findRoleOrganIds(user.getCompanyId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

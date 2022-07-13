@@ -277,6 +277,30 @@
         ORDER BY a.sort ASC
     </select>
 
+
+    <select id="findOwnerAndChildIds" resultType="java.lang.String">
+        SELECT
+        a.id
+        FROM t_sys_organ a
+        WHERE
+        a.status = '0'
+        <choose>
+            <when test="parentId != null and parentId !=''">
+                AND (a.id = #{id} OR a.parent_id = #{parentId})
+            </when>
+            <otherwise>
+                AND (a.id = #{id} OR a.parent_id IS NULL OR a.parent_id = '' OR a.parent_id = '0')
+            </otherwise>
+        </choose>
+        <if test="types != null and types.size() !=0">
+            AND a.type IN
+            <foreach collection="types" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY a.sort ASC
+    </select>
+
     <select id="findChild" resultType="Organ">
         SELECT
         <include refid="organColumns"/>

@@ -315,7 +315,7 @@ public class SecurityUtils {
                     return true;
                 }
             }else if (DataScope.CUSTOM.getValue().equals(r.getDataScope())) {
-                List<String> organIds = Static.roleService.findRoleOrganIds(user.getCompanyId());
+                List<String> organIds = Static.roleService.findRoleOrganIds(r.getId());
                 if(organIds.contains(organId)){
                     return true;
                 }

@@ -109,7 +109,7 @@ public class DownloadChartServlet extends HttpServlet {
 					}
 				}
 			} else
-				out.print("Invalid type: " + type);
+				out.print("Invalid type: " + EncodeUtils.htmlEscape(EncodeUtils.xssFilter(type)));
 		} else {
 			response.addHeader("Content-Type", "text/html");
 			out.println("Usage:\n\tParameter [svg]: The DOM Element to be converted." + "\n\tParameter [type]: The destination MIME type for the elment to be transcoded.");

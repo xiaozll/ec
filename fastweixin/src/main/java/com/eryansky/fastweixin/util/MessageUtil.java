@@ -86,8 +86,8 @@ public final class MessageUtil {
 
             }
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
-            factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");  // compliant
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
             XMLEventReader reader = factory.createXMLEventReader(inputStream);
             while (reader.hasNext()) {
                 XMLEvent event = reader.nextEvent();

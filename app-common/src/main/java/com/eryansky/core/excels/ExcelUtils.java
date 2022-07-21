@@ -8,6 +8,8 @@ package com.eryansky.core.excels;
 import com.eryansky.common.utils.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import delight.rhinosandox.RhinoSandbox;
+import delight.rhinosandox.RhinoSandboxes;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -18,6 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -758,12 +761,11 @@ public class ExcelUtils {
      * @return
      */
     public static Double calculateExpression(String ex) {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("javascript");
+        RhinoSandbox sandbox = RhinoSandboxes.create();
         try {
-            Double d = (Double) engine.eval(ex);
+            Double d = (Double) sandbox.eval("source",ex);
             return d;
-        } catch (ScriptException e) {
+        } catch (Exception e) {
             mLogger.error(e.getMessage());
             return null;
         }

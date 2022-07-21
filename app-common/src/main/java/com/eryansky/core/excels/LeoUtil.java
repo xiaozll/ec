@@ -1,5 +1,7 @@
 package com.eryansky.core.excels;
 
+import delight.rhinosandox.RhinoSandbox;
+import delight.rhinosandox.RhinoSandboxes;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.slf4j.Logger;
@@ -245,11 +247,12 @@ public class LeoUtil {
 	 * @return
 	 */
 	public static Double calculateExpression(String ex) {
-		ScriptEngineManager manager = new ScriptEngineManager();
-		ScriptEngine engine = manager.getEngineByName("javascript");
+		RhinoSandbox sandbox = RhinoSandboxes.create();
 		try {
-			return (Double) engine.eval(ex);
-		} catch (ScriptException e) {
+			Double d = (Double) sandbox.eval("source",ex);
+			return d;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return null;
 		}
 	}

@@ -19,7 +19,7 @@ import java.io.Reader;
 public class CommandUtils {
 
 	public static String execute(String command) throws IOException {
-		return execute(command, "GBK");
+		return execute(command, "UTF-8");
 	}
 	
 	public static String execute(String command, String charsetName) throws IOException {

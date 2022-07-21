@@ -55,7 +55,8 @@ public class SpringUtils {
             } catch (Exception e) {
             }
 
-            return parser.parseExpression(str).getValue(context, String.class);
+            String value =  parser.parseExpression(str).getValue(context, String.class);
+            return value;
         } catch (Exception e) {
 //            logger.error(e.getMessage(),e);
         }

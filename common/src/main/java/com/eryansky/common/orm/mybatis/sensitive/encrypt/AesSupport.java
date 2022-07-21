@@ -34,7 +34,7 @@ public class AesSupport implements IEncrypt {
     /**
      * 密钥, 256位32个字节
      */
-    public static final String DEFAULT_PASSWORD = "ec";
+    public static final String DEFAULT_KEY = "ec";
 
     private String key;
     private final SensitiveTypeHandler sensitiveTypeHandler = SensitiveTypeRegisty.get(SensitiveType.DEFAUL);
@@ -54,7 +54,7 @@ public class AesSupport implements IEncrypt {
         java.security.Security.setProperty("crypto.policy", "unlimited");
     }
     public AesSupport() throws NoSuchAlgorithmException {
-        this.key = DEFAULT_PASSWORD;
+        this.key = DEFAULT_KEY;
         this.secretKeySpec = getSecretKey(key);
     }
 

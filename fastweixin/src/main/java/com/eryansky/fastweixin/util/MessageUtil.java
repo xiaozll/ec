@@ -61,9 +61,9 @@ public final class MessageUtil {
                 LOG.debug("收到的消息密文:{}", body);
 
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
-                dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                 DocumentBuilder db = dbf.newDocumentBuilder();
+
                 StringReader sr = new StringReader(body);
                 InputSource is = new InputSource(sr);
                 Document document = db.parse(is);

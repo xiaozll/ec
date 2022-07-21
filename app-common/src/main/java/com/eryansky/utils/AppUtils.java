@@ -503,38 +503,4 @@ public class AppUtils {
     }
 
 
-    public static String execCommand(String command){
-        Runtime runtime = Runtime.getRuntime();
-        String errorMSG = "";
-
-        try {
-            String[] args = new String[]{"cmd","/c",command};
-            //String[] args = new String[]{"sh","-?/c",command};
-
-            Process pro = runtime.exec(command);
-            //Process pro = runtime.exec("c://///////.exe");
-            //检查命令是否失败
-            try (InputStream in = pro.getErrorStream();
-                 InputStreamReader isr = new InputStreamReader(in);
-                 BufferedReader br = new BufferedReader(isr)){
-                String line = null;
-
-                while ( (line = br.readLine()) != null){
-                    errorMSG += line+"\n";
-                    logger.error(errorMSG);
-                }
-                if(pro.waitFor()!=0){
-                    logger.error("exit value:" + pro.exitValue());
-                }
-            } catch (InterruptedException e) {
-                logger.error(e.getMessage(),e);
-            }
-
-        } catch (IOException e) {
-            logger.error(e.getMessage(),e);
-        }
-        return errorMSG;
-
-    }
-
 }

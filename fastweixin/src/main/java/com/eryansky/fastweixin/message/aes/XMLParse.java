@@ -40,10 +40,7 @@ class XMLParse {
     public static Object[] extract(String xmltext) throws AesException {
         Object[] result = new Object[3];
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant
-            DocumentBuilder db = dbf.newDocumentBuilder();
+            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             StringReader sr = new StringReader(xmltext);
             InputSource is = new InputSource(sr);
             Document document = db.parse(is);

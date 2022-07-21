@@ -40,7 +40,9 @@ class XMLParse {
     public static Object[] extract(String xmltext) throws AesException {
         Object[] result = new Object[3];
         try {
-            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            DocumentBuilder db = dbf.newDocumentBuilder();
             StringReader sr = new StringReader(xmltext);
             InputSource is = new InputSource(sr);
             Document document = db.parse(is);

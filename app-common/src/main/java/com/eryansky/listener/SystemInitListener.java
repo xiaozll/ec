@@ -46,7 +46,6 @@ public class SystemInitListener extends DefaultSystemInitListener{
 		super.contextInitialized(sce);
 		AppUtils.init(sce.getServletContext());
 		logger.info("当前启动系统：{}-V{}",AppConstants.getAppFullName(),AppConstants.getAppVersion());
-		logger.info("默认访问地址：{}",AppConstants.getAppURL());
 		clearTempDir();
 
 		//WebService发布
@@ -60,6 +59,8 @@ public class SystemInitListener extends DefaultSystemInitListener{
 			}
 			logger.info("WebService发布成功，发布地址：{}",webServiceUrl);
 		}
+
+		logger.info("默认访问地址：{}",AppConstants.getAppURL());
 	}
 
 	/**

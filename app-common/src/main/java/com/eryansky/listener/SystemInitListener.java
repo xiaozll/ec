@@ -45,6 +45,7 @@ public class SystemInitListener extends DefaultSystemInitListener{
 	public void contextInitialized(ServletContextEvent sce) {
 		super.contextInitialized(sce);
 		AppUtils.init(sce.getServletContext());
+		logger.info("当前启动系统：{}-V{}",AppConstants.getAppFullName(),AppConstants.getAppVersion());
 		clearTempDir();
 
 		//WebService发布

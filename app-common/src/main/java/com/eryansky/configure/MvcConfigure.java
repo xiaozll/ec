@@ -139,11 +139,15 @@ public class MvcConfigure implements WebMvcConfigurer {
       mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
 
       //设置中文编码格式
-      List<MediaType> list = new ArrayList<>();
-      list.add(MediaType.APPLICATION_JSON);
-      list.add(MediaType.TEXT_PLAIN);
-      list.add(MediaType.TEXT_HTML);
-      mappingJackson2HttpMessageConverter.setSupportedMediaTypes(list);
+      List<MediaType> mediaTypes = Arrays.asList(
+              MediaType.APPLICATION_JSON,
+              MediaType.TEXT_PLAIN,
+              MediaType.TEXT_HTML,
+              MediaType.TEXT_XML,
+              MediaType.APPLICATION_OCTET_STREAM,
+              MediaType.valueOf("application/vnd.spring-boot.actuator.v3+json"));
+
+      mappingJackson2HttpMessageConverter.setSupportedMediaTypes(mediaTypes);
       return mappingJackson2HttpMessageConverter;
    }
 

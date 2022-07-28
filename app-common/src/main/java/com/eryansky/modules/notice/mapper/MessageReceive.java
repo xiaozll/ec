@@ -42,6 +42,8 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
      */
     private Date readTime;
 
+    private Message message;
+
     public MessageReceive() {
         this.isSend = YesOrNo.YES.getValue();
     }
@@ -99,9 +101,16 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
 
     //    @JsonIgnore
     public Message getMessage() {
+        if(null != message){
+            return message;
+        }
         return MessageUtils.get(messageId);
     }
 
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 
     public String getOrganName() {
         return UserUtils.getDefaultOrganName(userId);

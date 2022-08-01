@@ -95,7 +95,7 @@
                     <div class="controls">
                         <input type="text" id="loginName" name="loginName" class="required" style="width: 210px;height:36px;padding: 5px;"
                                value="${fns:urlDecode(loginNameOrName)}" placeholder="用户名"/>
-                        <%--<i class="-user" title="用户名"></i>--%>
+                        <%--<i class="icon-user" title="用户名"></i>--%>
                         <i class="icon-search" title="选择" onclick="chooseUser()"></i>
                     </div>
                 </div>

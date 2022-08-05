@@ -178,6 +178,22 @@
         </div>
     </div>
 
+    <div class="control-group">
+        <label class="control-label">内部代理：</label>
+        <div class="controls">
+            <label><input name="system.security.proxy.enable" type="radio" value="true"/>启用</label>
+            <label><input name="system.security.proxy.enable" type="radio" value="false"/>禁用</label>
+            <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;内部代理/a/sys/proxy/*，全局配置</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">内部代理URL白名单：</label>
+        <div class="controls">
+            <textarea name="system.security.proxy.whitelist" class="input-xxlarge"></textarea>
+            <span class="help-inline">每行一个或多个之间以";"分割，支持"*"通配符</span>
+        </div>
+    </div>
+
 
     <div class="form-actions">
         <e:hasPermission name="sys:config:edit">

@@ -1,4 +1,13 @@
-﻿20220527
+﻿20220805
+V4.2.20220805
+1、修复部分可能造成的SSRF漏洞。
+Proxy授权访问以及关闭StaticContentServlet
+#启用内部代理
+system.security.proxy.enable=false
+#内部代理URL白名单 每行一个或多个之间以";"分割，支持"*"通配符
+system.security.proxy.whitelist=*
+
+20220527
 V4.2.50220522.04
 1、升级Spring boot 2.6.8
 2、quartz支持指定实例执行

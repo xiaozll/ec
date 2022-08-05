@@ -35,16 +35,16 @@ public class ServletConfiguration {
      * 本地静态内容展示与下载的Servlet
      * @return
      */
-    @Bean
-    public ServletRegistrationBean<StaticContentServlet> getStaticContentServlet() {
-        StaticContentServlet servlet = new StaticContentServlet();
-        ServletRegistrationBean<StaticContentServlet> bean = new ServletRegistrationBean<>(servlet);
-        bean.addUrlMappings("/servlet/StaticContentServlet");
-        bean.addInitParameter("cacheChannel","cacheChannel");
-        bean.addInitParameter("cacheKey","contentInfoCache");
-        bean.addInitParameter("cacheFileData","true");
-        return bean;
-    }
+//    @Bean
+//    public ServletRegistrationBean<StaticContentServlet> getStaticContentServlet() {
+//        StaticContentServlet servlet = new StaticContentServlet();
+//        ServletRegistrationBean<StaticContentServlet> bean = new ServletRegistrationBean<>(servlet);
+//        bean.addUrlMappings("/servlet/StaticContentServlet");
+//        bean.addInitParameter("cacheChannel","cacheChannel");
+//        bean.addInitParameter("cacheKey","contentInfoCache");
+//        bean.addInitParameter("cacheFileData","true");
+//        return bean;
+//    }
 
 
     /**

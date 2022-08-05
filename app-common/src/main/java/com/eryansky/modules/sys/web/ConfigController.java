@@ -145,7 +145,7 @@ public class ConfigController extends SimpleController {
             "system.security.limit.ip.whitelist",
             "system.security.limit.ip.blacklist",
             "system.security.proxy.enable",
-            "system.security.proxy.blacklist"
+            "system.security.proxy.whitelist"
     };
 
     /**

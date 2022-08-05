@@ -63,12 +63,12 @@ public class IpLimitInterceptor implements HandlerInterceptor {
         }
         //白名单 缓存
         Collection<String> whiteList = CacheUtils.keys(LOCK_IP_LIMIT_WHITELIST_REGION);
-        if (null != whiteList && null != whiteList.stream().filter(v->com.eryansky.j2cache.util.IpUtils.checkIPMatching(v,ip)).findAny().orElse(null)) {
+        if (null != whiteList && null != whiteList.stream().filter(v-> "*".equals(v) || com.eryansky.j2cache.util.IpUtils.checkIPMatching(v,ip)).findAny().orElse(null)) {
             return false;
         }
         //白名单 配置文件
         Collection<String> configWhiteList = AppConstants.getLimitIpWhiteList();
-        if (null != configWhiteList && null != configWhiteList.stream().filter(v->com.eryansky.j2cache.util.IpUtils.checkIPMatching(v,ip)).findAny().orElse(null)) {
+        if (null != configWhiteList && null != configWhiteList.stream().filter(v-> "*".equals(v) || com.eryansky.j2cache.util.IpUtils.checkIPMatching(v,ip)).findAny().orElse(null)) {
             return false;
         }
         if(AppConstants.isLimitIpWhiteEnable()){

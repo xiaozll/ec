@@ -32,7 +32,7 @@ public class ServletConfiguration {
     }
 
     /**
-     * 本地静态内容展示与下载的Servlet
+     * 本地静态内容展示与下载的Servlet 可能存在安全问题 不推荐使用
      * @return
      */
 //    @Bean

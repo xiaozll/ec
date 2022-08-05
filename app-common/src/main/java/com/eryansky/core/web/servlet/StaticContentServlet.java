@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
 /**
- * 本地静态内容展示与下载的Servlet.
+ * 本地静态内容展示与下载的Servlet. 可能存在安全问题 不推荐使用
  * <p/>
  * 使用J2Cache缓存静态内容基本信息（可支持数据信息）, 演示文件高效读取,客户端缓存控制及Gzip压缩传输.
  * <p/>
@@ -35,6 +35,7 @@ import java.io.*;
  *
  * @author Eryan
  */
+@Deprecated
 public class StaticContentServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

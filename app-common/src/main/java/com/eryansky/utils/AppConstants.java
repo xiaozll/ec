@@ -305,6 +305,33 @@ public class AppConstants extends SysConstants {
 
 
     /**
+     * 启用内部代理
+     *
+     * @return
+     */
+    public static Boolean isProxyEnable() {
+        String code = "system.security.proxy.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+    /**
+     * 内部代理URL白名单 每行一个或多个之间以";"分割，支持"*"通配符
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getProxyWhiteList() {
+        String code = "system.security.proxy.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
      * 应用文件 磁盘绝对路径
      *
      * @return

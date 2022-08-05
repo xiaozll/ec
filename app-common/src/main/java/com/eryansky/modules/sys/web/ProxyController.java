@@ -11,7 +11,6 @@ import com.eryansky.common.utils.http.HttpPoolCompoents;
 import com.eryansky.common.web.filter.CustomHttpServletRequestWrapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Maps;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -39,10 +39,29 @@ import java.util.Map;
  * @author Eryan
  * @date 2015-12-14
  */
-@RequiresUser(required = false)
 @Controller
 @RequestMapping(value = "${adminPath}/sys/proxy")
 public class ProxyController extends SimpleController {
+
+
+    /**
+     * 判断URL是否允许代理
+     *
+     * @param url
+     */
+    private Boolean isAuthProxyUrl(String url) {
+        boolean proxyEnable = AppConstants.isProxyEnable();
+        if(!proxyEnable){
+            logger.warn("系统未启用Proxy功能。");
+            return false;
+        }
+        //白名单
+        Collection<String> whiteList = AppConstants.getProxyWhiteList();
+        if (null != whiteList && null != whiteList.stream().filter(v->"*".equals(v) || StringUtils.simpleWildcardMatch(v,url)).findAny().orElse(null)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 代理访问
@@ -53,9 +72,20 @@ public class ProxyController extends SimpleController {
      */
     @RequestMapping(value = {""})
     public void getHttpProxy(NativeWebRequest nativeWebRequest, String contentUrl) throws Exception {
-
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
+        //检查URL是否允许代理
+        if(!isAuthProxyUrl(contentUrl)){
+            logger.warn("未授权proxy访问权限：{}",contentUrl);
+            String errorMsg = "未授权访问权限!";
+            if (WebUtils.isAjaxRequest(request)) {
+                WebUtils.renderJson(response, Result.errorResult().setObj(errorMsg));
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, errorMsg);
+            }
+            return;
+        }
+
         HttpPoolCompoents httpPoolCompoents = HttpPoolCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
         String param = AppUtils.joinParasWithEncodedValue(WebUtils.getParametersStartingWith(request, null));//请求参数
         String url = contentUrl + "?" + param;
@@ -149,6 +179,18 @@ public class ProxyController extends SimpleController {
         String url = contentUrl + "?" + param;
         logger.debug("proxy url：{}", url);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
+        //检查URL是否允许代理
+        if(!isAuthProxyUrl(contentUrl)){
+            logger.warn("未授权proxy访问权限：{}",contentUrl);
+            String errorMsg = "未授权访问权限!";
+            if (WebUtils.isAjaxRequest(request)) {
+                WebUtils.renderJson(response, Result.errorResult().setObj(errorMsg));
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, errorMsg);
+            }
+            return null;
+        }
+
         HttpPoolCompoents httpCompoents = HttpPoolCompoents.getInstance();//获取当前实例 可自动维护Cookie信息
         Map<String,String> headers = Maps.newHashMap();
         Enumeration<String> enumeration = request.getHeaderNames();

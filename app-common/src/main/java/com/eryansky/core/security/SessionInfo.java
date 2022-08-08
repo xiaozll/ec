@@ -76,7 +76,7 @@ public class SessionInfo implements Serializable {
     /**
      * 设备类型 {@link com.eryansky.core.security._enum.DeviceType}
      */
-    private String sysTemDeviceType;
+    private String systemDeviceType;
     /**
      * 设备类型 {@link DeviceType}
      */
@@ -370,12 +370,12 @@ public class SessionInfo implements Serializable {
         return this;
     }
 
-    public String getSysTemDeviceType() {
-        return sysTemDeviceType;
+    public String getSystemDeviceType() {
+        return systemDeviceType;
     }
 
-    public SessionInfo setSysTemDeviceType(String sysTemDeviceType) {
-        this.sysTemDeviceType = sysTemDeviceType;
+    public SessionInfo setSystemDeviceType(String systemDeviceType) {
+        this.systemDeviceType = systemDeviceType;
         return this;
     }
 

@@ -81,7 +81,7 @@ $(function () {
             }
         }, {
             title: '设备类型',
-            field: 'sysTemDeviceType',
+            field: 'systemDeviceType',
             width: 120,
             hidden: true
         }, {

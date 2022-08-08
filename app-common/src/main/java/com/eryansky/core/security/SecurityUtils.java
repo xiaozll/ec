@@ -465,11 +465,11 @@ public class SecurityUtils {
         boolean likeIOS = AppUtils.likeIOS(userAgent);
         boolean likeAndroid = AppUtils.likeAndroid(userAgent);
         if (likeIOS) {
-            sessionInfo.setSysTemDeviceType(DeviceType.iPhone.getDescription());
+            sessionInfo.setSystemDeviceType(DeviceType.iPhone.getDescription());
         } else if (likeAndroid) {
-            sessionInfo.setSysTemDeviceType(DeviceType.Android.getDescription());
+            sessionInfo.setSystemDeviceType(DeviceType.Android.getDescription());
         } else {
-            sessionInfo.setSysTemDeviceType(DeviceType.PC.getDescription());
+            sessionInfo.setSystemDeviceType(DeviceType.PC.getDescription());
         }
 
         initPermission(sessionInfo);
@@ -495,7 +495,7 @@ public class SecurityUtils {
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setId(sessionId);
 
-        sessionInfo.setSysTemDeviceType(DeviceType.PC.getDescription());
+        sessionInfo.setSystemDeviceType(DeviceType.PC.getDescription());
 
         initPermission(sessionInfo);
 

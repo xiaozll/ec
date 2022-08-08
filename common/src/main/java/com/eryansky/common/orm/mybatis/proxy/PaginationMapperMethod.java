@@ -50,8 +50,8 @@ public class PaginationMapperMethod {
 
     public PaginationMapperMethod(Class<?> declaringInterface, Method method,
                                   SqlSession sqlSession) {
-        paramNames = new ArrayList<String>();
-        paramPositions = new ArrayList<Integer>();
+        paramNames = new ArrayList<>();
+        paramPositions = new ArrayList<>();
         this.sqlSession = sqlSession;
         this.method = method;
         this.config = sqlSession.getConfiguration();

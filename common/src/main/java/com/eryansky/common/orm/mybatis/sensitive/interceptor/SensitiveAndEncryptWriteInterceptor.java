@@ -139,7 +139,7 @@ public class SensitiveAndEncryptWriteInterceptor implements Interceptor {
 
         try {
             Map<String, Object> map = JsonUtils.parseToObjectMap(newValue.toString());
-            SensitiveJSONFieldKey[] keys = sensitiveJSONField.sensitivelist();
+            SensitiveJSONFieldKey[] keys = sensitiveJSONField.sensitiveList();
             for (SensitiveJSONFieldKey jsonFieldKey : keys) {
                 String key = jsonFieldKey.key();
                 SensitiveType sensitiveType = jsonFieldKey.type();

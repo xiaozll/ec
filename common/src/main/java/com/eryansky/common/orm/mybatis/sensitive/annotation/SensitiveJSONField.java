@@ -18,5 +18,5 @@ public @interface SensitiveJSONField {
      *
      * @return 返回结果
      */
-    SensitiveJSONFieldKey[] sensitivelist();
+    SensitiveJSONFieldKey[] sensitiveList();
 }

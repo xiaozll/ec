@@ -28,7 +28,7 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
     private Class<T> type;
 
     static {
-        jsonMapper = new JsonMapper();
+        jsonMapper = JsonMapper.getInstance();
     }
 
     public JsonTypeHandler(Class<T> type) {

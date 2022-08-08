@@ -89,8 +89,7 @@ public class RemoteContentServlet extends HttpServlet {
     private void fetchContentByApacheHttpClient(HttpServletResponse response, String contentUrl) throws IOException {
         // 获取内容
         HttpGet httpGet = new HttpGet(contentUrl);
-        CloseableHttpResponse remoteResponse = httpClient.execute(httpGet);
-        try {
+        try (CloseableHttpResponse remoteResponse = httpClient.execute(httpGet)) {
             // 判断返回值
             int statusCode = remoteResponse.getStatusLine().getStatusCode();
             if (statusCode >= 400) {
@@ -111,8 +110,6 @@ public class RemoteContentServlet extends HttpServlet {
             // 基于byte数组读取InputStream并直接写入OutputStream, 数组默认大小为4k.
             IOUtils.copy(input, output);
             output.flush();
-        } finally {
-            remoteResponse.close();
         }
     }
 

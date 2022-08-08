@@ -97,16 +97,10 @@ public class DownloadChartServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			} else if (ext.equals("svg")) {
-				OutputStreamWriter writer= null;
-				try {
-					writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+				try (OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
 					writer.append(svg);
 				} catch (IOException e) {
 					e.printStackTrace();
-				} finally {
-					if(null != writer){
-						writer.close();
-					}
 				}
 			} else
 				out.print("Invalid type: " + EncodeUtils.xssFilter(type));

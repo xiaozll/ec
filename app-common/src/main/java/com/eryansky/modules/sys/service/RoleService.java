@@ -13,7 +13,6 @@ import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.modules.sys._enum.RoleType;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.utils.CacheConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -356,11 +355,11 @@ public class RoleService extends CrudService<RoleDao, Role> {
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE}, allEntries = true)
-    public int deleteRoleResourcesByResourceIdAndRoleId(String roleId, String resourceId) {
+    public int deleteRoleResourceByResourceIdAndRoleId(String roleId, String resourceId) {
         Parameter parameter = Parameter.newParameter();
         parameter.put("roleId", roleId);
         parameter.put("resourceId", resourceId);
-        return dao.deleteRoleResourcesByResourceIdAndRoleId(parameter);
+        return dao.deleteRoleResourceByResourceIdAndRoleId(parameter);
     }
 
 }

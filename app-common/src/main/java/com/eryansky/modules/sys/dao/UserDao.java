@@ -94,6 +94,7 @@ public interface UserDao extends CrudDao<User> {
 
     List<User> findUsersByPost(Parameter parameter);
 
+
     List<String> findUserIdsByPost(Parameter parameter);
 
 
@@ -167,11 +168,25 @@ public interface UserDao extends CrudDao<User> {
 
 
     /**
+     * 根据资源ID查找
+     * @param parameter resourceId:资源ID
+     * @return
+     */
+    List<User> findUsersByResourceId(Parameter parameter);
+
+    /**
      * 删除用户资源关联信息
      *
      * @param parameter id:用户ID
      */
     int deleteUserResourcesByUserId(Parameter parameter);
+
+    /**
+     * 删除用户资源关联信息
+     *
+     * @param parameter userId:用户ID resourceId:资源ID
+     */
+    int deleteUserResourceByResourceIdAndUserId(Parameter parameter);
 
     /**
      * 插入用户资源关联信息

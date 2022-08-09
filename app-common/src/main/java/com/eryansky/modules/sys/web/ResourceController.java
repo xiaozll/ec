@@ -13,37 +13,31 @@ import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
-import com.eryansky.common.utils.io.FileUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
-import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.ResourceType;
-import com.eryansky.modules.sys.mapper.Area;
 import com.eryansky.modules.sys.mapper.Resource;
 import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.RoleService;
+import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,6 +55,8 @@ public class ResourceController extends SimpleController {
     private ResourceService resourceService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute("model")
     public Resource get(@RequestParam(required = false) String id) {
@@ -326,7 +322,58 @@ public class ResourceController extends SimpleController {
             return Result.warnResult().setMsg("操作失败，参数为空！");
         }
         for (String id : ids) {
-            roleService.deleteRoleResourcesByResourceIdAndRoleId(id,resourceId);
+            roleService.deleteRoleResourceByResourceIdAndRoleId(id,resourceId);
+        }
+        return Result.successResult();
+    }
+
+
+    /**
+     * 资源关联用户
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"user/{resourceId}"})
+    public String user(@PathVariable String resourceId,Model uiModel,HttpServletRequest request,HttpServletResponse response) {
+        uiModel.addAttribute("resourceId",resourceId);
+        return "modules/sys/resource-user";
+    }
+
+
+    /**
+     * 资源关联用户
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"resourceUserDatagrid/{resourceId}"})
+    @ResponseBody
+    public Datagrid resourceUserDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
+        page = userService.findUsersByResourceId(page,resourceId);
+        return new Datagrid(page.getTotalCount(),page.getResult());
+    }
+
+
+    /**
+     * 资源关联用户
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = {"deleteUsers/{resourceId}"})
+    @ResponseBody
+    public Result deleteUsers(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
+        if (Collections3.isEmpty(ids)) {
+            logger.warn("参数[ids]为空.");
+            return Result.warnResult().setMsg("操作失败，参数为空！");
+        }
+        for (String id : ids) {
+            userService.deleteUserResourceByResourceIdAndUserId(id,resourceId);
         }
         return Result.successResult();
     }

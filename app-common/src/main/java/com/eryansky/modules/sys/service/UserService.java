@@ -22,6 +22,7 @@ import com.eryansky.modules.sys._enum.SexType;
 import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.OrganExtend;
+import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
@@ -1080,6 +1081,21 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
+     * 根据角色查询（分页）
+     *
+     * @param page
+     * @param roleId 角色ID
+     * @return
+     */
+    public Page<User> findUsersByRoleId(Page<User> page,String roleId) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("roleId", roleId);
+        return page.setResult(dao.findUsersByRoleId(parameter));
+    }
+
+    /**
      * 根据角色查询
      *
      * @param roleId 角色ID
@@ -1734,6 +1750,33 @@ public class UserService extends CrudService<UserDao, User> {
         }
     }
 
+    /**
+     * 查找资源关联用户
+     *
+     * @param resourceId 资源ID
+     * @return
+     */
+    public List<User> findUsersByResourceId(String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("resourceId", resourceId);
+        return dao.findUsersByResourceId(parameter);
+    }
+
+    /**
+     * 查找资源关联用户
+     *
+     * @param resourceId 资源ID
+     * @return
+     */
+    public Page<User> findUsersByResourceId(Page<User> page, String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("resourceId", resourceId);
+        return page.setResult(dao.findUsersByResourceId(parameter));
+    }
+
 
     /**
      * 保存用户资源关联信息
@@ -1751,6 +1794,37 @@ public class UserService extends CrudService<UserDao, User> {
             dao.insertUserResources(parameter);
         }
     }
+
+    /**
+     * 删除用户资源关联关系
+     *
+     * @param userId  用户ID
+     */
+    public int deleteUserResourcesByUserId(String userId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", userId);
+        return dao.deleteUserResourcesByUserId(parameter);
+    }
+
+    /**
+     * 删除用户资源关联关系
+     *
+     * @param userId  用户ID
+     * @param resourceId 资源ID
+     */
+    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
+            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.ORGAN_USER_TREE_1_CACHE,
+            CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+    public int deleteUserResourceByResourceIdAndUserId(String userId, String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("userId", userId);
+        parameter.put("resourceId", resourceId);
+        return dao.deleteUserResourceByResourceIdAndUserId(parameter);
+    }
+
 
     /**
      * 自定义SQL查询

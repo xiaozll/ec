@@ -118,5 +118,5 @@ public interface RoleDao extends CrudDao<Role> {
      *
      * @param parameter roleId:角色ID resourceId:资源ID
      */
-    int deleteRoleResourcesByResourceIdAndRoleId(Parameter parameter);
+    int deleteRoleResourceByResourceIdAndRoleId(Parameter parameter);
 }

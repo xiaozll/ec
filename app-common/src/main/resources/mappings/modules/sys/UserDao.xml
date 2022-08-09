@@ -1102,5 +1102,21 @@
             SELECT #{id}, #{item} FROM dual
         </foreach>
     </insert>
+
+
+    <select id="findUsersByResourceId" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            a.status = #{status}
+            AND  a.id IN ( SELECT user_id FROM t_sys_user_resource WHERE resource_id = #{resourceId})
+        </where>
+    </select>
+
+
+    <delete id="deleteUserResourceByResourceIdAndUserId">
+        DELETE FROM t_sys_user_resource WHERE resource_id = #{resourceId} AND user_id = #{userId}
+    </delete>
     <!--用户资源-->
 </mapper>

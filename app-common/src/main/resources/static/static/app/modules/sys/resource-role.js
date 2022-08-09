@@ -1,8 +1,8 @@
 var modelId;
-var $role_datagrid;
+var $resource_role_datagrid;
 $(function () {
     //数据列表
-    $role_datagrid = $('#role_datagrid').datagrid({
+    $resource_role_datagrid = $('#resource_role_datagrid').datagrid({
         url: ctxAdmin + '/sys/resource/resourceRoleDatagrid/'+modelId,
         fit: true,
         pagination: true,//底部分页
@@ -55,7 +55,7 @@ $(function () {
 
 //删除
 function deleteRoles() {
-    var rows = $role_datagrid.datagrid('getSelections');
+    var rows = $resource_role_datagrid.datagrid('getSelections');
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要删除选中的所有行？', function (r) {
             if (r) {
@@ -71,7 +71,7 @@ function deleteRoles() {
                     dataType: 'json',
                     success: function (data) {
                         if (data.code === 1) {
-                            $role_datagrid.datagrid('load');	// reload the user data
+                            $resource_role_datagrid.datagrid('load');	// reload the user data
                             eu.showMsg(data.msg);//操作结果提示
                         } else {
                             eu.showAlertMsg(data.msg, 'error');

@@ -289,7 +289,7 @@
     </insert>
 
 
-    <delete id="deleteRoleResourcesByResourceIdAndRoleId">
+    <delete id="deleteRoleResourceByResourceIdAndRoleId">
         DELETE FROM t_sys_role_resource WHERE resource_id = #{resourceId} AND role_id = #{roleId}
     </delete>
     <!--角色资源-->

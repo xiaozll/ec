@@ -11,6 +11,7 @@
         <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
         <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
         <div onclick="resourceRole();" data-options="iconCls:'eu-icon-lock'">角色</div>
+        <div onclick="resourceUser();" data-options="iconCls:'eu-icon-user'">用户</div>
     </div>
 
     <%-- 中间部分 列表 --%>

@@ -70,10 +70,10 @@ public abstract class SimpleController{
      * @param pageName 页面名称(不加后缀)
      * @return 指定JSP页面
      */
-    @RequestMapping("/{folder}/{pageName}")
-    public String redirectJsp(@PathVariable String folder, @PathVariable String pageName) {
-        return "/" + folder + "/" + pageName;
-    }
+//    @RequestMapping("/{folder}/{pageName}")
+//    public String redirectJsp(@PathVariable String folder, @PathVariable String pageName) {
+//        return "/" + folder + "/" + pageName;
+//    }
 
     /**
      * 用户跳转JSP页面
@@ -86,21 +86,21 @@ public abstract class SimpleController{
      * @param response
      * @throws Exception
      */
-    @RequestMapping("redirect")
-    public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (StringUtils.isEmpty(prefix)) {
-            prefix = "/WEB-INF/views/";
-        }
-        if (StringUtils.isBlank(toPage)) {
-            logger.warn("重定向页面为空!");
-            response.sendError(404);
-        } else {
-            if (this.logger.isDebugEnabled()) {
-                this.logger.debug("重定向到页面:{}" , prefix + toPage);
-            }
-            request.getRequestDispatcher(prefix + toPage).forward(request, response);
-        }
-    }
+//    @RequestMapping("redirect")
+//    public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+//        if (StringUtils.isEmpty(prefix)) {
+//            prefix = "/WEB-INF/views/";
+//        }
+//        if (StringUtils.isBlank(toPage)) {
+//            logger.warn("重定向页面为空!");
+//            response.sendError(404);
+//        } else {
+//            if (this.logger.isDebugEnabled()) {
+//                this.logger.debug("重定向到页面:{}" , prefix + toPage);
+//            }
+//            request.getRequestDispatcher(prefix + toPage).forward(request, response);
+//        }
+//    }
 
 
     /**

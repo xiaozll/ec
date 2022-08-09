@@ -10,6 +10,7 @@
         <div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
         <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
         <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
+        <div onclick="resourceRole();" data-options="iconCls:'eu-icon-lock'">角色</div>
     </div>
 
     <%-- 中间部分 列表 --%>

@@ -108,6 +108,16 @@
         </where>
     </select>
 
+    <select id="findRolesByResourceId" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM t_sys_role a
+        <where>
+            a.status = #{status}
+            AND  a.id IN ( SELECT role_id FROM t_sys_role_resource WHERE resource_id = #{resourceId})
+        </where>
+    </select>
+
 
     <select id="findRolesByUserId" resultType="Role">
         SELECT
@@ -277,6 +287,11 @@
             SELECT #{id}, #{item} FROM dual
         </foreach>
     </insert>
+
+
+    <delete id="deleteRoleResourcesByResourceIdAndRoleId">
+        DELETE FROM t_sys_role_resource WHERE resource_id = #{resourceId} AND role_id = #{roleId}
+    </delete>
     <!--角色资源-->
 
 </mapper>

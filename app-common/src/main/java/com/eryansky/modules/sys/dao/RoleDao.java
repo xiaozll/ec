@@ -30,6 +30,8 @@ public interface RoleDao extends CrudDao<Role> {
 
     List<Role> findRolesByOrganId(Parameter parameter);
 
+    List<Role> findRolesByResourceId(Parameter parameter);
+
     List<Role> findRolesByUserId(Parameter parameter);
 
     List<String> findRoleIdsByUserId(Parameter parameter);
@@ -103,6 +105,7 @@ public interface RoleDao extends CrudDao<Role> {
      */
     int deleteRoleResourcesByRoleId(Parameter parameter);
 
+
     /**
      * 插入角色资源关联信息
      *
@@ -110,5 +113,10 @@ public interface RoleDao extends CrudDao<Role> {
      */
     int insertRoleResources(Parameter parameter);
 
-
+    /**
+     * 删除角色资源关联信息
+     *
+     * @param parameter roleId:角色ID resourceId:资源ID
+     */
+    int deleteRoleResourcesByResourceIdAndRoleId(Parameter parameter);
 }

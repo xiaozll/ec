@@ -301,7 +301,7 @@ public class ResourceController extends SimpleController {
     @PostMapping(value = {"resourceRoleDatagrid/{resourceId}"})
     @ResponseBody
     public Datagrid resourceRoleDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
-        Page<Role> page = new Page<>(SpringMVCHolder.getRequest());
+        Page<Role> page = new Page<>(request);
         page = roleService.findRolesByReourceId(page,resourceId);
         return new Datagrid(page.getTotalCount(),page.getResult());
     }
@@ -352,7 +352,7 @@ public class ResourceController extends SimpleController {
     @PostMapping(value = {"resourceUserDatagrid/{resourceId}"})
     @ResponseBody
     public Datagrid resourceUserDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
-        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
+        Page<User> page = new Page<>(request);
         page = userService.findUsersByResourceId(page,resourceId);
         return new Datagrid(page.getTotalCount(),page.getResult());
     }

@@ -284,7 +284,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"role/{resourceId}"})
+    @GetMapping(value = {"role/{resourceId}"})
     public String role(@PathVariable String resourceId,Model uiModel,HttpServletRequest request,HttpServletResponse response) {
         uiModel.addAttribute("resourceId",resourceId);
         return "modules/sys/resource-role";
@@ -298,7 +298,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"resourceRoleDatagrid/{resourceId}"})
+    @PostMapping(value = {"resourceRoleDatagrid/{resourceId}"})
     @ResponseBody
     public Datagrid resourceRoleDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
         Page<Role> page = new Page<>(SpringMVCHolder.getRequest());
@@ -314,7 +314,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"deleteRoles/{resourceId}"})
+    @PostMapping(value = {"deleteRoles/{resourceId}"})
     @ResponseBody
     public Result deleteRoles(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
         if (Collections3.isEmpty(ids)) {
@@ -335,7 +335,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"user/{resourceId}"})
+    @GetMapping(value = {"user/{resourceId}"})
     public String user(@PathVariable String resourceId,Model uiModel,HttpServletRequest request,HttpServletResponse response) {
         uiModel.addAttribute("resourceId",resourceId);
         return "modules/sys/resource-user";
@@ -349,7 +349,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"resourceUserDatagrid/{resourceId}"})
+    @PostMapping(value = {"resourceUserDatagrid/{resourceId}"})
     @ResponseBody
     public Datagrid resourceUserDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
         Page<User> page = new Page<>(SpringMVCHolder.getRequest());
@@ -365,7 +365,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"deleteUsers/{resourceId}"})
+    @PostMapping(value = {"deleteUsers/{resourceId}"})
     @ResponseBody
     public Result deleteUsers(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
         if (Collections3.isEmpty(ids)) {

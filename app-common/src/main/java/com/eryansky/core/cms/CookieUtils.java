@@ -37,6 +37,8 @@ public class CookieUtils {
 	 */
 	public static void setCookie(HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, null);
+		cookie.setSecure(true);
+		cookie.setHttpOnly(true); //HttpOnly flag
         if(StringUtils.isNotBlank(SpringContextHolder.getApplicationContext().getApplicationName())){
             cookie.setPath(SpringContextHolder.getApplicationContext().getApplicationName());
         }else{

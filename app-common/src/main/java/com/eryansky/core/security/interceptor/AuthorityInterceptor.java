@@ -274,7 +274,7 @@ public class AuthorityInterceptor implements AsyncHandlerInterceptor {
                         WebUtils.renderJson(response, new Result().setCode(401).setMsg("未授权或会话信息已失效"));
                     }else{
                         //返回校验不通过页面
-                        response.sendRedirect(redirectURL);
+                        response.sendRedirect(request.getContextPath()+redirectURL);
                     }
 
                 }

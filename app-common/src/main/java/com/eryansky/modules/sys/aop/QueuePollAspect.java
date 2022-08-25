@@ -1,7 +1,6 @@
 package com.eryansky.modules.sys.aop;
 
 import com.eryansky.common.utils.Identities;
-import com.eryansky.core.aop.annotation.LimitApi;
 import com.eryansky.core.aop.annotation.QueuePoll;
 import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.utils.CacheUtils;

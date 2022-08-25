@@ -1,8 +1,13 @@
 package com.eryansky.core.aop.annotation;
 
+import java.lang.annotation.*;
+
 /**
  * 排队(串行执行)
  */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface QueuePoll {
     /**
      * 缓存key

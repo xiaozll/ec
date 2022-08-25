@@ -442,7 +442,11 @@ public class SecurityUtils {
         sessionInfo.setLatitude(StringUtils.isBlank(latitude_s) ? null : BigDecimal.valueOf(Double.valueOf(latitude_s)));
         sessionInfo.setAccuracy(StringUtils.isBlank(accuracy_s) ? null : BigDecimal.valueOf(Double.valueOf(accuracy_s)));
         String appVersion_s = WebUtils.getParameter(request, "appVersion");
+        String deviceCode_s = WebUtils.getParameter(request, "deviceCode");
+        String platform_s = WebUtils.getParameter(request, "platform");
         sessionInfo.setAppVersion(appVersion_s);
+        sessionInfo.setDeviceCode(deviceCode_s);
+        sessionInfo.setDeviceType(platform_s);
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword()));
         sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword(), 7 * 24 * 60 * 60 * 1000L));

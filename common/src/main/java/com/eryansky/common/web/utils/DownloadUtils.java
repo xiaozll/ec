@@ -86,24 +86,16 @@ public class DownloadUtils {
     public static void download(HttpServletRequest request, HttpServletResponse response, InputStream inputStream, String displayName) throws IOException {
         response.reset();
         WebUtils.setNoCacheHeader(response);
-
         response.setContentType("application/x-download");
         response.setContentLength(inputStream.available());
-
 //        String displayFilename = displayName.substring(displayName.lastIndexOf("_") + 1);
 //        displayFilename = displayFilename.replace(" ", "_");
-        WebUtils.setDownloadableHeader(request,response,displayName);
-        BufferedInputStream is = null;
-        OutputStream os = null;
-        try {
-
-            os = response.getOutputStream();
-            is = new BufferedInputStream(inputStream);
+        WebUtils.setDownloadableHeader(request, response, displayName);
+        try (OutputStream os = response.getOutputStream();
+             BufferedInputStream is = new BufferedInputStream(inputStream)) {
             IOUtils.copy(is, os);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-        } finally {
-            IOUtils.closeQuietly(is);
+            logger.error(e.getMessage(), e);
         }
     }
 

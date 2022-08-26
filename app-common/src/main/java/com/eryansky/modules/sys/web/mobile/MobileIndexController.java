@@ -270,7 +270,7 @@ public class MobileIndexController extends SimpleController {
                 logger.error(e.getMessage(), e);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage());
             throw new ActionException(e);
         }
         return null;

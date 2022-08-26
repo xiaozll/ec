@@ -1,5 +1,6 @@
 package com.eryansky.modules.sys.utils;
 
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.utils.AppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Collection;
 import java.util.Enumeration;
 
 /**
@@ -22,13 +24,14 @@ public class DownloadFileUtils {
     /**
      * 文件下载 支持断点续传
      * @param downloadFile
+     * @param downloadFileName
      * @param response
      * @param request
      * @throws Exception
      */
-    public static void downRangeFile(File downloadFile, HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public static void downRangeFile(File downloadFile,String downloadFileName, HttpServletResponse response, HttpServletRequest request) throws Exception {
         // 文件不存在
-        if (!downloadFile.exists()) {
+        if (!downloadFile.exists() || !downloadFile.canRead()) {
             // 404
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -36,6 +39,7 @@ public class DownloadFileUtils {
 
         // 记录文件大小
         long fileLength = downloadFile.length();
+        String _fileName = null != downloadFileName ? downloadFileName:downloadFile.getName();
         // 记录已下载文件大小
         long pastLength = 0;
         // 0：从头开始的全文下载；1：从某字节开始的下载（bytes=27000-）；2：从某字节开始到某字节结束的下载（bytes=27000-39000）
@@ -47,12 +51,6 @@ public class DownloadFileUtils {
         // 记录客户端传来的形如“bytes=27000-”或者“bytes=27000-39000”的内容
         String rangeBytes = "";
 
-        // 负责读取数据
-        RandomAccessFile raf = null;
-        // 写出数据
-        OutputStream os = null;
-        // 缓冲
-        OutputStream out = null;
         // 缓冲区大小
         int bsize = 1024;
         // 暂存容器
@@ -64,7 +62,7 @@ public class DownloadFileUtils {
                 String name = paramNames.nextElement().toString();
                 if (name != null && name.length() > 0) {
                     String value = request.getHeader(name);
-                    logger.debug("************" + name + "：" + value);
+                    logger.info("request {}:{}", name, value);
                 }
             }
         }
@@ -76,7 +74,7 @@ public class DownloadFileUtils {
         if (range != null && range.trim().length() > 0 && !"null".equals(range)) {
             // 客户端请求的下载的文件块的开始字节
             responseStatus = javax.servlet.http.HttpServletResponse.SC_PARTIAL_CONTENT;
-            logger.debug("request.getHeader(\"Range\")=" + range);
+            logger.debug("request.getHeader(\"Range\")={}",range);
             rangeBytes = range.replaceAll("bytes=", "");
 
             if (rangeBytes.endsWith("-")) {
@@ -128,7 +126,6 @@ public class DownloadFileUtils {
         if (rangeSwitch != 0) {
             // 不是从最开始下载，断点下载响应号为206
             response.setStatus(responseStatus);
-            logger.debug("----------------------------片段下载，服务器即将开始断点续传...");
             switch (rangeSwitch) {
                 case 1: {
                     // 针对 bytes=27000- 的请求
@@ -157,107 +154,93 @@ public class DownloadFileUtils {
                     .append(fileLength - 1).append("/").append(fileLength)
                     .toString();
             response.setHeader("Content-Range", contentRange);
-            logger.debug("----------------------------是从开始到最后完整下载！");
         }
 
-        try {
-            /**
-             * 设置response的Content-Type,set the MIME type
-             */
-            String contentType = AppUtils.getServletContext().getMimeType(downloadFile.getName());
-            if (null != contentType) {
-                response.setContentType(contentType);
-            } else {
-                response.setContentType("application/x-download");
-            }
+        /**
+         * 设置response的Content-Type,set the MIME type
+         */
+        String contentType = AppUtils.getServletContext().getMimeType(_fileName);
+        if (null != contentType) {
+            response.setContentType(contentType);
+        } else {
+            response.setContentType("application/x-download");
+        }
 
-            // /////////////////////////设置文件下载名称Content-Disposition///////////////////////////
+        // /////////////////////////设置文件下载名称Content-Disposition///////////////////////////
 //            if("bytes=0-1".equals(range)){
 //                response.reset();
 //                304
 //                response.setStatus(javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED);
 //            }
-            response.setHeader("Content-Length", String.valueOf(contentLength));
-
-            os = response.getOutputStream();
-            out = new BufferedOutputStream(os);
-            raf = new RandomAccessFile(downloadFile, "r");
-            try {
-                // 实际输出字节数
-                long outLength = 0;
-                switch (rangeSwitch) {
-                    case 0: {
-                        // 普通下载，或者从头开始的下载
-                        // 同1，没有break
-                    }
-                    case 1: {
-                        // 针对 bytes=27000- 的请求
-                        raf.seek(pastLength);// 形如 bytes=969998336- 的客户端请求，跳过969998336 个字节
-                        int n = 0;
-                        while ((n = raf.read(b)) != -1) {
-                            out.write(b, 0, n);
-                            outLength += n;
-                        }
-                        // while ((n = raf.read(b, 0, 1024)) != -1) {
-                        // out.write(b, 0, n);
-                        // }
-                        break;
-                    }
-                    case 2: {
-                        // 针对 bytes=27000-39000 的请求，从27000开始写数据
-                        raf.seek(pastLength);
-                        int n = 0;
-                        // 记录已读字节数
-                        long readLength = 0;
-                        while (readLength <= contentLength - bsize) {
-                            // 大部分字节在这里读取
-                            n = raf.read(b);
-                            readLength += n;
-                            out.write(b, 0, n);
-                            outLength += n;
-                        }
-                        if (readLength <= contentLength) {
-                            // 余下的不足 1024 个字节在这里读取
-                            n = raf.read(b, 0, (int) (contentLength - readLength));
-                            out.write(b, 0, n);
-                            outLength += n;
-                        }
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                logger.debug("Content-Length为：" + contentLength + "；实际输出字节数：" + outLength);
-                out.flush();
-            } catch (IOException ie) {
-                /**
-                 * 在写数据的时候， 对于 ClientAbortException 之类的异常，
-                 * 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。
-                 * 尤其是对于迅雷这种吸血的客户端软件， 明明已经有一个线程在读取 bytes=1275856879-1275877358，
-                 * 如果短时间内没有读取完毕，迅雷会再启第二个、第三个。。。线程来读取相同的字节段， 直到有一个线程读取完毕，迅雷会 KILL
-                 * 掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。
-                 * 所以，我们忽略这种异常
-                 */
-                // ignore
+        response.setHeader("Content-Length", String.valueOf(contentLength));
+        if (request.getParameter("showHeader") != null) {
+            Collection<String> responseHeaderNames = response.getHeaderNames();
+            for (String name : responseHeaderNames) {
+                String value = response.getHeader(name);
+                logger.info("response {}:{}", name, value);
             }
-        } catch (Exception e) {
-            //logger.log(Level.SEVERE, e.getMessage());
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e) {
-                    //logger.log(Level.SEVERE, e.getMessage());
+        }
+        WebUtils.setDownloadableHeader(request, response, _fileName);
+        try (OutputStream os = response.getOutputStream();
+             OutputStream out = new BufferedOutputStream(os);
+             RandomAccessFile raf = new RandomAccessFile(downloadFile, "r")){
+            // 实际输出字节数
+            long outLength = 0;
+            switch (rangeSwitch) {
+                case 0: {
+                    // 普通下载，或者从头开始的下载
+                    // 同1，没有break
+                }
+                case 1: {
+                    // 针对 bytes=27000- 的请求
+                    raf.seek(pastLength);// 形如 bytes=969998336- 的客户端请求，跳过969998336 个字节
+                    int n = 0;
+                    while ((n = raf.read(b)) != -1) {
+                        out.write(b, 0, n);
+                        outLength += n;
+                    }
+                    // while ((n = raf.read(b, 0, 1024)) != -1) {
+                    // out.write(b, 0, n);
+                    // }
+                    break;
+                }
+                case 2: {
+                    // 针对 bytes=27000-39000 的请求，从27000开始写数据
+                    raf.seek(pastLength);
+                    int n = 0;
+                    // 记录已读字节数
+                    long readLength = 0;
+                    while (readLength <= contentLength - bsize) {
+                        // 大部分字节在这里读取
+                        n = raf.read(b);
+                        readLength += n;
+                        out.write(b, 0, n);
+                        outLength += n;
+                    }
+                    if (readLength <= contentLength) {
+                        // 余下的不足 1024 个字节在这里读取
+                        n = raf.read(b, 0, (int) (contentLength - readLength));
+                        out.write(b, 0, n);
+                        outLength += n;
+                    }
+                    break;
+                }
+                default: {
+                    break;
                 }
             }
-            if (raf != null) {
-                try {
-                    raf.close();
-                } catch (IOException e) {
-                    //logger.log(Level.SEVERE, e.getMessage());
-                }
-            }
+            logger.debug("Content-Length为：" + contentLength + "；实际输出字节数：" + outLength);
+            out.flush();
+        } catch (IOException ie) {
+            /**
+             * 在写数据的时候， 对于 ClientAbortException 之类的异常，
+             * 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。
+             * 尤其是对于迅雷这种吸血的客户端软件， 明明已经有一个线程在读取 bytes=1275856879-1275877358，
+             * 如果短时间内没有读取完毕，迅雷会再启第二个、第三个。。。线程来读取相同的字节段， 直到有一个线程读取完毕，迅雷会 KILL
+             * 掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。
+             * 所以，我们忽略这种异常
+             */
+            // ignore
         }
     }
 }

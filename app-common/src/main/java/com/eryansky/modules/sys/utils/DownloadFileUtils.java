@@ -57,9 +57,9 @@ public class DownloadFileUtils {
         byte[] b = new byte[bsize];
 
         if (request.getParameter("showHeader") != null) {
-            Enumeration paramNames = request.getHeaderNames();
+            Enumeration<String> paramNames = request.getHeaderNames();
             while (paramNames.hasMoreElements()) {
-                String name = paramNames.nextElement().toString();
+                String name = paramNames.nextElement();
                 if (name != null && name.length() > 0) {
                     String value = request.getHeader(name);
                     logger.info("request {}:{}", name, value);

@@ -544,9 +544,9 @@ public class DiskController extends SimpleController {
             return downloadSingleFileUtil(response, request, file);
         } catch (Exception e) {
             logger.error("{},{},{},{},{}", IpUtils.getIpAddr0(request), UserAgentUtils.getHTTPUserAgent(request),SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
-            Enumeration paramNames = request.getHeaderNames();
+            Enumeration<String> paramNames = request.getHeaderNames();
             while (paramNames.hasMoreElements()) {
-                String name = paramNames.nextElement().toString();
+                String name = paramNames.nextElement();
                 if (name != null && name.length() > 0) {
                     String value = request.getHeader(name);
                     logger.info("request {}:{}", name, value);
@@ -557,7 +557,9 @@ public class DiskController extends SimpleController {
                 String value = response.getHeader(name);
                 logger.info("response {}:{}", name, value);
             }
-            throw e;
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+//            throw e;
         }
 
     }

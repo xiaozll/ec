@@ -207,9 +207,9 @@ public class MobileIndexController extends SimpleController {
             DownloadFileUtils.downRangeFile(file.getDiskFile(),file.getName(),response,request);
         } catch (Exception e) {
             logger.error("{},{},{},{},{}", IpUtils.getIpAddr0(request), UserAgentUtils.getHTTPUserAgent(request),SecurityUtils.getCurrentUserLoginName(),file.getId(),e.getMessage());
-            Enumeration paramNames = request.getHeaderNames();
+            Enumeration<String> paramNames = request.getHeaderNames();
             while (paramNames.hasMoreElements()) {
-                String name = paramNames.nextElement().toString();
+                String name = paramNames.nextElement();
                 if (name != null && name.length() > 0) {
                     String value = request.getHeader(name);
                     logger.info("request {}:{}", name, value);
@@ -220,7 +220,8 @@ public class MobileIndexController extends SimpleController {
                 String value = response.getHeader(name);
                 logger.info("response {}:{}", name, value);
             }
-            throw e;
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+//            throw e;
         }
         return null;
     }

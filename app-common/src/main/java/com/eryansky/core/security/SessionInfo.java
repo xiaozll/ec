@@ -599,7 +599,12 @@ public class SessionInfo implements Serializable {
         if (StringUtils.isBlank(deviceType)) {
             return false;
         }
-        DeviceType _deviceType = DeviceType.valueOf(deviceType);
+        DeviceType _deviceType = null;
+        try {
+            _deviceType = DeviceType.valueOf(deviceType);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         return DeviceType.MOBILE.equals(_deviceType) || DeviceType.TABLET.equals(_deviceType);
     }
 

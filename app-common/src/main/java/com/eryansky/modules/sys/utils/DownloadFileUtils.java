@@ -245,4 +245,25 @@ public class DownloadFileUtils {
             // ignore
         }
     }
+
+    /**
+     * 打印HTTP请求、响应日志
+     * @param request
+     * @param response
+     */
+    public static void loggerHTTPHeader(HttpServletRequest request,HttpServletResponse response){
+        Enumeration<String> paramNames = request.getHeaderNames();
+        while (paramNames.hasMoreElements()) {
+            String name = paramNames.nextElement();
+            if (name != null && name.length() > 0) {
+                String value = request.getHeader(name);
+                logger.info("request {}:{}", name, value);
+            }
+        }
+        Collection<String> responseHeaderNames = response.getHeaderNames();
+        for (String name : responseHeaderNames) {
+            String value = response.getHeader(name);
+            logger.info("response {}:{}", name, value);
+        }
+    }
 }

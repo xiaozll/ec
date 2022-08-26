@@ -431,7 +431,7 @@ public class SecurityUtils {
         SessionInfo sessionInfo = userToSessionInfo(user);
         sessionInfo.setIp(IpUtils.getIpAddr0(request));
         sessionInfo.setUserAgent(UserAgentUtils.getHTTPUserAgent(request));
-        sessionInfo.setDeviceType(UserAgentUtils.getDeviceType(request).toString());
+
         sessionInfo.setBrowserType(UserAgentUtils.getBrowser(request).getName());
         String deviceCode = WebUtils.getParameter(request, "deviceCode");
         sessionInfo.setDeviceCode(deviceCode);
@@ -446,7 +446,7 @@ public class SecurityUtils {
         String platform_s = WebUtils.getParameter(request, "platform");
         sessionInfo.setAppVersion(appVersion_s);
         sessionInfo.setDeviceCode(deviceCode_s);
-        sessionInfo.setDeviceType(platform_s);
+        sessionInfo.setDeviceType(StringUtils.isNotBlank(platform_s) ? platform_s:UserAgentUtils.getDeviceType(request).toString());
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword()));
         sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword(), 7 * 24 * 60 * 60 * 1000L));

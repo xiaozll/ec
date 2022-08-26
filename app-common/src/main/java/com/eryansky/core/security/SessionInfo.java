@@ -604,6 +604,7 @@ public class SessionInfo implements Serializable {
             _deviceType = DeviceType.valueOf(deviceType);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            return "iOS".equalsIgnoreCase(deviceType)|| "android".equals(deviceType);
         }
         return DeviceType.MOBILE.equals(_deviceType) || DeviceType.TABLET.equals(_deviceType);
     }

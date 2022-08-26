@@ -7,6 +7,7 @@ import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.encode.EncodeUtils;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.aop.annotation.Logging;
@@ -202,7 +203,25 @@ public class MobileIndexController extends SimpleController {
         if (VersionLogType.Android.getValue().equals(versionLogType)) {
             response.setContentType(MIME_ANDROID_TYPE);
         }
-        DownloadFileUtils.downRangeFile(file.getDiskFile(),file.getName(),response,request);
+        try {
+            DownloadFileUtils.downRangeFile(file.getDiskFile(),file.getName(),response,request);
+        } catch (Exception e) {
+            logger.error("{},{},{},{},{}", IpUtils.getIpAddr0(request), UserAgentUtils.getHTTPUserAgent(request),SecurityUtils.getCurrentUserLoginName(),file.getId(),e.getMessage());
+            Enumeration paramNames = request.getHeaderNames();
+            while (paramNames.hasMoreElements()) {
+                String name = paramNames.nextElement().toString();
+                if (name != null && name.length() > 0) {
+                    String value = request.getHeader(name);
+                    logger.info("request {}:{}", name, value);
+                }
+            }
+            Collection<String> responseHeaderNames = response.getHeaderNames();
+            for (String name : responseHeaderNames) {
+                String value = response.getHeader(name);
+                logger.info("response {}:{}", name, value);
+            }
+            throw e;
+        }
         return null;
     }
 

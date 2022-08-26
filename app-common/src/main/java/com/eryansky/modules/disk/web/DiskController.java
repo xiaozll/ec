@@ -14,6 +14,7 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.PrettyMemoryUtils;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
@@ -48,9 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -544,7 +543,20 @@ public class DiskController extends SimpleController {
         try {
             return downloadSingleFileUtil(response, request, file);
         } catch (Exception e) {
-            logger.error("{},{},{},{}", IpUtils.getIpAddr0(request),SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
+            logger.error("{},{},{},{},{}", IpUtils.getIpAddr0(request), UserAgentUtils.getHTTPUserAgent(request),SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
+            Enumeration paramNames = request.getHeaderNames();
+            while (paramNames.hasMoreElements()) {
+                String name = paramNames.nextElement().toString();
+                if (name != null && name.length() > 0) {
+                    String value = request.getHeader(name);
+                    logger.info("request {}:{}", name, value);
+                }
+            }
+            Collection<String> responseHeaderNames = response.getHeaderNames();
+            for (String name : responseHeaderNames) {
+                String value = response.getHeader(name);
+                logger.info("response {}:{}", name, value);
+            }
             throw e;
         }
 

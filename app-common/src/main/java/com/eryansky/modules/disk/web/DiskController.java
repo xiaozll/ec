@@ -37,6 +37,7 @@ import com.eryansky.modules.disk.service.*;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.utils.SelectType;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -619,9 +620,9 @@ public class DiskController extends SimpleController {
             // 创建一个临时压缩文件， 文件流全部注入到这个文件中
             tempZipFile = new java.io.File(Identities.uuid() + "_temp.zip");
             DiskUtils.makeZip(fileList, tempZipFile.getAbsolutePath());
-            String dName = "【批量下载】" + fileList.get(0).getName() + ".zip";
-            DownloadUtils.download(request, response, new FileInputStream(
-                    tempZipFile), dName);
+            String dName = "【批量下载】" + StringUtils.substringBeforeLast(FilenameUtils.getName(fileList.get(0).getName()),".") + "等.zip";
+            DownloadFileUtils.downRangeFile(tempZipFile,dName,response,request);
+//            DownloadUtils.download(request, response, new FileInputStream(tempZipFile), dName);
         } catch (Exception e) {
             throw e;
         } finally {

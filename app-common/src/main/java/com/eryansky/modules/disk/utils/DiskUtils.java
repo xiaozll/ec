@@ -506,12 +506,12 @@ public class DiskUtils {
 
     public static void makeZip(List<File> inFiles, String zipPath,
                                String encoding) throws Exception {
-        ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(
-                new FileOutputStream(zipPath)));
-        zipOut.setEncoding(encoding);
-        doZipFile(zipOut, inFiles);
-        zipOut.flush();
-        zipOut.close();
+        try(ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(
+                new FileOutputStream(zipPath)))) {
+            zipOut.setEncoding(encoding);
+            doZipFile(zipOut, inFiles);
+            zipOut.flush();
+        }
     }
 
     /**
@@ -526,7 +526,6 @@ public class DiskUtils {
             throws Exception {
         if (Collections3.isNotEmpty(inFiles)) {
             Map<String, Integer> countMap = Maps.newHashMap();
-
             for (File file : inFiles) {
                 String name = file.getName();
                 Integer mapVal = countMap.get(name);

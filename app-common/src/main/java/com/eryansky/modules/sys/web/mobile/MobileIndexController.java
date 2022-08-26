@@ -198,8 +198,10 @@ public class MobileIndexController extends SimpleController {
         }
         try {
             File file = DiskUtils.getFile(versionLog.getFileId());
+            boolean setContentType = false;
             if (VersionLogType.Android.getValue().equals(versionLogType)) {
                 response.setContentType(MIME_ANDROID_TYPE);
+                setContentType = true;
             }
             java.io.File diskFile = file.getDiskFile();
             if (!diskFile.exists() || !diskFile.canRead()) {
@@ -248,7 +250,7 @@ public class MobileIndexController extends SimpleController {
                 response.setHeader("content-length", "" + contentLength);
             }
             String contentType = AppUtils.getServletContext().getMimeType(filename);
-            if (null != contentType) {
+            if (null != contentType && !setContentType) {
                 response.setContentType(contentType);
             } else {
                 response.setContentType("application/x-download");

@@ -9,7 +9,6 @@ import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
-import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -200,6 +199,9 @@ public class MobileIndexController extends SimpleController {
             return null;
         }
         File file = DiskUtils.getFile(versionLog.getFileId());
+        if (VersionLogType.Android.getValue().equals(versionLogType)) {
+            response.setContentType(MIME_ANDROID_TYPE);
+        }
         DownloadFileUtils.downRangeFile(file.getDiskFile(),file.getName(),response,request);
         return null;
     }

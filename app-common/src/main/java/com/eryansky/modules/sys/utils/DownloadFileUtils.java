@@ -107,8 +107,20 @@ public class DownloadFileUtils {
          * ServletActionContext.getResponse().setHeader("Content-Length", new Long(file.length() - p).toString());
          */
 
+       String contentType = response.getContentType();
         // 来清除首部的空白行
         response.reset();
+        if(null != contentType){
+            response.setContentType(contentType);
+        }else{
+            //设置response的Content-Type,set the MIME type
+            String mimeType = AppUtils.getServletContext().getMimeType(_fileName);
+            if (null != mimeType) {
+                response.setContentType(mimeType);
+            } else {
+                response.setContentType("application/x-download");
+            }
+        }
         // 告诉客户端允许断点续传多线程连接下载,响应的格式是:Accept-Ranges: bytes
         response.setHeader("Accept-Ranges", "bytes");
         // 如果是第一次下,还没有断点续传,状态是默认的 200,无需显式设置;响应的格式是:HTTP/1.1
@@ -154,16 +166,6 @@ public class DownloadFileUtils {
                     .append(fileLength - 1).append("/").append(fileLength)
                     .toString();
             response.setHeader("Content-Range", contentRange);
-        }
-
-        /**
-         * 设置response的Content-Type,set the MIME type
-         */
-        String contentType = AppUtils.getServletContext().getMimeType(_fileName);
-        if (null != contentType) {
-            response.setContentType(contentType);
-        } else {
-            response.setContentType("application/x-download");
         }
 
         // /////////////////////////设置文件下载名称Content-Disposition///////////////////////////

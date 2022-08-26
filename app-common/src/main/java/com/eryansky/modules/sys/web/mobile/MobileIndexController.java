@@ -181,9 +181,9 @@ public class MobileIndexController extends SimpleController {
     @RequiresUser(required = false)
     @RequestMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,
-                                     HttpServletRequest request,
-                                     String app,
-                                     String versionCode,
+                                    HttpServletRequest request,
+                                    String app,
+                                    String versionCode,
                                     @PathVariable String versionLogType) {
         VersionLog versionLog = null;
         if (StringUtils.isNotBlank(versionCode)) {
@@ -258,32 +258,16 @@ public class MobileIndexController extends SimpleController {
             response.setHeader("Accept-Ranges", "bytes");
             // 必须先设置content-length再设置header
             response.addHeader("Content-Range", "bytes " + pastLength + "-" + toLength + "/" + fileLength);
-            int bufferSize = 2048;
+            int bufferSize = contentLength < 2048 ? Long.valueOf(contentLength).intValue() : 2048;
             response.setBufferSize(bufferSize);
 
-            InputStream istream = null;
-            OutputStream os = null;
-            try {
-                WebUtils.setDownloadableHeader(request, response, filename);
-                os = response.getOutputStream();
-                istream = new BufferedInputStream(new FileInputStream(diskFile), bufferSize);
-                try {
-                    IoUtils.copy(istream, os, pastLength, toLength);
-                } catch (IOException ie) {
-                    /**
-                     * 在写数据的时候， 对于 ClientAbortException 之类的异常，
-                     * 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。
-                     * 尤其是对于迅雷这种吸血的客户端软件， 明明已经有一个线程在读取 bytes=1275856879-1275877358，
-                     * 如果短时间内没有读取完毕，迅雷会再启第二个、第三个。。。线程来读取相同的字节段， 直到有一个线程读取完毕，迅雷会 KILL
-                     * 掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。
-                     * 所以，我们忽略这种异常
-                     */
-                    // ignore
-                }
+            WebUtils.setDownloadableHeader(request, response, filename);
+            try (OutputStream os = response.getOutputStream();
+                 InputStream fileInputStream = new FileInputStream(diskFile);
+                 InputStream inputStream = new BufferedInputStream(fileInputStream, bufferSize)) {
+                IoUtils.copy(inputStream, os, pastLength, toLength);
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-            } finally {
-                IoUtils.closeSilently(istream);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);

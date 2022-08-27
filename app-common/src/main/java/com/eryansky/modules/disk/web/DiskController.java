@@ -543,7 +543,7 @@ public class DiskController extends SimpleController {
         try {
             return downloadSingleFileUtil(response, request, file);
         } catch (Exception e) {
-            logger.error("{},{},{},{},{}", IpUtils.getIpAddr0(request), UserAgentUtils.getHTTPUserAgent(request),SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
+            logger.error(e.getMessage(),e);
             DownloadFileUtils.loggerHTTPHeader(request,response);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;

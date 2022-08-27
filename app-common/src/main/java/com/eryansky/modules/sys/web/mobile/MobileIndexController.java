@@ -206,7 +206,7 @@ public class MobileIndexController extends SimpleController {
         try {
             DownloadFileUtils.downRangeFile(file.getDiskFile(),file.getName(),response,request);
         } catch (Exception e) {
-            logger.error("{},{},{},{},{}", IpUtils.getIpAddr0(request), UserAgentUtils.getHTTPUserAgent(request),SecurityUtils.getCurrentUserLoginName(),file.getId(),e.getMessage());
+            logger.error(e.getMessage(),e);
             DownloadFileUtils.loggerHTTPHeader(request,response);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 //            throw e;

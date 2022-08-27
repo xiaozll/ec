@@ -261,7 +261,7 @@ public class AuthorityInterceptor implements AsyncHandlerInterceptor {
 
             return true;
         }else{
-            logger.warn("[{},{}]未授权[{}]",new Object[]{SpringMVCHolder.getIp(),request.getSession().getId(),requestUrl});
+            logger.debug("[{},{}]未授权[{}]",new Object[]{SpringMVCHolder.getIp(),request.getSession().getId(),requestUrl});
             //返回校验不通过页面
             try {
                 if(!response.isCommitted()){

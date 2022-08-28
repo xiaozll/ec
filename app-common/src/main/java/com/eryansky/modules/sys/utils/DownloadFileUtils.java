@@ -1,7 +1,6 @@
 package com.eryansky.modules.sys.utils;
 
 import com.eryansky.common.web.utils.WebUtils;
-import com.eryansky.utils.AppUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,17 +18,19 @@ public class DownloadFileUtils {
 
     private static Logger logger = LoggerFactory.getLogger(DownloadFileUtils.class);
 
-    private DownloadFileUtils(){}
+    private DownloadFileUtils() {
+    }
 
     /**
-     * 文件下载 支持断点续传
+     * 文件下载 分片断点下载
+     *
      * @param downloadFile
      * @param downloadFileName
      * @param response
      * @param request
      * @throws Exception
      */
-    public static void downRangeFile(File downloadFile,String downloadFileName, HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public static void downRangeFile(File downloadFile, String downloadFileName, HttpServletResponse response, HttpServletRequest request) throws Exception {
         // 文件不存在
         if (!downloadFile.exists() || !downloadFile.canRead()) {
             // 404
@@ -39,22 +40,8 @@ public class DownloadFileUtils {
 
         // 记录文件大小
         long fileLength = downloadFile.length();
-        String _fileName = null != downloadFileName ? downloadFileName:downloadFile.getName();
-        // 记录已下载文件大小
-        long pastLength = 0;
-        // 0：从头开始的全文下载；1：从某字节开始的下载（bytes=27000-）；2：从某字节开始到某字节结束的下载（bytes=27000-39000）
-        int rangeSwitch = 0;
-        // 记录客户端需要下载的字节段的最后一个字节偏移量（比如bytes=27000-39000，则这个值是为39000）
-        long toLength = 0;
-        // 客户端请求的字节总量
-        long contentLength = 0;
-        // 记录客户端传来的形如“bytes=27000-”或者“bytes=27000-39000”的内容
-        String rangeBytes = "";
-
-        // 缓冲区大小
-        int bsize = 1024;
-        // 暂存容器
-        byte[] b = new byte[bsize];
+        String _fileName = null != downloadFileName ? downloadFileName : downloadFile.getName();
+        String range = request.getHeader("Range");
 
         if (request.getParameter("showHeader") != null) {
             Enumeration<String> paramNames = request.getHeaderNames();
@@ -67,54 +54,53 @@ public class DownloadFileUtils {
             }
         }
 
-        String range = request.getHeader("Range");
-        // if(range == null)
-        // range = "bytes=0-";
-        int responseStatus = 206;
-        if (range != null && range.trim().length() > 0 && !"null".equals(range)) {
-            // 客户端请求的下载的文件块的开始字节
-            responseStatus = javax.servlet.http.HttpServletResponse.SC_PARTIAL_CONTENT;
-            logger.debug("request.getHeader(\"Range\")={}",range);
-            rangeBytes = range.replaceAll("bytes=", "");
 
-            if (rangeBytes.endsWith("-")) {
-                // 行如：bytes=969998336-
-                rangeSwitch = 1;
-                rangeBytes = rangeBytes.substring(0, rangeBytes.indexOf('-'));
-                pastLength = Long.parseLong(rangeBytes.trim());
-                // 客户端请求的是969998336之后的字节（包括bytes下标索引为969998336的字节）
-                contentLength = fileLength - pastLength;
-            } else {
-                // 行如：bytes=1275856879-1275877358
-                rangeSwitch = 2;
-                String temp0 = rangeBytes.substring(0, rangeBytes.indexOf('-'));
-                String temp2 = rangeBytes.substring(rangeBytes.indexOf('-') + 1, rangeBytes.length());
-                // bytes=1275856879-1275877358，从第1275856879个字节开始下载
-                pastLength = Long.parseLong(temp0.trim());
-                // bytes=1275856879-1275877358，到第1275877358 个字节结束
-                toLength = Long.parseLong(temp2);
-                // 客户端请求的是1275856879-1275877358之间的字节
-                contentLength = toLength - pastLength + 1;
+        //开始下载位置
+        long startByte = 0;
+        //结束下载位置
+        long endByte = fileLength - 1;
+        int responseStatus = HttpServletResponse.SC_OK;
+        //有range的话
+        if (range != null && range.contains("bytes=") && range.contains("-")) {
+            responseStatus = HttpServletResponse.SC_PARTIAL_CONTENT;
+            range = range.substring(range.lastIndexOf("=") + 1).trim();
+            String ranges[] = range.split("-");
+            try {
+                //根据range解析下载分片的位置区间
+                if (ranges.length == 1) {
+                    //情况1，如：bytes=-1024  从开始字节到第1024个字节的数据
+                    if (range.startsWith("-")) {
+                        endByte = Long.parseLong(ranges[0]);
+                    }
+                    //情况2，如：bytes=1024-  第1024个字节到最后字节的数据
+                    else if (range.endsWith("-")) {
+                        startByte = Long.parseLong(ranges[0]);
+                    }
+                }
+                //情况3，如：bytes=1024-2048  第1024个字节到2048个字节的数据
+                else if (ranges.length == 2) {
+                    startByte = Long.parseLong(ranges[0]);
+                    endByte = Long.parseLong(ranges[1]);
+                }
+
+            } catch (NumberFormatException e) {
+                logger.error(e.getMessage());
+                startByte = 0;
+                endByte = fileLength - 1;
+                responseStatus = HttpServletResponse.SC_OK;
             }
-        } else {
-            // 从开始进行下载
-            contentLength = fileLength;// 客户端要求全文下载
         }
 
-        /**
-         * 如果设设置了Content-Length，则客户端会自动进行多线程下载。如果不希望支持多线程，则不要设置这个参数。 响应的格式是:
-         * Content-Length: [文件的总大小] - [客户端请求的下载的文件块的开始字节]
-         * ServletActionContext.getResponse().setHeader("Content-Length", new Long(file.length() - p).toString());
-         */
-
-       String contentType = response.getContentType();
+        //要下载的长度
+        long contentLength = endByte - startByte + 1;
+        String contentType = response.getContentType();
         // 来清除首部的空白行
         response.reset();
-        if(null != contentType){
+        if (null != contentType) {
             response.setContentType(contentType);
-        }else{
+        } else {
             //设置response的Content-Type,set the MIME type
-            String mimeType = AppUtils.getServletContext().getMimeType(_fileName);
+            String mimeType = request.getServletContext().getMimeType(_fileName);
             if (null != mimeType) {
                 response.setContentType(mimeType);
             } else {
@@ -123,58 +109,14 @@ public class DownloadFileUtils {
         }
         // 告诉客户端允许断点续传多线程连接下载,响应的格式是:Accept-Ranges: bytes
         response.setHeader("Accept-Ranges", "bytes");
-        // 如果是第一次下,还没有断点续传,状态是默认的 200,无需显式设置;响应的格式是:HTTP/1.1
-        // response.addHeader("Cache-Control", "max-age=1296000");
-        // response.addHeader("Expires", "Fri, 12 Oct 2012 03:43:01 GMT");
-        // response.addHeader("Last-Modified", "Tue, 31 Jul 2012 03:58:36 GMT");
-        // response.addHeader("Connection", "keep-alive");
-        // response.addHeader("ETag", downloadFile.getName() + "-" +
-        // downloadFile.lastModified());
-        // response.addHeader("Last-Modified", "Thu, 27 Sep 2012 05:24:44 GMT");
 
-        /**
-         * 设置response的Content-Range。响应的格式是:Content-Range: bytes [文件块的开始字节]-[文件的总大小 - 1]/[文件的总大小]
-         */
-        if (rangeSwitch != 0) {
-            // 不是从最开始下载，断点下载响应号为206
-            response.setStatus(responseStatus);
-            switch (rangeSwitch) {
-                case 1: {
-                    // 针对 bytes=27000- 的请求
-                    String contentRange = new StringBuffer("bytes ")
-                            .append(new Long(pastLength)).append("-")
-                            .append(new Long(fileLength - 1))
-                            .append("/").append(new Long(fileLength))
-                            .toString();
-                    response.setHeader("Content-Range", contentRange);
-                    break;
-                }
-                case 2: {
-                    // 针对 bytes=27000-39000 的请求
-                    String contentRange = range.replace("=", " ") + "/"
-                            + new Long(fileLength).toString();
-                    response.setHeader("Content-Range", contentRange);
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-        } else {
-            // 是从开始下载
-            String contentRange = new StringBuffer("bytes ").append("0-")
-                    .append(fileLength - 1).append("/").append(fileLength)
-                    .toString();
-            response.setHeader("Content-Range", contentRange);
-        }
-
-        // /////////////////////////设置文件下载名称Content-Disposition///////////////////////////
-//            if("bytes=0-1".equals(range)){
-//                response.reset();
-//                304
-//                response.setStatus(javax.servlet.http.HttpServletResponse.SC_NOT_MODIFIED);
-//            }
+        //Content-Length 表示资源内容长度，即：文件大小
         response.setHeader("Content-Length", String.valueOf(contentLength));
+        //Content-Range 表示响应了多少数据，格式为：[要下载的开始位置]-[结束位置]/[文件总大小]
+        response.setHeader("Content-Range", "bytes " + startByte + "-" + endByte + "/" + fileLength);
+        response.setStatus(responseStatus);
+        WebUtils.setDownloadableHeader(request, response, _fileName);
+
         if (request.getParameter("showHeader") != null) {
             Collection<String> responseHeaderNames = response.getHeaderNames();
             for (String name : responseHeaderNames) {
@@ -182,58 +124,33 @@ public class DownloadFileUtils {
                 logger.info("response {}:{}", name, value);
             }
         }
-        WebUtils.setDownloadableHeader(request, response, _fileName);
-        try (OutputStream os = response.getOutputStream();
-             OutputStream out = new BufferedOutputStream(os);
-             RandomAccessFile raf = new RandomAccessFile(downloadFile, "r")){
-            // 实际输出字节数
-            long outLength = 0;
-            switch (rangeSwitch) {
-                case 0: {
-                    // 普通下载，或者从头开始的下载
-                    // 同1，没有break
-                }
-                case 1: {
-                    // 针对 bytes=27000- 的请求
-                    raf.seek(pastLength);// 形如 bytes=969998336- 的客户端请求，跳过969998336 个字节
-                    int n = 0;
-                    while ((n = raf.read(b)) != -1) {
-                        out.write(b, 0, n);
-                        outLength += n;
-                    }
-                    // while ((n = raf.read(b, 0, 1024)) != -1) {
-                    // out.write(b, 0, n);
-                    // }
-                    break;
-                }
-                case 2: {
-                    // 针对 bytes=27000-39000 的请求，从27000开始写数据
-                    raf.seek(pastLength);
-                    int n = 0;
-                    // 记录已读字节数
-                    long readLength = 0;
-                    while (readLength <= contentLength - bsize) {
-                        // 大部分字节在这里读取
-                        n = raf.read(b);
-                        readLength += n;
-                        out.write(b, 0, n);
-                        outLength += n;
-                    }
-                    if (readLength <= contentLength) {
-                        // 余下的不足 1024 个字节在这里读取
-                        n = raf.read(b, 0, (int) (contentLength - readLength));
-                        out.write(b, 0, n);
-                        outLength += n;
-                    }
-                    break;
-                }
-                default: {
-                    break;
-                }
+
+
+        //已传送数据大小
+        long transmitted = 0;
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+             RandomAccessFile randomAccessFile = new RandomAccessFile(downloadFile, "r");) {
+            byte[] buff = new byte[2048];
+            int len = 0;
+            randomAccessFile.seek(startByte);
+            //判断是否到了最后不足2048（buff的length）个byte
+            while ((transmitted + len) <= contentLength && (len = randomAccessFile.read(buff)) != -1) {
+                outputStream.write(buff, 0, len);
+                transmitted += len;
             }
-            logger.debug("Content-Length为：" + contentLength + "；实际输出字节数：" + outLength);
-            out.flush();
-        } catch (IOException ie) {
+            //处理不足buff.length部分
+            if (transmitted < contentLength) {
+                len = randomAccessFile.read(buff, 0, (int) (contentLength - transmitted));
+                outputStream.write(buff, 0, len);
+                transmitted += len;
+            }
+
+            outputStream.flush();
+            response.flushBuffer();
+        } catch (IOException e) {
+            if(!"ClientAbortException".equals(e.getClass().getSimpleName())){
+                logger.error(e.getMessage(), e);
+            }
             /**
              * 在写数据的时候， 对于 ClientAbortException 之类的异常，
              * 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。
@@ -248,10 +165,11 @@ public class DownloadFileUtils {
 
     /**
      * 打印HTTP请求、响应日志
+     *
      * @param request
      * @param response
      */
-    public static void loggerHTTPHeader(HttpServletRequest request,HttpServletResponse response){
+    public static void loggerHTTPHeader(HttpServletRequest request, HttpServletResponse response) {
         Enumeration<String> paramNames = request.getHeaderNames();
         while (paramNames.hasMoreElements()) {
             String name = paramNames.nextElement();
@@ -266,4 +184,120 @@ public class DownloadFileUtils {
             logger.info("response {}:{}", name, value);
         }
     }
+
+
+    /**
+     * @param fileName
+     * @return
+     */
+    public static String getContentType(String fileName) {
+        String contentType = "application/octet-stream";
+        if (fileName.lastIndexOf(".") < 0) {
+            return contentType;
+        }
+        String fileSuffix = fileName.toLowerCase().substring(fileName.lastIndexOf(".") + 1);
+
+        if (fileSuffix.equals("html") || fileSuffix.equals("htm") || fileSuffix.equals("shtml")) {
+            contentType = "text/html";
+        } else if (fileSuffix.equals("css")) {
+            contentType = "text/css";
+        } else if (fileSuffix.equals("xml")) {
+            contentType = "text/xml";
+        } else if (fileSuffix.equals("gif")) {
+            contentType = "image/gif";
+        } else if (fileSuffix.equals("jpeg") || fileSuffix.equals("jpg")) {
+            contentType = "image/jpeg";
+        } else if (fileSuffix.equals("js")) {
+            contentType = "application/x-javascript";
+        } else if (fileSuffix.equals("atom")) {
+            contentType = "application/atom+xml";
+        } else if (fileSuffix.equals("rss")) {
+            contentType = "application/rss+xml";
+        } else if (fileSuffix.equals("mml")) {
+            contentType = "text/mathml";
+        } else if (fileSuffix.equals("txt")) {
+            contentType = "text/plain";
+        } else if (fileSuffix.equals("jad")) {
+            contentType = "text/vnd.sun.j2me.app-descriptor";
+        } else if (fileSuffix.equals("wml")) {
+            contentType = "text/vnd.wap.wml";
+        } else if (fileSuffix.equals("htc")) {
+            contentType = "text/x-component";
+        } else if (fileSuffix.equals("png")) {
+            contentType = "image/png";
+        } else if (fileSuffix.equals("tif") || fileSuffix.equals("tiff")) {
+            contentType = "image/tiff";
+        } else if (fileSuffix.equals("wbmp")) {
+            contentType = "image/vnd.wap.wbmp";
+        } else if (fileSuffix.equals("ico")) {
+            contentType = "image/x-icon";
+        } else if (fileSuffix.equals("jng")) {
+            contentType = "image/x-jng";
+        } else if (fileSuffix.equals("bmp")) {
+            contentType = "image/x-ms-bmp";
+        } else if (fileSuffix.equals("svg")) {
+            contentType = "image/svg+xml";
+        } else if (fileSuffix.equals("jar") || fileSuffix.equals("var") || fileSuffix.equals("ear")) {
+            contentType = "application/java-archive";
+        } else if (fileSuffix.equals("doc")) {
+            contentType = "application/msword";
+        } else if (fileSuffix.equals("pdf")) {
+            contentType = "application/pdf";
+        } else if (fileSuffix.equals("rtf")) {
+            contentType = "application/rtf";
+        } else if (fileSuffix.equals("xls")) {
+            contentType = "application/vnd.ms-excel";
+        } else if (fileSuffix.equals("ppt")) {
+            contentType = "application/vnd.ms-powerpoint";
+        } else if (fileSuffix.equals("7z")) {
+            contentType = "application/x-7z-compressed";
+        } else if (fileSuffix.equals("rar")) {
+            contentType = "application/x-rar-compressed";
+        } else if (fileSuffix.equals("swf")) {
+            contentType = "application/x-shockwave-flash";
+        } else if (fileSuffix.equals("rpm")) {
+            contentType = "application/x-redhat-package-manager";
+        } else if (fileSuffix.equals("der") || fileSuffix.equals("pem") || fileSuffix.equals("crt")) {
+            contentType = "application/x-x509-ca-cert";
+        } else if (fileSuffix.equals("xhtml")) {
+            contentType = "application/xhtml+xml";
+        } else if (fileSuffix.equals("zip")) {
+            contentType = "application/zip";
+        } else if (fileSuffix.equals("mid") || fileSuffix.equals("midi") || fileSuffix.equals("kar")) {
+            contentType = "audio/midi";
+        } else if (fileSuffix.equals("mp3")) {
+            contentType = "audio/mpeg";
+        } else if (fileSuffix.equals("ogg")) {
+            contentType = "audio/ogg";
+        } else if (fileSuffix.equals("m4a")) {
+            contentType = "audio/x-m4a";
+        } else if (fileSuffix.equals("ra")) {
+            contentType = "audio/x-realaudio";
+        } else if (fileSuffix.equals("3gpp") || fileSuffix.equals("3gp")) {
+            contentType = "video/3gpp";
+        } else if (fileSuffix.equals("mp4")) {
+            contentType = "video/mp4";
+        } else if (fileSuffix.equals("mpeg") || fileSuffix.equals("mpg")) {
+            contentType = "video/mpeg";
+        } else if (fileSuffix.equals("mov")) {
+            contentType = "video/quicktime";
+        } else if (fileSuffix.equals("flv")) {
+            contentType = "video/x-flv";
+        } else if (fileSuffix.equals("m4v")) {
+            contentType = "video/x-m4v";
+        } else if (fileSuffix.equals("mng")) {
+            contentType = "video/x-mng";
+        } else if (fileSuffix.equals("asx") || fileSuffix.equals("asf")) {
+            contentType = "video/x-ms-asf";
+        } else if (fileSuffix.equals("wmv")) {
+            contentType = "video/x-ms-wmv";
+        } else if (fileSuffix.equals("avi")) {
+            contentType = "video/x-msvideo";
+        } else if (fileSuffix.equals("apk")) {
+            contentType = "application/vnd.android.package-archive";
+        }
+
+        return contentType;
+    }
+
 }

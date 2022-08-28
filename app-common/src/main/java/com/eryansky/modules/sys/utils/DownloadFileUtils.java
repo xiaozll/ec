@@ -1,5 +1,6 @@
 package com.eryansky.modules.sys.utils;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,13 +79,14 @@ public class DownloadFileUtils {
                     }
                 }
                 //情况3，如：bytes=1024-2048  第1024个字节到2048个字节的数据
-                else if (ranges.length == 2) {
+                else if (ranges.length == 2 && StringUtils.isNotBlank(ranges[0]) && StringUtils.isNotBlank(ranges[1])) {
                     startByte = Long.parseLong(ranges[0]);
                     endByte = Long.parseLong(ranges[1]);
                 }
 
             } catch (NumberFormatException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getMessage(),e);
+                loggerHTTPHeader(request,response);
                 startByte = 0;
                 endByte = fileLength - 1;
                 responseStatus = HttpServletResponse.SC_OK;

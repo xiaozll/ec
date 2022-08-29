@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.zip.GZIPOutputStream;
@@ -166,17 +167,31 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		return new GZIPOutputStream(response.getOutputStream());
 	}
 
-	/**
-	 * 设置让浏览器弹出下载对话框的Header.
-	 * 
-	 * @param fileName
-	 *            下载后的文件名.
-	 */
-	public static void setDownloadableHeader(HttpServletResponse response,
-			String fileName) {
-		response.setHeader("Content-Disposition", "attachment; filename=\""
-				+ fileName + "\"");
-	}
+    /**
+     * 设置让浏览器弹出下载对话框的Header.
+     *
+     * @param fileName
+     *            下载后的文件名.
+     */
+    public static void setInlineHeader(HttpServletResponse response,
+                                       String fileName) {
+        // 解决下载文件时文件名乱码问题
+        byte[] fileNameBytes = fileName.getBytes(StandardCharsets.UTF_8);
+        fileName = new String(fileNameBytes, 0, fileNameBytes.length, StandardCharsets.ISO_8859_1);
+        response.setHeader("Content-Disposition", "inline;filename=" + fileName);
+    }
+
+    /**
+     * 设置让浏览器弹出下载对话框的Header.
+     *
+     * @param fileName
+     *            下载后的文件名.
+     */
+    public static void setDownloadableHeader(HttpServletResponse response,
+                                             String fileName) {
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + fileName + "\"");
+    }
 
     /**
      * 设置让浏览器弹出下载对话框的Header.

@@ -115,13 +115,10 @@ public class DownloadFileUtils {
         response.setHeader("Content-Range", "bytes " + startByte + "-" + endByte + "/" + fileLength);
         response.setStatus(responseStatus);
 
-        // 解决下载文件时文件名乱码问题
-//        byte[] fileNameBytes = _fileName.getBytes(StandardCharsets.UTF_8);
-//        _fileName = new String(fileNameBytes, 0, fileNameBytes.length, StandardCharsets.ISO_8859_1);
-        //inline表示浏览器直接使用，attachment表示下载，fileName表示下载的文件名
-//        response.setHeader("Content-Disposition", "inline;filename=" + _fileName);
-
-        WebUtils.setDownloadableHeader(request, response, _fileName);
+        String contentDisposition = response.getHeader("Content-Disposition");
+        if(null == contentDisposition){
+            WebUtils.setDownloadableHeader(request, response, _fileName);
+        }
 
         if (request.getParameter("showHeader") != null) {
             Collection<String> responseHeaderNames = response.getHeaderNames();

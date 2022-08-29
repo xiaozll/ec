@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Enumeration;
 
@@ -96,11 +97,7 @@ public class DownloadFileUtils {
         //要下载的长度
         long contentLength = endByte - startByte + 1;
         String contentType = response.getContentType();
-        // 来清除首部的空白行
-        response.reset();
-        if (null != contentType) {
-            response.setContentType(contentType);
-        } else {
+        if (null == contentType) {
             //设置response的Content-Type,set the MIME type
             String mimeType = request.getServletContext().getMimeType(_fileName);
             if (null != mimeType) {
@@ -117,6 +114,13 @@ public class DownloadFileUtils {
         //Content-Range 表示响应了多少数据，格式为：[要下载的开始位置]-[结束位置]/[文件总大小]
         response.setHeader("Content-Range", "bytes " + startByte + "-" + endByte + "/" + fileLength);
         response.setStatus(responseStatus);
+
+        // 解决下载文件时文件名乱码问题
+//        byte[] fileNameBytes = _fileName.getBytes(StandardCharsets.UTF_8);
+//        _fileName = new String(fileNameBytes, 0, fileNameBytes.length, StandardCharsets.ISO_8859_1);
+        //inline表示浏览器直接使用，attachment表示下载，fileName表示下载的文件名
+//        response.setHeader("Content-Disposition", "inline;filename=" + _fileName);
+
         WebUtils.setDownloadableHeader(request, response, _fileName);
 
         if (request.getParameter("showHeader") != null) {

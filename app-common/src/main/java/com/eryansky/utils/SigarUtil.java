@@ -5,6 +5,7 @@
  */
 package com.eryansky.utils;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -74,8 +75,10 @@ public class SigarUtil {
      */
     private static void resetClasspath() {
         String libPath = System.getProperty("java.library.path");
-        String classpath = SigarUtil.class.getResource("/").getPath();
-        System.setProperty("java.library.path", classpath + "sigar" + File.pathSeparator + libPath);
+        String sigarClasspath = SigarUtil.class.getResource("/").getPath() + "sigar";
+        if(!StringUtils.contains(libPath,sigarClasspath)){
+            System.setProperty("java.library.path", sigarClasspath + File.pathSeparator + libPath);
+        }
     }
     /**
      * 返回服务系统信息

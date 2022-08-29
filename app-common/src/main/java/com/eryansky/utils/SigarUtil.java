@@ -75,7 +75,7 @@ public class SigarUtil {
     private static void resetClasspath() {
         String libPath = System.getProperty("java.library.path");
         String classpath = SigarUtil.class.getResource("/").getPath();
-        System.setProperty("java.library.path", classpath + File.separator + "sigar" + File.pathSeparator + libPath);
+        System.setProperty("java.library.path", classpath + "sigar" + File.pathSeparator + libPath);
     }
     /**
      * 返回服务系统信息

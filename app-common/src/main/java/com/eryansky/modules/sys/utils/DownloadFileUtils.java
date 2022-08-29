@@ -65,7 +65,7 @@ public class DownloadFileUtils {
         if (range != null && range.contains("bytes=") && range.contains("-")) {
             responseStatus = HttpServletResponse.SC_PARTIAL_CONTENT;
             range = range.substring(range.lastIndexOf("=") + 1).trim();
-            String ranges[] = range.split("-");
+            String[] ranges = range.split("-");
             try {
                 //根据range解析下载分片的位置区间
                 if (ranges.length == 1) {

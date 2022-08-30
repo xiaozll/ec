@@ -59,7 +59,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      */
     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public Organ saveOrgan(Organ entity) {
-        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
+        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao});
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
         return entity;
@@ -73,7 +73,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public String deleteById(final String id) {
         dao.delete(new Organ(id));
-        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
+        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao});
         return id;
     }
 
@@ -93,7 +93,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public void deleteOwnerAndChilds(String id) {
         dao.deleteOwnerAndChilds(new Organ(id));
-        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
+        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao});
     }
 
     /**

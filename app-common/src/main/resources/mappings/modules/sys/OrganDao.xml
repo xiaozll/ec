@@ -749,7 +749,7 @@
         LEFT JOIN t_sys_user u ON u.default_organ_id = a.id
         <where>
             <if test="status != null and status !=''">
-                AND a.status = #{status}
+                AND u.status = #{status}
             </if>
             AND u.login_name = #{loginName}
         </where>

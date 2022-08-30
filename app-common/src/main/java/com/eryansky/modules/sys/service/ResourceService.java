@@ -52,11 +52,13 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     @CacheEvict(value = {CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void save(Resource entity) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
-                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE);
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
     }
@@ -69,11 +71,13 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     @CacheEvict(value = {CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void saveResource(Resource entity) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
-                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE);
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
         if (entity.getType() != null && ResourceType.function.getValue().equals(entity.getType())) {
@@ -93,7 +97,8 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     @CacheEvict(value = {CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteByIds(Collection<String> ids) {
         if (Collections3.isNotEmpty(ids)) {
             for (String id : ids) {
@@ -108,12 +113,14 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
 
     @CacheEvict(value = {CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteById(String id) {
         this.delete(new Resource(id));
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
-                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE);
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
 
     }
 
@@ -122,12 +129,14 @@ public class ResourceService extends TreeService<ResourceDao, Resource> {
      */
     @CacheEvict(value = {CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteOwnerAndChilds(String id) {
         dao.deleteOwnerAndChilds(new Resource(id));
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
-                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE);
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
     }
 
 

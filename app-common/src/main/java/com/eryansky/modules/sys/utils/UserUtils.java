@@ -149,6 +149,7 @@ public class UserUtils {
      * 根据loginName查找用户
      *
      * @param loginName 用户账号
+     * @param defaultResult 为null时返回
      * @return
      */
     public static String getUserNameByLoginName(String loginName,String defaultResult) {

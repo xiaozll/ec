@@ -99,6 +99,7 @@
             </if>
             AND a.login_name = #{loginName}
         </where>
+        LIMIT 1
     </select>
 
     <select id="getUserByMobile" resultType="User">

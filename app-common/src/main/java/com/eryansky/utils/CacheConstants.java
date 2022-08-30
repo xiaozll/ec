@@ -50,5 +50,9 @@ public class CacheConstants {
     public static final String ORGAN_USER_TREE_1_CACHE = "organ_user_tree_1_cache";
     public static final String ORGAN_USER_TREE_2_CACHE = "organ_user_tree_2_cache";
 
+    public static final String CACHE_OrganDao = "com.eryansky.modules.sys.dao.OrganDao";
+    public static final String CACHE_UserDao = "com.eryansky.modules.sys.dao.UserDao";
+    public static final String CACHE_ResourceDao = "com.eryansky.modules.sys.dao.ResourceDao";
+
 	
 }

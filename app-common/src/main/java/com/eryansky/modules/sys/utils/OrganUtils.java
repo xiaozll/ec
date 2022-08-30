@@ -141,6 +141,20 @@ public class OrganUtils {
         return Static.organService.getOrganExtendByUserId(userId);
     }
 
+
+    /**
+     * 根据用户登录账号查找
+     *
+     * @param loginName 用户账号
+     * @return
+     */
+    public static OrganExtend getOrganExtendByUserLoginName(String loginName) {
+        if (StringUtils.isBlank(loginName)) {
+            return null;
+        }
+        return Static.organService.getOrganExtendByUserLoginName(loginName);
+    }
+
     /**
      * 根据用户ID查找
      *

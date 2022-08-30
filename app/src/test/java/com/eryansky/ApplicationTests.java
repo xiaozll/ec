@@ -4,8 +4,10 @@ import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.modules.sys.dao.VersionLogDao;
+import com.eryansky.modules.sys.mapper.OrganExtend;
 import com.eryansky.modules.sys.mapper.VersionLog;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Maps;
@@ -15,6 +17,8 @@ import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -112,5 +116,18 @@ public class ApplicationTests {
 
         List<VersionLog> rows = versionLogService.selectMany(selectStatement);
         System.out.println(JsonMapper.toJsonString(rows));
+    }
+
+
+
+    @Test
+    public void getOrganExtendByUserId() {
+        Date d1 = Calendar.getInstance().getTime();
+        for(int i =0;i<1000;i++){
+            OrganExtend organExtend = OrganUtils.getOrganExtendByUserLoginName("admin");
+            System.out.println(JsonMapper.toJsonString(organExtend));
+        }
+        Date d2 = Calendar.getInstance().getTime();
+        System.out.println(d2.getTime() - d1.getTime());
     }
 }

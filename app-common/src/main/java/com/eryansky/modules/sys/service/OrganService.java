@@ -57,7 +57,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     /**
      * 保存或修改.
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public Organ saveOrgan(Organ entity) {
         logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
         Assert.notNull(entity, "参数[entity]为空!");
@@ -70,7 +70,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      *
      * @param id 主键ID
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public String deleteById(final String id) {
         dao.delete(new Organ(id));
         logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
@@ -80,7 +80,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     /**
      * 自定义删除方法.
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public void deleteByIds(Collection<String> ids) {
         for (String id : ids) {
             deleteById(id);
@@ -90,7 +90,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     /**
      * 自定义删除方法.
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public void deleteOwnerAndChilds(String id) {
         dao.deleteOwnerAndChilds(new Organ(id));
         logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
@@ -1137,6 +1137,20 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         parameter.put("userId", userId);
         return dao.getOrganExtendByUserId(parameter);
     }
+
+    /**
+     * 根据用户账号查找
+     *
+     * @param loginName
+     * @return
+     */
+    public OrganExtend getOrganExtendByUserLoginName(String loginName) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("loginName", loginName);
+        return dao.getOrganExtendByUserLoginName(parameter);
+    }
+
 
     /**
      * 根据用户ID查找

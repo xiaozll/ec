@@ -85,7 +85,7 @@ public class SecurityUtils {
                 }
             }
             if (userId == null) {
-                logger.warn("用户不存在.");
+                logger.debug("用户不存在.");
                 return false;
             }
 
@@ -132,7 +132,7 @@ public class SecurityUtils {
                 }
             }
             if (userId == null) {
-                logger.warn("用户不存在.");
+                logger.debug("用户不存在.");
                 return false;
             }
 

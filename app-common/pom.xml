@@ -11,7 +11,7 @@
     <artifactId>ec-app-common</artifactId>
     <version>${ec-app-common.version}</version>
     <packaging>jar</packaging>
-    <name>app-common</name>
+    <name>ec-app-common</name>
     <description>web</description>
 
     <properties>

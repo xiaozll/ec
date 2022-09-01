@@ -31,6 +31,7 @@ public class SystemInitListener extends DefaultSystemInitListener{
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInitListener.class);
 
+	private static Endpoint endpoint;
 	/**
 	 * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
 	 */
@@ -57,7 +58,7 @@ public class SystemInitListener extends DefaultSystemInitListener{
 		if(StringUtils.isNotBlank(webServiceUrl)){
 			logger.info("WebService发布...");
 			try {
-				Endpoint.publish(webServiceUrl, Static.apiWebService);
+				endpoint = Endpoint.publish(webServiceUrl, Static.apiWebService);
 			} catch (Exception e) {
 				logger.error("WebService发布失败，"+e.getMessage(),e);
 			}
@@ -79,6 +80,14 @@ public class SystemInitListener extends DefaultSystemInitListener{
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
+		if(null != endpoint) {
+			try {
+				endpoint.stop();
+				logger.error("WebService 已停止服务！");
+			} catch (Exception e) {
+				logger.error("WebService 停止服务失败，" + e.getMessage(), e);
+			}
+		}
 		super.contextDestroyed(sce);
 	}
 

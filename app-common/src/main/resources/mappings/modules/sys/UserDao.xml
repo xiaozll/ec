@@ -244,7 +244,7 @@
         </choose>
     </select>
 
-    <select id="findAllList" resultType="User">
+    <select id="findAllList" resultType="User" useCache="false">
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a

@@ -164,7 +164,7 @@
         </choose>
     </select>
 
-    <select id="findAllList" resultType="Organ">
+    <select id="findAllList" resultType="Organ" useCache="false">
         SELECT
         <include refid="organColumns"/>
         FROM t_sys_organ a
@@ -230,7 +230,7 @@
     </select>
 
 
-    <select id="findOwnerAndChilds" resultType="Organ">
+    <select id="findOwnerAndChilds" resultType="Organ" useCache="false">
         SELECT
         <include refid="organColumns"/>
         FROM t_sys_organ a
@@ -281,7 +281,7 @@
         ORDER BY a.sort ASC
     </select>
 
-    <select id="findChild" resultType="Organ">
+    <select id="findChild" resultType="Organ" useCache="false">
         SELECT
         <include refid="organColumns"/>
         FROM t_sys_organ a

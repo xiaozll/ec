@@ -170,7 +170,7 @@
     </select>
 
 
-    <select id="findQuery" resultType="Resource">
+    <select id="findQuery" resultType="Resource" useCache="false">
         SELECT
         <include refid="resourceColumns"/>
         FROM t_sys_resource a
@@ -296,7 +296,7 @@
     </select>
 
 
-    <select id="findAuthorityResourcesByUserId" resultType="Resource">
+    <select id="findAuthorityResourcesByUserId" resultType="Resource" useCache="false">
         SELECT
         DISTINCT
         <include refid="resourceColumns"/>

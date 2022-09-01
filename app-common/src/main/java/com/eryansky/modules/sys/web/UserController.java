@@ -107,14 +107,14 @@ public class UserController extends SimpleController {
     @RequestMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<User> datagrid(String organId, String query, String userType) {
-        Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(organId)) {
             organId = (sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()) ? sessionInfo.getLoginHomeCompanyId():sessionInfo.getLoginOrganId();
         }
 
         page = userService.findPage(page, organId, query, userType);
-        Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
+        Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
         return dg;
     }
 

@@ -172,6 +172,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             return null;
         }
         Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_DELETE);
         parameter.put("id", id);
         parameter.put("code", code);
         return dao.getDeleteByIdOrCode(parameter);

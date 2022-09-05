@@ -7,6 +7,7 @@ package com.eryansky.core.orm.mybatis.service;
 
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.persistence.PCrudDao;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.PBaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.orm.mybatis.entity.PDataEntity;
@@ -106,6 +107,28 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 	 */
 	public int insertBatch(List<T> list){
 		return dao.insertBatch(list);
+	}
+
+	/**
+	 * 保存数据（批量拆分插入） 每次限定100条
+	 *
+	 * @param list
+	 */
+	public void insertAutoBatch(List<T> list) {
+		insertAutoBatch(list, null);
+	}
+
+	/**
+	 * 保存数据（批量拆分插入）
+	 *
+	 * @param list
+	 * @param group 分组大小，默认值：100
+	 */
+	public void insertAutoBatch(List<T> list, Integer group) {
+		List<List<T>> groupList = Collections3.fixedGrouping(list, null != group ? group : 100);
+		for (List<T> fixedGroup : groupList) {
+			dao.insertBatch(fixedGroup);
+		}
 	}
 
 	/**

@@ -7,12 +7,15 @@ package com.eryansky.core.orm.mybatis.service;
 
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.persistence.CrudDao;
+import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service基类
@@ -107,6 +110,29 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 	public int insertBatch(List<T> list){
 		return dao.insertBatch(list);
 	}
+
+	/**
+	 * 保存数据（批量拆分插入） 每次限定100条
+	 *
+	 * @param list
+	 */
+	public void insertAutoBatch(List<T> list) {
+		insertAutoBatch(list, null);
+	}
+
+	/**
+	 * 保存数据（批量拆分插入）
+	 *
+	 * @param list
+	 * @param group 分组大小，默认值：100
+	 */
+	public void insertAutoBatch(List<T> list, Integer group) {
+		List<List<T>> groupList = Collections3.fixedGrouping(list, null != group ? group : 100);
+		for (List<T> fixedGroup : groupList) {
+			dao.insertBatch(fixedGroup);
+		}
+	}
+
 
 	/**
 	 * 删除数据（逻辑删除）

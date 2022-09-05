@@ -229,7 +229,8 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
             });
         }
         noticeReceiveInfoService.deleteByNoticeId(notice.getId());
-        receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
+//        receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
+        noticeReceiveInfoService.insertAutoBatch(receiveInfos);
         return notice;
     }
 
@@ -300,6 +301,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
 
         }
         if (!flag) {
+            receiveInfo.prePersist();
             receiveInfos.add(receiveInfo);
         }
 

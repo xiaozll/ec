@@ -221,6 +221,39 @@
         #{userId}
         )
     </insert>
+    <insert id="insertBatch">
+        INSERT INTO t_notice_contact_group(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        CONTACT_GROUP_TYPE,
+        IS_DEFAULT,
+        NAME,
+        sort,
+        ORIGIN_USER_ID,
+        REMARK,
+        USER_ID
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.contactGroupType},
+        #{item.isDefault},
+        #{item.name},
+        #{item.sort},
+        #{item.originUserId},
+        #{item.remark},
+        #{item.userId}
+        )</foreach>
+    </insert>
 
     <update id="update">
         UPDATE t_notice_contact_group SET

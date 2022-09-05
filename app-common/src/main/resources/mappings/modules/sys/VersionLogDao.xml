@@ -253,6 +253,45 @@
         #{fileId}
         )
 	</insert>
+	<insert id="insertBatch">
+		INSERT INTO t_sys_version_log(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        APP,
+        VERSION_LOG_TYPE,
+        VERSION_CODE,
+        VERSION_NAME,
+        IS_PUB,
+        is_tip,
+        is_shelf,
+        PUB_TIME,
+        REMARK,
+        FILE_ID
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.app},
+        #{item.versionLogType},
+        #{item.versionCode},
+        #{item.versionName},
+        #{item.isPub},
+        #{item.isTip},
+        #{item.isShelf},
+        #{item.pubTime},
+        #{item.remark},
+        #{item.fileId}
+		)</foreach>
+	</insert>
 
 	<update id="update">
 		UPDATE t_sys_version_log SET

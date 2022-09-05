@@ -122,6 +122,20 @@
 		)
 	</insert>
 
+	<insert id="insertBatch">
+		INSERT INTO t_sys_config(
+			id,
+			code,
+			value,
+			remark
+		) VALUES <foreach collection="list" item="item" separator=",">(
+					 #{item.id},
+					 #{item.code},
+					 #{item.value},
+					 #{item.remark}
+		)</foreach>
+	</insert>
+
 	<update id="update">
 		UPDATE t_sys_config SET
 			code = #{code},

@@ -149,7 +149,8 @@ public class MessageService extends CrudService<MessageDao, Message> {
             if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
                 targetIds.add(objectId);
             } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
-                targetIds = userService.findUsersLoginNamesByOrganId(objectId);
+//                targetIds = userService.findUsersLoginNamesByOrganId(objectId);
+                targetIds = userService.findUserIdsByOrganId(objectId);
             } else if (MessageReceiveObjectType.Member.equals(messageReceiveObjectType)) {
                 targetIds.add(objectId);
 
@@ -158,13 +159,15 @@ public class MessageService extends CrudService<MessageDao, Message> {
                 MessageReceive messageReceive = new MessageReceive(message.getId());
                 messageReceive.setUserId(targetId);
                 messageReceive.setIsRead(YesOrNo.NO.getValue());
-                messageReceiveService.save(messageReceive);
+                messageReceive.prePersist();
+//                messageReceiveService.save(messageReceive);
                 messageReceives.add(messageReceive);
             }
         }
+        message.setMessageReceives(messageReceives);
+        messageReceiveService.insertAutoBatch(messageReceives);
         message.setBizMode(MessageMode.Published.getValue());
         this.save(message);
-        message.setMessageReceives(messageReceives);
         return message;
     }
 }

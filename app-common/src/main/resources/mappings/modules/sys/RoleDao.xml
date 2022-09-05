@@ -208,6 +208,42 @@
         )
     </insert>
 
+    <insert id="insertBatch">
+        INSERT INTO t_sys_role(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        NAME,
+        CODE,
+        ORGAN_ID,
+        IS_SYSTEM,
+        IS_ACTIVITY,
+        ROLE_TYPE,
+        DATA_SCOPE,
+        REMARK
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.name},
+        #{item.code},
+        #{item.organId},
+        #{item.isSystem},
+        #{item.isActivity},
+        #{item.roleType},
+        #{item.dataScope},
+        #{item.remark}
+        )</foreach>
+    </insert>
+
     <update id="update">
         UPDATE t_sys_role SET
         status = #{status},

@@ -620,6 +620,59 @@
         #{remark}
         )
     </insert>
+    <insert id="insertBatch">
+        INSERT INTO t_sys_organ(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        NAME,
+        SHORT_NAME,
+        TYPE,
+        CODE,
+        SYS_CODE,
+        ADDRESS,
+        MOBILE,
+        PHONE,
+        FAX,
+        MANAGER_USER_ID,
+        DEPUTY_MANAGER_USER_ID,
+        SUPER_MANAGER_USER_ID,
+        sort,
+        PARENT_ID,
+        PARENT_IDS,
+        AREA_ID,
+        remark
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.name},
+        #{item.shortName},
+        #{item.type},
+        #{item.code},
+        #{item.sysCode},
+        #{item.address},
+        #{item.mobile},
+        #{item.phone},
+        #{item.fax},
+        #{item.managerUserId},
+        #{item.deputyManagerUserId},
+        #{item.superManagerUserId},
+        #{item.sort},
+        #{item.parentId},
+        #{item.parentIds},
+        #{item.areaId},
+        #{item.remark}
+        )</foreach>
+    </insert>
 
     <update id="update">
         UPDATE t_sys_organ SET

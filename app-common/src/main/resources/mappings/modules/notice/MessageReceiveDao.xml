@@ -167,6 +167,23 @@
 		#{readTime}
 		)
 	</insert>
+	<insert id="insertBatch">
+		INSERT INTO t_notice_message_receive(
+		id,
+		message_id,
+		user_id,
+		is_send,
+		is_read,
+		read_time
+		) VALUES <foreach collection="list" item="item" separator=",">(
+		#{item.id},
+		#{item.messageId},
+		#{item.userId},
+		#{item.isSend},
+		#{item.isRead},
+		#{item.readTime}
+		)</foreach>
+	</insert>
 
 	<update id="update">
 		UPDATE t_notice_message_receive SET

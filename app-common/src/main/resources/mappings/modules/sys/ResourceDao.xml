@@ -394,6 +394,46 @@
         )
     </insert>
 
+    <insert id="insertBatch">
+        INSERT INTO t_sys_resource(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        NAME,
+        CODE,
+        URL,
+        sort,
+        ICON_CLS,
+        ICON,
+        MARK_URL,
+        TYPE,
+        PARENT_ID,
+        PARENT_IDS
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.name},
+        #{item.code},
+        #{item.url},
+        #{item.sort},
+        #{item.iconCls},
+        #{item.icon},
+        #{item.markUrl},
+        #{item.type},
+        #{item.parentId},
+        #{item.parentIds}
+        )</foreach>
+    </insert>
+
     <update id="update">
         UPDATE t_sys_resource SET
         status = #{status},

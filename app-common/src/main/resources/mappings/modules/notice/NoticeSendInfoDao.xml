@@ -125,6 +125,20 @@
 		)
 	</insert>
 
+	<insert id="insertBatch">
+		INSERT INTO t_notice_send_info(
+		id,
+		notice_id,
+		receive_object_type,
+		receive_object_id
+		) VALUES <foreach collection="list" item="item" separator=",">(
+		#{item.id},
+		#{item.noticeId},
+		#{item.receiveObjectType},
+		#{item.receiveObjectId}
+		)</foreach>
+	</insert>
+
 	<update id="update">
 		UPDATE t_notice_send_info SET
 		notice_id = #{noticeId},

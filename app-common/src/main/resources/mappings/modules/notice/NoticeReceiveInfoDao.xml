@@ -222,6 +222,32 @@
 		)
 	</insert>
 
+	<insert id="insertBatch">
+		INSERT INTO t_notice_receive_info(
+		id,
+		notice_id,
+		user_id,
+		is_send,
+		is_read,
+		read_time,
+		is_reply,
+		reply_time,
+		reply_content,
+		reply_file_ids
+		) VALUES <foreach collection="list" item="item" separator=",">(
+		#{item.id},
+		#{item.noticeId},
+		#{item.userId},
+		#{item.isSend},
+		#{item.isRead},
+		#{item.readTime},
+		#{item.isReply},
+		#{item.replyTime},
+		#{item.replyContent},
+		#{item.replyFileIds}
+		)</foreach>
+	</insert>
+
 
 	<update id="updateReadById">
 		UPDATE t_notice_receive_info SET

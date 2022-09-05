@@ -234,7 +234,48 @@
 			#{tipMessage}
 		)
 	</insert>
-	
+	<insert id="insertBatch">
+		INSERT INTO t_notice_message(
+			id,
+			status,
+			version,
+			create_user,
+			create_time,
+			update_user,
+			update_time,
+			app_id,
+			category,
+			title,
+			url,
+			image,
+			content,
+			biz_mode,
+			sender,
+			send_time,
+			organ_id,
+			tip_message
+		) VALUES <foreach collection="list" item="item" separator=",">(
+			#{item.id},
+			#{item.status},
+			0,
+			#{item.createUser},
+			#{item.createTime},
+			#{item.updateUser},
+			#{item.updateTime},
+			#{item.appId},
+			#{item.category},
+			#{item.title},
+			#{item.url},
+			#{item.image},
+			#{item.content},
+			#{item.bizMode},
+			#{item.sender},
+			#{item.sendTime},
+			#{item.organId},
+			#{item.tipMessage}
+		)</foreach>
+	</insert>
+
 	<update id="update">
 		UPDATE t_notice_message SET
 			status = #{status},

@@ -123,6 +123,43 @@
 		#{remark}
 		)
 	</insert>
+	<insert id="insertBatch">
+		INSERT INTO t_sys_serial_number(
+		id,
+		status,
+		version,
+		create_user,
+		create_time,
+		update_user,
+		update_time,
+		app,
+		module_name,
+		module_code,
+		config_template,
+		max_serial,
+		reset_type,
+		is_auto_increment,
+		pre_max_num,
+		remark
+		) VALUES <foreach collection="list" item="item" separator=",">(
+		#{item.id},
+		#{item.status},
+		0,
+		#{item.createUser},
+		#{item.createTime},
+		#{item.updateUser},
+		#{item.updateTime},
+		#{item.app},
+		#{item.moduleName},
+		#{item.moduleCode},
+		#{item.configTemplate},
+		#{item.maxSerial},
+		#{item.resetType},
+		#{item.isAutoIncrement},
+		#{item.preMaxNum},
+		#{item.remark}
+		)</foreach>
+	</insert>
 
 	<update id="update">
 		UPDATE t_sys_serial_number SET

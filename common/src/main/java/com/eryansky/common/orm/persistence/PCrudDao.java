@@ -73,6 +73,13 @@ public interface PCrudDao<T,PK extends Serializable> extends BaseDao {
 	 * @return
 	 */
 	int insert(T entity);
+
+	/**
+	 * 批量插入数据
+	 * @param list
+	 * @return
+	 */
+	int insertBatch(List<T> list);
 	
 	/**
 	 * 更新数据

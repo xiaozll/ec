@@ -101,6 +101,14 @@ public abstract class PCrudService<D extends PCrudDao<T,PK>, T extends PBaseEnti
 	}
 
 	/**
+	 * 保存数据（批量插入）
+	 * @param list
+	 */
+	public int insertBatch(List<T> list){
+		return dao.insertBatch(list);
+	}
+
+	/**
 	 * 删除数据（逻辑删除）
 	 * @param entity
 	 */

@@ -984,6 +984,68 @@
         )
     </insert>
 
+
+    <insert id="insertBatch">
+        INSERT INTO t_sys_user(
+            id,
+            status,
+            version,
+            create_user,
+            create_time,
+            update_user,
+            update_time,
+            LOGIN_NAME,
+            CODE,
+            ORIGINAL_PASSWORD,
+            PASSWORD,
+            NAME,
+            SEX,
+            BIRTHDAY,
+            PHOTO,
+            EMAIL,
+            PERSON_EMAIL,
+            MOBILE,
+            TEL,
+            QQ,
+            ADDRESS,
+            DEFAULT_ORGAN_ID,
+            sort,
+            USER_TYPE,
+            REMARK,
+            weixin
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.status},
+            1,
+            #{item.createUser},
+            #{item.createTime},
+            #{item.updateUser},
+            #{item.updateTime},
+            #{item.loginName},
+            #{item.code},
+            #{item.originalPassword},
+            #{item.password},
+            #{item.name},
+            #{item.sex},
+            #{item.birthday},
+            #{item.photo},
+            #{item.email},
+            #{item.personEmail},
+            #{item.mobile},
+            #{item.tel},
+            #{item.qq},
+            #{item.address},
+            #{item.defaultOrganId},
+            #{item.sort},
+            #{item.userType},
+            #{item.remark},
+            #{item.weixin}
+            )
+        </foreach >
+    </insert>
+
     <update id="update">
         UPDATE t_sys_user SET
         status = #{status},

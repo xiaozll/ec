@@ -1013,9 +1013,7 @@
             USER_TYPE,
             REMARK,
             weixin
-        ) VALUES
-        <foreach collection="list" item="item" separator=",">
-            (
+        ) VALUES <foreach collection="list" item="item" separator=",">(
             #{item.id},
             #{item.status},
             1,
@@ -1042,8 +1040,7 @@
             #{item.userType},
             #{item.remark},
             #{item.weixin}
-            )
-        </foreach >
+            )</foreach >
     </insert>
 
     <update id="update">

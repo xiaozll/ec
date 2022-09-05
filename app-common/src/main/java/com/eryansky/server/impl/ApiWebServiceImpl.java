@@ -113,20 +113,44 @@ public class ApiWebServiceImpl implements IApiWebService {
                 senderUser = Static.userService.getSuperUser();
             }
 
+            MessageReceiveObjectType messageReceiveObjectType = MessageReceiveObjectType.getByValue(_receiveType);
+            if(null == messageReceiveObjectType){
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "参数[receiveType]异常："+receiveType);
+            }
 
             List<String> receiveObjectIds = new ArrayList<>();
-            for (String localLoginName : receiveIds) {
-                User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
-                if (receiveUser == null) {
-                    logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
+            if(MessageReceiveObjectType.User.equals(messageReceiveObjectType)){
+                for (String localLoginName : receiveIds) {
+                    User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
+                    if (receiveUser == null) {
+                        logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
+                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
+                    }
+                    receiveObjectIds.add(receiveUser.getId());
                 }
-                receiveObjectIds.add(receiveUser.getId());
+            }else if(MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)){
+                for (String companyCode : receiveIds) {
+                    Organ company = Static.organService.getByIdOrCode(companyCode);
+                    if (company == null) {
+                        logger.error("机构[" + companyCode + "],统一平台无相关账号信息");
+                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
+                    }
+                    List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());
+                    if(Collections3.isNotEmpty(organList)){
+                        receiveObjectIds.addAll(organList);
+                    }
+                    if(!receiveObjectIds.contains(company.getId())){
+                        receiveObjectIds.add(company.getId());
+                    }
+                }
+            }else {
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "参数[receiveType]异常："+receiveType);
             }
+
 
             //微信发送消息
             try {
-                MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, MessageReceiveObjectType.getByValue(_receiveType), receiveObjectIds,sendTime,messageChannels);
+                MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, messageReceiveObjectType, receiveObjectIds,sendTime,messageChannels);
                 return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功");
             } catch (Exception e) {
                 return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息发送失败");
@@ -211,7 +235,7 @@ public class ApiWebServiceImpl implements IApiWebService {
                 senderUser = Static.userService.getSuperUser();
             }
 
-            List<String> organIds = new ArrayList<String>();
+            List<String> organIds = new ArrayList<>();
             for (String companyCode : receiveIds) {
                 Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {

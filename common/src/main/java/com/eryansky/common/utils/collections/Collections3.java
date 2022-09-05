@@ -341,7 +341,7 @@ public class Collections3 {
 
 		if (null == source || source.size() == 0 || n <= 0)
 			return null;
-		List<List<T>> result = new ArrayList<List<T>>();
+		List<List<T>> result = new ArrayList<>();
 
 		int sourceSize = source.size();
 		int size = (sourceSize % n) == 0 ? (sourceSize / n) : ((source.size() / n) + 1);

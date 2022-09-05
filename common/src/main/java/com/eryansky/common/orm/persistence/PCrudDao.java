@@ -8,6 +8,7 @@ package com.eryansky.common.orm.persistence;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -79,7 +80,7 @@ public interface PCrudDao<T,PK extends Serializable> extends BaseDao {
 	 * @param list
 	 * @return
 	 */
-	int insertBatch(List<T> list);
+	int insertBatch(Collection<T> list);
 	
 	/**
 	 * 更新数据

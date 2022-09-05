@@ -11,9 +11,11 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.google.common.collect.Lists;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -107,7 +109,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 	 * 保存数据（批量插入）
 	 * @param list
 	 */
-	public int insertBatch(List<T> list){
+	public int insertBatch(Collection<T> list){
 		return dao.insertBatch(list);
 	}
 
@@ -116,7 +118,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 	 *
 	 * @param list
 	 */
-	public void insertAutoBatch(List<T> list) {
+	public void insertAutoBatch(Collection<T> list) {
 		insertAutoBatch(list, null);
 	}
 
@@ -126,8 +128,8 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 	 * @param list
 	 * @param group 分组大小，默认值：100
 	 */
-	public void insertAutoBatch(List<T> list, Integer group) {
-		List<List<T>> groupList = Collections3.fixedGrouping(list, null != group ? group : 100);
+	public void insertAutoBatch(Collection<T> list, Integer group) {
+		List<List<T>> groupList = Collections3.fixedGrouping(Lists.newArrayList(list), null != group ? group : 100);
 		for (List<T> fixedGroup : groupList) {
 			dao.insertBatch(fixedGroup);
 		}

@@ -7,6 +7,7 @@ package com.eryansky.common.orm.persistence;
 
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -79,7 +80,7 @@ public interface CrudDao<T> extends BaseDao {
 	 * @param list
 	 * @return
 	 */
-	int insertBatch(List<T> list);
+	int insertBatch(Collection<T> list);
 
 	/**
 	 * 更新数据

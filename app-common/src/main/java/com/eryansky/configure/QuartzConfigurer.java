@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @AutoConfigureAfter({ QuartzAutoConfiguration.class})
-public class QuartzConfigure {
+public class QuartzConfigurer {
 
 
     @Bean

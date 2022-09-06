@@ -31,7 +31,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import java.util.*;
 
 @Configuration
-public class MvcConfigure implements WebMvcConfigurer {
+public class MvcConfigurer implements WebMvcConfigurer {
 
    @Lazy
    @Autowired

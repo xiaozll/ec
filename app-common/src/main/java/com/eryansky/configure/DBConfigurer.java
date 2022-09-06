@@ -30,7 +30,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.interceptor.*;
@@ -46,9 +45,9 @@ import java.util.Properties;
  * @date 2019-01-23
  */
 @Configuration
-public class DBConfigure {
+public class DBConfigurer {
 
-    private static Logger logger = LoggerFactory.getLogger(DBConfigure.class);
+    private static Logger logger = LoggerFactory.getLogger(DBConfigurer.class);
 
     public static final String TX_MANAGER_NAME = "transactionManager";
 

@@ -163,7 +163,7 @@ public class AppConstants extends SysConstants {
      */
     public static int getLogKeepTime() {
         String code = "system.logKeepTime";
-        return Integer.valueOf(getConfigValue(code, "30"));
+        return Integer.parseInt(getConfigValue(code, "30"));
     }
 
     /**
@@ -599,6 +599,16 @@ public class AppConstants extends SysConstants {
      */
     public static String getAppProductContact() {
         String code = "app.productContact";
+        return getConfigValue(code);
+    }
+
+
+    /**
+     * 客服链接
+     * @return
+     */
+    public static String getAppProductContactUrl() {
+        String code = "app.productContactUrl";
         return getConfigValue(code);
     }
 

@@ -223,7 +223,7 @@
                     AND a.login_name = #{loginName}
                 </when>
                 <when test="mobile != null and mobile !=''">
-                    AND a.code = #{code}
+                    AND a.mobile = #{mobile}
                 </when>
                 <otherwise>
                     <![CDATA[ 1 <> 1 ]]>

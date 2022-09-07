@@ -190,13 +190,47 @@
         FROM t_sys_user a
         <where>
             a.status = #{status}
-            AND a.login_name = #{loginName}
-            <if test="code != null and code !=''">
-                OR a.code = #{code}
-            </if>
+            <choose>
+                <when test="loginName != null and loginName !='' and code != null and code !=''">
+                    AND (a.login_name = #{loginName} OR a.code = #{code})
+                </when>
+                <when test="loginName != null and loginName">
+                    AND a.login_name = #{loginName}
+                </when>
+                <when test="code != null and code !=''">
+                    AND a.code = #{code}
+                </when>
+                <otherwise>
+                    <![CDATA[ 1 <> 1 ]]>
+                </otherwise>
+            </choose>
         </where>
     </select>
 
+    <select id="findByLoginNameOrMobile" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            <choose>
+                <when test="loginName != null and loginName !='' and mobile != null and mobile !=''">
+                    AND (a.login_name = #{loginName} OR a.mobile = #{mobile})
+                </when>
+                <when test="loginName != null and loginName">
+                    AND a.login_name = #{loginName}
+                </when>
+                <when test="mobile != null and mobile !=''">
+                    AND a.code = #{code}
+                </when>
+                <otherwise>
+                    <![CDATA[ 1 <> 1 ]]>
+                </otherwise>
+            </choose>
+        </where>
+    </select>
 
 
     <select id="findLoginUser" resultType="User">

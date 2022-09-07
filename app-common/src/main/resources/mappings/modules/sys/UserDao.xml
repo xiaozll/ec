@@ -139,6 +139,19 @@
         </where>
     </select>
 
+
+    <select id="getUserByLoginNameOrMobile" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            AND (a.login_name = #{loginNameOrMobile} OR a.mobile = #{loginNameOrMobile})
+        </where>
+    </select>
+
     <select id="findByCode" resultType="User">
         SELECT
         <include refid="userColumns"/>

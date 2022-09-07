@@ -85,6 +85,20 @@ public class UserUtils {
 
 
     /**
+     * 根据登录名或手机号查找用户
+     *
+     * @param loginNameOrMobile 登录名或手机号
+     * @return
+     */
+    public static User getUserByLoginNameOrMobile(String loginNameOrMobile) {
+        if (StringUtils.isNotBlank(loginNameOrMobile)) {
+            return Static.userService.getUserByLoginNameOrMobile(loginNameOrMobile);
+        }
+        return null;
+    }
+
+
+    /**
      * 根据ID或手机号查找用户
      *
      * @param idOrMobile ID、账号或手机号

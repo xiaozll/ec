@@ -353,6 +353,36 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.getUserByIdOrLoginName(parameter);
     }
 
+    /**
+     * 根据登录名或手机号查找.
+     *
+     * @param loginNameOrMobile 登录名或手机号
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLoginNameOrMobile(String loginNameOrMobile) {
+        return getUserByLoginNameOrMobile(loginNameOrMobile, DataEntity.STATUS_NORMAL);
+    }
+
+
+    /**
+     * 根据登录名或手机号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param loginNameOrMobile 登录名或手机号
+     * @param status
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLoginNameOrMobile(String loginNameOrMobile, String status) {
+        Assert.notNull(loginNameOrMobile, "参数[loginNameOrMobile]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("loginNameOrMobile", loginNameOrMobile);
+        return dao.getUserByLoginNameOrMobile(parameter);
+    }
+
 
     /**
      * 根据ID或手机号名名查找.

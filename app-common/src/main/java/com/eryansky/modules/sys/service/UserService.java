@@ -383,6 +383,18 @@ public class UserService extends CrudService<UserDao, User> {
         return dao.getUserByLoginNameOrMobile(parameter);
     }
 
+    /**
+     * 根据登录名或手机号查找.
+     *
+     * @param loginName 登录名
+     * @param mobile 手机号
+     * @return
+     */
+    public User getUserByLoginNameOrMobileOther(String loginName,String mobile) {
+        List<User> list =  findByLoginNameOrMobile(loginName, mobile);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
 
     /**
      * 根据ID或手机号名名查找.

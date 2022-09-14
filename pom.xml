@@ -37,13 +37,13 @@
         <spring-boot.version>2.7.3</spring-boot.version>
         <spring-integration-redis.version>5.5.14</spring-integration-redis.version>
         <logback.version>7.2</logback.version>
-        <byte-buddy.version>1.12.14</byte-buddy.version>
+        <byte-buddy.version>1.12.16</byte-buddy.version>
 
         <tomcat.version>9.0.65</tomcat.version>
 
         <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
         <commons-pool2.version>2.11.1</commons-pool2.version>
-        <druid-version>1.2.11</druid-version>
+        <druid-version>1.2.12</druid-version>
         <mariadb.driver.version>3.0.7</mariadb.driver.version>
         <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>
         <db2.driver.version>10.1</db2.driver.version>
@@ -53,12 +53,12 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20220818.21</ec-common.version>
-        <ec-app-common.version>4.2.20220818.21</ec-app-common.version>
-        <ec-client-common.version>4.2.20220818.21</ec-client-common.version>
-        <ec-j2cache.version>4.2.20220818.21</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20220818.21</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20220818.21</ec-fastweixin.version>
+        <ec-common.version>4.2.20220818.22</ec-common.version>
+        <ec-app-common.version>4.2.20220818.22</ec-app-common.version>
+        <ec-client-common.version>4.2.20220818.22</ec-client-common.version>
+        <ec-j2cache.version>4.2.20220818.22</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20220818.22</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20220818.22</ec-fastweixin.version>
 
         <jackson.version>2.13.3</jackson.version>
         <springfox.version>3.0.0</springfox.version>

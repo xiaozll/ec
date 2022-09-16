@@ -386,10 +386,6 @@ public class LoginController extends SimpleController {
         if (StringUtils.isNotBlank(theme) && (theme.equals("app") || theme.equals("index"))) {
             return "layout/" + theme;
         } else {
-            String queue = "queue.default";
-//            CacheUtils.getCacheChannel().queuePush(queue,"01");
-            System.out.println(JsonMapper.toJsonString(CacheUtils.getCacheChannel().queueList(queue)));
-
             return "layout/index";
         }
     }

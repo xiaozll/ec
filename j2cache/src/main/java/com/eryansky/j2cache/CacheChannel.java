@@ -15,6 +15,7 @@
  */
 package com.eryansky.j2cache;
 
+import com.eryansky.j2cache.caffeine.CaffeineProvider;
 import com.eryansky.j2cache.lock.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -924,6 +925,22 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			queue.clear();
         }
 	}
+
+	/**
+	 * 队列 key列表
+	 * @return
+	 */
+	public Collection<Region> queues() {
+		assertNotClose();
+		return holder.queues();
+//		Level2Cache level2Cache = holder.getLevel2Cache(CaffeineProvider.QUEUE_DEFAULT);
+//		if(!(level2Cache instanceof NullCache)){
+//			return holder.queues();
+//		}else{
+//			return mQueueMap.keySet().stream().map(v->new Region(v,-1,-1)).collect(Collectors.toList());
+//		}
+	}
+
 
 	/**
 	 * 锁定对象（自动释放锁）

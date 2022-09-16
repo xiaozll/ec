@@ -2,6 +2,8 @@ package com.eryansky.core.excels;
 
 import com.eryansky.common.utils.io.IoUtils;
 import com.eryansky.common.web.utils.WebUtils;
+import org.apache.poi.hpsf.DocumentSummaryInformation;
+import org.apache.poi.hpsf.SummaryInformation;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.ClientAnchor;
@@ -419,6 +421,7 @@ public class JsGridReportBase {
             throws Exception {
 
         HSSFWorkbook wb = new HSSFWorkbook();// 创建新的Excel 工作簿
+        createDocumentInfo(wb,title,creator);
 
         HashMap<String, HSSFCellStyle> styles = initStyles(wb);// 根据模板文件，初始化表头样式
 
@@ -431,6 +434,33 @@ public class JsGridReportBase {
             response.setHeader("Content-Type", "application/vnd.ms-excel");
         }
         wb.write(null != response ? response.getOutputStream() : out);
+    }
+
+    /**
+     * 创建文档信息
+     *
+     * @param hssfWorkbook Excel工作簿
+     */
+    private void createDocumentInfo(HSSFWorkbook hssfWorkbook,String title,String author) {
+        //创建文档信息
+        hssfWorkbook.createInformationProperties();
+        //摘要信息
+        DocumentSummaryInformation information = hssfWorkbook.getDocumentSummaryInformation();
+        //设置类别
+        information.setCategory("");
+        //设置文档管理者名称
+        information.setManager(author);
+        //设置公司
+        information.setCompany("");
+        SummaryInformation summaryInformation = hssfWorkbook.getSummaryInformation();
+        //作者
+        summaryInformation.setAuthor(author);
+        //备注
+        summaryInformation.setComments("");
+        //主题
+        summaryInformation.setSubject("");
+        //标题
+        summaryInformation.setTitle(title);
     }
 
     /**

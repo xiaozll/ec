@@ -13,7 +13,6 @@
     <version>${ec-j2cache.version}</version>
     <packaging>jar</packaging>
     <properties>
-        <ehcache.version>2.10.9.2</ehcache.version>
         <caffeine.version>2.9.3</caffeine.version>
         <jedis.version>2.10.2</jedis.version>
         <lettuce.version>6.1.9.RELEASE</lettuce.version>
@@ -30,13 +29,6 @@
 
     <dependencies>
         <!--Cache-->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>

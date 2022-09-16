@@ -15,6 +15,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.servlet.ValidateCodeServlet;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
@@ -385,6 +386,10 @@ public class LoginController extends SimpleController {
         if (StringUtils.isNotBlank(theme) && (theme.equals("app") || theme.equals("index"))) {
             return "layout/" + theme;
         } else {
+            String queue = "queue.default";
+//            CacheUtils.getCacheChannel().queuePush(queue,"01");
+            System.out.println(JsonMapper.toJsonString(CacheUtils.getCacheChannel().queueList(queue)));
+
             return "layout/index";
         }
     }

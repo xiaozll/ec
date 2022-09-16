@@ -16,6 +16,7 @@
 package com.eryansky.j2cache;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -69,6 +70,14 @@ public interface CacheProvider {
 	 * @return all regions name
 	 */
 	Collection<CacheChannel.Region> regions();
+
+	/**
+	 * Return all channels defined in first level cache
+	 * @return all regions name
+	 */
+	default Collection<CacheChannel.Region> queues(){
+		return Collections.emptyList();
+	};
 
 	/**
 	 * Callback to perform any necessary initialization of the underlying cache implementation

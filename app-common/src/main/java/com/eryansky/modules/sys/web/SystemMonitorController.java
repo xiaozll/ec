@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -267,6 +268,69 @@ public class SystemMonitorController extends SimpleController {
         }
         return "modules/sys/systemMonitor-log";
     }
+
+    /**
+     * 系统监控-缓存管理
+     *
+     * @return
+     */
+    @RequiresPermissions("sys:systemMonitor:view")
+    @Logging(value = "系统监控-队列管理", logType = LogType.access, logging = "!#isAjax")
+    @RequestMapping("queue")
+    public String queue(HttpServletRequest request, Model uiModel, HttpServletResponse response) {
+        Page<Map<String, Object>> page = new Page<>(request, response);
+        if (WebUtils.isAjaxRequest(request)) {
+            Collection<CacheChannel.Region> regions = CacheUtils.getCacheChannel().queues();
+            List<CacheChannel.Region> list = AppUtils.getPagedList(Collections3.union(regions, Collections.emptyList()), page.getPageNo(), page.getPageSize());
+            List<Map<String, Object>> dataList = Lists.newArrayList();
+            for (CacheChannel.Region r : list) {
+                Map<String, Object> map = Maps.newHashMap();
+                map.put("name", r.getName());
+                map.put("size", r.getSize());
+                map.put("keys", CacheUtils.getCacheChannel().queueList(r.getName()).size());
+                dataList.add(map);
+            }
+            page.setTotalCount(regions.size());
+            page.setResult(dataList);
+            return renderString(response, page);
+        }
+        uiModel.addAttribute("page", page);
+        return "modules/sys/systemMonitor-queue";
+    }
+
+
+    @RequiresPermissions("sys:systemMonitor:view")
+    @Logging(value = "系统监控-队列管理:队列数据", logType = LogType.access, logging = "!#isAjax")
+    @RequestMapping("queueDetail")
+    public String queueDetail(HttpServletRequest request, Model uiModel, String region, HttpServletResponse response) {
+        Collection<String> queueList = CacheUtils.getCacheChannel().queueList(region);
+        uiModel.addAttribute("region", region);
+        uiModel.addAttribute("data", JsonMapper.toJsonString(queueList));
+        return "modules/sys/systemMonitor-queueDetail";
+    }
+
+    @RequiresPermissions("sys:systemMonitor:edit")
+    @Logging(value = "系统监控-队列管理:清空队列", logType = LogType.access, logging = "!#isAjax")
+    @RequestMapping("queueClear")
+    @ResponseBody
+    public Result queueClear(HttpServletRequest request,String region, HttpServletResponse response) {
+        CacheUtils.getCacheChannel().queueClear(region);
+        return  Result.successResult();
+    }
+
+
+    @RequiresPermissions("sys:systemMonitor:edit")
+    @Logging(value = "系统监控-队列管理:清空队列", logType = LogType.access, logging = "!#isAjax")
+    @RequestMapping("clearAllQueue")
+    public String clearAllQueue(HttpServletRequest request,RedirectAttributes redirectAttributes,HttpServletResponse response) {
+        Collection<CacheChannel.Region> regions = CacheUtils.getCacheChannel().queues();
+        for (CacheChannel.Region r : regions) {
+            CacheUtils.getCacheChannel().queueClear(r.getName());
+        }
+        addMessage(redirectAttributes, "操作成功！");
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemMonitor/queue?repage";
+    }
+
 
     /**
      * 动态获取日志文件所在路径

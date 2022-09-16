@@ -53,12 +53,12 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20220818.24</ec-common.version>
-        <ec-app-common.version>4.2.20220818.24</ec-app-common.version>
-        <ec-client-common.version>4.2.20220818.24</ec-client-common.version>
-        <ec-j2cache.version>4.2.20220818.24</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20220818.24</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20220818.24</ec-fastweixin.version>
+        <ec-common.version>4.2.20220818.25</ec-common.version>
+        <ec-app-common.version>4.2.20220818.25</ec-app-common.version>
+        <ec-client-common.version>4.2.20220818.25</ec-client-common.version>
+        <ec-j2cache.version>4.2.20220818.25</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20220818.25</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20220818.25</ec-fastweixin.version>
 
         <jackson.version>2.13.3</jackson.version>
         <springfox.version>3.0.0</springfox.version>

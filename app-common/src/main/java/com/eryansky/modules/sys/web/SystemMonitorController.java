@@ -312,10 +312,10 @@ public class SystemMonitorController extends SimpleController {
     @RequiresPermissions("sys:systemMonitor:edit")
     @Logging(value = "系统监控-队列管理:清空队列", logType = LogType.access, logging = "!#isAjax")
     @RequestMapping("queueClear")
-    @ResponseBody
-    public Result queueClear(HttpServletRequest request,String region, HttpServletResponse response) {
+    public String queueClear(HttpServletRequest request,RedirectAttributes redirectAttributes,String region, HttpServletResponse response) {
         CacheUtils.getCacheChannel().queueClear(region);
-        return  Result.successResult();
+        addMessage(redirectAttributes, "操作成功！");
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemMonitor/queue?repage";
     }
 
 

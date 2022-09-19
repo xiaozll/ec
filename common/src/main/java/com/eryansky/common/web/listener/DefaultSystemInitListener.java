@@ -34,7 +34,10 @@ public class DefaultSystemInitListener implements ServletContextListener,
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         Properties props = System.getProperties();
-        logger.info("{}",props);
+        for (String key : props.stringPropertyNames()) {
+            logger.info("{}={}",key,props.getProperty(key));
+        }
+//        logger.info("{}",props);
         logger.info("系统服务启动.");
     }
 

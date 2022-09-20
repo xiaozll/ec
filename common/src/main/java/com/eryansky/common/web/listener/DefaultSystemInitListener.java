@@ -5,6 +5,8 @@
  */
 package com.eryansky.common.web.listener;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * 系统初始化监听.
@@ -34,9 +36,9 @@ public class DefaultSystemInitListener implements ServletContextListener,
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         Properties props = System.getProperties();
-        for (String key : props.stringPropertyNames()) {
-            logger.info("{}={}",key,props.getProperty(key));
-        }
+        props.stringPropertyNames().stream().sorted().forEach(v -> {
+            logger.info("{}={}", v, props.getProperty(v));
+        });
 //        logger.info("{}",props);
         logger.info("系统服务启动.");
     }

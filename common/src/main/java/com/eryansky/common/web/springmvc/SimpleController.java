@@ -47,7 +47,7 @@ public abstract class SimpleController{
     /**
      * 验证Bean实例对象
      */
-    @Autowired
+    @Autowired(required = false)
     protected Validator validator;
 
 
@@ -235,6 +235,16 @@ public abstract class SimpleController{
      */
     protected String renderString(HttpServletResponse response, Object object) {
         return renderString(response, JsonMapper.toJsonString(object), WebUtils.JSON_TYPE);
+    }
+
+    /**
+     * 客户端返回JSON字符串 只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串，建议在外部接口中使用
+     * @param response
+     * @param object
+     * @return
+     */
+    protected String renderNonEmptyString(HttpServletResponse response, Object object) {
+        return renderString(response, JsonMapper.toNonEmptyJsonString(object), WebUtils.JSON_TYPE);
     }
 
 

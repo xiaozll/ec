@@ -314,4 +314,13 @@ public class JsonMapper  extends ObjectMapper{
     public static Object fromJsonString(String jsonString, Class<?> clazz){
         return JsonMapper.getInstance().fromJson(jsonString, clazz);
     }
+
+    /**
+     * 对象转换为JSON字符串 只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串,建议在外部接口中使用
+     * @param object
+     * @return
+     */
+    public static String toNonEmptyJsonString(Object object){
+        return JsonMapper.nonEmptyMapper().toJson(object);
+    }
 }

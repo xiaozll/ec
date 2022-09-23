@@ -290,14 +290,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      */
     public static String readFile(File file) {
         StringBuffer sb = new StringBuffer();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))){
             String data = null;
             while((data = br.readLine())!=null){
                 sb.append(data).append("\n");
             }
-            br.close();
         } catch (FileNotFoundException e) {
             throw new ServiceException("找不到指定的文件", e);
         } catch (IOException e) {
@@ -314,14 +311,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      */
     public static String readFile(File file, String charSet) {
         StringBuffer sb = new StringBuffer();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), charSet));
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),charSet))){
             String data = null;
             while((data = br.readLine())!=null){
                 sb.append(data).append("\n");
             }
-            br.close();
         } catch (FileNotFoundException e) {
             throw new ServiceException("找不到指定的文件", e);
         } catch (IOException e) {
@@ -382,6 +376,26 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			}
 		}
 		return code;
+	}
 
+	/**
+	 * 校验文件
+	 * @param filename
+	 * @param intenDedDir
+	 * @return
+	 * @throws IOException
+	 */
+	public String validateFilename(String filename,String intenDedDir) throws IOException {
+		File f = new File(filename);
+		String canonicalPath = f.getCanonicalPath();
+
+		File iD = new File(intenDedDir);
+		String canonicalID = iD.getCanonicalPath();
+
+		if(canonicalPath.startsWith(canonicalID)){
+			return canonicalPath;
+		}else{
+			throw new IllegalStateException("文件不再目标目录内容");
+		}
 	}
 }

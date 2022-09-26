@@ -1,6 +1,10 @@
 package com.eryansky.common.utils.http;
 
+import com.eryansky.common.utils.StringUtils;
 import org.apache.http.*;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.CookieSpecs;
@@ -26,10 +30,7 @@ import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.cookie.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.impl.cookie.BrowserCompatSpec;
@@ -50,6 +51,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * 基于HttpClient HTTP客户端组件
@@ -228,6 +230,25 @@ public class HttpCompoents {
         SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(3000).build();
         //拦截器：返回增加gzip解压
         //增加gzip压缩请求
+        Properties props = System.getProperties();
+        String httpProxyHost = props.getProperty("http.proxyHost");
+        String httpProxyPort = props.getProperty("http.proxyPort");
+        String httpNonProxyHosts = props.getProperty("http.nonProxyHosts");
+        String httpProxyUser = props.getProperty("http.proxyUser");
+        String httpProxyPassword = props.getProperty("http.proxyPassword");
+        HttpHost proxy = null;
+        CredentialsProvider credsProvider = null;
+        if(StringUtils.isNotBlank(httpProxyHost)){
+            proxy = new HttpHost(httpProxyHost, Integer.valueOf(httpProxyPort));
+            credsProvider = new BasicCredentialsProvider();
+            if(StringUtils.isNotBlank(httpProxyUser)){
+                credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(
+                        new AuthScope(proxy.getHostName(), proxy.getPort()),
+                        new UsernamePasswordCredentials(httpProxyUser, httpProxyPassword));
+
+            }
+        }
         return HttpClients.custom().setKeepAliveStrategy(keepAliveStrat)
                 .setRetryHandler(retryHandler)
                 .setDefaultCookieSpecRegistry(r)
@@ -235,6 +256,8 @@ public class HttpCompoents {
                 .setDefaultCookieStore(cookieStore)
                 .setDefaultSocketConfig(socketConfig)
                 .setConnectionManager(connectionManager)
+                .setProxy(proxy)
+                .setDefaultCredentialsProvider(credsProvider)
                 .addInterceptorFirst((HttpRequestInterceptor) (request, context) -> {
                     if (!request.containsHeader("Accept-Encoding")) {
                         request.addHeader("Accept-Encoding", "gzip");

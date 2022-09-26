@@ -22,6 +22,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.util.PublicSuffixMatcher;
@@ -33,6 +34,7 @@ import org.apache.http.cookie.MalformedCookieException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.*;
 import org.apache.http.message.BasicNameValuePair;
@@ -51,6 +53,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import static org.apache.http.HttpHost.DEFAULT_SCHEME_NAME;
 
 /**
  * 基于HttpClient HTTP客户端组件
@@ -246,14 +250,15 @@ public class HttpPoolCompoents {
         String httpProxyUser = props.getProperty("http.proxyUser");
         String httpProxyPassword = props.getProperty("http.proxyPassword");
         HttpHost proxy = null;
-        CredentialsProvider credsProvider = null;
+        HttpRoutePlanner httpRoutePlanner = null;
+        CredentialsProvider credentialsProvider = null;
         if(StringUtils.isNotBlank(httpProxyHost)){
-            proxy = new HttpHost(httpProxyHost, Integer.valueOf(httpProxyPort));
-            credsProvider = new BasicCredentialsProvider();
+            proxy = new HttpHost(httpProxyHost, Integer.valueOf(httpProxyPort),DEFAULT_SCHEME_NAME);
+            httpRoutePlanner = new DefaultProxyRoutePlanner(proxy);
             if(StringUtils.isNotBlank(httpProxyUser)){
-                credsProvider = new BasicCredentialsProvider();
-                credsProvider.setCredentials(
-                        new AuthScope(proxy.getHostName(), proxy.getPort()),
+                credentialsProvider = new BasicCredentialsProvider();
+                credentialsProvider.setCredentials(
+                        new AuthScope(proxy),
                         new UsernamePasswordCredentials(httpProxyUser, httpProxyPassword));
 
             }
@@ -265,8 +270,8 @@ public class HttpPoolCompoents {
                 .setDefaultCookieStore(cookieStore)
                 .setDefaultSocketConfig(socketConfig)
                 .setConnectionManager(connectionManager)
-                .setProxy(proxy)
-                .setDefaultCredentialsProvider(credsProvider)
+                .setRoutePlanner(httpRoutePlanner)
+                .setDefaultCredentialsProvider(credentialsProvider)
                 .addInterceptorFirst((HttpRequestInterceptor) (request, context) -> {
                     if (!request.containsHeader("Accept-Encoding")) {
                         request.addHeader("Accept-Encoding", "gzip");

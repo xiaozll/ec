@@ -24,10 +24,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +39,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(value = "${adminPath}/sys/dictionary")
+@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/sys/dictionary")
 public class DictionaryController extends SimpleController {
 
 
@@ -53,7 +50,7 @@ public class DictionaryController extends SimpleController {
 
     @RequiresPermissions("sys:dictionary:view")
     @Logging(value = "字典管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list() {
         return "modules/sys/dictionary";
     }
@@ -67,7 +64,7 @@ public class DictionaryController extends SimpleController {
         }
     }
 
-    @RequestMapping(value = {"input"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
     public ModelAndView input(@ModelAttribute Dictionary model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/dictionary-input");
         modelAndView.addObject("model", model);
@@ -76,7 +73,7 @@ public class DictionaryController extends SimpleController {
 
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-保存字典", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Dictionary dictionary) {
         Result result = null;
@@ -109,7 +106,7 @@ public class DictionaryController extends SimpleController {
     /**
      * 下拉列表
      */
-    @RequestMapping(value = {"comboboxGroup"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"comboboxGroup"})
     @ResponseBody
     public List<Combobox> combobox(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
@@ -135,7 +132,7 @@ public class DictionaryController extends SimpleController {
     /**
      * 下拉列表
      */
-    @RequestMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
@@ -162,7 +159,7 @@ public class DictionaryController extends SimpleController {
     /**
      * 分组下拉列表
      */
-    @RequestMapping(value = {"groupCombobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"groupCombobox"})
     @ResponseBody
     public List<Combobox> groupCombobox(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
@@ -183,7 +180,7 @@ public class DictionaryController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
     @ResponseBody
     public Result maxSort() {
         Integer maxSort = dictionaryService.getMaxSort();
@@ -195,7 +192,7 @@ public class DictionaryController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"treegrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"treegrid"})
     @ResponseBody
     public Datagrid<Dictionary> treegrid(Dictionary Dictionary, HttpServletRequest request, HttpServletResponse response) {
         Page<Dictionary> page = new Page<Dictionary>(request);
@@ -211,7 +208,7 @@ public class DictionaryController extends SimpleController {
      */
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-删除字典", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         dictionaryService.deleteByIds(ids);
@@ -228,7 +225,7 @@ public class DictionaryController extends SimpleController {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = {"combobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"combobox"})
     @ResponseBody
     public List<Combobox> combobox(String selectType, String dictionaryCode) {
         List<Combobox> titleList = Lists.newArrayList();
@@ -249,7 +246,7 @@ public class DictionaryController extends SimpleController {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = {"combotree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"combotree"})
     @ResponseBody
     public List<TreeNode> combotree(String selectType, String dictionaryCode) {
         List<TreeNode> titleList = Lists.newArrayList();

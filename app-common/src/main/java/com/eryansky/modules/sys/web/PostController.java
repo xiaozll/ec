@@ -45,7 +45,7 @@ import java.util.Set;
  * @date : 2014-06-09 14:07
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/post")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/post")
 public class PostController extends SimpleController {
 
     @Autowired
@@ -66,12 +66,12 @@ public class PostController extends SimpleController {
 
     @RequiresPermissions("sys:post:view")
     @Logging(value = "岗位管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list() {
         return "modules/sys/post";
     }
 
-    @RequestMapping(value = {"datagrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"datagrid"})
     @ResponseBody
     public String datagrid(String organId, String query, HttpServletRequest request) {
         Page<Post> page = new Page<Post>(request);
@@ -93,7 +93,7 @@ public class PostController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"input"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Post model) throws Exception {
         ModelAndView modelAndView = new ModelAndView("modules/sys/post-input");
         modelAndView.addObject("model", model);
@@ -104,7 +104,7 @@ public class PostController extends SimpleController {
 
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-保存岗位", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Post model, String organId) {
         Result result;
@@ -132,7 +132,7 @@ public class PostController extends SimpleController {
      */
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-删除岗位", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         postService.deleteByIds(ids);
@@ -143,7 +143,7 @@ public class PostController extends SimpleController {
     /**
      * 设置岗位用户页面.
      */
-    @RequestMapping(value = {"user"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"user"})
     public String user(@ModelAttribute("model") Post model, Model uiModel) throws Exception {
         uiModel.addAttribute("organId", model.getOrganId());
         List<String> userIds = userService.findUserIdsByPostIdAndOrganId(model.getId(), model.getOrganId());
@@ -156,7 +156,7 @@ public class PostController extends SimpleController {
      */
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-岗位用户", logType = LogType.access)
-    @RequestMapping(value = {"updatePostUser"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"updatePostUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updatePostUser(@ModelAttribute("model") Post model,
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) throws Exception {
@@ -171,7 +171,7 @@ public class PostController extends SimpleController {
      * @param postId
      * @return
      */
-    @RequestMapping(value = {"postOrganUsers/{postId}"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"postOrganUsers/{postId}"})
     @ResponseBody
     public Datagrid<User> postOrganUsers(@PathVariable String postId) {
         List<User> users = userService.findUsersByPostId(postId);
@@ -191,7 +191,7 @@ public class PostController extends SimpleController {
      * @param userId     用户ID
      * @return
      */
-    @RequestMapping(value = {"userPostCombobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"userPostCombobox"})
     @ResponseBody
     public List<Combobox> userPostCombobox(String selectType, String userId, String organId) {
         List<String> userOrganIds = UserUtils.findOrganIdsByUserId(userId);
@@ -226,7 +226,7 @@ public class PostController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Post model) {
         return Result.successResult().setObj(model);

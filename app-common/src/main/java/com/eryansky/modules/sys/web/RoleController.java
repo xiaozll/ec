@@ -32,10 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +47,7 @@ import java.util.Set;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(value = "${adminPath}/sys/role")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/role")
 public class RoleController extends SimpleController {
 
     @Autowired
@@ -71,12 +68,12 @@ public class RoleController extends SimpleController {
 
     @RequiresPermissions("sys:role:view")
     @Logging(value = "角色管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list() {
         return "modules/sys/role";
     }
 
-    @RequestMapping(value = {"datagrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"datagrid"})
     @ResponseBody
     public String datagrid(Role model) {
         HttpServletRequest request = SpringMVCHolder.getRequest();
@@ -99,7 +96,7 @@ public class RoleController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"input"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
     public String input(@ModelAttribute("model") Role model, Model uiModel) {
         if (StringUtils.isBlank(model.getId()) && !SecurityUtils.isCurrentUserAdmin()) {
             model.setIsSystem(YesOrNo.NO.getValue());
@@ -115,7 +112,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-保存角色", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody()
     public Result save(@ModelAttribute("model") Role role) {
         Result result;
@@ -139,7 +136,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-删除角色", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         Result result;
@@ -156,7 +153,7 @@ public class RoleController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"resource"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resource"})
     public String resource(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
         List<TreeNode> treeNodes = resourceService.findTreeNodeResourcesWithPermissions(SecurityUtils.getCurrentUserId());
         String resourceComboboxData = JsonMapper.getInstance().toJson(treeNodes);
@@ -175,7 +172,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-角色资源", logType = LogType.access)
-    @RequestMapping(value = {"updateRoleResource"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"updateRoleResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateRoleResource(@RequestParam(value = "resourceIds", required = false) Set<String> resourceIds,
                                      @ModelAttribute("model") Role role) {
@@ -189,7 +186,7 @@ public class RoleController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"user"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"user"})
     public String user(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
         List<String> userIds = userService.findUserIdsByRoleId(model.getId());
         uiModel.addAttribute("userIds", userIds);
@@ -203,7 +200,7 @@ public class RoleController extends SimpleController {
      * @param name   角色ID
      * @return
      */
-    @RequestMapping(value = {"userDatagrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"userDatagrid"})
     @ResponseBody
     public String userDatagrid(@RequestParam(value = "roleId", required = true) String roleId,
                                String name) {
@@ -220,7 +217,7 @@ public class RoleController extends SimpleController {
      * @param roleId 角色ID
      * @return
      */
-    @RequestMapping(value = {"select"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"select"})
     public ModelAndView selectPage(String roleId) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-select");
         List<User> users = null;
@@ -247,7 +244,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-添加关联用户", logType = LogType.access)
-    @RequestMapping(value = {"addRoleUser"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"addRoleUser"})
     @ResponseBody
     public Result addRoleUser(@ModelAttribute("model") Role model,
                               @RequestParam(value = "userIds", required = true) Set<String> userIds) {
@@ -265,7 +262,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-移除关联用户", logType = LogType.access)
-    @RequestMapping(value = {"removeRoleUser"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"removeRoleUser"})
     @ResponseBody
     public Result removeRoleUser(@ModelAttribute("model") Role model,
                                  @RequestParam(value = "userIds", required = true) Set<String> userIds) {
@@ -281,7 +278,7 @@ public class RoleController extends SimpleController {
      */
     @RequiresPermissions("sys:role:edit")
     @Logging(value = "角色管理-保存角色用户", logType = LogType.access)
-    @RequestMapping(value = {"updateRoleUser"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"updateRoleUser"})
     @ResponseBody
     public Result updateRoleUser(@ModelAttribute("model") Role model,
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) {
@@ -295,7 +292,7 @@ public class RoleController extends SimpleController {
      * @param selectType {@link SelectType}
      * @return
      */
-    @RequestMapping(value = {"dataScope"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dataScope"})
     @ResponseBody
     public List<Combobox> dataScope(String selectType) {
         DataScope[] list = DataScope.values();
@@ -315,7 +312,7 @@ public class RoleController extends SimpleController {
     /**
      * 角色下拉框列表.
      */
-    @RequestMapping(value = {"combobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"combobox"})
     @ResponseBody
     public List<Combobox> combobox(String selectType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -339,7 +336,7 @@ public class RoleController extends SimpleController {
     /**
      * 机构树.
      */
-    @RequestMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -365,7 +362,7 @@ public class RoleController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Role model) {
         return Result.successResult().setObj(model);

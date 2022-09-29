@@ -9,6 +9,7 @@ import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.server.result.WSResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequiresUser(required = false)
 @Controller
-@RequestMapping(value = {"api/message","rest/message"})
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"api/message","rest/message"})
 public class MessageAPIController extends SimpleController {
 
 
@@ -64,7 +65,7 @@ public class MessageAPIController extends SimpleController {
      */
     @Logging(value = "消息接口-发送消息",logType = LogType.REST)
     @RequiresUser(required = false)
-    @RequestMapping(value = { "sendMessage"},method = RequestMethod.POST)
+    @PostMapping(value = { "sendMessage"})
     @ResponseBody
     public Result sendMessage(String appKey,String data) {
         if(SystemInitListener.Static.apiWebService != null){

@@ -77,7 +77,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @Mobile(value = MobileValue.ALL)
     @RequiresUser(required = false)
-    @RequestMapping(value = {"welcome", ""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"welcome", ""})
     public ModelAndView welcome(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
@@ -147,7 +147,7 @@ public class LoginController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = {"prepareLogin"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"prepareLogin"})
     @ResponseBody
     public Result prepareLogin(HttpServletRequest request){
         String randomSecurityToken = Identities.randomBase62(64);
@@ -169,7 +169,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = {"login"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"login"})
     public Result login(@RequestParam(required = true) String loginName,
                         @RequestParam(required = true) String password,
                         @RequestParam(defaultValue = "true") Boolean encrypt,
@@ -304,7 +304,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = {"autoLogin"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"autoLogin"})
     public Result autoLogin(@RequestParam(required = true) String loginName,
                             @RequestParam(required = true) String token,
                             HttpServletRequest request, Model uiModel) {
@@ -380,7 +380,7 @@ public class LoginController extends SimpleController {
     }
 
 
-    @RequestMapping(value = {"index"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"index"})
     public String index(String theme) {
         //根据客户端指定的参数跳转至 不同的主题 如果未指定 默认:index
         if (StringUtils.isNotBlank(theme) && (theme.equals("app") || theme.equals("index"))) {
@@ -395,7 +395,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @RequestMapping(value = {"navTree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"navTree"})
     public List<TreeNode> navTree(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -411,7 +411,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @RequestMapping(value = {"navTree2"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"navTree2"})
     public List<SiderbarMenu> navTree2(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<SiderbarMenu> treeNodes = Lists.newArrayList();
@@ -541,7 +541,7 @@ public class LoginController extends SimpleController {
      * @throws Exception
      */
     @RequiresUser(required = true)
-    @RequestMapping(value = {"onlineDatagrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"onlineDatagrid"})
     @ResponseBody
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request) throws Exception {
         Page<SessionInfo> page = new Page<>(request);
@@ -555,7 +555,7 @@ public class LoginController extends SimpleController {
     /**
      * 桌面版 开始菜单
      */
-    @RequestMapping(value = {"startMenu"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"startMenu"})
     @ResponseBody
     public List<Menu> startMenu() {
         List<Menu> menus = null;
@@ -568,7 +568,7 @@ public class LoginController extends SimpleController {
     /**
      * 桌面版 桌面应用程序列表
      */
-    @RequestMapping(value = {"apps"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"apps"})
     @ResponseBody
     public List<Menu> apps() {
         List<Menu> menus = Lists.newArrayList();
@@ -636,7 +636,7 @@ public class LoginController extends SimpleController {
      * 异步方式返回session信息
      * @reload 刷新Session信息
      */
-    @RequestMapping(value = {"sessionInfo"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"sessionInfo"})
     @ResponseBody
     public Result sessionInfo(Boolean reload) {
         Result result = Result.successResult();

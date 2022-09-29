@@ -28,6 +28,7 @@ import com.eryansky.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,7 +47,7 @@ import java.util.Map;
  * @date 2014-07-31 12:30
  */
 @Controller
-@RequestMapping(value = "${adminPath}/portal")
+@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/portal")
 public class PortalController extends SimpleController {
 
     @Autowired
@@ -59,7 +60,7 @@ public class PortalController extends SimpleController {
     private UserPasswordService userPasswordService;
 
 
-    @RequestMapping("")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "")
     public ModelAndView portal() {
         ModelAndView modelAnView = new ModelAndView("layout/portal");
         return modelAnView;
@@ -71,7 +72,7 @@ public class PortalController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("mymessages")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "mymessages")
     @ResponseBody
     public Result mymessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         WebUtils.setNoCacheHeader(response);
@@ -104,7 +105,7 @@ public class PortalController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("checkPassword")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "checkPassword")
     @ResponseBody
     public Result checkPassword(HttpServletResponse response) throws Exception {
         WebUtils.setNoCacheHeader(response);
@@ -160,7 +161,7 @@ public class PortalController extends SimpleController {
      */
     @Mobile(value = MobileValue.PC)
     @RequiresUser(required = false)
-    @RequestMapping("notice")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "notice")
     public ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAnView = new ModelAndView("layout/portal-notice");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();

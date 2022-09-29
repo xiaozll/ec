@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Mobile
 @Controller
-@RequestMapping(value = "${mobilePath}/notice")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${mobilePath}/notice")
 public class NoticeMobileController extends SimpleController {
 
     @Autowired
@@ -54,7 +54,7 @@ public class NoticeMobileController extends SimpleController {
     }
 
     @Logging(logType = LogType.access, value = "我的通知")
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list() {
         return "modules/notice/notice";
     }
@@ -63,7 +63,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticePage")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "noticePage")
     @ResponseBody
     public String noticePage() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -81,7 +81,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticeData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "noticeData")
     @ResponseBody
     public String noticeData(HttpServletRequest request, HttpServletResponse response,
                              NoticeQueryVo noticeQueryVo) {
@@ -103,7 +103,7 @@ public class NoticeMobileController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Notice model) {
         return Result.successResult().setObj(model);

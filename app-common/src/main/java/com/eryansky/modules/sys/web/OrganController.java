@@ -49,7 +49,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(value = "${adminPath}/sys/organ")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/organ")
 public class OrganController extends SimpleController {
 
     @Autowired
@@ -72,13 +72,13 @@ public class OrganController extends SimpleController {
 
     @RequiresPermissions("sys:organ:view")
     @Logging(value = "机构管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list() {
         return "modules/sys/organ";
     }
 
 
-    @RequestMapping(value = {"treegrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"treegrid"})
     @ResponseBody
     public String treegrid(String parentId) {
         List<Organ> list = null;
@@ -104,7 +104,7 @@ public class OrganController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"input"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Organ model, String parentId, Model uiModel){
         ModelAndView modelAndView = new ModelAndView("modules/sys/organ-input");
         modelAndView.addObject("parentId", parentId);
@@ -116,7 +116,7 @@ public class OrganController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
     @ResponseBody
     public Result maxSort() {
         Result result;
@@ -131,7 +131,7 @@ public class OrganController extends SimpleController {
      * 父级机构下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = {"parentOrgan"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"parentOrgan"})
     @ResponseBody
     public List<TreeNode> parentOrgan(String selectType, @ModelAttribute("model") Organ organ) {
         List<TreeNode> treeNodes = null;
@@ -166,7 +166,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-保存机构", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Organ organ, String _parentId) {
         Result result = null;
@@ -197,7 +197,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-删除机构", logType = LogType.access)
-    @RequestMapping(value = {"delete/{id}"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
 //        organService.deleteById(id);
@@ -211,7 +211,7 @@ public class OrganController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"user"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"user"})
     public String user(@ModelAttribute("model") Organ model, Model uiModel) {
         List<User> organUsers = userService.findOrganUsers(model.getId());
         String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers, User.class,
@@ -230,7 +230,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-机构用户", logType = LogType.access)
-    @RequestMapping(value = {"updateOrganUser"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"updateOrganUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateOrganUser(@ModelAttribute("model") Organ organ) {
         Result result;
@@ -245,7 +245,7 @@ public class OrganController extends SimpleController {
      * @param dataScope  {@link DataScope}
      * @return
      */
-    @RequestMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String parentId, String selectType, String dataScope,
                                @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
@@ -279,7 +279,7 @@ public class OrganController extends SimpleController {
      *
      * @param parentId 父级机构ID
      */
-    @RequestMapping(value = {"organTypeCombobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"organTypeCombobox"})
     @ResponseBody
     public List<Combobox> organTypeCombobox(String selectType, String parentId) {
         List<Combobox> cList = Lists.newArrayList();
@@ -336,7 +336,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = "treeData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
                                    @RequestParam(required = false) Integer type,
                                    @RequestParam(required = false) Integer grade,
@@ -355,7 +355,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = "treeCompanyData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "treeCompanyData")
     public List<TreeNode> treeCompanyData(
             Boolean shortName,
             HttpServletResponse response) {
@@ -373,7 +373,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = "ownerAndChildsHomeCompanysData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsHomeCompanysData")
     public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId,
                                                          Boolean shortName,
                                                          HttpServletResponse response) {
@@ -396,7 +396,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = "ownerAndChildsCompanysData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsCompanysData")
     public List<TreeNode> ownerAndChildsCompanysData(String parentId,
                                                      Boolean shortName,
                                                      HttpServletResponse response) {
@@ -418,7 +418,7 @@ public class OrganController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "provinceCityAreaData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "provinceCityAreaData")
     public List<TreeNode> provinceCityAreaData(Boolean shortName,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
@@ -439,7 +439,7 @@ public class OrganController extends SimpleController {
     @RequiresPermissions("sys:organ:sync")
     @Logging(value = "机构管理-同步机构所有父级ID", logType = LogType.access)
     @ResponseBody
-    @RequestMapping(value = "syncAllParentIds")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "syncAllParentIds")
     public Result syncAllParentIds() {
         organService.syncAllParentIds();
         return Result.successResult();
@@ -453,7 +453,7 @@ public class OrganController extends SimpleController {
     @RequiresPermissions("sys:organ:sync")
     @Logging(value = "机构管理-重新初始化机构系统编码", logType = LogType.access)
     @ResponseBody
-    @RequestMapping(value = "initSysCode")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "initSysCode")
     public Result initSysCode() {
         List<Organ> roots = organService.findRoots();
         for (int i = 0; i < roots.size(); i++) {
@@ -485,7 +485,7 @@ public class OrganController extends SimpleController {
     @RequiresPermissions("sys:organ:sync")
     @Logging(value = "机构管理-同步到扩展表", logType = LogType.access)
     @ResponseBody
-    @RequestMapping(value = "syncToExtend")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "syncToExtend")
     public Result syncToExtend() {
         logger.info("定时任务...开始：同步organ扩展表");
         systemService.syncOrganToExtend();
@@ -500,7 +500,7 @@ public class OrganController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Organ model) {
         return Result.successResult().setObj(model);

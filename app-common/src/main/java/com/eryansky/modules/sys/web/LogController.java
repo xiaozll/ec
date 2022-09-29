@@ -33,10 +33,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +48,7 @@ import java.util.stream.Collectors;
  * @date 2013-12-8 下午5:13
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/log")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/log")
 public class LogController extends SimpleController {
 
     @Autowired
@@ -82,7 +79,7 @@ public class LogController extends SimpleController {
     @Logging(value = "日志管理", logType = LogType.access)
 //    @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequiresPermissions(value = "sys:log:view")
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list(String type,
                        String userInfo,
                        String query,
@@ -142,7 +139,7 @@ public class LogController extends SimpleController {
      * @param log
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Log log) {
         return Result.successResult().setObj(log);
@@ -156,7 +153,7 @@ public class LogController extends SimpleController {
      */
     @Logging(value = "日志管理-删除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(value = {"remove"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         logService.deleteByIds(ids);
@@ -170,7 +167,7 @@ public class LogController extends SimpleController {
      */
     @Logging(value = "日志管理-清除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(value = {"removeAll"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"removeAll"})
     @ResponseBody
     public Result removeAll() {
         logService.clearAll();
@@ -180,7 +177,7 @@ public class LogController extends SimpleController {
     /**
      * 日志类型下拉列表.
      */
-    @RequestMapping(value = {"logTypeCombobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"logTypeCombobox"})
     @ResponseBody
     public List<Combobox> logTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -197,7 +194,7 @@ public class LogController extends SimpleController {
      * 数据修复 title
      * @return
      */
-    @RequestMapping(value = {"dataAutoFix"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dataAutoFix"})
     @ResponseBody
     public Result dataAutoFix() {
         logService.dataAutoFix();

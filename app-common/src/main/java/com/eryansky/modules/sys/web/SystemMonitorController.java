@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -48,7 +49,7 @@ import java.util.*;
  * @date 2016-10-28
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/systemMonitor")
+@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/sys/systemMonitor")
 public class SystemMonitorController extends SimpleController {
 
     /**
@@ -58,7 +59,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "")
     public String list(HttpServletRequest request, HttpServletResponse response) {
         if (WebUtils.isAjaxRequest(request)) {
             ServerStatus serverStatus = null;
@@ -81,7 +82,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-缓存管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("cache")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "cache")
     public String cache(HttpServletRequest request, Model uiModel, HttpServletResponse response) {
         Page<Map<String, Object>> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -111,7 +112,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-缓存管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("cacheDetail")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "cacheDetail")
     public String cacheDetail(String region, Model uiModel, HttpServletRequest request, HttpServletResponse response) {
         Page<Map<String, Object>> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -143,7 +144,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-缓存管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("cacheKeyDetail")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "cacheKeyDetail")
     public String cacheKeyDetail(String region, String key, Model uiModel, HttpServletRequest request, HttpServletResponse response) {
         Object object = CacheUtils.get(region, key);
         try {
@@ -172,7 +173,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @Logging(value = "系统监控-清空缓存", logType = LogType.access)
     @RequiresPermissions("sys:systemMonitor:edit")
-    @RequestMapping("clearCache")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "clearCache")
     public String clearCache(String region, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
         //清空ehcache缓存
         if (StringUtils.isNotBlank(region)) {
@@ -201,7 +202,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @Logging(value = "系统监控-清空缓存", logType = LogType.access)
     @RequiresPermissions("sys:systemMonitor:edit")
-    @RequestMapping("clearCacheKey")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "clearCacheKey")
     public String clearCacheKey(String region, String key, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response) {
         CacheUtils.remove(region, key);
         addMessage(redirectAttributes, "操作成功！");
@@ -220,7 +221,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @Logging(value = "系统监控-系统日志", logType = LogType.access, logging = "!#isAjax")
     @RequiresPermissions("sys:systemMonitor:view")
-    @RequestMapping("log")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "log")
     public String log(@RequestParam(value = "download", defaultValue = "false") boolean download,
                       Integer pageSize,
                       HttpServletRequest request, HttpServletResponse response, Model uiModel) {
@@ -276,7 +277,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-队列管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("queue")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "queue")
     public String queue(HttpServletRequest request, Model uiModel, HttpServletResponse response) {
         Page<Map<String, Object>> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -301,7 +302,7 @@ public class SystemMonitorController extends SimpleController {
 
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-队列管理:队列数据", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("queueDetail")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "queueDetail")
     public String queueDetail(HttpServletRequest request, Model uiModel, String region, HttpServletResponse response) {
         Collection<String> queueList = CacheUtils.getCacheChannel().queueList(region);
         uiModel.addAttribute("region", region);
@@ -311,7 +312,7 @@ public class SystemMonitorController extends SimpleController {
 
     @RequiresPermissions("sys:systemMonitor:edit")
     @Logging(value = "系统监控-队列管理:清空队列", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("queueClear")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "queueClear")
     public String queueClear(HttpServletRequest request,RedirectAttributes redirectAttributes,String region, HttpServletResponse response) {
         CacheUtils.getCacheChannel().queueClear(region);
         addMessage(redirectAttributes, "操作成功！");
@@ -321,7 +322,7 @@ public class SystemMonitorController extends SimpleController {
 
     @RequiresPermissions("sys:systemMonitor:edit")
     @Logging(value = "系统监控-队列管理:清空队列", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping("clearAllQueue")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "clearAllQueue")
     public String clearAllQueue(HttpServletRequest request,RedirectAttributes redirectAttributes,HttpServletResponse response) {
         Collection<CacheChannel.Region> regions = CacheUtils.getCacheChannel().queues();
         for (CacheChannel.Region r : regions) {

@@ -17,9 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
@@ -70,7 +68,7 @@ public abstract class SimpleController{
      * @param pageName 页面名称(不加后缀)
      * @return 指定JSP页面
      */
-    @RequestMapping("/{folder}/{pageName}")
+    @GetMapping("/{folder}/{pageName}")
     public String redirectJsp(@PathVariable String folder, @PathVariable String pageName) {
         return "/" + folder + "/" + pageName;
     }
@@ -86,7 +84,7 @@ public abstract class SimpleController{
      * @param response
      * @throws Exception
      */
-    @RequestMapping("redirect")
+    @GetMapping("redirect")
     public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (StringUtils.isEmpty(prefix)) {
             prefix = "/WEB-INF/views/";

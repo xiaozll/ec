@@ -48,7 +48,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(value = "${adminPath}/sys/resource")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/resource")
 public class ResourceController extends SimpleController {
 
     @Autowired
@@ -69,12 +69,12 @@ public class ResourceController extends SimpleController {
 
     @RequiresPermissions("sys:resource:view")
     @Logging(value = "资源管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public String list() {
         return "modules/sys/resource";
     }
 
-    @RequestMapping(value = {"treegrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"treegrid"})
     @ResponseBody
     public Datagrid<Resource> treegrid(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Resource model = new Resource();
@@ -89,7 +89,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"input"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
     public String input(@ModelAttribute("model") Resource model, String parentId, Model uiModel) throws Exception {
         uiModel.addAttribute("parentId", parentId);
         uiModel.addAttribute("model", model);
@@ -101,7 +101,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-保存资源", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Resource resource, String _parentId) {
         Result result = null;
@@ -135,7 +135,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-删除资源", logType = LogType.access)
-    @RequestMapping(value = {"delete/{id}"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
 //        resourceService.deleteById(id);
@@ -147,7 +147,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树.
      */
-    @RequestMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) throws Exception {
         List<TreeNode> treeNodes = null;
@@ -165,7 +165,7 @@ public class ResourceController extends SimpleController {
      * 资源树.
      */
     @RequiresPermissions("MANAGER")
-    @RequestMapping(value = {"resourceData"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resourceData"})
     @ResponseBody
     public List<TreeNode> resourceData(){
         List<TreeNode>  treeNodes = resourceService.findTreeNodeResources();
@@ -175,7 +175,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树-分级权限
      */
-    @RequestMapping(value = {"resourceDataWithPermission"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resourceDataWithPermission"})
     @ResponseBody
     public List<TreeNode> resourceDataWithPermission(){
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -187,7 +187,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源类型下拉列表.
      */
-    @RequestMapping(value = {"resourceTypeCombobox"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resourceTypeCombobox"})
     @ResponseBody
     public List<Combobox> resourceTypeCombobox(String selectType, String parentId) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
@@ -236,7 +236,7 @@ public class ResourceController extends SimpleController {
      * 父级资源下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = {"parent"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"parent"})
     @ResponseBody
     public List<TreeNode> parent(@ModelAttribute("model") Resource resource, String selectType) {
         List<TreeNode> treeNodes = null;
@@ -252,7 +252,7 @@ public class ResourceController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
     @ResponseBody
     public Result maxSort() throws Exception {
         Result result;
@@ -269,7 +269,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Resource model) {
         return Result.successResult().setObj(model);

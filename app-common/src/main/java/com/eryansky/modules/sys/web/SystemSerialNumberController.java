@@ -27,10 +27,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +40,7 @@ import java.util.List;
  * @date 2016-07-18
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/systemSerialNumber")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/systemSerialNumber")
 public class SystemSerialNumberController extends SimpleController {
 
     @Autowired
@@ -60,7 +57,7 @@ public class SystemSerialNumberController extends SimpleController {
 
 
     @RequiresPermissions("sys:systemSerialNumber:view")
-    @RequestMapping(value = {"list", ""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"list", ""})
     public String list(SystemSerialNumber model,
                        @RequestParam(value = "export", defaultValue = "false") Boolean export,
                        @RequestParam(value = "exportType", defaultValue = "xls") String exportType,
@@ -109,7 +106,7 @@ public class SystemSerialNumberController extends SimpleController {
 
 
     @RequiresPermissions("sys:systemSerialNumber:view")
-    @RequestMapping(value = "form")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "form")
     public String form(@ModelAttribute("model") SystemSerialNumber model, Model uiModel) {
         uiModel.addAttribute("model", model);
         uiModel.addAttribute("resetTypes", ResetType.values());
@@ -117,7 +114,7 @@ public class SystemSerialNumberController extends SimpleController {
     }
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(value = "save")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "save")
     public String save(@ModelAttribute("model") SystemSerialNumber model,
                        String _maxSerial, Model uiModel, RedirectAttributes redirectAttributes) {
         if (!beanValidator(uiModel, model)) {
@@ -131,7 +128,7 @@ public class SystemSerialNumberController extends SimpleController {
     }
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(value = "delete")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "delete")
     public String delete(@ModelAttribute("model") SystemSerialNumber model, RedirectAttributes redirectAttributes) {
         systemSerialNumberService.delete(model);
         addMessage(redirectAttributes, "删除成功");
@@ -146,7 +143,7 @@ public class SystemSerialNumberController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(value = {"resetSerialNumber"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resetSerialNumber"})
     @ResponseBody
     public Result resetSerialNumber(String id) {
         if(StringUtils.isNotBlank(id)){
@@ -164,7 +161,7 @@ public class SystemSerialNumberController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") SystemSerialNumber model) {
         return Result.successResult().setObj(model);

@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date ${date}
  */
 @Controller
-@RequestMapping(value = "${J}{adminPath}/${modulePath}/${entityInstance}")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${J}{adminPath}/${modulePath}/${entityInstance}")
 public class ${entityName}Controller extends SimpleController {
 
     @Autowired
@@ -47,7 +47,7 @@ public class ${entityName}Controller extends SimpleController {
     }
 
     @RequiresPermissions("${modulePermission}:${entityInstance}:view")
-    @RequestMapping(value = {"","list"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"","list"})
     public String list(${entityName} model,
                 Model uiModel,
                 HttpServletRequest request,
@@ -64,14 +64,14 @@ public class ${entityName}Controller extends SimpleController {
 
 
     @RequiresPermissions("${modulePermission}:${entityInstance}:view")
-    @RequestMapping(value = "form")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "form")
     public String form(@ModelAttribute("model")${entityName} model, Model uiModel) {
         uiModel.addAttribute("model", model);
         return "modules/${modulePath}/${entityInstance}Form";
     }
 
     @RequiresPermissions("${modulePermission}:${entityInstance}:edit")
-    @RequestMapping(value = "save")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "save")
     public String save(@ModelAttribute("model")${entityName} model, Model uiModel, RedirectAttributes redirectAttributes) {
         if (!beanValidator(uiModel, model)){
             return form(model, uiModel);
@@ -82,7 +82,7 @@ public class ${entityName}Controller extends SimpleController {
     }
 
     @RequiresPermissions("${modulePermission}:${entityInstance}:edit")
-    @RequestMapping(value = "delete")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "delete")
     public String delete(@ModelAttribute("model")${entityName} model,@RequestParam(required=false) Boolean isRe, RedirectAttributes redirectAttributes) {
         ${entityInstance}Service.delete(model,isRe);
         addMessage(redirectAttributes, "操作成功");

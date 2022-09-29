@@ -36,10 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,20 +52,20 @@ import java.util.Map;
  */
 @Mobile
 @Controller
-@RequestMapping("${mobilePath}")
+@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value="${mobilePath}")
 public class MobileIndexController extends SimpleController {
 
     @Autowired
     private VersionLogService versionLogService;
 
     @Logging(logType = LogType.access, value = "移动APP")
-    @RequestMapping("")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value="")
     public ModelAndView index() {
         return new ModelAndView("layout/index");
     }
 
     @Logging(logType = LogType.access, value = "移动APP")
-    @RequestMapping(value = {"content"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"content"})
     public ModelAndView content() {
         return new ModelAndView("layout/index_content");
     }
@@ -83,7 +80,7 @@ public class MobileIndexController extends SimpleController {
      */
     @Mobile(value = MobileValue.PC)
     @RequiresUser(required = false)
-    @RequestMapping("download")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value="download")
     public ModelAndView download(String app,String versionLogType, String versionCode) {
         ModelAndView modelAndView = new ModelAndView("mobile/download");
         VersionLog versionLog = null;
@@ -125,7 +122,7 @@ public class MobileIndexController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = {"getNewVersion/{versionLogType}"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"getNewVersion/{versionLogType}"})
     public Result getNewVersion(@PathVariable String versionLogType,String app) {
         return getNewVersion(SpringMVCHolder.getRequest(),versionLogType,app);
     }
@@ -141,7 +138,7 @@ public class MobileIndexController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = {"getNewVersion"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"getNewVersion"})
     public Result getNewVersion(HttpServletRequest request,String versionLogType,String app) {
         String _versionLogType = versionLogType;
         if(StringUtils.isBlank(versionLogType)){
@@ -179,7 +176,7 @@ public class MobileIndexController extends SimpleController {
      */
     @Logging(logType = LogType.access, value = "APP下载")
     @RequiresUser(required = false)
-    @RequestMapping(value = {"downloadApp/{versionLogType}"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,
                                     HttpServletRequest request,
                                     String app,
@@ -220,7 +217,7 @@ public class MobileIndexController extends SimpleController {
      * @param fileId
      * @return
      */
-    @RequestMapping(value = {"deleteFile"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"deleteFile"})
     @ResponseBody
     public Result deleteFile(@RequestParam(value = "fileId") String fileId) {
         DiskUtils.deleteFile(fileId);
@@ -230,7 +227,7 @@ public class MobileIndexController extends SimpleController {
     /**
      * 图片文件上传
      */
-    @RequestMapping(value = {"base64ImageUpLoad"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"base64ImageUpLoad"})
     @ResponseBody
     public Result base64ImageUpLoad(@RequestParam(value = "base64Data", required = false) String base64Data) {
         Result result = null;
@@ -315,7 +312,7 @@ public class MobileIndexController extends SimpleController {
     /**
      * 图片文件上传
      */
-    @RequestMapping(value = {"imageUpLoad"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"imageUpLoad"})
     @ResponseBody
     public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
         Result result = null;

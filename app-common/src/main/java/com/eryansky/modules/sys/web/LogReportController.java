@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -45,7 +46,7 @@ import java.util.Map;
  * 操作日志分析报表
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/log/report")
+@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/sys/log/report")
 public class LogReportController extends SimpleController {
 
     @Autowired
@@ -58,13 +59,13 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-登录统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:loginStatistics")
-    @RequestMapping(value = {"loginStatistics"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"loginStatistics"})
     public String loginStatistics() {
         return "modules/sys/log-loginStatistics";
     }
 
     @RequiresPermissions(value = "sys:log:loginStatistics")
-    @RequestMapping(value = {"loginStatisticsData"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"loginStatisticsData"})
     @ResponseBody
     public Datagrid<Map<String, Object>> datagrid(String name, String startTime, String endTime, HttpServletRequest request) {
         Page<Map<String, Object>> page = new Page<>(request);
@@ -81,7 +82,7 @@ public class LogReportController extends SimpleController {
     }
 
     @RequiresPermissions(value = "sys:log:loginStatistics")
-    @RequestMapping(value = {"loginStatisticsExportExcel"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"loginStatisticsExportExcel"})
     @ResponseBody
     public void loginStatisticsExportExcel(String name, String startTime, String endTime, HttpServletResponse response, HttpServletRequest request) throws Exception {
         Page<Map<String, Object>> page = new Page<>(1, -1);
@@ -123,7 +124,7 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-每日登陆次数分析", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:dayLoginStatistics")
-    @RequestMapping(value = {"dayLoginStatistics"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dayLoginStatistics"})
     public String dayLoginStatistics() {
         return "modules/sys/log-dayLoginStatistics";
     }
@@ -137,7 +138,7 @@ public class LogReportController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions(value = "sys:log:dayLoginStatistics")
-    @RequestMapping(value = {"dayLoginStatisticsData"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dayLoginStatisticsData"})
     @ResponseBody
     public Result dayLoginStatisticsData(String startTime, String endTime) throws Exception {
         String _startTime = StringUtils.isBlank(startTime) ? DateUtils.formatDate(AppDateUtils.getCurrentYearStartTime()):startTime;
@@ -166,7 +167,7 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-模块访问统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:moduleStatistics")
-    @RequestMapping(value = {"moduleStatistics"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"moduleStatistics"})
     public String moduleStatistics(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,
                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);
@@ -189,7 +190,7 @@ public class LogReportController extends SimpleController {
     }
 
     @RequiresPermissions(value = "sys:log:moduleStatistics")
-    @RequestMapping(value = {"moduleStatisticsExportExcel"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"moduleStatisticsExportExcel"})
     public void moduleStatisticsExportExcel(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,
                                             HttpServletResponse response, HttpServletRequest request) throws Exception {
         Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);

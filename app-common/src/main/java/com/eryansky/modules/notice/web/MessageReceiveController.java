@@ -25,10 +25,7 @@ import com.eryansky.modules.sys._enum.YesOrNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2016-04-14
  */
 @Controller
-@RequestMapping(value = "${adminPath}/notice/messageReceive")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/notice/messageReceive")
 public class MessageReceiveController extends SimpleController {
 
     @Autowired
@@ -71,7 +68,7 @@ public class MessageReceiveController extends SimpleController {
      */
     @Mobile(value = MobileValue.ALL)
     @Logging(logType = LogType.access, value = "消息中心", logging = "!#isAjax")
-    @RequestMapping(value = {"", "list"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"", "list"})
     public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<MessageReceive> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -93,7 +90,7 @@ public class MessageReceiveController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "info")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "info")
     public ModelAndView info(@ModelAttribute("model")  MessageReceive model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageReceiveInfo");
         messageReceiveService.setRead(model);
@@ -108,7 +105,7 @@ public class MessageReceiveController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "setRead")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "setRead")
     @ResponseBody
     public Result setRead(@ModelAttribute("model")  MessageReceive model) {
         messageTask.setRead(model);
@@ -120,7 +117,7 @@ public class MessageReceiveController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = "setReadAll")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "setReadAll")
     @ResponseBody
     public Result setReadAll(String appId) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -133,7 +130,7 @@ public class MessageReceiveController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") MessageReceive model) {
         return Result.successResult().setObj(model);

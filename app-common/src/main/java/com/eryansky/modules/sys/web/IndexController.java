@@ -13,6 +13,7 @@ import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.utils.AppConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -22,10 +23,10 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2014-09-16 10:30
  */
 @Controller
-@RequestMapping(value = "${adminPath}")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}")
 public class IndexController extends SimpleController {
 
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
     public ModelAndView welcome() {
         ModelAndView modelAnView = new ModelAndView("login");
         if (SecurityUtils.getCurrentSessionInfo() != null) {
@@ -34,7 +35,7 @@ public class IndexController extends SimpleController {
         return modelAnView;
     }
 
-    @RequestMapping(value = {"index"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"index"})
     public ModelAndView index() {
         User sessionUser = SecurityUtils.getCurrentUser();
         String userPhoto = null;
@@ -50,7 +51,7 @@ public class IndexController extends SimpleController {
         return modelAnView;
     }
 
-    @RequestMapping("index/west")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "index/west")
     public ModelAndView west() {
         ModelAndView modelAnView = new ModelAndView("layout/west");
         User sessionUser = SecurityUtils.getCurrentUser();

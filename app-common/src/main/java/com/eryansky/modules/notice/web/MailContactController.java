@@ -29,10 +29,7 @@ import com.eryansky.modules.notice.service.ContactGroupService;
 import com.eryansky.modules.notice.service.MailContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -44,7 +41,7 @@ import java.util.stream.Collectors;
  * @date 2015-08-19
  */
 @Controller
-@RequestMapping(value = "${adminPath}/notice/mailContact")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/notice/mailContact")
 public class MailContactController extends SimpleController {
     @Autowired
     private MailContactService contactService;
@@ -64,7 +61,7 @@ public class MailContactController extends SimpleController {
         }
     }
 
-    @RequestMapping(value = {"input"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
     public ModelAndView input(@ModelAttribute("model") MailContact model, String contactGroupId) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/contactGroupMail-input");
         modelAndView.addObject("contactGroupId", contactGroupId);
@@ -78,7 +75,7 @@ public class MailContactController extends SimpleController {
      * @param query 用户登录名或姓名
      * @return
      */
-    @RequestMapping(value = {"contactGroupMailDatagrid"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"contactGroupMailDatagrid"})
     @ResponseBody
     public String contactGroupMailDatagrid(String id, String query) {
         String json = "[]";
@@ -97,7 +94,7 @@ public class MailContactController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"_save"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"_save"})
     @ResponseBody
     public Result save(@ModelAttribute("model") MailContact model, String contactGroupId) {
         Result result = null;
@@ -128,7 +125,7 @@ public class MailContactController extends SimpleController {
      * @param email
      * @return
      */
-    @RequestMapping(value = "autoAdd")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "autoAdd")
     @ResponseBody
     public Result autoAdd(String email) {
         if (StringUtils.isBlank(email) || !SysUtils.checkEmail(email)) {
@@ -173,7 +170,7 @@ public class MailContactController extends SimpleController {
      * @param includeIds    包含的ID
      * @return
      */
-    @RequestMapping(value = {"multiSelectPrefix"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"multiSelectPrefix"})
     @ResponseBody
     public String multiSelectPrefix(String postCode, String mailAccountId, String query,
                                     @RequestParam(value = "includeIds", required = false) List<String> includeIds) {
@@ -292,7 +289,7 @@ public class MailContactController extends SimpleController {
      * @param mailAccountId 邮件账号ID
      * @return
      */
-    @RequestMapping(value = {"multiSelect"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"multiSelect"})
     @ResponseBody
     public String multiSelect(String mailAccountId) {
         List<Map<String, String>> list = Lists.newArrayList();

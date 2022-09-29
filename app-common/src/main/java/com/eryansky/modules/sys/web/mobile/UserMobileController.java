@@ -36,7 +36,7 @@ import java.util.*;
  */
 @Mobile
 @Controller
-@RequestMapping("${mobilePath}/sys/user")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${mobilePath}/sys/user")
 public class UserMobileController extends SimpleController {
 
     @Autowired
@@ -62,7 +62,7 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = "password")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "password")
     public String password(@ModelAttribute("model")User model, String msg, Model uiModel) {
         if(null == model || StringUtils.isBlank(model.getId())){
             model = SecurityUtils.getCurrentUser();
@@ -85,7 +85,7 @@ public class UserMobileController extends SimpleController {
      */
     @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
-    @RequestMapping(value = "savePs")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "savePs")
     @ResponseBody
     public Result savePs(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "ln",required = false) String loginName,
@@ -138,7 +138,7 @@ public class UserMobileController extends SimpleController {
      */
     @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
-    @RequestMapping(value = "savePassword")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "savePassword")
     @ResponseBody
     public Result savePassword(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "loginName",required = false) String loginName,
@@ -185,7 +185,7 @@ public class UserMobileController extends SimpleController {
      * @param uiModel
      * @return
      */
-    @RequestMapping(value = "input")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "input")
     public String input(@ModelAttribute("model")User model, String msg, Model uiModel) {
         if(null == model || StringUtils.isBlank(model.getId())){
             model = SecurityUtils.getCurrentUser();
@@ -204,7 +204,7 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access,value = "修改个人信息")
-    @RequestMapping(value = "saveUserInfo")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "saveUserInfo")
     @ResponseBody
     public Result saveUserInfo(@ModelAttribute("model")User model) {
         if (model == null || StringUtils.isBlank(model.getId())) {
@@ -233,7 +233,7 @@ public class UserMobileController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "contactData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "contactData")
     public String contactData(String companyId,HttpServletRequest request, HttpServletResponse response) {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
         Map<String, List<User>> listMap = Maps.newConcurrentMap();
@@ -267,7 +267,7 @@ public class UserMobileController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "contactTagData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "contactTagData")
     public String contactTagData(String companyId,
                                  @RequestParam(value = "showPhoto",defaultValue = "false") Boolean showPhoto,
                                  HttpServletRequest request, HttpServletResponse response) {
@@ -299,7 +299,7 @@ public class UserMobileController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") User model) {
         return Result.successResult().setObj(model);
@@ -314,7 +314,7 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = {"detailByIdOrLoginName"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detailByIdOrLoginName"})
     @ResponseBody
     public Result detailByIdOrLoginName(String id,
                                     String loginName) {

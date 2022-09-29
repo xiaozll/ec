@@ -25,10 +25,7 @@ import com.eryansky.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +39,7 @@ import java.util.List;
  * @date 2016-05-12
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/area")
+@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/sys/area")
 public class AreaController extends SimpleController {
 
     @Autowired
@@ -59,7 +56,7 @@ public class AreaController extends SimpleController {
 
     @Logging(value = "区域管理", logType = LogType.access)
     @RequiresPermissions("sys:area:view")
-    @RequestMapping(value = {"list", ""})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"list", ""})
     public String list(Area area, Model model, HttpServletRequest request, HttpServletResponse response) {
         List<Area> list = null;
         String parentId = area.getParentId();
@@ -76,7 +73,7 @@ public class AreaController extends SimpleController {
     }
 
     @RequiresPermissions("sys:area:view")
-    @RequestMapping(value = "form")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "form")
     public String form(@ModelAttribute("model") Area area, Model model) {
         if (area.getParent() == null || area.getParent().getId() == null) {
             area.setParent(new Area(OrganUtils.getOrganExtendByUserId(SecurityUtils.getCurrentUserId()).getId()));
@@ -105,7 +102,7 @@ public class AreaController extends SimpleController {
 
     @Logging(value = "区域管理-保存区域", logType = LogType.access)
     @RequiresPermissions("sys:area:edit")
-    @RequestMapping(value = "save")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "save")
     public String save(@ModelAttribute("model") Area area, Model model, RedirectAttributes redirectAttributes) {
         if (!beanValidator(model, area)) {
             return form(area, model);
@@ -117,7 +114,7 @@ public class AreaController extends SimpleController {
 
     @Logging(value = "区域管理-删除区域", logType = LogType.access)
     @RequiresPermissions("sys:area:edit")
-    @RequestMapping(value = "delete")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "delete")
     public String delete(@ModelAttribute("model") Area model, RedirectAttributes redirectAttributes) {
 		if (Area.ROOT_ID.equals(model.getId()) || Area.ROOT_ID.equals(model.getCode())){
 			addMessage(redirectAttributes, "删除区域失败, 不允许删除顶级区域或编号为空");
@@ -129,7 +126,7 @@ public class AreaController extends SimpleController {
 
     @Logging(value = "区域管理-级联删除区域", logType = LogType.access)
     @RequiresPermissions("sys:area:edit")
-    @RequestMapping(value = "deleteOwnerAndChilds")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "deleteOwnerAndChilds")
     public String deleteOwnerAndChilds(@ModelAttribute("model") Area model, RedirectAttributes redirectAttributes) {
         areaService.deleteOwnerAndChilds(model.getId());
         addMessage(redirectAttributes, "删除区域以及子节点成功");
@@ -145,7 +142,7 @@ public class AreaController extends SimpleController {
      */
     @RequiresUser
     @ResponseBody
-    @RequestMapping(value = "treeData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
                                    String state,
                                    HttpServletResponse response) {
@@ -171,7 +168,7 @@ public class AreaController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "areaUpData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "areaUpData")
     public List<TreeNode> areaUpData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
@@ -193,7 +190,7 @@ public class AreaController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "areaDownData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "areaDownData")
     public List<TreeNode> areaDownData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -218,7 +215,7 @@ public class AreaController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "ownAndChildData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownAndChildData")
     public List<TreeNode> ownAndChildData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -242,7 +239,7 @@ public class AreaController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Area model) {
         return Result.successResult().setObj(model);

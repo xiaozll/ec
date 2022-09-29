@@ -6,6 +6,7 @@ import com.eryansky.modules.sys.web.demo.module.DataCount;
 import com.eryansky.modules.sys.web.demo.module.People;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +80,7 @@ public class ExportController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping("loadData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "loadData")
     @ResponseBody
     public List<People> loadData() {
         return getBeanData();
@@ -91,7 +92,7 @@ public class ExportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("exportExcel")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "exportExcel")
     public void exportExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
 
@@ -111,7 +112,7 @@ public class ExportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("spanExport")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "spanExport")
     public void spanExport(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
         List<Map> list = getMapData();//获取数据
@@ -134,7 +135,7 @@ public class ExportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("sheetsExport")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "sheetsExport")
     public void exportSheets(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
         List<Object[]> list = getData();
@@ -168,7 +169,7 @@ public class ExportController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping("loadRowSpanData")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "loadRowSpanData")
     @ResponseBody
     public List<DataCount> loadRowSpanData() {
         List<DataCount> list = new ArrayList<DataCount>();//获取数据
@@ -187,7 +188,7 @@ public class ExportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("rowSpanExport")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "rowSpanExport")
     public void exportRowSpan(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
 
@@ -209,7 +210,7 @@ public class ExportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("exportTotal")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "exportTotal")
     public void exportTotal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
 
@@ -261,7 +262,7 @@ public class ExportController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("exportZip")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "exportZip")
     public void exportZip(HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<DataCount> list = new ArrayList<DataCount>();//获取数据
         // 这里的数据集查询的话就看个人具体情况了，比如可以分页多次查询

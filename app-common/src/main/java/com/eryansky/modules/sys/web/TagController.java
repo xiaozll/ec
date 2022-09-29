@@ -10,6 +10,7 @@ import com.eryansky.core.security.annotation.RequiresUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,14 +22,14 @@ import javax.servlet.http.HttpServletRequest;
  * @version 2013-3-23
  */
 @Controller
-@RequestMapping(value = "${adminPath}/tag")
+@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/tag")
 public class TagController extends SimpleController {
 
     /**
      * 树结构选择标签（treeselect.tag）
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = "treeselect")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "treeselect")
     public String treeselect(HttpServletRequest request, Model model) {
         model.addAttribute("url", request.getParameter("url"));    // 树结构数据URL
         model.addAttribute("extId", request.getParameter("extId")); // 排除的编号ID
@@ -42,7 +43,7 @@ public class TagController extends SimpleController {
      * 图标选择标签（iconselect.tag）
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = "iconselect")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "iconselect")
     public String iconselect(HttpServletRequest request, Model model) {
         model.addAttribute("value", request.getParameter("value"));
         return "modules/sys/tagIconselect";

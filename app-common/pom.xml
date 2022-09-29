@@ -24,7 +24,7 @@
         <commons-csv.version>1.9.0</commons-csv.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
         <commons-cli.version>1.5.0</commons-cli.version>
-        <batik.version>1.14</batik.version>
+        <batik.version>1.15</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
         <jwt.version>4.0.0</jwt.version>
 

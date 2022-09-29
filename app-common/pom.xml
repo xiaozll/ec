@@ -24,6 +24,7 @@
         <commons-csv.version>1.9.0</commons-csv.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
         <commons-cli.version>1.5.0</commons-cli.version>
+        <fop.version>2.7</fop.version>
         <batik.version>1.15</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
         <jwt.version>4.0.0</jwt.version>
@@ -51,7 +52,7 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop</artifactId>
-            <version>2.7</version>
+            <version>${fop.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-io</groupId>

@@ -70,7 +70,7 @@ public class PortalController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "mymessages")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "mymessages")
     @ResponseBody
     public Result mymessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         WebUtils.setNoCacheHeader(response);

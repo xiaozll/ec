@@ -68,7 +68,7 @@ public class MessageReceiveController extends SimpleController {
      */
     @Mobile(value = MobileValue.ALL)
     @Logging(logType = LogType.access, value = "消息中心", logging = "!#isAjax")
-    @GetMapping(value = {"", "list"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"", "list"})
     public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<MessageReceive> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {

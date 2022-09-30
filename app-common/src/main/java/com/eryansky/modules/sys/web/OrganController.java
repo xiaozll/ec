@@ -197,7 +197,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-删除机构", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"delete/{id}"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
 //        organService.deleteById(id);
@@ -435,7 +435,7 @@ public class OrganController extends SimpleController {
     @RequiresPermissions("sys:organ:sync")
     @Logging(value = "机构管理-同步机构所有父级ID", logType = LogType.access)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "syncAllParentIds")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "syncAllParentIds")
     public Result syncAllParentIds() {
         organService.syncAllParentIds();
         return Result.successResult();
@@ -449,7 +449,7 @@ public class OrganController extends SimpleController {
     @RequiresPermissions("sys:organ:sync")
     @Logging(value = "机构管理-重新初始化机构系统编码", logType = LogType.access)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "initSysCode")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "initSysCode")
     public Result initSysCode() {
         List<Organ> roots = organService.findRoots();
         for (int i = 0; i < roots.size(); i++) {
@@ -481,7 +481,7 @@ public class OrganController extends SimpleController {
     @RequiresPermissions("sys:organ:sync")
     @Logging(value = "机构管理-同步到扩展表", logType = LogType.access)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "syncToExtend")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "syncToExtend")
     public Result syncToExtend() {
         logger.info("定时任务...开始：同步organ扩展表");
         systemService.syncOrganToExtend();
@@ -496,7 +496,7 @@ public class OrganController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Organ model) {
         return Result.successResult().setObj(model);

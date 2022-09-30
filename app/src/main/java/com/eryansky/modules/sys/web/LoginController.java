@@ -632,7 +632,7 @@ public class LoginController extends SimpleController {
      * 异步方式返回session信息
      * @reload 刷新Session信息
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"sessionInfo"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"sessionInfo"})
     @ResponseBody
     public Result sessionInfo(Boolean reload) {
         Result result = Result.successResult();

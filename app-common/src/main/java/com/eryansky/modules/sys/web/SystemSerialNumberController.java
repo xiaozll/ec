@@ -59,7 +59,7 @@ public class SystemSerialNumberController extends SimpleController {
 
 
     @RequiresPermissions("sys:systemSerialNumber:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"list", ""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"list", ""})
     public String list(SystemSerialNumber model,
                        @RequestParam(value = "export", defaultValue = "false") Boolean export,
                        @RequestParam(value = "exportType", defaultValue = "xls") String exportType,
@@ -150,7 +150,7 @@ public class SystemSerialNumberController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resetSerialNumber"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"resetSerialNumber"})
     @ResponseBody
     public Result resetSerialNumber(String id) {
         if(StringUtils.isNotBlank(id)){
@@ -168,7 +168,7 @@ public class SystemSerialNumberController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") SystemSerialNumber model) {
         return Result.successResult().setObj(model);

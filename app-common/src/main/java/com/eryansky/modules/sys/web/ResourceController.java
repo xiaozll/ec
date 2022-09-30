@@ -69,7 +69,7 @@ public class ResourceController extends SimpleController {
 
     @RequiresPermissions("sys:resource:view")
     @Logging(value = "资源管理", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public String list() {
         return "modules/sys/resource";
     }
@@ -252,7 +252,7 @@ public class ResourceController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"maxSort"})
     @ResponseBody
     public Result maxSort() throws Exception {
         Result result;
@@ -269,7 +269,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Resource model) {
         return Result.successResult().setObj(model);

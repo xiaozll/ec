@@ -336,7 +336,7 @@ public class VersionLogController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") VersionLog model) {
         return Result.successResult().setObj(model);

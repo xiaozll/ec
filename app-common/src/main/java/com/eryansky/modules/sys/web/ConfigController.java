@@ -42,7 +42,7 @@ public class ConfigController extends SimpleController {
 
     @RequiresPermissions("sys:config:view")
     @Logging(value = "属性配置", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public String list() {
         return "modules/sys/config";
     }

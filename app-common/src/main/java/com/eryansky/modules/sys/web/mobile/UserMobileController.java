@@ -299,7 +299,7 @@ public class UserMobileController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") User model) {
         return Result.successResult().setObj(model);

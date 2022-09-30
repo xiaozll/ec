@@ -56,7 +56,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "")
     public String list(HttpServletRequest request, HttpServletResponse response) {
         if (WebUtils.isAjaxRequest(request)) {
             ServerStatus serverStatus = null;
@@ -79,7 +79,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-缓存管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "cache")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "cache")
     public String cache(HttpServletRequest request, Model uiModel, HttpServletResponse response) {
         Page<Map<String, Object>> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -109,7 +109,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-缓存管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "cacheDetail")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "cacheDetail")
     public String cacheDetail(String region, Model uiModel, HttpServletRequest request, HttpServletResponse response) {
         Page<Map<String, Object>> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -141,7 +141,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-缓存管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "cacheKeyDetail")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "cacheKeyDetail")
     public String cacheKeyDetail(String region, String key, Model uiModel, HttpServletRequest request, HttpServletResponse response) {
         Object object = CacheUtils.get(region, key);
         try {
@@ -218,7 +218,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @Logging(value = "系统监控-系统日志", logType = LogType.access, logging = "!#isAjax")
     @RequiresPermissions("sys:systemMonitor:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "log")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "log")
     public String log(@RequestParam(value = "download", defaultValue = "false") boolean download,
                       Integer pageSize,
                       HttpServletRequest request, HttpServletResponse response, Model uiModel) {
@@ -274,7 +274,7 @@ public class SystemMonitorController extends SimpleController {
      */
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-队列管理", logType = LogType.access, logging = "!#isAjax")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "queue")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "queue")
     public String queue(HttpServletRequest request, Model uiModel, HttpServletResponse response) {
         Page<Map<String, Object>> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {

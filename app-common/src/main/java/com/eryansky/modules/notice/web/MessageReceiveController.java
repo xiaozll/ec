@@ -130,7 +130,7 @@ public class MessageReceiveController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") MessageReceive model) {
         return Result.successResult().setObj(model);

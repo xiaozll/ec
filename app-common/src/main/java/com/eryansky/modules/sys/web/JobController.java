@@ -47,7 +47,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:view")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value={"list",""})
+	@RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value={"list",""})
 	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export, QuartzJobDetail model,
                              Model uiModel, HttpServletRequest request, HttpServletResponse response) {
 		Page<QuartzJobDetail> page = new Page<>(request, response);

@@ -79,7 +79,7 @@ public class LogReportController extends SimpleController {
     }
 
     @RequiresPermissions(value = "sys:log:loginStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"loginStatisticsExportExcel"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"loginStatisticsExportExcel"})
     @ResponseBody
     public void loginStatisticsExportExcel(String name, String startTime, String endTime, HttpServletResponse response, HttpServletRequest request) throws Exception {
         Page<Map<String, Object>> page = new Page<>(1, -1);
@@ -162,7 +162,7 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-模块访问统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:moduleStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"moduleStatistics"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"moduleStatistics"})
     public String moduleStatistics(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,
                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         Page<Map<String, Object>> page = new Page<>(request, response);
@@ -185,7 +185,7 @@ public class LogReportController extends SimpleController {
     }
 
     @RequiresPermissions(value = "sys:log:moduleStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"moduleStatisticsExportExcel"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"moduleStatisticsExportExcel"})
     public void moduleStatisticsExportExcel(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,
                                             HttpServletResponse response, HttpServletRequest request) throws Exception {
         Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);

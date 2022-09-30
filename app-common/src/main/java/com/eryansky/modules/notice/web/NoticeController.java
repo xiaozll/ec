@@ -500,7 +500,7 @@ public class NoticeController extends SimpleController {
      *
      * @return
      */
-    @PostMapping(value = {"myMessage"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"myMessage"})
     @ResponseBody
     public Result myMessage(HttpServletRequest request, HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
@@ -569,7 +569,7 @@ public class NoticeController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Notice model) {
         return Result.successResult().setObj(model);

@@ -79,7 +79,7 @@ public class LogController extends SimpleController {
     @Logging(value = "日志管理", logType = LogType.access)
 //    @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequiresPermissions(value = "sys:log:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public String list(String type,
                        String userInfo,
                        String query,
@@ -139,7 +139,7 @@ public class LogController extends SimpleController {
      * @param log
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Log log) {
         return Result.successResult().setObj(log);
@@ -194,7 +194,7 @@ public class LogController extends SimpleController {
      * 数据修复 title
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dataAutoFix"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"dataAutoFix"})
     @ResponseBody
     public Result dataAutoFix() {
         logService.dataAutoFix();

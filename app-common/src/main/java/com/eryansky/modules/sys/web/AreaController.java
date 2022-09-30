@@ -239,7 +239,7 @@ public class AreaController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Area model) {
         return Result.successResult().setObj(model);

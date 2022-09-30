@@ -103,7 +103,7 @@ public class SessionController extends SimpleController {
      * @param id
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(String id) {
         SessionInfo sessionInfo = SecurityUtils.getSessionInfo(id);

@@ -29,7 +29,7 @@ public class FTPController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"init"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"init"})
     @ResponseBody
     public Result init(Boolean reconnect, Long connectTime) {
         if (iFileManager instanceof FTPManager) {

@@ -28,10 +28,7 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +43,7 @@ import java.util.Map;
  * 操作日志分析报表
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/sys/log/report")
+@RequestMapping(value = "${adminPath}/sys/log/report")
 public class LogReportController extends SimpleController {
 
     @Autowired
@@ -59,13 +56,13 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-登录统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:loginStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"loginStatistics"})
+    @GetMapping(value = {"loginStatistics"})
     public String loginStatistics() {
         return "modules/sys/log-loginStatistics";
     }
 
     @RequiresPermissions(value = "sys:log:loginStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"loginStatisticsData"})
+    @PostMapping(value = {"loginStatisticsData"})
     @ResponseBody
     public Datagrid<Map<String, Object>> datagrid(String name, String startTime, String endTime, HttpServletRequest request) {
         Page<Map<String, Object>> page = new Page<>(request);
@@ -106,9 +103,7 @@ public class LogReportController extends SimpleController {
             //导出CSV
             try {
                 List<Object[]> data = Lists.newArrayList();
-                page.getResult().forEach(o -> {
-                    data.add(new Object[]{o.get(fields[0]), o.get(fields[1]), o.get(fields[2]), o.get(fields[3]), o.get(fields[4]), o.get(fields[5])});
-                });
+                page.getResult().forEach(o -> data.add(new Object[]{o.get(fields[0]), o.get(fields[1]), o.get(fields[2]), o.get(fields[3]), o.get(fields[4]), o.get(fields[5])}));
                 CsvUtils.exportToCsv(fileName, hearders, data, request, response);
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
@@ -124,7 +119,7 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-每日登陆次数分析", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:dayLoginStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dayLoginStatistics"})
+    @GetMapping(value = {"dayLoginStatistics"})
     public String dayLoginStatistics() {
         return "modules/sys/log-dayLoginStatistics";
     }
@@ -138,7 +133,7 @@ public class LogReportController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions(value = "sys:log:dayLoginStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"dayLoginStatisticsData"})
+    @PostMapping(value = {"dayLoginStatisticsData"})
     @ResponseBody
     public Result dayLoginStatisticsData(String startTime, String endTime) throws Exception {
         String _startTime = StringUtils.isBlank(startTime) ? DateUtils.formatDate(AppDateUtils.getCurrentYearStartTime()):startTime;
@@ -167,11 +162,11 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-模块访问统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:moduleStatistics")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"moduleStatistics"})
+    @GetMapping(value = {"moduleStatistics"})
     public String moduleStatistics(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,
                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-        Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);
-        HashMap<String, Object> paramMap = new HashMap<String, Object>();
+        Page<Map<String, Object>> page = new Page<>(request, response);
+        HashMap<String, Object> paramMap = Maps.newHashMap();
         paramMap.put("userId", userId);
         paramMap.put("organId", organId);
         paramMap.put("userName", UserUtils.getUserName(userId));

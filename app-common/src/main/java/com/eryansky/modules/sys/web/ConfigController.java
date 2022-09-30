@@ -34,7 +34,7 @@ import java.util.Map;
  * @date 2015-05-14
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/config")
+@RequestMapping(value = "${adminPath}/sys/config")
 public class ConfigController extends SimpleController {
     @Autowired
     private ConfigService configService;
@@ -56,12 +56,12 @@ public class ConfigController extends SimpleController {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
+    @GetMapping(value = {"input"})
     public String input() {
         return "modules/sys/config-input";
     }
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<Config> datagrid(Config model, HttpServletRequest request, HttpServletResponse response,
                                      String query) {
@@ -72,7 +72,7 @@ public class ConfigController extends SimpleController {
 
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-保存配置", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Config model) {
         Result result;
@@ -97,7 +97,7 @@ public class ConfigController extends SimpleController {
      */
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-配置文件同步", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"syncFromProperties"})
+    @PostMapping(value = {"syncFromProperties"})
     @ResponseBody
     public Result syncFromProperties(Boolean overrideFromProperties) {
         Result result;
@@ -114,7 +114,7 @@ public class ConfigController extends SimpleController {
      */
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-删除配置", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         configService.deleteByIds(ids);
@@ -152,7 +152,7 @@ public class ConfigController extends SimpleController {
      */
     @Logging(value = "参数配置",logType = LogType.access)
     @RequiresPermissions("sys:config:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"paramForm"})
+    @GetMapping(value = {"paramForm"})
     public String paramForm(Model uiModel) {
         Map<String,Object> data = Maps.newHashMap();
         for(String configCode:CONFIGS){
@@ -174,7 +174,7 @@ public class ConfigController extends SimpleController {
      */
     @Logging(value = "参数配置-保存", logType = LogType.access)
     @RequiresPermissions("sys:config:edit")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"saveParam"})
+    @PostMapping(value = {"saveParam"})
     public String saveParam(HttpServletRequest request, RedirectAttributes redirectAttributes, Model uiModel) {
         if (AppConstants.isdevMode()) {
             addMessage(uiModel,"系统处于开发模式，无效操作！");

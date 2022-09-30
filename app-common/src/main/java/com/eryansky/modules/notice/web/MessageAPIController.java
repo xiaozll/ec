@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequiresUser(required = false)
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"api/message","rest/message"})
+@RequestMapping(value = {"api/message","rest/message"})
 public class MessageAPIController extends SimpleController {
 
 

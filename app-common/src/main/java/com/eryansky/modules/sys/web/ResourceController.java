@@ -48,7 +48,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/resource")
+@RequestMapping(value = "${adminPath}/sys/resource")
 public class ResourceController extends SimpleController {
 
     @Autowired
@@ -74,7 +74,7 @@ public class ResourceController extends SimpleController {
         return "modules/sys/resource";
     }
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"treegrid"})
+    @PostMapping(value = {"treegrid"})
     @ResponseBody
     public Datagrid<Resource> treegrid(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Resource model = new Resource();
@@ -89,7 +89,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
+    @GetMapping(value = {"input"})
     public String input(@ModelAttribute("model") Resource model, String parentId, Model uiModel) throws Exception {
         uiModel.addAttribute("parentId", parentId);
         uiModel.addAttribute("model", model);
@@ -101,7 +101,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-保存资源", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Resource resource, String _parentId) {
         Result result = null;
@@ -135,7 +135,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-删除资源", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"delete/{id}"})
+    @PostMapping(value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
 //        resourceService.deleteById(id);
@@ -147,7 +147,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
+    @PostMapping(value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) throws Exception {
         List<TreeNode> treeNodes = null;
@@ -165,7 +165,7 @@ public class ResourceController extends SimpleController {
      * 资源树.
      */
     @RequiresPermissions("MANAGER")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resourceData"})
+    @PostMapping(value = {"resourceData"})
     @ResponseBody
     public List<TreeNode> resourceData(){
         List<TreeNode>  treeNodes = resourceService.findTreeNodeResources();
@@ -175,7 +175,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树-分级权限
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resourceDataWithPermission"})
+    @PostMapping(value = {"resourceDataWithPermission"})
     @ResponseBody
     public List<TreeNode> resourceDataWithPermission(){
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -187,7 +187,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源类型下拉列表.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"resourceTypeCombobox"})
+    @PostMapping(value = {"resourceTypeCombobox"})
     @ResponseBody
     public List<Combobox> resourceTypeCombobox(String selectType, String parentId) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
@@ -236,7 +236,7 @@ public class ResourceController extends SimpleController {
      * 父级资源下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"parent"})
+    @PostMapping(value = {"parent"})
     @ResponseBody
     public List<TreeNode> parent(@ModelAttribute("model") Resource resource, String selectType) {
         List<TreeNode> treeNodes = null;

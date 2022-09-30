@@ -14,6 +14,7 @@ import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
 import com.eryansky.utils.AppUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,7 +27,7 @@ import java.io.IOException;
  * @date : 2021-11-03
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sso")
+@RequestMapping(value = "${adminPath}/sso")
 public class SSORedirctController extends SimpleController {
 
     /**
@@ -35,7 +36,7 @@ public class SSORedirctController extends SimpleController {
      * @param request
      * @throws IOException
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"**"})
+    @GetMapping(value = {"**"})
     public String redirect(HttpServletRequest request) throws Exception {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String requestUrl = request.getRequestURI();

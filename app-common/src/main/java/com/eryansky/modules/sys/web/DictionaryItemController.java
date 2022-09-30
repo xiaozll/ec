@@ -38,7 +38,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/dictionaryItem")
+@RequestMapping(value = "${adminPath}/sys/dictionaryItem")
 public class DictionaryItemController extends SimpleController {
 
     @Autowired
@@ -55,10 +55,10 @@ public class DictionaryItemController extends SimpleController {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<DictionaryItem> datagrid(DictionaryItem dictionaryItem, HttpServletRequest request, HttpServletResponse response) {
-        Page<DictionaryItem> page = new Page<DictionaryItem>(request);
+        Page<DictionaryItem> page = new Page<>(request);
         page = dictionaryItemService.findPage(page, dictionaryItem);
         Datagrid<DictionaryItem> datagrid = new Datagrid<DictionaryItem>(page.getTotalCount(), page.getResult());
         return datagrid;
@@ -74,7 +74,7 @@ public class DictionaryItemController extends SimpleController {
      */
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-保存字典项", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute DictionaryItem dictionaryItem, String dictionaryId, String parentId) {
         Result result = null;
@@ -103,7 +103,7 @@ public class DictionaryItemController extends SimpleController {
 
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-删除字典项", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         dictionaryItemService.deleteByIds(ids);
@@ -114,7 +114,7 @@ public class DictionaryItemController extends SimpleController {
      * combotree下拉列表数据.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"combotree"})
+    @PostMapping(value = {"combotree"})
     @ResponseBody
     public List<TreeNode> combotree(@ModelAttribute("model") DictionaryItem dictionaryItem, String selectType) throws Exception {
         List<TreeNode> titleList = Lists.newArrayList();
@@ -131,7 +131,7 @@ public class DictionaryItemController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() {
         Integer maxSort = dictionaryItemService.getMaxSort();

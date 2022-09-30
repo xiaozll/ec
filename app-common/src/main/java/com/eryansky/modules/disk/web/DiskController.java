@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
  * @date 2014-11-22
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/disk")
+@RequestMapping(value = "${adminPath}/disk")
 public class DiskController extends SimpleController {
 
     @Autowired
@@ -102,7 +102,7 @@ public class DiskController extends SimpleController {
      */
     @RequiresPermissions("disk:disk:view")
     @Logging(logType = LogType.access, value = "我的云盘")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -119,7 +119,7 @@ public class DiskController extends SimpleController {
      * @param selectType
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"folderTree"})
+    @PostMapping(value = {"folderTree"})
     @ResponseBody
     public List<TreeNode> folderTree(String folderAuthorize, String excludeFolderId, String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -138,7 +138,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"folderAuthorizeCombobox"})
+    @PostMapping(value = {"folderAuthorizeCombobox"})
     @ResponseBody
     public List<Combobox> folderAuthorizeCombobox(String selectType,
                                                   String requestType) {
@@ -164,7 +164,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"fileSizeTypeCombobox"})
+    @PostMapping(value = {"fileSizeTypeCombobox"})
     @ResponseBody
     public List<Combobox> fileSizeTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -189,7 +189,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件夹保存")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"saveFolder"})
+    @PostMapping(value = {"saveFolder"})
     @ResponseBody
     public Result saveFolder(@ModelAttribute("model") Folder folder) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -210,7 +210,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件夹删除")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"folderRemove/{folderId}"})
+    @PostMapping(value = {"folderRemove/{folderId}"})
     @ResponseBody
     public Result folderRemove(@PathVariable String folderId) {
         Folder folder = folderService.get(folderId);
@@ -255,7 +255,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"diskTree"})
+    @PostMapping(value = {"diskTree"})
     @ResponseBody
     public List<TreeNode> diskTree() {
         List<TreeNode> treeNodes = Lists.newArrayList(); // 返回的树节点
@@ -291,7 +291,7 @@ public class DiskController extends SimpleController {
      * @param fileName
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"folderFileDatagrid"})
+    @PostMapping(value = {"folderFileDatagrid"})
     @ResponseBody
     public String folderFileDatagrid(String folderId, String folderAuthorize, String fileName) {
         String json = null;
@@ -340,7 +340,7 @@ public class DiskController extends SimpleController {
      * @param parentFolderId
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"folderInput"})
+    @GetMapping(value = {"folderInput"})
     public ModelAndView folderInput(String folderId, Integer folderAuthorize,
                                     String parentFolderId) {
         ModelAndView modelAndView = new ModelAndView(
@@ -371,7 +371,7 @@ public class DiskController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"fileInput"})
+    @GetMapping(value = {"fileInput"})
     public ModelAndView fileInput(String folderId, String folderAuthorize) throws Exception {
         ModelAndView modelAndView = new ModelAndView(
                 "modules/disk/disk-fileInput");
@@ -399,7 +399,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件修改")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"fileSave"})
+    @PostMapping(value = {"fileSave"})
     @ResponseBody
     public Result fileSave(@ModelAttribute("model") File file) {
         fileService.save(file);
@@ -413,7 +413,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件删除")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"delFolderFile"})
+    @PostMapping(value = {"delFolderFile"})
     @ResponseBody
     public Result delFolderFile(@RequestParam(value = "fileIds", required = false) List<String> fileIds) {
         fileService.deleteFileByFileIds(fileIds);
@@ -427,7 +427,7 @@ public class DiskController extends SimpleController {
      * @throws Exception
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件级联删除")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"cascadeDelFile"})
+    @PostMapping(value = {"cascadeDelFile"})
     @ResponseBody
     public Result cascadeDelFile(@RequestParam(value = "fileCodes", required = false) List<String> fileCodes) {
         fileService.deleteFileByFolderCode(fileCodes);
@@ -442,7 +442,7 @@ public class DiskController extends SimpleController {
      * @param uploadFile 上传文件
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"fileUpload"})
+    @PostMapping(value = {"fileUpload"})
     @ResponseBody
     public Result fileUpload(
             @RequestParam(value = "folderId", required = false) String folderId,
@@ -475,7 +475,7 @@ public class DiskController extends SimpleController {
      */
     @RequiresPermissions("disk:disk:search")
     @Logging(logType = LogType.access, value = "我的云盘-文件检索")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"search"})
+    @GetMapping(value = {"search"})
     public ModelAndView searchList() {
         boolean isAdmin = DiskUtils.isDiskAdmin(SecurityUtils.getCurrentUserId());
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk-search");
@@ -494,8 +494,7 @@ public class DiskController extends SimpleController {
      * @param personIds       上传人Id集合
      * @return
      */
-
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"fileSearchDatagrid"})
+    @PostMapping(value = {"fileSearchDatagrid"})
     @ResponseBody
     public String fileSearchDatagrid(
             String query,
@@ -511,11 +510,11 @@ public class DiskController extends SimpleController {
             userId = null;
         }
         userId = Collections3.isNotEmpty(personIds) ? personIds.get(0) : userId;
-        Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
+        Page<File> page = new Page<>(SpringMVCHolder.getRequest());
         page = fileService.searchFilePage(page, userId, query,
                 folderAuthorize, sizeType,isAdmin, startTime, endTime);
         if (page != null) {
-            Datagrid<File> dg = new Datagrid<File>(page.getTotalCount(),
+            Datagrid<File> dg = new Datagrid<>(page.getTotalCount(),
                     page.getResult());
             json = JsonMapper.getInstance().toJson(
                     dg,
@@ -535,7 +534,7 @@ public class DiskController extends SimpleController {
      * @param fileId   文件ID
      */
     @Logging(logType = LogType.access, value = "下载文件")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"fileDownload/{fileId}"})
+    @GetMapping(value = {"fileDownload/{fileId}"})
     public ModelAndView fileDownload(HttpServletResponse response,
                                      HttpServletRequest request, @PathVariable String fileId) throws Exception {
         File file = fileService.get(fileId);
@@ -581,7 +580,7 @@ public class DiskController extends SimpleController {
      * @throws Exception
      */
     @Logging(logType = LogType.access, value = "下载文件")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"downloadDiskFile"})
+    @GetMapping(value = {"downloadDiskFile"})
     public ModelAndView downloadDiskFile(
             HttpServletResponse response,
             HttpServletRequest request,
@@ -641,7 +640,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-清空缓存目录")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"clearTempDir"})
+    @PostMapping(value = {"clearTempDir"})
     @ResponseBody
     public Result clearTempDir() {
         logger.info("清空缓存目录...");

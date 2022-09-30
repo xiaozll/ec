@@ -12,14 +12,12 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.JobState;
 import com.eryansky.modules.sys.mapper.QuartzJobDetail;
 import com.eryansky.modules.sys.service.JobService;
+import com.google.common.collect.Maps;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +29,7 @@ import java.util.Map;
  * Quartz定时任务管理
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/job")
+@RequestMapping(value = "${adminPath}/sys/job")
 public class JobController extends SimpleController {
 	@Autowired
 	private JobService jobAndTriggerService;
@@ -88,7 +86,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:edit")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "triggerJob")
+	@PostMapping(value = "triggerJob")
 	@ResponseBody
 	public Result triggerJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -112,7 +110,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:edit")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "pauseJob")
+	@PostMapping(value = "pauseJob")
 	@ResponseBody
 	public Result pauseJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -135,7 +133,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:edit")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "resumeJob")
+	@PostMapping(value = "resumeJob")
 	@ResponseBody
 	public Result resumeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -158,7 +156,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:edit")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "addJob")
+	@PostMapping(value = "addJob")
 	@ResponseBody
 	public Result addJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -203,7 +201,7 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:edit")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "rescheduleJob")
+	@PostMapping(value = "rescheduleJob")
 	@ResponseBody
 	public Result rescheduleJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -237,10 +235,10 @@ public class JobController extends SimpleController {
 	 * @return
 	 */
 	@RequiresPermissions("sys:job:edit")
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "removeJob")
+	@PostMapping(value = "removeJob")
 	@ResponseBody
 	public Result removeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
-		Map<String, String> returnData = new HashMap<String, String>();
+		Map<String, String> returnData = Maps.newHashMap();
 		try {
 			//TriggerKey定义了trigger的名称和组别
 			TriggerKey triggerKey = TriggerKey.triggerKey(jobClassName, jobGroupName);

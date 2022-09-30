@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.*;
  * @date 2015-06-26
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/disk/ftp")
+@RequestMapping(value = "${adminPath}/disk/ftp")
 public class FTPController extends SimpleController {
 
     @Autowired
     private IFileManager iFileManager;
-
 
     /**
      * 启动FTP客户端管理工具

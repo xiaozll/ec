@@ -58,7 +58,7 @@ import java.util.*;
  * 通知管理
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/notice")
+@RequestMapping(value = "${adminPath}/notice")
 public class NoticeController extends SimpleController {
 
     @Autowired
@@ -92,7 +92,7 @@ public class NoticeController extends SimpleController {
      * @param noticeId 通知ID
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public ModelAndView list(String noticeId,
                              @RequestParam(value = "objectType", required = false) String objectType,
                              @RequestParam(value = "objectId", required = false) String objectId,
@@ -121,7 +121,7 @@ public class NoticeController extends SimpleController {
      * @param noticeId 通知ID
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"receive"})
+    @GetMapping(value = {"receive"})
     public ModelAndView receive(String noticeId,
                                 @RequestParam(value = "objectType", required = false) String objectType,
                                 @RequestParam(value = "objectId", required = false) String objectId,
@@ -150,7 +150,7 @@ public class NoticeController extends SimpleController {
      * @param noticeQueryVo {@link com.eryansky.modules.notice.vo.NoticeQueryVo} 查询条件
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public String datagrid(NoticeQueryVo noticeQueryVo) {
         Page<Notice> page = new Page<Notice>(SpringMVCHolder.getRequest());
@@ -174,7 +174,7 @@ public class NoticeController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"readInfo/{id}"})
+    @GetMapping(value = {"readInfo/{id}"})
     public ModelAndView readInfo(@PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-readInfo");
         modelAndView.addObject("noticeId", id);
@@ -190,7 +190,7 @@ public class NoticeController extends SimpleController {
      * @throws Exception
      */
     @Mobile(value = MobileValue.ALL)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"view/{id}"})
+    @GetMapping(value = {"view/{id}"})
     public ModelAndView view(@PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-view");
         List<File> files = DiskUtils.findFilesByIds(noticeService.findFileIdsByNoticeId(id));
@@ -213,7 +213,7 @@ public class NoticeController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
+    @GetMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Notice model,
                               @RequestParam(value = "receiveUserIds", required = false) List<String> fileIds,
                               @RequestParam(value = "receiveUserIds", required = false) List<String> receiveUserIds,
@@ -223,11 +223,11 @@ public class NoticeController extends SimpleController {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-input");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String loginUserId = sessionInfo.getUserId();
-        List<File> files = Collections.EMPTY_LIST;
-        List<String> _fileIds = Collections.EMPTY_LIST;
-        List<String> _receiveUserIds = Collections.EMPTY_LIST;
-        List<String> _receiveOrganIds = Collections.EMPTY_LIST;
-        List<String> _receiveContactGroupIds = Collections.EMPTY_LIST;
+        List<File> files = Collections.emptyList();
+        List<String> _fileIds = Collections.emptyList();
+        List<String> _receiveUserIds = Collections.emptyList();
+        List<String> _receiveOrganIds = Collections.emptyList();
+        List<String> _receiveContactGroupIds = Collections.emptyList();
         if (OperateType.Repeat.equals(operateType)) {// 转发
             List<String> sourceFileIds = noticeService.findFileIdsByNoticeId(model.getId());
             files = DiskUtils.copyFiles(loginUserId, Notice.FOLDER_NOTICE, sourceFileIds);
@@ -274,7 +274,7 @@ public class NoticeController extends SimpleController {
      * @param dataScope  {@link DataScope}
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"multiSelectPrefix"})
+    @PostMapping(value = {"multiSelectPrefix"})
     @ResponseBody
     public String multiSelectPrefix(String query, String dataScope,
                                     @RequestParam(value = "includeIds", required = false) List<String> includeIds) {
@@ -308,7 +308,7 @@ public class NoticeController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:publish")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"})
+    @PostMapping(value = {"save"})
     @ResponseBody
     public Result save(@ModelAttribute("model") Notice model, OperateType operateType,
                        @RequestParam(value = "_noticeUserIds", required = false) List<String> noticeUserIds,
@@ -337,7 +337,7 @@ public class NoticeController extends SimpleController {
      * @param ids
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"markReaded"})
+    @PostMapping(value = {"markReaded"})
     @ResponseBody
     public Result markReaded(@RequestParam(value = "ids", required = false) List<String> ids) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -350,7 +350,7 @@ public class NoticeController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"markReadedAll"})
+    @PostMapping(value = {"markReadedAll"})
     @ResponseBody
     public Result markReadedAll() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -365,7 +365,7 @@ public class NoticeController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:publish")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"publish/{id}"})
+    @PostMapping(value = {"publish/{id}"})
     @ResponseBody
     public Result publish(@PathVariable String id) {
         noticeService.publish(id);
@@ -379,7 +379,7 @@ public class NoticeController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:publish")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"invalid/{id}"})
+    @PostMapping(value = {"invalid/{id}"})
     @ResponseBody
     public Result invalid(@PathVariable String id) {
         Notice notice = noticeService.get(id);
@@ -394,7 +394,7 @@ public class NoticeController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:publish")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         noticeService.deleteByIds(ids);
@@ -404,7 +404,7 @@ public class NoticeController extends SimpleController {
     /**
      * 文件上传
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"upload"})
+    @PostMapping(value = {"upload"})
     @ResponseBody
     public Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile, String jsessionid) {
         Result result = null;
@@ -450,10 +450,10 @@ public class NoticeController extends SimpleController {
      * @param fileId
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"delUpload"})
+    @PostMapping(value = {"delUpload"})
     @ResponseBody
     public Result delUpload(@ModelAttribute("model") Notice model, @RequestParam String fileId) {
-        List<String> fileIds = new ArrayList<String>(1);
+        List<String> fileIds = new ArrayList<>(1);
         fileIds.add(fileId);
         noticeService.deleteNoticeFiles(model.getId(), fileIds);
         DiskUtils.deleteFile(fileId);
@@ -466,7 +466,7 @@ public class NoticeController extends SimpleController {
      * @param selectType
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"isTopCombobox"})
+    @PostMapping(value = {"isTopCombobox"})
     @ResponseBody
     public List<Combobox> isTopCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -488,7 +488,7 @@ public class NoticeController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"read"})
+    @GetMapping(value = {"read"})
     public ModelAndView readList() {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-read");
         return modelAndView;
@@ -500,14 +500,14 @@ public class NoticeController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"myMessage"})
+    @PostMapping(value = {"myMessage"})
     @ResponseBody
     public Result myMessage(HttpServletRequest request, HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         long noticeScopes = 0;
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(request);
+        Page<NoticeReceiveInfo> page = new Page<>(request);
         page = noticeReceiveInfoService.findUserUnreadNotices(page, sessionInfo.getUserId());
         if (Collections3.isNotEmpty(page.getResult())) {
             noticeScopes = page.getTotalCount();
@@ -523,12 +523,12 @@ public class NoticeController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"myUnreadNotice"})
+    @PostMapping(value = {"myUnreadNotice"})
     @ResponseBody
     public String myUnreadNotice(HttpServletRequest request, HttpServletResponse response) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(request);
+        Page<NoticeReceiveInfo> page = new Page<>(request);
         page = noticeReceiveInfoService.findUserUnreadNotices(page, sessionInfo.getUserId());
         result = Result.successResult().setObj(page.getResult());
         String json = JsonMapper.getInstance().toJson(result, NoticeReceiveInfo.class,
@@ -543,7 +543,7 @@ public class NoticeController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"receiveScopeCombobox"})
+    @PostMapping(value = {"receiveScopeCombobox"})
     @ResponseBody
     public List<Combobox> receiveScopeCombobox(String selectType) throws Exception {
         List<Combobox> cList = Lists.newArrayList();

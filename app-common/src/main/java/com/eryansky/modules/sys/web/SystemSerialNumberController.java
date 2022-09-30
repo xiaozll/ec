@@ -40,7 +40,7 @@ import java.util.List;
  * @date 2016-07-18
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/systemSerialNumber")
+@RequestMapping(value = "${adminPath}/sys/systemSerialNumber")
 public class SystemSerialNumberController extends SimpleController {
 
     @Autowired

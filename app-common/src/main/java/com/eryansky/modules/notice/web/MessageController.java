@@ -49,7 +49,7 @@ import java.util.List;
  * @date 2016-03-24
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/notice/message")
+@RequestMapping(value = "${adminPath}/notice/message")
 public class MessageController extends SimpleController {
 
     @Autowired
@@ -70,7 +70,7 @@ public class MessageController extends SimpleController {
 
 
     @RequiresPermissions("notice:message:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"list", "", "audit"})
+    @GetMapping(value = {"list", "", "audit"})
     public ModelAndView list(@ModelAttribute("model") Message model,String appId, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageList");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -90,7 +90,7 @@ public class MessageController extends SimpleController {
     }
 
     @RequiresPermissions("notice:message:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "form")
+    @GetMapping(value = "form")
     public ModelAndView form(@ModelAttribute("model") Message model) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageForm");
         if (StringUtils.isBlank(model.getReceiveObjectType())) {
@@ -114,7 +114,7 @@ public class MessageController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:message:edit")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "save")
+    @PostMapping(value = "save")
     public ModelAndView save(@ModelAttribute("model") Message model, Model uiModel, RedirectAttributes redirectAttributes,
                              String receiveObjectType,
                              @RequestParam(value = "objectIds") List<String> objectIds) {
@@ -144,7 +144,7 @@ public class MessageController extends SimpleController {
     }
 
     @RequiresPermissions("notice:message:edit")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "delete")
+    @GetMapping(value = "delete")
     public ModelAndView delete(@ModelAttribute("model") Message model, @RequestParam(required = false) Boolean isRe, RedirectAttributes redirectAttributes) {
         messageService.delete(model, isRe);
         addMessage(redirectAttributes, (isRe != null && isRe ? "恢复" : "") + "删除消息成功");
@@ -153,7 +153,7 @@ public class MessageController extends SimpleController {
     }
 
     @RequiresPermissions("notice:message:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "info")
+    @GetMapping(value = "info")
     public ModelAndView info(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageInfo");
         modelAndView.addObject("model", model);
@@ -166,7 +166,7 @@ public class MessageController extends SimpleController {
     }
 
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "view")
+    @GetMapping(value = "view")
     public ModelAndView view(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageView");
         modelAndView.addObject("model", model);
@@ -183,7 +183,7 @@ public class MessageController extends SimpleController {
      * @param receiveObjectIds  必选 接收对象ID集合 多个之间以”,“分割
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "sendMessage")
+    @PostMapping(value = "sendMessage")
     @ResponseBody
     public Result sendMessage(@RequestParam(value = "content") String content,
                               String linkUrl,
@@ -204,14 +204,14 @@ public class MessageController extends SimpleController {
      * @param linkUrl 消息URL链接地址
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "sendToManager")
+    @PostMapping(value = "sendToManager")
     @ResponseBody
     public Result sendToManager(@RequestParam(value = "content") String content,
                                 String linkUrl) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         User superUser = UserUtils.getSuperUser();
-        List<String> receiveObjectIds = new ArrayList<String>(1);
+        List<String> receiveObjectIds = new ArrayList<>(1);
         receiveObjectIds.add(superUser.getId());
         MessageUtils.sendMessage(null, null != sessionInfo ? sessionInfo.getUserId():null, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,null);
         result = Result.successResult().setMsg("消息正在发送...请稍候！");
@@ -225,7 +225,7 @@ public class MessageController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tipMessageCombobox"})
+    @PostMapping(value = {"tipMessageCombobox"})
     @ResponseBody
     public List<Combobox> tipMessageCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();

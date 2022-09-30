@@ -37,7 +37,7 @@ import java.util.List;
  * @date 2014-11-07
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/notice/contactGroup")
+@RequestMapping(value = "${adminPath}/notice/contactGroup")
 public class ContactGroupController extends SimpleController {
 
     @Autowired
@@ -54,12 +54,12 @@ public class ContactGroupController extends SimpleController {
         }
     }
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/notice/contactGroup";
     }
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
+    @GetMapping(value = {"input"})
     public String input(@ModelAttribute("model") ContactGroup model) {
         return "modules/notice/contactGroup-input";
     }
@@ -67,7 +67,7 @@ public class ContactGroupController extends SimpleController {
     /**
      * 邮件联系人编辑
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"inputContactGroupMail"})
+    @GetMapping(value = {"inputContactGroupMail"})
     public String inputContactGroupMail(@ModelAttribute("model") MailContact model) {
         return "modules/notice/contactGroupMail-input";
     }
@@ -77,7 +77,7 @@ public class ContactGroupController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"})
+    @PostMapping(value = {"save"})
     @ResponseBody
     public Result save(@ModelAttribute("model") ContactGroup model) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -96,7 +96,7 @@ public class ContactGroupController extends SimpleController {
      * 个人 联系人组树形菜单 查询用
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"groupTree"})
+    @PostMapping(value = {"groupTree"})
     @ResponseBody
     public List<TreeNode> groupTree(String contactGroupType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -119,7 +119,7 @@ public class ContactGroupController extends SimpleController {
      * 个人 联系人组树形菜单
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
+    @PostMapping(value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String contactGroupType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -137,7 +137,7 @@ public class ContactGroupController extends SimpleController {
      * @param ids
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         ids.forEach(v -> {
@@ -151,7 +151,7 @@ public class ContactGroupController extends SimpleController {
      * @param contactGroupId 角色ID
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"select"})
+    @GetMapping(value = {"select"})
     public ModelAndView selectPage(String contactGroupId) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-select");
         List<User> users = null;
@@ -174,7 +174,7 @@ public class ContactGroupController extends SimpleController {
      * @param contactGroupId 联系人组ID
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"contactGroupUser"})
+    @GetMapping(value = {"contactGroupUser"})
     @ResponseBody
     public ModelAndView contactGroupUser(String contactGroupId) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/contactGroup-user");
@@ -186,7 +186,7 @@ public class ContactGroupController extends SimpleController {
      * @param addObjectIds 新增联系人 ID集合
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"addContactGroupUser"})
+    @PostMapping(value = {"addContactGroupUser"})
     @ResponseBody
     public Result addContactGroupUser(@ModelAttribute("model") ContactGroup model,
                                       @RequestParam(value = "addObjectIds", required = false) List<String> addObjectIds) {
@@ -200,7 +200,7 @@ public class ContactGroupController extends SimpleController {
      * @param removeObjectIds 需要移除的联系人 ID集合
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"removeContactGroupUser"})
+    @PostMapping(value = {"removeContactGroupUser"})
     @ResponseBody
     public Result removeContactGroupUser(@ModelAttribute("model") ContactGroup model,
                                          @RequestParam(value = "removeObjectIds", required = true) List<String> removeObjectIds) {
@@ -214,7 +214,7 @@ public class ContactGroupController extends SimpleController {
      * @param query 用户登录名或姓名
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"contactGroupUserDatagrid"})
+    @PostMapping(value = {"contactGroupUserDatagrid"})
     @ResponseBody
     public String contactGroupUserDatagrid(String id, String query) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -235,7 +235,7 @@ public class ContactGroupController extends SimpleController {
      * @param loginNameOrName 用户登录名或姓名
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"selectContactGroupUserDatagrid"})
+    @PostMapping(value = {"selectContactGroupUserDatagrid"})
     @ResponseBody
     public String selectContactGroupUserDatagrid(String contactGroupId, String loginNameOrName) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -252,7 +252,7 @@ public class ContactGroupController extends SimpleController {
     /**
      * 类型下拉列表.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"contactGroupTypeCombobox"})
+    @PostMapping(value = {"contactGroupTypeCombobox"})
     @ResponseBody
     public List<Combobox> contactGroupTypeCombobox(String selectType) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
@@ -274,7 +274,7 @@ public class ContactGroupController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() throws Exception {
         Result result;

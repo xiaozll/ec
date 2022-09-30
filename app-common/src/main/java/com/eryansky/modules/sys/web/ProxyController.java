@@ -21,6 +21,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -41,7 +42,7 @@ import java.util.Map;
  * @date 2015-12-14
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/proxy")
+@RequestMapping(value = "${adminPath}/sys/proxy")
 public class ProxyController extends SimpleController {
 
 
@@ -71,7 +72,7 @@ public class ProxyController extends SimpleController {
      * @param contentUrl       远程URL
      * @throws IOException
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public void getHttpProxy(NativeWebRequest nativeWebRequest, String contentUrl) throws Exception {
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
@@ -170,7 +171,7 @@ public class ProxyController extends SimpleController {
      * @param nativeWebRequest
      * @throws IOException
      */
-    @RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = {"**"})
+    @GetMapping(value = {"**"})
     public ModelAndView proxy(NativeWebRequest nativeWebRequest) throws Exception {
         CustomHttpServletRequestWrapper request = nativeWebRequest.getNativeRequest(CustomHttpServletRequestWrapper.class);
         String requestUrl = request.getRequestURI();

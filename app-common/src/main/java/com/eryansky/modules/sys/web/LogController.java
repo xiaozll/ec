@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  * @date 2013-12-8 下午5:13
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/log")
+@RequestMapping(value = "${adminPath}/sys/log")
 public class LogController extends SimpleController {
 
     @Autowired
@@ -153,7 +153,7 @@ public class LogController extends SimpleController {
      */
     @Logging(value = "日志管理-删除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         logService.deleteByIds(ids);
@@ -167,7 +167,7 @@ public class LogController extends SimpleController {
      */
     @Logging(value = "日志管理-清除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"removeAll"})
+    @PostMapping(value = {"removeAll"})
     @ResponseBody
     public Result removeAll() {
         logService.clearAll();
@@ -177,7 +177,7 @@ public class LogController extends SimpleController {
     /**
      * 日志类型下拉列表.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"logTypeCombobox"})
+    @PostMapping(value = {"logTypeCombobox"})
     @ResponseBody
     public List<Combobox> logTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();

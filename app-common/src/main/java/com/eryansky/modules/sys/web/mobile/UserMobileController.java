@@ -36,7 +36,7 @@ import java.util.*;
  */
 @Mobile
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${mobilePath}/sys/user")
+@RequestMapping(value = "${mobilePath}/sys/user")
 public class UserMobileController extends SimpleController {
 
     @Autowired
@@ -62,7 +62,7 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "password")
+    @GetMapping(value = "password")
     public String password(@ModelAttribute("model")User model, String msg, Model uiModel) {
         if(null == model || StringUtils.isBlank(model.getId())){
             model = SecurityUtils.getCurrentUser();
@@ -85,7 +85,7 @@ public class UserMobileController extends SimpleController {
      */
     @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "savePs")
+    @PostMapping(value = "savePs")
     @ResponseBody
     public Result savePs(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "ln",required = false) String loginName,
@@ -138,7 +138,7 @@ public class UserMobileController extends SimpleController {
      */
     @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "savePassword")
+    @PostMapping(value = "savePassword")
     @ResponseBody
     public Result savePassword(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "loginName",required = false) String loginName,
@@ -185,7 +185,7 @@ public class UserMobileController extends SimpleController {
      * @param uiModel
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "input")
+    @GetMapping(value = "input")
     public String input(@ModelAttribute("model")User model, String msg, Model uiModel) {
         if(null == model || StringUtils.isBlank(model.getId())){
             model = SecurityUtils.getCurrentUser();
@@ -204,7 +204,7 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access,value = "修改个人信息")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "saveUserInfo")
+    @PostMapping(value = "saveUserInfo")
     @ResponseBody
     public Result saveUserInfo(@ModelAttribute("model")User model) {
         if (model == null || StringUtils.isBlank(model.getId())) {
@@ -233,7 +233,7 @@ public class UserMobileController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "contactData")
+    @PostMapping(value = "contactData")
     public String contactData(String companyId,HttpServletRequest request, HttpServletResponse response) {
         List<User> personPlatformContacts = StringUtils.isBlank(companyId) ? userService.findAllNormal():userService.findUsersByCompanyId(companyId);
         Map<String, List<User>> listMap = Maps.newConcurrentMap();
@@ -267,7 +267,7 @@ public class UserMobileController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "contactTagData")
+    @PostMapping(value = "contactTagData")
     public String contactTagData(String companyId,
                                  @RequestParam(value = "showPhoto",defaultValue = "false") Boolean showPhoto,
                                  HttpServletRequest request, HttpServletResponse response) {
@@ -314,7 +314,7 @@ public class UserMobileController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"detailByIdOrLoginName"})
+    @PostMapping(value = {"detailByIdOrLoginName"})
     @ResponseBody
     public Result detailByIdOrLoginName(String id,
                                     String loginName) {

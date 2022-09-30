@@ -12,10 +12,7 @@ import com.eryansky.common.web.utils.MediaTypes;
 import com.eryansky.modules.sys.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Map;
@@ -27,7 +24,7 @@ import java.util.Map;
  * @date 2013-2-25 下午1:59:38
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/common")
+@RequestMapping(value = "${adminPath}/common")
 public class CommonController extends SimpleController {
 
     @Autowired
@@ -42,7 +39,7 @@ public class CommonController extends SimpleController {
      * @param rowId      主键ID
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "fieldCheck")
+    @PostMapping(value = "fieldCheck")
     @ResponseBody
     public Result fieldCheck(String entityName, String fieldName, String fieldValue, String rowId) {
         String entityId = null;
@@ -66,7 +63,7 @@ public class CommonController extends SimpleController {
      * @param callbackName 回调方法
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "mashup", produces = MediaTypes.JAVASCRIPT_UTF_8)
+    @PostMapping(value = "mashup", produces = MediaTypes.JAVASCRIPT_UTF_8)
     @ResponseBody
     public String mashup(@RequestParam("callback") String callbackName) {
 

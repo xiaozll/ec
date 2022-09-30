@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Mobile
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${mobilePath}/notice")
+@RequestMapping(value = "${mobilePath}/notice")
 public class NoticeMobileController extends SimpleController {
 
     @Autowired
@@ -54,7 +54,7 @@ public class NoticeMobileController extends SimpleController {
     }
 
     @Logging(logType = LogType.access, value = "我的通知")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/notice/notice";
     }
@@ -63,7 +63,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "noticePage")
+    @PostMapping(value = "noticePage")
     @ResponseBody
     public String noticePage() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -81,7 +81,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "noticeData")
+    @PostMapping(value = "noticeData")
     @ResponseBody
     public String noticeData(HttpServletRequest request, HttpServletResponse response,
                              NoticeQueryVo noticeQueryVo) {

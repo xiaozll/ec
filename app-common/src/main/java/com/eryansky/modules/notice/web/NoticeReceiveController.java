@@ -58,7 +58,7 @@ import java.util.List;
  * @date 2016-04-14
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/notice/noticeReceiveInfo")
+@RequestMapping(value = "${adminPath}/notice/noticeReceiveInfo")
 public class NoticeReceiveController extends SimpleController {
 
     @Autowired
@@ -86,7 +86,7 @@ public class NoticeReceiveController extends SimpleController {
      */
     @Mobile(value = MobileValue.ALL)
     @Logging(logType = LogType.access, value = "消息中心")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"", "list"})
+    @GetMapping(value = {"", "list"})
     public String list(NoticeReceiveInfo model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<NoticeReceiveInfo> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
@@ -106,14 +106,14 @@ public class NoticeReceiveController extends SimpleController {
      * @param noticeQueryVo 查询条件
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"readInfoDatagrid"})
+    @PostMapping(value = {"readInfoDatagrid"})
     @ResponseBody
     public String noticeReadDatagrid(NoticeQueryVo noticeQueryVo) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
+        Page<NoticeReceiveInfo> page = new Page<>(SpringMVCHolder.getRequest());
         noticeQueryVo.syncEndTime();
         page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), noticeQueryVo);
-        Datagrid<NoticeReceiveInfo> dg = new Datagrid<NoticeReceiveInfo>(page.getTotalCount(), page.getResult());
+        Datagrid<NoticeReceiveInfo> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
         String json = JsonMapper.getInstance().toJson(dg, Notice.class,
                 new String[]{"id", "noticeId", "title", "type", "typeView", "publishUserName", "publishTime", "isReadView", "isNeedReply", "isNeedReplyView", "isReply", "isReplyView"});
         return json;
@@ -125,12 +125,12 @@ public class NoticeReceiveController extends SimpleController {
      * @param id 通知ID
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"readInfoDatagrid/{id}"})
+    @PostMapping(value = {"readInfoDatagrid/{id}"})
     @ResponseBody
     public String readInfoDatagrid(@PathVariable String id) {
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
+        Page<NoticeReceiveInfo> page = new Page<>(SpringMVCHolder.getRequest());
         page = noticeReceiveInfoService.findNoticeReceiveInfosByNoticeId(page, id);
-        Datagrid<NoticeReceiveInfo> dg = new Datagrid<NoticeReceiveInfo>(page.getTotalCount(), page.getResult());
+        Datagrid<NoticeReceiveInfo> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
         String json = JsonMapper.getInstance().toJson(dg, NoticeReceiveInfo.class,
                 new String[]{"id", "userName", "organName", "isRead", "isReadView", "readTime", "isReply", "isReplyView", "replyTime", "replyContent", "replyFileIds"});
         return json;
@@ -145,7 +145,7 @@ public class NoticeReceiveController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "info")
+    @GetMapping(value = "info")
     public ModelAndView info(@ModelAttribute("model") NoticeReceiveInfo model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/noticeReceiveInfo");
         noticeReceiveInfoService.updateReadById(model.getId());
@@ -156,7 +156,7 @@ public class NoticeReceiveController extends SimpleController {
     /**
      * 文件上传
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"upload"})
+    @PostMapping(value = {"upload"})
     @ResponseBody
     public Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile, String jsessionid) {
         Result result = null;
@@ -199,7 +199,7 @@ public class NoticeReceiveController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"replyInput"})
+    @GetMapping(value = {"replyInput"})
     public ModelAndView replyInput(@ModelAttribute("model") NoticeReceiveInfo model) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/notice-reply-input");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -218,7 +218,7 @@ public class NoticeReceiveController extends SimpleController {
      * @param fileIds 页面文件ID集合
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"replySave"})
+    @PostMapping(value = {"replySave"})
     @ResponseBody
     public Result replySave(@ModelAttribute("model") NoticeReceiveInfo model,
                             @RequestParam(value = "fileIds", required = false) List<String> fileIds) {
@@ -236,7 +236,7 @@ public class NoticeReceiveController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "setRead")
+    @PostMapping(value = "setRead")
     @ResponseBody
     public Result setRead(@ModelAttribute("model") NoticeReceiveInfo model) {
         noticeReceiveInfoService.updateReadById(model.getId());
@@ -248,7 +248,7 @@ public class NoticeReceiveController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "setReadAll")
+    @PostMapping(value = "setReadAll")
     @ResponseBody
     public Result setReadAll(String appId) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();

@@ -49,7 +49,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 @Controller
-@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "${adminPath}/sys/organ")
+@RequestMapping(value = "${adminPath}/sys/organ")
 public class OrganController extends SimpleController {
 
     @Autowired
@@ -72,13 +72,13 @@ public class OrganController extends SimpleController {
 
     @RequiresPermissions("sys:organ:view")
     @Logging(value = "机构管理", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/sys/organ";
     }
 
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"treegrid"})
+    @PostMapping(value = {"treegrid"})
     @ResponseBody
     public String treegrid(String parentId) {
         List<Organ> list = null;
@@ -104,7 +104,7 @@ public class OrganController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
+    @GetMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Organ model, String parentId, Model uiModel){
         ModelAndView modelAndView = new ModelAndView("modules/sys/organ-input");
         modelAndView.addObject("parentId", parentId);
@@ -116,7 +116,7 @@ public class OrganController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() {
         Result result;
@@ -131,7 +131,7 @@ public class OrganController extends SimpleController {
      * 父级机构下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"parentOrgan"})
+    @PostMapping(value = {"parentOrgan"})
     @ResponseBody
     public List<TreeNode> parentOrgan(String selectType, @ModelAttribute("model") Organ organ) {
         List<TreeNode> treeNodes = null;
@@ -166,7 +166,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-保存机构", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Organ organ, String _parentId) {
         Result result = null;
@@ -211,7 +211,7 @@ public class OrganController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"user"})
+    @GetMapping(value = {"user"})
     public String user(@ModelAttribute("model") Organ model, Model uiModel) {
         List<User> organUsers = userService.findOrganUsers(model.getId());
         String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers, User.class,
@@ -230,7 +230,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresPermissions("sys:organ:edit")
     @Logging(value = "机构管理-机构用户", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"updateOrganUser"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updateOrganUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateOrganUser(@ModelAttribute("model") Organ organ) {
         Result result;
@@ -245,7 +245,7 @@ public class OrganController extends SimpleController {
      * @param dataScope  {@link DataScope}
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"tree"})
+    @PostMapping(value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String parentId, String selectType, String dataScope,
                                @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
@@ -279,7 +279,7 @@ public class OrganController extends SimpleController {
      *
      * @param parentId 父级机构ID
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"organTypeCombobox"})
+    @PostMapping(value = {"organTypeCombobox"})
     @ResponseBody
     public List<Combobox> organTypeCombobox(String selectType, String parentId) {
         List<Combobox> cList = Lists.newArrayList();
@@ -325,7 +325,7 @@ public class OrganController extends SimpleController {
 
 
     /**
-     * 栏目编辑，展示的栏目树
+     * 机构树
      *
      * @param extId
      * @param type
@@ -336,7 +336,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "treeData")
+    @PostMapping(value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
                                    @RequestParam(required = false) Integer type,
                                    @RequestParam(required = false) Integer grade,
@@ -355,7 +355,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "treeCompanyData")
+    @PostMapping(value = "treeCompanyData")
     public List<TreeNode> treeCompanyData(
             Boolean shortName,
             HttpServletResponse response) {
@@ -373,7 +373,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsHomeCompanysData")
+    @PostMapping(value = "ownerAndChildsHomeCompanysData")
     public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId,
                                                          Boolean shortName,
                                                          HttpServletResponse response) {
@@ -396,7 +396,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsCompanysData")
+    @PostMapping(value = "ownerAndChildsCompanysData")
     public List<TreeNode> ownerAndChildsCompanysData(String parentId,
                                                      Boolean shortName,
                                                      HttpServletResponse response) {
@@ -418,7 +418,7 @@ public class OrganController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "provinceCityAreaData")
+    @PostMapping(value = "provinceCityAreaData")
     public List<TreeNode> provinceCityAreaData(Boolean shortName,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();

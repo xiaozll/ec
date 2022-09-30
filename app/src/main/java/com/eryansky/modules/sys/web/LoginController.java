@@ -44,10 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,7 +74,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @Mobile(value = MobileValue.ALL)
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"welcome", ""})
+    @GetMapping(value = {"welcome", ""})
     public ModelAndView welcome(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
@@ -147,7 +144,7 @@ public class LoginController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"prepareLogin"})
+    @PostMapping(value = {"prepareLogin"})
     @ResponseBody
     public Result prepareLogin(HttpServletRequest request){
         String randomSecurityToken = Identities.randomBase62(64);
@@ -169,7 +166,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"login"})
+    @PostMapping(value = {"login"})
     public Result login(@RequestParam(required = true) String loginName,
                         @RequestParam(required = true) String password,
                         @RequestParam(defaultValue = "true") Boolean encrypt,
@@ -257,7 +254,7 @@ public class LoginController extends SimpleController {
      * @return
      */
     @PrepareOauth2(enable = false)
-    @RequestMapping(value = {"logout"}, method = RequestMethod.POST)
+    @PostMapping(value = {"logout"})
     @ResponseBody
     public Result postlogout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -279,7 +276,7 @@ public class LoginController extends SimpleController {
      * @return
      */
     @PrepareOauth2(enable = false)
-    @RequestMapping(value = {"logout"}, method = RequestMethod.GET)
+    @GetMapping(value = {"logout"})
     public String logout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
@@ -304,7 +301,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"autoLogin"})
+    @PostMapping(value = {"autoLogin"})
     public Result autoLogin(@RequestParam(required = true) String loginName,
                             @RequestParam(required = true) String token,
                             HttpServletRequest request, Model uiModel) {
@@ -353,7 +350,7 @@ public class LoginController extends SimpleController {
      * @param loginName
      * @return
      */
-    @RequestMapping(value = {"toggleLogin"},method = RequestMethod.POST)
+    @PostMapping(value = {"toggleLogin"})
     @ResponseBody
     public Result toggleLogin(HttpServletRequest request,@RequestParam(value = "loginName") String loginName) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -380,7 +377,7 @@ public class LoginController extends SimpleController {
     }
 
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"index"})
+    @GetMapping(value = {"index"})
     public String index(String theme) {
         //根据客户端指定的参数跳转至 不同的主题 如果未指定 默认:index
         if (StringUtils.isNotBlank(theme) && (theme.equals("app") || theme.equals("index"))) {
@@ -395,7 +392,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"navTree"})
+    @PostMapping(value = {"navTree"})
     public List<TreeNode> navTree(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -411,7 +408,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"navTree2"})
+    @PostMapping(value = {"navTree2"})
     public List<SiderbarMenu> navTree2(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<SiderbarMenu> treeNodes = Lists.newArrayList();
@@ -540,8 +537,7 @@ public class LoginController extends SimpleController {
      *
      * @throws Exception
      */
-    @RequiresUser(required = true)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"onlineDatagrid"})
+    @PostMapping(value = {"onlineDatagrid"})
     @ResponseBody
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request) throws Exception {
         Page<SessionInfo> page = new Page<>(request);
@@ -555,7 +551,7 @@ public class LoginController extends SimpleController {
     /**
      * 桌面版 开始菜单
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"startMenu"})
+    @PostMapping(value = {"startMenu"})
     @ResponseBody
     public List<Menu> startMenu() {
         List<Menu> menus = null;
@@ -568,7 +564,7 @@ public class LoginController extends SimpleController {
     /**
      * 桌面版 桌面应用程序列表
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"apps"})
+    @PostMapping(value = {"apps"})
     @ResponseBody
     public List<Menu> apps() {
         List<Menu> menus = Lists.newArrayList();

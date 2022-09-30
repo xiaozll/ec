@@ -58,7 +58,7 @@ import java.util.List;
  * @date 2015-01-09
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${adminPath}/sys/versionLog")
+@RequestMapping(value = "${adminPath}/sys/versionLog")
 public class VersionLogController extends SimpleController {
 
     @Autowired
@@ -67,7 +67,7 @@ public class VersionLogController extends SimpleController {
 
     @RequiresPermissions("sys:versionLog:view")
     @Logging(value = "版本更新", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {""})
+    @GetMapping(value = {""})
     public String list(Model uiModel) {
         uiModel.addAttribute("versionLogTypes",VersionLogType.values());
         return "modules/sys/versionLog";
@@ -90,12 +90,12 @@ public class VersionLogController extends SimpleController {
      * @param endTime   更新时间 - 截止时间
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<VersionLog> datagrid(VersionLog model, HttpServletRequest request,
                                          @RequestParam(value = "startTime", required = false) Date startTIme,
                                          @RequestParam(value = "endTime", required = false) Date endTime) {
-        Page<VersionLog> page = new Page<VersionLog>(request);
+        Page<VersionLog> page = new Page<>(request);
         Parameter parameter = new Parameter();
         if (startTIme != null) {
             parameter.put("startTime", DateUtils.format(startTIme, DateUtils.DATE_TIME_FORMAT));
@@ -118,7 +118,7 @@ public class VersionLogController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"input"})
+    @GetMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") VersionLog model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/versionLog-input");
         File file = null;
@@ -136,7 +136,7 @@ public class VersionLogController extends SimpleController {
     /**
      * 日志类型下拉列表.
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"versionLogTypeCombobox"})
+    @PostMapping(value = {"versionLogTypeCombobox"})
     @ResponseBody
     public List<Combobox> versionLogTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -158,7 +158,7 @@ public class VersionLogController extends SimpleController {
     /**
      * 文件上传
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"upload"})
+    @PostMapping(value = {"upload"})
     @ResponseBody
     public static Result upload(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -205,7 +205,7 @@ public class VersionLogController extends SimpleController {
      */
     @RequiresPermissions("sys:versionLog:edit")
     @Logging(value = "版本更新-保存版本", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") VersionLog model) {
         Result result;
@@ -228,7 +228,7 @@ public class VersionLogController extends SimpleController {
      */
     @RequiresPermissions("sys:versionLog:edit")
     @Logging(value = "版本管理-删除版本", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         Result result = null;
@@ -247,7 +247,7 @@ public class VersionLogController extends SimpleController {
      * @return
      */
     @Logging(value = "版本管理-清空所有数据", logType = LogType.access)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"removeAll"})
+    @PostMapping(value = {"removeAll"})
     @ResponseBody
     public Result removeAll() {
         versionLogService.clearAll();
@@ -262,8 +262,7 @@ public class VersionLogController extends SimpleController {
      * @return
      * @throws Exception
      */
-
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"view/{id}"})
+    @GetMapping(value = {"view/{id}"})
     public ModelAndView view(@PathVariable String id) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/versionLog-view");
         File file = null;
@@ -286,7 +285,7 @@ public class VersionLogController extends SimpleController {
      * @throws Exception
      */
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"downloadApp/{versionLogType}"})
+    @GetMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,String app, @PathVariable String versionLogType) {
         return downloadApp(SpringMVCHolder.getRequest(),response,app,versionLogType);
     }
@@ -302,7 +301,7 @@ public class VersionLogController extends SimpleController {
      * @throws Exception
      */
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"downloadApp"})
+    @GetMapping(value = {"downloadApp"})
     public ModelAndView downloadApp(HttpServletRequest request, HttpServletResponse response,String app, @PathVariable String versionLogType){
         String _versionLogType = versionLogType;
         if(StringUtils.isBlank(versionLogType)){

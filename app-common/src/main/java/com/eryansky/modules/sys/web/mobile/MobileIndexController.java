@@ -43,8 +43,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Map;
 
 /**
@@ -52,20 +50,20 @@ import java.util.Map;
  */
 @Mobile
 @Controller
-@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value="${mobilePath}")
+@RequestMapping(value="${mobilePath}")
 public class MobileIndexController extends SimpleController {
 
     @Autowired
     private VersionLogService versionLogService;
 
     @Logging(logType = LogType.access, value = "移动APP")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value="")
+    @GetMapping(value="")
     public ModelAndView index() {
         return new ModelAndView("layout/index");
     }
 
     @Logging(logType = LogType.access, value = "移动APP")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"content"})
+    @GetMapping(value = {"content"})
     public ModelAndView content() {
         return new ModelAndView("layout/index_content");
     }
@@ -80,7 +78,7 @@ public class MobileIndexController extends SimpleController {
      */
     @Mobile(value = MobileValue.PC)
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value="download")
+    @GetMapping(value="download")
     public ModelAndView download(String app,String versionLogType, String versionCode) {
         ModelAndView modelAndView = new ModelAndView("mobile/download");
         VersionLog versionLog = null;
@@ -122,7 +120,7 @@ public class MobileIndexController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"getNewVersion/{versionLogType}"})
+    @PostMapping(value = {"getNewVersion/{versionLogType}"})
     public Result getNewVersion(@PathVariable String versionLogType,String app) {
         return getNewVersion(SpringMVCHolder.getRequest(),versionLogType,app);
     }
@@ -138,7 +136,7 @@ public class MobileIndexController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"getNewVersion"})
+    @PostMapping(value = {"getNewVersion"})
     public Result getNewVersion(HttpServletRequest request,String versionLogType,String app) {
         String _versionLogType = versionLogType;
         if(StringUtils.isBlank(versionLogType)){
@@ -176,7 +174,7 @@ public class MobileIndexController extends SimpleController {
      */
     @Logging(logType = LogType.access, value = "APP下载")
     @RequiresUser(required = false)
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"downloadApp/{versionLogType}"})
+    @GetMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,
                                     HttpServletRequest request,
                                     String app,
@@ -217,7 +215,7 @@ public class MobileIndexController extends SimpleController {
      * @param fileId
      * @return
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"deleteFile"})
+    @PostMapping(value = {"deleteFile"})
     @ResponseBody
     public Result deleteFile(@RequestParam(value = "fileId") String fileId) {
         DiskUtils.deleteFile(fileId);
@@ -227,7 +225,7 @@ public class MobileIndexController extends SimpleController {
     /**
      * 图片文件上传
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"base64ImageUpLoad"})
+    @PostMapping(value = {"base64ImageUpLoad"})
     @ResponseBody
     public Result base64ImageUpLoad(@RequestParam(value = "base64Data", required = false) String base64Data) {
         Result result = null;
@@ -312,7 +310,7 @@ public class MobileIndexController extends SimpleController {
     /**
      * 图片文件上传
      */
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"imageUpLoad"})
+    @PostMapping(value = {"imageUpLoad"})
     @ResponseBody
     public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
         Result result = null;

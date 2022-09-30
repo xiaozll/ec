@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
@@ -34,7 +35,7 @@ import java.util.Map;
  * Spring Boot 自定义错误页面
  */
 @Controller
-@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET},value = "${server.error.path:${error.path:/error}}")
+@RequestMapping(value = "${server.error.path:${error.path:/error}}")
 public class AppErrorController extends AbstractErrorController {
 
     private static final Logger logger = LoggerFactory.getLogger(AppErrorController.class);
@@ -51,7 +52,7 @@ public class AppErrorController extends AbstractErrorController {
     }
 
 
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
@@ -74,7 +75,7 @@ public class AppErrorController extends AbstractErrorController {
 
     }
 
-    @RequestMapping
+    @GetMapping
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
         if (status == HttpStatus.NO_CONTENT) {

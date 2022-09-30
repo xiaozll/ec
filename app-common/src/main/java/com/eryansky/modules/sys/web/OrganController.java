@@ -334,7 +334,7 @@ public class OrganController extends SimpleController {
      * @param response
      * @return
      */
-    @RequiresUser(required = false)
+//    @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
@@ -353,7 +353,7 @@ public class OrganController extends SimpleController {
      * @param shortName 简称
      * @return
      */
-    @RequiresUser(required = false)
+//    @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "treeCompanyData")
     public List<TreeNode> treeCompanyData(
@@ -371,7 +371,7 @@ public class OrganController extends SimpleController {
      * @param response
      * @return
      */
-    @RequiresUser(required = false)
+//    @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "ownerAndChildsHomeCompanysData")
     public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId,
@@ -394,7 +394,7 @@ public class OrganController extends SimpleController {
      * @param response
      * @return
      */
-    @RequiresUser(required = false)
+//    @RequiresUser(required = false)
     @ResponseBody
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "ownerAndChildsCompanysData")
     public List<TreeNode> ownerAndChildsCompanysData(String parentId,

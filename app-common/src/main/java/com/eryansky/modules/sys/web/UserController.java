@@ -682,7 +682,7 @@ public class UserController extends SimpleController {
      * @param response
      * @return
      */
-    @RequiresUser(required = false)
+//    @RequiresUser(required = false)
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsOrganUserTree")
     @ResponseBody
     public List<TreeNode> ownerAndChildsOrganUserTree(String parentId,
@@ -708,7 +708,7 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-    @RequiresUser(required = false)
+//    @RequiresUser(required = false)
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = { "organUserTreeByOrganCode" })
     @ResponseBody
     public List<TreeNode> organUserTreeByOrganCode(String parentId,String organCode,

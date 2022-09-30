@@ -78,14 +78,6 @@ $(function () {
         }
     });
 
-    // $loginName = $("#loginName").autocomplete(ctxAdmin + '/sys/user/autoComplete', {
-    //     remoteDataType:'json',
-    //     minChars: 0,
-    //     maxItemsToShow: 10
-    // });
-    // var ac = $loginName.data('autocompleter');
-    // //添加查询属性
-    // ac.setExtraParam("rows",ac.options.maxItemsToShow);
 });
 // 登录
 function login() {
@@ -133,52 +125,4 @@ function refreshCheckCode() {
     //加上随机时间 防止IE浏览器不请求数据
     var url = ctx + '/servlet/ValidateCodeServlet?' + new Date().getTime();
     $('#validateCodeImage').attr('src', url);
-}
-var user_dialog;
-// 选择用户
-function chooseUser() {
-    //弹出对话窗口
-    user_dialog = $('<div/>').dialog({
-        title: '用户选择',
-        width: 400,
-        height: 500,
-        modal: true,
-        maximizable: true,
-        href: ctxAdmin + '/sys/user/organUserTreePage?checkbox=false&cascade=false',
-        buttons: [
-            {
-                text: '确定',
-                iconCls: 'easyui-icon-save',
-                handler: function () {
-                    setOrganUserResult();
-                    user_dialog.dialog('destroy');
-                }
-            },{
-                text: '关闭',
-                iconCls: 'easyui-icon-cancel',
-                handler: function () {
-                    user_dialog.dialog('close');
-                }
-            }
-        ],
-        onClose: function () {
-            user_dialog.dialog('destroy');
-        },
-        onLoad: function () {
-        }
-    });
-}
-
-
-function setOrganUserResult(node){
-    if(node == undefined){
-        node = $("#organUserTree").tree("getSelected");
-    }
-    if(node){
-        if("u" ==node['attributes']['nType']){
-            $("#loginName").val(node['attributes']['loginName']);
-            user_dialog.dialog('close');
-        }
-
-    }
 }

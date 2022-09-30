@@ -158,7 +158,6 @@ public class PortalController extends SimpleController {
      * @return
      */
     @Mobile(value = MobileValue.PC)
-    @RequiresUser(required = false)
     @GetMapping(value = "notice")
     public ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAnView = new ModelAndView("layout/portal-notice");

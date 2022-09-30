@@ -43,7 +43,6 @@
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]> <script src="${ctxStatic}/js/common/html5.js"></script><![endif]-->
     <script src="${ctxStatic}/js/md5/md5.min.js"></script>
-<%--    <%@ include file="/common/autocomplete.jsp"%>--%>
     <style type="text/css">
         .control-group{border-bottom:0px;}
         .login-form label {
@@ -95,8 +94,7 @@
                     <div class="controls">
                         <input type="text" id="loginName" name="loginName" class="required" style="width: 210px;height:36px;padding: 5px;"
                                value="${fns:urlDecode(loginNameOrName)}" placeholder="用户名"/>
-                        <%--<i class="icon-user" title="用户名"></i>--%>
-                        <i class="icon-search" title="选择" onclick="chooseUser()"></i>
+                        <i class="icon-user" title="用户名"></i>
                     </div>
                 </div>
 

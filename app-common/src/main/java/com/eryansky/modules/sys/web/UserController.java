@@ -552,7 +552,6 @@ public class UserController extends SimpleController {
      * @param q 查询关键字
      * @return
      */
-//    @RequiresUser(required = false)
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"autoComplete"})
     @ResponseBody
     public List<String> autoComplete(String q) {
@@ -616,7 +615,6 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-    @RequiresUser(required = false)
     @GetMapping(value = {"organUserTreePage"})
     public ModelAndView organUserTreePage(String parentId,
                                           String postCode,
@@ -643,7 +641,6 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-    @RequiresUser(required = false)
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"organUserTree"})
     @ResponseBody
     public List<TreeNode> organUserTree(String parentId,
@@ -682,7 +679,6 @@ public class UserController extends SimpleController {
      * @param response
      * @return
      */
-//    @RequiresUser(required = false)
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsOrganUserTree")
     @ResponseBody
     public List<TreeNode> ownerAndChildsOrganUserTree(String parentId,
@@ -708,7 +704,6 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-//    @RequiresUser(required = false)
     @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = { "organUserTreeByOrganCode" })
     @ResponseBody
     public List<TreeNode> organUserTreeByOrganCode(String parentId,String organCode,

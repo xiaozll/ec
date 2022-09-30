@@ -552,8 +552,8 @@ public class UserController extends SimpleController {
      * @param q 查询关键字
      * @return
      */
-    @RequiresUser(required = false)
-    @PostMapping(value = {"autoComplete"})
+//    @RequiresUser(required = false)
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"autoComplete"})
     @ResponseBody
     public List<String> autoComplete(String q) {
         List<String> cList = Lists.newArrayList();
@@ -644,7 +644,7 @@ public class UserController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @PostMapping(value = {"organUserTree"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"organUserTree"})
     @ResponseBody
     public List<TreeNode> organUserTree(String parentId,
                                         String postCode,
@@ -683,7 +683,7 @@ public class UserController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @PostMapping(value = "ownerAndChildsOrganUserTree")
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "ownerAndChildsOrganUserTree")
     @ResponseBody
     public List<TreeNode> ownerAndChildsOrganUserTree(String parentId,
                                    @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
@@ -709,7 +709,7 @@ public class UserController extends SimpleController {
      * @return
      */
     @RequiresUser(required = false)
-    @PostMapping(value = { "organUserTreeByOrganCode" })
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = { "organUserTreeByOrganCode" })
     @ResponseBody
     public List<TreeNode> organUserTreeByOrganCode(String parentId,String organCode,
                                                    @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
@@ -876,7 +876,7 @@ public class UserController extends SimpleController {
     /**
      * 查看用户资源权限
      */
-    @GetMapping(value = {"viewUserResources"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"viewUserResources"})
     public String viewUserResources(String userId, Model uiModel,
                                           HttpServletRequest request,
                                           HttpServletResponse response) {

@@ -78,14 +78,14 @@ $(function () {
         }
     });
 
-    $loginName = $("#loginName").autocomplete(ctxAdmin + '/sys/user/autoComplete', {
-        remoteDataType:'json',
-        minChars: 0,
-        maxItemsToShow: 10
-    });
-    var ac = $loginName.data('autocompleter');
-    //添加查询属性
-    ac.setExtraParam("rows",ac.options.maxItemsToShow);
+    // $loginName = $("#loginName").autocomplete(ctxAdmin + '/sys/user/autoComplete', {
+    //     remoteDataType:'json',
+    //     minChars: 0,
+    //     maxItemsToShow: 10
+    // });
+    // var ac = $loginName.data('autocompleter');
+    // //添加查询属性
+    // ac.setExtraParam("rows",ac.options.maxItemsToShow);
 });
 // 登录
 function login() {

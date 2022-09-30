@@ -248,7 +248,6 @@ public class MessageController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequiresUser(required = false)
     @PostMapping(value = {"api/sendMessage"})
     @ResponseBody
     public WSResult sendMessage(String paramJson) {

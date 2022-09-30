@@ -260,7 +260,7 @@ function saveFileName(target, index, id) {
         return false;
     }
     $.ajax({
-        type: 'POST',
+        type: 'post',
         url: ctxAdmin + '/disk/fileSave',
         data: $.extend({
                 id: selectRow.id,

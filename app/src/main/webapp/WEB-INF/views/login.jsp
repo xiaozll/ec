@@ -43,7 +43,7 @@
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]> <script src="${ctxStatic}/js/common/html5.js"></script><![endif]-->
     <script src="${ctxStatic}/js/md5/md5.min.js"></script>
-    <%@ include file="/common/autocomplete.jsp"%>
+<%--    <%@ include file="/common/autocomplete.jsp"%>--%>
     <style type="text/css">
         .control-group{border-bottom:0px;}
         .login-form label {

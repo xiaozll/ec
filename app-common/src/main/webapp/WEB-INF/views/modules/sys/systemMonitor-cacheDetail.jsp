@@ -14,7 +14,7 @@
             var queryParam = $.serializeObject($("#searchForm"));
 			$.ajax({
 				url: ctxAdmin + '/sys/systemMonitor/cacheDetail?region='+region,
-				type: 'get',
+				type: 'post',
                 dataType: "json",
 				cache:false,
                 data:queryParam,

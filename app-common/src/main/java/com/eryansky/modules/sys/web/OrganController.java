@@ -245,7 +245,7 @@ public class OrganController extends SimpleController {
      * @param dataScope  {@link DataScope}
      * @return
      */
-    @PostMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String parentId, String selectType, String dataScope,
                                @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
@@ -295,9 +295,9 @@ public class OrganController extends SimpleController {
             }
         }
 
-        OrganType _enumParentType = OrganType.getByValue(parentType);
-        if (_enumParentType != null) {
-            if (_enumParentType.equals(OrganType.organ)) {
+        OrganType enumParentType = OrganType.getByValue(parentType);
+        if (enumParentType != null) {
+            if (enumParentType.equals(OrganType.organ)) {
                 OrganType[] rss = OrganType.values();
                 for (int i = 0; i < rss.length; i++) {
                     Combobox combobox = new Combobox();
@@ -305,12 +305,12 @@ public class OrganController extends SimpleController {
                     combobox.setText(rss[i].getDescription());
                     cList.add(combobox);
                 }
-            } else if (_enumParentType.equals(OrganType.department)) {
+            } else if (enumParentType.equals(OrganType.department)) {
                 Combobox departmentCombobox = new Combobox(OrganType.department.getValue(), OrganType.department.getDescription());
                 Combobox groupCombobox = new Combobox(OrganType.group.getValue(), OrganType.group.getDescription());
                 cList.add(departmentCombobox);
                 cList.add(groupCombobox);
-            } else if (_enumParentType.equals(OrganType.group)) {
+            } else if (enumParentType.equals(OrganType.group)) {
                 Combobox groupCombobox = new Combobox(OrganType.group.getValue(), OrganType.group.getDescription());
                 cList.add(groupCombobox);
             }
@@ -336,7 +336,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @PostMapping(value = "treeData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
                                    @RequestParam(required = false) Integer type,
                                    @RequestParam(required = false) Integer grade,
@@ -355,7 +355,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @PostMapping(value = "treeCompanyData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "treeCompanyData")
     public List<TreeNode> treeCompanyData(
             Boolean shortName,
             HttpServletResponse response) {
@@ -373,7 +373,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @PostMapping(value = "ownerAndChildsHomeCompanysData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "ownerAndChildsHomeCompanysData")
     public List<TreeNode> ownerAndChildsHomeCompanysData(String parentId,
                                                          Boolean shortName,
                                                          HttpServletResponse response) {
@@ -396,7 +396,7 @@ public class OrganController extends SimpleController {
      */
     @RequiresUser(required = false)
     @ResponseBody
-    @PostMapping(value = "ownerAndChildsCompanysData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "ownerAndChildsCompanysData")
     public List<TreeNode> ownerAndChildsCompanysData(String parentId,
                                                      Boolean shortName,
                                                      HttpServletResponse response) {
@@ -418,7 +418,7 @@ public class OrganController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "provinceCityAreaData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "provinceCityAreaData")
     public List<TreeNode> provinceCityAreaData(Boolean shortName,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();

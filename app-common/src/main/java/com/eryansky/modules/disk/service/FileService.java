@@ -174,7 +174,9 @@ public class FileService extends CrudService<FileDao, File> {
 //			}
             if (tempFile != null && tempFile.exists()) {
                 boolean deleteFlag = tempFile.delete();
-                logger.warn("temp file delete {}:{}",tempFile.getName(),deleteFlag);
+                if(!deleteFlag){
+                    logger.warn("temp file delete {}:{}",tempFile.getName(),deleteFlag);
+                }
             }
 
         }

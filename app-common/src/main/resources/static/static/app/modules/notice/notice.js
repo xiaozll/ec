@@ -36,7 +36,7 @@ $(function () {
     if (noticeId !== "" && objectId === '') {
         $.ajax({
             url: ctxAdmin + '/notice/noticeReceiveInfo/detail?noticeId='+noticeId,
-            type: 'get',
+            type: 'post',
             dataType: 'json',
             success: function (data) {
                 if (data.code === 1) {
@@ -70,7 +70,7 @@ function refreshMessage() {
 function mymessage() {
     $.ajax({
         url: ctxAdmin + '/notice/myMessage',
-        type: 'get',
+        type: 'post',
         dataType: 'json',
         success: function (data) {
             if (data.code === 1) {

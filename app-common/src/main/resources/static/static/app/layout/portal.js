@@ -136,7 +136,7 @@ function setTipMessage(tipMessage) {
 function mymessages(refreshPanel, tipMessage) {
     $.ajax({
         url: ctxAdmin + '/portal/mymessages',
-        type: 'get',
+        type: 'POST',
         dataType: 'json',
         success: function (data) {
             if (data.code === 1) {

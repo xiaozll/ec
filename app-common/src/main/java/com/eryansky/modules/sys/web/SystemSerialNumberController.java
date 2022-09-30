@@ -27,8 +27,10 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,9 +89,7 @@ public class SystemSerialNumberController extends SimpleController {
                     //导出CSV
                     try {
                         List<Object[]> data = Lists.newArrayList();
-                        page.getResult().forEach(o -> {
-                            data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(), o.getMaxSerial(), o.getResetType(), o.getIsAutoIncrement(), o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())});
-                        });
+                        page.getResult().forEach(o -> data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(), o.getMaxSerial(), o.getResetType(), o.getIsAutoIncrement(), o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())}));
                         CsvUtils.exportToCsv(title, hearders, data, request, response);
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
@@ -106,33 +106,40 @@ public class SystemSerialNumberController extends SimpleController {
 
 
     @RequiresPermissions("sys:systemSerialNumber:view")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "form")
+    @GetMapping(value = "form")
     public String form(@ModelAttribute("model") SystemSerialNumber model, Model uiModel) {
         uiModel.addAttribute("model", model);
         uiModel.addAttribute("resetTypes", ResetType.values());
         return "modules/sys/systemSerialNumberForm";
     }
 
+
+    @Override
+    protected void initBinder(WebDataBinder binder) {
+        super.defaultWebDataBinder(binder);
+        super.setAllowedFields(binder);
+    }
+
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "save")
+    @PostMapping(value = "save")
     public String save(@ModelAttribute("model") SystemSerialNumber model,
                        String _maxSerial, Model uiModel, RedirectAttributes redirectAttributes) {
         if (!beanValidator(uiModel, model)) {
             return form(model, uiModel);
         }
-        MaxSerial maxSerial = (MaxSerial) JsonMapper.fromJsonString(_maxSerial, MaxSerial.class);
+        MaxSerial maxSerial = (MaxSerial) JsonMapper.fromJsonString(HtmlUtils.htmlUnescape(_maxSerial), MaxSerial.class);
         model.setMaxSerial(maxSerial);
         systemSerialNumberService.save(model);
         addMessage(redirectAttributes, "保存'" + model.getModuleName() + "'成功");
-        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber";
     }
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = "delete")
+    @GetMapping(value = "delete")
     public String delete(@ModelAttribute("model") SystemSerialNumber model, RedirectAttributes redirectAttributes) {
         systemSerialNumberService.delete(model);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber";
     }
 
 

@@ -162,7 +162,7 @@ public class LogReportController extends SimpleController {
      */
     @Logging(value = "日志统计-模块访问统计", logType = LogType.access)
     @RequiresPermissions(value = "sys:log:moduleStatistics")
-    @GetMapping(value = {"moduleStatistics"})
+    @RequestMapping(method = {RequestMethod.POST,RequestMethod.GET},value = {"moduleStatistics"})
     public String moduleStatistics(String userId, String organId, String postCode, @RequestParam(defaultValue = "false") Boolean onlyCompany, String startTime, String endTime,
                                    HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         Page<Map<String, Object>> page = new Page<>(request, response);

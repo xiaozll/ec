@@ -68,7 +68,7 @@
         function setRead(id,messageId,linkUrl){
             $.ajax({
                 url: '${ctxAdmin}/notice/messageReceive/setRead?id='+id,
-                type: 'get',
+                type: 'post',
                 dataType: 'json',
                 success: function (data) {}
             });
@@ -76,7 +76,7 @@
                 try {
                     $.ajax({
                         url: '${ctx}/f/getMessageSSOUrl?messageId=' + messageId,
-                        type: 'get',
+                        type: 'post',
                         dataType: 'json',
                         success: function (data) {
                             if (1 === data['code']) {

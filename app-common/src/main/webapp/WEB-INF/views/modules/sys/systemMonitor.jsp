@@ -12,7 +12,7 @@
 		function reLoad(){
 			$.ajax({
 				url: ctxAdmin + '/sys/systemMonitor',
-				type: 'get',
+				type: 'post',
 				cache:false,
 				dataType: 'json',
 				success: function (data) {

@@ -65,14 +65,14 @@ public class ConfigController extends SimpleController {
     @ResponseBody
     public Datagrid<Config> datagrid(Config model, HttpServletRequest request, HttpServletResponse response,
                                      String query) {
-        Page<Config> page = new Page<Config>(request);
+        Page<Config> page = new Page<>(request);
         page = configService.findPage(page, query);
         return new Datagrid(page.getTotalCount(), page.getResult());
     }
 
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-保存配置", logType = LogType.access)
-    @PostMapping(produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = "save",produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Config model) {
         Result result;

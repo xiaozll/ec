@@ -120,7 +120,7 @@ public class MobileIndexController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @PostMapping(value = {"getNewVersion/{versionLogType}"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"getNewVersion/{versionLogType}"})
     public Result getNewVersion(@PathVariable String versionLogType,String app) {
         return getNewVersion(SpringMVCHolder.getRequest(),versionLogType,app);
     }
@@ -136,7 +136,7 @@ public class MobileIndexController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @PostMapping(value = {"getNewVersion"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"getNewVersion"})
     public Result getNewVersion(HttpServletRequest request,String versionLogType,String app) {
         String _versionLogType = versionLogType;
         if(StringUtils.isBlank(versionLogType)){

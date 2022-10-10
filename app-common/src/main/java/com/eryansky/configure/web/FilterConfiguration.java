@@ -5,7 +5,7 @@ import com.eryansky.common.web.filter.CustomHttpServletRequestFilter;
 import com.eryansky.common.web.filter.XssFilter;
 import com.eryansky.core.web.filter.MySiteMeshFilter;
 import com.eryansky.core.web.interceptor.ExceptionInterceptor;
-import com.eryansky.filters.ChinesePathFilter;
+import com.eryansky.core.web.filter.ChinesePathFilter;
 import com.eryansky.utils.AppConstants;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

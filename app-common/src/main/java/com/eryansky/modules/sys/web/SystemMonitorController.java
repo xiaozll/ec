@@ -37,7 +37,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 系统监控
@@ -207,65 +209,6 @@ public class SystemMonitorController extends SimpleController {
     }
 
 
-    /**
-     * 系统监控-系统日志
-     *
-     * @param download 下载
-     * @param request
-     * @param response
-     * @param uiModel
-     * @return
-     */
-    @Logging(value = "系统监控-系统日志", logType = LogType.access, logging = "!#isAjax")
-    @RequiresPermissions("sys:systemMonitor:view")
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "log")
-    public String log(@RequestParam(value = "download", defaultValue = "false") boolean download,
-                      Integer pageSize,
-                      HttpServletRequest request, HttpServletResponse response, Model uiModel) {
-        Result result = null;
-        File file = null;
-        if (download || WebUtils.isAjaxRequest(request)) {
-            String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
-            file = new File(_logPath);
-        }
-        if (download) {
-            WebUtils.setDownloadableHeader(request, response, file.getName());
-            try (OutputStream os = response.getOutputStream();
-                 FileInputStream fileInputStream = new FileInputStream(file);
-                 BufferedInputStream is = new BufferedInputStream(fileInputStream)) {
-                IOUtils.copy(is, os);
-            } catch (Exception e) {
-                logger.error(e.getMessage(),e);
-            }
-            return null;
-        }
-        if (WebUtils.isAjaxRequest(request)) {
-            try {
-                // 读取日志
-                assert file != null;
-                List<String> logs = FileUtils.readLines(file, "utf-8");
-                List<String> showLogs = logs;
-                StringBuilder log = new StringBuilder();
-                Collections.reverse(logs);
-                Page<String> page = new Page<>(request, response);
-                page.setPageSize(pageSize == null ? 1000 : pageSize);//最大读取行数
-                if (page.getPageSize() != Page.PAGESIZE_ALL) {
-                    showLogs = Collections3.getPagedList(logs, page.getPageNo(), page.getPageSize());
-                    page.setResult(showLogs);
-                    page.setTotalCount(showLogs.size());
-                }
-                for (int i = showLogs.size() - 1; i >= 0; i--) {
-                    String line = logs.get(i);
-                    log.append(line.replace("\t", "&nbsp;")).append("<br>");
-                }
-                return renderString(response, Result.successResult().setMsg(log.toString()).setObj(page));
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                return renderString(response, Result.errorResult().setMsg(e.getMessage()));
-            }
-        }
-        return "modules/sys/systemMonitor-log";
-    }
 
     /**
      * 系统监控-缓存管理
@@ -296,7 +239,6 @@ public class SystemMonitorController extends SimpleController {
         return "modules/sys/systemMonitor-queue";
     }
 
-
     @RequiresPermissions("sys:systemMonitor:view")
     @Logging(value = "系统监控-队列管理:队列数据", logType = LogType.access, logging = "!#isAjax")
     @GetMapping(value = "queueDetail")
@@ -316,7 +258,6 @@ public class SystemMonitorController extends SimpleController {
         return "redirect:" + AppConstants.getAdminPath() + "/sys/systemMonitor/queue?repage";
     }
 
-
     @RequiresPermissions("sys:systemMonitor:edit")
     @Logging(value = "系统监控-队列管理:清空队列", logType = LogType.access, logging = "!#isAjax")
     @GetMapping(value = "clearAllQueue")
@@ -329,6 +270,94 @@ public class SystemMonitorController extends SimpleController {
         return "redirect:" + AppConstants.getAdminPath() + "/sys/systemMonitor/queue?repage";
     }
 
+    /**
+     * 系统监控-系统日志
+     *
+     * @param pretty 美化
+     * @param showTotal 全部显示
+     * @param request
+     * @param response
+     * @param uiModel
+     * @return
+     */
+    @Logging(value = "系统监控-系统日志", logType = LogType.access, logging = "!#isAjax")
+    @RequiresPermissions("sys:systemMonitor:view")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "log")
+    public String log(@RequestParam(name = "pretty",defaultValue = "false") boolean pretty,
+                      @RequestParam(name = "showTotal",defaultValue = "false") boolean showTotal,
+                      HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+        Page<String> page = new Page<>(request, response, 1000);
+        if(showTotal){
+            page.setPageSize(Page.PAGESIZE_ALL);
+        }
+        if (WebUtils.isAjaxRequest(request)) {
+            String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
+            File file = new File(_logPath);
+            try {
+                // 读取日志
+                List<String> totalLogs = org.apache.commons.io.FileUtils.readLines(file, StandardCharsets.UTF_8);
+                List<String> showLogs = totalLogs;
+                if (page.getPageSize() != Page.PAGESIZE_ALL) {
+                    showLogs = Collections3.getPagedList(totalLogs, page.getPageNo(), page.getPageSize());
+                }
+
+                List<String> resultLogs = showLogs.parallelStream().map(line->{
+                    if (pretty) {
+                        //先转义
+                        line = line.replaceAll("&", "&amp;")
+                                .replaceAll("<", "&lt;")
+                                .replaceAll(">", "&gt;")
+                                .replaceAll("\"", "&quot;")
+                                .replaceAll("\t", "&nbsp;");
+
+                        //处理等级
+                        line = line.replace("DEBUG", "<span style='color: blue;'>DEBUG</span>")
+                                .replace("INFO", "<span style='color: green;'>INFO</span>")
+                                .replace("WARN", "<span style='color: orange;'>WARN</span>")
+                                .replace("ERROR", "<span style='color: red;'>ERROR</span>");
+
+                        //处理类名
+                        String[] split = line.split("] ");
+                        if (split.length >= 2) {
+                            String[] split1 = split[1].split("-");
+                            if (split1.length == 2) {
+                                line = split[0] + "] " + "<span style='color: #298a8a;'>" + split1[0] + "</span>" + "-" + split1[1];
+                            }else if (split1.length > 2) {
+                                line = split[0] + "] " + "<span style='color: #298a8a;'>" + split1[0] + "</span>" + "-" + StringUtils.substringAfter(split[1],"-");
+                            }
+                        }
+                        return line;
+                    }
+                    return line;
+                }).collect(Collectors.toList());
+                page.setTotalCount(totalLogs.size());
+                page.setResult(resultLogs);
+                return renderString(response, Result.successResult().setObj(page));
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                return renderString(response, Result.errorResult().setObj(e.getMessage()));
+            }
+        }
+        uiModel.addAttribute("page", page);
+        return "modules/sys/systemMonitor-log";
+    }
+
+    @Logging(value = "系统监控-系统日志文件下载", logType = LogType.access)
+    @RequiresPermissions("sys:systemMonitor:view")
+    @GetMapping(value = "downloadLogFile")
+    public String downloadLogFile(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+        String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
+        File file = new File(_logPath);
+        WebUtils.setDownloadableHeader(request, response, file.getName());
+        try (OutputStream os = response.getOutputStream();
+             FileInputStream fileInputStream = new FileInputStream(file);
+             BufferedInputStream is = new BufferedInputStream(fileInputStream)) {
+            IOUtils.copy(is, os);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+        return null;
+    }
 
     /**
      * 动态获取日志文件所在路径

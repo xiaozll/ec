@@ -191,7 +191,7 @@ public class Page<T> implements Serializable{
 		//1
 		this.first = 1;
 
-		this.last = (int)(totalCount / (this.pageSize < 1 ? 20 : this.pageSize) + first - 1);
+		this.last = this.pageSize <= 1 ? 0 : (int)(totalCount / this.pageSize + first - 1);
 
 		if (this.totalCount % this.pageSize != 0 || this.last == 0) {
 			this.last++;

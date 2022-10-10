@@ -6,6 +6,12 @@
 	<meta name="decorator" content="default_sys"/>
 	<script type="text/javascript">
 		$(function(){
+			$("#showTotal").change(function(){
+				reLoad();
+			});
+			$("#pretty").change(function(){
+				reLoad();
+			});
 			reLoad();
 		});
         function page(n,s){
@@ -22,18 +28,28 @@
 				cache:false,
 				dataType: 'json',
 				success: function (data) {
-					if (data.code == 1) {
-						$("#systemInfo_div").html(data['msg']);
+					if (data.code === 1) {
+						var html = Mustache.render($("#list_template").html(), data['obj']);
+						$("#list").html(html);
+						$(".pagination").append(data['obj']['html']);
 					} else {
-						$("#systemInfo_div").html(data['msg']);
+						$("#list").html(data['msg']);
 					}
 				}
 			});
 		}
         function _download() {
             var annexFrame = document.getElementById("annexFrame");
-            annexFrame.src = '${ctxAdmin}/sys/systemMonitor/log?download=true';
+            annexFrame.src = '${ctxAdmin}/sys/systemMonitor/downloadLogFile';
         }
+	</script>
+	<script type="text/template" id="list_template">
+		<div style="padding: 10px;">
+			{{#result}}
+			{{&.}}</br>
+			{{/result}}
+		</div>
+		<div class="page pagination"></div>
 	</script>
 </head>
 <body>
@@ -44,10 +60,14 @@
 	<li><a href="${ctxAdmin}/sys/systemMonitor/queue">队列管理</a></li>
 </ul>
 <form:form id="searchForm" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+	<label> <input id="showTotal" name="showTotal" type="checkbox" value="true">全部显示</label>&nbsp;
+	<label> <input id="pretty" name="pretty" type="checkbox" value="true" checked>彩色日志</label>&nbsp;
 	&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="button" value="刷新" onclick="reLoad();"/>&nbsp;&nbsp;
 	&nbsp;&nbsp;<input class="btn btn-primary" type="button" value="下载" onclick="_download();"/>&nbsp;&nbsp;
 </form:form>
-<div id="systemInfo_div" style="padding: 10px;"></div>
+<div id="list"></div>
 <iframe id="annexFrame" src="" frameborder="no" style="padding: 0;border: 0;width: 100%;height: 50px;"></iframe>
 </body>
 </html>

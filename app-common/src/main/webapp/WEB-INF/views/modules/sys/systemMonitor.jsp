@@ -30,7 +30,7 @@
 		<table class="table table-striped table-bordered table-condensed">
 			<tbody>
 			<tr><td>名称</td><td>{{serverName}}</td></tr>
-			<%--<tr><td>IP地址</td><td>{{ip}}</td></tr>--%>
+			<tr><td>IP地址</td><td>{{ip}}</td></tr>
 			<tr><td>操作系统</td><td>{{serverOs}}</td></tr>
 			<tr><td>服务器时间</td><td>{{serverTime}}</td></tr>
 			<%--<tr><td>deployPath</td><td>{{deployPath}}</td></tr>--%>

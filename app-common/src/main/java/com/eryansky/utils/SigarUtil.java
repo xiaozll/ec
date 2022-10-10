@@ -8,6 +8,7 @@ package com.eryansky.utils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.utils.net.IpUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.hyperic.sigar.*;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class SigarUtil {
     }
 
     // 磁盘读写初始数据 用于计算读写速率
-    private static Map<String, String> diskWritesAndReadsOnInit = new HashMap<String, String>();
+    private static Map<String, String> diskWritesAndReadsOnInit = new HashMap<>();
     private static long initTime;
     private static boolean init = false;
     static {
@@ -90,7 +91,7 @@ public class SigarUtil {
         status.setServerName(System.getenv().get("COMPUTERNAME"));
 
         Runtime rt = Runtime.getRuntime();
-        //status.setIp(InetAddress.getLocalHost().getHostAddress());
+        status.setIp(IpUtils.getActivityLocalIp());
         status.setJvmTotalMem(rt.totalMemory() / (1024 * 1024));
         status.setJvmFreeMem(rt.freeMemory() / (1024 * 1024));
         status.setJvmMaxMem(rt.maxMemory()/ (1024 * 1024));
@@ -113,8 +114,8 @@ public class SigarUtil {
             if(!init){
                 init();
             }
-            CpuInfo infos[] = sigar.getCpuInfoList();
-            CpuPerc cpuList[] = sigar.getCpuPercList();
+            CpuInfo[] infos = sigar.getCpuInfoList();
+            CpuPerc[] cpuList = sigar.getCpuPercList();
             double totalUse = 0L;
             for (int i = 0; i < infos.length; i++) {
                 CpuPerc perc = cpuList[i];
@@ -165,7 +166,7 @@ public class SigarUtil {
 //            if(!init){
 //                init();
 //            }
-            FileSystem fslist[] = sigar.getFileSystemList();
+            FileSystem[] fslist = sigar.getFileSystemList();
             FileSystemUsage usage = null;
             for (int i = 0; i < fslist.length; i++) {
                 FileSystem fs = fslist[i];

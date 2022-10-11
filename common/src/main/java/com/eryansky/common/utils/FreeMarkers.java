@@ -29,7 +29,7 @@ public class FreeMarkers {
     public static String renderString(String templateString, Map<String, ?> model) {
         try {
             StringWriter result = new StringWriter();
-            Template t = new Template("default", new StringReader(templateString), new Configuration());
+            Template t = new Template("default", new StringReader(templateString), new Configuration(Configuration.VERSION_2_3_31));
             t.process(model, result);
             return result.toString();
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class FreeMarkers {
      * 创建默认配置，设定模板目录.
      */
     public static Configuration buildConfiguration(String directory) throws IOException {
-        Configuration cfg = new Configuration();
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
         Resource path = new DefaultResourceLoader().getResource(directory);
         cfg.setDirectoryForTemplateLoading(path.getFile());
         return cfg;

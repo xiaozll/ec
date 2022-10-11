@@ -66,8 +66,9 @@ public class SigarUtil {
             logger.error(e.getMessage(),e);
             init = false;
         } finally {
-            if (sigar != null)
+            if (sigar != null){
                 sigar.close();
+            }
         }
     }
 
@@ -80,6 +81,7 @@ public class SigarUtil {
         if(!StringUtils.contains(libPath,sigarClasspath)){
             System.setProperty("java.library.path", sigarClasspath + File.pathSeparator + libPath);
         }
+        logger.info("java.library.path={}",System.getProperty("java.library.path"));
     }
     /**
      * 返回服务系统信息
@@ -101,116 +103,104 @@ public class SigarUtil {
         status.setJavaVersion(props.getProperty("java.version"));
         status.setJavaTmpPath(props.getProperty("java.io.tmpdir"));
 
-        Sigar sigar = new Sigar();
-        getServerCpuInfo(sigar, status);
-        getServerDiskInfo(sigar, status);
-        getServerMemoryInfo(sigar, status);
+        Sigar sigar = null;
+        try {
+            if(!init){
+                init();
+            }
+            sigar = new Sigar();
+            getServerCpuInfo(sigar, status);
+            getServerDiskInfo(sigar, status);
+            getServerMemoryInfo(sigar, status);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+        }finally {
+            if (sigar != null){
+                sigar.close();
+            }
+        }
 
         return status;
     }
 
-    public static void getServerCpuInfo(Sigar sigar, ServerStatus status) {
-        try {
-            if(!init){
-                init();
-            }
-            CpuInfo[] infos = sigar.getCpuInfoList();
-            CpuPerc[] cpuList = sigar.getCpuPercList();
-            double totalUse = 0L;
-            for (int i = 0; i < infos.length; i++) {
-                CpuPerc perc = cpuList[i];
-                ServerStatus.CpuInfoVo cpuInfo = new ServerStatus.CpuInfoVo();
-                cpuInfo.setId(infos[i].hashCode() + "");
-                cpuInfo.setCacheSize(infos[i].getCacheSize());
-                cpuInfo.setModel(infos[i].getModel());
-                cpuInfo.setUsed(CpuPerc.format(perc.getCombined()));
-                cpuInfo.setUsedOrigVal(perc.getCombined());
-                cpuInfo.setIdle(CpuPerc.format(perc.getIdle()));
-                cpuInfo.setTotalMHz(infos[i].getMhz());
-                cpuInfo.setVendor(infos[i].getVendor());
-                status.getCpuInfos().add(cpuInfo);
-                totalUse += perc.getCombined();
-            }
-            String cpuu = CpuPerc.format(totalUse / status.getCpuInfos().size());
-            cpuu = cpuu.substring(0,cpuu.length()-1);
-            status.setCpuUsage(cpuu);
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            init = false;
+    public static void getServerCpuInfo(Sigar sigar, ServerStatus status) throws SigarException {
+        CpuInfo[] infos = sigar.getCpuInfoList();
+        CpuPerc[] cpuList = sigar.getCpuPercList();
+        double totalUse = 0L;
+        for (int i = 0; i < infos.length; i++) {
+            CpuPerc perc = cpuList[i];
+            ServerStatus.CpuInfoVo cpuInfo = new ServerStatus.CpuInfoVo();
+            cpuInfo.setId(infos[i].hashCode() + "");
+            cpuInfo.setCacheSize(infos[i].getCacheSize());
+            cpuInfo.setModel(infos[i].getModel());
+            cpuInfo.setUsed(CpuPerc.format(perc.getCombined()));
+            cpuInfo.setUsedOrigVal(perc.getCombined());
+            cpuInfo.setIdle(CpuPerc.format(perc.getIdle()));
+            cpuInfo.setTotalMHz(infos[i].getMhz());
+            cpuInfo.setVendor(infos[i].getVendor());
+            status.getCpuInfos().add(cpuInfo);
+            totalUse += perc.getCombined();
         }
+        String cpuu = CpuPerc.format(totalUse / status.getCpuInfos().size());
+        cpuu = cpuu.substring(0,cpuu.length()-1);
+        status.setCpuUsage(cpuu);
     }
 
 
-    public static void getServerMemoryInfo(Sigar sigar, ServerStatus status) {
-        try {
-            if(!init){
-                init();
-            }
-            Mem mem = sigar.getMem();
-            status.setTotalMem(mem.getTotal() / (1024 * 1024));
-            status.setUsedMem(mem.getUsed() / (1024 * 1024));
-            status.setFreeMem(mem.getFree() / (1024 * 1024));
-            // 交换区
-            Swap swap = sigar.getSwap();
-            status.setTotalSwap(swap.getTotal() / (1024 * 1024));
-            status.setUsedSwap(swap.getUsed() / (1024 * 1024));
-            status.setFreeSwap(swap.getFree() / (1024 * 1024));
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            init = false;
-        }
+    public static void getServerMemoryInfo(Sigar sigar, ServerStatus status) throws SigarException {
+        Mem mem = sigar.getMem();
+        status.setTotalMem(mem.getTotal() / (1024 * 1024));
+        status.setUsedMem(mem.getUsed() / (1024 * 1024));
+        status.setFreeMem(mem.getFree() / (1024 * 1024));
+        // 交换区
+        Swap swap = sigar.getSwap();
+        status.setTotalSwap(swap.getTotal() / (1024 * 1024));
+        status.setUsedSwap(swap.getUsed() / (1024 * 1024));
+        status.setFreeSwap(swap.getFree() / (1024 * 1024));
     }
 
-    public static void getServerDiskInfo(Sigar sigar, ServerStatus status) {
-        try {
-//            if(!init){
-//                init();
-//            }
-            FileSystem[] fslist = sigar.getFileSystemList();
-            FileSystemUsage usage = null;
-            for (int i = 0; i < fslist.length; i++) {
-                FileSystem fs = fslist[i];
-                switch (fs.getType()) {
-                    case 0: // TYPE_UNKNOWN ：未知
-                    case 1: // TYPE_NONE
-                    case 3:// TYPE_NETWORK ：网络
-                    case 4:// TYPE_RAM_DISK ：闪存
-                    case 5:// TYPE_CDROM ：光驱
-                    case 6:// TYPE_SWAP ：页面交换
-                        break;
-                    case 2: // TYPE_LOCAL_DISK : 本地硬盘
-                        ServerStatus.DiskInfoVo disk = new ServerStatus.DiskInfoVo();
-                        disk.setDevName(fs.getDevName());
-                        disk.setDirName(fs.getDirName());
-                        usage = sigar.getFileSystemUsage(fs.getDirName());
-                        disk.setTotalSize(usage.getTotal() / (1024 * 1024));
-                        // disk.setFreeSize(usage.getFree()/(1024*1024));
-                        disk.setAvailSize(usage.getAvail() / (1024 * 1024));
-                        disk.setUsedSize(usage.getUsed() / (1024 * 1024));
-                        disk.setUsePercent(usage.getUsePercent() * 100D + "%");
-                        disk.setTypeName(fs.getTypeName());
-                        disk.setSysTypeName(fs.getSysTypeName());
+    public static void getServerDiskInfo(Sigar sigar, ServerStatus status) throws SigarException {
+        FileSystem[] fslist = sigar.getFileSystemList();
+        FileSystemUsage usage = null;
+        for (int i = 0; i < fslist.length; i++) {
+            FileSystem fs = fslist[i];
+            switch (fs.getType()) {
+                case 0: // TYPE_UNKNOWN ：未知
+                case 1: // TYPE_NONE
+                case 3:// TYPE_NETWORK ：网络
+                case 4:// TYPE_RAM_DISK ：闪存
+                case 5:// TYPE_CDROM ：光驱
+                case 6:// TYPE_SWAP ：页面交换
+                    break;
+                case 2: // TYPE_LOCAL_DISK : 本地硬盘
+                    ServerStatus.DiskInfoVo disk = new ServerStatus.DiskInfoVo();
+                    disk.setDevName(fs.getDevName());
+                    disk.setDirName(fs.getDirName());
+                    usage = sigar.getFileSystemUsage(fs.getDirName());
+                    disk.setTotalSize(usage.getTotal() / (1024 * 1024));
+                    // disk.setFreeSize(usage.getFree()/(1024*1024));
+                    disk.setAvailSize(usage.getAvail() / (1024 * 1024));
+                    disk.setUsedSize(usage.getUsed() / (1024 * 1024));
+                    disk.setUsePercent(usage.getUsePercent() * 100D + "%");
+                    disk.setTypeName(fs.getTypeName());
+                    disk.setSysTypeName(fs.getSysTypeName());
 
-                        String val = diskWritesAndReadsOnInit.get(fs.getDevName());
-                        if (val != null) {
-                            long timePeriod = (System.currentTimeMillis() - initTime) / 1000;
-                            if(timePeriod == 0){
-                                ThreadUtils.sleep(1000L);
-                                timePeriod = (System.currentTimeMillis() - initTime) / 1000;
-                            }
-                            long origRead = Long.parseLong(val.split("\\|")[0]);
-                            long origWrite = Long.parseLong(val.split("\\|")[1]);
-                            disk.setDiskReadRate((usage.getDiskReadBytes() - origRead) / timePeriod);
-                            disk.setDiskWriteRate((usage.getDiskWriteBytes() - origWrite) / timePeriod);
+                    String val = diskWritesAndReadsOnInit.get(fs.getDevName());
+                    if (val != null) {
+                        long timePeriod = (System.currentTimeMillis() - initTime) / 1000;
+                        if(timePeriod == 0){
+                            ThreadUtils.sleep(1000L);
+                            timePeriod = (System.currentTimeMillis() - initTime) / 1000;
                         }
+                        long origRead = Long.parseLong(val.split("\\|")[0]);
+                        long origWrite = Long.parseLong(val.split("\\|")[1]);
+                        disk.setDiskReadRate((usage.getDiskReadBytes() - origRead) / timePeriod);
+                        disk.setDiskWriteRate((usage.getDiskWriteBytes() - origWrite) / timePeriod);
+                    }
 
-                        status.getDiskInfos().add(disk);
+                    status.getDiskInfos().add(disk);
 
-                }
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            init = false;
         }
     }
 }

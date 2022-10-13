@@ -50,6 +50,7 @@ import javax.net.ssl.SSLException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.apache.http.HttpHost.DEFAULT_SCHEME_NAME;
@@ -85,7 +86,7 @@ public class HttpCompoents {
      */
     private static final int MAX_EXECUT_COUNT = 3;
 
-    private final String _DEFLAUT_CHARSET = "utf-8";
+    private final String _DEFLAUT_CHARSET = StandardCharsets.UTF_8.name();
     /**
      * 设置超时，毫秒级别
      */
@@ -351,6 +352,28 @@ public class HttpCompoents {
         return null;
     }
 
+    /**
+     * GET请求
+     *
+     * @param url     请求地址
+     * @param headers 自定义Header
+     * @param callback 自定义结果回调函数
+     * @return
+     */
+    public <T> T get(String url, Map<String, String> headers, HttpResponseCallback<T> callback) throws Exception {
+        HttpGet httpGet = new HttpGet(url);
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                httpGet.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
+        httpGet.setConfig(requestConfig);
+        try (CloseableHttpClient httpClient = createHttpClient(url);
+             CloseableHttpResponse httpResponse =  httpClient.execute(httpGet)){
+            return callback.handle(httpResponse);
+        }
+    }
+
 
     /**
      * POST请求
@@ -428,6 +451,44 @@ public class HttpCompoents {
         return null;
     }
 
+
+    /**
+     * POST请求
+     *
+     * @param url     请求地址
+     * @param params  请求参数
+     * @param headers 自定义Header
+     * @param charset 编码
+     * @param callback 自定义结果回调函数
+     * @return
+     */
+    public <T> T post(String url, Map<String, String> params,
+                       Map<String, String> headers, String charset,HttpResponseCallback<T> callback) throws Exception {
+        String useCharset = charset;
+        if (charset == null) {
+            useCharset = _DEFLAUT_CHARSET;
+        }
+
+        HttpPost httpPost = new HttpPost(url);
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                httpPost.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
+        List<NameValuePair> nvps = new ArrayList<>();
+        if (params != null) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+            }
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
+        }
+        httpPost.setConfig(requestConfig);
+        try (CloseableHttpClient httpClient = createHttpClient(url);
+             CloseableHttpResponse httpResponse =  httpClient.execute(httpPost)){
+            return callback.handle(httpResponse);
+        }
+    }
+
     /**
      * POST请求
      *
@@ -471,6 +532,35 @@ public class HttpCompoents {
             logger.error(e.getMessage(), e);
         }
         return null;
+    }
+
+
+    /**
+     * POST请求
+     *
+     * @param url     请求地址
+     * @param data  请求json数据
+     * @param headers 自定义Header
+     * @param charset
+     * @param callback 自定义结果回调函数
+     * @return
+     */
+    public <T> T  post(String url, String data,
+                       Map<String, String> headers, String charset,HttpResponseCallback<T> callback) throws Exception {
+        HttpPost httpPost = new HttpPost(url);
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                httpPost.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
+        // Create request data
+        StringEntity requestEntity = new StringEntity(data, ContentType.APPLICATION_JSON);
+        httpPost.setEntity(requestEntity);
+        httpPost.setConfig(requestConfig);
+        try (CloseableHttpClient httpClient = createHttpClient(url);
+             CloseableHttpResponse httpResponse =  httpClient.execute(httpPost)){
+            return callback.handle(httpResponse);
+        }
     }
 
     /**

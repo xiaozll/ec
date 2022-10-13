@@ -50,10 +50,7 @@ import javax.net.ssl.SSLException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static org.apache.http.HttpHost.DEFAULT_SCHEME_NAME;
 
@@ -147,8 +144,11 @@ public class HttpCompoents {
         return HttpCompoentsHolder.httpCompoents;
     }
 
-
     public CloseableHttpClient createHttpClient() throws Exception {
+        return createHttpClient(null);
+    }
+
+    public CloseableHttpClient createHttpClient(String url) throws Exception {
         // 保持连接时长
         ConnectionKeepAliveStrategy keepAliveStrat = new DefaultConnectionKeepAliveStrategy() {
             @Override
@@ -254,15 +254,13 @@ public class HttpCompoents {
 
             }
         }
-        return HttpClients.custom().setKeepAliveStrategy(keepAliveStrat)
+        HttpClientBuilder httpClientBuilder = HttpClients.custom().setKeepAliveStrategy(keepAliveStrat)
                 .setRetryHandler(retryHandler)
                 .setDefaultCookieSpecRegistry(r)
                 .setDefaultRequestConfig(requestConfig)
                 .setDefaultCookieStore(cookieStore)
                 .setDefaultSocketConfig(socketConfig)
                 .setConnectionManager(connectionManager)
-                .setRoutePlanner(httpRoutePlanner)
-                .setDefaultCredentialsProvider(credentialsProvider)
                 .addInterceptorFirst((HttpRequestInterceptor) (request, context) -> {
                     if (!request.containsHeader("Accept-Encoding")) {
                         request.addHeader("Accept-Encoding", "gzip");
@@ -282,9 +280,14 @@ public class HttpCompoents {
                             }
                         }
                     }
-                })
-                //                    .setSslcontext(sslContext)
-                .build();
+                });
+        if(null != httpRoutePlanner && StringUtils.isNotBlank(url) &&
+                (null == httpNonProxyHosts || null == Arrays.stream(httpNonProxyHosts.split(",")).filter(url::contains).findAny().orElse(null))){
+            httpClientBuilder.setRoutePlanner(httpRoutePlanner)
+                    .setDefaultCredentialsProvider(credentialsProvider);
+        }
+//        httpClientBuilder.setSslcontext(sslContext);
+        return httpClientBuilder.build();
     }
     /**
      * 设置超时
@@ -338,7 +341,7 @@ public class HttpCompoents {
             }
         }
         httpGet.setConfig(requestConfig);
-        try (CloseableHttpClient httpClient = createHttpClient();
+        try (CloseableHttpClient httpClient = createHttpClient(url);
              CloseableHttpResponse response = httpClient.execute(httpGet)) {
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity, useCharset);
@@ -415,7 +418,7 @@ public class HttpCompoents {
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, Charset.forName(useCharset)));
         }
         httpPost.setConfig(requestConfig);
-        try (CloseableHttpClient httpClient = createHttpClient();
+        try (CloseableHttpClient httpClient = createHttpClient(url);
              CloseableHttpResponse response = httpClient.execute(httpPost)) {
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity, useCharset);
@@ -460,7 +463,7 @@ public class HttpCompoents {
         StringEntity requestEntity = new StringEntity(data, ContentType.APPLICATION_JSON);
         httpPost.setEntity(requestEntity);
         httpPost.setConfig(requestConfig);
-        try (CloseableHttpClient httpClient = createHttpClient();
+        try (CloseableHttpClient httpClient = createHttpClient(url);
              CloseableHttpResponse response = httpClient.execute(httpPost)) {
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity, useCharset);

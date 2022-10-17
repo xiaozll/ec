@@ -629,7 +629,7 @@ public class AppConstants extends SysConstants {
      */
     public static String getRestDefaultApiKey() {
         String code = "system.rest.defaultApiKey";
-        return getConfigValue(code);
+        return getConfigValue(code,"");
     }
 
     /**

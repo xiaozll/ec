@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 消息接口
  */
 @Controller
-@RequestMapping(value = {"rest/message"})
+@RequestMapping(value = {"rest/message""rest/notice/message"})
 public class MessageRestController extends SimpleController {
 
 

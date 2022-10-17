@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 消息接口
  */
+@RestApi
 @Controller
 @RequestMapping(value = {"rest/message","rest/notice/message"})
 public class MessageRestController extends SimpleController {
@@ -60,7 +61,6 @@ public class MessageRestController extends SimpleController {
      * obj 返回的数据信息
      */
     @Logging(value = "消息接口-发送消息",logType = LogType.REST)
-    @RestApi
     @PostMapping(value = { "sendMessage"})
     @ResponseBody
     public Result sendMessage(String data) {
@@ -100,7 +100,6 @@ public class MessageRestController extends SimpleController {
      * @return
      */
     @Logging(value = "消息接口-发送通知",logType = LogType.REST)
-    @RestApi
     @PostMapping(value = { "sendNotice"})
     @ResponseBody
     public Result sendNotice(String data) {

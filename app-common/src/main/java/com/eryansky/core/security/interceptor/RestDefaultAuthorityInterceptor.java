@@ -39,16 +39,6 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
 
     public static final String CACHE_REST_PREFIX = "Rest_Authority_";
 
-    /**
-     * 不需要拦截的资源
-     */
-    private List<String> excludeUrls = Lists.newArrayList();
-    /**
-     * 验证数据库标记URL 默认值：false
-     */
-    private Boolean authorMarkUrl = false;
-
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String sessionId = request.getSession().getId();
@@ -181,27 +171,4 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
         }
     }
 
-
-    public List<String> getExcludeUrls() {
-        return excludeUrls;
-    }
-
-    public RestDefaultAuthorityInterceptor setExcludeUrls(List<String> excludeUrls) {
-        this.excludeUrls = excludeUrls;
-        return this;
-    }
-
-    public RestDefaultAuthorityInterceptor addExcludeUrl(String excludeUrl) {
-        this.excludeUrls.add(excludeUrl);
-        return this;
-    }
-
-    public Boolean getAuthorMarkUrl() {
-        return authorMarkUrl;
-    }
-
-    public RestDefaultAuthorityInterceptor setAuthorMarkUrl(Boolean authorMarkUrl) {
-        this.authorMarkUrl = authorMarkUrl;
-        return this;
-    }
 }

@@ -201,7 +201,7 @@
         <div class="controls">
             <label><input name="system.rest.enable" type="radio" value="true"/>启用</label>
             <label><input name="system.rest.enable" type="radio" value="false"/>禁用</label>
-            <span class="help-inline"></span>
+            <span class="help-inline">是否开启REST授权</span>
         </div>
     </div>
     <div class="control-group">

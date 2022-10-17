@@ -612,4 +612,47 @@ public class AppConstants extends SysConstants {
         return getConfigValue(code);
     }
 
+    /**
+     * REST 服务是否启用
+     * @return
+     */
+    public static boolean getIsSystemRestEnable() {
+        String code = "system.rest.enable";
+        String value = getConfigValue(code, "true");
+        return "true".equals(value) || "1".equals(value);
+    }
+
+
+    /**
+     * REST 服务是否启用
+     * @return
+     */
+    public static String getRestDefaultApiKey() {
+        String code = "system.rest.defaultApiKey";
+        return getConfigValue(code);
+    }
+
+    /**
+     * REST IP白名单访问限制
+     * @return
+     */
+    public static boolean getIsSystemRestLimitEnable() {
+        String code = "system.rest.limit.ip.enable";
+        String value = getConfigValue(code, "false");
+        return "true".equals(value) || "1".equals(value);
+    }
+
+    /**
+     * REST IP房访问白名单 每行一个或多个之间以";"分割，支持"*"通配符
+     *
+     * @return
+     */
+    public static List<String> getRestLimitIpWhiteList() {
+        String code = "system.rest.limit.ip.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
 }

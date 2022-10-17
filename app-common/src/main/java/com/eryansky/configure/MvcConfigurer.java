@@ -8,6 +8,7 @@ import com.eryansky.core.dialect.dialect.ShiroDialect;
 import com.eryansky.core.security.interceptor.AuthorityInterceptor;
 import com.eryansky.core.security.interceptor.AuthorityOauth2Interceptor;
 import com.eryansky.core.security.interceptor.IpLimitInterceptor;
+import com.eryansky.core.security.interceptor.RestDefaultAuthorityInterceptor;
 import com.eryansky.core.web.interceptor.LogInterceptor;
 import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
@@ -73,6 +74,12 @@ public class MvcConfigurer implements WebMvcConfigurer {
               .addPathPatterns("/**")
               .excludePathPatterns("/static/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 100);
+
+//      if(Boolean.TRUE.equals(AppConstants.getIsSystemRestEnable())){
+//         registry.addInterceptor(new RestDefaultAuthorityInterceptor())
+//                 .addPathPatterns("/rest/**")
+//                 .order(Ordered.HIGHEST_PRECEDENCE + 140);
+//      }
 
       if(Boolean.TRUE.equals(AppConstants.isOauth2Enable())){
          List<String> dList = Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**");

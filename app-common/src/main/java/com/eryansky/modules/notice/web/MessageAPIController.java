@@ -3,7 +3,7 @@ package com.eryansky.modules.notice.web;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
-import com.eryansky.core.security.annotation.RequiresUser;
+import com.eryansky.core.security.annotation.RestApi;
 import com.eryansky.listener.SystemInitListener;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.server.result.WSResult;
@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 /**
  * 消息接口
  */
-@RequiresUser(required = false)
 @Controller
-@RequestMapping(value = {"api/message","rest/message"})
+@RequestMapping(value = {"rest/message"})
 public class MessageAPIController extends SimpleController {
 
 
@@ -63,7 +61,7 @@ public class MessageAPIController extends SimpleController {
      * obj 返回的数据信息
      */
     @Logging(value = "消息接口-发送消息",logType = LogType.REST)
-    @RequiresUser(required = false)
+    @RestApi
     @PostMapping(value = { "sendMessage"})
     @ResponseBody
     public Result sendMessage(String appKey,String data) {

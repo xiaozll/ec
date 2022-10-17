@@ -142,7 +142,11 @@ public class ConfigController extends SimpleController {
             "system.security.limit.ip.whitelist",
             "system.security.limit.ip.blacklist",
             "system.security.proxy.enable",
-            "system.security.proxy.whitelist"
+            "system.security.proxy.whitelist",
+            "system.rest.enable",
+            "system.rest.defaultApiKey",
+            "system.rest.limit.ip.enable",
+            "system.rest.limit.ip.whitelist"
     };
 
     /**

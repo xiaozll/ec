@@ -193,7 +193,37 @@
             <span class="help-inline">每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
-
+    <h5 class="page-header">REST服务</h5>
+    <div class="control-group">
+        <label class="control-label">REST授权：</label>
+        <div class="controls">
+            <label><input name="system.rest.enable" type="radio" value="true"/>启用</label>
+            <label><input name="system.rest.enable" type="radio" value="false"/>禁用</label>
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">X-Api-Key：</label>
+        <div class="controls">
+            <input name="system.rest.defaultApiKey" type="text" class="input-xxlarge"/>
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">IP访问限制：</label>
+        <div class="controls">
+            <label><input name="system.rest.limit.ip.enable" type="radio" value="true"/>启用</label>
+            <label><input name="system.rest.limit.ip.enable" type="radio" value="false"/>禁用</label>
+            <span class="help-inline"></span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">IP白名单：</label>
+        <div class="controls">
+            <textarea name="system.rest.limit.ip.whitelist" class="input-xxlarge"></textarea>
+            <span class="help-inline">每行一个或多个之间以";"分割，支持"*"通配符</span>
+        </div>
+    </div>
 
     <div class="form-actions">
         <e:hasPermission name="sys:config:edit">

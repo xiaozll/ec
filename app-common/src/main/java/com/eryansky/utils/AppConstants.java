@@ -618,13 +618,13 @@ public class AppConstants extends SysConstants {
      */
     public static boolean getIsSystemRestEnable() {
         String code = "system.rest.enable";
-        String value = getConfigValue(code, "true");
+        String value = getConfigValue(code, "false");
         return "true".equals(value) || "1".equals(value);
     }
 
 
     /**
-     * REST 服务是否启用
+     * REST 服务访问密钥
      * @return
      */
     public static String getRestDefaultApiKey() {
@@ -643,7 +643,7 @@ public class AppConstants extends SysConstants {
     }
 
     /**
-     * REST IP房访问白名单 每行一个或多个之间以";"分割，支持"*"通配符
+     * REST IP访问白名单 每行一个或多个之间以";"分割，支持"*"通配符
      *
      * @return
      */

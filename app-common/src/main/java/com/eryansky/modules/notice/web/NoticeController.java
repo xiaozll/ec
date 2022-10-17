@@ -92,7 +92,7 @@ public class NoticeController extends SimpleController {
      * @param noticeId 通知ID
      * @return
      */
-    @GetMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public ModelAndView list(String noticeId,
                              @RequestParam(value = "objectType", required = false) String objectType,
                              @RequestParam(value = "objectId", required = false) String objectId,
@@ -121,7 +121,7 @@ public class NoticeController extends SimpleController {
      * @param noticeId 通知ID
      * @return
      */
-    @GetMapping(value = {"receive"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"receive"})
     public ModelAndView receive(String noticeId,
                                 @RequestParam(value = "objectType", required = false) String objectType,
                                 @RequestParam(value = "objectId", required = false) String objectId,

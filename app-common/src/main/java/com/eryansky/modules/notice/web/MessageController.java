@@ -70,7 +70,7 @@ public class MessageController extends SimpleController {
 
 
     @RequiresPermissions("notice:message:view")
-    @GetMapping(value = {"list", "", "audit"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"list", "", "audit"})
     public ModelAndView list(@ModelAttribute("model") Message model,String appId, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageList");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -153,7 +153,7 @@ public class MessageController extends SimpleController {
     }
 
     @RequiresPermissions("notice:message:view")
-    @GetMapping(value = "info")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "info")
     public ModelAndView info(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageInfo");
         modelAndView.addObject("model", model);

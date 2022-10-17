@@ -37,9 +37,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String PARAM_APP_CODE = "appCode";
-    private static final String PARAM_APP_KEY = "appKey";
-
+    private static final String CACHE_REST_PREFIX = "Rest_Authority_";
 
     /**
      * 不需要拦截的资源
@@ -53,6 +51,12 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+        String sessionId = request.getSession().getId();
+        String cacheKey = CACHE_REST_PREFIX + sessionId;
+        Boolean handlerResult = CacheUtils.get(cacheKey);
+        if (null != handlerResult) {
+            return handlerResult;
+        }
         String requestUrl = request.getRequestURI();
         requestUrl = requestUrl.replaceAll("//", "/");
         if (logger.isDebugEnabled()) {
@@ -65,13 +69,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
             WebUtils.renderJson(response, result);
             return false;
         }
-        String sessionId = request.getSession().getId();
-        String cacheKey = sessionId;
-//        String cacheKey = sessionId+requestUrl;
-        Boolean handlerResult = CacheUtils.get(cacheKey);
-        if (null != handlerResult) {
-            return handlerResult;
-        }
+
         //注解处理
         handlerResult = this.defaultandler(request, response, o, requestUrl);
         CacheUtils.put(cacheKey, handlerResult);
@@ -110,17 +108,15 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
                 if (!restApi.required()) {
                     return true;
                 }
-                String appCode = WebUtils.getParameter(request, PARAM_APP_CODE);
-                String appKey = WebUtils.getParameter(request, PARAM_APP_KEY);
-                String apiKey = request.getHeader("X-API-Key");
-                if (StringUtils.isBlank(appCode) && StringUtils.isBlank(appKey) && StringUtils.isBlank(apiKey)) {
-                    notPermittedPermission(request, response, requestUrl, "未识别appCode、appKey或apiKey参数:" + appCode);
+                String apiKey = request.getHeader("X-Api-Key");
+                if (StringUtils.isBlank(apiKey)) {
+                    notPermittedPermission(request, response, requestUrl, "未识别参数:Header['X-API-Key']=" + apiKey);
                     return false;
                 }
                 //密钥认证
                 String DEFAULT_API_KEY = AppConstants.getRestDefaultApiKey();
-                if (!DEFAULT_API_KEY.equals(appKey) || !DEFAULT_API_KEY.equals(apiKey)) {
-                    notPermittedPermission(request, response, requestUrl, "未授权访问:" + appCode);
+                if (!DEFAULT_API_KEY.equals(apiKey)) {
+                    notPermittedPermission(request, response, requestUrl, "未授权访问:Header['X-API-Key']=" + apiKey);
                     return false;
                 }
 
@@ -131,7 +127,6 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
                     if("127.0.0.1".equals(ip) || "localhost".equals(ip)){
                         return true;
                     }
-                    //TODO 配置IP白名单
                     List<String> ipList = AppConstants.getRestLimitIpWhiteList();
                     if (null == ipList.stream().filter(v -> "*".equals(v) || com.eryansky.j2cache.util.IpUtils.checkIPMatching(v, ip)).findAny().orElse(null)) {
                         notPermittedPermission(request, response, requestUrl, "REST禁止访问：" + ip);

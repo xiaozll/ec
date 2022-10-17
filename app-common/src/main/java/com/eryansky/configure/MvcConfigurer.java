@@ -75,11 +75,11 @@ public class MvcConfigurer implements WebMvcConfigurer {
               .excludePathPatterns("/static/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 100);
 
-//      if(Boolean.TRUE.equals(AppConstants.getIsSystemRestEnable())){
-//         registry.addInterceptor(new RestDefaultAuthorityInterceptor())
-//                 .addPathPatterns("/rest/**")
-//                 .order(Ordered.HIGHEST_PRECEDENCE + 140);
-//      }
+      if(Boolean.TRUE.equals(AppConstants.getIsSystemRestEnable())){
+         registry.addInterceptor(new RestDefaultAuthorityInterceptor())
+                 .addPathPatterns("/rest/**")
+                 .order(Ordered.HIGHEST_PRECEDENCE + 145);
+      }
 
       if(Boolean.TRUE.equals(AppConstants.isOauth2Enable())){
          List<String> dList = Lists.newArrayList("/jump.jsp","/index.html","/web/**","/mweb/**","/assets/**","/icons/**","/static/**","/**/*.css","/**/*.js","/**/*.png","/**/*.ico","/**/*.json","favicon**","/userfiles/**","/servlet/**","/error/**","/api/**","/rest/**");

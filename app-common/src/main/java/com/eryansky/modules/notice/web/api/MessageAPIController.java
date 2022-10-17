@@ -28,7 +28,6 @@ public class MessageAPIController extends SimpleController {
 
     /**
      * 发送消息
-     * @param appKey 访问密钥:
      * @param data 参数说明:
      * {
      * 	 appId:"appId",
@@ -64,9 +63,49 @@ public class MessageAPIController extends SimpleController {
     @RestApi
     @PostMapping(value = { "sendMessage"})
     @ResponseBody
-    public Result sendMessage(String appKey,String data) {
+    public Result sendMessage(String data) {
         if(SystemInitListener.Static.apiWebService != null){
             WSResult wsResult = SystemInitListener.Static.apiWebService.sendMessage(data);
+            return WSResult.SUCCESS.equals(wsResult.getCode()) ? Result.successResult().setMsg(wsResult.getMessage()): Result.errorResult().setMsg(wsResult.getMessage());
+        }
+        return Result.errorResult();
+    }
+
+    /**
+     * 发送通知
+     * @param data 参数说明:
+     * data:json字符串
+     * data={
+     * 	 senderId:"",
+     * 	 sendTime:"yyyy-MM-dd HH:mm:ss",
+     *   type:"通知类型",
+     *   title:"标题",
+     *   content:"内容",
+     *   date:"",
+     *   receiveType:"user",
+     *   receiveIds:["loginName1","loginName2",...]
+     *   tipType:["message","weixin"]
+     * }
+     * clientId   :应用编码   必选
+     * serviceId  :服务ID  必选
+     * senderId   :发布账号 必选
+     * sendTime       :发布时间(格式：yyyy-MM-dd HH:mm:ss)  可选
+     * senderOrganCode   :发布部门编码 可选
+     * type       :公告类型     可选
+     * title      :标题     必选
+     * content    :内容（支持HTML富文本）     必选
+     * receiveType:接收对象类型（部门：organ，用户：user）默认为"organ" 可选（暂不可用）
+     * receiveIds :接收对象(组织机构编码/用户账号) 必选
+     * tipType    :消息通道（消息：Message，企业微信:QYWeixin，邮件:Mail，短信:SMS，APP:APP） 默认为："['Message','QYWeixin',"APP"]" 可选
+     * @return
+     */
+    @Logging(value = "消息接口-发送通知",logType = LogType.REST)
+    @RestApi
+    @PostMapping(value = { "sendNotice"})
+    @ResponseBody
+    public Result sendNotice(String data) {
+        if(SystemInitListener.Static.apiWebService != null){
+            WSResult wsResult = SystemInitListener.Static.apiWebService.sendNotice(data);
             return WSResult.SUCCESS.equals(wsResult.getCode()) ? Result.successResult().setMsg(wsResult.getMessage()): Result.errorResult().setMsg(wsResult.getMessage());
         }
         return Result.errorResult();

@@ -239,7 +239,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             for (String companyCode : receiveIds) {
                 Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {
-                    logger.error("机构[" + companyCode + "],统一平台无相关账号信息");
+                    logger.error("机构[" + companyCode + "],统一平台无相关机构信息");
                     return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
                 }
                 List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());

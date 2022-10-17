@@ -77,7 +77,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             List<MessageChannel> messageChannels = Lists.newArrayList();
             try {
                 checkOptional(appId, "appId");
-                checkOptional(serviceId, "serviceId");
+//                checkOptional(serviceId, "serviceId");
                 checkOptional(content, "content");
                 if (Collections3.isEmpty(receiveIds)) {
                     return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数[receiveIds]不能为空");
@@ -199,7 +199,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             List<MessageChannel> messageChannels = Lists.newArrayList();
             try {
                 checkOptional(appId, "appId");
-                checkOptional(serviceId, "serviceId");
+//                checkOptional(serviceId, "serviceId");
                 checkOptional(senderId, "senderId");
                 checkOptional(title, "title");
                 checkOptional(content, "content");

@@ -99,7 +99,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
                     return true;
                 }
                 String apiKey = request.getHeader(REST_AUTHORITY_HEADER_NAME);
-                if (StringUtils.isBlank(apiKey)) {
+                if (null == apiKey) {
                     notPermittedPermission(request, response, requestUrl, "未识别参数:Header['X-API-Key']=" + apiKey);
                     return false;
                 }

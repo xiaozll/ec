@@ -37,7 +37,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String CACHE_REST_PREFIX = "Rest_Authority_";
+    public static final String CACHE_REST_PREFIX = "Rest_Authority_";
 
     /**
      * 不需要拦截的资源

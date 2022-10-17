@@ -638,7 +638,7 @@ public class AppConstants extends SysConstants {
      */
     public static boolean getIsSystemRestLimitEnable() {
         String code = "system.rest.limit.ip.enable";
-        String value = getConfigValue(code, "false");
+        String value = getConfigValue(code, "true");
         return "true".equals(value) || "1".equals(value);
     }
 

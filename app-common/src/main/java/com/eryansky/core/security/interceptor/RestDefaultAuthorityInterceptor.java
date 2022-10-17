@@ -34,10 +34,10 @@ import java.util.List;
  */
 public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor {
 
-
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
     public static final String CACHE_REST_PREFIX = "Rest_Authority_";
+    public static final String REST_AUTHORITY_HEADER_NAME = "X-Api-Key";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -98,7 +98,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
                 if (!restApi.required()) {
                     return true;
                 }
-                String apiKey = request.getHeader("X-Api-Key");
+                String apiKey = request.getHeader(REST_AUTHORITY_HEADER_NAME);
                 if (StringUtils.isBlank(apiKey)) {
                     notPermittedPermission(request, response, requestUrl, "未识别参数:Header['X-API-Key']=" + apiKey);
                     return false;

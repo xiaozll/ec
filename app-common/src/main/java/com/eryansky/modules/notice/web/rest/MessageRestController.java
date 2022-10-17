@@ -1,4 +1,4 @@
-package com.eryansky.modules.notice.web.api;
+package com.eryansky.modules.notice.web.rest;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.web.springmvc.SimpleController;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping(value = {"rest/message"})
-public class MessageAPIController extends SimpleController {
+public class MessageRestController extends SimpleController {
 
 
     @Override

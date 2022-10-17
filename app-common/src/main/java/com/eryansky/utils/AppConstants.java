@@ -269,7 +269,7 @@ public class AppConstants extends SysConstants {
      */
     public static Boolean isLimitIpWhiteEnable() {
         String code = "system.security.limit.ip.whiteEnable";
-        String value = getConfigValue(code,"false");
+        String value = getConfigValue(code,"true");
         return Boolean.valueOf(value);
     }
 

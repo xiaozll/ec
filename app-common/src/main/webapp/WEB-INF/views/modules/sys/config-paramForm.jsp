@@ -178,6 +178,7 @@
         </div>
     </div>
 
+    <h5 class="page-header">内部代理</h5>
     <div class="control-group">
         <label class="control-label">内部代理：</label>
         <div class="controls">
@@ -193,6 +194,7 @@
             <span class="help-inline">每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
+
     <h5 class="page-header">REST服务</h5>
     <div class="control-group">
         <label class="control-label">REST授权：</label>

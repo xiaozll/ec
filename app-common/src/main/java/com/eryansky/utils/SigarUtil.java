@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +93,13 @@ public class SigarUtil {
         ServerStatus status = new ServerStatus();
         status.setServerTime(DateFormatUtils.format(Calendar.getInstance(), "yyyy-MM-dd HH:mm:ss"));
         status.setServerName(System.getenv().get("COMPUTERNAME"));
+        if (StringUtils.isBlank(status.getServerName())) {
+            try {
+                status.setServerName(InetAddress.getLocalHost().getHostName());
+            } catch (UnknownHostException e) {
+                status.setServerName("unknown");
+            }
+        }
 
         Runtime rt = Runtime.getRuntime();
         status.setIp(IpUtils.getActivityLocalIp());

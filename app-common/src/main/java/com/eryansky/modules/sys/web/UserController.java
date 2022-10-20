@@ -30,7 +30,6 @@ import com.eryansky.core.excels.JsGridReportBase;
 import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
 import com.eryansky.modules.disk.utils.DiskUtils;
@@ -828,7 +827,7 @@ public class UserController extends SimpleController {
                                      String query,
                                      @RequestParam(value = "excludeUserIds", required = false) List<String> excludeUserIds) {
         Page<User> page = new Page<>(SpringMVCHolder.getRequest());
-        page = userService.findUsersByOrgan(page, organId, query, excludeUserIds);
+        page = userService.findUserPageByOrgan(page, organId, query, excludeUserIds);
         Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
         return JsonMapper.getInstance().toJson(dg, User.class, new String[]{"id", "loginName", "name", "sexView", "sort","defaultOrganName","companyName"});
     }

@@ -22,7 +22,6 @@ import com.eryansky.modules.sys._enum.SexType;
 import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.OrganExtend;
-import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
@@ -661,7 +660,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param excludeUserIds 排除的用户IDS
      * @return
      */
-    public Page<User> findUsersByOrgan(Page<User> page, String organId, String query, Collection<String> excludeUserIds) {
+    public Page<User> findUserPageByOrgan(Page<User> page, String organId, String query, Collection<String> excludeUserIds) {
         if (StringUtils.isBlank(organId)) {
             return page;
         }
@@ -673,6 +672,28 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("query", query);
         parameter.put("excludeUserIds", excludeUserIds);
         return page.setResult(dao.findUsersByOrgan(parameter));
+    }
+
+
+    /**
+     * 根据机构查询用户信息
+     *
+     * @param organId        机构Id
+     * @param query          关键字
+     * @param excludeUserIds 排除的用户IDS
+     * @return
+     */
+    public List<User> findUserListByOrgan(String organId, String query, Collection<String> excludeUserIds) {
+        if (StringUtils.isBlank(organId)) {
+            return Collections.emptyList();
+        }
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("organId", organId);
+        parameter.put("query", query);
+        parameter.put("excludeUserIds", excludeUserIds);
+        return dao.findUsersByOrgan(parameter);
     }
 
     /**

@@ -121,14 +121,9 @@ public class LogInterceptor implements HandlerInterceptor {
 			newLogValue = LogType.exception.getDescription();
 			logType = LogType.exception.getValue();
 		}
-
 		//注解处理
-		if (!flag) {
-			try {
-				handlerMethod = (HandlerMethod) handler;
-			} catch (ClassCastException e) {
-//                logger.error(e.getMessage(),e);
-			}
+		if (!flag && handler instanceof HandlerMethod) {
+			handlerMethod = (HandlerMethod) handler;
 			Logging logging = null;
 			if (handlerMethod != null) {
 				//需要登录

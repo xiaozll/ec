@@ -90,92 +90,88 @@ public class AuthorityInterceptor implements AsyncHandlerInterceptor {
      * 注解处理
      * @param request
      * @param response
-     * @param o
+     * @param handler
      * @param sessionInfo
      * @param requestUrl
      * @return
      * @throws Exception
      */
-    private Boolean annotationHandler(HttpServletRequest request, HttpServletResponse response, Object o,
+    private Boolean annotationHandler(HttpServletRequest request, HttpServletResponse response, Object handler,
                                       SessionInfo sessionInfo,String requestUrl) throws Exception {
-        HandlerMethod handler = null;
-        try {
-            handler = (HandlerMethod) o;
-        } catch (ClassCastException e) {
-//                logger.error(e.getMessage(),e);
+        HandlerMethod handlerMethod = null;
+        //注解处理 满足设置不拦截
+        if(handler instanceof HandlerMethod) {
+            handlerMethod = (HandlerMethod) handler;
+        }
+        if(null == handlerMethod){
+            return null;
+        }
+        //需要登录
+        RequiresUser methodRequiresUser = handlerMethod.getMethodAnnotation(RequiresUser.class);
+        if (methodRequiresUser != null && !methodRequiresUser.required()) {
+            return true;
         }
 
-        if (handler != null) {
-            Object bean = handler.getBean();
-            //需要登录
-            RequiresUser methodRequiresUser = handler.getMethodAnnotation(RequiresUser.class);
-            if (methodRequiresUser != null && !methodRequiresUser.required()) {
+        if(methodRequiresUser == null){//类注解处理
+            RequiresUser classRequiresUser =  this.getAnnotation(handlerMethod.getBean().getClass(),RequiresUser.class);
+            if (classRequiresUser != null && !classRequiresUser.required()) {
                 return true;
             }
-
-            if(methodRequiresUser == null){//类注解处理
-                RequiresUser classRequiresUser =  this.getAnnotation(bean.getClass(),RequiresUser.class);
-                if (classRequiresUser != null && !classRequiresUser.required()) {
-                    return true;
-                }
-            }
-
-            //角色注解
-            RequiresRoles requiresRoles = handler.getMethodAnnotation(RequiresRoles.class);
-            if(requiresRoles == null){
-                requiresRoles = this.getAnnotation(bean.getClass(),RequiresRoles.class);
-            }
-            if (requiresRoles != null) {//方法注解处理
-                String[] roles = requiresRoles.value();
-                boolean permittedRole = false;
-                for (String role : roles) {
-                    permittedRole = SecurityUtils.isPermittedRole(role);
-                    if (Logical.AND.equals(requiresRoles.logical())) {
-                        if (!permittedRole) {
-                            notPermittedRole(request,response,sessionInfo,requestUrl,role);
-                            return false;
-                        }
-                    } else {
-                        if (permittedRole) {
-                            break;
-                        }
-                    }
-                }
-                if(!permittedRole){
-                    notPermittedPermission(request,response,sessionInfo,requestUrl,null);
-                    return false;
-                }
-            }
-
-            //资源/权限注解
-            RequiresPermissions requiresPermissions = handler.getMethodAnnotation(RequiresPermissions.class);
-            if(requiresPermissions == null){
-                requiresPermissions = this.getAnnotation(bean.getClass(),RequiresPermissions.class);
-            }
-            if (requiresPermissions != null) {//方法注解处理
-                String[] permissions = requiresPermissions.value();
-                boolean permittedResource = false;
-                for (String permission : permissions) {
-                    permittedResource = SecurityUtils.isPermitted(permission);
-                    if (Logical.AND.equals(requiresPermissions.logical())) {
-                        if (!permittedResource) {
-                            notPermittedPermission(request,response,sessionInfo,requestUrl,permission);
-                            return false;
-                        }
-                    } else {
-                        if (permittedResource) {
-                            break;
-                        }
-                    }
-                }
-                if(!permittedResource){
-                    notPermittedPermission(request,response,sessionInfo,requestUrl,null);
-                    return false;
-                }
-            }
-
         }
 
+        //角色注解
+        RequiresRoles requiresRoles = handlerMethod.getMethodAnnotation(RequiresRoles.class);
+        if(requiresRoles == null){
+            requiresRoles = this.getAnnotation(handlerMethod.getBean().getClass(),RequiresRoles.class);
+        }
+        if (requiresRoles != null) {//方法注解处理
+            String[] roles = requiresRoles.value();
+            boolean permittedRole = false;
+            for (String role : roles) {
+                permittedRole = SecurityUtils.isPermittedRole(role);
+                if (Logical.AND.equals(requiresRoles.logical())) {
+                    if (!permittedRole) {
+                        notPermittedRole(request,response,sessionInfo,requestUrl,role);
+                        return false;
+                    }
+                } else {
+                    if (permittedRole) {
+                        break;
+                    }
+                }
+            }
+            if(!permittedRole){
+                notPermittedPermission(request,response,sessionInfo,requestUrl,null);
+                return false;
+            }
+        }
+
+        //资源/权限注解
+        RequiresPermissions requiresPermissions = handlerMethod.getMethodAnnotation(RequiresPermissions.class);
+        if(requiresPermissions == null){
+            requiresPermissions = this.getAnnotation(handlerMethod.getBean().getClass(),RequiresPermissions.class);
+        }
+        if (requiresPermissions != null) {//方法注解处理
+            String[] permissions = requiresPermissions.value();
+            boolean permittedResource = false;
+            for (String permission : permissions) {
+                permittedResource = SecurityUtils.isPermitted(permission);
+                if (Logical.AND.equals(requiresPermissions.logical())) {
+                    if (!permittedResource) {
+                        notPermittedPermission(request,response,sessionInfo,requestUrl,permission);
+                        return false;
+                    }
+                } else {
+                    if (permittedResource) {
+                        break;
+                    }
+                }
+            }
+            if(!permittedResource){
+                notPermittedPermission(request,response,sessionInfo,requestUrl,null);
+                return false;
+            }
+        }
         return null;
     }
 

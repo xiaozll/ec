@@ -47,7 +47,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
     private List<String> excludeUrls = Lists.newArrayList();
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //已登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (null != sessionInfo && request.getSession().getId().equals(sessionInfo.getId())) {
@@ -55,55 +55,51 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
         }
 
         //注解处理 满足设置不拦截
-        HandlerMethod handler = null;
-        try {
-            handler = (HandlerMethod) o;
-            Object bean = handler.getBean();
-            PrepareOauth2 prepareOauth2Method = handler.getMethodAnnotation(PrepareOauth2.class);
-            PrepareOauth2 prepareOauth2Class = this.getAnnotation(bean.getClass(), PrepareOauth2.class);
+        if(handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod = (HandlerMethod)handler;
+            PrepareOauth2 prepareOauth2Method = handlerMethod.getMethodAnnotation(PrepareOauth2.class);
+            PrepareOauth2 prepareOauth2Class = this.getAnnotation(handlerMethod.getBean().getClass(), PrepareOauth2.class);
             if ((prepareOauth2Method != null && !prepareOauth2Method.enable()) || (prepareOauth2Class != null && !prepareOauth2Class.enable())) {
                 return true;
             }
-        } catch (ClassCastException e) {
-            logger.error(e.getMessage());
-        }
 
-        //自动登录
-        String authorization = request.getParameter(AuthorityInterceptor.ATTR_AUTHORIZATION);
-        if (StringUtils.isBlank(authorization)) {
-            authorization = request.getHeader("Authorization");
-        }
-        if (StringUtils.isNotBlank(authorization)) {
-            String requestUrl = request.getRequestURI();
-            boolean verify = false;
-            String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
-            String loginName = null;
-            User user = null;
-            try {
-                loginName = JWTUtils.getUsername(token);
-                user = UserUtils.getUserByLoginName(loginName);
-                if(null == user){
-                    logger.warn("{},Token校验失败（用户不存在）,{},{}", loginName, requestUrl, token);
-                    return true;
-                }
-                verify = JWTUtils.verify(token, loginName, user.getPassword());
-            } catch (Exception e) {
-                if(!(e instanceof TokenExpiredException)){
-                    logger.error("{}-{},Token校验失败,{},{},{}", SpringMVCHolder.getIp(),loginName, requestUrl, token, e.getMessage());
-                }
+            //自动登录
+            String authorization = request.getParameter(AuthorityInterceptor.ATTR_AUTHORIZATION);
+            if (StringUtils.isBlank(authorization)) {
+                authorization = request.getHeader("Authorization");
             }
-            if (verify && null != user) {
-                if(null != sessionInfo){
-                    SecurityUtils.addExtendSession(request.getSession().getId(),sessionInfo.getId());
-                    logger.debug("{},{},自动跳过登录,{},{},{}", loginName, IpUtils.getIpAddr0(request), requestUrl,request.getSession().getId(),sessionInfo.getId());
-                }else{
-                    SecurityUtils.putUserToSession(request,user);
-                    UserUtils.recordLogin(user.getId());
-                    logger.debug("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
+            if (StringUtils.isNotBlank(authorization)) {
+                String requestUrl = request.getRequestURI();
+                boolean verify = false;
+                String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
+                String loginName = null;
+                User user = null;
+                try {
+                    loginName = JWTUtils.getUsername(token);
+                    user = UserUtils.getUserByLoginName(loginName);
+                    if(null == user){
+                        logger.warn("{},Token校验失败（用户不存在）,{},{}", loginName, requestUrl, token);
+                        return true;
+                    }
+                    verify = JWTUtils.verify(token, loginName, user.getPassword());
+                } catch (Exception e) {
+                    if(!(e instanceof TokenExpiredException)){
+                        logger.error("{}-{},Token校验失败,{},{},{}", SpringMVCHolder.getIp(),loginName, requestUrl, token, e.getMessage());
+                    }
                 }
+                if (verify && null != user) {
+                    if(null != sessionInfo){
+                        SecurityUtils.addExtendSession(request.getSession().getId(),sessionInfo.getId());
+                        logger.debug("{},{},自动跳过登录,{},{},{}", loginName, IpUtils.getIpAddr0(request), requestUrl,request.getSession().getId(),sessionInfo.getId());
+                    }else{
+                        SecurityUtils.putUserToSession(request,user);
+                        UserUtils.recordLogin(user.getId());
+                        logger.debug("{},{},自动登录成功,{}", loginName, IpUtils.getIpAddr0(request), requestUrl);
+                    }
 
-            } else {
+                } else {
 //                logger.warn("自动登录失败,{}",authorization);
+                }
             }
         }
         return true;

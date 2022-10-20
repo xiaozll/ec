@@ -74,25 +74,23 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
      * 注解处理
      * @param request
      * @param response
-     * @param o
+     * @param handler
      * @param requestUrl
      * @return
      * @throws Exception
      */
-    private Boolean defaultandler(HttpServletRequest request, HttpServletResponse response, Object o, String requestUrl) throws Exception {
-        HandlerMethod handler = null;
-        try {
-            handler = (HandlerMethod) o;
-        } catch (ClassCastException e) {
-//                logger.error(e.getMessage(),e);
+    private Boolean defaultandler(HttpServletRequest request, HttpServletResponse response, Object handler, String requestUrl) throws Exception {
+        HandlerMethod handlerMethod = null;
+        //注解处理 满足设置不拦截
+        if(handler instanceof HandlerMethod) {
+            handlerMethod = (HandlerMethod) handler;
         }
 
-        if (handler != null) {
-            Object bean = handler.getBean();
+        if (handlerMethod != null) {
             //权限校验
-            RestApi restApi = handler.getMethodAnnotation(RestApi.class);
+            RestApi restApi = handlerMethod.getMethodAnnotation(RestApi.class);
             if (restApi == null) {
-                restApi = this.getAnnotation(bean.getClass(), RestApi.class);
+                restApi = this.getAnnotation(handlerMethod.getBean().getClass(), RestApi.class);
             }
             if (restApi != null) {//方法注解处理
                 if (!restApi.required()) {

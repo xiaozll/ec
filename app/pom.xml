@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>ec-app</artifactId>
-    <version>1.0.0.20220923</version>
+    <version>1.0.0.20221021</version>
     <packaging>${project.packaging}</packaging>
     <name>ec-app</name>
     <description>web</description>
@@ -22,7 +22,7 @@
         <velocity.version>2.3</velocity.version>
         <ckfinder.version>2.3</ckfinder.version>
         <sitemesh.version>2.4.2</sitemesh.version>
-        <liquibase.version>4.16.1</liquibase.version>
+        <liquibase.version>4.17.0</liquibase.version>
         <commons-cli.version>1.5.0</commons-cli.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>5.2.0</version>
+            <version>5.2.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.webjars</groupId>

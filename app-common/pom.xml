@@ -27,7 +27,7 @@
         <fop.version>2.7</fop.version>
         <batik.version>1.15</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
-        <jwt.version>4.0.0</jwt.version>
+        <jwt.version>4.1.0</jwt.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

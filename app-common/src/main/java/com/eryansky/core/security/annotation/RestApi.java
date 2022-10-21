@@ -29,7 +29,7 @@ public @interface RestApi {
      */
     boolean required() default true;
 
-    String[] value() default "";
+    String[] value();
 
     Logical logical() default AND;
 

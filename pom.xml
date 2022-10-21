@@ -124,6 +124,10 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context-support</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 

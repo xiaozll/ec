@@ -54,18 +54,13 @@ public class MvcConfigurer implements WebMvcConfigurer {
               .resourceChain(false);
    }
 
-   @Bean
-   public IpLimitInterceptor getIpUrlLimitInterceptor(){
-      return new IpLimitInterceptor();
-   }
-
    /**
     * 配置拦截器
     * @param registry
     */
    @Override
    public void addInterceptors(InterceptorRegistry registry) {
-      registry.addInterceptor(getIpUrlLimitInterceptor())
+      registry.addInterceptor(new IpLimitInterceptor())
               .addPathPatterns("/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 90);
 

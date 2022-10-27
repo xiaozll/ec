@@ -22,7 +22,7 @@
         <velocity.version>2.3</velocity.version>
         <ckfinder.version>2.3</ckfinder.version>
         <sitemesh.version>2.4.2</sitemesh.version>
-        <liquibase.version>4.17.0</liquibase.version>
+        <liquibase.version>4.17.1</liquibase.version>
         <commons-cli.version>1.5.0</commons-cli.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -202,7 +202,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.17</version>
+            <version>0.4.18</version>
         </dependency>
         <!-- <dependency>
              <groupId>com.ckfinder</groupId>

@@ -27,7 +27,7 @@
         <fop.version>2.7</fop.version>
         <batik.version>1.15</batik.version>
         <ckfinder.version>2.3</ckfinder.version>
-        <jwt.version>4.1.0</jwt.version>
+        <jwt.version>4.2.1</jwt.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -149,7 +149,7 @@
         <dependency>
             <groupId>org.javadelight</groupId>
             <artifactId>delight-rhino-sandbox</artifactId>
-            <version>0.0.15</version>
+            <version>0.0.17</version>
         </dependency>
 
         <dependency>
@@ -179,7 +179,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.17</version>
+            <version>0.4.18</version>
         </dependency>
         <!-- <dependency>
              <groupId>com.ckfinder</groupId>

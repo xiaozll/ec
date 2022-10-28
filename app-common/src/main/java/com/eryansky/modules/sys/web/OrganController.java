@@ -39,6 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -249,7 +251,6 @@ public class OrganController extends SimpleController {
     @ResponseBody
     public List<TreeNode> tree(String parentId, String selectType, String dataScope,
                                @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
-        List<TreeNode> treeNodes = null;
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
         if (selectTreeNode != null) {
@@ -261,16 +262,17 @@ public class OrganController extends SimpleController {
             String organId = sessionInfo != null ? sessionInfo.getLoginOrganId() : null;
             if (sessionInfo.isSuperUser() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
                 organId = null;
-            } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) && sessionInfo != null) {
-                organId = UserUtils.getCompanyId(sessionInfo.getUserId());
-
-            } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) && sessionInfo != null) {
-                organId = UserUtils.getDefaultOrganId(sessionInfo.getUserId());
+            } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) {
+                organId = sessionInfo.getLoginCompanyId();
+            } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) {
+                organId = sessionInfo.getLoginOrganId();
             }
             _parentId = organId;
         }
-
-        treeNodes = organService.findOrganTree(_parentId, true, cascade);
+        Date d1 = Calendar.getInstance().getTime();
+        List<TreeNode> treeNodes = organService.findOrganTree(_parentId, true, cascade);
+        Date d2 = Calendar.getInstance().getTime();
+        System.out.println(d2.getTime() - d1.getTime());
         return ListUtils.union(titleList, treeNodes);
     }
 

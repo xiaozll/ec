@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Calendar;
@@ -81,10 +82,35 @@ public class SigarUtil {
         String libPath = System.getProperty("java.library.path");
         String sigarClasspath = SigarUtil.class.getResource("/").getPath() + "sigar";
         if(!StringUtils.contains(libPath,sigarClasspath)){
-            System.setProperty("java.library.path", sigarClasspath + File.pathSeparator + libPath);
+            try {
+                addLibraryDir(sigarClasspath);
+                logger.info("reset java.library.path={}",System.getProperty("java.library.path"));
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
         }
-        logger.info("java.library.path={}",System.getProperty("java.library.path"));
+
     }
+
+    private static void addLibraryDir(String libraryPath) throws Exception {
+        Field userPathsField = ClassLoader.class.getDeclaredField("usr_paths");
+        userPathsField.setAccessible(true);
+        String[] paths = (String[]) userPathsField.get(null);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < paths.length; i++) {
+            if (libraryPath.equals(paths[i])) {
+                continue;
+            }
+//            sb.append(paths[i]).append(';');
+            sb.append(paths[i]).append(File.pathSeparator);
+        }
+        sb.append(libraryPath);
+        System.setProperty("java.library.path", sb.toString());
+        final Field sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
+        sysPathsField.setAccessible(true);
+        sysPathsField.set(null, null);
+    }
+
     /**
      * 返回服务系统信息
      * @throws Exception

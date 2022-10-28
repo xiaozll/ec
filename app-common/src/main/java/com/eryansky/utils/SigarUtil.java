@@ -79,7 +79,6 @@ public class SigarUtil {
      * ， 重新设置CLASSPATH,加入sigar，以支持dll,so等文件的加入与读取
      */
     private static void resetClasspath() {
-        String libPath = System.getProperty("java.library.path");
         String sigarClasspath = SigarUtil.class.getResource("/").getPath() + "sigar";
         try {
             addLibraryDir(sigarClasspath);

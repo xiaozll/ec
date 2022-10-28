@@ -81,13 +81,11 @@ public class SigarUtil {
     private static void resetClasspath() {
         String libPath = System.getProperty("java.library.path");
         String sigarClasspath = SigarUtil.class.getResource("/").getPath() + "sigar";
-        if(!StringUtils.contains(libPath,sigarClasspath)){
-            try {
-                addLibraryDir(sigarClasspath);
-                logger.info("reset java.library.path={}",System.getProperty("java.library.path"));
-            } catch (Exception e) {
-                logger.error(e.getMessage(),e);
-            }
+        try {
+            addLibraryDir(sigarClasspath);
+            logger.info("reset java.library.path={}",System.getProperty("java.library.path"));
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
         }
 
     }

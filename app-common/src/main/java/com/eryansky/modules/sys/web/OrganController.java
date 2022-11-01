@@ -269,10 +269,7 @@ public class OrganController extends SimpleController {
             }
             _parentId = organId;
         }
-        Date d1 = Calendar.getInstance().getTime();
         List<TreeNode> treeNodes = organService.findOrganTree(_parentId, true, cascade);
-        Date d2 = Calendar.getInstance().getTime();
-        System.out.println(d2.getTime() - d1.getTime());
         return ListUtils.union(titleList, treeNodes);
     }
 

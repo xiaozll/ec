@@ -33,8 +33,8 @@
 		company_code,
 		home_company_id,
 		home_company_code,
-		tree_level,
-		is_leaf
+		tree_level
+# 		is_leaf
 		) SELECT id,
 		status,
 		version,
@@ -75,14 +75,14 @@
 				(length(t_sys_organ.PARENT_IDS) - length(replace(t_sys_organ.PARENT_IDS,',','')))
 			</otherwise>
 		</choose>
-		,<choose>
-			<when test="isLeaf != null and isLeaf !=''">
-				#{isLeaf}
-			</when>
-			<otherwise>
-				NULL
-			</otherwise>
-		</choose>
+<!--		,<choose>-->
+<!--			<when test="isLeaf != null and isLeaf !=''">-->
+<!--				#{isLeaf}-->
+<!--			</when>-->
+<!--			<otherwise>-->
+<!--				NULL-->
+<!--			</otherwise>-->
+<!--		</choose>-->
 		FROM t_sys_organ
 		<where>
 			<if test="id != null and id != ''">

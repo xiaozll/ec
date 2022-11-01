@@ -43,6 +43,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 角色Role管理 Controller层.
@@ -301,6 +302,12 @@ public class RoleController extends SimpleController {
         Role model = RoleUtils.getRole(roleId);
         if(WebUtils.isAjaxRequest(request)){
             List<Resource> list = resourceService.findResourcesByRoleId(roleId);
+            //结构树展示优化
+            list.forEach(v->{
+                if(null == list.parallelStream().filter(r->r.getId().equals(v.get_parentId())).findAny().orElse(null)){
+                    v.setParent(null);
+                }
+            });
             return renderString(response, new Datagrid<>(list.size(), list));
         }
         uiModel.addAttribute("model", model);

@@ -877,6 +877,12 @@ public class UserController extends SimpleController {
         User model = UserUtils.getUser(userId);
         if(WebUtils.isAjaxRequest(request)){
             List<Resource> list = resourceService.findResourcesWithPermissions(userId);
+            //结构树展示优化
+            list.forEach(v->{
+                if(null == list.parallelStream().filter(r->r.getId().equals(v.get_parentId())).findAny().orElse(null)){
+                    v.setParent(null);
+                }
+            });
             return renderString(response, new Datagrid<>(list.size(), list));
         }
         uiModel.addAttribute("model", model);

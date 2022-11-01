@@ -3,7 +3,7 @@ var $resource_treegrid;
 $(function () {
     //数据列表
     $resource_treegrid = $('#resource_treegrid').treegrid({
-        url: ctxAdmin + '/sys/role/viewRoleResources?userId=' + modelId,
+        url: ctxAdmin + '/sys/role/viewRoleResources?roleId=' + modelId,
         fit: true,
         fitColumns: false,//自适应列宽
         striped: true,//显示条纹

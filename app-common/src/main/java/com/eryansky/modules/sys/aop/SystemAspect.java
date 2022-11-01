@@ -12,7 +12,6 @@ import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.OrganService;
 import com.eryansky.modules.sys.service.SystemService;
-import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;

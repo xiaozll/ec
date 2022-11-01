@@ -106,6 +106,8 @@ public interface OrganDao extends TreeDao<Organ> {
 
     OrganExtend getCompanyByUserId(Parameter parameter);
 
+    OrganExtend getHomeCompanyByUserId(Parameter parameter);
+
     List<OrganExtend> findOrganExtends(Parameter parameter);
 
     /**

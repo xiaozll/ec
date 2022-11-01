@@ -1166,6 +1166,20 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         return dao.getCompanyByUserId(parameter);
     }
 
+
+    /**
+     * 根据用户ID查找
+     *
+     * @param userId
+     * @return
+     */
+    public OrganExtend getHomeCompanyByUserId(String userId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("userId", userId);
+        return dao.getHomeCompanyByUserId(parameter);
+    }
+
     /**
      * 查找所有单位
      *

@@ -168,6 +168,19 @@ public class OrganUtils {
         return Static.organService.getCompanyByUserId(userId);
     }
 
+    /**
+     * 根据用户ID查找
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    public static OrganExtend getHomeCompanyByUserId(String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return null;
+        }
+        return Static.organService.getHomeCompanyByUserId(userId);
+    }
+
 
     /**
      * 根据机构ID查找单位ID

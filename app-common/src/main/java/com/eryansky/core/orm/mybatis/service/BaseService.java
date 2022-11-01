@@ -57,6 +57,15 @@ public abstract class BaseService {
                     if (!dataScope.contains(r.getDataScope()) && StringUtils.isNotBlank(oa)) {
                         if (DataScope.ALL.getValue().equals(r.getDataScope())) {
                             isDataScopeAll = true;
+                        } else if (DataScope.HOME_COMPANY_AND_CHILD.getValue().equals(r.getDataScope())) {
+                            OrganExtend company = OrganUtils.getHomeCompanyByUserId(user.getId());
+                            sqlString.append(" OR " + oa + ".id = '" + company.getId() + "'");
+                            sqlString.append(" OR " + oa + ".parent_ids LIKE '" + company.getParentIds() + company.getId() + ",%'");
+                        } else if (DataScope.HOME_COMPANY.getValue().equals(r.getDataScope())) {
+                            OrganExtend company = OrganUtils.getHomeCompanyByUserId(user.getId());
+//                            sqlString.append(" OR " + oa + ".id = '" + company.getId() + "'");
+//                            sqlString.append(" OR (" + oa + ".parent_id = '" + company.getId() + "' ");
+                            sqlString.append(" OR " + oa + ".home_company_id = '" + company.getId() + "'");
                         } else if (DataScope.COMPANY_AND_CHILD.getValue().equals(r.getDataScope())) {
                             OrganExtend company = OrganUtils.getCompanyByUserId(user.getId());
                             sqlString.append(" OR " + oa + ".id = '" + company.getId() + "'");
@@ -66,7 +75,7 @@ public abstract class BaseService {
 //                            sqlString.append(" OR " + oa + ".id = '" + company.getId() + "'");
 //                            sqlString.append(" OR (" + oa + ".parent_id = '" + company.getId() + "' ");
                             sqlString.append(" OR " + oa + ".company_id = '" + company.getId() + "'");
-                        } else if (DataScope.OFFICE_AND_CHILD.getValue().equals(r.getDataScope())) {
+                        }else if (DataScope.OFFICE_AND_CHILD.getValue().equals(r.getDataScope())) {
                             OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(user.getId());
                             sqlString.append(" OR " + oa + ".id = '" + organExtend.getId() + "'");
                             sqlString.append(" OR " + oa + ".parent_ids LIKE '" + organExtend.getParentIds() + organExtend.getId() + ",%'");
@@ -144,7 +153,18 @@ public abstract class BaseService {
 
         // 生成部门权限SQL语句
         for (String where : StringUtils.split(officeWheres, ",")) {
-            if (DataScope.COMPANY_AND_CHILD.getValue().equals(dataScopeString)) {
+            if (DataScope.HOME_COMPANY_AND_CHILD.getValue().equals(dataScopeString)) {
+                sqlString.append(" AND EXISTS (SELECT 1 FROM t_sys_organ");
+                OrganExtend company = OrganUtils.getHomeCompanyByUserId(user.getId());
+                sqlString.append(" WHERE (id = '" + company.getId() + "'");
+                sqlString.append(" OR parent_ids LIKE '" + company.getParentIds() + company.getId() + ",%')");
+                sqlString.append(" AND " + where + ")");
+            } else if (DataScope.HOME_COMPANY.getValue().equals(dataScopeString)) {
+                sqlString.append(" AND EXISTS (SELECT 1 FROM t_sys_organ_extend");
+                OrganExtend company = OrganUtils.getHomeCompanyByUserId(user.getId());
+                sqlString.append(" WHERE home_company_id = '" + company.getId() + "'");
+                sqlString.append(" AND " + where + ")");
+            }else if (DataScope.COMPANY_AND_CHILD.getValue().equals(dataScopeString)) {
                 sqlString.append(" AND EXISTS (SELECT 1 FROM t_sys_organ");
                 OrganExtend company = OrganUtils.getOrganCompany(user.getId());
                 sqlString.append(" WHERE (id = '" + company.getId() + "'");

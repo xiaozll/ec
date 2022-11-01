@@ -15,6 +15,7 @@ import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -23,9 +24,12 @@ import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.RoleType;
 import com.eryansky.modules.sys._enum.YesOrNo;
+import com.eryansky.modules.sys.mapper.Resource;
 import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.utils.RoleUtils;
+import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Set;
 
@@ -284,6 +289,22 @@ public class RoleController extends SimpleController {
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) {
         roleService.saveRoleUsers(model.getId(), userIds);
         return Result.successResult();
+    }
+
+    /**
+     * 查看角色资源权限
+     */
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"viewRoleResources"})
+    public String viewRoleResources(String roleId, Model uiModel,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response) {
+        Role model = RoleUtils.getRole(roleId);
+        if(WebUtils.isAjaxRequest(request)){
+            List<Resource> list = resourceService.findResourcesByRoleId(roleId);
+            return renderString(response, new Datagrid<>(list.size(), list));
+        }
+        uiModel.addAttribute("model", model);
+        return "modules/sys/role-resource-view";
     }
 
     /**

@@ -9,10 +9,12 @@ import com.eryansky.common.orm._enum.IGenericEnum;
 public enum DataScope implements IGenericEnum<DataScope> {
 
     ALL("1", "所有数据"),
-    COMPANY_AND_CHILD("2", "所在公司及以下数据"),
-    COMPANY("3", "所在公司数据"),
-    OFFICE_AND_CHILD("4", "所在部门及以下数据"),
-    OFFICE("5", "所在部门数据"),
+    HOME_COMPANY_AND_CHILD("2", "所在集团公司及以下数据"),
+    HOME_COMPANY("3", "所在集团公司数据"),
+    COMPANY_AND_CHILD("4", "所在公司及以下数据"),
+    COMPANY("5", "所在公司数据"),
+    OFFICE_AND_CHILD("6", "所在部门及以下数据"),
+    OFFICE("7", "所在部门数据"),
     SELF("8", "仅本人数据"),
     CUSTOM("9", "按明细设置");
 

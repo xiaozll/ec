@@ -67,6 +67,13 @@ $(function () {
                 handler: function () {
                     editRoleResource();
                 }
+            },'-',
+            {
+                text: '查看资源',
+                iconCls: 'easyui-icon-view',
+                handler: function () {
+                    viewRoleResource();
+                }
             },
             '-',
             {
@@ -270,6 +277,28 @@ function editRoleResource() {
 
     } else {
         eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+    }
+}
+
+//产看用户权限
+function viewRoleResource(rowIndex) {
+    //响应双击事件
+    if (rowIndex !== undefined) {
+        $role_datagrid.datagrid('unselectAll');
+        $role_datagrid.datagrid('selectRow', rowIndex);
+    }
+    //选中的行（最后一次选择的行）
+    var row = $role_datagrid.datagrid('getSelected');
+    if (!row || !row["id"]) {
+        eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+        return false;
+    }
+    var url = ctxAdmin + '/sys/role/viewRoleResources?userId=' + row['id'];
+    var title = '查看权限-' + row['name'];
+    try {
+        parent.addTabs({id: 'viewUserResource_' + row['id'], title: title, close: true, url: url, urlType: ''});
+    } catch (e) {
+        eu.addTab(window.parent.layout_center_tabs, title, url, true, "");
     }
 }
 

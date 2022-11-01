@@ -86,12 +86,16 @@ public class SystemService extends BaseService {
                 Parameter parameter = Parameter.newParameter();
                 parameter.put("id", organ.getId());
                 parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-                parameter.put("companyId", OrganUtils.getCompanyIdByRecursive(organ.getId()));
-                parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
-                parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
-                parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
+                Organ company = OrganUtils.getCompanyByRecursive(organ.getId());
+                Organ homeCompany = OrganUtils.getHomeCompanyByRecursive(organ.getId());
+                parameter.put("companyId", company.getId());
+                parameter.put("companyCode", company.getCode());
+                parameter.put("homeCompanyId", homeCompany.getId());
+                parameter.put("homeCompanyCode", homeCompany.getCode());
                 Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length : null;
                 parameter.put("treeLevel", level);
+                Integer childCount = organService.findChildCount(organ.getId());
+                parameter.put("isLeaf", null == childCount || childCount == 0);
                 syncOrganToExtend(parameter);
             }
         }

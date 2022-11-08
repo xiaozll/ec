@@ -35,6 +35,7 @@ import com.eryansky.modules.sys.dao.OrganDao;
 import org.springframework.util.Assert;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 机构表 service
@@ -443,19 +444,12 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             }
 
         }
-
-        List<TreeNode> result = Lists.newArrayList();
-        keyIds = tempMap.keySet();
-        iteratorKey = keyIds.iterator();
-        while (iteratorKey.hasNext()) {
-            TreeNode treeNode = tempMap.get(iteratorKey.next());
-            if (cascade && Collections3.isEmpty(treeNode.getChildren())) {
-                treeNode.setState(TreeNode.STATE_OPEN);
+        return tempMap.entrySet().parallelStream().map(v-> {
+            if(cascade && Collections3.isEmpty(v.getValue().getChildren())){
+                v.getValue().setState(TreeNode.STATE_OPEN);
             }
-            result.add(treeNode);
-
-        }
-        return result;
+            return v.getValue();
+        }).collect(Collectors.toList());
     }
 
     /**

@@ -106,15 +106,16 @@ public class UserController extends SimpleController {
         Page<User> page = new Page<>(SpringMVCHolder.getRequest());
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(organId)) {
-            if(sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()){
-                organId = sessionInfo.getLoginHomeCompanyId();
-            }else if(SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY_AND_CHILD.getValue()) || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY.getValue())){
-                organId = sessionInfo.getLoginHomeCompanyId();
-            }else if(SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.COMPANY_AND_CHILD.getValue()) || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.COMPANY.getValue())){
-                organId = sessionInfo.getLoginCompanyId();
-            }else{
-                organId = sessionInfo.getLoginOrganId();
-            }
+            organId = sessionInfo.getLoginOrganId();
+//            if(sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()){
+//                organId = sessionInfo.getLoginHomeCompanyId();
+//            }else if(SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY_AND_CHILD.getValue()) || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY.getValue())){
+//                organId = sessionInfo.getLoginHomeCompanyId();
+//            }else if(SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.COMPANY_AND_CHILD.getValue()) || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.COMPANY.getValue())){
+//                organId = sessionInfo.getLoginCompanyId();
+//            }else{
+//                organId = sessionInfo.getLoginOrganId();
+//            }
         }
 
         page = userService.findPage(page, organId, query, userType);

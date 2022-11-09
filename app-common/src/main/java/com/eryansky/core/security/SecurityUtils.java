@@ -240,6 +240,16 @@ public class SecurityUtils {
     }
 
     /**
+     * 判断用户是否授权所有数据
+     * @param userId
+     * @param dataScope {@link DataScope}
+     * @return
+     */
+    public static boolean isPermittedDataScope(String userId,String dataScope) {
+        return isCurrentUserAdmin() || Integer.parseInt(dataScope) <= (Integer.parseInt(getUserMaxRoleDataScope(userId)));
+    }
+
+    /**
      * 获取用户最大的数据权限范围
      * @param userId
      * @return

@@ -106,7 +106,7 @@ public class UserController extends SimpleController {
         Page<User> page = new Page<>(SpringMVCHolder.getRequest());
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(organId)) {
-            organId = (sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()) ? sessionInfo.getLoginHomeCompanyId():sessionInfo.getLoginOrganId();
+            organId = (sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope() || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY_AND_CHILD.getValue())) ? sessionInfo.getLoginHomeCompanyId():sessionInfo.getLoginOrganId();
         }
 
         page = userService.findPage(page, organId, query, userType);

@@ -499,6 +499,11 @@ public class UserController extends SimpleController {
             list = userService.findWithInclude(includeUserIds, query);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
             list = userService.findAllNormalWithExclude(excludeUserIds);
+        } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY_AND_CHILD.getValue()))) {
+            String organId = sessionInfo.getLoginHomeCompanyId();
+            list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);
+        } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY.getValue()))) {
+            list = userService.findUsersByCompanyId(sessionInfo.getLoginHomeCompanyId(), excludeUserIds);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue()))) {
             String organId = sessionInfo.getLoginCompanyId();
             list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);

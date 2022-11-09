@@ -811,7 +811,6 @@ public class UserService extends CrudService<UserDao, User> {
         return findUserIdsByCompanyId(companyId, null);
     }
 
-
     /**
      * 获取单位下直属部门用户IDS
      *
@@ -827,6 +826,51 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("companyId", companyId);
         parameter.put("excludeUserIds", excludeUserIds);
         return dao.findUserIdsByCompanyId(parameter);
+    }
+
+    /**
+     * 获取单位下直属部门用户
+     *
+     * @param homeCompanyId      单位ID
+     * @param excludeUserIds 排除的用户IDS
+     * @return
+     */
+    public List<User> findUsersByHomeCompanyId(String homeCompanyId, Collection<String> excludeUserIds) {
+        Assert.notNull(homeCompanyId, "参数[homeCompanyId]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("excludeUserIds", excludeUserIds);
+        return dao.findUsersByHomeCompanyId(parameter);
+    }
+
+    /**
+     * 获取单位下直属部门用户IDS
+     *
+     * @param homeCompanyId 单位ID
+     * @return
+     */
+    public List<String> findUserIdsByHomeCompanyId(String homeCompanyId) {
+        return findUserIdsByHomeCompanyId(homeCompanyId, null);
+    }
+
+
+    /**
+     * 获取单位下直属部门用户IDS
+     *
+     * @param homeCompanyId      单位ID
+     * @param excludeUserIds 排除的用户IDS
+     * @return
+     */
+    public List<String> findUserIdsByHomeCompanyId(String homeCompanyId, Collection<String> excludeUserIds) {
+        Assert.notNull(homeCompanyId, "参数[homeCompanyId]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("excludeUserIds", excludeUserIds);
+        return dao.findUserIdsByHomeCompanyId(parameter);
     }
 
     /**

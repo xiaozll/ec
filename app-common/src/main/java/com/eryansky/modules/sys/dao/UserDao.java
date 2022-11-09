@@ -85,6 +85,10 @@ public interface UserDao extends CrudDao<User> {
 
     List<String> findUserIdsByCompanyId(Parameter parameter);
 
+    List<User> findUsersByHomeCompanyId(Parameter parameter);
+
+    List<String> findUserIdsByHomeCompanyId(Parameter parameter);
+
 
     List<User> findOwnerAndChildsUsers(Parameter parameter);
 

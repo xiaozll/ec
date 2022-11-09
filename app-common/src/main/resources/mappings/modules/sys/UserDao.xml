@@ -710,8 +710,43 @@
         ORDER BY a.sort ASC
     </select>
 
+    <select id="findUsersByHomeCompanyId" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
+        <where>
+            a.status = #{status}
+            AND o.home_company_id = #{homeCompanyId}
+            <if test="excludeUserIds != null and excludeUserIds.size() != 0">
+                AND o.id NOT IN
+                <foreach collection="excludeUserIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
 
-
+    <select id="findUserIdsByHomeCompanyId" resultType="java.lang.String">
+        SELECT
+        a.id
+        FROM t_sys_user a
+        LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
+        <where>
+            a.status = #{status}
+            AND o.home_company_id = #{homeCompanyId}
+            <if test="excludeUserIds != null and excludeUserIds.size() != 0">
+                AND o.id NOT IN
+                <foreach collection="excludeUserIds" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.sort ASC
+    </select>
 
     <select id="findUsersByRoleId" resultType="User">
         SELECT

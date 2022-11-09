@@ -262,6 +262,8 @@ public class OrganController extends SimpleController {
             String organId = sessionInfo != null ? sessionInfo.getLoginOrganId() : null;
             if (sessionInfo.isSuperUser() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
                 organId = null;
+            } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY_AND_CHILD.getValue())) {
+                organId = sessionInfo.getLoginHomeCompanyId();
             } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) {
                 organId = sessionInfo.getLoginCompanyId();
             } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) {

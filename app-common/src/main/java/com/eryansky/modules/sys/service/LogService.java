@@ -80,7 +80,7 @@ public class LogService extends CrudService<LogDao, Log> {
         Map<String, String> sqlMap = Maps.newHashMap();
         sqlMap.put("dsf", "");
         if (isDataScopeFilter) {
-            parameter.put("dsf", dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
+            sqlMap.put("dsf", dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
         }
         parameter.put("sqlMap", sqlMap);
         page.setResult(dao.findQueryList(parameter));

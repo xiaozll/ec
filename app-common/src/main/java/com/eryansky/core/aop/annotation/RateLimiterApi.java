@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface LimitApi {
+public @interface RateLimiterApi {
 
 	/**
 	 * 缓存key

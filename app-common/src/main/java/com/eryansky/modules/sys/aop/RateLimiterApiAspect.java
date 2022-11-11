@@ -2,7 +2,7 @@ package com.eryansky.modules.sys.aop;
 
 import com.eryansky.common.model.Result;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
-import com.eryansky.core.aop.annotation.LimitApi;
+import com.eryansky.core.aop.annotation.RateLimiterApi;
 import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.CacheObject;
 import com.eryansky.utils.CacheUtils;
@@ -28,16 +28,16 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 @Order(1)
 @Aspect
-public class LimitAspect {
+public class RateLimiterApiAspect {
 
-    private static final Logger log = LoggerFactory.getLogger(LimitAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(RateLimiterApiAspect.class);
 
-    @Pointcut("@annotation(limitApi)")
-    public void limit(LimitApi limitApi) {
+    @Pointcut("@annotation(rateLimiterApi)")
+    public void limit(RateLimiterApi rateLimiterApi) {
     }
 
-    @Around("limit(limitApi)")
-    public Object aroundLog(ProceedingJoinPoint joinpoint, LimitApi limitApi) throws Throwable {
+    @Around("limit(rateLimiterApi)")
+    public Object aroundLog(ProceedingJoinPoint joinpoint, RateLimiterApi rateLimiterApi) throws Throwable {
         HttpServletRequest request = SpringMVCHolder.getRequest();
         Assert.notNull(request, "request can not null");
 
@@ -48,8 +48,8 @@ public class LimitAspect {
         key.append(token).append("_").append(path);
 
         MethodSignature methodSignature = (MethodSignature) joinpoint.getSignature();
-        int frequency = limitApi.frequency();
-        String paramKey = limitApi.paramKey();
+        int frequency = rateLimiterApi.frequency();
+        String paramKey = rateLimiterApi.paramKey();
 
         if (null != paramKey) {
             //入参
@@ -67,13 +67,13 @@ public class LimitAspect {
         }
 
         CacheChannel cacheChannel = CacheUtils.getCacheChannel();
-        CacheObject cacheObject = cacheChannel.get(limitApi.region(), key.toString());
+        CacheObject cacheObject = cacheChannel.get(rateLimiterApi.region(), key.toString());
         if (null == cacheObject || null == cacheObject.getValue()) {
-            cacheChannel.set(limitApi.region(), key.toString(), frequency - 1);
+            cacheChannel.set(rateLimiterApi.region(), key.toString(), frequency - 1);
         } else {
             int l = (int) cacheObject.getValue();
             if (l > 0) {
-                cacheChannel.set(limitApi.region(), key.toString(), --l);
+                cacheChannel.set(rateLimiterApi.region(), key.toString(), --l);
             } else {
                 Result result = Result.errorApiResult().setMsg("接口访问频率限制，请稍后再试！").setData(key);
                 log.warn(result.toString());

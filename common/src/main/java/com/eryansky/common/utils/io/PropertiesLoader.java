@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -24,7 +24,7 @@ import org.springframework.core.io.ResourceLoader;
  * 本类有两种使用方法:
  * 1.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class PropertiesLoader {
 
@@ -32,11 +32,11 @@ public class PropertiesLoader {
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     private static final class Static {
-        private static ResourceLoader resourceLoader = new DefaultResourceLoader();
+        private static final ResourceLoader resourceLoader = new DefaultResourceLoader();
     }
 
 
-    private static Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesLoader.class);
 
     private final Properties properties;
 
@@ -143,10 +143,9 @@ public class PropertiesLoader {
      * @param value         值
      */
     public void modifyProperties(String resourcesPath, String key, String value) {
-        try {
+        try (FileOutputStream outputFile = new FileOutputStream(resourcesPath)){
             // 从输入流中读取属性列表（键和元素对）
             properties.setProperty(key, value);
-            FileOutputStream outputFile = new FileOutputStream(resourcesPath);
             properties.store(outputFile, "modify");
             outputFile.close();
             outputFile.flush();

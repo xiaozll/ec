@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -47,12 +47,12 @@ import java.io.*;
 /**
  * 云盘公共接口 以及相关工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-12-10
  */
 public class DiskUtils {
 
-    protected static Logger logger = LoggerFactory.getLogger(DiskUtils.class);
+    protected static final Logger logger = LoggerFactory.getLogger(DiskUtils.class);
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -221,7 +221,7 @@ public class DiskUtils {
                                       MultipartFile multipartFile) throws InvalidExtensionException,
             FileUploadBase.FileSizeLimitExceededException,
             FileNameLengthLimitExceededException, IOException {
-        return saveSystemFile(folderCode,FolderType.HIDE.getValue(), userId, multipartFile.getInputStream(), multipartFile.getOriginalFilename());
+        return saveSystemFile(folderCode,FolderType.HIDE.getValue(), userId, multipartFile.getInputStream(), DiskUtils.getMultipartOriginalFilename(multipartFile));
     }
 
     /**
@@ -275,7 +275,7 @@ public class DiskUtils {
         StringBuilder location = new StringBuilder();
         Folder folder = Static.folderService.get(folderId);
         if (folder != null) {
-            String type = folder.getType();// 文件夹类型
+//            String type = folder.getType();// 文件夹类型
             String userName = folder.getUserName();// 文件夹创建人
             String folderName = folder.getName();// 文件夹名称
             FolderAuthorize folderAuthorize = FolderAuthorize.getByValue(folder.getFolderAuthorize());// 文件夹授权类型
@@ -482,12 +482,10 @@ public class DiskUtils {
         String tempPath = AppConstants.getDiskTempDir() + java.io.File.separator + file.getCode();
         java.io.File tempFile = new java.io.File(tempPath);
         try {
-            if (file != null) {
-                if (!tempFile.exists()) {
-                    Static.iFileManager.loadFile(file.getFilePath(), tempPath);
-                }
-                return tempFile;
+            if (!tempFile.exists()) {
+                Static.iFileManager.loadFile(file.getFilePath(), tempPath);
             }
+            return tempFile;
         } catch (IOException e) {
             logger.warn(String.format("请求的文件%s不存在", file.getId()), e.getMessage());
         }
@@ -508,12 +506,12 @@ public class DiskUtils {
 
     public static void makeZip(List<File> inFiles, String zipPath,
                                String encoding) throws Exception {
-        ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(
-                new FileOutputStream(zipPath)));
-        zipOut.setEncoding(encoding);
-        doZipFile(zipOut, inFiles);
-        zipOut.flush();
-        zipOut.close();
+        try(ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(
+                new FileOutputStream(zipPath)))) {
+            zipOut.setEncoding(encoding);
+            doZipFile(zipOut, inFiles);
+            zipOut.flush();
+        }
     }
 
     /**
@@ -528,7 +526,6 @@ public class DiskUtils {
             throws Exception {
         if (Collections3.isNotEmpty(inFiles)) {
             Map<String, Integer> countMap = Maps.newHashMap();
-
             for (File file : inFiles) {
                 String name = file.getName();
                 Integer mapVal = countMap.get(name);
@@ -547,17 +544,17 @@ public class DiskUtils {
                     }
                 }
                 if (file.getDiskFile().isFile()) {
-                    BufferedInputStream bis = new BufferedInputStream(
-                            new FileInputStream(file.getDiskFile()));
-                    ZipEntry entry = new ZipEntry(newName);
-                    zipOut.putNextEntry(entry);
-                    byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
-                    int size;
-                    while ((size = bis.read(buff, 0, buff.length)) != -1) {
-                        zipOut.write(buff, 0, size);
+                    try (InputStream inputStream = new FileInputStream(file.getDiskFile());
+                         BufferedInputStream bis = new BufferedInputStream(inputStream)) {
+                        ZipEntry entry = new ZipEntry(newName);
+                        zipOut.putNextEntry(entry);
+                        byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
+                        int size;
+                        while ((size = bis.read(buff, 0, buff.length)) != -1) {
+                            zipOut.write(buff, 0, size);
+                        }
+                        zipOut.closeEntry();
                     }
-                    zipOut.closeEntry();
-                    bis.close();
                 }
                 countMap.put(name, mapVal);
 
@@ -654,9 +651,35 @@ public class DiskUtils {
             is = new BufferedInputStream(inputStream);
             IOUtils.copy(is, os);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             IOUtils.closeQuietly(is);
         }
+    }
+
+
+    /**
+     * 获取文件名 兼容IE、Chrome
+     * @param file
+     * @return
+     */
+    public static String getMultipartOriginalFilename(MultipartFile file) {
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        //判断是否为IE浏览器的文件名，IE浏览器下文件名会带有盘符信息
+        // Check for Unix-style path
+        if(null == fileName){
+            return null;
+        }
+        int unixSep = fileName.lastIndexOf('/');
+        // Check for Windows-style path
+        int winSep = fileName.lastIndexOf('\\');
+        // Cut off at latest possible point
+        int pos = Math.max(winSep, unixSep);
+        if (pos != -1) {
+            // Any sort of path separator found...
+            fileName = fileName.substring(pos + 1);
+        }
+        return fileName;
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -25,10 +25,7 @@ import com.eryansky.modules.sys._enum.YesOrNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 消息接收 个人消息中心
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-04-14
  */
 @Controller
@@ -71,9 +68,9 @@ public class MessageReceiveController extends SimpleController {
      */
     @Mobile(value = MobileValue.ALL)
     @Logging(logType = LogType.access, value = "消息中心", logging = "!#isAjax")
-    @RequestMapping(value = {"", "list"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"", "list"})
     public String list(MessageReceive model, HttpServletRequest request, HttpServletResponse response, Model uiModel) {
-        Page<MessageReceive> page = new Page<MessageReceive>(request, response);
+        Page<MessageReceive> page = new Page<>(request, response);
         if (WebUtils.isAjaxRequest(request)) {
             SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
             page = MessageUtils.findUserMessages(sessionInfo.getUserId(),page.getPageNo(), page.getPageSize(),null, model.getIsRead(),null);
@@ -93,7 +90,7 @@ public class MessageReceiveController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "info")
+    @GetMapping(value = "info")
     public ModelAndView info(@ModelAttribute("model")  MessageReceive model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageReceiveInfo");
         messageReceiveService.setRead(model);
@@ -108,7 +105,7 @@ public class MessageReceiveController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "setRead")
+    @PostMapping(value = "setRead")
     @ResponseBody
     public Result setRead(@ModelAttribute("model")  MessageReceive model) {
         messageTask.setRead(model);
@@ -120,7 +117,7 @@ public class MessageReceiveController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = "setReadAll")
+    @PostMapping(value = "setReadAll")
     @ResponseBody
     public Result setReadAll(String appId) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -133,7 +130,7 @@ public class MessageReceiveController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") MessageReceive model) {
         return Result.successResult().setObj(model);

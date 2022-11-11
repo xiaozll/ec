@@ -1,13 +1,13 @@
 package com.eryansky.fastweixin.message.req;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public final class ImageReqMsg extends BaseReqMsg {
 
-    private String picUrl;
-    private String mediaId;
+    private final String picUrl;
+    private final String mediaId;
 
     public ImageReqMsg(String picUrl, String mediaId) {
         super();

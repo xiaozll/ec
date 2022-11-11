@@ -1,4 +1,93 @@
-﻿20201229
+﻿20220805
+V4.2.20220722.10
+1、修复部分可能造成的SSRF漏洞。
+Proxy授权访问以及关闭StaticContentServlet
+#启用内部代理
+system.security.proxy.enable=false
+#内部代理URL白名单 每行一个或多个之间以";"分割，支持"*"通配符
+system.security.proxy.whitelist=*
+
+20220527
+V4.2.50220522.04
+1、升级Spring boot 2.6.8
+2、quartz支持指定实例执行
+
+    quartz.properties配置如下：
+    #集群是否开启
+    spring.quartz.properties.org.quartz.jobStore.isClustered = true
+    #quartz集群实例名称 “AUTO”为系统自动生成
+    spring.quartz.properties.org.quartz.scheduler.instanceId = AUTO
+    #quartz集群实例名称生成器 linux为IP地址；windows、macos为机器名
+    spring.quartz.properties.org.quartz.scheduler.instanceIdGenerator.class=com.eryansky.core.quartz.extend.QuartzSchedulerInstanceIdGenerator
+    #JDBC代理类（增加指定实例执行）
+    spring.quartz.properties.org.quartz.jobStore.driverDelegateClass = com.eryansky.core.quartz.extend.StdJDBCDelegate
+
+    #代码使用，instanceId指定实例名称，默认为“AUTO” linux为IP地址；windows、macos为机器名
+    @QuartzJob(instanceId = "AUTO")
+
+20220427
+V4.2.20220422.02
+1、升级Spring boot 2.6.7
+2、jquery-validate由1.11.1升级到1.19.3
+3、其它升级
+tomcat 9.5.56->9.0.62
+jackson 2.12.5->2.13.2
+logback 7.0.1->7.1.1
+fastjson 1.2.79->1.2.80
+
+20220117-V4.2.20220125.04
+1、修复事务嵌套导致的序号生成器并发问题；
+2、支持全局事务与注解式事务共存。
+
+20211228
+1、升级Spring Boot 2.6.2
+2、其它升级
+tomcat 9.5.54->9.5.56
+jackson 2.12.5->2.13.1
+logback 6.3.0->7.0.1
+fastjson 1.2.78->1.2.79
+
+20211223
+1、升级Spring Boot 2.5.8
+2、application.properties调整配置
+旧配置：
+spring.quartz.properties.org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+新配置
+spring.quartz.properties.org.quartz.jobStore.class = org.springframework.scheduling.quartz.LocalDataSourceJobStore
+3、log4j2升级2.17.0
+4、其它升级
+tomcat 9.5.54->9.5.56
+jackson 2.12.5->2.12.6
+logback 6.3.0->7.0.1
+fastjson 1.2.78->1.2.79
+
+20211129
+1、动态加密登录密码
+2、XSS防注入
+
+20211105
+1、增加防重复提交支持
+在Controller的方法上增加注解@NoRepeatSubmit（返回值为Result）
+2、API访问频率限制
+在Controller的方法上增加注解@LimitApi（返回值为Result）
+
+20211103
+1、增加内部应用单点登录跳转
+SSORedirctController
+
+20211012-4.2.20210924.04
+1、升级My97DatePicker 4.8.5
+
+
+20210519-V4.2.20210415.09
+20210511-V4.2.20210415.08
+1、添加Quartz定时任务管理
+菜单：/a/sys/job
+权限（查看）：sys:job:view
+权限（编辑）：sys:job:edit
+2、修复版本管理选择错误bug
+
+20201229
 1、通知公告支持回复
 ALTER TABLE t_notice
 ADD COLUMN is_reply char(1) COMMENT '是否需要回复 是：1 否：0';

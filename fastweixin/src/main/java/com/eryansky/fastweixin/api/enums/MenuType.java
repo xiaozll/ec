@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.api.enums;
 /**
  * 微信菜单类型枚举
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public enum MenuType {

@@ -82,7 +82,7 @@ $(function () {
             }
         }, {
             title: '设备类型',
-            field: 'sysTemDeviceType',
+            field: 'systemDeviceType',
             width: 120,
             hidden: true
         }, {
@@ -144,7 +144,7 @@ $(function () {
  * 用户下线
  */
 function offline(rowIndex) {
-    var rows = new Array();
+    var rows = [];
     var tipMsg = "您确定要将选中用户强制下线？";
     if (rowIndex != undefined) {
         $session_datagrid.datagrid('unselectAll');
@@ -159,7 +159,7 @@ function offline(rowIndex) {
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', tipMsg, function (r) {
             if (r) {
-                var ids = new Array();
+                var ids = [];
                 $.each(rows, function (i, row) {
                     ids[i] = row.id;
                 });

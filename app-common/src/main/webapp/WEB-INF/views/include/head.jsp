@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="Cache-Control" content="no-store" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />
-<meta name="author" content="尔演&Eryan"/><meta http-equiv="X-UA-Compatible" content="IE=7,IE=9,IE=10" />
-<script src="${ctxStatic}/js/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/js/jquery/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.method.min.js" type="text/javascript"></script>
+<meta name="author" content="Eryan"/><meta http-equiv="X-UA-Compatible" content="IE=7,IE=9,IE=10" />
+<script src="${ctxStatic}/js/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/js/jquery/jquery-migrate-1.4.1.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/js/jquery-validation-1.19.3/dist/jquery.validate.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend-methods.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/js/bootstrap/2.3.2/css_${not empty cookie.theme.value ? cookie.theme.value:'default'}/bootstrap.min.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/js/bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript"></script>
 <!--[if lte IE 6]><link href="${ctxStatic}/js/bootstrap/bsie/css/bootstrap-ie6.min.css" type="text/css" rel="stylesheet" />

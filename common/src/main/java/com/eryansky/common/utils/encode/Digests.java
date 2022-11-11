@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -26,7 +26,9 @@ public class Digests {
     private static final String SHA1 = "SHA-1";
     private static final String MD5 = "MD5";
 
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
+
+    private Digests(){}
 
     /**
      * 对输入字符串进行sha1散列.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * 消息接收表
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 public class MessageReceive extends BaseEntity<MessageReceive> {
@@ -41,6 +41,8 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
      * 读取时间
      */
     private Date readTime;
+
+    private Message message;
 
     public MessageReceive() {
         this.isSend = YesOrNo.YES.getValue();
@@ -99,9 +101,16 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
 
     //    @JsonIgnore
     public Message getMessage() {
+        if(null != message){
+            return message;
+        }
         return MessageUtils.get(messageId);
     }
 
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 
     public String getOrganName() {
         return UserUtils.getDefaultOrganName(userId);
@@ -117,5 +126,9 @@ public class MessageReceive extends BaseEntity<MessageReceive> {
 
     public String getIsReadView() {
         return YesOrNo.YES.getValue().equals(isRead) ? "已阅":"未阅";
+    }
+
+    public String getIsSendView() {
+        return YesOrNo.YES.getValue().equals(isSend) ? "成功":"失败";
     }
 }

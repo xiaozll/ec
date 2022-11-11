@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,8 +10,8 @@ import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.zip.GZIPOutputStream;
@@ -27,11 +28,11 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Http与Servlet工具类.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class WebUtils extends org.springframework.web.util.WebUtils {
 
-    private static final Log logger = LogFactory.getLog(WebUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebUtils.class);
 
     //-- header 常量定义 --//
     public static final String HEADER_ENCODING = "encoding";
@@ -166,17 +167,31 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
 		return new GZIPOutputStream(response.getOutputStream());
 	}
 
-	/**
-	 * 设置让浏览器弹出下载对话框的Header.
-	 * 
-	 * @param fileName
-	 *            下载后的文件名.
-	 */
-	public static void setDownloadableHeader(HttpServletResponse response,
-			String fileName) {
-		response.setHeader("Content-Disposition", "attachment; filename=\""
-				+ fileName + "\"");
-	}
+    /**
+     * 设置让浏览器弹出下载对话框的Header.
+     *
+     * @param fileName
+     *            下载后的文件名.
+     */
+    public static void setInlineHeader(HttpServletResponse response,
+                                       String fileName) {
+        // 解决下载文件时文件名乱码问题
+        byte[] fileNameBytes = fileName.getBytes(StandardCharsets.UTF_8);
+        fileName = new String(fileNameBytes, 0, fileNameBytes.length, StandardCharsets.ISO_8859_1);
+        response.setHeader("Content-Disposition", "inline;filename=" + fileName);
+    }
+
+    /**
+     * 设置让浏览器弹出下载对话框的Header.
+     *
+     * @param fileName
+     *            下载后的文件名.
+     */
+    public static void setDownloadableHeader(HttpServletResponse response,
+                                             String fileName) {
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + fileName + "\"");
+    }
 
     /**
      * 设置让浏览器弹出下载对话框的Header.
@@ -194,6 +209,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
             }
 
         } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage());
         }
     }
 
@@ -387,7 +403,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
     public static void setCookie(HttpServletResponse response, String name,
                                  String value, String path) {
         if (logger.isDebugEnabled()) {
-            logger.debug("设置Cookie '" + name + "',位置: '" + path + "'");
+            logger.debug("设置Cookie {},位置: {}",name,path);
         }
 
         Cookie cookie = new Cookie(name, value);

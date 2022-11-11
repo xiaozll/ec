@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2019 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,7 +9,7 @@ package com.eryansky.j2cache.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2019-02-11
  */
 @ConfigurationProperties("j2cache.session")

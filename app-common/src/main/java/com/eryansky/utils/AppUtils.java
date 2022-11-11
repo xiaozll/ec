@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -16,20 +16,23 @@ import com.eryansky.modules.sys._enum.YesOrNo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import javax.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-10-19 
  */
 public class AppUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppUtils.class);
 
     private static ServletContext servletContext;
 
@@ -114,13 +117,13 @@ public class AppUtils {
             try {
                 while (ite.hasNext()) {
                     Map.Entry<String, Object> entry = (Map.Entry<String, Object>) ite.next();
-                    paras.append(entry.getKey()).append(EQUAL_SIGN).append(StringUtils.utf8Encode((String) entry.getValue()));
+                    paras.append(entry.getKey()).append(EQUAL_SIGN).append(entry.getValue() instanceof String[] ? StringUtils.utf8Encode(StringUtils.join((String[]) entry.getValue())):StringUtils.utf8Encode((String) entry.getValue()));
                     if (ite.hasNext()) {
                         paras.append(PARAMETERS_SEPARATOR);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
             }
         }
         return paras.toString();
@@ -494,9 +497,10 @@ public class AppUtils {
                 return file.toString();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return null;
     }
+
 
 }

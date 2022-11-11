@@ -16,6 +16,7 @@
 package com.eryansky.j2cache;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -51,7 +52,7 @@ public class NullCacheProvider implements CacheProvider {
 
 	@Override
 	public Collection<CacheChannel.Region> regions() {
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override

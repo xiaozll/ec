@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -24,10 +24,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +33,7 @@ import java.util.List;
 /**
  * 数据字典Dictionary管理 Controller层.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-10-11 下午4:36:24
  */
 @SuppressWarnings("serial")
@@ -58,10 +55,10 @@ public class DictionaryItemController extends SimpleController {
         }
     }
 
-    @RequestMapping(value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<DictionaryItem> datagrid(DictionaryItem dictionaryItem, HttpServletRequest request, HttpServletResponse response) {
-        Page<DictionaryItem> page = new Page<DictionaryItem>(request);
+        Page<DictionaryItem> page = new Page<>(request);
         page = dictionaryItemService.findPage(page, dictionaryItem);
         Datagrid<DictionaryItem> datagrid = new Datagrid<DictionaryItem>(page.getTotalCount(), page.getResult());
         return datagrid;
@@ -77,7 +74,7 @@ public class DictionaryItemController extends SimpleController {
      */
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-保存字典项", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute DictionaryItem dictionaryItem, String dictionaryId, String parentId) {
         Result result = null;
@@ -106,7 +103,7 @@ public class DictionaryItemController extends SimpleController {
 
     @RequiresPermissions("sys:dictionary:edit")
     @Logging(value = "字典管理-删除字典项", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         dictionaryItemService.deleteByIds(ids);
@@ -117,7 +114,7 @@ public class DictionaryItemController extends SimpleController {
      * combotree下拉列表数据.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = {"combotree"})
+    @PostMapping(value = {"combotree"})
     @ResponseBody
     public List<TreeNode> combotree(@ModelAttribute("model") DictionaryItem dictionaryItem, String selectType) throws Exception {
         List<TreeNode> titleList = Lists.newArrayList();
@@ -134,7 +131,7 @@ public class DictionaryItemController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() {
         Integer maxSort = dictionaryItemService.getMaxSort();

@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  微信企业号菜单事件
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYMenuEvent extends QYBaseEvent {

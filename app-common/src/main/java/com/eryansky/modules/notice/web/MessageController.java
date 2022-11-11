@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * 消息
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-24
  */
 @Controller
@@ -70,7 +70,7 @@ public class MessageController extends SimpleController {
 
 
     @RequiresPermissions("notice:message:view")
-    @RequestMapping(value = {"list", "", "audit"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"list", "", "audit"})
     public ModelAndView list(@ModelAttribute("model") Message model,String appId, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageList");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -83,14 +83,14 @@ public class MessageController extends SimpleController {
             userId = null;
         }
 //        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),_appId,userId,model.getStatus(),true);
-        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),null,userId,model.getStatus(),true);
+        Page<Message> page = messageService.findQueryPage(new Page<>(request, response),null,userId,model.getStatus(),null,null,true,null);
         modelAndView.addObject("page", page);
         modelAndView.addObject("model", model);
         return modelAndView;
     }
 
     @RequiresPermissions("notice:message:view")
-    @RequestMapping(value = "form")
+    @GetMapping(value = "form")
     public ModelAndView form(@ModelAttribute("model") Message model) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageForm");
         if (StringUtils.isBlank(model.getReceiveObjectType())) {
@@ -114,7 +114,7 @@ public class MessageController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:message:edit")
-    @RequestMapping(value = "save")
+    @PostMapping(value = "save")
     public ModelAndView save(@ModelAttribute("model") Message model, Model uiModel, RedirectAttributes redirectAttributes,
                              String receiveObjectType,
                              @RequestParam(value = "objectIds") List<String> objectIds) {
@@ -139,26 +139,26 @@ public class MessageController extends SimpleController {
         }
 
         addMessage(redirectAttributes, "消息正在发送...请稍候！");
-        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message/?repage");
+        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message");
         return modelAndView;
     }
 
     @RequiresPermissions("notice:message:edit")
-    @RequestMapping(value = "delete")
+    @GetMapping(value = "delete")
     public ModelAndView delete(@ModelAttribute("model") Message model, @RequestParam(required = false) Boolean isRe, RedirectAttributes redirectAttributes) {
         messageService.delete(model, isRe);
         addMessage(redirectAttributes, (isRe != null && isRe ? "恢复" : "") + "删除消息成功");
-        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message/?repage");
+        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message");
         return modelAndView;
     }
 
     @RequiresPermissions("notice:message:view")
-    @RequestMapping(value = "info")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "info")
     public ModelAndView info(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageInfo");
         modelAndView.addObject("model", model);
         //接收信息
-        Page<MessageReceive> page = new Page<MessageReceive>(request, response);
+        Page<MessageReceive> page = new Page<>(request, response);
         MessageReceive messageReceive = new MessageReceive(model.getId());
         page = messageReceiveService.findPage(page, messageReceive);
         modelAndView.addObject("page", page);
@@ -166,7 +166,7 @@ public class MessageController extends SimpleController {
     }
 
 
-    @RequestMapping(value = "view")
+    @GetMapping(value = "view")
     public ModelAndView view(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/messageView");
         modelAndView.addObject("model", model);
@@ -183,7 +183,7 @@ public class MessageController extends SimpleController {
      * @param receiveObjectIds  必选 接收对象ID集合 多个之间以”,“分割
      * @return
      */
-    @RequestMapping(value = "sendMessage")
+    @PostMapping(value = "sendMessage")
     @ResponseBody
     public Result sendMessage(@RequestParam(value = "content") String content,
                               String linkUrl,
@@ -204,14 +204,14 @@ public class MessageController extends SimpleController {
      * @param linkUrl 消息URL链接地址
      * @return
      */
-    @RequestMapping(value = "sendToManager")
+    @PostMapping(value = "sendToManager")
     @ResponseBody
     public Result sendToManager(@RequestParam(value = "content") String content,
                                 String linkUrl) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         User superUser = UserUtils.getSuperUser();
-        List<String> receiveObjectIds = new ArrayList<String>(1);
+        List<String> receiveObjectIds = new ArrayList<>(1);
         receiveObjectIds.add(superUser.getId());
         MessageUtils.sendMessage(null, null != sessionInfo ? sessionInfo.getUserId():null, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds,null);
         result = Result.successResult().setMsg("消息正在发送...请稍候！");
@@ -225,7 +225,7 @@ public class MessageController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"tipMessageCombobox"})
+    @PostMapping(value = {"tipMessageCombobox"})
     @ResponseBody
     public List<Combobox> tipMessageCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -233,8 +233,8 @@ public class MessageController extends SimpleController {
         if (titleCombobox != null) {
             cList.add(titleCombobox);
         }
-        MessageChannel[] _emums = MessageChannel.values();
-        for (MessageChannel column : _emums) {
+        MessageChannel[] _enums = MessageChannel.values();
+        for (MessageChannel column : _enums) {
             Combobox combobox = new Combobox(column.getValue(), column.getDescription());
             cList.add(combobox);
         }
@@ -248,8 +248,7 @@ public class MessageController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequiresUser(required = false)
-    @RequestMapping(value = {"api/sendMessage"}, method = RequestMethod.POST)
+    @PostMapping(value = {"api/sendMessage"})
     @ResponseBody
     public WSResult sendMessage(String paramJson) {
         if (SystemInitListener.Static.apiWebService != null) {
@@ -263,7 +262,7 @@ public class MessageController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Message model) {
         return Result.successResult().setObj(model);

@@ -169,8 +169,8 @@ public class J2CacheSessionFilter implements Filter {
      *************************************************/
     public class J2CacheRequestWrapper extends HttpServletRequestWrapper {
 
-        private HttpServletResponse response;
-        private ServletContext servletContext;
+        private final HttpServletResponse response;
+        private final ServletContext servletContext;
         private J2CacheSession session;
 
         public J2CacheRequestWrapper(ServletRequest req, ServletResponse res) {

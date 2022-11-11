@@ -68,7 +68,7 @@
         function setRead(id,messageId,linkUrl){
             $.ajax({
                 url: '${ctxAdmin}/notice/messageReceive/setRead?id='+id,
-                type: 'get',
+                type: 'post',
                 dataType: 'json',
                 success: function (data) {}
             });
@@ -76,7 +76,7 @@
                 try {
                     $.ajax({
                         url: '${ctx}/f/getMessageSSOUrl?messageId=' + messageId,
-                        type: 'get',
+                        type: 'post',
                         dataType: 'json',
                         success: function (data) {
                             if (1 === data['code']) {
@@ -97,6 +97,7 @@
                 <th>消息内容</th>
                 <th>发送者</th>
                 <th>发送时间</th>
+                <th>推送状态</th>
                 <th>阅读状态</th>
             </tr>
             </thead>
@@ -106,6 +107,7 @@
                     <td><a href="javascript:" onclick="setRead('{{id}}','{{message.id}}','{{message.url}}');">{{message.content}}</a></td>
                     <td>{{message.senderName}}</td>
                     <td>{{message.sendTime}}</td>
+                    <td>{{isSendView}}</td>
                     <td>{{isReadView}}</td>
                 </tr>
             {{/result}}

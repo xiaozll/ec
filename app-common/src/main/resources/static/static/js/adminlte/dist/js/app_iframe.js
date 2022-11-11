@@ -2417,6 +2417,11 @@ $(function () {
                 }
                 if (item.children && item.children.length > 0) {
                     var pullSpan = $('<span class="pull-right-container"></span>');
+                    if (item.tip != null && item.tip != "") {
+                        var badge = $("<span></span>");
+                        badge.addClass("label").addClass(item.tipStyle || "label-success").text(item.tip);
+                        pullSpan.append(badge);
+                    }
                     var pullIcon = $('<i class="fa fa-angle-left pull-right"></i>');
                     pullSpan.append(pullIcon);
                     $a.append(pullSpan);
@@ -2459,10 +2464,10 @@ $(function () {
                         $("#iframe-main").addClass("tab_iframe");
                     }
                     $a.addClass("nav-link");
-                    var badge = $("<span></span>");
+                    var badge = $("<span style='float: right;'></span>");
                     // <span class="badge badge-success">1</span>
-                    if (item.tip != null && item.tip > 0) {
-                        badge.addClass("label").addClass("label-success").text(item.tip);
+                    if (item.tip != null && item.tip != "") {
+                        badge.addClass("label").addClass(item.tipStyle || "label-success").text(item.tip);
                     }
                     $a.append(badge);
                     li.append($a);

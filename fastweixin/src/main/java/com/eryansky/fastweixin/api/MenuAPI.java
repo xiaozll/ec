@@ -21,7 +21,7 @@ import java.util.Map;
  * 菜单相关API
  * 1.3.7支持个性化菜单
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class MenuAPI extends BaseAPI {

@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public final class NetWorkCenter {
      * 日志输出组件
      */
     private static final Logger  LOG             = LoggerFactory.getLogger(NetWorkCenter.class);
-    private static final Charset UTF_8           = Charset.forName("UTF-8");
+    private static final Charset UTF_8           = StandardCharsets.UTF_8;
 
     /**
      * 私有化构造器
@@ -109,21 +110,18 @@ public final class NetWorkCenter {
 
     public static BaseResponse post(String url, String paramData, List<File> fileList) {
         final BaseResponse[] response = new BaseResponse[]{null};
-        post(url, paramData, fileList, new ResponseCallback() {
-            @Override
-            public void onResponse(int resultCode, String resultJson) {
-                if (200 == resultCode) {
-                    BaseResponse r = JSONUtil.toBean(resultJson, BaseResponse.class);
-                    if(StrUtil.isBlank(r.getErrcode())) {
-                        r.setErrcode("0");
-                    }
-                    r.setErrmsg(resultJson);
-                    response[0] = r;
-                } else {//请求本身就失败了
-                    response[0] = new BaseResponse();
-                    response[0].setErrcode(String.valueOf(resultCode));
-                    response[0].setErrmsg("请求失败");
+        post(url, paramData, fileList, (resultCode, resultJson) -> {
+            if (200 == resultCode) {
+                BaseResponse r = JSONUtil.toBean(resultJson, BaseResponse.class);
+                if(StrUtil.isBlank(r.getErrcode())) {
+                    r.setErrcode("0");
                 }
+                r.setErrmsg(resultJson);
+                response[0] = r;
+            } else {//请求本身就失败了
+                response[0] = new BaseResponse();
+                response[0].setErrcode(String.valueOf(resultCode));
+                response[0].setErrmsg("请求失败");
             }
         });
         return response[0];
@@ -155,21 +153,18 @@ public final class NetWorkCenter {
 
     public static BaseResponse get(String url) {
         final BaseResponse[] response = new BaseResponse[]{null};
-        doRequest(RequestMethod.GET, url, null, null, new ResponseCallback() {
-            @Override
-            public void onResponse(int resultCode, String resultJson) {
-                if (200 == resultCode) {
-                    BaseResponse r = JSONUtil.toBean(resultJson, BaseResponse.class);
-                    if(StrUtil.isBlank(r.getErrcode())) {
-                        r.setErrcode("0");
-                    }
-                    r.setErrmsg(resultJson);
-                    response[0] = r;
-                } else {//请求本身就失败了
-                    response[0] = new BaseResponse();
-                    response[0].setErrcode(String.valueOf(resultCode));
-                    response[0].setErrmsg("请求失败");
+        doRequest(RequestMethod.GET, url, null, null, (resultCode, resultJson) -> {
+            if (200 == resultCode) {
+                BaseResponse r = JSONUtil.toBean(resultJson, BaseResponse.class);
+                if(StrUtil.isBlank(r.getErrcode())) {
+                    r.setErrcode("0");
                 }
+                r.setErrmsg(resultJson);
+                response[0] = r;
+            } else {//请求本身就失败了
+                response[0] = new BaseResponse();
+                response[0].setErrcode(String.valueOf(resultCode));
+                response[0].setErrmsg("请求失败");
             }
         });
         return response[0];
@@ -208,7 +203,7 @@ public final class NetWorkCenter {
         LOG.debug("-----------------请求地址:{}-----------------", url);
         //配置请求参数
         RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(CONNECT_TIMEOUT).setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(CONNECT_TIMEOUT).build();
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+
         HttpUriRequest request = null;
         switch (method) {
             case GET:
@@ -251,16 +246,14 @@ public final class NetWorkCenter {
             case PUT:
             case DELETE:
             default:
-                LOG.warn("-----------------请求类型:{} 暂不支持-----------------", method.toString());
+                LOG.warn("-----------------请求类型:{} 暂不支持-----------------", method);
                 break;
         }
-        CloseableHttpResponse response = null;
-        try {
+        try (CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+             CloseableHttpResponse response =  client.execute(request)){
             long start = System.currentTimeMillis();
-            //发起请求
-            response = client.execute(request);
             long time = System.currentTimeMillis() - start;
-            LOG.debug("本次请求'{}'耗时:{}ms", url.substring(url.lastIndexOf("/") + 1, url.length()), time);
+            LOG.debug("本次请求'{}'耗时:{}ms", url.substring(url.lastIndexOf("/") + 1), time);
             int resultCode = response.getStatusLine().getStatusCode();
             HttpEntity entity = response.getEntity();
             //此流不是操作系统资源，不用关闭，ByteArrayOutputStream源码里close也是个空方法-0_0-
@@ -305,16 +298,13 @@ public final class NetWorkCenter {
             if (null != request && !request.isAborted()) {
                 request.abort();
             }
-            //close the connection
-            HttpClientUtils.closeQuietly(client);
-            HttpClientUtils.closeQuietly(response);
         }
     }
 
     /**
      * 标识HTTP请求类型枚举
      *
-     * @author 尔演&Eryan eryanwcp@gmail.com
+     * @author Eryan
      * @date 2016-03-15
      */
     enum RequestMethod {
@@ -344,7 +334,7 @@ public final class NetWorkCenter {
     /**
      * 自定义HTTP响应回调接口,用于兼容jdk6
      *
-     * @author 尔演&Eryan eryanwcp@gmail.com
+     * @author Eryan
      * @date 2016-03-15
      */
 //	@FunctionalInterface

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,7 +14,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * 判断是否具有某个资源编码权限
- * User: 尔演&Eryan eryanwcp@gmail.com
+ * User: eryan
  * Date: 13-11-16 下午9:43
  */
 @SuppressWarnings("serial")

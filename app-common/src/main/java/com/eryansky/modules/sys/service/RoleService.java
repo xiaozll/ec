@@ -1,16 +1,18 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.service;
 
+import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.model.Parameter;
+import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.modules.sys._enum.RoleType;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.utils.CacheConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ import java.util.List;
 /**
  * 角色表 service
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-08
  */
 @Service
@@ -123,6 +125,34 @@ public class RoleService extends CrudService<RoleDao, Role> {
     }
 
     /**
+     * 查找资源关联角色
+     *
+     * @param resourceId 资源ID
+     * @return
+     */
+    public List<Role> findRolesByReourceId(String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("resourceId", resourceId);
+        return dao.findRolesByResourceId(parameter);
+    }
+
+    /**
+     * 查找资源关联角色
+     *
+     * @param resourceId 资源ID
+     * @return
+     */
+    public Page<Role> findRolesByReourceId(Page<Role> page, String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("resourceId", resourceId);
+        return page.setResult(dao.findRolesByResourceId(parameter));
+    }
+
+
+    /**
      * 查找用户角色
      *
      * @param userId 用户ID
@@ -156,12 +186,13 @@ public class RoleService extends CrudService<RoleDao, Role> {
      * @param organId 机构ID
      * @return
      */
-    public List<Role> findOrganRolesAndSystemRoles(String organId) {
+    public List<Role> findOrganRolesAndSystemNormalRoles(String organId) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("organId", organId);
         parameter.put("isSystem", YesOrNo.YES.getValue());
-        return dao.findOrganRolesAndSystemRoles(parameter);
+        parameter.put("roleType", RoleType.USER.getValue());
+        return dao.findOrganRolesAndSystemNormalRoles(parameter);
     }
 
     /**
@@ -313,5 +344,22 @@ public class RoleService extends CrudService<RoleDao, Role> {
         }
     }
 
+
+    /**
+     * 删除指定角色资源关联信息
+     *
+     * @param roleId  角色ID
+     * @param resourceId 资源ID
+     */
+    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
+            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE}, allEntries = true)
+    public int deleteRoleResourceByResourceIdAndRoleId(String roleId, String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("roleId", roleId);
+        parameter.put("resourceId", resourceId);
+        return dao.deleteRoleResourceByResourceIdAndRoleId(parameter);
+    }
 
 }

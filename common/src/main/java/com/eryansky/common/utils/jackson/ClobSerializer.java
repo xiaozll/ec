@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.Clob;
 /**
  * 自定义Jackson Clob类型转换.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-4-1 下午2:49:07 
  *
  */
@@ -23,8 +23,7 @@ public class ClobSerializer extends JsonSerializer<Clob> {
 
 		@Override
 		public void serialize(Clob arg0, JsonGenerator arg1,
-				SerializerProvider arg2) throws IOException,
-				JsonProcessingException {
+				SerializerProvider arg2) throws IOException {
 			String json = ClobUtil.getString(arg0);
 			arg1.writeString(json);
 		}

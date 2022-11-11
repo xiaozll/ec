@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -20,7 +20,7 @@ import java.util.*;
 
 /**
  * 存储过程调用规则
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-09-21
  */
 @Intercepts({@Signature(
@@ -29,7 +29,7 @@ import java.util.*;
         args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class CallableConvertInterceptor implements Interceptor {
 
-    private static Logger logger = LoggerFactory.getLogger(CallableConvertInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(CallableConvertInterceptor.class);
 
     static int MAPPED_STATEMENT_INDEX = 0;
     static int PARAMETER_INDEX = 1;

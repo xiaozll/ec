@@ -278,6 +278,48 @@
         )
     </insert>
 
+    <insert id="insertBatch">
+        INSERT INTO t_disk_folder(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        code,
+        folder_authorize,
+        limit_size,
+        name,
+        sort,
+        parent_id,
+        parent_ids,
+        path,
+        remark,
+        type,
+        user_id
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.code},
+        #{item.folderAuthorize},
+        #{item.limitSize},
+        #{item.name},
+        #{item.sort},
+        #{item.parentId},
+        #{item.parentIds},
+        #{item.path},
+        #{item.remark},
+        #{item.type},
+        #{item.userId}
+        )</foreach>
+    </insert>
+
     <update id="update">
         UPDATE t_disk_folder SET
         status = #{status},

@@ -3,12 +3,12 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  微信企业号文本消息事件
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYTextReqMsg extends QYBaseReqMsg {
 
-    private String content;
+    private final String content;
 
     public QYTextReqMsg(String content) {
         super();

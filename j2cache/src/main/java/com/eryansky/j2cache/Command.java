@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 /**
@@ -49,7 +50,7 @@ public class Command implements java.io.Serializable{
 	private String region;
 	private String[] keys;
 
-	private static Serializer serializer;
+	private static final Serializer serializer;
 
 	static {
 		serializer = new FstJSONSerializer(null);
@@ -57,8 +58,8 @@ public class Command implements java.io.Serializable{
 
 	public static int genRandomSrc() {
 		long ct = System.currentTimeMillis();
-		SecureRandom rndSeed  = new SecureRandom ();
-		return (int)(rndSeed .nextInt(10000) * 1000 + ct % 1000);
+		SecureRandom random = new SecureRandom();
+		return (int)(random.nextInt(10000) * 1000 + ct % 1000);
 	}
 
 	public Command(){}//just for json deserialize , dont remove it.
@@ -79,7 +80,7 @@ public class Command implements java.io.Serializable{
 
 	public String json() {
 		try {
-			return new String(serializer.serialize(this));
+			return new String(serializer.serialize(this),StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			logger.warn("Failed to json j2cache command", e);
 		}
@@ -88,7 +89,7 @@ public class Command implements java.io.Serializable{
 
 	public static Command parse(String json) {
 		try {
-			return (Command) serializer.deserialize(json.getBytes());
+			return (Command) serializer.deserialize(json.getBytes(StandardCharsets.UTF_8));
 		} catch (IOException e) {
 			logger.warn("Failed to parse j2cache command: {}", json, e);
 		}

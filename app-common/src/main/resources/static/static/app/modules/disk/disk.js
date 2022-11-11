@@ -260,7 +260,7 @@ function saveFileName(target, index, id) {
         return false;
     }
     $.ajax({
-        type: 'POST',
+        type: 'post',
         url: ctxAdmin + '/disk/fileSave',
         data: $.extend({
                 id: selectRow.id,
@@ -318,7 +318,7 @@ function downloadFile(pageId) {
         $("#annexFrame").attr("src", url);
     } else {
         eu.showMsg("请选择要操作的对象！");
-        return;
+
     }
 }
 

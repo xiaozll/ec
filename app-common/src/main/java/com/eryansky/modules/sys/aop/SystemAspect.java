@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,8 +10,8 @@ import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.User;
+import com.eryansky.modules.sys.service.OrganService;
 import com.eryansky.modules.sys.service.SystemService;
-import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 /**
  * 切面
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-10
  */
 @Order(1)
@@ -42,7 +42,7 @@ public class SystemAspect implements InitializingBean, DisposableBean {
     @Autowired
     private SystemService systemService;
     @Autowired
-    private UserPasswordService userPasswordService;
+    private OrganService organService;
 
     /**
      * 同步到扩展机构表
@@ -60,24 +60,31 @@ public class SystemAspect implements InitializingBean, DisposableBean {
                 parameter.put("id", id);
                 Organ organ = OrganUtils.getOrgan(id);
                 parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-                parameter.put("companyId", OrganUtils.getCompanyIdByRecursive(organ.getId()));
-                parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
-                parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
-                parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
+                Organ company = OrganUtils.getCompanyByRecursive(organ.getId());
+                Organ homeCompany = OrganUtils.getHomeCompanyByRecursive(organ.getId());
+                parameter.put("companyId", company.getId());
+                parameter.put("companyCode", company.getCode());
+                parameter.put("homeCompanyId", homeCompany.getId());
+                parameter.put("homeCompanyCode", homeCompany.getCode());
                 Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length : null;
                 parameter.put("treeLevel", level);
-
+                Integer childCount = organService.findChildCount(organ.getId());
+                parameter.put("isLeaf", null == childCount || childCount == 0);
                 systemService.syncOrganToExtend(parameter);
             } else if (returnObj instanceof Organ) {
                 Organ organ = (Organ) returnObj;
                 parameter.put("id", organ.getId());
                 parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-                parameter.put("companyId", OrganUtils.getCompanyIdByRecursive(organ.getId()));
-                parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
-                parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
-                parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
+                Organ company = OrganUtils.getCompanyByRecursive(organ.getId());
+                Organ homeCompany = OrganUtils.getHomeCompanyByRecursive(organ.getId());
+                parameter.put("companyId", company.getId());
+                parameter.put("companyCode", company.getCode());
+                parameter.put("homeCompanyId", homeCompany.getId());
+                parameter.put("homeCompanyCode", homeCompany.getCode());
                 Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length : null;
                 parameter.put("treeLevel", level);
+                Integer childCount = organService.findChildCount(organ.getId());
+                parameter.put("isLeaf", null == childCount || childCount == 0);
                 systemService.syncOrganToExtend(parameter);
             }
         } else {

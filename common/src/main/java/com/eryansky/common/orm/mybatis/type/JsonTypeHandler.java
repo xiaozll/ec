@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * json类型数据处理
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2020-02-12
  * @param <T>
  */
@@ -24,11 +24,11 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
 
     private static  final Logger logger = LoggerFactory.getLogger(JsonTypeHandler.class);
 
-    private static JsonMapper jsonMapper;
+    private static final JsonMapper jsonMapper;
     private Class<T> type;
 
     static {
-        jsonMapper = new JsonMapper();
+        jsonMapper = JsonMapper.getInstance();
     }
 
     public JsonTypeHandler(Class<T> type) {
@@ -66,17 +66,17 @@ public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
 
     @Override
     public T getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return (T) parse(rs.getString(columnName));
+        return parse(rs.getString(columnName));
     }
 
     @Override
     public T getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return (T) parse(rs.getString(columnIndex));
+        return parse(rs.getString(columnIndex));
     }
 
     @Override
     public T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return (T) parse(cs.getString(columnIndex));
+        return parse(cs.getString(columnIndex));
     }
 
     @Override

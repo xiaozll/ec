@@ -110,7 +110,7 @@ function tipMsg() {
         $jplayer.jPlayer('play');
     }
     var tipMessageHtml = "<span>您有新的消息，请注意查收！</span>";
-    tipMessageHtml += "<div style='margin-top: 10px;'><label><input id='tip_checkbox' type='checkbox' onclick='javascript:setTipMessage(this.checked);' ";
+    tipMessageHtml += "<div style='margin-top: 10px;'><label><input id='tip_checkbox' type='checkbox' onclick='setTipMessage(this.checked);' ";
     if (tipMessage) {
         tipMessageHtml += " checked ";
     }
@@ -136,7 +136,7 @@ function setTipMessage(tipMessage) {
 function mymessages(refreshPanel, tipMessage) {
     $.ajax({
         url: ctxAdmin + '/portal/mymessages',
-        type: 'get',
+        type: 'POST',
         dataType: 'json',
         success: function (data) {
             if (data.code === 1) {
@@ -156,16 +156,16 @@ function mymessages(refreshPanel, tipMessage) {
                 $("#p1").panel("setTitle", protal_titles[0] + messagesHtml);
 
                 if (obj["tipPasswordType"] !== undefined && obj["tipPasswordType"] !== null) {
-                    var tipPasswordMsg = '';
+                    var tipMsg = '';
                     if (obj["tipPasswordType"] === 0) {
-                        tipPasswordMsg = "您从未修改过用户密码，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
+                        tipMsg = "您从未修改过用户密码，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
                     } else if (obj["tipPasswordType"] === 1) {
-                        tipPasswordMsg = "距离上次修改密码已经很长时间了，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
+                        tipMsg = "距离上次修改密码已经很长时间了，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
                     }
-                    if(tipPasswordMsg !== ''){
+                    if(tipMsg !== ''){
                         $.messager.show({
                             title: '<span class="tree-icon tree-file easyui-icon-tip easyui-tooltip"></span><span style="color: red;"> 提示信息！</span>',
-                            msg: tipPasswordMsg,
+                            msg: tipMsg,
                             height: 110,
                             timeout: 30 * 1000,
                             showType: 'slide' //null,slide,fade,show.

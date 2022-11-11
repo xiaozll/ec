@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,12 +15,12 @@ import java.util.UUID;
 /**
  * 封装各种生成唯一性ID算法的工具类.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class Identities {
 
-	private static SecureRandom random = new SecureRandom();
-	private static SnowFlake snowFlake = SnowFlake.getInstance();
+	private static final SecureRandom random = new SecureRandom();
+	private static final SnowFlake snowFlake = SnowFlake.getInstance();
 
 	private Identities() {
 	}
@@ -97,7 +97,7 @@ public class Identities {
 			String prevNum = "000";
 			if (lastNotNumIndex != -1){
 				prefix = str.substring(0, lastNotNumIndex);
-				prevNum = str.substring(lastNotNumIndex, str.length());
+				prevNum = str.substring(lastNotNumIndex);
 			}
 			String nextNum = new BigDecimal(prevNum).add(BigDecimal.ONE).toString();
 			str = prefix + StringUtils.leftPad(nextNum, prevNum.length(), "0");

@@ -3,7 +3,7 @@ package com.eryansky.j2cache.lock;
 /**
  * 锁重试获取频率策略
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-12-24
  */
 public enum LockRetryFrequency {
@@ -17,7 +17,7 @@ public enum LockRetryFrequency {
      * @param retryInterval 重试间隔 单位：毫秒
      */
     LockRetryFrequency(int retryInterval) {
-        retryInterval = retryInterval;
+        this.retryInterval = retryInterval;
     }
 
     public int getRetryInterval() {

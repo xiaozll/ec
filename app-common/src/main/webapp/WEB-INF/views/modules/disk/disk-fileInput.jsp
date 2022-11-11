@@ -19,7 +19,7 @@
 
     }
 
-    var fileIdArray = new Array();
+    var fileIdArray = [];
     var dataMap = new HashMap();
     /**
      * 文件上传

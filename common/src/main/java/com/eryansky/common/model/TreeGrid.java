@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * EasyUI treegrid模型.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-18 下午8:26:12
  * 
  */

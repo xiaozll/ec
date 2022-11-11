@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -8,6 +8,8 @@ package com.eryansky.common.mail.receiver;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.Flags.Flag;
@@ -17,10 +19,13 @@ import javax.mail.search.FlagTerm;
 /**
  * 实现使用IMAP协议接收邮件
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14
  */
 public class IMAPReceiver extends Receiver {
+
+	private static final Logger logger = LoggerFactory.getLogger(IMAPReceiver.class);
+
 	private IMAPStore store;
 	private IMAPFolder folder;
 
@@ -43,7 +48,7 @@ public class IMAPReceiver extends Receiver {
 			// 打开文件夹对象
 			flag = this.switchFolder(mode);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			flag = false;
 			this.close();
 		}

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); 
  */
@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-05-05 12:59
  */
 public class ExceptionInterceptor implements HandlerExceptionResolver {
@@ -59,7 +59,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         if(null != loginName){
             sb.append(loginName).append(",");
         }
-        sb.append("发生异常:");
+        sb.append("访问出现异常:");
         if("ClientAbortException".equals(ex.getClass().getSimpleName())){
             return null;
         }
@@ -70,7 +70,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
         }
         //空指针异常
         else if(Exceptions.isCausedBy(ex, NullPointerException.class)){
-            sb.append("空指针异常，请联系管理员！");
+            sb.append("空指针异常，请刷新后重试或者联系管理员！");
 //            sb.append("空指针异常！");
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
@@ -98,7 +98,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
             if(SysConstants.isdevMode()){
                 sb.append(MSG_DETAIL).append(SysUtils.jsonStrConvert(emsg));//将":"替换为","
             }else{
-                sb.append("未知异常，请联系管理员！");
+                sb.append("未知异常，请刷新后重试或者联系管理员！");
             }
         }
         if(isWarn){
@@ -115,7 +115,7 @@ public class ExceptionInterceptor implements HandlerExceptionResolver {
 //        return  new ModelAndView("error-business", model);
 
         //异步方式返回异常信息
-        if(StringUtils.startsWith(requestUrl, request.getContextPath()+"/rest")){
+        if(StringUtils.startsWith(requestUrl, request.getContextPath()+"/rest") || WebUtils.isAjaxRequest(request)){
             result.setCode(Result.ERROR_API);
             WebUtils.renderJson(response, result);
         }

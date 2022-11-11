@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -12,7 +12,7 @@ import com.eryansky.common.orm._enum.IGenericEnum;
  * 资源类型标识 枚举类型.
  * <br>菜单(0) 功能(1)
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-01-28 上午10:48:23
  */
 public enum ResourceType implements IGenericEnum<ResourceType> {

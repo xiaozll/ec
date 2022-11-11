@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * 客户会话状态
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-08-06
  */
 public class GetCustomSessionResponse extends BaseResponse {

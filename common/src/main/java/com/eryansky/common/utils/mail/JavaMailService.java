@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -28,12 +28,12 @@ import freemarker.template.TemplateException;
 /**
  * 借助spring {@link JavaMailSender} 来做邮件发送器的Java邮件服务类
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  *
  */
 public class JavaMailService {
 
-	private static Logger logger = LoggerFactory.getLogger(JavaMailService.class);
+	private static final Logger logger = LoggerFactory.getLogger(JavaMailService.class);
 
 	//spring邮件发送器
 	private JavaMailSender mailSender;

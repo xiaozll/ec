@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,6 +10,7 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.configure.DBConfigurer;
 import com.eryansky.core.orm.mybatis.service.CrudService;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.dao.SystemSerialNumberDao;
@@ -25,12 +26,14 @@ import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.*;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-07-14
  */
 @Service
@@ -106,13 +109,14 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
      * @param moduleCode 模块code
      * @return
      */
+    @Transactional(value = DBConfigurer.TX_MANAGER_NAME,propagation = Propagation.REQUIRES_NEW)//开启新事务 防止事务嵌套传递
     public List<String> generatePrepareSerialNumbers(String app, String moduleCode, String customCategory, Map<String, String> params) {
         String _moduleCode = null == customCategory ? moduleCode : moduleCode + "_" + customCategory;
         String maxSerialKey = null == customCategory ? SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL : SystemSerialNumber.DEFAULT_KEY_MAX_SERIAL + "_" + customCategory;
         SystemSerialNumber entity = getByCode(StringUtils.isNotBlank(app) ? app : VersionLog.DEFAULT_ID, moduleCode);
-        /** 预生成数量 */
-        int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.valueOf(entity.getPreMaxNum()) : 1;
-        /** 数据库存储的当前最大序列号 **/
+        //预生成数量
+        int prepare = StringUtils.isNotBlank(entity.getPreMaxNum()) ? Integer.parseInt(entity.getPreMaxNum()) : 1;
+        //数据库存储的当前最大序列号
         if (null == entity.getMaxSerial()) {
             entity.setMaxSerial(new MaxSerial());
         }
@@ -144,7 +148,10 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
         entity.getMaxSerial().addIfNotExist(maxSerialItem.getKey(), maxSerialItem.getValue());
         entity.getMaxSerial().update(maxSerialItem.getKey(), maxSerialItem.getValue());
         entity.setUpdateTime(Calendar.getInstance().getTime());
-        updateByVersion(entity);
+        int result = dao.updateByVersion(entity);
+        if (result == 0) {
+            throw new ServiceException("乐观锁更新失败," + entity.toString());
+        }
         return resultList;
     }
 
@@ -204,7 +211,7 @@ public class SystemSerialNumberService extends CrudService<SystemSerialNumberDao
                 });
             }
 
-            logger.info("重置序列号，{}：{}", new Object[]{systemSerialNumber.getApp(), systemSerialNumber.getModuleCode()});
+            logger.info("重置序列号，{}：{}", systemSerialNumber.getApp(), systemSerialNumber.getModuleCode());
             systemSerialNumber.setMaxSerial(new MaxSerial());
             systemSerialNumber.setVersion(0);
             systemSerialNumber.setUpdateTime(Calendar.getInstance().getTime());

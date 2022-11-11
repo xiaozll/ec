@@ -3,7 +3,7 @@ package com.eryansky.codegen.util;
 
 /**
  * JDBC Types转换Java Types
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-7-15 下午1:37:32 
  * @version 1.0
  */
@@ -38,9 +38,9 @@ public enum JavaType {
     NUMBER("Integer"),
     VARCHAR2("String");
 
-	private String typeName;
+	private final String typeName;
 
-	private JavaType(String typeName) {
+	JavaType(String typeName) {
 		this.typeName = typeName;
 	}
 

@@ -5,7 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Access-Control-Allow-Origin" content="*" />
-<meta name="author" content="尔演&Eryan"/>
+<meta name="author" content="Eryan"/>
 <link rel="shortcut icon" href="${appURL}/static/img/favicon.ico" />
 <%-- 引入jQuery --%>
 <script type="text/javascript" src="${appURL}/static/js/jquery/jquery-2.1.4.min.js" charset="utf-8"></script>

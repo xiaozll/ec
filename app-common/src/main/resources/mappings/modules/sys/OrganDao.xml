@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eryansky.modules.sys.dao.OrganDao">
 
+    <cache type="com.eryansky.j2cache.mybatis.J2CacheAdapter">
+        <property name="encodeKey" value="true"></property>
+    </cache>
+
     <sql id="organColumns">
         a.id AS "id",
         a.create_user AS "createUser",
@@ -160,7 +164,7 @@
         </choose>
     </select>
 
-    <select id="findAllList" resultType="Organ">
+    <select id="findAllList" resultType="Organ" useCache="false">
         SELECT
         <include refid="organColumns"/>
         FROM t_sys_organ a
@@ -226,13 +230,13 @@
     </select>
 
 
-    <select id="findOwnerAndChilds" resultType="Organ">
+    <select id="findOwnerAndChilds" resultType="Organ" useCache="false">
         SELECT
         <include refid="organColumns"/>
         FROM t_sys_organ a
         <include refid="organJoins"/>
         WHERE
-        a.status = '0'
+        a.status = #{status}
         <if test="id != null and id !=''">
             AND (a.id = #{id} OR a.parent_ids LIKE
             <choose>
@@ -277,7 +281,7 @@
         ORDER BY a.sort ASC
     </select>
 
-    <select id="findChild" resultType="Organ">
+    <select id="findChild" resultType="Organ" useCache="false">
         SELECT
         <include refid="organColumns"/>
         FROM t_sys_organ a
@@ -616,6 +620,59 @@
         #{remark}
         )
     </insert>
+    <insert id="insertBatch">
+        INSERT INTO t_sys_organ(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        NAME,
+        SHORT_NAME,
+        TYPE,
+        CODE,
+        SYS_CODE,
+        ADDRESS,
+        MOBILE,
+        PHONE,
+        FAX,
+        MANAGER_USER_ID,
+        DEPUTY_MANAGER_USER_ID,
+        SUPER_MANAGER_USER_ID,
+        sort,
+        PARENT_ID,
+        PARENT_IDS,
+        AREA_ID,
+        remark
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.name},
+        #{item.shortName},
+        #{item.type},
+        #{item.code},
+        #{item.sysCode},
+        #{item.address},
+        #{item.mobile},
+        #{item.phone},
+        #{item.fax},
+        #{item.managerUserId},
+        #{item.deputyManagerUserId},
+        #{item.superManagerUserId},
+        #{item.sort},
+        #{item.parentId},
+        #{item.parentIds},
+        #{item.areaId},
+        #{item.remark}
+        )</foreach>
+    </insert>
 
     <update id="update">
         UPDATE t_sys_organ SET
@@ -738,12 +795,35 @@
         WHERE u.id = #{userId}
     </select>
 
+    <select id="getOrganExtendByUserLoginName" resultType="OrganExtend">
+        SELECT
+        <include refid="organExtendColumns"/>
+        FROM t_sys_organ_extend a
+        LEFT JOIN t_sys_user u ON u.default_organ_id = a.id
+        <where>
+            <if test="status != null and status !=''">
+                AND u.status = #{status}
+            </if>
+            AND u.login_name = #{loginName}
+        </where>
+        LIMIT 1
+    </select>
+
     <select id="getCompanyByUserId" resultType="OrganExtend">
         SELECT
         <include refid="organExtendColumns"/>
         FROM t_sys_organ_extend e
         LEFT JOIN t_sys_user u ON u.default_organ_id = e.id
         LEFT JOIN t_sys_organ_extend a ON a.id = e.company_id
+        WHERE u.id = #{userId}
+    </select>
+
+    <select id="getHomeCompanyByUserId" resultType="OrganExtend">
+        SELECT
+        <include refid="organExtendColumns"/>
+        FROM t_sys_organ_extend e
+        LEFT JOIN t_sys_user u ON u.default_organ_id = e.id
+        LEFT JOIN t_sys_organ_extend a ON a.id = e.home_company_id
         WHERE u.id = #{userId}
     </select>
 

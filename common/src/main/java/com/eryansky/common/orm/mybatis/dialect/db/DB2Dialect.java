@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,7 +11,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * DB2的分页数据库方言实现
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-7-16
  */
 public class DB2Dialect implements Dialect {
@@ -62,7 +62,7 @@ public class DB2Dialect implements Dialect {
         int startOfSelect = sql.toLowerCase().indexOf("select");
 
         StringBuilder pagingSelect = new StringBuilder(sql.length() + 100)
-                .append(sql.substring(0, startOfSelect)) //add the comment
+                .append(sql, 0, startOfSelect) //add the comment
                 .append("select * from ( select ") //nest the main query in an outer select
                 .append(getRowNumber(sql)); //add the rownnumber bit into the outer query select list
 

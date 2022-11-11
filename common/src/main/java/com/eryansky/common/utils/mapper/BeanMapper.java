@@ -1,12 +1,13 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.mapper;
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import com.google.common.collect.Lists;
-import org.dozer.DozerBeanMapper;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * 3. 批量转换Collection中的所有对象.
  * 4. 区分创建新的B对象与将对象A值复制到已存在的B对象两种函数.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-20 下午3:32:08 
  *
  */
@@ -28,7 +29,7 @@ public class BeanMapper {
 	/**
 	 * 持有Dozer单例, 避免重复创建DozerMapper消耗资源.
 	 */
-	private static DozerBeanMapper dozer = new DozerBeanMapper();
+	private static final Mapper dozer = DozerBeanMapperBuilder.buildDefault();
 
 	/**
 	 * 基于Dozer转换对象的类型.

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -7,7 +7,7 @@ package com.eryansky.utils;
 
 /**
  * 缓存静态变量.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-19 下午6:45:50 
  *
  */
@@ -49,6 +49,10 @@ public class CacheConstants {
 
     public static final String ORGAN_USER_TREE_1_CACHE = "organ_user_tree_1_cache";
     public static final String ORGAN_USER_TREE_2_CACHE = "organ_user_tree_2_cache";
+
+    public static final String CACHE_OrganDao = "com.eryansky.modules.sys.dao.OrganDao";
+    public static final String CACHE_UserDao = "com.eryansky.modules.sys.dao.UserDao";
+    public static final String CACHE_ResourceDao = "com.eryansky.modules.sys.dao.ResourceDao";
 
 	
 }

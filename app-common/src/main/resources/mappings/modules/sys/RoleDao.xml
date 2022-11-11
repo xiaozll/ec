@@ -108,6 +108,16 @@
         </where>
     </select>
 
+    <select id="findRolesByResourceId" resultType="Role">
+        SELECT
+        <include refid="roleColumns"/>
+        FROM t_sys_role a
+        <where>
+            a.status = #{status}
+            AND  a.id IN ( SELECT role_id FROM t_sys_role_resource WHERE resource_id = #{resourceId})
+        </where>
+    </select>
+
 
     <select id="findRolesByUserId" resultType="Role">
         SELECT
@@ -119,6 +129,7 @@
             a.status = '0'
             AND u.id = #{userId}
         </where>
+        ORDER BY a.data_scope ASC
     </select>
 
     <select id="findRoleIdsByUserId" resultType="java.lang.String">
@@ -134,13 +145,13 @@
     </select>
 
 
-    <select id="findOrganRolesAndSystemRoles" resultType="Role">
+    <select id="findOrganRolesAndSystemNormalRoles" resultType="Role">
         SELECT
         <include refid="roleColumns"/>
         FROM t_sys_role a
         <where>
             a.status = '0'
-            AND (a.organ_id = #{organId} OR a.is_system = #{isSystem})
+            AND (a.organ_id = #{organId} OR (a.is_system = #{isSystem} AND a.role_type = #{roleType}))
         </where>
     </select>
 
@@ -195,6 +206,42 @@
         #{dataScope},
         #{remark}
         )
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO t_sys_role(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        NAME,
+        CODE,
+        ORGAN_ID,
+        IS_SYSTEM,
+        IS_ACTIVITY,
+        ROLE_TYPE,
+        DATA_SCOPE,
+        REMARK
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.name},
+        #{item.code},
+        #{item.organId},
+        #{item.isSystem},
+        #{item.isActivity},
+        #{item.roleType},
+        #{item.dataScope},
+        #{item.remark}
+        )</foreach>
     </insert>
 
     <update id="update">
@@ -276,6 +323,11 @@
             SELECT #{id}, #{item} FROM dual
         </foreach>
     </insert>
+
+
+    <delete id="deleteRoleResourceByResourceIdAndRoleId">
+        DELETE FROM t_sys_role_resource WHERE resource_id = #{resourceId} AND role_id = #{roleId}
+    </delete>
     <!--角色资源-->
 
 </mapper>

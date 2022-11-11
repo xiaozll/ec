@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,25 +10,28 @@ import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.model.TreeNode;
+import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.ResourceType;
-import com.eryansky.modules.sys.mapper.Area;
 import com.eryansky.modules.sys.mapper.Resource;
+import com.eryansky.modules.sys.mapper.Role;
+import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.ResourceService;
+import com.eryansky.modules.sys.service.RoleService;
+import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,7 @@ import java.util.List;
 /**
  * 资源权限Resource管理 Controller层.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-10-11 下午4:36:24
  */
 @SuppressWarnings("serial")
@@ -50,6 +53,10 @@ public class ResourceController extends SimpleController {
 
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private UserService userService;
 
     @ModelAttribute("model")
     public Resource get(@RequestParam(required = false) String id) {
@@ -62,17 +69,17 @@ public class ResourceController extends SimpleController {
 
     @RequiresPermissions("sys:resource:view")
     @Logging(value = "资源管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public String list() {
         return "modules/sys/resource";
     }
 
-    @RequestMapping(value = {"treegrid"})
+    @PostMapping(value = {"treegrid"})
     @ResponseBody
     public Datagrid<Resource> treegrid(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Resource model = new Resource();
         List<Resource> list = resourceService.findList(model);
-        return new Datagrid<Resource>(list.size(), list);
+        return new Datagrid<>(list.size(), list);
     }
 
 
@@ -82,7 +89,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"input"})
+    @GetMapping(value = {"input"})
     public String input(@ModelAttribute("model") Resource model, String parentId, Model uiModel) throws Exception {
         uiModel.addAttribute("parentId", parentId);
         uiModel.addAttribute("model", model);
@@ -94,7 +101,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-保存资源", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Resource resource, String _parentId) {
         Result result = null;
@@ -128,7 +135,7 @@ public class ResourceController extends SimpleController {
      */
     @RequiresPermissions("sys:resource:edit")
     @Logging(value = "资源管理-删除资源", logType = LogType.access)
-    @RequestMapping(value = {"delete/{id}"})
+    @PostMapping(value = {"delete/{id}"})
     @ResponseBody
     public Result delete(@PathVariable String id) {
 //        resourceService.deleteById(id);
@@ -140,7 +147,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树.
      */
-    @RequestMapping(value = {"tree"})
+    @PostMapping(value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) throws Exception {
         List<TreeNode> treeNodes = null;
@@ -158,7 +165,7 @@ public class ResourceController extends SimpleController {
      * 资源树.
      */
     @RequiresPermissions("MANAGER")
-    @RequestMapping(value = {"resourceData"})
+    @PostMapping(value = {"resourceData"})
     @ResponseBody
     public List<TreeNode> resourceData(){
         List<TreeNode>  treeNodes = resourceService.findTreeNodeResources();
@@ -168,7 +175,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树-分级权限
      */
-    @RequestMapping(value = {"resourceDataWithPermission"})
+    @PostMapping(value = {"resourceDataWithPermission"})
     @ResponseBody
     public List<TreeNode> resourceDataWithPermission(){
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -180,7 +187,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源类型下拉列表.
      */
-    @RequestMapping(value = {"resourceTypeCombobox"})
+    @PostMapping(value = {"resourceTypeCombobox"})
     @ResponseBody
     public List<Combobox> resourceTypeCombobox(String selectType, String parentId) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
@@ -229,7 +236,7 @@ public class ResourceController extends SimpleController {
      * 父级资源下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(value = {"parent"})
+    @PostMapping(value = {"parent"})
     @ResponseBody
     public List<TreeNode> parent(@ModelAttribute("model") Resource resource, String selectType) {
         List<TreeNode> treeNodes = null;
@@ -245,7 +252,7 @@ public class ResourceController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"maxSort"})
     @ResponseBody
     public Result maxSort() throws Exception {
         Result result;
@@ -262,10 +269,113 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Resource model) {
         return Result.successResult().setObj(model);
+    }
+
+
+
+    /**
+     * 资源关联角色
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = {"role/{resourceId}"})
+    public String role(@PathVariable String resourceId,Model uiModel,HttpServletRequest request,HttpServletResponse response) {
+        uiModel.addAttribute("resourceId",resourceId);
+        return "modules/sys/resource-role";
+    }
+
+
+    /**
+     * 资源关联角色
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = {"resourceRoleDatagrid/{resourceId}"})
+    @ResponseBody
+    public Datagrid resourceRoleDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
+        Page<Role> page = new Page<>(request);
+        page = roleService.findRolesByReourceId(page,resourceId);
+        return new Datagrid(page.getTotalCount(),page.getResult());
+    }
+
+
+    /**
+     * 资源关联角色
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = {"deleteRoles/{resourceId}"})
+    @ResponseBody
+    public Result deleteRoles(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
+        if (Collections3.isEmpty(ids)) {
+            logger.warn("参数[ids]为空.");
+            return Result.warnResult().setMsg("操作失败，参数为空！");
+        }
+        for (String id : ids) {
+            roleService.deleteRoleResourceByResourceIdAndRoleId(id,resourceId);
+        }
+        return Result.successResult();
+    }
+
+
+    /**
+     * 资源关联用户
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = {"user/{resourceId}"})
+    public String user(@PathVariable String resourceId,Model uiModel,HttpServletRequest request,HttpServletResponse response) {
+        uiModel.addAttribute("resourceId",resourceId);
+        return "modules/sys/resource-user";
+    }
+
+
+    /**
+     * 资源关联用户
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = {"resourceUserDatagrid/{resourceId}"})
+    @ResponseBody
+    public Datagrid resourceUserDatagrid(@PathVariable String resourceId,HttpServletRequest request,HttpServletResponse response) {
+        Page<User> page = new Page<>(request);
+        page = userService.findUsersByResourceId(page,resourceId);
+        return new Datagrid(page.getTotalCount(),page.getResult());
+    }
+
+
+    /**
+     * 资源关联用户
+     *
+     * @param resourceId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = {"deleteUsers/{resourceId}"})
+    @ResponseBody
+    public Result deleteUsers(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
+        if (Collections3.isEmpty(ids)) {
+            logger.warn("参数[ids]为空.");
+            return Result.warnResult().setMsg("操作失败，参数为空！");
+        }
+        for (String id : ids) {
+            userService.deleteUserResourceByResourceIdAndUserId(id,resourceId);
+        }
+        return Result.successResult();
     }
 
 }

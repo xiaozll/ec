@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -28,7 +28,7 @@ import org.springframework.util.Assert;
  * 反射工具类.
  *
  * 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-24 下午4:17:27 
  *
  */
@@ -39,7 +39,7 @@ public class ReflectionUtils {
 
     private static final String CGLIB_CLASS_SEPARATOR = "$$";
 
-    private static Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
 
 
     /**
@@ -370,7 +370,7 @@ public class ReflectionUtils {
      */
     public static <T> T getAnnotation(Object target, Class annotationClass) {
         Assert.notNull(target, "target不能为空");
-        return (T) getAnnotation(target.getClass(), annotationClass);
+        return getAnnotation(target.getClass(), annotationClass);
     }
 
     /**
@@ -448,7 +448,7 @@ public class ReflectionUtils {
         for (Class<?> superClass = targetClass.getSuperclass(); superClass == null
                 || superClass == Object.class; superClass = superClass
                 .getSuperclass()) {
-            List<T> temp = (List<T>) getAnnotations(superClass, annotationClass);
+            List<T> temp = getAnnotations(superClass, annotationClass);
             if (CollectionUtils.isNotEmpty(temp)) {
                 CollectionUtils.addAll(result, temp.iterator());
             }

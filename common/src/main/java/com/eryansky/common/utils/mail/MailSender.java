@@ -1,11 +1,14 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.mail;
 
+import com.eryansky.common.utils.io.FileUtils;
 import com.eryansky.common.utils.mail.model.MailSenderModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -18,10 +21,12 @@ import java.util.Date;
  * 简单邮件发送器. <br>
  * 支持文本邮件、HTML邮件、带附件的HTML邮件
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-5-5 下午3:40:06
  */
 public class MailSender {
+
+    private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -76,7 +81,7 @@ public class MailSender {
             Transport.send(mailMessage);
             return true;
         } catch (MessagingException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(),ex);
         }
         return false;
     }
@@ -140,7 +145,7 @@ public class MailSender {
             Transport.send(mailMessage);
             return true;
         } catch (MessagingException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(),ex);
         }
         return false;
     }
@@ -213,7 +218,7 @@ public class MailSender {
                     // 附件区别内嵌内容的一个特点是有文件名，为防止中文乱码要编码
                     file.setFileName(MimeUtility.encodeText(dh.getName(),
                             DEFAULT_ENCODING, null));
-                    System.out.println(dh.getName());
+                    logger.debug(dh.getName());
                     mainPart.addBodyPart(file);
                 }
             }
@@ -225,9 +230,9 @@ public class MailSender {
             Transport.send(mailMessage);
             return true;
         } catch (MessagingException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(),ex);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return false;
     }

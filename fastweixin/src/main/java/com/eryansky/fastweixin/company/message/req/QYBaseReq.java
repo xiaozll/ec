@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  企业号基础消息模型
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYBaseReq {

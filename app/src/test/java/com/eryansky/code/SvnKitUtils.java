@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 public class SvnKitUtils {
 
     // svn各种客户端的管理工具，使用svnkit-hl接口进行开发
-    private SVNClientManager ourClientManager;
+    private final SVNClientManager ourClientManager;
     // 仓库的统计开始版本，默认为1
     private static long defaultPreVersion = 1;
     private static final String USER_NAME = "";//SVN账号

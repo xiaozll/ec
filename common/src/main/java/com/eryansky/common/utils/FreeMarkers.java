@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -19,7 +19,7 @@ import java.util.Map;
  * freemarker模板引擎工具类.
  * Utilities of <a href="http://www.freemarker.org">FreeMarker</a>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class FreeMarkers {
 
@@ -29,7 +29,7 @@ public class FreeMarkers {
     public static String renderString(String templateString, Map<String, ?> model) {
         try {
             StringWriter result = new StringWriter();
-            Template t = new Template("default", new StringReader(templateString), new Configuration());
+            Template t = new Template("default", new StringReader(templateString), new Configuration(Configuration.VERSION_2_3_31));
             t.process(model, result);
             return result.toString();
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class FreeMarkers {
      * 创建默认配置，设定模板目录.
      */
     public static Configuration buildConfiguration(String directory) throws IOException {
-        Configuration cfg = new Configuration();
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
         Resource path = new DefaultResourceLoader().getResource(directory);
         cfg.setDirectoryForTemplateLoading(path.getFile());
         return cfg;

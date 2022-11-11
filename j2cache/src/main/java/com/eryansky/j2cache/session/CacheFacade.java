@@ -39,13 +39,13 @@ public class CacheFacade extends JedisPubSub implements Closeable, AutoCloseable
 
     private static final Map<String, Object> _g_keyLocks = new ConcurrentHashMap<>();
 
-    private CaffeineCache cache1;
+    private final CaffeineCache cache1;
     private RedisCache cache2;
 
     private RedisClient redisClient;
     private String pubsub_channel;
 
-    private boolean discardNonSerializable;
+    private final boolean discardNonSerializable;
 
     public CacheFacade(int maxSizeInMemory, int maxAge, Properties redisConf, boolean discardNonSerializable) {
         this.discardNonSerializable = discardNonSerializable;

@@ -1,15 +1,18 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.mapper;
 
 
+import com.eryansky.common.model.TreeNode;
+import com.eryansky.modules.sys.utils.OrganUtils;
+
 /**
  * 机构扩展
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-08
  */
 public class OrganExtend extends Organ {
@@ -25,6 +28,8 @@ public class OrganExtend extends Organ {
 
     private String homeCompanyId;
     private String homeCompanyCode;
+
+    private String isLeaf;
 
     public Integer getTreeLevel() {
         return treeLevel;
@@ -81,5 +86,23 @@ public class OrganExtend extends Organ {
 
     public void setHomeCompanyCode(String homeCompanyCode) {
         this.homeCompanyCode = homeCompanyCode;
+    }
+
+    public String getIsLeaf() {
+        return isLeaf;
+    }
+
+    public void setIsLeaf(String isLeaf) {
+        this.isLeaf = isLeaf;
+    }
+
+
+    /**
+     * Treegrid 关闭状态设置
+     *
+     * @return
+     */
+    public String getState() {
+        return Boolean.parseBoolean(isLeaf) ? TreeNode.STATE_OPEN : TreeNode.STATE_CLOASED;
     }
 }

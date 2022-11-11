@@ -15,6 +15,7 @@
  */
 package com.eryansky.j2cache;
 
+import com.eryansky.j2cache.caffeine.CaffeineProvider;
 import com.eryansky.j2cache.lock.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +39,9 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	private final Logger logger = LoggerFactory.getLogger(CacheChannel.class);
 
 	private static final Map<String, Object> _g_keyLocks = new ConcurrentHashMap<>();
-	private J2CacheConfig config;
-	private CacheProviderHolder holder;
-    private boolean defaultCacheNullObject ;
+	private final J2CacheConfig config;
+	private final CacheProviderHolder holder;
+    private final boolean defaultCacheNullObject ;
 	private boolean closed;
 	private static final Map<String, LinkedBlockingQueue<String>> mQueueMap = new ConcurrentHashMap<>();
 	private static final Map<String, ReentrantLock> mLockMap = new ConcurrentHashMap<>();
@@ -926,6 +927,22 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 	}
 
 	/**
+	 * 队列 key列表
+	 * @return
+	 */
+	public Collection<Region> queues() {
+		assertNotClose();
+		return holder.queues();
+//		Level2Cache level2Cache = holder.getLevel2Cache(CaffeineProvider.QUEUE_DEFAULT);
+//		if(!(level2Cache instanceof NullCache)){
+//			return holder.queues();
+//		}else{
+//			return mQueueMap.keySet().stream().map(v->new Region(v,-1,-1)).collect(Collectors.toList());
+//		}
+	}
+
+
+	/**
 	 * 锁定对象（自动释放锁）
 	 * @param region 锁对象
 	 * @param keyExpireSeconds 锁超时时间（使用redis有效） 单位：秒
@@ -1012,7 +1029,7 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			return level2Cache.lock(frequency,timeoutInSecond, keyExpireSeconds,lockCallback);
 		}else{
 			ReentrantLock lock  = mLockMap.computeIfAbsent(region, k -> new ReentrantLock());
-			int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
+			int retryCount = Float.valueOf(timeoutInSecond * 1000 / (float)frequency.getRetryInterval()).intValue();
 
 			for (int i = 0; i < retryCount; i++) {
 				boolean flag = lock.tryLock();
@@ -1036,6 +1053,20 @@ public abstract class CacheChannel implements Closeable , AutoCloseable {
 			}
 			return lockCallback.handleNotObtainLock();
 		}
+	}
+
+
+	/**
+	 * 尝试锁
+	 * @param region 锁对象
+	 * @param key
+	 * @return
+	 * @throws LockInsideExecutedException
+	 * @throws LockCantObtainException
+	 */
+	public boolean  tryLock(String region, String key) throws LockInsideExecutedException, LockCantObtainException {
+		CacheObject cacheObject = get(region,key);
+		return null == cacheObject || null == cacheObject.getValue();
 	}
 
 }

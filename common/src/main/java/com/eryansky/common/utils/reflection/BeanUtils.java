@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -21,7 +21,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-1-19 下午4:36:03
  */
 public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
@@ -44,7 +44,7 @@ public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
 
         // Copy the properties, converting as necessary
         if (orig instanceof DynaBean) {
-            DynaProperty origDescriptors[] =
+            DynaProperty[] origDescriptors =
                     ((DynaBean) orig).getDynaClass().getDynaProperties();
             for (int i = 0; i < origDescriptors.length; i++) {
                 String name = origDescriptors[i].getName();
@@ -53,7 +53,7 @@ public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
                     try {
                         copyProperty(dest, name, value);
                     } catch (Exception e) {
-                        ; // Should not happen
+                        // Should not happen
                     }
 
                 }
@@ -67,14 +67,14 @@ public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
                     try {
                         copyProperty(dest, name, value);
                     } catch (Exception e) {
-                        ; // Should not happen
+                        // Should not happen
                     }
 
                 }
             }
         } else
       /* if (orig is a standard JavaBean) */ {
-            PropertyDescriptor origDescriptors[] =
+            PropertyDescriptor[] origDescriptors =
                     PropertyUtils.getPropertyDescriptors(orig);
             for (int i = 0; i < origDescriptors.length; i++) {
                 String name = origDescriptors[i].getName();
@@ -88,9 +88,9 @@ public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
                         Object value = PropertyUtils.getSimpleProperty(orig, name);
                         copyProperty(dest, name, value);
                     } catch (IllegalArgumentException ie) {
-                        ; // Should not happen
+                        // Should not happen
                     } catch (Exception e) {
-                        ; // Should not happen
+                        // Should not happen
                     }
 
                 }
@@ -110,7 +110,7 @@ public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
      * copy
      */
     public static void copyBeanNotNull2Bean(Object databean, Object tobean) throws Exception {
-        PropertyDescriptor origDescriptors[] =
+        PropertyDescriptor[] origDescriptors =
                 PropertyUtils.getPropertyDescriptors(databean);
         for (int i = 0; i < origDescriptors.length; i++) {
             String name = origDescriptors[i].getName();
@@ -126,9 +126,9 @@ public class BeanUtils extends org.apache.commons.beanutils.BeanUtils {
                         copyProperty(tobean, name, value);
                     }
                 } catch (IllegalArgumentException ie) {
-                    ; // Should not happen
+                    // Should not happen
                 } catch (Exception e) {
-                    ; // Should not happen
+                    // Should not happen
                 }
 
             }

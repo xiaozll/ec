@@ -64,6 +64,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             String category = (String) map.get("category");
             String content = (String) map.get("content");
             String linkUrl = (String) map.get("linkUrl");
+            String linkSSO = (String) map.get("linkSSO");
             if (StringUtils.isNotBlank(linkUrl)){
                 linkUrl = EncodeUtils.urlDecode(linkUrl);
             }
@@ -76,7 +77,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             List<MessageChannel> messageChannels = Lists.newArrayList();
             try {
                 checkOptional(appId, "appId");
-                checkOptional(serviceId, "serviceId");
+//                checkOptional(serviceId, "serviceId");
                 checkOptional(content, "content");
                 if (Collections3.isEmpty(receiveIds)) {
                     return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数[receiveIds]不能为空");
@@ -112,20 +113,44 @@ public class ApiWebServiceImpl implements IApiWebService {
                 senderUser = Static.userService.getSuperUser();
             }
 
-
-            List<String> receiveObjectIds = new ArrayList<String>();
-            for (String localLoginName : receiveIds) {
-                User recevieUser = Static.userService.getUserByIdOrLoginName(localLoginName);
-                if (recevieUser == null) {
-                    logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
-                }
-                receiveObjectIds.add(recevieUser.getId());
+            MessageReceiveObjectType messageReceiveObjectType = MessageReceiveObjectType.getByValue(_receiveType);
+            if(null == messageReceiveObjectType){
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "参数[receiveType]异常："+receiveType);
             }
+
+            List<String> receiveObjectIds = new ArrayList<>();
+            if(MessageReceiveObjectType.User.equals(messageReceiveObjectType)){
+                for (String localLoginName : receiveIds) {
+                    User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
+                    if (receiveUser == null) {
+                        logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
+                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
+                    }
+                    receiveObjectIds.add(receiveUser.getId());
+                }
+            }else if(MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)){
+                for (String companyCode : receiveIds) {
+                    Organ company = Static.organService.getByIdOrCode(companyCode);
+                    if (company == null) {
+                        logger.error("机构[" + companyCode + "],统一平台无相关账号信息");
+                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
+                    }
+                    List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());
+                    if(Collections3.isNotEmpty(organList)){
+                        receiveObjectIds.addAll(organList);
+                    }
+                    if(!receiveObjectIds.contains(company.getId())){
+                        receiveObjectIds.add(company.getId());
+                    }
+                }
+            }else {
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "参数[receiveType]异常："+receiveType);
+            }
+
 
             //微信发送消息
             try {
-                MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, MessageReceiveObjectType.getByValue(_receiveType), receiveObjectIds,sendTime,messageChannels);
+                MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, messageReceiveObjectType, receiveObjectIds,sendTime,messageChannels);
                 return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功");
             } catch (Exception e) {
                 return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息发送失败");
@@ -174,7 +199,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             List<MessageChannel> messageChannels = Lists.newArrayList();
             try {
                 checkOptional(appId, "appId");
-                checkOptional(serviceId, "serviceId");
+//                checkOptional(serviceId, "serviceId");
                 checkOptional(senderId, "senderId");
                 checkOptional(title, "title");
                 checkOptional(content, "content");
@@ -210,11 +235,11 @@ public class ApiWebServiceImpl implements IApiWebService {
                 senderUser = Static.userService.getSuperUser();
             }
 
-            List<String> organIds = new ArrayList<String>();
+            List<String> organIds = new ArrayList<>();
             for (String companyCode : receiveIds) {
                 Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {
-                    logger.error("机构[" + companyCode + "],统一平台无相关账号信息");
+                    logger.error("机构[" + companyCode + "],统一平台无相关机构信息");
                     return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
                 }
                 List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 系统任务
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2017-09-19
  */
 @Service
@@ -54,7 +54,7 @@ public class SystemService extends BaseService {
     }
 
     /**
-     * 删除organ扩展表数据
+     * 删除t_sys_organ_extend扩展表数据
      *
      * @return
      */
@@ -64,7 +64,7 @@ public class SystemService extends BaseService {
     }
 
     /**
-     * 删除organ扩展表数据
+     * 删除t_sys_organ_extend扩展表数据
      *
      * @param parameter 参数
      * @return
@@ -74,7 +74,7 @@ public class SystemService extends BaseService {
     }
 
     /**
-     * 同步数据到organ表
+     * 同步数据到t_sys_organ_extend表
      */
     public void syncOrganToExtend() {
         String dbType = AppConstants.getJdbcType();
@@ -82,18 +82,22 @@ public class SystemService extends BaseService {
             syncOrganToExtend(null);//使用存储过程
         } else {
             List<Organ> list = organService.findAllWithDelete();
-            for (Organ organ : list) {
+            list.parallelStream().forEach(organ -> {
                 Parameter parameter = Parameter.newParameter();
                 parameter.put("id", organ.getId());
                 parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
-                parameter.put("companyId", OrganUtils.getCompanyIdByRecursive(organ.getId()));
-                parameter.put("companyCode", OrganUtils.getCompanyCodeByRecursive(organ.getId()));
-                parameter.put("homeCompanyId", OrganUtils.getHomeCompanyIdByRecursive(organ.getId()));
-                parameter.put("homeCompanyCode", OrganUtils.getHomeCompanyCodeByRecursive(organ.getId()));
+                Organ company = OrganUtils.getCompanyByRecursive(organ.getId());
+                Organ homeCompany = OrganUtils.getHomeCompanyByRecursive(organ.getId());
+                parameter.put("companyId", company.getId());
+                parameter.put("companyCode", company.getCode());
+                parameter.put("homeCompanyId", homeCompany.getId());
+                parameter.put("homeCompanyCode", homeCompany.getCode());
                 Integer level = StringUtils.isNotBlank(organ.getParentIds()) ? organ.getParentIds().split(",").length : null;
                 parameter.put("treeLevel", level);
+                Integer childCount = organService.findChildCount(organ.getId());
+                parameter.put("isLeaf", null == childCount || childCount == 0);
                 syncOrganToExtend(parameter);
-            }
+            });
         }
     }
 

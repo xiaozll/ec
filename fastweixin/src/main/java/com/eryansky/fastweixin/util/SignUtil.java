@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import static com.eryansky.fastweixin.util.StrUtil.hasBlank;
 /**
  * 绑定服务器工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public final class SignUtil {
@@ -53,12 +54,10 @@ public final class SignUtil {
 
         try {
             md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(content.toString().getBytes("UTF-8"));
+            byte[] digest = md.digest(content.toString().getBytes(StandardCharsets.UTF_8));
             tmpStr = byteToStr(digest);
         } catch (NoSuchAlgorithmException e) {
             LOG.error("加密方式异常", e);
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("编码格式不支持", e);
         }
         return tmpStr != null && tmpStr.equalsIgnoreCase(signature);
     }

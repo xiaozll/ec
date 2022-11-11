@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * 		<filter-name>cacheControlHeaderFilter</filter-name>
  * 		<url-pattern>/img/*</url-pattern>
  * 	</filter-mapping>
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-31 下午9:09:35 
  *
  */

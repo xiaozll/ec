@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 public interface IFileManager {
 
     //枚举上传状态
-    public enum UploadStatus {
+    enum UploadStatus {
         Create_Directory_Fail,      //远程服务器相应目录创建失败
         Create_Directory_Success,   //远程服务器创建目录成功
         Upload_New_File_Success,    //上传新文件成功
@@ -26,7 +26,7 @@ public interface IFileManager {
     }
 
     //枚举下载状态
-    public enum DownloadStatus {
+    enum DownloadStatus {
         Remote_File_Noexist,    //远程文件不存在
         Local_Bigger_Remote,    //本地文件大于远程文件
         Download_From_Break_Success,    //断点下载文件成功

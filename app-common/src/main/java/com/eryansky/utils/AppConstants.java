@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,11 +14,14 @@ import com.eryansky.common.utils.io.PropertiesLoader;
 import com.eryansky.modules.sys.service.ConfigService;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 系统使用的静态变量.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-03-17 上午8:25:36
  */
 public class AppConstants extends SysConstants {
@@ -160,7 +163,7 @@ public class AppConstants extends SysConstants {
      */
     public static int getLogKeepTime() {
         String code = "system.logKeepTime";
-        return Integer.valueOf(getConfigValue(code, "30"));
+        return Integer.parseInt(getConfigValue(code, "30"));
     }
 
     /**
@@ -176,6 +179,157 @@ public class AppConstants extends SysConstants {
         }
         return value;
     }
+
+
+    /**
+     * Oauth2拦截器是否启用
+     *
+     * @return
+     */
+    public static Boolean isOauth2Enable() {
+        String code = "system.security.oauth2.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+
+    /**
+     * oauth2 排除URL 多个之间以“,”分割
+     * @return
+     */
+    public static String getOauth2ExcludePaths() {
+        String code = "system.security.oauth2.excludePaths";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 消     * oauth2 排除URL 多个之间以“,”分割
+     * @return
+     */
+    public static List<String> getOauth2ExcludePathList() {
+        String value = getOauth2ExcludePaths();
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
+     * 允许跨站 多个之间以“,”分割
+     * @return
+     */
+    public static String getCorsAllowedOrigins() {
+        String code = "system.security.cors.allowedOrigins";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 允许跨站
+     * @return
+     */
+    public static List<String> getCorsAllowedOriginList() {
+        String value = getCorsAllowedOrigins();
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 登录账号白名单 不受“最大登录用户数限制” 每行一个或多个之间以";"分割
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getLimitUserWhiteList() {
+        String code = "system.security.limit.user.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value.toUpperCase()).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 仅限IP白名单访问
+     *
+     * @return
+     */
+    public static Boolean isLimitIpEnable() {
+        String code = "system.security.limit.ip.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+    /**
+     * 仅限IP白名单访问
+     *
+     * @return
+     */
+    public static Boolean isLimitIpWhiteEnable() {
+        String code = "system.security.limit.ip.whiteEnable";
+        String value = getConfigValue(code,"true");
+        return Boolean.valueOf(value);
+    }
+
+    /**
+     * #不通过应用集成账号验证的账号 每行一个或多个之间以";"分割
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getLimitIpWhiteList() {
+        String code = "system.security.limit.ip.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * #不通过应用集成账号验证的账号 每行一个或多个之间以";"分割
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getLimitIpBlackList() {
+        String code = "system.security.limit.ip.blacklist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(value.toUpperCase().replaceAll("，", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
+     * 启用内部代理
+     *
+     * @return
+     */
+    public static Boolean isProxyEnable() {
+        String code = "system.security.proxy.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+    /**
+     * 内部代理URL白名单 每行一个或多个之间以";"分割，支持"*"通配符
+     * 自动转换成小写
+     *
+     * @return
+     */
+    public static List<String> getProxyWhiteList() {
+        String code = "system.security.proxy.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
+
 
     /**
      * 应用文件 磁盘绝对路径
@@ -448,4 +602,57 @@ public class AppConstants extends SysConstants {
         return getConfigValue(code);
     }
 
+
+    /**
+     * 客服链接
+     * @return
+     */
+    public static String getAppProductContactUrl() {
+        String code = "app.productContactUrl";
+        return getConfigValue(code);
+    }
+
+    /**
+     * REST 服务是否启用
+     * @return
+     */
+    public static boolean getIsSystemRestEnable() {
+        String code = "system.rest.enable";
+        String value = getConfigValue(code, "false");
+        return "true".equals(value) || "1".equals(value);
+    }
+
+
+    /**
+     * REST 服务访问密钥
+     * @return
+     */
+    public static String getRestDefaultApiKey() {
+        String code = "system.rest.defaultApiKey";
+        return getConfigValue(code,"");
+    }
+
+    /**
+     * REST IP白名单访问限制
+     * @return
+     */
+    public static boolean getIsSystemRestLimitEnable() {
+        String code = "system.rest.limit.ip.enable";
+        String value = getConfigValue(code, "true");
+        return "true".equals(value) || "1".equals(value);
+    }
+
+    /**
+     * REST IP访问白名单 每行一个或多个之间以";"分割，支持"*"通配符
+     *
+     * @return
+     */
+    public static List<String> getRestLimitIpWhiteList() {
+        String code = "system.rest.limit.ip.whitelist";
+        String value = getConfigValue(code);
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(StringUtils.split(StringUtils.trim(value).replaceAll("\r\n", ",").replaceAll("，", ",").replaceAll("；", ",").replaceAll(";", ","), ","));
+        }
+        return Collections.emptyList();
+    }
 }

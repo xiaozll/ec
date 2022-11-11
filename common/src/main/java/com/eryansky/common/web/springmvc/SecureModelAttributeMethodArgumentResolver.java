@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -41,7 +41,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ExtendedServletRequ
 public class SecureModelAttributeMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     @SuppressWarnings("unused")
-    private static Logger logger = LoggerFactory.getLogger(SecureModelAttributeMethodArgumentResolver.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecureModelAttributeMethodArgumentResolver.class);
 
     private final boolean annotationNotRequired;
 
@@ -81,7 +81,7 @@ public class SecureModelAttributeMethodArgumentResolver implements HandlerMethod
         }
 
         // 从绑定工厂获取绑定类
-        WebDataBinder binder = (ExtendedServletRequestDataBinder) binderFactory.createBinder(request, attribute, name);
+        WebDataBinder binder = binderFactory.createBinder(request, attribute, name);
         if (binder.getTarget() != null) {
 
             // 设置绑定允许的字段和禁止的字段
@@ -145,7 +145,7 @@ public class SecureModelAttributeMethodArgumentResolver implements HandlerMethod
     private Map<String, String> getUriTemplateVariables(NativeWebRequest request) {
         Map<String, String> variables = (Map<String, String>) request.getAttribute(
                 HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
-        return (variables != null) ? variables : Collections.<String, String>emptyMap();
+        return (variables != null) ? variables : Collections.emptyMap();
     }
 
     // 从requestValue创建Attribute
@@ -176,7 +176,7 @@ public class SecureModelAttributeMethodArgumentResolver implements HandlerMethod
         for (Annotation annot : annotations) {
             if (annot.annotationType().getSimpleName().startsWith("Valid")) {
                 Object hints = AnnotationUtils.getValue(annot);
-                binder.validate(hints instanceof Object[] ? (Object[]) hints : new Object[]{hints});
+                binder.validate(hints instanceof Object[] ? hints : new Object[]{hints});
                 break;
             }
         }

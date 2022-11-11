@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -18,12 +18,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
  *  生成随机验证码.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-4 下午9:00:06
  */
 @SuppressWarnings("serial")
@@ -31,7 +32,8 @@ public class ValidateCodeServlet extends HttpServlet {
 	
 	private int w = 70;
 	private int h = 26;
-	
+	private static final SecureRandom random = new SecureRandom();
+
 	public ValidateCodeServlet() {
 		super();
 	}
@@ -103,8 +105,7 @@ public class ValidateCodeServlet extends HttpServlet {
 	}
 	
 	private Color getRandColor(int fc,int bc) { 
-		Random random=new Random();
-        if(fc>255) fc=255; 
+        if(fc>255) fc=255;
         if(bc>255) bc=255; 
         int r=fc+random.nextInt(bc-fc); 
         int g=fc+random.nextInt(bc-fc); 
@@ -119,7 +120,6 @@ public class ValidateCodeServlet extends HttpServlet {
 		// 加入干扰线条
 		for (int i = 0; i < 10; i++) {
 			g.setColor(getRandColor(40,150));
-			Random random = new Random();
 			int x = random.nextInt(w);
 			int y = random.nextInt(h);
 			int x1 = random.nextInt(w);
@@ -133,7 +133,6 @@ public class ValidateCodeServlet extends HttpServlet {
 				'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
 				'X', 'Y', 'Z', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 		String[] fontTypes = {"\u5b8b\u4f53","\u65b0\u5b8b\u4f53","\u9ed1\u4f53","\u6977\u4f53","\u96b6\u4e66"}; 
-		Random random = new Random();
 		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < 4; i++) {
 			String r = String.valueOf(codeSeq[random.nextInt(codeSeq.length)]);//random.nextInt(10));

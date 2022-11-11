@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *          Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Cookie工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2013-01-15
  */
 public class CookieUtils {
@@ -37,6 +37,8 @@ public class CookieUtils {
 	 */
 	public static void setCookie(HttpServletResponse response, String name, String value, int maxAge) {
 		Cookie cookie = new Cookie(name, null);
+		cookie.setSecure(true);
+		cookie.setHttpOnly(true); //HttpOnly flag
         if(StringUtils.isNotBlank(SpringContextHolder.getApplicationContext().getApplicationName())){
             cookie.setPath(SpringContextHolder.getApplicationContext().getApplicationName());
         }else{

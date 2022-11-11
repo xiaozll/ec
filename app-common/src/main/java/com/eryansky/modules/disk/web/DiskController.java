@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,17 +14,16 @@ import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.PrettyMemoryUtils;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
-import com.eryansky.common.utils.io.IoUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.DownloadUtils;
-import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.disk.mapper.Folder;
-import com.eryansky.utils.AppConstants;
+import com.eryansky.modules.sys.utils.DownloadFileUtils;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -39,10 +38,10 @@ import com.eryansky.modules.disk.service.*;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.utils.SelectType;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,15 +49,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * 我的云盘 管理 包含：文件夹的管理 文件的管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-22
  */
 @Controller
@@ -105,7 +102,7 @@ public class DiskController extends SimpleController {
      */
     @RequiresPermissions("disk:disk:view")
     @Logging(logType = LogType.access, value = "我的云盘")
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     public ModelAndView list() {
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -122,7 +119,7 @@ public class DiskController extends SimpleController {
      * @param selectType
      * @return
      */
-    @RequestMapping(value = {"folderTree"})
+    @PostMapping(value = {"folderTree"})
     @ResponseBody
     public List<TreeNode> folderTree(String folderAuthorize, String excludeFolderId, String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -141,7 +138,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"folderAuthorizeCombobox"})
+    @PostMapping(value = {"folderAuthorizeCombobox"})
     @ResponseBody
     public List<Combobox> folderAuthorizeCombobox(String selectType,
                                                   String requestType) {
@@ -167,7 +164,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"fileSizeTypeCombobox"})
+    @PostMapping(value = {"fileSizeTypeCombobox"})
     @ResponseBody
     public List<Combobox> fileSizeTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -192,7 +189,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件夹保存")
-    @RequestMapping(value = {"saveFolder"})
+    @PostMapping(value = {"saveFolder"})
     @ResponseBody
     public Result saveFolder(@ModelAttribute("model") Folder folder) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -213,7 +210,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件夹删除")
-    @RequestMapping(value = {"folderRemove/{folderId}"})
+    @PostMapping(value = {"folderRemove/{folderId}"})
     @ResponseBody
     public Result folderRemove(@PathVariable String folderId) {
         Folder folder = folderService.get(folderId);
@@ -258,7 +255,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"diskTree"})
+    @PostMapping(value = {"diskTree"})
     @ResponseBody
     public List<TreeNode> diskTree() {
         List<TreeNode> treeNodes = Lists.newArrayList(); // 返回的树节点
@@ -294,11 +291,10 @@ public class DiskController extends SimpleController {
      * @param fileName
      * @return
      */
-    @RequestMapping(value = {"folderFileDatagrid"})
+    @PostMapping(value = {"folderFileDatagrid"})
     @ResponseBody
     public String folderFileDatagrid(String folderId, String folderAuthorize, String fileName) {
         String json = null;
-        long totalSize = 0L; // 分页总大小
         List<Map<String, Object>> footer = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String loginUserId = sessionInfo.getUserId(); // 登录人Id
@@ -321,11 +317,7 @@ public class DiskController extends SimpleController {
 
             Datagrid<File> dg = new Datagrid<>(page.getTotalCount(),
                     page.getResult());
-            if (Collections3.isNotEmpty(page.getResult())) {
-                for (File file : page.getResult()) {
-                    totalSize += file.getFileSize();
-                }
-            }
+            long totalSize = page.getResult().parallelStream().mapToLong(File::getFileSize).sum();
             Map<String, Object> map = Maps.newHashMap();
             map.put("name", "总大小");
             map.put("prettyFileSize", PrettyMemoryUtils.prettyByteSize(totalSize));
@@ -348,7 +340,7 @@ public class DiskController extends SimpleController {
      * @param parentFolderId
      * @return
      */
-    @RequestMapping(value = {"folderInput"})
+    @GetMapping(value = {"folderInput"})
     public ModelAndView folderInput(String folderId, Integer folderAuthorize,
                                     String parentFolderId) {
         ModelAndView modelAndView = new ModelAndView(
@@ -379,7 +371,7 @@ public class DiskController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"fileInput"})
+    @GetMapping(value = {"fileInput"})
     public ModelAndView fileInput(String folderId, String folderAuthorize) throws Exception {
         ModelAndView modelAndView = new ModelAndView(
                 "modules/disk/disk-fileInput");
@@ -407,7 +399,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件修改")
-    @RequestMapping(value = {"fileSave"})
+    @PostMapping(value = {"fileSave"})
     @ResponseBody
     public Result fileSave(@ModelAttribute("model") File file) {
         fileService.save(file);
@@ -421,7 +413,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件删除")
-    @RequestMapping(value = {"delFolderFile"})
+    @PostMapping(value = {"delFolderFile"})
     @ResponseBody
     public Result delFolderFile(@RequestParam(value = "fileIds", required = false) List<String> fileIds) {
         fileService.deleteFileByFileIds(fileIds);
@@ -435,7 +427,7 @@ public class DiskController extends SimpleController {
      * @throws Exception
      */
     @Logging(logType = LogType.access, value = "我的云盘-文件级联删除")
-    @RequestMapping(value = {"cascadeDelFile"})
+    @PostMapping(value = {"cascadeDelFile"})
     @ResponseBody
     public Result cascadeDelFile(@RequestParam(value = "fileCodes", required = false) List<String> fileCodes) {
         fileService.deleteFileByFolderCode(fileCodes);
@@ -450,7 +442,7 @@ public class DiskController extends SimpleController {
      * @param uploadFile 上传文件
      * @return
      */
-    @RequestMapping(value = {"fileUpload"})
+    @PostMapping(value = {"fileUpload"})
     @ResponseBody
     public Result fileUpload(
             @RequestParam(value = "folderId", required = false) String folderId,
@@ -483,7 +475,7 @@ public class DiskController extends SimpleController {
      */
     @RequiresPermissions("disk:disk:search")
     @Logging(logType = LogType.access, value = "我的云盘-文件检索")
-    @RequestMapping(value = {"search"})
+    @GetMapping(value = {"search"})
     public ModelAndView searchList() {
         boolean isAdmin = DiskUtils.isDiskAdmin(SecurityUtils.getCurrentUserId());
         ModelAndView modelAndView = new ModelAndView("modules/disk/disk-search");
@@ -502,8 +494,7 @@ public class DiskController extends SimpleController {
      * @param personIds       上传人Id集合
      * @return
      */
-
-    @RequestMapping(value = {"fileSearchDatagrid"})
+    @PostMapping(value = {"fileSearchDatagrid"})
     @ResponseBody
     public String fileSearchDatagrid(
             String query,
@@ -519,11 +510,11 @@ public class DiskController extends SimpleController {
             userId = null;
         }
         userId = Collections3.isNotEmpty(personIds) ? personIds.get(0) : userId;
-        Page<File> page = new Page<File>(SpringMVCHolder.getRequest());
+        Page<File> page = new Page<>(SpringMVCHolder.getRequest());
         page = fileService.searchFilePage(page, userId, query,
                 folderAuthorize, sizeType,isAdmin, startTime, endTime);
         if (page != null) {
-            Datagrid<File> dg = new Datagrid<File>(page.getTotalCount(),
+            Datagrid<File> dg = new Datagrid<>(page.getTotalCount(),
                     page.getResult());
             json = JsonMapper.getInstance().toJson(
                     dg,
@@ -543,112 +534,42 @@ public class DiskController extends SimpleController {
      * @param fileId   文件ID
      */
     @Logging(logType = LogType.access, value = "下载文件")
-    @RequiresUser(required = false)
-    @RequestMapping(value = {"fileDownload/{fileId}"})
+    @GetMapping(value = {"fileDownload/{fileId}"})
     public ModelAndView fileDownload(HttpServletResponse response,
-                                     HttpServletRequest request, @PathVariable String fileId) {
+                                     HttpServletRequest request, @PathVariable String fileId) throws Exception {
         File file = fileService.get(fileId);
         try {
             return downloadSingleFileUtil(response, request, file);
         } catch (Exception e) {
-            logger.error("{},{},{},{}", IpUtils.getIpAddr0(request),SecurityUtils.getCurrentUserLoginName(),fileId,e.getMessage());
-            throw e;
+            logger.error(e.getMessage(),e);
+            DownloadFileUtils.loggerHTTPHeader(request,response);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+//            throw e;
         }
 
     }
 
 
     private ModelAndView downloadSingleFileUtil(HttpServletResponse response,
-                                                HttpServletRequest request, File file) {
+                                                HttpServletRequest request, File file) throws Exception {
         ActionException fileNotFoldException = new ActionException("文件不存在，已被删除或移除。");
         if (file == null) {
-            throw fileNotFoldException;
+//            throw fileNotFoldException;
+            // 404
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
 
         java.io.File diskFile = file.getDiskFile();
         if (!diskFile.exists() || !diskFile.canRead()) {
             logger.error("{}:{}",file.getId(),fileNotFoldException.getMessage());
-            throw fileNotFoldException;
+//            throw fileNotFoldException;
+            // 404
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
-        String filename = file.getName();
-        long fileLength = diskFile.length();// 记录文件大小
-        long pastLength = 0;// 记录已下载文件大小
-        long toLength = 0;// 记录客户端需要下载的字节段的最后一个字节偏移量（比如bytes=27000-39000，则这个值是为39000）
-        long contentLength = 0;// 客户端请求的字节总量
-        String rangeBytes = "";// 记录客户端传来的形如“bytes=27000-”或者“bytes=27000-39000”的内容
-
-        // ETag header
-        // The ETag is contentLength + lastModified
-        response.setHeader("ETag", "W/\"" + fileLength + "-" + diskFile.lastModified() + "\"");
-        // Last-Modified header
-        response.setHeader("Last-Modified", new Date(diskFile.lastModified()).toString());
-
-        if (request.getHeader("Range") != null) {// 客户端请求的下载的文件块的开始字节
-            response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
-            logger.debug("request.getHeader(\"Range\")=" + request.getHeader("Range"));
-            rangeBytes = request.getHeader("Range").replaceAll("bytes=", "");
-            if (rangeBytes.indexOf('-') == rangeBytes.length() - 1) {// bytes=969998336-
-                rangeBytes = rangeBytes.substring(0, rangeBytes.indexOf('-'));
-                pastLength = Long.parseLong(rangeBytes.trim());
-                toLength = fileLength - 1;
-            } else {// bytes=1275856879-1275877358
-                String temp0 = rangeBytes.substring(0, rangeBytes.indexOf('-'));
-                String temp2 = rangeBytes.substring(
-                        rangeBytes.indexOf('-') + 1, rangeBytes.length());
-                // bytes=1275856879-1275877358，从第 1275856879个字节开始下载
-                pastLength = Long.parseLong(temp0.trim());
-                // bytes=1275856879-1275877358，到第 1275877358 个字节结束
-                toLength = Long.parseLong(temp2);
-            }
-        } else {// 从开始进行下载
-            toLength = fileLength - 1;
-        }
-        // 客户端请求的是1275856879-1275877358 之间的字节
-        contentLength = toLength - pastLength + 1;
-        if (contentLength < Integer.MAX_VALUE) {
-            response.setContentLength((int) contentLength);
-        } else {
-            // Set the content-length as String to be able to use a long
-            response.setHeader("content-length", "" + contentLength);
-        }
-        String contentType = AppUtils.getServletContext().getMimeType(filename);
-        if (null != contentType) {
-            response.setContentType(contentType);
-        } else {
-            response.setContentType("application/x-download");
-        }
-
-        // 告诉客户端允许断点续传多线程连接下载,响应的格式是:Accept-Ranges: bytes
-        response.setHeader("Accept-Ranges", "bytes");
-        // 必须先设置content-length再设置header
-        response.addHeader("Content-Range", "bytes " + pastLength + "-" + toLength + "/" + fileLength);
-        int bufferSize = 2048;
-        response.setBufferSize(bufferSize);
-
-        InputStream istream = null;
-        OutputStream os = null;
-        try {
-            WebUtils.setDownloadableHeader(request, response, filename);
-            os = response.getOutputStream();
-            istream = new BufferedInputStream(new FileInputStream(diskFile), bufferSize);
-            try {
-                IoUtils.copy(istream, os, pastLength, toLength);
-            } catch (IOException ie) {
-                /**
-                 * 在写数据的时候， 对于 ClientAbortException 之类的异常，
-                 * 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。
-                 * 尤其是对于迅雷这种吸血的客户端软件， 明明已经有一个线程在读取 bytes=1275856879-1275877358，
-                 * 如果短时间内没有读取完毕，迅雷会再启第二个、第三个。。。线程来读取相同的字节段， 直到有一个线程读取完毕，迅雷会 KILL
-                 * 掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。
-                 * 所以，我们忽略这种异常
-                 */
-                // ignore
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        } finally {
-            IoUtils.closeSilently(istream);
-        }
+        DownloadFileUtils.downRangeFile(diskFile,file.getName(),response,request);
         return null;
     }
 
@@ -659,7 +580,7 @@ public class DiskController extends SimpleController {
      * @throws Exception
      */
     @Logging(logType = LogType.access, value = "下载文件")
-    @RequestMapping(value = {"downloadDiskFile"})
+    @GetMapping(value = {"downloadDiskFile"})
     public ModelAndView downloadDiskFile(
             HttpServletResponse response,
             HttpServletRequest request,
@@ -699,9 +620,9 @@ public class DiskController extends SimpleController {
             // 创建一个临时压缩文件， 文件流全部注入到这个文件中
             tempZipFile = new java.io.File(Identities.uuid() + "_temp.zip");
             DiskUtils.makeZip(fileList, tempZipFile.getAbsolutePath());
-            String dName = "【批量下载】" + fileList.get(0).getName() + ".zip";
-            DownloadUtils.download(request, response, new FileInputStream(
-                    tempZipFile), dName);
+            String dName = "【批量下载】" + StringUtils.substringBeforeLast(FilenameUtils.getName(fileList.get(0).getName()),".") + "等.zip";
+            DownloadFileUtils.downRangeFile(tempZipFile,dName,response,request);
+//            DownloadUtils.download(request, response, new FileInputStream(tempZipFile), dName);
         } catch (Exception e) {
             throw e;
         } finally {
@@ -719,7 +640,7 @@ public class DiskController extends SimpleController {
      * @return
      */
     @Logging(logType = LogType.access, value = "我的云盘-清空缓存目录")
-    @RequestMapping(value = {"clearTempDir"})
+    @PostMapping(value = {"clearTempDir"})
     @ResponseBody
     public Result clearTempDir() {
         logger.info("清空缓存目录...");

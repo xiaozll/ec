@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventReader;
@@ -16,6 +17,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ import java.util.Map;
  * 消息工具类
  * 用于解析微信平台消息xml报文
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public final class MessageUtil {
@@ -49,19 +51,19 @@ public final class MessageUtil {
      * @return 微信消息或者事件Map
      */
     public static Map<String, Object> parseXml(HttpServletRequest request, String token, String appId, String aesKey) {
-        Map<String, Object> map = new HashMap<String, Object>();
-
+        Map<String, Object> map = new HashMap<>();
         InputStream inputStream = null;
-        try {
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             inputStream = request.getInputStream();
             if (StrUtil.isNotBlank(aesKey)) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 StreamUtil.copy(inputStream, outputStream);
                 String body = outputStream.toString();
                 LOG.debug("收到的消息密文:{}", body);
 
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                 DocumentBuilder db = dbf.newDocumentBuilder();
+
                 StringReader sr = new StringReader(body);
                 InputSource is = new InputSource(sr);
                 Document document = db.parse(is);
@@ -69,20 +71,23 @@ public final class MessageUtil {
                 Element root = document.getDocumentElement();
                 NodeList nodelist1 = root.getElementsByTagName("Encrypt");
 
+                try (WXBizMsgCrypt pc = new WXBizMsgCrypt(token, aesKey, appId)){
+                    String msgSignature = request.getParameter("msg_signature");
+                    String timeStamp = request.getParameter("timestamp");
+                    String nonce = request.getParameter("nonce");
+                    LOG.debug("msgSignature:{}", msgSignature);
+                    LOG.debug("timeStamp:{}", timeStamp);
+                    LOG.debug("nonce:{}", nonce);
+                    String encrypt = nodelist1.item(0).getTextContent();
+                    String fromXML = String.format(FORMAT, encrypt);
+                    String message = pc.decryptMsg(msgSignature, timeStamp, nonce, fromXML);
+                    inputStream = new ByteArrayInputStream(message.getBytes(StandardCharsets.UTF_8));
+                }
 
-                WXBizMsgCrypt pc = new WXBizMsgCrypt(token, aesKey, appId);
-                String msgSignature = request.getParameter("msg_signature");
-                String timeStamp = request.getParameter("timestamp");
-                String nonce = request.getParameter("nonce");
-                LOG.debug("msgSignature:{}", msgSignature);
-                LOG.debug("timeStamp:{}", timeStamp);
-                LOG.debug("nonce:{}", nonce);
-                String encrypt = nodelist1.item(0).getTextContent();
-                String fromXML = String.format(FORMAT, encrypt);
-                String message = pc.decryptMsg(msgSignature, timeStamp, nonce, fromXML);
-                inputStream = new ByteArrayInputStream(message.getBytes("UTF-8"));
             }
             XMLInputFactory factory = XMLInputFactory.newInstance();
+            factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
             XMLEventReader reader = factory.createXMLEventReader(inputStream);
             while (reader.hasNext()) {
                 XMLEvent event = reader.nextEvent();
@@ -141,7 +146,7 @@ public final class MessageUtil {
                         XMLEvent event1 = reader.nextEvent();
                         if(event1.isStartElement() && "PicMd5Sum".equals(event1.asStartElement().getName()
                                 .toString())){
-                            Map<String, String> picMap = new HashMap<String, String>();
+                            Map<String, String> picMap = new HashMap<>();
                             picMap.put("PicMd5Sum", reader.getElementText());
 //                            sb.append(reader.getElementText());
 //                            sb.append(",");

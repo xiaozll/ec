@@ -60,7 +60,7 @@ public class ReadonlyRedisCacheProvider extends RedisCacheProvider {
 
         private static final List<String> ignoreMethods = Arrays.asList("put","evict","clear");
 
-        private Cache cache;
+        private final Cache cache;
 
         public ReadonlyCache(Cache cache) {
             this.cache = cache;

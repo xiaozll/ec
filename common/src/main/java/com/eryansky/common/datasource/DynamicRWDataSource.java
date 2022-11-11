@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,13 +15,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 读写分离动态数据源
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-08-13
  */
 public class DynamicRWDataSource extends AbstractRoutingDataSource {
 
-    private Logger logger = LoggerFactory.getLogger(DynamicRWDataSource.class);
-    private AtomicInteger counter = new AtomicInteger();
+    private final Logger logger = LoggerFactory.getLogger(DynamicRWDataSource.class);
+    private final AtomicInteger counter = new AtomicInteger();
 
     private DataSource master;
 

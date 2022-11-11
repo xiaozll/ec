@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -58,11 +58,11 @@ public class GZIPResponseStream extends ServletOutputStream {
 		gzipstream.write((byte) b);
 	}
 
-	public void write(byte b[]) throws IOException {
+	public void write(byte[] b) throws IOException {
 		write(b, 0, b.length);
 	}
 
-	public void write(byte b[], int off, int len) throws IOException {
+	public void write(byte[] b, int off, int len) throws IOException {
 		if (closed) {
 			throw new IOException("Cannot write to a closed output stream");
 		}

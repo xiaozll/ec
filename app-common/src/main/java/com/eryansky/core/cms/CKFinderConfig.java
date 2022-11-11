@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *          Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * CKFinder配置
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2013-01-15
  */
 public class CKFinderConfig extends Configuration {
@@ -38,12 +38,18 @@ public class CKFinderConfig extends Configuration {
 		if(sessionInfo == null){
 //			String _sessionId = SpringMVCHolder.getRequest().getRequestedSessionId() == null ? CookieUtils.getCookie(SpringMVCHolder.getRequest(),SESSION_ID): SpringMVCHolder.getRequest().getRequestedSessionId();
 			String _sessionId = CookieUtils.getCookie(SpringMVCHolder.getRequest(),SESSION_ID);
-			sessionInfo = SecurityUtils.getSessionInfo(StringUtils.substringBefore(_sessionId,"."), _sessionId);
+			sessionInfo = SecurityUtils.getSessionInfo(StringUtils.substringBefore(_sessionId,"."));
+			//更新真实的SessionID
+			if (sessionInfo != null && _sessionId != null && !sessionInfo.getSessionId().equals(_sessionId)) {
+				sessionInfo.setId(_sessionId);
+				sessionInfo.setSessionId(_sessionId);
+				SecurityUtils.refreshSessionInfo(sessionInfo);
+			}
 		}
 
-		boolean isView = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:view");
-		boolean isUpload = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:upload");
-		boolean isEdit = SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:edit");
+		boolean isView = null != sessionInfo && SecurityUtils.isPermitted(sessionInfo.getUserId(), "cms:ckfinder:view");
+		boolean isUpload = null != sessionInfo && SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:upload");
+		boolean isEdit = null != sessionInfo && SecurityUtils.isPermitted(sessionInfo.getUserId(),"cms:ckfinder:edit");
 		AccessControlLevel alc = this.getAccessConrolLevels().get(0);
 		alc.setFolderView(isView);
 		alc.setFolderCreate(isEdit);
@@ -57,9 +63,9 @@ public class CKFinderConfig extends Configuration {
 
 		try {
 			this.baseDir = AppConstants.getAppBasePath()+"/cms"+CK_BASH_URL+
-					(sessionInfo.getUserId())+"/";
+					(null == sessionInfo ? "temp":sessionInfo.getUserId())+"/";
 			this.baseURL = SpringMVCHolder.getRequest().getContextPath()+ CK_BASH_URL +
-					(sessionInfo.getUserId())+"/";
+					(null == sessionInfo ? "temp":sessionInfo.getUserId())+"/";
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

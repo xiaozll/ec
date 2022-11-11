@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -46,20 +46,20 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 日志拦截器
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2015-07-10
  */
 public class LogInterceptor implements HandlerInterceptor {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	private static final ThreadLocal<Long> startTimeThreadLocal =
-			new NamedThreadLocal<Long>("ThreadLocal StartTime");
+			new NamedThreadLocal<>("ThreadLocal StartTime");
 
 	private RequestMappingHandlerAdapter adapter;
-	private final Map<Class<?>, Set<Method>> initBinderCache = new ConcurrentHashMap<Class<?>, Set<Method>>(64);
+	private final Map<Class<?>, Set<Method>> initBinderCache = new ConcurrentHashMap<>(64);
 	private List<HandlerMethodArgumentResolver> argumentResolvers;
 	private final Map<MethodParameter, HandlerMethodArgumentResolver> argumentResolverCache =
-			new ConcurrentHashMap<MethodParameter, HandlerMethodArgumentResolver>(256);
+			new ConcurrentHashMap<>(256);
 
 	/**
 	 * 需要拦截的资源
@@ -121,14 +121,9 @@ public class LogInterceptor implements HandlerInterceptor {
 			newLogValue = LogType.exception.getDescription();
 			logType = LogType.exception.getValue();
 		}
-
 		//注解处理
-		if (!flag) {
-			try {
-				handlerMethod = (HandlerMethod) handler;
-			} catch (ClassCastException e) {
-//                logger.error(e.getMessage(),e);
-			}
+		if (!flag && handler instanceof HandlerMethod) {
+			handlerMethod = (HandlerMethod) handler;
 			Logging logging = null;
 			if (handlerMethod != null) {
 				//需要登录
@@ -228,7 +223,7 @@ public class LogInterceptor implements HandlerInterceptor {
 			methods = MethodIntrospector.selectMethods(handlerType, RequestMappingHandlerAdapter.INIT_BINDER_METHODS);
 			this.initBinderCache.put(handlerType, methods);
 		}
-		List<InvocableHandlerMethod> initBinderMethods = new ArrayList<InvocableHandlerMethod>();
+		List<InvocableHandlerMethod> initBinderMethods = new ArrayList<>();
 		for (Method method : methods) {
 			Object bean = handlerMethod.getBean();
 			initBinderMethods.add(new InvocableHandlerMethod(bean, method));

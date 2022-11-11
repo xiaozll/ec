@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 /**
  * 关于邮件消息的常用方法封装
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14
  */
 public class MailUtils {
@@ -67,7 +67,6 @@ public class MailUtils {
 			try {
 				// 判断是邮件内容实体是否是复合式
 				Object content = message.getContent();
-				System.out.println(content);
 				if (content instanceof MimeMultipart) {
 					parts = (MimeMultipart) message.getContent();
 					result.setContent(parseMailContent(parts));
@@ -93,9 +92,6 @@ public class MailUtils {
 			for (int i = 0; i < parts.getCount(); ++i) {
 				MimeBodyPart part = (MimeBodyPart) parts.getBodyPart(i);
 				String disposition = part.getDisposition();
-				
-				System.out.println(part.getContent());
-
 				if (!MimeBodyPart.ATTACHMENT.equals(disposition) && part instanceof MimeBodyPart) {
 					if (part.getContent() instanceof MimeMultipart) {
 						return parseMailContent((MimeMultipart) part

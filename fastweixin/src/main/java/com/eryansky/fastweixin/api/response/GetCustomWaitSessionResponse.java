@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 未接入会话信息
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-08-06
  */
 public class GetCustomWaitSessionResponse extends BaseResponse {

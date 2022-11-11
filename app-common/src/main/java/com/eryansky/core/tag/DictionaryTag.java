@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 /**
  * 数据字典标签
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-3-29 下午8:02:39
  */
 @SuppressWarnings("serial")
@@ -25,10 +25,7 @@ public class DictionaryTag extends TagSupport {
     public static final String TYPE_COMBOBOX = "combobox";
     public static final String TYPE_COMBOTREE = "combotree";
 
-    /**
-     * 元素id
-     */
-    private String id = "";
+
     /**
      * 元素name
      */
@@ -105,7 +102,7 @@ public class DictionaryTag extends TagSupport {
     private String createTagHtml() {
         String contextPath = pageContext.getServletContext().getContextPath(); //上下文路径
         String method = null;
-        StringBuffer buffer = new StringBuffer("<input ");
+        StringBuilder buffer = new StringBuilder("<input ");
         if (TYPE_COMBOBOX.equals(type)) {
             buffer.append(" class=\"easyui-combobox\"");
             method = TYPE_COMBOBOX;
@@ -114,7 +111,7 @@ public class DictionaryTag extends TagSupport {
             method = TYPE_COMBOTREE;
         }
         if (!"".equals(this.id)) {
-            buffer.append(" id=\"" + this.id + "\" ");
+            buffer.append(" id=\"").append(this.id).append("\" ");
         }
 
         if (this.name != null && !"".equals(this.name)) {
@@ -158,14 +155,6 @@ public class DictionaryTag extends TagSupport {
 
         buffer.append(" />");
         return buffer.toString();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Integer getWidth() {

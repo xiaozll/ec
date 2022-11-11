@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,6 +10,7 @@ import com.eryansky.common.utils.encode.MD5Util;
 import com.eryansky.core.security.LogUtils;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
+import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.utils.AppConstants;
 import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.apache.commons.io.FileUtils;
@@ -39,21 +40,21 @@ public class FileUploadUtils {
     private static String defaultBaseDir = "disk";
 
     //默认的文件名最大长度
-    public static final int DEFAULT_FILE_NAME_LENGTH = 200;
+    protected static final int DEFAULT_FILE_NAME_LENGTH = 200;
 
-    public static final String[] IMAGE_EXTENSION = {
+    protected static final String[] IMAGE_EXTENSION = {
             "bmp", "gif", "jpg", "jpeg", "png"
     };
 
-    public static final String[] FLASH_EXTENSION = {
+    protected static final String[] FLASH_EXTENSION = {
             "swf", "flv"
     };
 
-    public static final String[] MEDIA_EXTENSION = {
+    protected static final String[] MEDIA_EXTENSION = {
             "swf", "flv", "mp3", "wav", "wma", "wmv", "mid", "avi", "mpg", "asf", "rm", "rmvb"
     };
 
-    public static final String[] DEFAULT_ALLOWED_EXTENSION = {
+    protected static final String[] DEFAULT_ALLOWED_EXTENSION = {
             //图片
             "bmp", "gif", "jpg", "jpeg", "png",
             //word excel powerpoint
@@ -143,11 +144,11 @@ public class FileUploadUtils {
                                       boolean needDatePathAndRandomName, String _prefix)
             throws InvalidExtensionException, FileSizeLimitExceededException,
             IOException, FileNameLengthLimitExceededException {
-
-        int fileNamelength = file.getOriginalFilename().length();
+        String originalFilename = DiskUtils.getMultipartOriginalFilename(file);
+        int fileNamelength = originalFilename.length();
         if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH) {
             throw new FileNameLengthLimitExceededException(
-                    file.getOriginalFilename(), fileNamelength,
+                    originalFilename, fileNamelength,
                     FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
         }
         File desc = null;
@@ -288,7 +289,7 @@ public class FileUploadUtils {
     public static final String extractFilename(MultipartFile file,
                                                String baseDir, boolean needDatePathAndRandomName, String _prefix)
             throws UnsupportedEncodingException {
-        String fileAllName = file.getOriginalFilename();
+        String fileAllName = DiskUtils.getMultipartOriginalFilename(file);
 
         return extractFilename(fileAllName, baseDir, needDatePathAndRandomName,
                 _prefix);
@@ -378,8 +379,8 @@ public class FileUploadUtils {
     public static final void assertAllowed(MultipartFile file, String[] allowedExtension, long maxSize)
             throws InvalidExtensionException, FileSizeLimitExceededException {
 
-        String filename = file.getOriginalFilename();
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        String filename = DiskUtils.getMultipartOriginalFilename(file);
+        String extension = FilenameUtils.getExtension(filename);
 
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension)) {
             if (allowedExtension == IMAGE_EXTENSION) {

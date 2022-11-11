@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 角色表
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-08
  */
 @MyBatisDao
@@ -24,11 +24,13 @@ public interface RoleDao extends CrudDao<Role> {
 
     List<Role> findRolesByIds(Parameter parameter);
 
-    List<Role> findOrganRolesAndSystemRoles(Parameter parameter);
+    List<Role> findOrganRolesAndSystemNormalRoles(Parameter parameter);
 
     Role getByCode(Parameter parameter);
 
     List<Role> findRolesByOrganId(Parameter parameter);
+
+    List<Role> findRolesByResourceId(Parameter parameter);
 
     List<Role> findRolesByUserId(Parameter parameter);
 
@@ -103,6 +105,7 @@ public interface RoleDao extends CrudDao<Role> {
      */
     int deleteRoleResourcesByRoleId(Parameter parameter);
 
+
     /**
      * 插入角色资源关联信息
      *
@@ -110,5 +113,10 @@ public interface RoleDao extends CrudDao<Role> {
      */
     int insertRoleResources(Parameter parameter);
 
-
+    /**
+     * 删除角色资源关联信息
+     *
+     * @param parameter roleId:角色ID resourceId:资源ID
+     */
+    int deleteRoleResourceByResourceIdAndRoleId(Parameter parameter);
 }

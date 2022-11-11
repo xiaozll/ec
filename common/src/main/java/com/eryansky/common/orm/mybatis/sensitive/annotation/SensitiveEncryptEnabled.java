@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 标记在DTO类上，用于说明是否支持加解密
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 @Target({ElementType.TYPE})

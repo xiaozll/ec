@@ -22,7 +22,7 @@ public class BooleanUtil {
 	 * 使用标准JDK，只分析是否忽略大小写的"true", str为空时返回null
 	 */
 	public static Boolean toBooleanObject(String str) {
-		return str != null ? Boolean.valueOf(str) : null;
+		return null != str ? Boolean.valueOf(str) : null;
 	}
 
 	/**

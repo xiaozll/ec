@@ -4,13 +4,13 @@ package com.eryansky.j2cache.lock;
  * 默认的一个callback类<br>
  * 〈功能详细描述〉
  * 
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-12-24
  */
 public abstract class DefaultLockCallback<T> implements LockCallback<T> {
 
-    private T handleNotObtainLock;
-    private T handleException;
+    private final T handleNotObtainLock;
+    private final T handleException;
 
     /**
      * @param handleNotObtainLock

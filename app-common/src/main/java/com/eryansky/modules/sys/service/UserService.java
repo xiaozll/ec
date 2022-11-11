@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -45,7 +45,7 @@ import static com.eryansky.modules.sys.service.OrganService.*;
 /**
  * 用户表 service
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-08
  */
 @Service
@@ -59,13 +59,17 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
-            CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void clearCache() {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE);
+                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
+                + "," + CacheConstants.CACHE_OrganDao
+                + "," + CacheConstants.CACHE_UserDao);
     }
 
     /**
@@ -77,13 +81,17 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
-            CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void saveUser(User entity) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE);
+                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
+                + "," + CacheConstants.CACHE_OrganDao
+                + "," + CacheConstants.CACHE_UserDao);
         super.save(entity);
         //保存用户机构信息
 //        List<String> oldOrganIds = organService.findOrganIdsByUserId(entity.getId());
@@ -144,13 +152,17 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
-            CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void save(User entity) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE);
+                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
+                + "," + CacheConstants.CACHE_OrganDao
+                + "," + CacheConstants.CACHE_UserDao);
         super.save(entity);
     }
 
@@ -163,7 +175,9 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
-            CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void deleteByIds(Collection<String> ids) {
         if (Collections3.isNotEmpty(ids)) {
             for (String id : ids) {
@@ -179,13 +193,17 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
-            CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void deleteById(String id) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
                 + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE);
+                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
+                + "," + CacheConstants.CACHE_OrganDao
+                + "," + CacheConstants.CACHE_UserDao);
         if (isSuperUser(id)) {
             throw new SystemException("不允许删除超级用户!");
         }
@@ -217,6 +235,7 @@ public class UserService extends CrudService<UserDao, User> {
         return userId.equals(superUser.getId());
     }
 
+
     /**
      * 根据登录名、密码查找用户.
      * <br/>排除已删除的用户
@@ -227,6 +246,19 @@ public class UserService extends CrudService<UserDao, User> {
      */
     @SuppressWarnings("unchecked")
     public User getUserByLP(String loginName, String password) {
+        return getUserByLP(loginName,password,null);
+    }
+
+    /**
+     * 根据登录名、密码查找用户.
+     * <br/>排除已删除的用户
+     *
+     * @param loginName 登录名
+     * @param password  密码
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLP(String loginName, String password,String securityToken) {
         Assert.notNull(loginName, "参数[loginName]为空!");
         Assert.notNull(password, "参数[password]为空!");
         Parameter parameter = new Parameter();
@@ -234,9 +266,11 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("loginName", loginName);
         parameter.put("password", password);
+        parameter.put("securityToken", securityToken);
         List<User> list = dao.findLoginUser(parameter);
         return list.isEmpty() ? null : list.get(0);
     }
+
 
     /**
      * 根据手机号和密码验证
@@ -316,6 +350,48 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("idOrLoginName", idOrLoginName);
         return dao.getUserByIdOrLoginName(parameter);
+    }
+
+    /**
+     * 根据登录名或手机号查找.
+     *
+     * @param loginNameOrMobile 登录名或手机号
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLoginNameOrMobile(String loginNameOrMobile) {
+        return getUserByLoginNameOrMobile(loginNameOrMobile, DataEntity.STATUS_NORMAL);
+    }
+
+
+    /**
+     * 根据登录名或手机号查找.
+     * <br>注：排除已删除的对象
+     *
+     * @param loginNameOrMobile 登录名或手机号
+     * @param status
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public User getUserByLoginNameOrMobile(String loginNameOrMobile, String status) {
+        Assert.notNull(loginNameOrMobile, "参数[loginNameOrMobile]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, status);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("loginNameOrMobile", loginNameOrMobile);
+        return dao.getUserByLoginNameOrMobile(parameter);
+    }
+
+    /**
+     * 根据登录名或手机号查找.
+     *
+     * @param loginName 登录名
+     * @param mobile 手机号
+     * @return
+     */
+    public User getUserByLoginNameOrMobileOther(String loginName,String mobile) {
+        List<User> list =  findByLoginNameOrMobile(loginName, mobile);
+        return list.isEmpty() ? null : list.get(0);
     }
 
 
@@ -409,10 +485,9 @@ public class UserService extends CrudService<UserDao, User> {
 
     /**
      * 根据账号或编号查找.
-     * <br>注：排除已删除的对象
      *
-     * @param loginName 账号（必填）
-     * @param code 编码（可选）
+     * @param loginName 账号
+     * @param code 编码
      * @return
      */
     public List<User> findByLoginNameOrCode(String loginName, String code) {
@@ -423,6 +498,23 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("loginName", loginName);
         parameter.put("code", code);
         return dao.findByLoginNameOrCode(parameter);
+    }
+
+    /**
+     * 根据账号或手机号查找.
+     *
+     * @param loginName 账号
+     * @param mobile 手机号
+     * @return
+     */
+    public List<User> findByLoginNameOrMobile(String loginName, String mobile) {
+        Assert.notNull(loginName, "参数[loginName]不能为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("loginName", loginName);
+        parameter.put("mobile", mobile);
+        return dao.findByLoginNameOrMobile(parameter);
     }
 
     /**
@@ -568,7 +660,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param excludeUserIds 排除的用户IDS
      * @return
      */
-    public Page<User> findUsersByOrgan(Page<User> page, String organId, String query, Collection<String> excludeUserIds) {
+    public Page<User> findUserPageByOrgan(Page<User> page, String organId, String query, Collection<String> excludeUserIds) {
         if (StringUtils.isBlank(organId)) {
             return page;
         }
@@ -580,6 +672,28 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("query", query);
         parameter.put("excludeUserIds", excludeUserIds);
         return page.setResult(dao.findUsersByOrgan(parameter));
+    }
+
+
+    /**
+     * 根据机构查询用户信息
+     *
+     * @param organId        机构Id
+     * @param query          关键字
+     * @param excludeUserIds 排除的用户IDS
+     * @return
+     */
+    public List<User> findUserListByOrgan(String organId, String query, Collection<String> excludeUserIds) {
+        if (StringUtils.isBlank(organId)) {
+            return Collections.emptyList();
+        }
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("organId", organId);
+        parameter.put("query", query);
+        parameter.put("excludeUserIds", excludeUserIds);
+        return dao.findUsersByOrgan(parameter);
     }
 
     /**
@@ -697,7 +811,6 @@ public class UserService extends CrudService<UserDao, User> {
         return findUserIdsByCompanyId(companyId, null);
     }
 
-
     /**
      * 获取单位下直属部门用户IDS
      *
@@ -713,6 +826,51 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put("companyId", companyId);
         parameter.put("excludeUserIds", excludeUserIds);
         return dao.findUserIdsByCompanyId(parameter);
+    }
+
+    /**
+     * 获取单位下直属部门用户
+     *
+     * @param homeCompanyId      单位ID
+     * @param excludeUserIds 排除的用户IDS
+     * @return
+     */
+    public List<User> findUsersByHomeCompanyId(String homeCompanyId, Collection<String> excludeUserIds) {
+        Assert.notNull(homeCompanyId, "参数[homeCompanyId]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("excludeUserIds", excludeUserIds);
+        return dao.findUsersByHomeCompanyId(parameter);
+    }
+
+    /**
+     * 获取单位下直属部门用户IDS
+     *
+     * @param homeCompanyId 单位ID
+     * @return
+     */
+    public List<String> findUserIdsByHomeCompanyId(String homeCompanyId) {
+        return findUserIdsByHomeCompanyId(homeCompanyId, null);
+    }
+
+
+    /**
+     * 获取单位下直属部门用户IDS
+     *
+     * @param homeCompanyId      单位ID
+     * @param excludeUserIds 排除的用户IDS
+     * @return
+     */
+    public List<String> findUserIdsByHomeCompanyId(String homeCompanyId, Collection<String> excludeUserIds) {
+        Assert.notNull(homeCompanyId, "参数[homeCompanyId]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("homeCompanyId", homeCompanyId);
+        parameter.put("excludeUserIds", excludeUserIds);
+        return dao.findUserIdsByHomeCompanyId(parameter);
     }
 
     /**
@@ -1061,6 +1219,21 @@ public class UserService extends CrudService<UserDao, User> {
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("roleId", roleId);
         return dao.findUsersByRoleId(parameter);
+    }
+
+    /**
+     * 根据角色查询（分页）
+     *
+     * @param page
+     * @param roleId 角色ID
+     * @return
+     */
+    public Page<User> findUsersByRoleId(Page<User> page,String roleId) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("roleId", roleId);
+        return page.setResult(dao.findUsersByRoleId(parameter));
     }
 
     /**
@@ -1513,7 +1686,7 @@ public class UserService extends CrudService<UserDao, User> {
             }
 
             OrganExtend _userOrganExtend = userOrganExtend;
-            while (_userOrganExtend != null) {
+            while (null != _userOrganExtend) {
                 List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
                 if (Collections3.isEmpty(organs)) {
                     organs = Lists.newArrayList();
@@ -1557,7 +1730,7 @@ public class UserService extends CrudService<UserDao, User> {
         unionUsers.forEach(u->{
             //补漏(中间漏了的机构)
             OrganExtend _userOrganExtend = OrganUtils.getOrganExtendByUserId(u.getId());
-            while (_userOrganExtend != null) {
+            while (null != _userOrganExtend) {
                 if (_userOrganExtend.getTreeLevel() >= finalMinLevel && !organTempMap.containsKey(_userOrganExtend.getId())) {
                     List<OrganExtend> organs = organMap.get(_userOrganExtend.getTreeLevel());
                     if (Collections3.isEmpty(organs)) {
@@ -1718,6 +1891,33 @@ public class UserService extends CrudService<UserDao, User> {
         }
     }
 
+    /**
+     * 查找资源关联用户
+     *
+     * @param resourceId 资源ID
+     * @return
+     */
+    public List<User> findUsersByResourceId(String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("resourceId", resourceId);
+        return dao.findUsersByResourceId(parameter);
+    }
+
+    /**
+     * 查找资源关联用户
+     *
+     * @param resourceId 资源ID
+     * @return
+     */
+    public Page<User> findUsersByResourceId(Page<User> page, String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("resourceId", resourceId);
+        return page.setResult(dao.findUsersByResourceId(parameter));
+    }
+
 
     /**
      * 保存用户资源关联信息
@@ -1735,6 +1935,39 @@ public class UserService extends CrudService<UserDao, User> {
             dao.insertUserResources(parameter);
         }
     }
+
+    /**
+     * 删除用户资源关联关系
+     *
+     * @param userId  用户ID
+     */
+    public int deleteUserResourcesByUserId(String userId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", userId);
+        return dao.deleteUserResourcesByUserId(parameter);
+    }
+
+    /**
+     * 删除用户资源关联关系
+     *
+     * @param userId  用户ID
+     * @param resourceId 资源ID
+     */
+    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
+            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.ORGAN_USER_TREE_1_CACHE,
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
+    public int deleteUserResourceByResourceIdAndUserId(String userId, String resourceId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("userId", userId);
+        parameter.put("resourceId", resourceId);
+        return dao.deleteUserResourceByResourceIdAndUserId(parameter);
+    }
+
 
     /**
      * 自定义SQL查询

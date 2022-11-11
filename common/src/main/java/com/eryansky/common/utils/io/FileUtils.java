@@ -1,24 +1,30 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.io;
 
 import com.eryansky.common.exception.ServiceException;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 文件工具类.
- * @author     : 尔演&Eryan eryanwcp@gmail.com
+ * @author     : eryan
  * @date       : 2013-1-19 下午4:41:56
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
 	/**
 	 * 生成随机的文件名 将原始文件名去掉,改为一个UUID的文件名,后缀名以原文件名的后缀为准
@@ -59,18 +65,15 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 */
 	public static void copyFile(File src, File dst) {
 		try {
-			FileInputStream in = null;
-			FileOutputStream out = null;
-			try {
-				out = new FileOutputStream(dst);
-				in = new FileInputStream(src);
+			try (FileOutputStream out = new FileOutputStream(dst);
+				 FileInputStream in = new FileInputStream(src)){
 				byte[] buffer = new byte[1024];
 				int len = 0;
 				while ((len = in.read(buffer)) > 0) {
 					out.write(buffer, 0, len);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 				String dstpath = dst.getAbsolutePath();
 				if (dstpath.lastIndexOf("/") != -1) {
 					dstpath = dstpath.subSequence(0, dstpath.lastIndexOf("/"))
@@ -81,16 +84,9 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 				}
 				createDirectory(dstpath);
 				copyFile(src, dst);
-			} finally {
-				if (null != in) {
-					in.close();
-				}
-				if (null != out) {
-					out.close();
-				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 	}
 
@@ -113,7 +109,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 * @param dir
 	 */
 	public static String checkSaveDir(String dir) {
-
 		File dirFile = new File(dir);
 		boolean flag = true;
 		if (!dirFile.exists()) {
@@ -158,7 +153,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			}
 			file.delete();
 		} else {
-			System.out.println("所删除的文件不存在！" + '\n');
+			logger.warn("所删除的文件不存在！" );
 		}
 	}
 
@@ -190,11 +185,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		} else if (null != agent && -1 != agent.indexOf("firefox")) {
 			codedfilename = "=?UTF-8?B?"
 					+ (new String(Base64.encodeBase64(fileName
-							.getBytes("UTF-8")))) + "?=";
+							.getBytes(StandardCharsets.UTF_8)))) + "?=";
 		} else if (null != agent && -1 != agent.indexOf("safari")) {
-			codedfilename = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+			codedfilename = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");
 		} else if (null != agent && -1 != agent.indexOf("applewebkit")) {
-			codedfilename = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+			codedfilename = new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");
 		} else {
 			codedfilename = URLEncoder.encode(fileName, "UTF-8").replace('+',
 					' ');
@@ -284,7 +279,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		System.out.println("realPath----->"+realPath);
 		return realPath;
 	}
 	
@@ -296,14 +290,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      */
     public static String readFile(File file) {
         StringBuffer sb = new StringBuffer();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))){
             String data = null;
             while((data = br.readLine())!=null){
                 sb.append(data).append("\n");
             }
-            br.close();
         } catch (FileNotFoundException e) {
             throw new ServiceException("找不到指定的文件", e);
         } catch (IOException e) {
@@ -320,14 +311,11 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      */
     public static String readFile(File file, String charSet) {
         StringBuffer sb = new StringBuffer();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(file), charSet));
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file),charSet))){
             String data = null;
             while((data = br.readLine())!=null){
                 sb.append(data).append("\n");
             }
-            br.close();
         } catch (FileNotFoundException e) {
             throw new ServiceException("找不到指定的文件", e);
         } catch (IOException e) {
@@ -362,29 +350,52 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 	 */
 	public static String checkFileCodeString(File file) throws Exception {
 		if (file == null || !file.exists()) {
-			throw  new ServiceException("文件["+file.getAbsolutePath()+"]不存在");
+			throw new ServiceException("文件[" + (null == file ? "" : file.getAbsolutePath()) + "]不存在");
 		}
-		BufferedInputStream bin = new BufferedInputStream(new FileInputStream(file));
-		int p = (bin.read() << 8) + bin.read();
 		String code = null;
-		//其中的 0xefbb、0xfffe、0xfeff、0x5c75这些都是这个文件的前面两个字节的16进制数
-		switch (p) {
-			case 0xefbb:
-				code = "UTF-8";
-				break;
-			case 0xfffe:
-				code = "Unicode";
-				break;
-			case 0xfeff:
-				code = "UTF-16BE";
-				break;
-			case 0x5c75:
-				code = "ANSI|ASCII";
-				break;
-			default:
-				code = "GBK";
+		try (InputStream inputStream = new FileInputStream(file);
+			 BufferedInputStream bin = new BufferedInputStream(inputStream)){
+			int p = (bin.read() << 8) + bin.read();
+
+			//其中的 0xefbb、0xfffe、0xfeff、0x5c75这些都是这个文件的前面两个字节的16进制数
+			switch (p) {
+				case 0xefbb:
+					code = "UTF-8";
+					break;
+				case 0xfffe:
+					code = "Unicode";
+					break;
+				case 0xfeff:
+					code = "UTF-16BE";
+					break;
+				case 0x5c75:
+					code = "ANSI|ASCII";
+					break;
+				default:
+					code = "GBK";
+			}
 		}
 		return code;
+	}
 
+	/**
+	 * 校验文件
+	 * @param filename
+	 * @param intenDedDir
+	 * @return
+	 * @throws IOException
+	 */
+	public String validateFilename(String filename,String intenDedDir) throws IOException {
+		File f = new File(filename);
+		String canonicalPath = f.getCanonicalPath();
+
+		File iD = new File(intenDedDir);
+		String canonicalID = iD.getCanonicalPath();
+
+		if(canonicalPath.startsWith(canonicalID)){
+			return canonicalPath;
+		}else{
+			throw new IllegalStateException("文件不再目标目录内容");
+		}
 	}
 }

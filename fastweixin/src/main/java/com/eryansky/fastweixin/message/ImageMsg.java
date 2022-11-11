@@ -4,7 +4,7 @@ package com.eryansky.fastweixin.message;
 import com.eryansky.fastweixin.message.util.MessageBuilder;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class ImageMsg extends BaseMsg {

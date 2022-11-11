@@ -8,7 +8,7 @@ import com.eryansky.fastweixin.util.StrUtil;
 /**
  * 微信API响应报文对象基类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class BaseResponse extends BaseModel {

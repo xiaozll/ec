@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,6 +9,7 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.security.annotation.RequiresUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 标签Controller
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2013-3-23
  */
 @Controller
@@ -28,7 +29,7 @@ public class TagController extends SimpleController {
      * 树结构选择标签（treeselect.tag）
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = "treeselect")
+    @GetMapping(value = "treeselect")
     public String treeselect(HttpServletRequest request, Model model) {
         model.addAttribute("url", request.getParameter("url"));    // 树结构数据URL
         model.addAttribute("extId", request.getParameter("extId")); // 排除的编号ID
@@ -42,7 +43,7 @@ public class TagController extends SimpleController {
      * 图标选择标签（iconselect.tag）
      */
     @RequiresUser(required = false)
-    @RequestMapping(value = "iconselect")
+    @GetMapping(value = "iconselect")
     public String iconselect(HttpServletRequest request, Model model) {
         model.addAttribute("value", request.getParameter("value"));
         return "modules/sys/tagIconselect";

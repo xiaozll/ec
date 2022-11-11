@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,7 +15,7 @@ import com.eryansky.common.orm.Page;
 /**
  * MyBatis的Dao基类.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-7-28 下午7:38:46
  */
 public class MyBatisSuportDao extends SqlSessionDaoSupport {
@@ -66,7 +66,7 @@ public class MyBatisSuportDao extends SqlSessionDaoSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T get(String key, Object params) {
-		return (T) getSqlSession().selectOne(key, params);
+		return getSqlSession().selectOne(key, params);
 	}
 
 	/**

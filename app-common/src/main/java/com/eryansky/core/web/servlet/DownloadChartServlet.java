@@ -1,10 +1,11 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.core.web.servlet;
 
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderException;
@@ -85,7 +86,7 @@ public class DownloadChartServlet extends HttpServlet {
 			} else if (type.equals("image/svg+xml"))
 				ext = "svg";
             WebUtils.setDownloadableHeader(request,response,filename + "." + ext);
-			response.addHeader("Content-Type", type);
+			response.addHeader("Content-Type", EncodeUtils.xssFilter(type));
 			if (null != t) {
 				TranscoderInput input = new TranscoderInput(new StringReader(svg));
 				TranscoderOutput output = new TranscoderOutput(out);
@@ -96,19 +97,13 @@ public class DownloadChartServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			} else if (ext.equals("svg")) {
-				OutputStreamWriter writer= null;
-				try {
-					writer = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+				try (OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
 					writer.append(svg);
 				} catch (IOException e) {
 					e.printStackTrace();
-				} finally {
-					if(null != writer){
-						writer.close();
-					}
 				}
 			} else
-				out.print("Invalid type: " + type);
+				out.print("Invalid type: " + EncodeUtils.xssFilter(type));
 		} else {
 			response.addHeader("Content-Type", "text/html");
 			out.println("Usage:\n\tParameter [svg]: The DOM Element to be converted." + "\n\tParameter [type]: The destination MIME type for the elment to be transcoded.");

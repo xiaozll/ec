@@ -4,20 +4,20 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;
-import com.eryansky.core.excelTools.ExcelUtils;
-import com.eryansky.core.excelTools.JsGridReportBase;
-import com.eryansky.core.excelTools.TableData;
+import com.eryansky.core.excels.ExcelUtils;
+import com.eryansky.core.excels.JsGridReportBase;
+import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.JobState;
-import com.eryansky.modules.sys.mapper.JobDetails;
+import com.eryansky.modules.sys.mapper.QuartzJobDetail;
 import com.eryansky.modules.sys.service.JobService;
+import com.google.common.collect.Maps;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +25,9 @@ import java.rmi.ServerException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Quartz定时任务管理
+ */
 @Controller
 @RequestMapping(value = "${adminPath}/sys/job")
 public class JobController extends SimpleController {
@@ -44,19 +46,20 @@ public class JobController extends SimpleController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value={"getJobList",""})
-	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export,JobDetails model,
-							 Model uiModel, HttpServletRequest request, HttpServletResponse response) {
-		Page<JobDetails> page = new Page<JobDetails>(request, response);
+	@RequiresPermissions("sys:job:view")
+	@RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value={"list",""})
+	public String getJobList(@RequestParam(value = "export",defaultValue = "false") Boolean export, QuartzJobDetail model,
+                             Model uiModel, HttpServletRequest request, HttpServletResponse response) {
+		Page<QuartzJobDetail> page = new Page<>(request, response);
 		if(WebUtils.isAjaxRequest(request) || export){
 			if(export){
 				page.setPageSize(Page.PAGESIZE_ALL);
 			}
-			page = jobAndTriggerService.getJobList(page,model.getJobName(),model.getTriggerState());
+			page = jobAndTriggerService.findJobList(page,model.getJobName(),model.getTriggerState());
 			if(export){
 				String title = "定时任务列表";
-				String[] hearders = new String[] {"任务名", "任务状态","时间表达式","上一次执行时间","下一次执行时间"};//表头数组
-				String[] fields = new String[] {"jobName", "triggerStateView", "cronExpression","prevFireTime","nextFireTime"};//对象属性数组
+				String[] hearders = new String[] {"任务名", "任务状态", "执行实例","时间表达式","上一次执行时间","下一次执行时间"};//表头数组
+				String[] fields = new String[] {"jobName", "triggerStateView", "instanceName", "cronExpression","prevFireTime","nextFireTime"};//对象属性数组
 				TableData td = ExcelUtils.createTableData(page.getResult(), ExcelUtils.createTableHeader(hearders,0),fields);
 				try {
 					JsGridReportBase report = new JsGridReportBase(request, response);
@@ -82,7 +85,8 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "triggerJob")
+	@RequiresPermissions("sys:job:edit")
+	@PostMapping(value = "triggerJob")
 	@ResponseBody
 	public Result triggerJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -105,7 +109,8 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "pauseJob")
+	@RequiresPermissions("sys:job:edit")
+	@PostMapping(value = "pauseJob")
 	@ResponseBody
 	public Result pauseJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -127,7 +132,8 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "resumeJob")
+	@RequiresPermissions("sys:job:edit")
+	@PostMapping(value = "resumeJob")
 	@ResponseBody
 	public Result resumeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -149,7 +155,8 @@ public class JobController extends SimpleController {
 	 * @param cronExpression
 	 * @return
 	 */
-	@RequestMapping(value = "addJob")
+	@RequiresPermissions("sys:job:edit")
+	@PostMapping(value = "addJob")
 	@ResponseBody
 	public Result addJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -193,7 +200,8 @@ public class JobController extends SimpleController {
 	 * @param cronExpression
 	 * @return
 	 */
-	@RequestMapping(value = "rescheduleJob")
+	@RequiresPermissions("sys:job:edit")
+	@PostMapping(value = "rescheduleJob")
 	@ResponseBody
 	public Result rescheduleJob(String jobClassName, String jobGroupName, String cronExpression, HttpServletRequest request, HttpServletResponse response) {
 		try {
@@ -226,10 +234,11 @@ public class JobController extends SimpleController {
 	 * @param jobGroupName
 	 * @return
 	 */
-	@RequestMapping(value = "removeJob")
+	@RequiresPermissions("sys:job:edit")
+	@PostMapping(value = "removeJob")
 	@ResponseBody
 	public Result removeJob(String jobClassName, String jobGroupName, HttpServletRequest request, HttpServletResponse response) {
-		Map<String, String> returnData = new HashMap<String, String>();
+		Map<String, String> returnData = Maps.newHashMap();
 		try {
 			//TriggerKey定义了trigger的名称和组别
 			TriggerKey triggerKey = TriggerKey.triggerKey(jobClassName, jobGroupName);

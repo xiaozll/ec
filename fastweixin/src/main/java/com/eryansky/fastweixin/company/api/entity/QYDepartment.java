@@ -4,8 +4,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.eryansky.fastweixin.api.entity.BaseModel;
 
 /**
- *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * 部门
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYDepartment extends BaseModel{
@@ -14,6 +14,11 @@ public class QYDepartment extends BaseModel{
     private Integer id;
     @JSONField(name = "name")
     private String name;
+    /**
+     * 英文名称，此字段从2019年12月30日起，对新创建第三方应用不再返回，2020年6月30日起，对所有历史第三方应用不再返回该字段
+     */
+    @JSONField(name = "name_en")
+    private String nameEn;
     @JSONField(name = "parentid")
     private Integer parentId;
     @JSONField(name = "order")
@@ -35,6 +40,14 @@ public class QYDepartment extends BaseModel{
         this.order = order;
     }
 
+    public QYDepartment(Integer id, String name, String nameEn, Integer parentId, Integer order) {
+        this.id = id;
+        this.name = name;
+        this.nameEn = nameEn;
+        this.parentId = parentId;
+        this.order = order;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -50,6 +63,15 @@ public class QYDepartment extends BaseModel{
 
     public QYDepartment setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getNameEn() {
+        return nameEn;
+    }
+
+    public QYDepartment setNameEn(String nameEn) {
+        this.nameEn = nameEn;
         return this;
     }
 

@@ -1,5 +1,5 @@
 /**
-*  Copyright (c) 2012-2020 http://www.eryansky.com
+*  Copyright (c) 2012-2022 https://www.eryansky.com
 *
 */
 package com.eryansky.modules.notice.dao;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * 联系人分组
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-03-05
  */
 @MyBatisDao

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 用户表
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-08
  */
 @MyBatisDao
@@ -36,11 +36,15 @@ public interface UserDao extends CrudDao<User> {
 
     User getUserByIdOrLoginName(Parameter parameter);
 
+    User getUserByLoginNameOrMobile(Parameter parameter);
+
     List<User> findByCode(Parameter parameter);
 
     List<User> findByName(Parameter parameter);
 
     List<User> findByLoginNameOrCode(Parameter parameter);
+
+    List<User> findByLoginNameOrMobile(Parameter parameter);
 
     Integer getMaxSort();
 
@@ -81,6 +85,10 @@ public interface UserDao extends CrudDao<User> {
 
     List<String> findUserIdsByCompanyId(Parameter parameter);
 
+    List<User> findUsersByHomeCompanyId(Parameter parameter);
+
+    List<String> findUserIdsByHomeCompanyId(Parameter parameter);
+
 
     List<User> findOwnerAndChildsUsers(Parameter parameter);
 
@@ -93,6 +101,7 @@ public interface UserDao extends CrudDao<User> {
     List<String> findUserIdsByRoleId(Parameter parameter);
 
     List<User> findUsersByPost(Parameter parameter);
+
 
     List<String> findUserIdsByPost(Parameter parameter);
 
@@ -167,11 +176,25 @@ public interface UserDao extends CrudDao<User> {
 
 
     /**
+     * 根据资源ID查找
+     * @param parameter resourceId:资源ID
+     * @return
+     */
+    List<User> findUsersByResourceId(Parameter parameter);
+
+    /**
      * 删除用户资源关联信息
      *
      * @param parameter id:用户ID
      */
     int deleteUserResourcesByUserId(Parameter parameter);
+
+    /**
+     * 删除用户资源关联信息
+     *
+     * @param parameter userId:用户ID resourceId:资源ID
+     */
+    int deleteUserResourceByResourceIdAndUserId(Parameter parameter);
 
     /**
      * 插入用户资源关联信息

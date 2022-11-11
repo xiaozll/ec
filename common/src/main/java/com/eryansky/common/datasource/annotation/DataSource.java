@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * 数据源注解
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-08-13
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

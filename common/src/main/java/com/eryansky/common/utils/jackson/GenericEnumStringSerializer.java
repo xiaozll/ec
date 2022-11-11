@@ -10,13 +10,13 @@ import java.io.IOException;
 
 /**
  * IGenericEnum 类型枚举类序列化String value
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-02-12
  *
  */
 public class GenericEnumStringSerializer extends JsonSerializer<IGenericEnum> {
     @Override
-    public void serialize(IGenericEnum value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(IGenericEnum value, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         String text = (value == null ? null : value.getValue());
         if (text != null) {
             jsonGenerator.writeString(text);

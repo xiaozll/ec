@@ -16,6 +16,7 @@
 package com.eryansky.j2cache.session;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Random;
@@ -42,8 +43,8 @@ public class Command implements Serializable {
 
 	private static int genRandomSrc() {
 		long ct = System.currentTimeMillis();
-		Random rnd_seed = new Random(ct);
-		return (int)(rnd_seed.nextInt(10000) * 1000 + ct % 1000);
+		SecureRandom random = new SecureRandom();
+		return (int)(random.nextInt(10000) * 1000 + ct % 1000);
 	}
 
 	public Command(byte operator, String session, String key) {

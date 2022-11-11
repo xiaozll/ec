@@ -16,16 +16,19 @@
             striped: true,//显示条纹
             pageSize: 20,//每页记录数
             singleSelect: false,//单选模式
+            remoteSort: false,//是否通过远程服务器对数据排序
             checkbox: true,
             nowrap: true,
             border: false,
+            showFooter: true,
             //idField: 'id',
             columns: [ [
                 {field: 'companyName', title: '单位', width: 235, hidden: false},
                 {field: 'organName', title: '部门', width: 235, hidden: false},
                 {field: 'name', title: '姓名', width: 100},
+                {field: 'userId', title: '用户标识', width: 235, hidden: false},
                 {field: 'userName', title: '账号', width: 120, hidden: false},
-                {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false}
+                {field: 'count', title: '登录次数', width: 100,align:'right', hidden: false, sortable: true}
             ]]
         }).datagrid("showTooltip");
 
@@ -47,7 +50,7 @@
             &nbsp;起始时间：<input type="text" id="startTime" name="startTime" class="easyui-my97" placeholder="起始时间..."/>
             &nbsp;结束时间：<input type="text" id="endTime" name="endTime" class="easyui-my97"  placeholder="结束时间..."/>
             &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28, onClick:search">查询</a>
-            <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$log_search_form.form('reset');">重置</a>
+            <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="$log_search_form.form('reset');">重置</a>
             <a href="#" class="easyui-linkbutton" id="exportExcel" data-options="iconCls:'easyui-icon-search',width:100,height:28, onClick:exportExcel">导出</a>
         </form>
     </div>

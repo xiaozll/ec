@@ -58,6 +58,19 @@ $(function () {
                 handler: function () {
                     syncFromProperties()
                 }
+            },
+            '-',
+            {
+                text: '快捷配置',
+                iconCls: 'easyui-icon-edit',
+                handler: function () {
+                    var url = ctxAdmin + '/sys/config/paramForm';
+                    try {
+                        parent.addTabs({id: 'notice', title: '参数配置', close: true, url: url, urlType: ''});
+                    } catch (e) {
+                        eu.addTab(window.parent.layout_center_tabs, "参数配置", url, true, "");
+                    }
+                }
             }
         ],
         onLoadSuccess: function () {

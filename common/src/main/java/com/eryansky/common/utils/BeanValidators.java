@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -25,7 +25,7 @@ import com.google.common.collect.Maps;
  * 2. List<String>, String内容为propertyPath + separator + message
  * 3. Map<propertyPath, message>
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class BeanValidators {
 

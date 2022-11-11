@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -29,10 +29,7 @@ import com.eryansky.modules.notice.service.ContactGroupService;
 import com.eryansky.modules.notice.service.MailContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -40,7 +37,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-08-19
  */
 @Controller
@@ -64,7 +61,7 @@ public class MailContactController extends SimpleController {
         }
     }
 
-    @RequestMapping(value = {"input"})
+    @GetMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") MailContact model, String contactGroupId) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/contactGroupMail-input");
         modelAndView.addObject("contactGroupId", contactGroupId);
@@ -78,14 +75,14 @@ public class MailContactController extends SimpleController {
      * @param query 用户登录名或姓名
      * @return
      */
-    @RequestMapping(value = {"contactGroupMailDatagrid"})
+    @PostMapping(value = {"contactGroupMailDatagrid"})
     @ResponseBody
     public String contactGroupMailDatagrid(String id, String query) {
         String json = "[]";
         if (StringUtils.isNotBlank(id)) {
-            Page<MailContact> page = new Page<MailContact>(SpringMVCHolder.getRequest());// 分页对象
+            Page<MailContact> page = new Page<>(SpringMVCHolder.getRequest());// 分页对象
             page = contactService.findPageByContactGroupId(page, id, query);
-            Datagrid<MailContact> dg = new Datagrid<MailContact>(page.getTotalCount(), page.getResult());
+            Datagrid<MailContact> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
             json = JsonMapper.getInstance().toJson(dg);
         }
         return json;
@@ -97,7 +94,7 @@ public class MailContactController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"_save"})
+    @PostMapping(value = {"_save"})
     @ResponseBody
     public Result save(@ModelAttribute("model") MailContact model, String contactGroupId) {
         Result result = null;
@@ -128,7 +125,7 @@ public class MailContactController extends SimpleController {
      * @param email
      * @return
      */
-    @RequestMapping(value = "autoAdd")
+    @PostMapping(value = "autoAdd")
     @ResponseBody
     public Result autoAdd(String email) {
         if (StringUtils.isBlank(email) || !SysUtils.checkEmail(email)) {
@@ -173,7 +170,7 @@ public class MailContactController extends SimpleController {
      * @param includeIds    包含的ID
      * @return
      */
-    @RequestMapping(value = {"multiSelectPrefix"})
+    @PostMapping(value = {"multiSelectPrefix"})
     @ResponseBody
     public String multiSelectPrefix(String postCode, String mailAccountId, String query,
                                     @RequestParam(value = "includeIds", required = false) List<String> includeIds) {
@@ -292,7 +289,7 @@ public class MailContactController extends SimpleController {
      * @param mailAccountId 邮件账号ID
      * @return
      */
-    @RequestMapping(value = {"multiSelect"})
+    @PostMapping(value = {"multiSelect"})
     @ResponseBody
     public String multiSelect(String mailAccountId) {
         List<Map<String, String>> list = Lists.newArrayList();

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -28,11 +28,11 @@ import java.util.TimeZone;
  * 
  * 封装不同的输出风格, 使用不同的builder函数创建实例.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class JsonMapper  extends ObjectMapper{
 
-	private static Logger logger = LoggerFactory.getLogger(JsonMapper.class);
+	private static final Logger logger = LoggerFactory.getLogger(JsonMapper.class);
 
     public JsonMapper() {
         this(null);
@@ -235,7 +235,7 @@ public class JsonMapper  extends ObjectMapper{
 		}
 
 		try {
-			return (T) this.readValue(jsonString, javaType);
+			return this.readValue(jsonString, javaType);
 		} catch (IOException e) {
 			logger.warn("parse json string error:" + jsonString, e);
 			return null;
@@ -259,7 +259,7 @@ public class JsonMapper  extends ObjectMapper{
     @SuppressWarnings("unchecked")
     public <T> T update(String jsonString, T object) {
         try {
-            return (T) this.readerForUpdating(object).readValue(jsonString);
+            return this.readerForUpdating(object).readValue(jsonString);
         } catch (JsonProcessingException e) {
             logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
         } catch (IOException e) {
@@ -313,5 +313,14 @@ public class JsonMapper  extends ObjectMapper{
      */
     public static Object fromJsonString(String jsonString, Class<?> clazz){
         return JsonMapper.getInstance().fromJson(jsonString, clazz);
+    }
+
+    /**
+     * 对象转换为JSON字符串 只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串,建议在外部接口中使用
+     * @param object
+     * @return
+     */
+    public static String toNonEmptyJsonString(Object object){
+        return JsonMapper.nonEmptyMapper().toJson(object);
     }
 }

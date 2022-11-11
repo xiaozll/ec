@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,16 +11,19 @@ import com.eryansky.modules.sys.mapper.Area;
 import com.eryansky.modules.sys.service.AreaService;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-05-12
  */
 public class AreaUtils {
+
+    private AreaUtils(){}
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static AreaService areaService = SpringContextHolder.getBean(AreaService.class);
+        private static final AreaService areaService = SpringContextHolder.getBean(AreaService.class);
+        private Static(){}
     }
 
     /**

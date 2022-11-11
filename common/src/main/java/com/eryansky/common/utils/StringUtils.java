@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -7,6 +7,7 @@ package com.eryansky.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,13 +16,19 @@ import java.util.regex.Pattern;
 
 import com.eryansky.common.utils.collections.MapUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static java.util.regex.Pattern.compile;
 
 /**
  * 字符串工具类，用于实现一些字符串的常用操作
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2012-1-9下午2:43:26
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils{
+
+    private static final Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
     public static final String NUMBERS_AND_LETTERS         = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String NUMBERS                     = "0123456789";
@@ -33,6 +40,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
     public static final String defaultValueEntitySeparator = ",";
     public static final String defaultKeyOrValueQuote      = "\"";
     private static final char SEPARATOR = '_';
+    private static final SecureRandom random = new SecureRandom();
 
     /**
      * 判断字符串是否为空或长度为0
@@ -108,7 +116,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(),e);
                 return null;
             }
         }
@@ -127,6 +135,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
+                logger.error(e.getMessage(),e);
                 return defultReturn;
             }
         }
@@ -245,7 +254,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      */
     public static String toDoubleDigit(int number) {
         if (number >= 0 && number < 10) {
-            return "0" + ((Integer)number).toString();
+            return "0" + ((Integer)number);
         }
         return ((Integer)number).toString();
     }
@@ -282,7 +291,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
         }
         // String hrefReg = "[^(<a)]*<[\\s]*a[\\s]*[^(a>)]*>(.+?)<[\\s]*/a[\\s]*>.*";
         String hrefReg = ".*<[\\s]*a[\\s]*.*>(.+?)<[\\s]*/a[\\s]*>.*";
-        Pattern hrefPattern = Pattern.compile(hrefReg, Pattern.CASE_INSENSITIVE);
+        Pattern hrefPattern = compile(hrefReg, Pattern.CASE_INSENSITIVE);
         Matcher hrefMatcher = hrefPattern.matcher(href);
         if (hrefMatcher.matches()) {
             return hrefMatcher.group(1);
@@ -375,8 +384,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
         if (sourceChar == null || sourceChar.length == 0 || length < 0) {
             return null;
         }
-        StringBuilder str = new StringBuilder("");
-        Random random = new Random();
+        StringBuilder str = new StringBuilder();
         for (int i = 0; i < length; i++) {
             str.append(sourceChar[random.nextInt(sourceChar.length)]);
         }
@@ -453,9 +461,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
                     seperator = valueEntity.indexOf(keyAndValueSeparator);
                     if (seperator != -1 && seperator < valueEntity.length()) {
                         MapUtils.putMapNotEmptyKey(keyAndValueMap,
-                                RemoveBothSideSymbol(valueEntity.substring(0, seperator).trim(),
+                                removeBothSideSymbol(valueEntity.substring(0, seperator).trim(),
                                         keyOrValueQuote),
-                                RemoveBothSideSymbol(valueEntity.substring(seperator + 1).trim(),
+                                removeBothSideSymbol(valueEntity.substring(seperator + 1).trim(),
                                         keyOrValueQuote));
                     }
                 }
@@ -486,7 +494,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      * @param symbol 符号
      * @return
      */
-    public static String RemoveBothSideSymbol(String source, String symbol) {
+    public static String removeBothSideSymbol(String source, String symbol) {
         if (isEmpty(source) || isEmpty(symbol)) {
             return source;
         }
@@ -565,7 +573,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             return "";
         }
         String regEx = "<.+?>";
-        Pattern p = Pattern.compile(regEx);
+        Pattern p = compile(regEx);
         Matcher m = p.matcher(html);
         String s = m.replaceAll("");
         return s;
@@ -595,7 +603,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
             }
             return sb.toString();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return "";
     }
@@ -636,7 +644,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      * 转换为Long类型
      */
     public static Long toLong(Object val){
-        return toDouble(val).longValue();
+        if (val == null) {
+            return 0L;
+        }
+        try {
+            return Long.valueOf(trim(val.toString()));
+        } catch (Exception e) {
+            return 0L;
+        }
     }
 
     /**
@@ -736,10 +751,11 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      * @param target
      * @param source
      */
-    public static void setValueIfNotBlank(String target, String source) {
+    public static String setValueIfNotBlank(String target, String source) {
         if (isNotBlank(source)){
             target = source;
         }
+        return target;
     }
 
     /**

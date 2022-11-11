@@ -37,7 +37,7 @@
 </head>
 <body>
 	<h2>多Sheet导出示例</h2>
-	点击按钮导出以下两个表格的数据到不同的Sheet：<a href="#" onclick="javascript:exportToExcel()" class="easyui-linkbutton" iconCls="icon-save">导出</a>
+	点击按钮导出以下两个表格的数据到不同的Sheet：<a href="#" onclick="exportToExcel()" class="easyui-linkbutton" iconCls="icon-save">导出</a>
 	<br><br>
 	<table id="grid1"></table>
 	<table id="grid2" class="easyui-datagrid" style="width:700px;height:250px"

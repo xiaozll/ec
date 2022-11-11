@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -21,7 +21,7 @@ import java.util.*;
 /**
  * 实现可订阅提醒的邮件服务器的综合应用
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14
  */
 @Deprecated
@@ -56,7 +56,7 @@ public class MailService implements Runnable {
 	/**
 	 * 订阅者列表
 	 */
-	private List<SubscriptionListener> listeners = new ArrayList<SubscriptionListener>();
+	private final List<SubscriptionListener> listeners = new ArrayList<SubscriptionListener>();
 
 	/**
 	 * 订阅监听线程
@@ -73,7 +73,7 @@ public class MailService implements Runnable {
 	 * 当前本地的邮件数据，主键为邮件UID，值为<tt>Mail</tt>电子邮件对象
 	 * TODO 后期可更改为数据库DAO获取，并做缓存优化，建议使用SQLITE
 	 */
-	private Map<String, Mail> data = new HashMap<String, Mail>();
+	private final Map<String, Mail> data = new HashMap<String, Mail>();
 
 	public MailService() {
 	}

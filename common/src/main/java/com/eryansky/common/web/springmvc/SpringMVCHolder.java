@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -18,7 +18,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 /**
  * spring mvc 上下文持有者，类似Struts2的ServletActionContext,
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-05-17 20:39
  */
 @SuppressWarnings("unchecked")
@@ -31,7 +31,7 @@ public abstract class SpringMVCHolder {
      * @return Object
      */
     public static <T> T getRequestAttribute(String name) {
-        return (T) getAttribute(name, RequestAttributes.SCOPE_REQUEST);
+        return getAttribute(name, RequestAttributes.SCOPE_REQUEST);
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class SpringMVCHolder {
      * @return Object
      */
     public static <T> T getSessionAttribute(String name) {
-        return (T) getAttribute(name, RequestAttributes.SCOPE_SESSION);
+        return getAttribute(name, RequestAttributes.SCOPE_SESSION);
     }
 
     /**

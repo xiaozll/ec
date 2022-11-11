@@ -15,7 +15,9 @@
  */
 package com.eryansky.j2cache;
 
-import jline.console.ConsoleReader;
+import java.io.Console;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -27,18 +29,20 @@ import java.util.stream.Collectors;
  */
 public class J2CacheCmd {
 
+	private static final Logger logger = LoggerFactory.getLogger(J2CacheCmd.class);
+
 	private static long TTL = 0;
 
 	public static void main(String[] args) throws IOException {
 
 		CacheChannel cache = J2Cache.getChannel(); //获取 J2Cache 操作接口
-		ConsoleReader reader = new ConsoleReader();
+		Console con = System.console();
 
 		String line;
 
 		do{
 			try {
-				line = reader.readLine("> ");
+				line = con.readLine("> ");
 
 				if(line == null || line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit"))
 					break;
@@ -122,16 +126,16 @@ public class J2CacheCmd {
 				}
 			}
 			catch(ArrayIndexOutOfBoundsException e) {
-				System.out.println("Wrong arguments.");
+				logger.info("Wrong arguments.");
 				printHelp();
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 		}while(true);
 
 		cache.close();	//关闭 J2Cache 缓存
-		reader.shutdown();
+
 
 		System.exit(0);
 	}

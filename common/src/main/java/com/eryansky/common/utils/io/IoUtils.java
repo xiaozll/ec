@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -22,7 +22,7 @@ import java.net.URL;
 /**
  * IO操作工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-8-16 下午1:31:16
  */
 public class IoUtils extends IOUtils {
@@ -140,7 +140,7 @@ public class IoUtils extends IOUtils {
             throw new IOException("skip fail: skipped=" + Long.valueOf(skipped)+ ", start=" + Long.valueOf(start));
         }
         long bytesToRead = end - start + 1;
-        byte buffer[] = new byte[2048];
+        byte[] buffer = new byte[2048];
         int len = buffer.length;
         while ((bytesToRead > 0) && (len >= buffer.length)) {
             try {

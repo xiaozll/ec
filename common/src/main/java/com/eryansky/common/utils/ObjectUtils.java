@@ -1,12 +1,12 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils;
 /**
  * Object工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2012-1-9下午2:44:48
  */
 public class ObjectUtils extends org.apache.commons.lang3.ObjectUtils{

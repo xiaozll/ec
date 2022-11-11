@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,7 +9,7 @@ package com.eryansky.common.exception;
  * 基本异常, 继承自RuntimeException.
  * <br>从由Spring管理事务的函数中抛出时会触发事务回滚.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-43-10 上午12:08:55
  */
 @SuppressWarnings("serial")

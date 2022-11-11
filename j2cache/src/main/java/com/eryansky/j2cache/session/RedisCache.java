@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
  */
 public class RedisCache {
 
-    private String namespace;
-    private RedisClient client;
+    private final String namespace;
+    private final RedisClient client;
 
     /**
      * 缓存构造

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,6 +11,7 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.security.SecureRandom;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Random;
@@ -30,16 +31,16 @@ import org.slf4j.LoggerFactory;
  *
  * 2. 查找空闲端口
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-06-12 
  */
 public class NetUtil {
-    private static Logger logger = LoggerFactory.getLogger(NetUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(NetUtil.class);
 
     public static final int PORT_RANGE_MIN = 1024;
     public static final int PORT_RANGE_MAX = 65535;
 
-    private static Random random = new Random();
+    private static final SecureRandom random = new SecureRandom();
 
     /////// LocalAddress //////
 
@@ -75,7 +76,7 @@ public class NetUtil {
 
         private InetAddress localInetAddress;
         private String localHost;
-        private String hostName;
+        private final String hostName;
 
         public LocalAddress() {
             initLocalAddress();

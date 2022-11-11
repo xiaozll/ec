@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-01
  */
 @Mobile
@@ -54,7 +54,7 @@ public class NoticeMobileController extends SimpleController {
     }
 
     @Logging(logType = LogType.access, value = "我的通知")
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/notice/notice";
     }
@@ -63,7 +63,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticePage")
+    @PostMapping(value = "noticePage")
     @ResponseBody
     public String noticePage() {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -81,7 +81,7 @@ public class NoticeMobileController extends SimpleController {
     /**
      * @return
      */
-    @RequestMapping(value = "noticeData")
+    @PostMapping(value = "noticeData")
     @ResponseBody
     public String noticeData(HttpServletRequest request, HttpServletResponse response,
                              NoticeQueryVo noticeQueryVo) {
@@ -103,7 +103,7 @@ public class NoticeMobileController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Notice model) {
         return Result.successResult().setObj(model);

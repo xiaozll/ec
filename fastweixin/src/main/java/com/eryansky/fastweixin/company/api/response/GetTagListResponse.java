@@ -9,7 +9,7 @@ import java.util.List;
 /**
  *  Response -- 获取标签列表
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class GetTagListResponse extends BaseResponse {

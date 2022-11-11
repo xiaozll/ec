@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 
 /**
  * 国际化资源工具类.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2012-12-15 上午8:43:52
  */
 public class ResourceUtils {
@@ -93,7 +94,7 @@ public class ResourceUtils {
 		BufferedReader reader = null;
 		try {
 			in = new FileInputStream(resource);
-			reader = new BufferedReader(new InputStreamReader(in, "utf-8"));
+			reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 			return IOUtils.toString(reader);
 		} catch (Exception excp) {
 			throw new RuntimeException(excp);

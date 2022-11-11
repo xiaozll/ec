@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -8,11 +8,12 @@ package com.eryansky.common.orm.persistence;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * DAO支持类实现
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-05-16
  * @param <T>
  */
@@ -73,6 +74,13 @@ public interface PCrudDao<T,PK extends Serializable> extends BaseDao {
 	 * @return
 	 */
 	int insert(T entity);
+
+	/**
+	 * 批量插入数据
+	 * @param list
+	 * @return
+	 */
+	int insertBatch(Collection<T> list);
 	
 	/**
 	 * 更新数据

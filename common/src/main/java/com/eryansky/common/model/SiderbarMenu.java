@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 树形节点Menu模型.
  * 
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2019-4-1
  */
 @SuppressWarnings("serial")
@@ -54,6 +54,14 @@ public class SiderbarMenu implements Serializable {
 	 * abosulte
 	 */
 	private String urlType;
+	/**
+	 *
+	 */
+	private String tip;
+	/**
+	 *
+	 */
+	private String tipStyle;
 	/**
 	 * 自定义属性
 	 */
@@ -221,6 +229,24 @@ public class SiderbarMenu implements Serializable {
 
 	public SiderbarMenu setUrlType(String urlType) {
 		this.urlType = urlType;
+		return this;
+	}
+
+	public String getTip() {
+		return tip;
+	}
+
+	public SiderbarMenu setTip(String tip) {
+		this.tip = tip;
+		return this;
+	}
+
+	public String getTipStyle() {
+		return tipStyle;
+	}
+
+	public SiderbarMenu setTipStyle(String tipStyle) {
+		this.tipStyle = tipStyle;
 		return this;
 	}
 

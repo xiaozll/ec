@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 数据库数据源Vo
- * User: 尔演&Eryan eryanwcp@gmail.com
+ * User: eryan
  * Date: 13-12-27 上午9:45
  */
 public class DbConfig implements Serializable {

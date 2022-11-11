@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import java.io.Serializable;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class GetUsersResponse extends BaseResponse {
@@ -48,7 +48,7 @@ public class GetUsersResponse extends BaseResponse {
         this.nextOpenid = nextOpenid;
     }
 
-    public class Openid implements Serializable {
+    public static class Openid {
         private String[] openid;
 
         public String[] getOpenid() {

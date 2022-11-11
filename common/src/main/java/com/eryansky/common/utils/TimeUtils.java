@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * 时间计算工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2016-05-03
  */
 public class TimeUtils {
@@ -77,7 +77,7 @@ public class TimeUtils {
     /**
      * 时间数据容器
      */
-    private int[] fields = new int[4];
+    private final int[] fields = new int[4];
 
     /**
      * 无参构造，将各字段置为 0
@@ -317,10 +317,7 @@ public class TimeUtils {
         if (getClass() != obj.getClass())
             return false;
         final TimeUtils other = (TimeUtils) obj;
-        if (!Arrays.equals(fields, other.fields)) {
-            return false;
-        }
-        return true;
+        return Arrays.equals(fields, other.fields);
     }
     
 }

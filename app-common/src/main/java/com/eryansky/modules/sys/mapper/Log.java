@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * 系统操作日志
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date: 13-11-27 下午9:18
  */
 @JsonFilter(" ")

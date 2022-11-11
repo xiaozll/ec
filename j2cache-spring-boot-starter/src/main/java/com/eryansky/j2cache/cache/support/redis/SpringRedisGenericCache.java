@@ -2,6 +2,7 @@ package com.eryansky.j2cache.cache.support.redis;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
@@ -23,12 +24,12 @@ public class SpringRedisGenericCache implements Level2Cache {
 
 	private final static Logger log = LoggerFactory.getLogger(SpringRedisGenericCache.class);
 
-	private String namespace;
+	private final String namespace;
 
-	private String region;
+	private final String region;
 
-	private RedisTemplate<String, Serializable> redisTemplate;
-	private RedisLockRegistry redisLockRegistry;
+	private final RedisTemplate<String, Serializable> redisTemplate;
+	private final RedisLockRegistry redisLockRegistry;
 
 	public SpringRedisGenericCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate,RedisLockRegistry redisLockRegistry) {
 		if (region == null || region.isEmpty()) {
@@ -119,12 +120,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 
 	private byte[] _key(String key) {
 		byte[] k;
-		try {
-			k = (this.region + ":" + key).getBytes("utf-8");
-		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage(),e);
-			k = (this.region + ":" + key).getBytes();
-		}
+		k = (this.region + ":" + key).getBytes(StandardCharsets.UTF_8);
 		return k;
 	}
 
@@ -171,8 +167,8 @@ public class SpringRedisGenericCache implements Level2Cache {
 	@Override
 	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
 		long now = System.currentTimeMillis();
-		long expireSecond = now / 1000L + keyExpireSeconds;//设置加锁过期时间
-		long expireMillisSecond = now + keyExpireSeconds * 1000L;//作为值存入锁中(记录这把锁持有最终时限)
+//		long expireSecond = now / 1000L + keyExpireSeconds;//设置加锁过期时间
+//		long expireMillisSecond = now + keyExpireSeconds * 1000L;//作为值存入锁中(记录这把锁持有最终时限)
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 		for (int i = 0; i < retryCount; i++) {
 			Lock lock = redisLockRegistry.obtain(region);

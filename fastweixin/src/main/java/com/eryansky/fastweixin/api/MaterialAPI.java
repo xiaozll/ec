@@ -27,13 +27,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class MaterialAPI extends BaseAPI {
@@ -103,21 +104,18 @@ public class MaterialAPI extends BaseAPI {
         DownloadMaterialResponse response = new DownloadMaterialResponse();
         String url = BASE_API_URL + "cgi-bin/material/get_material?access_token=" + config.getAccessToken();
         RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(NetWorkCenter.CONNECT_TIMEOUT).setConnectTimeout(NetWorkCenter.CONNECT_TIMEOUT).setSocketTimeout(NetWorkCenter.CONNECT_TIMEOUT).build();
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
         HttpPost request = new HttpPost(url);
         StringEntity mediaEntity = new StringEntity("{\"media_id\":\"" + mediaId + "\"}", ContentType.APPLICATION_JSON);
         request.setEntity(mediaEntity);
-
-        CloseableHttpResponse httpResponse = null;
-        try{
-            httpResponse = client.execute(request);
+        try(CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+            CloseableHttpResponse httpResponse = client.execute(request)){
             if(HttpStatus.SC_OK == httpResponse.getStatusLine().getStatusCode()){
                 HttpEntity entity;
                 String resultJson;
                 switch (type){
                     case NEWS:
                         entity = httpResponse.getEntity();
-                        resultJson = EntityUtils.toString(entity, Charset.forName("UTF-8"));
+                        resultJson = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                         response = JSONUtil.toBean(resultJson, DownloadMaterialResponse.class);
                         LOG.debug("-----------------请求成功-----------------");
                         LOG.debug("响应结果:");
@@ -129,7 +127,7 @@ public class MaterialAPI extends BaseAPI {
                         break;
                     case VIDEO:
                         entity = httpResponse.getEntity();
-                        resultJson = EntityUtils.toString(entity, Charset.forName("UTF-8"));
+                        resultJson = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                         LOG.debug("-----------------请求成功-----------------");
                         LOG.debug("响应结果:");
                         LOG.debug(resultJson);

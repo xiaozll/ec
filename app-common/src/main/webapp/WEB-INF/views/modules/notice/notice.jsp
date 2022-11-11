@@ -78,7 +78,7 @@
                             <td>&nbsp;</td>
                             <td>
                                 <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
-                                <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$notice_search_form.form('reset');">重置</a>
+                                <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="$notice_search_form.form('reset');">重置</a>
                             </td>
                         </tr>
                     </table>

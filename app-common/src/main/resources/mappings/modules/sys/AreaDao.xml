@@ -225,6 +225,41 @@
 		#{remark}
 		)
 	</insert>
+	<insert id="insertBatch">
+		INSERT INTO t_sys_area(
+		id,
+		status,
+		version,
+		create_user,
+		create_time,
+		update_user,
+		update_time,
+		parent_id,
+		parent_ids,
+		name,
+		short_name,
+		code,
+		type,
+		sort,
+		remark
+		) VALUES <foreach collection="list" item="item" separator=",">(
+		#{item.id},
+		#{item.status},
+		0,
+		#item.createUser},
+		#{item.createTime},
+		#{item.updateUser},
+		#{item.updateTime},
+		#{item.parent.id},
+		#{item.parentIds},
+		#{item.name},
+		#{item.shortName},
+		#{item.code},
+		#{item.type},
+		#{item.sort},
+		#{item.remark}
+		)</foreach>
+	</insert>
 
 	<update id="update">
 		UPDATE t_sys_area SET

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -29,7 +29,7 @@ import java.util.Date;
 /**
  * 使用AspectJ实现登录登出日志AOP
  *
- * @author 尔演&Eryan
+ * @author Eryan
  */
 @Order(1)
 @Component

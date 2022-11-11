@@ -1,6 +1,6 @@
 /*!
  * 包含easyui的扩展和常用的jQuery方法扩展.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2013-05-26
  */
 
@@ -474,7 +474,7 @@ $.extend($.fn.tabs.methods, {
 /**
  * 使panel和datagrid在加载时提示
  * 
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * 
  * @requires jQuery,EasyUI
  * 
@@ -591,7 +591,7 @@ $.fn.window.defaults.onMove = easyuiPanelOnMove;
 $.fn.panel.defaults.onMove = easyuiPanelOnMove;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * 
  * @requires jQuery,EasyUI
  * 
@@ -939,7 +939,7 @@ var gridTooltipOptions = {
 	                }   
 	            }).tooltip('show');   
 	  
-	        };   
+	        }
 	        function bindEvent(delegateEle,td,grid){
 	        	var options = grid.data('datagrid'); 
 	        	$(delegateEle).undelegate(td, 'mouseover').undelegate(td, 'mouseout').undelegate(td, 'mousemove').delegate(td, {   
@@ -963,7 +963,7 @@ var gridTooltipOptions = {
                         }   
                     }   
                 }); 
-	        };
+	        }
 	        return jq.each(function () {   
 	            var grid = $(this);   
 	            var options = $(this).data('datagrid');   
@@ -1670,7 +1670,7 @@ $.extend($.fn.layout.methods, {
                 if(doResize){
                     $(dom).layout('resize');
                 }
-            };
+            }
             if(region.toLowerCase() == 'all'){
                 hide(this,'east',false);
                 hide(this,'north',false);
@@ -1712,7 +1712,7 @@ $.extend($.fn.layout.methods, {
                 if(doResize){
                     $(dom).layout('resize');
                 }
-            };
+            }
             if(region.toLowerCase() == 'all'){
                 show(this,'east',false);
                 show(this,'north',false);
@@ -1877,7 +1877,7 @@ $.extend($.fn.window.methods, {
 
                         clearInterval(_timerId);
                         _timerId = null,_p=null,_fx=null;
-                    };
+                    }
                 };
             _p = _p.concat(_p.concat(_p));
             _timerId = setInterval(_fx, interval);
@@ -1929,7 +1929,7 @@ $.extend($.fn.dialog.methods, {
                     if(text == param){
                         cbtn = $(this);
                         text = null;
-                        return;
+
                     }
                 });
             }

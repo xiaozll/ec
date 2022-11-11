@@ -6,7 +6,7 @@ import com.eryansky.common.orm.mybatis.sensitive.type.SensitiveTypeHandler;
 /**
  * 默认脱敏处理类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 public class DafaultSensitiveHandler implements SensitiveTypeHandler {
@@ -40,28 +40,28 @@ public class DafaultSensitiveHandler implements SensitiveTypeHandler {
             stringBuilder.append(value.charAt(len - 1));
         } else {
             if (pamatwo <= 0) {
-                stringBuilder.append(value.substring(0, 1));
+                stringBuilder.append(value.charAt(0));
                 stringBuilder.append(SYMBOL);
-                stringBuilder.append(value.substring(len - 1, len));
+                stringBuilder.append(value.charAt(len - 1));
 
             } else if (pamatwo >= SIZE / TWO && SIZE + 1 != len) {
                 int pamafive = (len - SIZE) / 2;
-                stringBuilder.append(value.substring(0, pamafive));
+                stringBuilder.append(value, 0, pamafive);
                 for (int i = 0; i < SIZE; i++) {
                     stringBuilder.append(SYMBOL);
                 }
                 if (ispamaThree(pamathree)) {
-                    stringBuilder.append(value.substring(len - pamafive, len));
+                    stringBuilder.append(value, len - pamafive, len);
                 } else {
-                    stringBuilder.append(value.substring(len - (pamafive + 1), len));
+                    stringBuilder.append(value, len - (pamafive + 1), len);
                 }
             } else {
                 int pamafour = len - 2;
-                stringBuilder.append(value.substring(0, 1));
+                stringBuilder.append(value.charAt(0));
                 for (int i = 0; i < pamafour; i++) {
                     stringBuilder.append(SYMBOL);
                 }
-                stringBuilder.append(value.substring(len - 1, len));
+                stringBuilder.append(value.charAt(len - 1));
             }
         }
         return stringBuilder.toString();

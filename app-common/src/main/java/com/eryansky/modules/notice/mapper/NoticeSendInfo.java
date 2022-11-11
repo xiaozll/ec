@@ -1,16 +1,17 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.notice.mapper;
 
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.modules.notice._enum.ReceiveObjectType;
 import com.eryansky.modules.notice.utils.NoticeUtils;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-10-15
  */
 public class NoticeSendInfo extends BaseEntity<NoticeSendInfo> {
@@ -50,7 +51,7 @@ public class NoticeSendInfo extends BaseEntity<NoticeSendInfo> {
     }
 
     private Notice getNotice() {
-        if (this.notice == null) {
+        if (this.notice == null && StringUtils.isNotBlank(this.noticeId)) {
             return NoticeUtils.getNotice(this.noticeId);
         }
         return this.notice;

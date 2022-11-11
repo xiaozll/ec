@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * session登录用户对象.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-24 下午2:53:59
  */
 @SuppressWarnings("serial")
@@ -76,7 +76,7 @@ public class SessionInfo implements Serializable {
     /**
      * 设备类型 {@link com.eryansky.core.security._enum.DeviceType}
      */
-    private String sysTemDeviceType;
+    private String systemDeviceType;
     /**
      * 设备类型 {@link DeviceType}
      */
@@ -370,12 +370,12 @@ public class SessionInfo implements Serializable {
         return this;
     }
 
-    public String getSysTemDeviceType() {
-        return sysTemDeviceType;
+    public String getSystemDeviceType() {
+        return systemDeviceType;
     }
 
-    public SessionInfo setSysTemDeviceType(String sysTemDeviceType) {
-        this.sysTemDeviceType = sysTemDeviceType;
+    public SessionInfo setSystemDeviceType(String systemDeviceType) {
+        this.systemDeviceType = systemDeviceType;
         return this;
     }
 
@@ -599,7 +599,12 @@ public class SessionInfo implements Serializable {
         if (StringUtils.isBlank(deviceType)) {
             return false;
         }
-        DeviceType _deviceType = DeviceType.valueOf(deviceType);
+        DeviceType _deviceType = null;
+        try {
+            _deviceType = DeviceType.valueOf(deviceType);
+        } catch (IllegalArgumentException e) {
+            return "iOS".equalsIgnoreCase(deviceType)|| "android".equals(deviceType);
+        }
         return DeviceType.MOBILE.equals(_deviceType) || DeviceType.TABLET.equals(_deviceType);
     }
 

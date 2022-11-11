@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); 
  */
@@ -14,7 +14,7 @@ import static com.eryansky.core.security._enum.Logical.*;
 
 /**
  * 需要的角色
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-06-11 20:06
  */
 @Target({ElementType.TYPE, ElementType.METHOD,ElementType.PACKAGE})

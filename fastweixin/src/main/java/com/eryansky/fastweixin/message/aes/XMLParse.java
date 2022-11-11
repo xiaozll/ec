@@ -8,11 +8,15 @@
 
 package com.eryansky.fastweixin.message.aes;
 
+import com.eryansky.fastweixin.servlet.QYWeixinSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
@@ -23,6 +27,8 @@ import java.io.StringReader;
  * 提供提取消息格式中的密文及生成回复消息格式的接口.
  */
 class XMLParse {
+
+    private static final Logger LOG = LoggerFactory.getLogger(XMLParse.class);
 
     /**
      * 提取出xml数据包中的加密消息
@@ -35,6 +41,7 @@ class XMLParse {
         Object[] result = new Object[3];
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             DocumentBuilder db = dbf.newDocumentBuilder();
             StringReader sr = new StringReader(xmltext);
             InputSource is = new InputSource(sr);
@@ -48,7 +55,7 @@ class XMLParse {
             result[2] = nodelist2.item(0).getTextContent();
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e.getMessage(),e);
             throw new AesException(AesException.ParseXmlError);
         }
     }
@@ -64,9 +71,9 @@ class XMLParse {
      */
     public static String generate(String encrypt, String signature, String timestamp, String nonce) {
 
-        String format = "<xml>\n" + "<Encrypt><![CDATA[%1$s]]></Encrypt>\n"
-                + "<MsgSignature><![CDATA[%2$s]]></MsgSignature>\n"
-                + "<TimeStamp>%3$s</TimeStamp>\n" + "<Nonce><![CDATA[%4$s]]></Nonce>\n" + "</xml>";
+        String format = "<xml>%n" + "<Encrypt><![CDATA[%1$s]]></Encrypt>%n"
+                + "<MsgSignature><![CDATA[%2$s]]></MsgSignature>%n"
+                + "<TimeStamp>%3$s</TimeStamp>%n" + "<Nonce><![CDATA[%4$s]]></Nonce>%n" + "</xml>";
         return String.format(format, encrypt, signature, timestamp, nonce);
 
     }

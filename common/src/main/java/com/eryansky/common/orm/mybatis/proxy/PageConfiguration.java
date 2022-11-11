@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,25 +14,23 @@ import org.apache.ibatis.session.SqlSession;
  * 自定义Mybatis的配置，扩展.
  * </p>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-7-16
  */
 public class PageConfiguration extends Configuration {
 	
-    protected MapperRegistry mapperRegistry = new PaginationMapperRegistry(this);
-
     @Override
     public <T> void addMapper(Class<T> type) {
-        mapperRegistry.addMapper(type);
+        super.mapperRegistry.addMapper(type);
     }
 
     @Override
     public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
-        return mapperRegistry.getMapper(type, sqlSession);
+        return super.mapperRegistry.getMapper(type, sqlSession);
     }
 
     @Override
     public boolean hasMapper(Class<?> type) {
-        return mapperRegistry.hasMapper(type);
+        return super.mapperRegistry.hasMapper(type);
     }
 }

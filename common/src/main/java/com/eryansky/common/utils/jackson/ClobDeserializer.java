@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -18,7 +18,7 @@ import java.sql.Clob;
 
 /**
  * 自定义Jackson Clob类型转换.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-02-12
  *
  */
@@ -27,7 +27,7 @@ public class ClobDeserializer extends JsonDeserializer<Clob> {
 	private static final Logger logger = LoggerFactory.getLogger(ClobDeserializer.class);
 
 	@Override
-	public Clob deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+	public Clob deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 		String value = p.getText();
 		try {
 			return value == null ? null : ClobUtil.getClob(value);

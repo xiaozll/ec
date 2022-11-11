@@ -16,6 +16,11 @@
                 loadData();
             });
 
+            $("#btnReset").click(function(){
+                $('#searchForm').find("input[type=hidden]").val("");
+                $('#searchForm').find("select").val(null).trigger("change");
+            });
+
             $("#btnExport").click(function(){
                 var param = $.serializeObject($("#searchForm"));
                 $('#annexFrame').attr('src', '${ctxAdmin}/sys/job/getJobList?export=true&'+ $.param(param));
@@ -25,8 +30,8 @@
             var queryParam = $.serializeObject($("#searchForm"));
             $("#btnSubmit").attr("disabled",true);
             $.ajax({
-                url: ctxAdmin + '/sys/job/getJobList',
-                type: 'get',
+                url: ctxAdmin + '/sys/job/list',
+                type: 'post',
                 dataType: "json",
                 cache:false,
                 data:queryParam,
@@ -103,6 +108,7 @@
                 <th>任务状态</th>
                 <%--<th>任务组名</th>
                 <th>所属类名</th>--%>
+                <th>执行实例</th>
                 <th>时间表达式</th>
                 <th>上一次执行时间</th>
                 <th>下一次执行时间</th>
@@ -116,6 +122,7 @@
                 <td>{{triggerStateView}}</td>
                 <%--<td>{{jobGroup}}</td>
                 <td>{{jobClassName}}</td>--%>
+                <td>{{instanceName}}</td>
                 <td>{{cronExpression}}</td>
                 <td>{{prevFireTime}}</td>
                 <td>{{nextFireTime}}</td>
@@ -169,7 +176,8 @@
                         <div class="span4">
                             <div class="span3"></div>
                             <div class="span9">
-                                <input id="btnSubmit" class="btn btn-primary" type="button" value="查 询"/>&nbsp;
+                                <input id="btnSubmit" class="btn btn-primary" type="button" value="查 询"/>&nbsp;&nbsp;
+                                <input id="btnReset" class="btn btn-warning" type="reset" value="重 置"/>&nbsp;&nbsp;
                                 <button id="btnExport" type="button" class="btn btn-primary" >导 出</button>
                             </div>
                         </div>

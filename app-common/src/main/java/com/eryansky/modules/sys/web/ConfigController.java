@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,20 +15,22 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Config;
 import com.eryansky.modules.sys.service.ConfigService;
+import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-05-14
  */
 @Controller
@@ -40,7 +42,7 @@ public class ConfigController extends SimpleController {
 
     @RequiresPermissions("sys:config:view")
     @Logging(value = "属性配置", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public String list() {
         return "modules/sys/config";
     }
@@ -54,23 +56,23 @@ public class ConfigController extends SimpleController {
         }
     }
 
-    @RequestMapping(value = {"input"})
+    @GetMapping(value = {"input"})
     public String input() {
         return "modules/sys/config-input";
     }
 
-    @RequestMapping(value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<Config> datagrid(Config model, HttpServletRequest request, HttpServletResponse response,
                                      String query) {
-        Page<Config> page = new Page<Config>(request);
+        Page<Config> page = new Page<>(request);
         page = configService.findPage(page, query);
         return new Datagrid(page.getTotalCount(), page.getResult());
     }
 
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-保存配置", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = "save",produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Config model) {
         Result result;
@@ -95,7 +97,7 @@ public class ConfigController extends SimpleController {
      */
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-配置文件同步", logType = LogType.access)
-    @RequestMapping(value = {"syncFromProperties"})
+    @PostMapping(value = {"syncFromProperties"})
     @ResponseBody
     public Result syncFromProperties(Boolean overrideFromProperties) {
         Result result;
@@ -112,12 +114,88 @@ public class ConfigController extends SimpleController {
      */
     @RequiresPermissions("sys:config:edit")
     @Logging(value = "属性配置-删除配置", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         configService.deleteByIds(ids);
         return Result.successResult();
     }
 
+
+
+    private static final String[] CONFIGS = {"app.version",
+            "app.name",
+            "app.fullName",
+            "app.shortName",
+            "app.productName",
+            "app.productURL",
+            "app.productContact",
+            "security.on",
+            "sessionUser.MaxSize",
+            "sessionUser.UserSessionSize",
+            "password.updateCycle",
+            "password.repeatCount",
+            "system.logKeepTime",
+            "system.security.limit.user.whitelist",
+            "system.security.limit.ip.enable",
+            "system.security.limit.ip.whiteEnable",
+            "system.security.limit.ip.whitelist",
+            "system.security.limit.ip.blacklist",
+            "system.security.proxy.enable",
+            "system.security.proxy.whitelist",
+            "system.rest.enable",
+            "system.rest.defaultApiKey",
+            "system.rest.limit.ip.enable",
+            "system.rest.limit.ip.whitelist"
+    };
+
+    /**
+     * 部分系统参数配置 表单
+     * @param uiModel
+     * @return
+     */
+    @Logging(value = "参数配置",logType = LogType.access)
+    @RequiresPermissions("sys:config:view")
+    @GetMapping(value = {"paramForm"})
+    public String paramForm(Model uiModel) {
+        Map<String,Object> data = Maps.newHashMap();
+        for(String configCode:CONFIGS){
+            Config config = configService.getConfigByCode(configCode);
+//            data.put(configCode,config != null ? config.getValue():null);
+            data.put(configCode,config != null ? config.getValue():AppConstants.getConfig(configCode,null));
+        }
+        uiModel.addAttribute("data",data);
+        return "modules/sys/config-paramForm";
+    }
+
+
+    /**
+     * 保存
+     * @param request
+     * @param redirectAttributes
+     * @param uiModel
+     * @return
+     */
+    @Logging(value = "参数配置-保存", logType = LogType.access)
+    @RequiresPermissions("sys:config:edit")
+    @PostMapping(value = {"saveParam"})
+    public String saveParam(HttpServletRequest request, RedirectAttributes redirectAttributes, Model uiModel) {
+        if (AppConstants.isdevMode()) {
+            addMessage(uiModel,"系统处于开发模式，无效操作！");
+            return paramForm(uiModel);
+        }
+        for (String configCode : CONFIGS) {
+            String configValue = request.getParameter(configCode);
+            Config config = configService.getConfigByCode(configCode);
+            if (config == null) {
+                config = new Config();
+            }
+            config.setCode(configCode);
+            config.setValue(configValue);
+            configService.save(config);
+            addMessage(redirectAttributes, "操作成功！");
+        }
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/config/paramForm?repage";
+    }
 
 }

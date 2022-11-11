@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -41,10 +41,10 @@ import java.util.concurrent.TimeUnit;
 //@Lazy(false)
 public class MapperLoader implements DisposableBean, InitializingBean, ApplicationContextAware {
 
-    private static Logger logger = LoggerFactory.getLogger(MapperLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(MapperLoader.class);
 
 	private ConfigurableApplicationContext context = null;
-	private HashMap<String, String> fileMapping = new HashMap<String, String>();
+	private final HashMap<String, String> fileMapping = new HashMap<String, String>();
 	private Scanner scanner = null;
 	private ScheduledExecutorService service = null;
 	private Resource[] mapperLocationResources = null;
@@ -78,7 +78,7 @@ public class MapperLoader implements DisposableBean, InitializingBean, Applicati
 			service.scheduleAtFixedRate(new Task(), 5, 5, TimeUnit.SECONDS);
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			logger.error(e1.getMessage(),e1);
 		}
 
 	}
@@ -87,12 +87,12 @@ public class MapperLoader implements DisposableBean, InitializingBean, Applicati
 		@Override
 		public void run() {
 			try { if (scanner.isChanged()) {
-					System.out.println("*Mapper.xml文件改变,重新加载.");
+					logger.info("*Mapper.xml文件改变,重新加载.");
 					scanner.reloadXML();
-					System.out.println("加载完毕.");
+					logger.info("加载完毕.");
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 		}
 
@@ -101,7 +101,7 @@ public class MapperLoader implements DisposableBean, InitializingBean, Applicati
 	@SuppressWarnings({ "rawtypes" })
 	class Scanner {
 		
-		private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+		private final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 		public Scanner() {
 		}

@@ -13,13 +13,14 @@
     <version>${ec-j2cache.version}</version>
     <packaging>jar</packaging>
     <properties>
-        <ehcache.version>2.10.6</ehcache.version>
-        <caffeine.version>2.9.0</caffeine.version>
+        <caffeine.version>2.9.3</caffeine.version>
         <jedis.version>2.10.2</jedis.version>
-        <lettuce.version>6.0.4.RELEASE</lettuce.version>
+        <lettuce.version>6.2.1.RELEASE</lettuce.version>
+        <objenesis.version>3.2</objenesis.version>
         <fst.version>2.57</fst.version>
         <snappy.version>1.1.8.4</snappy.version>
         <jline.version>2.14.6</jline.version>
+        <guava.version>31.1-jre</guava.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -28,13 +29,6 @@
 
     <dependencies>
         <!--Cache-->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
@@ -53,7 +47,7 @@
         <dependency>
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
-            <version>2.6</version>
+            <version>${objenesis.version}</version>
         </dependency>
         <dependency>
             <groupId>de.ruedigermoeller</groupId>
@@ -65,12 +59,12 @@
             <artifactId>snappy-java</artifactId>
             <version>${snappy.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>jline</groupId>
-            <artifactId>jline</artifactId>
-            <version>${jline.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
             <scope>compile</scope>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

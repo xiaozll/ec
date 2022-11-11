@@ -1,11 +1,11 @@
 package com.eryansky.modules.sys.web.demo;
 
-import com.eryansky.core.excelTools.*;
+import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.core.excels.*;
 import com.eryansky.modules.sys.web.demo.module.DataCount;
 import com.eryansky.modules.sys.web.demo.module.People;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,13 +13,13 @@ import java.util.*;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-07-31 20:07
  */
 @Controller
 @RequestMapping("${adminPath}/sys/demo/export")
 @SuppressWarnings("unchecked")
-public class ExportController {
+public class ExportController extends SimpleController {
 
     /**
      * 数组数据样例
@@ -78,7 +78,7 @@ public class ExportController {
      *
      * @return
      */
-    @RequestMapping("loadData")
+    @PostMapping(value = "loadData")
     @ResponseBody
     public List<People> loadData() {
         return getBeanData();
@@ -90,7 +90,7 @@ public class ExportController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("exportExcel")
+    @GetMapping(value = "exportExcel")
     public void exportExcel(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
 
@@ -110,7 +110,7 @@ public class ExportController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("spanExport")
+    @GetMapping(value = "spanExport")
     public void spanExport(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
         List<Map> list = getMapData();//获取数据
@@ -133,7 +133,7 @@ public class ExportController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("sheetsExport")
+    @GetMapping(value = "sheetsExport")
     public void exportSheets(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
         List<Object[]> list = getData();
@@ -167,10 +167,10 @@ public class ExportController {
      *
      * @return
      */
-    @RequestMapping("loadRowSpanData")
+    @PostMapping(value = "loadRowSpanData")
     @ResponseBody
     public List<DataCount> loadRowSpanData() {
-        List<DataCount> list = new ArrayList<DataCount>();//获取数据
+        List<DataCount> list = new ArrayList<>();//获取数据
         list.add(new DataCount("广东", "广州", "天河", 131, 121, 14));
         list.add(new DataCount("广东", "广州", "海珠", 53, 44, 9));
         list.add(new DataCount("广东", "清远", "小市", 20, 53, 13));
@@ -186,7 +186,7 @@ public class ExportController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("rowSpanExport")
+    @GetMapping(value = "rowSpanExport")
     public void exportRowSpan(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
 
@@ -208,7 +208,7 @@ public class ExportController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("exportTotal")
+    @GetMapping(value = "exportTotal")
     public void exportTotal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=GBK");
 
@@ -260,9 +260,9 @@ public class ExportController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("exportZip")
+    @GetMapping(value = "exportZip")
     public void exportZip(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<DataCount> list = new ArrayList<DataCount>();//获取数据
+        List<DataCount> list = new ArrayList<>();//获取数据
         // 这里的数据集查询的话就看个人具体情况了，比如可以分页多次查询
         for (int i = 0; i < 500000; i++) {
             list.add(new DataCount("广东" + i, "广州" + i, "天河" + i, i, i, i));
@@ -284,7 +284,7 @@ public class ExportController {
             JsGridReportBase report = new JsGridReportBase(request, response);
             report.exportToExcel(zout, bean);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         } finally {
             zout.close();// 关闭压缩输出流
         }

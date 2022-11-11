@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -17,17 +17,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +45,7 @@ public abstract class SimpleController{
     /**
      * 验证Bean实例对象
      */
-    @Autowired
+    @Autowired(required = false)
     protected Validator validator;
 
 
@@ -68,7 +68,7 @@ public abstract class SimpleController{
      * @param pageName 页面名称(不加后缀)
      * @return 指定JSP页面
      */
-    @RequestMapping("/{folder}/{pageName}")
+    @GetMapping("/{folder}/{pageName}")
     public String redirectJsp(@PathVariable String folder, @PathVariable String pageName) {
         return "/" + folder + "/" + pageName;
     }
@@ -84,8 +84,8 @@ public abstract class SimpleController{
      * @param response
      * @throws Exception
      */
-    @RequestMapping("redirect")
-    public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @GetMapping("redirect")
+    public void redirectJsp(String prefix, String toPage, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (StringUtils.isEmpty(prefix)) {
             prefix = "/WEB-INF/views/";
         }
@@ -94,7 +94,7 @@ public abstract class SimpleController{
             response.sendError(404);
         } else {
             if (this.logger.isDebugEnabled()) {
-                this.logger.debug("重定向到页面:" + prefix + toPage);
+                this.logger.debug("重定向到页面:{}" , prefix + toPage);
             }
             request.getRequestDispatcher(prefix + toPage).forward(request, response);
         }
@@ -185,6 +185,16 @@ public abstract class SimpleController{
      */
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
+        defaultWebDataBinder(binder);
+        setAllowedFields(binder);
+        xss(binder);
+    }
+
+    /**
+     * 默认数据绑定
+     * @param binder
+     */
+    protected void defaultWebDataBinder(WebDataBinder binder) {
         // Date 类型转换
         binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
             @Override
@@ -192,7 +202,7 @@ public abstract class SimpleController{
                 setValue(DateUtils.parseDate(text));
             }
         });
-//        xss(binder);
+
     }
 
     /**
@@ -207,6 +217,15 @@ public abstract class SimpleController{
     }
 
     /**
+     * 漏洞修读 CNVD-2022-23942
+     * @param dataBinder
+     */
+    public void setAllowedFields(WebDataBinder dataBinder) {
+        String[] denylist = new String[]{"class.*", "Class.*", "*.class.*", "*.Class.*"};
+        dataBinder.setDisallowedFields(denylist);
+    }
+
+    /**
      * 客户端返回JSON字符串
      * @param response
      * @param object
@@ -214,6 +233,16 @@ public abstract class SimpleController{
      */
     protected String renderString(HttpServletResponse response, Object object) {
         return renderString(response, JsonMapper.toJsonString(object), WebUtils.JSON_TYPE);
+    }
+
+    /**
+     * 客户端返回JSON字符串 只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串，建议在外部接口中使用
+     * @param response
+     * @param object
+     * @return
+     */
+    protected String renderNonEmptyString(HttpServletResponse response, Object object) {
+        return renderString(response, JsonMapper.toNonEmptyJsonString(object), WebUtils.JSON_TYPE);
     }
 
 
@@ -224,16 +253,16 @@ public abstract class SimpleController{
      * @return
      */
     protected String renderString(HttpServletResponse response, String string, String type) {
-        try {
+        try (PrintWriter writer = response.getWriter()){
             response.reset();
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setContentType(type);
             response.setCharacterEncoding(WebUtils.DEFAULT_ENCODING);
-            response.getWriter().print(string);
-            return null;
+            writer.print(string);
         } catch (IOException e) {
-            return null;
+            logger.error(e.getMessage(),e);
         }
+        return null;
     }
 
 }

@@ -1,14 +1,14 @@
 package com.eryansky.fastweixin.message.req;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public final class VoiceReqMsg extends BaseReqMsg {
 
-    private String mediaId;
-    private String format;
-    private String recognition;
+    private final String mediaId;
+    private final String format;
+    private final String recognition;
 
     public VoiceReqMsg(String mediaId, String format, String recognition) {
         super();

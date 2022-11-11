@@ -38,7 +38,7 @@
                     &nbsp;<a class="easyui-linkbutton" href="#"
                              data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查询</a>
                     <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28"
-                       onclick="javascript:$dictionaryItem_search_form.form('reset');">重置</a>
+                       onclick="$dictionaryItem_search_form.form('reset');">重置</a>
                 </form>
             </div>
 

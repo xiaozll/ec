@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 /**
  * 维护存储用户账户信息，这些信息包括用户名、密码、电子邮件地址、接收服务器配置、发送服务器配置等
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14
  */
 public class Account {

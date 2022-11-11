@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 /**
  * 转换工具类.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2012-9-5 上午11:12:27
  */
 public class ConvertUtils  extends org.apache.commons.beanutils.ConvertUtils{

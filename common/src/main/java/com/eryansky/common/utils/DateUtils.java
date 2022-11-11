@@ -1,6 +1,8 @@
 package com.eryansky.common.utils;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,6 +15,8 @@ import java.util.GregorianCalendar;
  * 日期工具类, 继承org.apache.commons.lang.time.DateUtils类
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
     public static String DATE_FORMAT = "yyyy-MM-dd";
 
@@ -32,6 +36,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String DATE_TIME_FORMAT_SHORT = "yyyyMMddHHmmss";
 
+    public static final String DATE_TIME_HOUR_FORMAT = "yyyy-MM-dd HH";
+
     public static final String DATE_TIME_SHORT_FORMAT = "yyyy-MM-dd HH:mm";
 
     public static final String DATE_TIME_SHORT_FORMAT_SHORT = "yyyyMMddHHmm";
@@ -41,7 +47,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static final String TIMEZONE = "GMT+08:00";
     public static final String T_END_TIME = "9999-12-31";
 
-	private static String[] parsePatterns = {"yyyy-MM", "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm",
+	private static final String[] parsePatterns = {"yyyy-MM", "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm",
 		"yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy-MM-dd'T'HH:mm", "yyyy年MM月dd日", "yyyy年MM月"};
 
 	/**
@@ -169,7 +175,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		try {
 			date= sdf.parse(formatDate(date, "yyyy-MM-dd")+" 00:00:00");
 		} catch (ParseException e) {
-			e.printStackTrace();
+            logger.error(e.getMessage(),e);
 		}
 		return date;
 	}
@@ -182,7 +188,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		try {
 			date= sdf.parse(formatDate(date, "yyyy-MM-dd") +" 23:59:59");
 		} catch (ParseException e) {
-			e.printStackTrace();
+            logger.error(e.getMessage(),e);
 		}
 		return date;
 	}
@@ -242,14 +248,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
 
         gc.add(2, 1); // 2表示月的加减，年代表1依次类推(周,天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -264,7 +270,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             DateFormat df = DateFormat.getDateInstance();
             return df.parse(date1).before(df.parse(date2));
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return false;
         }
     }
@@ -285,14 +291,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
 
         gc.add(2, -1); // 2表示月的加减，年代表1依次类推(周,天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -315,14 +321,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
 
         gc.add(5, -1); // 2表示月的加减，年代表1依次类推(３周....5天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -345,14 +351,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = df.parse(strdate); // 将字符串格式化为日期型
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
 
         gc.setTime(date); // 得到gc格式的时间
 
         gc.add(5, 1); // 2表示月的加减，年代表1依次类推(３周....5天。。)
         // 把运算完的时间从新赋进对象
-        gc.set(gc.get(gc.YEAR), gc.get(gc.MONTH), gc.get(gc.DATE));
+        gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DATE));
         // 在格式化回字符串时间
         dateresult = df.format(gc.getTime());
 
@@ -365,7 +371,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static String giveMonthFist(String strdate) {
 
         // 以“－”为分隔符拆分字符串
-        String strArray[] = strdate.split("-");
+        String[] strArray = strdate.split("-");
 
         String tempyear = strArray[0]; // 得到字符串中的年
 
@@ -413,11 +419,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 给定的日期得到年月 格式为：2009-08-01
+     * @param yrmoday 给定的日期得到年月 格式为：2009-08-01
+     * @return  yyyy-MM
      */
-    public static String giveyrmo(String yrmoday) {
+    public static String giveYrMo(String yrmoday) {
         // 以“－”为分隔符拆分字符串
-        String strArray[] = yrmoday.split("-");
+        String[] strArray = yrmoday.split("-");
 
         String tempyear = strArray[0]; // 得到字符串中的年
 
@@ -481,7 +488,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Integer retrunmo(String yrmoday) {
         // 以“－”为分隔符拆分字符串
-        String strArray[] = yrmoday.split("-");
+        String[] strArray = yrmoday.split("-");
 
         String tempmonth = strArray[1]; // 得到字符串中的月
 
@@ -493,7 +500,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Integer retrunyr(String yrmoday) {
         // 以“－”为分隔符拆分字符串
-        String strArray[] = yrmoday.split("-");
+        String[] strArray = yrmoday.split("-");
 
         String tempmonth = strArray[0]; // 得到字符串中的月
 
@@ -508,12 +515,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static boolean boolcompara(String startdate, String enddate)
             throws ParseException {
 
-        if (DateFormat.getDateInstance().parse(startdate)
-                .compareTo(DateFormat.getDateInstance().parse(startdate)) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return DateFormat.getDateInstance().parse(startdate)
+                .compareTo(DateFormat.getDateInstance().parse(startdate)) >= 0;
     }
 
     /**
@@ -612,7 +615,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             // 系统默认月份加一
             longCalendar += 100L;
             // 创建上初始化上下文环境并返回
-            return String.valueOf(strYear + "-" + strMonth + "-" + strDate);
+            return strYear + "-" + strMonth + "-" + strDate;
         } catch (Exception Exp) {
             return "2008-08-08";
         }
@@ -789,7 +792,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -823,7 +826,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -900,7 +903,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -924,7 +927,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return "";
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -1182,22 +1185,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 longRZ = getNormalDay(longNF, longYF, longRZ);
 
             if (longYF < 10)
-                strYF = "0" + String.valueOf(longYF);
+                strYF = "0" + longYF;
             else
                 strYF = String.valueOf(longYF);
 
             if (longRZ < 10)
-                strRZ = "0" + String.valueOf(longRZ);
+                strRZ = "0" + longRZ;
             else
                 strRZ = String.valueOf(longRZ);
 
             // 判断是８位还是１４位
             if (String.valueOf(longCalendar).length() < 14) {
-                longDate = Long.parseLong(String.valueOf(longNF) + strYF
+                longDate = Long.parseLong(longNF + strYF
                         + strRZ);
             } else {
                 longDate = Long
-                        .parseLong(String.valueOf(longNF) + strYF + strRZ
+                        .parseLong(longNF + strYF + strRZ
                                 + String.valueOf(longCalendar).substring(8, 14));
             }
             // 返回日期
@@ -1306,7 +1309,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return StrCalendarResult;
         } catch (Exception e) {
             // 错误处理
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
             return "";
         }
     }
@@ -1479,8 +1482,46 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             throws ParseException {
         return strDateDiffTimes(time, sec, 's');
     }
-	
-	/**
+
+    /**
+     * 计算当前月有多少天
+     *
+     * @param year
+     * @param month
+     * @return
+     */
+    public int getMonthTotalDays(int year, int month) {
+        int days = 0;
+        if (month != 2) {
+            switch (month) {
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    days = 31;
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    days = 30;
+
+            }
+        } else {
+            // 闰年
+            if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+                days = 29;
+            else
+                days = 28;
+        }
+        return days;
+    }
+
+
+    /**
 	 * @param args
 	 * @throws java.text.ParseException
 	 */

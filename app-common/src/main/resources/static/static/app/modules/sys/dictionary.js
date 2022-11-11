@@ -346,7 +346,7 @@ function saveDictionaryItem(target, index, id) {
         return false;
     }
     $.ajax({
-        type: 'POST',
+        type: 'post',
         url: ctxAdmin + '/sys/dictionaryItem/save',
         data: $.extend({id: selectRow.id}, selectRow),
         traditional: true,

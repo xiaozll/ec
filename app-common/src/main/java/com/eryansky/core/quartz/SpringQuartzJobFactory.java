@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 public class SpringQuartzJobFactory extends SpringBeanJobFactory {
-    Logger logger = LoggerFactory.getLogger(SpringQuartzJobFactory.class);
+    private static Logger logger = LoggerFactory.getLogger(SpringQuartzJobFactory.class);
 
     @Autowired
     private ApplicationContext ctx;

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -8,7 +8,7 @@ package com.eryansky.common.orm.mybatis.dialect;
 /**
  * 类似hibernate的Dialect,但只精简出分页部分
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-7-16
  */
 public interface Dialect {

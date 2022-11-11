@@ -11,17 +11,19 @@ import com.eryansky.modules.sys.mapper.Post;
 import com.eryansky.modules.sys.service.PostService;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-25
  */
 public class PostUtils {
 
+    private PostUtils(){}
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static PostService postService = SpringContextHolder.getBean(PostService.class);
+        private static final PostService postService = SpringContextHolder.getBean(PostService.class);
+        private Static(){}
     }
 
     /**

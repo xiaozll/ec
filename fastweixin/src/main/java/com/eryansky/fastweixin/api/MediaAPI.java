@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * 多媒体资源API
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class MediaAPI extends BaseAPI {
@@ -94,10 +94,9 @@ public class MediaAPI extends BaseAPI {
         DownloadMediaResponse response = new DownloadMediaResponse();
         String url = "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=" + this.config.getAccessToken() + "&media_id=" + mediaId;
         RequestConfig config = RequestConfig.custom().setConnectionRequestTimeout(NetWorkCenter.CONNECT_TIMEOUT).setConnectTimeout(NetWorkCenter.CONNECT_TIMEOUT).setSocketTimeout(NetWorkCenter.CONNECT_TIMEOUT).build();
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
         HttpGet get = new HttpGet(url);
-        try {
-            CloseableHttpResponse r = client.execute(get);
+        try (CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+             CloseableHttpResponse r = client.execute(get)){
             if (HttpStatus.SC_OK == r.getStatusLine().getStatusCode()) {
                 InputStream inputStream = r.getEntity().getContent();
                 Header[] headers = r.getHeaders("Content-disposition");
@@ -106,20 +105,16 @@ public class MediaAPI extends BaseAPI {
                     response.setContent(inputStream, Integer.valueOf(length.getValue()));
                     response.setFileName(headers[0].getElements()[0].getParameterByName("filename").getValue());
                 } else {
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    StreamUtil.copy(inputStream, out);
-                    String json = out.toString();
-                    response = JSONUtil.toBean(json, DownloadMediaResponse.class);
+                    try(ByteArrayOutputStream out = new ByteArrayOutputStream()){
+                        StreamUtil.copy(inputStream, out);
+                        String json = out.toString();
+                        response = JSONUtil.toBean(json, DownloadMediaResponse.class);
+                    }
+
                 }
             }
         } catch (IOException e) {
             LOG.error("IO处理异常", e);
-        } finally {
-            try {
-                client.close();
-            } catch (IOException e) {
-                LOG.error("异常", e);
-            }
         }
         return response;
     }

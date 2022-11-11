@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 /**
  * 将数字金额转换为中国大写金额
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2011-12-27 上午9:39:57
  */
 public class MoneyFormat {
@@ -35,9 +35,9 @@ public class MoneyFormat {
     public static final String FEN = "分";
     public static final String DOT = ".";
     private static MoneyFormat formatter = null;
-    private HashMap<String, String> chineseNumberMap = new HashMap<String, String>();
-    private HashMap<String, String> chineseMoneyPattern = new HashMap<String, String>();
-    private NumberFormat numberFormat = NumberFormat.getInstance();
+    private final HashMap<String, String> chineseNumberMap = new HashMap<String, String>();
+    private final HashMap<String, String> chineseMoneyPattern = new HashMap<String, String>();
+    private final NumberFormat numberFormat = NumberFormat.getInstance();
 
     private MoneyFormat() {
         numberFormat.setMaximumFractionDigits(4);

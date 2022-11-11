@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,14 +15,15 @@ import com.eryansky.modules.sys.sn.MaxSerial;
 /**
  * 序列号生成器
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-07-14
  */
 public class SystemSerialNumber extends DataEntity<SystemSerialNumber> {
 
     public static final String DEFAULT_ID = "1";
-    public static final String QUEUE_KEY = "system_serial_queue";
-    public static final String LOCK_KEY = "system_serial_lock";
+    public static final String QUEUE_KEY = "queue_system_serial";
+    public static final String LOCK_KEY = "lock_system_serial";
+    public static final String LOCK_ITEM_KEY = "lock_system_serial_item";
     public static final String DEFAULT_KEY_MAX_SERIAL = "maxSerial";
     /**
      * APP标识

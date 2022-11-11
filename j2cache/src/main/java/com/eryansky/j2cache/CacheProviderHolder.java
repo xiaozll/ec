@@ -16,7 +16,6 @@
 package com.eryansky.j2cache;
 
 import com.eryansky.j2cache.caffeine.CaffeineProvider;
-import com.eryansky.j2cache.ehcache.EhCacheProvider;
 import com.eryansky.j2cache.lettuce.LettuceCacheProvider;
 import com.eryansky.j2cache.redis.RedisCacheProvider;
 import com.eryansky.j2cache.redis.ReadonlyRedisCacheProvider;
@@ -78,8 +77,6 @@ public class CacheProviderHolder {
 
 	private static CacheProvider loadProviderInstance(String cacheIdent) {
 		switch (cacheIdent.toLowerCase()) {
-			case "ehcache":
-				return new EhCacheProvider();
 			case "caffeine":
 				return new CaffeineProvider();
 			case "redis":
@@ -144,6 +141,16 @@ public class CacheProviderHolder {
 	 */
 	public Collection<CacheChannel.Region> regions() {
 		return l1_provider.regions();
+	}
+
+
+	/**
+	 * return all regions
+	 *
+	 * @return all regions
+	 */
+	public Collection<CacheChannel.Region> queues() {
+		return l1_provider.queues();
 	}
 
 }

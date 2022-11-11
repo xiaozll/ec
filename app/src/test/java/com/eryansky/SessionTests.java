@@ -8,15 +8,18 @@ import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.Serializable;
 import java.util.List;
 
-@SpringBootTest
+@RunWith(value = SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = Application.class)
 public class SessionTests {
 
 	@Autowired
@@ -27,9 +30,9 @@ public class SessionTests {
 		User user = userService.get(userId);
 		SessionInfo sessionInfo = SecurityUtils.putUserToSession("sessionId",user);
 		System.out.println(JsonMapper.toJsonString(sessionInfo));
-		System.out.println(SecurityUtils.isPermitted(userId,"sys:session:view"));;
+		System.out.println(SecurityUtils.isPermitted(userId,"sys:session:view"));
 
-	}
+    }
 
 
 

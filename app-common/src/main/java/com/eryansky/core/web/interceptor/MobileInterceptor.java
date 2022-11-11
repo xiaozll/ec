@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * 手机端视图拦截器
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2015-07-10
  */
 public class MobileInterceptor implements HandlerInterceptor {
@@ -50,14 +50,12 @@ public class MobileInterceptor implements HandlerInterceptor {
 			Boolean flag = null;
 			MobileValue mobileValue = null;
 			HandlerMethod handlerMethod = null;
-			try {
+			//注解处理 满足设置不拦截
+			if(handler instanceof HandlerMethod) {
 				handlerMethod = (HandlerMethod) handler;
-			} catch (ClassCastException e) {
-//                logger.error(e.getMessage(),e);
 			}
 
 			if (handlerMethod != null) {
-				Object bean = handlerMethod.getBean();
 				Mobile methodMobile = handlerMethod.getMethodAnnotation(Mobile.class);
 				if (methodMobile != null) {
 					flag = methodMobile.mobile();
@@ -65,7 +63,7 @@ public class MobileInterceptor implements HandlerInterceptor {
 				}
 
 				if(methodMobile == null){//类注解处理
-					Mobile classMobile =  this.getAnnotation(bean.getClass(),Mobile.class);
+					Mobile classMobile =  this.getAnnotation(handlerMethod.getBean().getClass(),Mobile.class);
 					if (classMobile != null) {
 						flag = classMobile.mobile();
 						mobileValue = classMobile.value();
@@ -103,10 +101,6 @@ public class MobileInterceptor implements HandlerInterceptor {
 					modelAndView.setViewName("mobile/" + modelAndView.getViewName());
 				}
 			}
-
-
-
-
 		}
 	}
 

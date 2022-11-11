@@ -31,12 +31,12 @@ public class SpringRedisCache implements Level2Cache {
 
 	private final static Logger log = LoggerFactory.getLogger(SpringRedisCache.class);
 
-	private String namespace;
+	private final String namespace;
 
-	private String region;
+	private final String region;
 
-	private RedisTemplate<String, Serializable> redisTemplate;
-	private RedisLockRegistry redisLockRegistry;
+	private final RedisTemplate<String, Serializable> redisTemplate;
+	private final RedisLockRegistry redisLockRegistry;
 
 	public SpringRedisCache(String namespace, String region, RedisTemplate<String, Serializable> redisTemplate,RedisLockRegistry redisLockRegistry) {
 		if (region == null || region.isEmpty()) {
@@ -171,7 +171,7 @@ public class SpringRedisCache implements Level2Cache {
 	@Override
 	public <T> T lock(LockRetryFrequency frequency, int timeoutInSecond, long keyExpireSeconds, LockCallback<T> lockCallback) throws LockInsideExecutedException, LockCantObtainException {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
-		long now = System.currentTimeMillis();
+//		long now = System.currentTimeMillis();
 		for (int i = 0; i < retryCount; i++) {
 			Lock lock = redisLockRegistry.obtain(region);
 			boolean flag = false;

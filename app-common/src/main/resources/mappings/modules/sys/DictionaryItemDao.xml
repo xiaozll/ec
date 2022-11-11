@@ -229,7 +229,40 @@
 			#{dictionary.id}
 		)
 	</insert>
-	
+	<insert id="insertBatch">
+		INSERT INTO t_sys_dictionary_item(
+			id,
+			status,
+			version,
+			create_user,
+			create_time,
+			update_user,
+			update_time,
+			name,
+			code,
+			value,
+			remark,
+			order_no,
+			parent_id,
+			dictionary_id
+		) VALUES <foreach collection="list" item="item" separator=",">(
+			#{item.id},
+			#{item.status},
+			0,
+			#{item.createUser},
+			#{item.createTime},
+			#{item.updateUser},
+			#{item.updateTime},
+			#{item.name},
+			#{item.code},
+			#{item.value},
+			#{item.remark},
+			#{item.orderNo},
+			#{item.parent.id},
+			#{item.dictionary.id}
+		)</foreach>
+	</insert>
+
 	<update id="update">
 		UPDATE t_sys_dictionary_item SET
 			status = #{status},

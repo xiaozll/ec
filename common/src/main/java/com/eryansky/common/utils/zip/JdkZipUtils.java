@@ -1,18 +1,11 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.zip;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -25,7 +18,7 @@ import java.util.zip.ZipOutputStream;
  * 存在问题：压缩时如果目录或文件名含有中文，压缩后会变成乱码
  * </pre>
  * 
- * @author 尔演&Eryan
+ * @author Eryan
  */
 public class JdkZipUtils {
 
@@ -42,37 +35,40 @@ public class JdkZipUtils {
 
 	public static void makeZip(File[] inFiles, String zipFilePath)
 			throws Exception {
-		ZipOutputStream zipOut = new ZipOutputStream(new BufferedOutputStream(
-				new FileOutputStream(zipFilePath)));
-		for (int i = 0; i < inFiles.length; i++) {
-			doZipFile(zipOut, inFiles[i], inFiles[i].getParent());
+		try (OutputStream outputStream = new FileOutputStream(zipFilePath);
+			 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+			 ZipOutputStream zipOut = new ZipOutputStream(bufferedOutputStream)) {
+			for (int i = 0; i < inFiles.length; i++) {
+				doZipFile(zipOut, inFiles[i], inFiles[i].getParent());
+			}
+			zipOut.flush();
 		}
-		zipOut.flush();
-		zipOut.close();
 	}
 
 	private static void doZipFile(ZipOutputStream zipOut, File file,
-			String dirPath) throws FileNotFoundException, IOException {
+			String dirPath) throws IOException {
 		if (file.isFile()) {
-			BufferedInputStream bis = new BufferedInputStream(
-					new FileInputStream(file));
-			String zipName = file.getPath().substring(dirPath.length());
-			while (zipName.charAt(0) == '\\' || zipName.charAt(0) == '/') {
-				zipName = zipName.substring(1);
+			try (InputStream inputStream = new FileInputStream(file);
+				 BufferedInputStream bis = new BufferedInputStream(inputStream)) {
+				String zipName = file.getPath().substring(dirPath.length());
+				while (zipName.charAt(0) == '\\' || zipName.charAt(0) == '/') {
+					zipName = zipName.substring(1);
+				}
+				ZipEntry entry = new ZipEntry(zipName);
+				zipOut.putNextEntry(entry);
+				byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
+				int size;
+				while ((size = bis.read(buff, 0, buff.length)) != -1) {
+					zipOut.write(buff, 0, size);
+				}
+				zipOut.closeEntry();
 			}
-			ZipEntry entry = new ZipEntry(zipName);
-			zipOut.putNextEntry(entry);
-			byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
-			int size;
-			while ((size = bis.read(buff, 0, buff.length)) != -1) {
-				zipOut.write(buff, 0, size);
-			}
-			zipOut.closeEntry();
-			bis.close();
 		} else {
 			File[] subFiles = file.listFiles();
-			for (File subFile : subFiles) {
-				doZipFile(zipOut, subFile, dirPath);
+			if(null != subFiles){
+				for (File subFile : subFiles) {
+					doZipFile(zipOut, subFile, dirPath);
+				}
 			}
 		}
 	}
@@ -88,37 +84,38 @@ public class JdkZipUtils {
 			storeDir.mkdir();
 			storeDir.mkdirs();
 		}
-		ZipFile zip = new ZipFile(zipFile);
-		Enumeration<? extends ZipEntry> entries = zip.entries();
-		while (entries.hasMoreElements()) {
-			ZipEntry zipEntry = entries.nextElement();
+		try(ZipFile zip = new ZipFile(zipFile)){
+			Enumeration<? extends ZipEntry> entries = zip.entries();
+			while (entries.hasMoreElements()) {
+				ZipEntry zipEntry = entries.nextElement();
 
-			if (zipEntry.isDirectory()) {
-			} else {
-				String zipEntryName = zipEntry.getName();
-				if (zipEntryName.indexOf(File.separator) > 0) {
-					String zipEntryDir = zipEntryName.substring(0, zipEntryName
-							.lastIndexOf(File.separator) + 1);
-					String unzipFileDir = storePath + File.separator
-							+ zipEntryDir;
-					File unzipFileDirFile = new File(unzipFileDir);
-					if (!unzipFileDirFile.exists()) {
-						unzipFileDirFile.mkdirs();
+				if (zipEntry.isDirectory()) {
+				} else {
+					String zipEntryName = zipEntry.getName();
+					if (zipEntryName.indexOf(File.separator) > 0) {
+						String zipEntryDir = zipEntryName.substring(0, zipEntryName
+								.lastIndexOf(File.separator) + 1);
+						String unzipFileDir = storePath + File.separator
+								+ zipEntryDir;
+						File unzipFileDirFile = new File(unzipFileDir);
+						if (!unzipFileDirFile.exists()) {
+							unzipFileDirFile.mkdirs();
+						}
 					}
-				}
+					try (InputStream is = zip.getInputStream(zipEntry);
+						 FileOutputStream fos = new FileOutputStream(storePath
+								 + File.separator + zipEntryName)){
+						byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
+						int size;
+						while ((size = is.read(buff)) > 0) {
+							fos.write(buff, 0, size);
+						}
+						fos.flush();
+					}
 
-				InputStream is = zip.getInputStream(zipEntry);
-				FileOutputStream fos = new FileOutputStream(new File(storePath
-						+ File.separator + zipEntryName));
-				byte[] buff = new byte[BUFFER_SIZE_DIFAULT];
-				int size;
-				while ((size = is.read(buff)) > 0) {
-					fos.write(buff, 0, size);
 				}
-				fos.flush();
-				fos.close();
-				is.close();
 			}
 		}
+
 	}
 }

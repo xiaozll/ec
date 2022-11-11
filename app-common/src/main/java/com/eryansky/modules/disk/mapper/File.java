@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 @JsonFilter(" ")
 @SuppressWarnings("serial")
-public class File extends DataEntity<File> implements Serializable {
+public class File extends DataEntity<File>{
 
     /**
      * 文件名

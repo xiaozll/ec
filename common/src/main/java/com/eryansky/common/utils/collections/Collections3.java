@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -17,7 +17,7 @@ import com.eryansky.common.utils.reflection.ReflectionUtils;
  * Collections工具集.
  * 在JDK的Collections和Guava的Collections2后, 命名为Collections3.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class Collections3 {
 
@@ -312,7 +312,7 @@ public class Collections3 {
 	 * @return
 	 */
 	public static <T> List<List<T>> averageAssign(List<T> source, int n) {
-		List<List<T>> result = new ArrayList<List<T>>();
+		List<List<T>> result = new ArrayList<>();
 		int remainder = source.size() % n;  //(先计算出余数)
 		int number = source.size() / n;  //然后是商
 		int offset = 0;//偏移量
@@ -340,8 +340,8 @@ public class Collections3 {
 	public static <T> List<List<T>> fixedGrouping(List<T> source, int n) {
 
 		if (null == source || source.size() == 0 || n <= 0)
-			return null;
-		List<List<T>> result = new ArrayList<List<T>>();
+			return Collections.emptyList();
+		List<List<T>> result = new ArrayList<>();
 
 		int sourceSize = source.size();
 		int size = (sourceSize % n) == 0 ? (sourceSize / n) : ((source.size() / n) + 1);
@@ -368,8 +368,8 @@ public class Collections3 {
 	public static <T> List<List<T>> fixedGrouping2(List<T> source, int n) {
 
 		if (null == source || source.size() == 0 || n <= 0)
-			return null;
-		List<List<T>> result = new ArrayList<List<T>>();
+			return Collections.emptyList();
+		List<List<T>> result = new ArrayList<>();
 		int remainder = source.size() % n;
 		int size = (source.size() / n);
 		for (int i = 0; i < size; i++) {
@@ -389,7 +389,7 @@ public class Collections3 {
 	 * List分割
 	 */
 	public static List<List<String>> groupList(List<String> list) {
-		List<List<String>> listGroup = new ArrayList<List<String>>();
+		List<List<String>> listGroup = new ArrayList<>();
 		int listSize = list.size();
 		//子集合的长度
 		int toIndex = 2;
@@ -401,6 +401,34 @@ public class Collections3 {
 			listGroup.add(newList);
 		}
 		return listGroup;
+	}
+
+	/**
+	 * Byte[] to byte[]
+	 *
+	 * @param oBytes
+	 * @return
+	 */
+	public static byte[] toPrimitives(Byte[] oBytes) {
+		byte[] bytes = new byte[oBytes.length];
+		for (int i = 0; i < oBytes.length; i++) {
+			bytes[i] = oBytes[i];
+		}
+		return bytes;
+	}
+
+	/**
+	 * byte[] to Byte[]
+	 *
+	 * @param bytesPrim
+	 * @return
+	 */
+	public static Byte[] toObjects(byte[] bytesPrim) {
+		Byte[] bytes = new Byte[bytesPrim.length];
+		int i = 0;
+		for (byte b : bytesPrim) bytes[i++] = b; //Autoboxing
+		return bytes;
+
 	}
 
 }

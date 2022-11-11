@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  * 19031317273364059018
  * 签约协议号脱敏格式为前6位后6位保留明文，中间脱敏
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 public class PaySignNoSensitiveHandler implements SensitiveTypeHandler {

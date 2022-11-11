@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 列表List工具类，用于实现一些list的常用操作
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2011-7-22 上午12:37:10
  */
 public class ListUtils {
@@ -112,7 +112,7 @@ public class ListUtils {
      * @return 若entry在sourceList已经存在，返回false；否则新增并返回true 注意此函数不能保证源sourceList中元素不重复。
      */
     public static <V> boolean addDistinctEntry(List<V> sourceList, V entry) {
-        return (sourceList != null && !sourceList.contains(entry)) ? sourceList.add(entry) : false;
+        return sourceList != null && !sourceList.contains(entry) && sourceList.add(entry);
     }
 
     /**
@@ -181,7 +181,7 @@ public class ListUtils {
      *         </ul>
      */
     public static <V> boolean addListNotNullValue(List<V> sourceList, V value) {
-        return (sourceList != null && value != null) ? sourceList.add(value) : false;
+        return sourceList != null && value != null && sourceList.add(value);
     }
 
     /**

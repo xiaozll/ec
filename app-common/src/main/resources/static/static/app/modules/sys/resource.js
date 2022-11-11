@@ -1,6 +1,8 @@
 var $resource_treegrid;
 var $resource_form;
 var $resource_dialog;
+var $resource_role_dialog;
+var $resource_user_dialog;
 
 $(function () {
     //数据列表
@@ -48,6 +50,18 @@ $(function () {
             iconCls: 'easyui-icon-remove',
             handler: function () {
                 del()
+            }
+        }, '-', {
+            text: '角色',
+            iconCls: 'eu-icon-lock',
+            handler: function () {
+                resourceRole();
+            }
+        }, '-', {
+            text: '用户',
+            iconCls: 'eu-icon-user',
+            handler: function () {
+                resourceUser();
             }
         }],
         onContextMenu: function (e, row) {
@@ -187,4 +201,71 @@ function del(rowIndex) {
     } else {
         eu.showMsg("您未选择任何操作对象，请选择一行数据！");
     }
+}
+
+
+//关联角色
+function resourceRole(row) {
+    if (row === undefined) {
+        row = $resource_treegrid.treegrid('getSelected');
+    }
+    if (row === undefined) {
+        eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+        return;
+    }
+    var inputUrl = ctxAdmin + "/sys/resource/role/"+row.id;
+
+    //弹出对话窗口
+    $resource_role_dialog = $('<div/>').dialog({
+        title: '授权角色详细信息',
+        top: 20,
+        width: 500,
+        height: 360,
+        modal: true,
+        maximizable: true,
+        href: inputUrl,
+        buttons: [ {
+            text: '关闭',
+            iconCls: 'easyui-icon-cancel',
+            handler: function () {
+                $resource_role_dialog.dialog('destroy');
+            }
+        }],
+        onClose: function () {
+            $resource_role_dialog.dialog('destroy');
+        }
+    });
+}
+
+//关联用户
+function resourceUser(row) {
+    if (row === undefined) {
+        row = $resource_treegrid.treegrid('getSelected');
+    }
+    if (row === undefined) {
+        eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+        return;
+    }
+    var inputUrl = ctxAdmin + "/sys/resource/user/"+row.id;
+
+    //弹出对话窗口
+    $resource_user_dialog = $('<div/>').dialog({
+        title: '授权用户（非角色传递）详细信息',
+        top: 20,
+        width: 500,
+        height: 360,
+        modal: true,
+        maximizable: true,
+        href: inputUrl,
+        buttons: [ {
+            text: '关闭',
+            iconCls: 'easyui-icon-cancel',
+            handler: function () {
+                $resource_user_dialog.dialog('destroy');
+            }
+        }],
+        onClose: function () {
+            $resource_user_dialog.dialog('destroy');
+        }
+    });
 }

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * J2Cache Session 自动注入配置
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2019-02-11
  */
 @ConditionalOnWebApplication
@@ -31,9 +31,9 @@ public class J2CacheSessionFilterAutoConfiguration {
         map.put("whiteListURL",filterConfig.getWhiteListURL());
         map.put("blackListURL",filterConfig.getBlackListURL());
 
-        map.put("cookieName",filterConfig.getCookieName());
-        map.put("cookieDomain",filterConfig.getCookieDomain());
-        map.put("cookiePath",filterConfig.getCookiePath());
+        map.put("cookie.name",filterConfig.getCookieName());
+        map.put("cookie.domain",filterConfig.getCookieDomain());
+        map.put("cookie.path",filterConfig.getCookiePath());
 
         map.put("session.maxAge",sessionProperties.getMaxAge());
         map.put("session.maxSizeInMemory",sessionProperties.getMaxSizeInMemory());

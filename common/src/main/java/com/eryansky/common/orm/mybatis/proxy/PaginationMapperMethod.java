@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -25,7 +25,7 @@ import java.util.Map;
  * 执行代理类，扩展Mybatis的方式来让其Mapper接口来支持.
  * </p>
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-7-16
  */
 public class PaginationMapperMethod {
@@ -50,8 +50,8 @@ public class PaginationMapperMethod {
 
     public PaginationMapperMethod(Class<?> declaringInterface, Method method,
                                   SqlSession sqlSession) {
-        paramNames = new ArrayList<String>();
-        paramPositions = new ArrayList<Integer>();
+        paramNames = new ArrayList<>();
+        paramPositions = new ArrayList<>();
         this.sqlSession = sqlSession;
         this.method = method;
         this.config = sqlSession.getConfiguration();
@@ -95,7 +95,7 @@ public class PaginationMapperMethod {
      * @return 查询的总记录数
      */
     private long executeForCount(Object param) {
-        Number result = (Number) sqlSession.selectOne(commandCountName, param);
+        Number result = sqlSession.selectOne(commandCountName, param);
         return result.longValue();
     }
 

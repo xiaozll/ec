@@ -4,7 +4,7 @@
 <meta http-equiv="Cache-Control" content="no-store"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
-<meta name="author" content="尔演&Eryan" />
+<meta name="author" content="Eryan" />
 <link rel="shortcut icon" href="${ctxStatic}/img/favicon.ico" />
 <script type="text/javascript" charset="utf-8">
     var ctx = "${ctx}";
@@ -14,8 +14,8 @@
 </script>
 <link rel="stylesheet" type="text/css" href="${ctxStatic}/css/default${yuicompressor}.css?_=${sysInitTime}" />
 <%-- 引入jQuery --%>
-<script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.10.2.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.2.1.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.12.4.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.4.1.min.js" charset="utf-8"></script>
 <%-- jQuery Cookie插件 --%>
 <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery.cookie${yuicompressor}.js" charset="utf-8"></script>
 <link id="easyuiTheme" rel="stylesheet" type="text/css" href="${ctxStatic}/js/easyui/themes/<c:out value="${cookie.easyuiThemeName.value}" default="bootstrap"/>/easyui.css" />

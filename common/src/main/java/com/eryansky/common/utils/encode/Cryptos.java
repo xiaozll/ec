@@ -1,17 +1,18 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.encode;
 
 import com.eryansky.common.utils.Exceptions;
+import com.eryansky.common.utils.collections.Collections3;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -19,27 +20,40 @@ import java.util.Arrays;
 
 /**
  * 支持HMAC-SHA1消息签名 及 DES/AES对称加密的工具类.
- * 
+ *
  * 支持Hex与Base64两种编码方式.
- * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ *
+ * @author Eryan
  */
 public class Cryptos {
 
     private static final String AES = "AES";
-    private static final String AES_CBC = "AES/CBC/PKCS5Padding";
+    private static final String AES_CBC = "AES/GCM/NoPadding";
     private static final String HMACSHA1 = "HmacSHA1";
 
     private static final int DEFAULT_HMACSHA1_KEYSIZE = 160; //RFC2401
     private static final int DEFAULT_AES_KEYSIZE = 128;
     private static final int DEFAULT_IVSIZE = 16;
 
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random;
+    /**
+     * 初始向量IV, 初始向量IV的长度规定为128位16个字节, 初始向量的来源为随机生成.
+     */
+    private static GCMParameterSpec gcMParameterSpec;
+    static {
+        random = new SecureRandom();
+        byte[] bytesIV = new byte[16];
+        random.nextBytes(bytesIV);
+        gcMParameterSpec = new GCMParameterSpec(128, bytesIV);
+        java.security.Security.setProperty("crypto.policy", "unlimited");
+    }
+
+    private Cryptos(){}
 
     //-- HMAC-SHA1 funciton --//
     /**
      * 使用HMAC-SHA1进行消息签名, 返回字节数组,长度为20字节.
-     * 
+     *
      * @param input 原始输入字符数组
      * @param key HMAC-SHA1密钥
      */
@@ -56,7 +70,7 @@ public class Cryptos {
 
     /**
      * 校验HMAC-SHA1签名是否正确.
-     * 
+     *
      * @param expected 已存在的签名
      * @param input 原始输入字符串
      * @param key 密钥
@@ -84,7 +98,7 @@ public class Cryptos {
     //-- AES funciton --//
     /**
      * 使用AES加密原始字符串.
-     * 
+     *
      * @param input 原始输入字符数组
      * @param key 符合AES要求的密钥
      */
@@ -94,18 +108,18 @@ public class Cryptos {
 
     /**
      * 使用AES加密原始字符串.
-     * 
+     *
      * @param input 原始输入字符数组
      * @param key 符合AES要求的密钥
      * @param iv 初始向量
      */
-    public static byte[] aesEncrypt(byte[] input, byte[] key, byte[] iv) {
+    public static byte[] aesEncrypt(byte[] input, byte[] key, Byte[] iv) {
         return aes(input, key, iv, Cipher.ENCRYPT_MODE);
     }
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
-     * 
+     *
      * @param input Hex编码的加密字符串
      * @param key 符合AES要求的密钥
      */
@@ -116,48 +130,43 @@ public class Cryptos {
 
     /**
      * 使用AES解密字符串, 返回原始字符串.
-     * 
+     *
      * @param input Hex编码的加密字符串
      * @param key 符合AES要求的密钥
      * @param iv 初始向量
      */
-    public static String aesDecrypt(byte[] input, byte[] key, byte[] iv) {
+    public static String aesDecrypt(byte[] input, byte[] key, Byte[] iv) {
         byte[] decryptResult = aes(input, key, iv, Cipher.DECRYPT_MODE);
         return new String(decryptResult);
     }
 
     /**
      * 使用AES加密或解密无编码的原始字节数组, 返回无编码的字节数组结果.
-     * 
+     *
      * @param input 原始字节数组
      * @param key 符合AES要求的密钥
      * @param mode Cipher.ENCRYPT_MODE 或 Cipher.DECRYPT_MODE
      */
-    private static byte[] aes(byte[] input, byte[] key, int mode) {
-        try {
-            SecretKey secretKey = new SecretKeySpec(key, AES);
-            Cipher cipher = Cipher.getInstance(AES);
-            cipher.init(mode, secretKey);
-            return cipher.doFinal(input);
-        } catch (GeneralSecurityException e) {
-            throw Exceptions.unchecked(e);
-        }
+    public static byte[] aes(byte[] input, byte[] key, int mode) {
+        return  aes(input,key,null,mode);
     }
 
     /**
      * 使用AES加密或解密无编码的原始字节数组, 返回无编码的字节数组结果.
-     * 
+     *
      * @param input 原始字节数组
      * @param key 符合AES要求的密钥
      * @param iv 初始向量
      * @param mode Cipher.ENCRYPT_MODE 或 Cipher.DECRYPT_MODE
      */
-    private static byte[] aes(byte[] input, byte[] key, byte[] iv, int mode) {
+    public static byte[] aes(byte[] input, byte[] key, Byte[] iv, int mode) {
         try {
             SecretKey secretKey = new SecretKeySpec(key, AES);
-            IvParameterSpec ivSpec = new IvParameterSpec(iv);
+            if(null != iv){
+                gcMParameterSpec = new GCMParameterSpec(128, Collections3.toPrimitives(iv));
+            }
             Cipher cipher = Cipher.getInstance(AES_CBC);
-            cipher.init(mode, secretKey, ivSpec);
+            cipher.init(mode, secretKey, gcMParameterSpec);
             return cipher.doFinal(input);
         } catch (GeneralSecurityException e) {
             throw Exceptions.unchecked(e);
@@ -193,5 +202,5 @@ public class Cryptos {
         random.nextBytes(bytes);
         return bytes;
     }
-    
+
 }

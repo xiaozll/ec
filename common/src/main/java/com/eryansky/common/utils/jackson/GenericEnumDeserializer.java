@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * IGenericEnum 类型枚举类反序列化
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-02-12
  */
 public class GenericEnumDeserializer<T extends Enum<T> & IGenericEnum<T>> extends JsonDeserializer<T> implements ContextualDeserializer {
@@ -31,7 +31,7 @@ public class GenericEnumDeserializer<T extends Enum<T> & IGenericEnum<T>> extend
     }
 
     @Override
-    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String value = p.getText();
         try {
             return GenericEnumUtils.getByValue((Class<T>) type.getRawClass(), value);

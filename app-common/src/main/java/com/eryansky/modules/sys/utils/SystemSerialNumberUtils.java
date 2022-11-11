@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -21,19 +21,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-05-12
  */
 public class SystemSerialNumberUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(SystemSerialNumberUtils.class);
+    private SystemSerialNumberUtils(){}
+
+    private static final Logger logger = LoggerFactory.getLogger(SystemSerialNumberUtils.class);
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static SystemSerialNumberService systemSerialNumberService = SpringContextHolder.getBean(SystemSerialNumberService.class);
-
+        private static final SystemSerialNumberService systemSerialNumberService = SpringContextHolder.getBean(SystemSerialNumberService.class);
+        private static final CacheChannel cacheChannel = CacheUtils.getCacheChannel();
+        private Static(){}
     }
 
     /**
@@ -53,6 +56,16 @@ public class SystemSerialNumberUtils {
      */
     public static String getLockRegion(String app,String moduleCode) {
         String queueRegion = SystemSerialNumber.LOCK_KEY + "_" + app + "_" + moduleCode;
+        return queueRegion;
+    }
+
+    /**
+     * @param app
+     * @param moduleCode
+     * @return
+     */
+    public static String getLockItemRegion(String app,String moduleCode) {
+        String queueRegion = SystemSerialNumber.LOCK_ITEM_KEY + "_" + app + "_" + moduleCode;
         return queueRegion;
     }
 
@@ -172,24 +185,23 @@ public class SystemSerialNumberUtils {
      * @return 序列号
      */
     public static String generateSerialNumberByModelCode(String app, String moduleCode, Integer timeoutInSecond, Long keyExpireSeconds, String customCategory, Map<String,String> params) {
-        app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
+        String _app = null == app ? SystemSerialNumber.DEFAULT_ID : app;
         String _moduleCode = null == customCategory ? moduleCode:moduleCode+"_"+customCategory;
-        String queueRegion = getQueueRegion(app,_moduleCode);
-        String lockKey = getLockRegion(app,moduleCode);
-        CacheChannel cacheChannel = CacheUtils.getCacheChannel();
+        String queueRegion = getQueueRegion(_app,_moduleCode);
+        String lockKey = getLockRegion(_app,moduleCode);//单组序列号
         synchronized (lockKey.intern()) {
-            String value = cacheChannel.queuePop(queueRegion);
+            String value = Static.cacheChannel.queuePop(queueRegion);
             if (value != null) {
                 return value;
             }
-            String lockRegion = getLockRegion(app,_moduleCode);
-            String finalApp = app;
-            boolean flag = cacheChannel.lock(lockRegion, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
+            String lockRegion = getLockItemRegion(_app,_moduleCode);//单组原子序列号
+            String finalApp = _app;
+            boolean flag = Static.cacheChannel.lock(lockRegion, null != timeoutInSecond ? timeoutInSecond : 60, null != keyExpireSeconds ? keyExpireSeconds : 180, new DefaultLockCallback<Boolean>(false, false) {
                 @Override
                 public Boolean handleObtainLock() {
                     List<String> list = Static.systemSerialNumberService.generatePrepareSerialNumbers(finalApp, moduleCode,customCategory,params);
                     for (String serial : list) {
-                        cacheChannel.queuePush(queueRegion, serial);
+                        Static.cacheChannel.queuePush(queueRegion, serial);
                     }
                     return true;
                 }
@@ -201,10 +213,10 @@ public class SystemSerialNumberUtils {
                 }
             });
             if (!flag) {
-                logger.error("生成序列号失败，{}",new Object[]{queueRegion});
+                logger.error("生成序列号失败，{}", queueRegion);
                 return null;
             }
-            value = cacheChannel.queuePop(queueRegion);
+            value = Static.cacheChannel.queuePop(queueRegion);
             return value;
         }
 

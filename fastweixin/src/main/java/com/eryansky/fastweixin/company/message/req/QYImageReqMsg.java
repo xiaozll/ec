@@ -3,13 +3,13 @@ package com.eryansky.fastweixin.company.message.req;
 /**
  *  微信企业号图片消息事件
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYImageReqMsg extends QYBaseReqMsg {
 
-    private String picUrl;
-    private String mediaId;
+    private final String picUrl;
+    private final String mediaId;
 
     public QYImageReqMsg(String picUrl, String mediaId) {
         super();

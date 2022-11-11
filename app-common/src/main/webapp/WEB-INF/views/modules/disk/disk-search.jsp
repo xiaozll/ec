@@ -129,7 +129,7 @@ function loadSearchDatagrid() {
 
 //下载文件
 function downloadFile(pageId) {
-    var ids = new Array();
+    var ids = [];
     if (pageId) {
         ids.push(pageId);
     } else {
@@ -147,7 +147,7 @@ function downloadFile(pageId) {
         $("#annexFrame").attr("src", url);
     } else {
         eu.showMsg("请选择要操作的对象！");
-        return;
+
     }
 }
 
@@ -156,7 +156,7 @@ function downloadFile(pageId) {
  * @param fileId fileName
  */
 function delFile(fileId, fileName) {
-    var ids = new Array();
+    var ids = [];
     var tipMsg = "您确定要删除选中文件吗?";
 
     if (fileId !== undefined && fileId !== null) {
@@ -210,7 +210,7 @@ function delFile(fileId, fileName) {
  * @param fileCode
  */
 function cascadeDelFile(fileCode) {
-    var ids = new Array();
+    var ids = [];
     var tipMsg = "引用该选中文件的所有数据将<font color=#D94600>级联删除</font>,您确定要删除吗?";
 
     if (fileCode !== undefined) {
@@ -329,7 +329,7 @@ function selectUser() {
 }
 
 function setSelectUser() {
-    var selectPersonIds = new Array();
+    var selectPersonIds = [];
     $("#selectUser option").each(function() {
         var txt = $(this).val();
         selectPersonIds.push($.trim(txt));
@@ -388,7 +388,7 @@ function loadFileSize() {
                     </td>
                     <td>文件大小：<input  id="sizeType" name="sizeType" style="width: 160px;height: 28px;"/>
                         <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
-                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:file_search_form.form('reset');">重置</a>
+                        <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="file_search_form.form('reset');">重置</a>
                     </td>
 
                 </tr>

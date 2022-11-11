@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,8 +9,11 @@ import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.eryansky.modules.sys.utils.UserUtils;
 //import com.eryansky.modules.weixin.utils.WeixinUtils;
 import com.eryansky.utils.AppConstants;
@@ -25,15 +28,17 @@ import com.eryansky.modules.notice.mapper.MessageReceive;
 import com.eryansky.modules.notice.mapper.MessageSender;
 import com.eryansky.modules.sys._enum.YesOrNo;
 import com.eryansky.modules.sys.service.UserService;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 @Service
@@ -47,16 +52,24 @@ public class MessageService extends CrudService<MessageDao, Message> {
     private UserService userService;
 
 
-    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, boolean isDataScopeFilter) {
+    public Page<Message> findQueryPage(Page<Message> page, String appId,String userId,String status, Date startTime, Date endTime, boolean isDataScopeFilter, Map<String,Object> params) {
         Parameter parameter = Parameter.newParameter();
+        Map<String, String> sqlMap = Maps.newHashMap();
+        sqlMap.put("dsf", "");
         if(isDataScopeFilter){
-            parameter.put("sqlMap.dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+            sqlMap.put("dsf", super.dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
         }
+        parameter.put("sqlMap", sqlMap);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put("appId",appId);
         parameter.put("userId",userId);
-        parameter.put("status",status);
+        parameter.put("status",StringUtils.isBlank(status) ? DataEntity.STATUS_NORMAL:status);
+        parameter.put("startTime", DateUtils.format(startTime,DateUtils.DATE_TIME_FORMAT));
+        parameter.put("endTime", DateUtils.format(endTime,DateUtils.DATE_TIME_FORMAT));
+        if (null != params) {
+            params.forEach(parameter::putIfAbsent);
+        }
         page.setResult(dao.findQueryList(parameter));
         return page;
     }
@@ -66,17 +79,26 @@ public class MessageService extends CrudService<MessageDao, Message> {
      * @param page
      * @param appId
      * @param userId 分级授权用户ID
+     * @param startTime
+     * @param endTime
      * @param params
      * @return
      */
-    public Page<Message> findPage(Page<Message> page,String appId,String userId,Map<String,Object> params) {
+    public Page<Message> findPage(Page<Message> page, String appId, String userId, Date startTime, Date endTime, Map<String,Object> params) {
         Parameter parameter = Parameter.newParameter();
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("appId",appId);
+        parameter.put("startTime", DateUtils.format(startTime,DateUtils.DATE_TIME_FORMAT));
+        parameter.put("endTime", DateUtils.format(endTime,DateUtils.DATE_TIME_FORMAT));
+        parameter.put("userId",userId);
+        Map<String, String> sqlMap = Maps.newHashMap();
+        sqlMap.put("dsf", "");
         if(StringUtils.isNotBlank(userId) ){
-            parameter.put("sqlMap.dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
+            sqlMap.put("dsf", super.dataScopeFilter(UserUtils.getUser(userId), "o", "u"));//数据权限控制
         }
+        parameter.put("sqlMap", sqlMap);
 
         if (null != params) {
             params.forEach(parameter::putIfAbsent);
@@ -127,7 +149,8 @@ public class MessageService extends CrudService<MessageDao, Message> {
             if (MessageReceiveObjectType.User.equals(messageReceiveObjectType)) {
                 targetIds.add(objectId);
             } else if (MessageReceiveObjectType.Organ.equals(messageReceiveObjectType)) {
-                targetIds = userService.findUsersLoginNamesByOrganId(objectId);
+//                targetIds = userService.findUsersLoginNamesByOrganId(objectId);
+                targetIds = userService.findUserIdsByOrganId(objectId);
             } else if (MessageReceiveObjectType.Member.equals(messageReceiveObjectType)) {
                 targetIds.add(objectId);
 
@@ -136,13 +159,15 @@ public class MessageService extends CrudService<MessageDao, Message> {
                 MessageReceive messageReceive = new MessageReceive(message.getId());
                 messageReceive.setUserId(targetId);
                 messageReceive.setIsRead(YesOrNo.NO.getValue());
-                messageReceiveService.save(messageReceive);
+                messageReceive.prePersist();
+//                messageReceiveService.save(messageReceive);
                 messageReceives.add(messageReceive);
             }
         }
+        message.setMessageReceives(messageReceives);
+        messageReceiveService.insertAutoBatch(messageReceives);
         message.setBizMode(MessageMode.Published.getValue());
         this.save(message);
-        message.setMessageReceives(messageReceives);
         return message;
     }
 }

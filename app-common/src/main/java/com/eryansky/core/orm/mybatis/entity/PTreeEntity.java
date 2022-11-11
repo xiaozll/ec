@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 /**
  * 树形Entity基类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-05-16
  */
 public abstract class PTreeEntity<T, PK extends Serializable> extends PDataEntity<T,PK> {

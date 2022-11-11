@@ -4,12 +4,12 @@ import java.io.*;
 
 /**
  * 文件操作工具类.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-7-15 下午1:37:21 
  * @version 1.0
  */
 public class FileUtil {
-	public static void create(String dir, String fileName, String content) throws FileNotFoundException, IOException, Exception {
+	public static void create(String dir, String fileName, String content) throws Exception {
 		File dirFile = new File(dir);
 		if (!dirFile.isDirectory())
 			dirFile.mkdirs();

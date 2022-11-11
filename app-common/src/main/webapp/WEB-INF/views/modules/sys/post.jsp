@@ -32,7 +32,7 @@
                                       class="easyui-validatebox textbox eu-input" placeholder="关键字..."
                                        onkeydown="if(event.keyCode==13)search()" maxLength="25" style="width: 160px"/>
                     &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
-                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$post_search_form.form('reset');">重置</a>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="$post_search_form.form('reset');">重置</a>
                 </form>
             </div>
         </div>

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,15 +15,15 @@ import java.io.IOException;
 
 /**
  * 权限操作标签
- * User: 尔演&Eryan eryanwcp@gmail.com
+ * User: eryan
  * Date: 13-11-16 下午9:43
  */
 @SuppressWarnings("serial")
 public class OperatiuonTag extends TagSupport {
 
-    public static String LINKBUTTON = "linkbutton";
-    public static String IMAGEBUTTON = "imagebutton";
-    public static String MENUITEM = "menuItem";
+    public static final String LINKBUTTON = "linkbutton";
+    public static final String IMAGEBUTTON = "imagebutton";
+    public static final String MENUITEM = "menuItem";
     /**
      * 按钮显示的操作名称
      */
@@ -61,19 +61,17 @@ public class OperatiuonTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        if (!"".equals(this.permission)) {
-            if (SecurityUtils.isPermitted(this.permission)) {
-                try {
-                    if (LINKBUTTON.equals(type)) {
-                        pageContext.getOut().print(createEasyuiButton());
-                    } else if (IMAGEBUTTON.equals(type)) {
-                        pageContext.getOut().print(createImageButton());
-                    }else if (MENUITEM.equals(type)) {
-                        pageContext.getOut().print(createMenuItem());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if (!"".equals(this.permission) && (Boolean.TRUE.equals(SecurityUtils.isPermitted(this.permission)))) {
+            try {
+                if (LINKBUTTON.equals(type)) {
+                    pageContext.getOut().print(createEasyuiButton());
+                } else if (IMAGEBUTTON.equals(type)) {
+                    pageContext.getOut().print(createImageButton());
+                }else if (MENUITEM.equals(type)) {
+                    pageContext.getOut().print(createMenuItem());
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

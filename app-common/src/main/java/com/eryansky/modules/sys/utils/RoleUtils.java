@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,17 +15,19 @@ import com.eryansky.modules.sys.service.RoleService;
 import java.util.List;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-25
  */
 public class RoleUtils {
+
+    private RoleUtils(){}
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
-
+        private static final RoleService roleService = SpringContextHolder.getBean(RoleService.class);
+        private Static(){}
     }
 
     /**

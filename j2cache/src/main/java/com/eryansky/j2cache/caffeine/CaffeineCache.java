@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class CaffeineCache implements Level1Cache {
 
-    private Cache<String, Object> cache;
-    private long size ;
-    private long expire ;
+    private final Cache<String, Object> cache;
+    private final long size ;
+    private final long expire ;
 
     public CaffeineCache(Cache<String, Object> cache, long size, long expire) {
         this.cache = cache;

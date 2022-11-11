@@ -39,6 +39,8 @@ function userDatagrid() {
         rownumbers: true,//显示行数
         fitColumns: false,//自适应列宽
         striped: true,//显示条纹
+        pageSize: 20,//每页记录数
+        pageList: [10, 20, 50, 100, 1000, 99999],
         idField: 'id',
         frozen: true,
         collapsible: true,
@@ -100,7 +102,7 @@ function addSelectUser(rows) {
             $("#selectUser option").each(function () {
                 if ($(this).val() === row.id) {
                     isSame = true;
-                    return;
+
                 }
             });
             if (!isSame) {

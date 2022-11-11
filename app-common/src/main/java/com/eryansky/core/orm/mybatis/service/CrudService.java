@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -7,16 +7,21 @@ package com.eryansky.core.orm.mybatis.service;
 
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm.persistence.CrudDao;
+import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.google.common.collect.Lists;
 import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service基类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2014-05-16
  */
 public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>> extends BaseService {
@@ -99,6 +104,37 @@ public abstract class CrudService<D extends CrudDao<T>, T extends BaseEntity<T>>
 			dao.update(entity);
 		}
 	}
+
+	/**
+	 * 保存数据（批量插入）
+	 * @param list
+	 */
+	public int insertBatch(Collection<T> list){
+		return dao.insertBatch(list);
+	}
+
+	/**
+	 * 保存数据（批量拆分插入） 每次限定100条
+	 *
+	 * @param list
+	 */
+	public void insertAutoBatch(Collection<T> list) {
+		insertAutoBatch(list, null);
+	}
+
+	/**
+	 * 保存数据（批量拆分插入）
+	 *
+	 * @param list
+	 * @param group 分组大小，默认值：100
+	 */
+	public void insertAutoBatch(Collection<T> list, Integer group) {
+		List<List<T>> groupList = Collections3.fixedGrouping(Lists.newArrayList(list), null != group ? group : 100);
+		for (List<T> fixedGroup : groupList) {
+			dao.insertBatch(fixedGroup);
+		}
+	}
+
 
 	/**
 	 * 删除数据（逻辑删除）

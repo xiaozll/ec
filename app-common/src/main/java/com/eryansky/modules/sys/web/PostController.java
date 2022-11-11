@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -41,7 +41,7 @@ import java.util.Set;
 /**
  * 岗位管理 Controller
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-06-09 14:07
  */
 @Controller
@@ -66,15 +66,15 @@ public class PostController extends SimpleController {
 
     @RequiresPermissions("sys:post:view")
     @Logging(value = "岗位管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/sys/post";
     }
 
-    @RequestMapping(value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public String datagrid(String organId, String query, HttpServletRequest request) {
-        Page<Post> page = new Page<Post>(request);
+        Page<Post> page = new Page<>(request);
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Post model = new Post();
         model.setOrganId(organId);
@@ -93,7 +93,7 @@ public class PostController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"input"})
+    @GetMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") Post model) throws Exception {
         ModelAndView modelAndView = new ModelAndView("modules/sys/post-input");
         modelAndView.addObject("model", model);
@@ -104,7 +104,7 @@ public class PostController extends SimpleController {
 
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-保存岗位", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") Post model, String organId) {
         Result result;
@@ -114,7 +114,7 @@ public class PostController extends SimpleController {
             Post checkPost = postService.getPostByOC(organId, model.getCode());
             if (checkPost != null && !checkPost.getId().equals(model.getId())) {
                 result = new Result(Result.WARN, "编码为[" + model.getCode() + "]已存在,请修正!", "code");
-                logger.debug(result.toString());
+                logger.debug("{}",result);
                 return result;
             }
         }
@@ -132,7 +132,7 @@ public class PostController extends SimpleController {
      */
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-删除岗位", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         postService.deleteByIds(ids);
@@ -143,7 +143,7 @@ public class PostController extends SimpleController {
     /**
      * 设置岗位用户页面.
      */
-    @RequestMapping(value = {"user"})
+    @GetMapping(value = {"user"})
     public String user(@ModelAttribute("model") Post model, Model uiModel) throws Exception {
         uiModel.addAttribute("organId", model.getOrganId());
         List<String> userIds = userService.findUserIdsByPostIdAndOrganId(model.getId(), model.getOrganId());
@@ -156,7 +156,7 @@ public class PostController extends SimpleController {
      */
     @RequiresPermissions("sys:post:edit")
     @Logging(value = "岗位管理-岗位用户", logType = LogType.access)
-    @RequestMapping(value = {"updatePostUser"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updatePostUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updatePostUser(@ModelAttribute("model") Post model,
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) throws Exception {
@@ -171,7 +171,7 @@ public class PostController extends SimpleController {
      * @param postId
      * @return
      */
-    @RequestMapping(value = {"postOrganUsers/{postId}"})
+    @PostMapping(value = {"postOrganUsers/{postId}"})
     @ResponseBody
     public Datagrid<User> postOrganUsers(@PathVariable String postId) {
         List<User> users = userService.findUsersByPostId(postId);
@@ -191,7 +191,7 @@ public class PostController extends SimpleController {
      * @param userId     用户ID
      * @return
      */
-    @RequestMapping(value = {"userPostCombobox"})
+    @PostMapping(value = {"userPostCombobox"})
     @ResponseBody
     public List<Combobox> userPostCombobox(String selectType, String userId, String organId) {
         List<String> userOrganIds = UserUtils.findOrganIdsByUserId(userId);
@@ -226,7 +226,7 @@ public class PostController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Post model) {
         return Result.successResult().setObj(model);

@@ -239,6 +239,36 @@
         )
     </insert>
 
+    <insert id="insertBatch">
+        INSERT INTO t_sys_post(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        NAME,
+        CODE,
+        sort,
+        REMARK,
+        ORGAN_ID
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.name},
+        #{item.code},
+        #{item.sort},
+        #{item.remark},
+        #{item.organId}
+        )</foreach>
+    </insert>
+
     <update id="update">
         UPDATE t_sys_post SET
         status = #{status},

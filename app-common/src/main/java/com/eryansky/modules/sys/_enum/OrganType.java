@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,7 +11,7 @@ import com.eryansky.common.orm._enum.IGenericEnum;
 /**
  * 机构类型
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 1.0
  * @date 2013-9-9 下午8:09:38
  */

@@ -1,21 +1,27 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils;
 
 import com.eryansky.common.spring.SpringContextHolder;
+import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.ftp.FtpFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.StandardEnvironment;
 
 
 /**
  * 项目中用到的静态变量.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-8-20 上午11:40:56
  */
 public class SysConstants {
+
+    private static final Logger logger = LoggerFactory.getLogger(SysConstants.class);
     /**
      * session 验证码key
      */
@@ -82,6 +88,29 @@ public class SysConstants {
      */
     public static String getJdbcPassword(){
         return SysConstants.getAppConfig().getProperty("spring.datasource.password","");
+    }
+
+
+    /**
+     * jdbc 密码
+     * @return
+     */
+    public static String getDruidJdbcPassword(){
+        //获取配置文件中的已经加密的密码
+        String ePassword = getAppConfig().getProperty("spring.datasource.druid.connect-properties.password","");
+        String cKey = getAppConfig().getProperty("spring.datasource.druid.connect-properties.key","");
+        String cdecrypt = getAppConfig().getProperty("spring.datasource.druid.connect-properties.config.decrypt","false");
+        boolean decrypt = Boolean.parseBoolean(cdecrypt);
+        if (decrypt && StringUtils.isNotEmpty(ePassword)) {
+            try {
+                //这里的代码是将密码进行解密，并设置
+                String password = StringUtils.isNotBlank(cKey) ?  Encryption.decrypt(ePassword,cKey ): Encryption.decrypt(ePassword);
+                return password;
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+        }
+        return getJdbcPassword();
     }
 
 

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -19,12 +19,12 @@ import java.lang.reflect.Proxy;
 /**
  * 多数据源动态配置拦截器
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-08-13
  */
 public class DataSourceMethodInterceptor implements MethodInterceptor, InitializingBean {
 
-    private Logger logger = LoggerFactory.getLogger(DataSourceMethodInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(DataSourceMethodInterceptor.class);
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {

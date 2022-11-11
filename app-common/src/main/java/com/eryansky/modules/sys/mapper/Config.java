@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,7 +11,7 @@ import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 /**
  * 系统配置参数
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-12-18
  */
 public class Config extends BaseEntity<Config> {

@@ -34,7 +34,7 @@ import org.apache.ibatis.logging.LogFactory;
 public class LocalVersionLockerCache implements VersionLockerCache {
 
     private static final Log log = LogFactory.getLog(LocalVersionLockerCache.class);
-    private ConcurrentHashMap<String, ConcurrentHashMap<MethodSignature, VersionLocker>> caches = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ConcurrentHashMap<MethodSignature, VersionLocker>> caches = new ConcurrentHashMap<>();
 
     @Override
     public boolean containMethodSignature(MethodSignature ms) {

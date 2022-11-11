@@ -9,8 +9,8 @@ import java.util.List;
  */
 public interface Generate {
 
-	public void generate(Table table) throws Exception;
+	void generate(Table table) throws Exception;
 
-	public void generate(List<Table> tables) throws Exception;
+	void generate(List<Table> tables) throws Exception;
 
 }

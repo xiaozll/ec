@@ -3,7 +3,7 @@ package com.eryansky.common.orm.mybatis.sensitive.type;
 /**
  * 脱敏处理类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 public interface SensitiveTypeHandler {

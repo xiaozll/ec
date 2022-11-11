@@ -42,10 +42,15 @@ public class CaffeineProvider implements CacheProvider {
     private final static Logger log = LoggerFactory.getLogger(CaffeineProvider.class);
 
     private final static String PREFIX_REGION = "region.";
+
     private final static String DEFAULT_REGION = "default";
-    private ConcurrentHashMap<String, CaffeineCache> caches = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, CacheConfig> cacheConfigs = new ConcurrentHashMap<>();
-    private PatternMatcher patternMatcher = new AntPathMatcher();
+    private final ConcurrentHashMap<String, CaffeineCache> caches = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, CacheConfig> cacheConfigs = new ConcurrentHashMap<>();
+    private final PatternMatcher patternMatcher = new AntPathMatcher();
+
+    private final static String QUEUE_PREFIX = "queue.";
+    public final static String QUEUE_DEFAULT = QUEUE_PREFIX + DEFAULT_REGION;
+    private final ConcurrentHashMap<String, CacheConfig> queueConfigs = new ConcurrentHashMap<>();
 
     @Override
     public String name() {
@@ -62,6 +67,13 @@ public class CaffeineProvider implements CacheProvider {
         Collection<CacheChannel.Region> regions = new ArrayList<>();
         caches.forEach((k,c) -> regions.add(new CacheChannel.Region(k, c.size(), c.ttl())));
         return regions;
+    }
+
+    @Override
+    public Collection<CacheChannel.Region> queues() {
+        Collection<CacheChannel.Region> queues = new ArrayList<>();
+        queueConfigs.forEach((k,c) -> queues.add(new CacheChannel.Region(k, c.size, c.expire)));
+        return queues;
     }
 
     @Override
@@ -153,6 +165,7 @@ public class CaffeineProvider implements CacheProvider {
             region = region.substring(PREFIX_REGION.length());
             this.saveCacheConfig(region, s_config);
         }
+
         //加载 Caffeine 独立配置文件
         String propertiesFile = props.getProperty("properties");
         if (propertiesFile != null && propertiesFile.trim().length() > 0) {
@@ -166,7 +179,11 @@ public class CaffeineProvider implements CacheProvider {
                 regionsProps.load(stream);
                 for (String region : regionsProps.stringPropertyNames()) {
                     String s_config = regionsProps.getProperty(region).trim();
-                    this.saveCacheConfig(region, s_config);
+                    if (region.startsWith(QUEUE_PREFIX)) {
+                        this.saveQueueConfig(region, s_config);
+                    } else {
+                        this.saveCacheConfig(region, s_config);
+                    }
                 }
             } catch (IOException e) {
                 log.error("Failed to load caffeine regions define {}", propertiesFile, e);
@@ -197,6 +214,17 @@ public class CaffeineProvider implements CacheProvider {
             log.warn("Illegal caffeine cache config [{}={}]", region, region_config);
         else
             cacheConfigs.put(region, cfg);
+    }
+
+    private void saveQueueConfig(String region, String region_config) {
+        CacheConfig cfg = CacheConfig.parse(region_config);
+        if(cfg == null){
+            log.warn("Illegal caffeine cache config [{}={}]", region, region_config);
+        }else{
+//            cfg.expire = -1;
+            queueConfigs.put(region, cfg);
+        }
+
     }
 
     @Override

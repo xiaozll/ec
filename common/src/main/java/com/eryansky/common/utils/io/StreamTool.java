@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 /**
  * 数据流工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2011-12-30下午2:30:28
  */
 public class StreamTool {

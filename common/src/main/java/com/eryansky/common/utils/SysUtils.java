@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -8,6 +8,8 @@ package com.eryansky.common.utils;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.eryansky.common.exception.SystemException;
@@ -20,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.sql.Blob;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -36,12 +40,16 @@ import java.util.zip.Inflater;
 /**
  * java工具类
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2011-12-30下午2:31:16
  */
 public class SysUtils {
+
+	private static final Logger logger = LoggerFactory.getLogger(SysUtils.class);
+
 	private static final int DEF_DIV_SCALE = 2;
 	public static final int BUFFER_SIZE = 16 * 1024;
+	private static final SecureRandom random = new SecureRandom();
 
 
 	/**
@@ -187,12 +195,8 @@ public class SysUtils {
 	 */
 	public static byte[] zip_Str(String in_str) {
 		byte[] input = new byte[0];
-		try {
-			input = in_str.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		ArrayList<Byte> al = new ArrayList<Byte>();
+        input = in_str.getBytes(StandardCharsets.UTF_8);
+        ArrayList<Byte> al = new ArrayList<Byte>();
 
 		byte[] output;
 		Deflater compresser = new Deflater();
@@ -230,7 +234,7 @@ public class SysUtils {
 			try {
 				count += decompresser.inflate(result);
 			} catch (DataFormatException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 			for (int i = 0; i < result.length; i++) {
 				al.add(new Byte(result[i]));
@@ -242,12 +246,8 @@ public class SysUtils {
 		}
 		decompresser.end();
 
-		try {
-			return new String(result, 0, count, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			return "";
-		}
-	}
+        return new String(result, 0, count, StandardCharsets.UTF_8);
+    }
 
 	/**
 	 * 判断是否为INT
@@ -390,7 +390,6 @@ public class SysUtils {
 				"r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C",
 				"D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "P",
 				"Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-		Random random = new Random();
 		while (bu.length() < length) {
 			String temp = arr[random.nextInt(57)];
 			if (bu.indexOf(temp) == -1) {
@@ -412,9 +411,6 @@ public class SysUtils {
 	 * @return 整数
 	 */
 	public static int getRandomInt(int sek, int min, int max) {
-
-		Random random = new Random();
-
 		int temp = 0;
 
 		do {
@@ -552,10 +548,8 @@ public class SysUtils {
 	public static boolean checkEmail(String email) {
 		Pattern pattern = Pattern.compile("\\w+(\\.\\w+)*@\\w+(\\.\\w+)+");
 		Matcher matcher = pattern.matcher(email);
-		if (matcher.matches())
-			return true;
-		return false;
-	}
+        return matcher.matches();
+    }
 
 	/**
 	 * 转换字符串为指定编码格式
@@ -626,8 +620,8 @@ public class SysUtils {
 			boolean caseInsensetive) {
 		for (int i = 0; i < stringArray.length; i++) {
 			if (caseInsensetive) {
-				if (strSearch.toLowerCase()
-						.equals(stringArray[i].toLowerCase())) {
+				if (strSearch
+						.equalsIgnoreCase(stringArray[i])) {
 					return i;
 				}
 			} else {
@@ -751,7 +745,6 @@ public class SysUtils {
 	 */
 	public static boolean isSafeUserInfoString(String str) {
 		String es = "^\\s*$|^c:\\con\\con$|[%,\\*\\\\s\\t\\<\\>\\&]|游客|^Guest";
-		System.out.println("es = " + es);
 		Pattern pattern = Pattern.compile(es);
 		return !pattern.matcher(str).find();
 	}
@@ -1202,7 +1195,8 @@ public class SysUtils {
 		}
 		if (str.length() > len) {
 			Throwable throwable = new Throwable("数值长度不正确,请检查!");
-			throwable.printStackTrace();
+//			throwable.printStackTrace();
+			logger.error(throwable.getMessage(),throwable);
 		}
 
 		while (str.length() < len) {
@@ -1220,12 +1214,12 @@ public class SysUtils {
 			len = asc.length();
 		}
 
-		byte abt[] = new byte[len];
+		byte[] abt = new byte[len];
 		if (len >= 2) {
 			len = len / 2;
 		}
 
-		byte bbt[] = new byte[len];
+		byte[] bbt = new byte[len];
 		abt = asc.getBytes();
 		int j, k;
 
@@ -1327,7 +1321,7 @@ public class SysUtils {
 	 * 
 	 * @param blob
 	 * @return
-	 * @author 尔演&Eryan eryanwcp@gmail.com
+	 * @author Eryan
 	 */
 	public static byte[] blobToBytes(Blob blob) {
 		BufferedInputStream is = null;
@@ -1352,7 +1346,7 @@ public class SysUtils {
 				    is = null;
                 }
 			} catch (IOException e) {
-				return null;
+				logger.error(e.getMessage(),e);
 			}
 		}
 	}
@@ -1363,8 +1357,8 @@ public class SysUtils {
      * @return
      */
     public static final byte[] decodeHex(String hex) {
-        char chars[] = hex.toCharArray();
-        byte bytes[] = new byte[chars.length / 2];
+        char[] chars = hex.toCharArray();
+        byte[] bytes = new byte[chars.length / 2];
         int byteCount = 0;
         for(int i = 0; i < chars.length; i += 2){
             int newByte = 0;
@@ -1382,7 +1376,7 @@ public class SysUtils {
      * @param bytes
      * @return
      */
-    public static final String encodeHex(byte bytes[]) {
+    public static final String encodeHex(byte[] bytes) {
         StringBuffer buf = new StringBuffer(bytes.length * 2);
         for(int i = 0; i < bytes.length; i++) {
             if((bytes[i] & 0xff) < 16)

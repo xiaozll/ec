@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,7 +11,7 @@ import java.util.Properties;
 /**
  * 实现存储基于SMTP协议的发送服务器的配置信息
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14
  */
 public class SMTPServerConfig extends ServerConfig {
@@ -34,6 +34,7 @@ public class SMTPServerConfig extends ServerConfig {
 				properties.put("mail.smtp.ssl.enable", "true");
 				properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 				properties.put("mail.smtp.socketFactory.fallback", "false");
+				properties.put("mail.smtp.ssl.checkserveridentity", true); // Compliant
 				break;
 		}
 

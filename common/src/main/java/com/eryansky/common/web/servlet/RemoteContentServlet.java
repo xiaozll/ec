@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -43,7 +43,7 @@ import java.net.URL;
  * <br>演示访问地址如下(contentUrl已经过URL编码):
  * remote-content?contentUrl=http%3A%2F%2Flocalhost%3A8080%2Fshowcase%2Fimages%2Flogo.jpg
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-24 下午3:43:18
  * 
  */
@@ -55,7 +55,7 @@ public class RemoteContentServlet extends HttpServlet {
 
     private static final int POOL_SIZE = 20;
 
-    private static Logger logger = LoggerFactory.getLogger(RemoteContentServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(RemoteContentServlet.class);
 
     private static CloseableHttpClient httpClient;
 
@@ -89,8 +89,7 @@ public class RemoteContentServlet extends HttpServlet {
     private void fetchContentByApacheHttpClient(HttpServletResponse response, String contentUrl) throws IOException {
         // 获取内容
         HttpGet httpGet = new HttpGet(contentUrl);
-        CloseableHttpResponse remoteResponse = httpClient.execute(httpGet);
-        try {
+        try (CloseableHttpResponse remoteResponse = httpClient.execute(httpGet)) {
             // 判断返回值
             int statusCode = remoteResponse.getStatusLine().getStatusCode();
             if (statusCode >= 400) {
@@ -111,8 +110,6 @@ public class RemoteContentServlet extends HttpServlet {
             // 基于byte数组读取InputStream并直接写入OutputStream, 数组默认大小为4k.
             IOUtils.copy(input, output);
             output.flush();
-        } finally {
-            remoteResponse.close();
         }
     }
 

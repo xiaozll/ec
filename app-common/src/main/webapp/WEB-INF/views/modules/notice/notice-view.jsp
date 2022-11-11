@@ -60,7 +60,7 @@
             <strong>附件列表：</strong>
             <br/>
             <c:forEach items="${files}" begin="0" var="file" varStatus="i">
-                <div style="margin-top: 10px;">${i.index +1}、<a href="javascript:void(0)" onclick="javascript:_download('${file.id}');">${file.name}</a></div>
+                <div style="margin-top: 10px;">${i.index +1}、<a href="javascript:void(0)" onclick="_download('${file.id}');">${file.name}</a></div>
             </c:forEach>
         </div>
     </c:if>

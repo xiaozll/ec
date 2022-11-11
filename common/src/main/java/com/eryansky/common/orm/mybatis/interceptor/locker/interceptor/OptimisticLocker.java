@@ -53,7 +53,7 @@ import org.apache.ibatis.type.TypeHandler;
 
 /**
  * MyBatis乐观锁插件
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-08-03
  *
  */

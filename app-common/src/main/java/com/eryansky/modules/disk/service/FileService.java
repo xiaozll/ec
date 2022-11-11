@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -41,7 +41,7 @@ import java.util.List;
 
 /**
  *  service
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-04
  */
 @Service
@@ -147,17 +147,14 @@ public class FileService extends CrudService<FileDao, File> {
         /*		Exception exception = null;
          */
         java.io.File tempFile = null;
-        try {
-            String fullName = uploadFile.getOriginalFilename();
-            String code = FileUploadUtils.encodingFilenamePrefix(sessionInfo.getUserId(), fullName);
-            String storePath = iFileManager.getStorePath(folder, sessionInfo.getUserId(), uploadFile.getOriginalFilename());
+        String fullName = DiskUtils.getMultipartOriginalFilename(uploadFile);
+        String code = FileUploadUtils.encodingFilenamePrefix(sessionInfo.getUserId(), fullName);
+        String storePath = iFileManager.getStorePath(folder, sessionInfo.getUserId(), fullName);
 
-
-            String fileTemp = AppConstants.getDiskTempDir() + java.io.File.separator + code;
-            tempFile = new java.io.File(fileTemp);
-            FileOutputStream fos = FileUtils.openOutputStream(tempFile);
+        String fileTemp = AppConstants.getDiskTempDir() + java.io.File.separator + code;
+        tempFile = new java.io.File(fileTemp);
+        try (FileOutputStream fos = FileUtils.openOutputStream(tempFile)){
             IOUtils.copy(uploadFile.getInputStream(), fos);
-
             iFileManager.saveFile(storePath, fileTemp, false);
             file = new File();
             file.setFolderId(folder.getId());
@@ -176,7 +173,10 @@ public class FileService extends CrudService<FileDao, File> {
 //				DiskUtils.deleteByFileId(null, file.getId());
 //			}
             if (tempFile != null && tempFile.exists()) {
-                tempFile.delete();
+                boolean deleteFlag = tempFile.delete();
+                if(!deleteFlag){
+                    logger.warn("temp file delete {}:{}",tempFile.getName(),deleteFlag);
+                }
             }
 
         }

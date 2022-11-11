@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -27,16 +27,13 @@ import com.eryansky.modules.notice.service.ContactGroupService;
 import com.eryansky.modules.notice.service.MailContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-07
  */
 @Controller
@@ -46,7 +43,7 @@ public class ContactGroupController extends SimpleController {
     @Autowired
     private ContactGroupService contactGroupService;
     @Autowired
-    private MailContactService contactService;
+    private MailContactService mailContactService;
 
     @ModelAttribute("model")
     public ContactGroup get(@RequestParam(required = false) String id) {
@@ -57,12 +54,12 @@ public class ContactGroupController extends SimpleController {
         }
     }
 
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/notice/contactGroup";
     }
 
-    @RequestMapping(value = {"input"})
+    @GetMapping(value = {"input"})
     public String input(@ModelAttribute("model") ContactGroup model) {
         return "modules/notice/contactGroup-input";
     }
@@ -70,7 +67,7 @@ public class ContactGroupController extends SimpleController {
     /**
      * 邮件联系人编辑
      */
-    @RequestMapping(value = {"inputContactGroupMail"})
+    @GetMapping(value = {"inputContactGroupMail"})
     public String inputContactGroupMail(@ModelAttribute("model") MailContact model) {
         return "modules/notice/contactGroupMail-input";
     }
@@ -80,7 +77,7 @@ public class ContactGroupController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"save"})
+    @PostMapping(value = {"save"})
     @ResponseBody
     public Result save(@ModelAttribute("model") ContactGroup model) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -99,7 +96,7 @@ public class ContactGroupController extends SimpleController {
      * 个人 联系人组树形菜单 查询用
      * @return
      */
-    @RequestMapping(value = {"groupTree"})
+    @PostMapping(value = {"groupTree"})
     @ResponseBody
     public List<TreeNode> groupTree(String contactGroupType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -122,7 +119,7 @@ public class ContactGroupController extends SimpleController {
      * 个人 联系人组树形菜单
      * @return
      */
-    @RequestMapping(value = {"tree"})
+    @PostMapping(value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String contactGroupType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -140,7 +137,7 @@ public class ContactGroupController extends SimpleController {
      * @param ids
      * @return
      */
-    @RequestMapping(value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         ids.forEach(v -> {
@@ -154,7 +151,7 @@ public class ContactGroupController extends SimpleController {
      * @param contactGroupId 角色ID
      * @return
      */
-    @RequestMapping(value = {"select"})
+    @GetMapping(value = {"select"})
     public ModelAndView selectPage(String contactGroupId) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-select");
         List<User> users = null;
@@ -177,7 +174,7 @@ public class ContactGroupController extends SimpleController {
      * @param contactGroupId 联系人组ID
      * @return
      */
-    @RequestMapping(value = {"contactGroupUser"})
+    @GetMapping(value = {"contactGroupUser"})
     @ResponseBody
     public ModelAndView contactGroupUser(String contactGroupId) {
         ModelAndView modelAndView = new ModelAndView("modules/notice/contactGroup-user");
@@ -189,7 +186,7 @@ public class ContactGroupController extends SimpleController {
      * @param addObjectIds 新增联系人 ID集合
      * @return
      */
-    @RequestMapping(value = {"addContactGroupUser"})
+    @PostMapping(value = {"addContactGroupUser"})
     @ResponseBody
     public Result addContactGroupUser(@ModelAttribute("model") ContactGroup model,
                                       @RequestParam(value = "addObjectIds", required = false) List<String> addObjectIds) {
@@ -203,7 +200,7 @@ public class ContactGroupController extends SimpleController {
      * @param removeObjectIds 需要移除的联系人 ID集合
      * @return
      */
-    @RequestMapping(value = {"removeContactGroupUser"})
+    @PostMapping(value = {"removeContactGroupUser"})
     @ResponseBody
     public Result removeContactGroupUser(@ModelAttribute("model") ContactGroup model,
                                          @RequestParam(value = "removeObjectIds", required = true) List<String> removeObjectIds) {
@@ -217,15 +214,15 @@ public class ContactGroupController extends SimpleController {
      * @param query 用户登录名或姓名
      * @return
      */
-    @RequestMapping(value = {"contactGroupUserDatagrid"})
+    @PostMapping(value = {"contactGroupUserDatagrid"})
     @ResponseBody
     public String contactGroupUserDatagrid(String id, String query) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String json = "[]";
         if (StringUtils.isNotBlank(id)) {
-            Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
+            Page<User> page = new Page<>(SpringMVCHolder.getRequest());
             page = contactGroupService.findContactGroupUsers(page, id, query);
-            Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
+            Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
             json = JsonMapper.getInstance().toJson(dg, User.class,
                     new String[]{"id", "loginName", "name", "sexView", "defaultOrganName", "email", "mobile", "tel"});
         }
@@ -238,7 +235,7 @@ public class ContactGroupController extends SimpleController {
      * @param loginNameOrName 用户登录名或姓名
      * @return
      */
-    @RequestMapping(value = {"selectContactGroupUserDatagrid"})
+    @PostMapping(value = {"selectContactGroupUserDatagrid"})
     @ResponseBody
     public String selectContactGroupUserDatagrid(String contactGroupId, String loginNameOrName) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -255,7 +252,7 @@ public class ContactGroupController extends SimpleController {
     /**
      * 类型下拉列表.
      */
-    @RequestMapping(value = {"contactGroupTypeCombobox"})
+    @PostMapping(value = {"contactGroupTypeCombobox"})
     @ResponseBody
     public List<Combobox> contactGroupTypeCombobox(String selectType) throws Exception {
         List<Combobox> cList = Lists.newArrayList();
@@ -277,7 +274,7 @@ public class ContactGroupController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() throws Exception {
         Result result;

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -16,10 +16,10 @@ import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
-import com.eryansky.core.excelTools.CsvUtils;
-import com.eryansky.core.excelTools.ExcelUtils;
-import com.eryansky.core.excelTools.JsGridReportBase;
-import com.eryansky.core.excelTools.TableData;
+import com.eryansky.core.excels.CsvUtils;
+import com.eryansky.core.excels.ExcelUtils;
+import com.eryansky.core.excels.JsGridReportBase;
+import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
@@ -33,10 +33,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +44,7 @@ import java.util.stream.Collectors;
 /**
  * 日志
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-12-8 下午5:13
  */
 @Controller
@@ -82,7 +79,7 @@ public class LogController extends SimpleController {
     @Logging(value = "日志管理", logType = LogType.access)
 //    @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
     @RequiresPermissions(value = "sys:log:view")
-    @RequestMapping(value = {""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {""})
     public String list(String type,
                        String userInfo,
                        String query,
@@ -100,14 +97,12 @@ public class LogController extends SimpleController {
             page = logService.findQueryPage(page, type, userInfo, query, _startTime, endTime, true);
             if (export) {
                 List<Object[]> data = Lists.newArrayList();
-                page.getResult().forEach(o -> {
-                    data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(), o.getIp(), o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()});
-                });
+                page.getResult().forEach(o -> data.add(new Object[]{o.getTypeView(), o.getTitle(), o.getUserCompanyName(), o.getUserOrganName(), o.getUserName(),o.getUserId(), o.getIp(), o.getDeviceType(), o.getModule(), DateUtils.formatDateTime(o.getOperTime()), o.getActionTime()}));
 
 
                 String title = "审计日志-" + DateUtils.getCurrentDate();
                 //Sheet2
-                String[] hearders = new String[]{"日志类型", "标题", "单位", "部门", "姓名", "IP地址", "设备", "模块", "操作时间", "操作耗时(ms)"};//表头数组
+                String[] hearders = new String[]{"日志类型", "标题", "单位", "部门", "姓名",  "用户标识","IP地址", "设备", "模块", "操作时间", "操作耗时(ms)"};//表头数组
 
                 if (page.getResult().size() < 65531) {
                     //导出Excel
@@ -144,7 +139,7 @@ public class LogController extends SimpleController {
      * @param log
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") Log log) {
         return Result.successResult().setObj(log);
@@ -158,7 +153,7 @@ public class LogController extends SimpleController {
      */
     @Logging(value = "日志管理-删除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         logService.deleteByIds(ids);
@@ -172,7 +167,7 @@ public class LogController extends SimpleController {
      */
     @Logging(value = "日志管理-清除日志", logType = LogType.access)
     @RequiresRoles(value = AppConstants.ROLE_SYSTEM_MANAGER)
-    @RequestMapping(value = {"removeAll"})
+    @PostMapping(value = {"removeAll"})
     @ResponseBody
     public Result removeAll() {
         logService.clearAll();
@@ -182,7 +177,7 @@ public class LogController extends SimpleController {
     /**
      * 日志类型下拉列表.
      */
-    @RequestMapping(value = {"logTypeCombobox"})
+    @PostMapping(value = {"logTypeCombobox"})
     @ResponseBody
     public List<Combobox> logTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -199,7 +194,7 @@ public class LogController extends SimpleController {
      * 数据修复 title
      * @return
      */
-    @RequestMapping(value = {"dataAutoFix"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"dataAutoFix"})
     @ResponseBody
     public Result dataAutoFix() {
         logService.dataAutoFix();

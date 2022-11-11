@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -47,14 +47,14 @@ import java.util.List;
  * <p/>
  * 过滤器介绍：
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public abstract class BaseFilter implements Filter {
 
     protected FilterConfig config = null;
 
     private final String[] NULL_STRING_ARRAY = new String[0];
-    private final String URL_SPLIT_PATTERN = "[, ;\r\n]";//逗号  空格 分号  换行
+    private static final String URL_SPLIT_PATTERN = "[, ;\r\n]";//逗号  空格 分号  换行
 
     private final PathMatcher pathMatcher = new AntPathMatcher();
 

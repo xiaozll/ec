@@ -40,11 +40,12 @@ public class AopConfigurer implements AsyncConfigurer {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //核心线程池数量，方法: 返回可用处理器的Java虚拟机的数量。
         int processors = Runtime.getRuntime().availableProcessors();
-        executor.setCorePoolSize(processors);
-        executor.setMaxPoolSize(processors * 5);//最大线程数量
-        executor.setQueueCapacity(processors * 100);//线程池的队列容量
+        int initProcessors = processors < 4 ? processors : processors - 1;
+        executor.setCorePoolSize(initProcessors);
+        executor.setMaxPoolSize(initProcessors * 5);//最大线程数量
+        executor.setQueueCapacity(initProcessors * 100);//线程池的队列容量
         executor.setRejectedExecutionHandler((Runnable r, ThreadPoolExecutor exe) -> {
-            logger.warn("当前任务线程池队列已满.");
+            logger.error("当前任务线程池队列已满. {} {} {}",executor.getCorePoolSize(),executor.getMaxPoolSize(),executor.getActiveCount());
         });
         executor.initialize();
         return executor;
@@ -52,7 +53,7 @@ public class AopConfigurer implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (throwable, method, objects) -> logger.error("线程池执行任务发生未知异常,"+method.getName() +":"+throwable.getMessage(), throwable);
+        return (throwable, method, objects) -> logger.error("线程池执行任务发生未知异常,{} {}:{}",method.getName(),throwable.getMessage(), throwable);
     }
 
 }

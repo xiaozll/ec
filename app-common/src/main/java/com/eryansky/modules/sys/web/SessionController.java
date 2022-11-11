@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -9,6 +9,7 @@ import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
@@ -18,9 +19,7 @@ import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys._enum.LogType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * 在线用户管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-05-18
  */
 @Controller
@@ -38,7 +37,7 @@ public class SessionController extends SimpleController {
 
     @RequiresPermissions("sys:session:view")
     @Logging(value = "在线用户", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     @Mobile(value = MobileValue.ALL)
     public ModelAndView list() {
         return new ModelAndView("modules/sys/session");
@@ -49,9 +48,9 @@ public class SessionController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"onLineSessions"})
+    @PostMapping(value = {"onLineSessions"})
     @ResponseBody
-    public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) throws Exception {
+    public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request, String query) {
         Page<SessionInfo> page = new Page<>(request);
         page = SecurityUtils.findSessionInfoPage(page,null,query);
         return new Datagrid<>(page.getTotalCount(), page.getResult());
@@ -62,9 +61,9 @@ public class SessionController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"winthPermissionsOnLineSessions"})
+    @PostMapping(value = {"winthPermissionsOnLineSessions"})
     @ResponseBody
-    public Datagrid<SessionInfo> winthPermissionsOnLineSessions(HttpServletRequest request, String query) throws Exception {
+    public Datagrid<SessionInfo> winthPermissionsOnLineSessions(HttpServletRequest request, String query) {
         Page<SessionInfo> page = new Page<>(request);
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         page = SecurityUtils.findSessionInfoPage(page,(sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()) ? null:sessionInfo.getLoginCompanyId(),query);
@@ -77,7 +76,7 @@ public class SessionController extends SimpleController {
      * @return
      */
     @RequiresPermissions("sys:session:edit")
-    @RequestMapping(value = {"offline"})
+    @PostMapping(value = {"offline"})
     @ResponseBody
     public Result offline(@RequestParam(value = "sessionIds") List<String> sessionIds) {
         SecurityUtils.offLine(sessionIds);
@@ -85,7 +84,7 @@ public class SessionController extends SimpleController {
     }
 
     @RequiresPermissions("sys:session:edit")
-    @RequestMapping(value = {"offlineAll"})
+    @PostMapping(value = {"offlineAll"})
     @ResponseBody
     public Result offlineAll() {
         if (SecurityUtils.isCurrentUserAdmin()) {
@@ -104,10 +103,35 @@ public class SessionController extends SimpleController {
      * @param id
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(String id) {
         SessionInfo sessionInfo = SecurityUtils.getSessionInfo(id);
         return Result.successResult().setObj(sessionInfo);
     }
+
+    /**
+     * 根据token同步sessionid
+     *
+     * @param token
+     * @param sessionId
+     * @param request
+     * @return
+     */
+    @Logging(value = "同步Token到Session",logType = LogType.access)
+    @PostMapping(value = {"syncTokenToSession"})
+    @ResponseBody
+    public Result syncTokenToSession(String token,String sessionId,HttpServletRequest request) {
+        SessionInfo sessionInfo = SecurityUtils.getSessionInfoByToken(token);
+        String _sessionId = StringUtils.isNotBlank(sessionId) ? sessionId:request.getSession().getId();
+        //更新真实的SessionID
+        if (sessionInfo != null && _sessionId != null && !sessionInfo.getSessionId().equals(_sessionId)) {
+            sessionInfo.setId(_sessionId);
+            sessionInfo.setSessionId(_sessionId);
+            SecurityUtils.refreshSessionInfo(sessionInfo);
+        }
+        return Result.successResult().setData(sessionInfo);
+    }
+
+
 }

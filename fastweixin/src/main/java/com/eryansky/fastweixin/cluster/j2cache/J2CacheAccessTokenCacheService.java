@@ -9,7 +9,7 @@ import com.eryansky.j2cache.J2Cache;
 /**
  * Token缓存 J2Cache实现
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-10-31
  */
 public class J2CacheAccessTokenCacheService implements IAccessTokenCacheService {
@@ -20,7 +20,7 @@ public class J2CacheAccessTokenCacheService implements IAccessTokenCacheService 
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     private static final class Static {
-        private static CacheChannel cache = J2Cache.getChannel();
+        private static final CacheChannel cache = J2Cache.getChannel();
     }
 
     public J2CacheAccessTokenCacheService() {

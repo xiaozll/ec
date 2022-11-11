@@ -29,7 +29,7 @@
             <div onclick="editLoginUserInfo();" iconCls="easyui-icon-edit">个人信息</div>
             <div onclick="editLoginUserPassword();" iconCls="eu-icon-lock">修改密码</div>
             <div class="menu-sep"></div>
-            <div onclick="javascript:window.location.href='${ctxFront}';">首页</div>
+            <div onclick="window.location.href='${ctxFront}';">首页</div>
             <div onclick="toApp();">切换到桌面版</div>
             <div class="menu-sep"></div>
             <div onclick="" data-options="iconCls:'easyui-icon-help'">帮助</div>
@@ -43,7 +43,7 @@
 <%--全屏工具栏--%>
 <div id="layout_center_tabs_full-tools" style="display: none">
     <a href="#" class="easyui-linkbutton easyui-tooltip" title="全屏" data-options="iconCls:'eu-icon-full_screen',plain:true,height:32,width:32"
-       onclick="javascript:screenToggle(true);"></a>
+       onclick="screenToggle(true);"></a>
     <%--<a href="#" class="easyui-linkbutton easyui-tooltip" title="刷新" data-options="iconCls:'easyui-icon-reload',plain:true"--%>
        <%--onclick="javascript:refresh();"></a>--%>
     <%--<a href="#" class="easyui-linkbutton easyui-tooltip" title="关闭" data-options="iconCls:'easyui-icon-cancel',plain:true"--%>
@@ -55,7 +55,7 @@
 <%--退出全屏工具栏--%>
 <div id="layout_center_tabs_unfull-tools" style="display: none;">
     <a href="#" class="easyui-linkbutton easyui-tooltip" title="退出全屏" data-options="iconCls:'eu-icon-exit_full_screen',plain:true,height:32,width:32"
-       onclick="javascript:screenToggle(false);"></a>
+       onclick="screenToggle(false);"></a>
     <%--<a href="#" class="easyui-linkbutton easyui-tooltip" title="刷新" data-options="iconCls:'easyui-icon-reload',plain:true"--%>
        <%--onclick="javascript:refresh();"></a>--%>
     <%--<a href="#" class="easyui-linkbutton easyui-tooltip" title="关闭" data-options="iconCls:'easyui-icon-cancel',plain:true"--%>

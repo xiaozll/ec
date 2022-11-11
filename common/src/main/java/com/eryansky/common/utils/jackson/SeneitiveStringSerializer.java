@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * Seneitive 类型枚举类序列化String value
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-02-12
  */
 public class SeneitiveStringSerializer extends JsonSerializer<String> implements ContextualSerializer {
@@ -24,7 +24,6 @@ public class SeneitiveStringSerializer extends JsonSerializer<String> implements
     private SensitiveType type;
 
     public SeneitiveStringSerializer() {
-        System.out.println(1);
     }
 
     public SeneitiveStringSerializer(final SensitiveType type) {

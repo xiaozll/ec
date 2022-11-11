@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * WebService返回结果基类,定义所有返回码.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-11 下午9:25:48 
  *
  */

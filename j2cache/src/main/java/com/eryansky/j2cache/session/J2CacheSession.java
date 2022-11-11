@@ -35,7 +35,7 @@ public class J2CacheSession implements HttpSession {
     private boolean newSession = true;
 
     private final ServletContext servletContext;
-    private CacheFacade cache;
+    private final CacheFacade cache;
 
     private volatile boolean invalid;
 
@@ -96,7 +96,7 @@ public class J2CacheSession implements HttpSession {
         try {
             checkValid();
         } catch (IllegalStateException e) {
-            logger.warn(e.getMessage());
+            logger.debug(e.getMessage());
             return null;
         }
         return session.get(name);
@@ -168,7 +168,7 @@ public class J2CacheSession implements HttpSession {
 
     @Deprecated
     public HttpSessionContext getSessionContext() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }

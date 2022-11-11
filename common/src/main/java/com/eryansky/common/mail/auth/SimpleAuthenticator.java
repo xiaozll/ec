@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -12,12 +12,12 @@ import javax.mail.PasswordAuthentication;
 /**
  * 简单的用户名/密码认证方式
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14
  */
 public class SimpleAuthenticator extends Authenticator {
-	private String user;
-	private String password;
+	private final String user;
+	private final String password;
 
 	public SimpleAuthenticator(String user, String password) {
 		this.user = user;

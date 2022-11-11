@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * 拦截写请求的插件。插件生效仅支持预编译的sql
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 @Intercepts({
@@ -39,7 +39,7 @@ public class SensitiveAndEncryptWriteInterceptor implements Interceptor {
     private static final String MAPPEDSTATEMENT = "delegate.mappedStatement";
     private static final String BOUND_SQL = "delegate.boundSql";
 
-    private IEncrypt IEncrypt;
+    private final IEncrypt IEncrypt;
 
     public SensitiveAndEncryptWriteInterceptor() throws NoSuchAlgorithmException {
         this.IEncrypt = new AesSupport();
@@ -139,7 +139,7 @@ public class SensitiveAndEncryptWriteInterceptor implements Interceptor {
 
         try {
             Map<String, Object> map = JsonUtils.parseToObjectMap(newValue.toString());
-            SensitiveJSONFieldKey[] keys = sensitiveJSONField.sensitivelist();
+            SensitiveJSONFieldKey[] keys = sensitiveJSONField.sensitiveList();
             for (SensitiveJSONFieldKey jsonFieldKey : keys) {
                 String key = jsonFieldKey.key();
                 SensitiveType sensitiveType = jsonFieldKey.type();

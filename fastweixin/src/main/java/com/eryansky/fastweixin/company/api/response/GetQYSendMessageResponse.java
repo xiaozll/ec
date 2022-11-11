@@ -7,7 +7,7 @@ import com.eryansky.fastweixin.api.response.BaseResponse;
 
 /**
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class GetQYSendMessageResponse extends BaseResponse {
@@ -18,6 +18,10 @@ public class GetQYSendMessageResponse extends BaseResponse {
     private String invalidParty;
     @JSONField(name = "invalidtag")
     private String invalidTag;
+    @JSONField(name = "msgid")
+    private String msgid;
+    @JSONField(name = "response_code")
+    private String responseCode;
 
     public String getInvalidUser() {
         return invalidUser;
@@ -43,4 +47,19 @@ public class GetQYSendMessageResponse extends BaseResponse {
         this.invalidTag = invalidTag;
     }
 
+    public String getMsgid() {
+        return msgid;
+    }
+
+    public void setMsgid(String msgid) {
+        this.msgid = msgid;
+    }
+
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        this.responseCode = responseCode;
+    }
 }

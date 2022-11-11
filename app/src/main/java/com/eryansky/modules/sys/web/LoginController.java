@@ -1,29 +1,32 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.sys.web;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.eryansky.common.exception.SystemException;
 import com.eryansky.common.model.*;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.orm._enum.StatusState;
+import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.servlet.ValidateCodeServlet;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.CookieUtils;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
-import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityConstants;
@@ -41,10 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +54,7 @@ import java.util.*;
 /**
  * 用户登录/注销等前端交互入口
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-05-02 19:50
  */
 @Controller
@@ -71,14 +71,18 @@ public class LoginController extends SimpleController {
      *
      * @return
      */
+    @PrepareOauth2(enable = false)
     @Mobile(value = MobileValue.ALL)
     @RequiresUser(required = false)
-    @RequestMapping(value = {"welcome", ""})
-    public ModelAndView welcome() {
+    @GetMapping(value = {"welcome", ""})
+    public ModelAndView welcome(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         modelAndView.addObject("isValidateCodeLogin", isValidateCodeLogin);
+        String randomSecurityToken = Identities.randomBase62(64);
+        modelAndView.addObject("securityToken", randomSecurityToken);
+        CacheUtils.put("securityToken:"+request.getSession().getId(),randomSecurityToken);
         return modelAndView;
     }
 
@@ -116,6 +120,13 @@ public class LoginController extends SimpleController {
      * 登录用户数校验
      */
     private void checkLoginLimit() {
+        String loginName = SpringMVCHolder.getRequest().getParameter("loginName");
+        if(StringUtils.isBlank(loginName)){
+            return;
+        }
+        if(null != AppConstants.getLimitUserWhiteList().stream().filter(v->StringUtils.simpleWildcardMatch(v,loginName.toUpperCase())).findAny().orElse(null)){
+            return;
+        }
         int maxSize = AppConstants.getSessionUserMaxSize();
         if (maxSize < 0) {//系统维护
             throw new SystemException("系统正在维护，请稍后再试！");
@@ -125,6 +136,20 @@ public class LoginController extends SimpleController {
                 throw new SystemException("系统当前登录用户数量过多，请稍后再试！");
             }
         }
+    }
+
+    /**
+     * 预登录信息获取 动态登录码
+     *
+     * @return
+     */
+    @RequiresUser(required = false)
+    @PostMapping(value = {"prepareLogin"})
+    @ResponseBody
+    public Result prepareLogin(HttpServletRequest request){
+        String randomSecurityToken = Identities.randomBase62(64);
+        CacheUtils.put("securityToken:"+request.getSession().getId(),randomSecurityToken);
+        return Result.successResult().setObj(randomSecurityToken);
     }
 
     /**
@@ -138,16 +163,20 @@ public class LoginController extends SimpleController {
      * @param request
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = {"login"})
+    @PostMapping(value = {"login"})
     public Result login(@RequestParam(required = true) String loginName,
                         @RequestParam(required = true) String password,
-                        @RequestParam(defaultValue = "false") Boolean encrypt,
+                        @RequestParam(defaultValue = "true") Boolean encrypt,
                         String validateCode,
                         String theme, HttpServletRequest request, Model uiModel) {
         //登录限制
         checkLoginLimit();
+
+        loginName = StringUtils.trim(loginName);
+        String securityToken = CacheUtils.get("securityToken:"+request.getSession().getId());
 
         Result result = null;
         String msg = null;
@@ -169,7 +198,7 @@ public class LoginController extends SimpleController {
         }
 
         // 获取用户信息
-        User user = userService.getUserByLP(loginName, _password);
+        User user = userService.getUserByLP(loginName, _password,securityToken);
         if (user == null) {
             msg = "用户名或密码不正确!";
         } else if (user.getStatus().equals(StatusState.LOCK.getValue())) {
@@ -177,7 +206,7 @@ public class LoginController extends SimpleController {
         }
         if (msg != null) {
             isValidateCodeLogin = isValidateCodeLogin(loginName, true, false);
-            if (isValidateCodeLogin) {
+            if (isValidateCodeLogin && UserAgentUtils.isComputer(request)){
                 msg += VALIDATECODE_TIP;
             }
             result = new Result(Result.ERROR, msg, isValidateCodeLogin);
@@ -194,6 +223,7 @@ public class LoginController extends SimpleController {
             //将用户信息放入session中
             SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
             userService.login(sessionInfo.getUserId());
+            CacheUtils.remove("securityToken:"+request.getSession().getId());
             logger.info("用户{}登录系统,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
 
             //设置调整URL 如果session中包含未被授权的URL 则跳转到该页面
@@ -223,7 +253,8 @@ public class LoginController extends SimpleController {
      * @param request
      * @return
      */
-    @RequestMapping(value = {"logout"}, method = RequestMethod.POST)
+    @PrepareOauth2(enable = false)
+    @PostMapping(value = {"logout"})
     @ResponseBody
     public Result postlogout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -244,7 +275,8 @@ public class LoginController extends SimpleController {
      * @param request
      * @return
      */
-    @RequestMapping(value = {"logout"}, method = RequestMethod.GET)
+    @PrepareOauth2(enable = false)
+    @GetMapping(value = {"logout"})
     public String logout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
@@ -266,9 +298,10 @@ public class LoginController extends SimpleController {
      * @param uiModel
      * @return
      */
+    @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @RequestMapping(value = {"autoLogin"})
+    @PostMapping(value = {"autoLogin"})
     public Result autoLogin(@RequestParam(required = true) String loginName,
                             @RequestParam(required = true) String token,
                             HttpServletRequest request, Model uiModel) {
@@ -278,19 +311,21 @@ public class LoginController extends SimpleController {
         Result result = null;
 
         boolean verify = false;
+        User user = UserUtils.getUserByLoginName(loginName);
+        if(null == user){
+            logger.warn("不存在账号[{}],", loginName);
+            return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
+        }
+
         try {
-            verify = JWTUtils.verify(token,loginName,loginName);
+            verify = JWTUtils.verify(token,loginName,user.getPassword());
         } catch (Exception e) {
-            logger.error("{},{},Token校验失败,{}", token,loginName,e.getMessage());
+            if(!(e instanceof TokenExpiredException)){
+                logger.error("{}-{},Token校验失败,{},{}", SpringMVCHolder.getIp(),loginName,  token, e.getMessage());
+            }
         }
         if(!verify){
             return Result.errorResult().setMsg("Token校验失败！");
-        }
-
-        User user = UserUtils.getUserByLoginName(loginName);
-        if(null == user){
-            logger.warn("不存在账号[{}],",new Object[]{loginName});
-            return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
         }
 
         SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
@@ -315,33 +350,34 @@ public class LoginController extends SimpleController {
      * @param loginName
      * @return
      */
-    @RequestMapping(value = {"toggleLogin"},method = RequestMethod.POST)
+    @PostMapping(value = {"toggleLogin"})
     @ResponseBody
     public Result toggleLogin(HttpServletRequest request,@RequestParam(value = "loginName") String loginName) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo == null) {
-            return Result.errorResult().setMsg("未登录");
+            return Result.errorResult().setMsg("未登录！");
         }
         if(!sessionInfo.getLoginNames().contains(loginName)){
-            return Result.errorResult().setMsg("未授权账号【"+loginName+"】");
+            return Result.errorResult().setMsg("未授权账号【"+loginName+"】！");
         }
 
         User user = UserUtils.getUserByLoginName(loginName);
         if(null == user){
-            return Result.errorResult().setMsg("账号不存在【"+loginName+"】");
+            return Result.errorResult().setMsg("账号不存在【"+loginName+"】！");
         }
 
-        SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout);
+        SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(),SecurityType.logout,false);
         SessionInfo newSessionInfo = SecurityUtils.putUserToSession(request,user);
         userService.login(newSessionInfo.getUserId());
-        logger.info("{}用户切换账号{},IP:{}.", new Object[]{sessionInfo.getId(),loginName, SpringMVCHolder.getIp()});
+
+        logger.info("{}，切换账号：{} -> {}，IP：{}.", sessionInfo.getId(),sessionInfo.getLoginName(),newSessionInfo.getLoginName(), SpringMVCHolder.getIp());
         Map<String,Object> data = Maps.newHashMap();
         data.put("sessionInfo",newSessionInfo);
         return Result.successResult().setObj(data);
     }
 
 
-    @RequestMapping(value = {"index"})
+    @GetMapping(value = {"index"})
     public String index(String theme) {
         //根据客户端指定的参数跳转至 不同的主题 如果未指定 默认:index
         if (StringUtils.isNotBlank(theme) && (theme.equals("app") || theme.equals("index"))) {
@@ -356,7 +392,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @RequestMapping(value = {"navTree"})
+    @PostMapping(value = {"navTree"})
     public List<TreeNode> navTree(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -372,7 +408,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @RequestMapping(value = {"navTree2"})
+    @PostMapping(value = {"navTree2"})
     public List<SiderbarMenu> navTree2(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<SiderbarMenu> treeNodes = Lists.newArrayList();
@@ -419,7 +455,7 @@ public class LoginController extends SimpleController {
                 }
             }
 
-            if (StringUtils.isNotBlank(treeNode.getpId())) {
+            if (null != treeNode && StringUtils.isNotBlank(treeNode.getpId())) {
                 SiderbarMenu pTreeNode = getParentSiderbarMenu(treeNode.getpId(), tempTreeNodes);
                 if (pTreeNode != null) {
                     for (SiderbarMenu treeNode2 : tempTreeNodes) {
@@ -501,8 +537,7 @@ public class LoginController extends SimpleController {
      *
      * @throws Exception
      */
-    @RequiresUser(required = true)
-    @RequestMapping(value = {"onlineDatagrid"})
+    @PostMapping(value = {"onlineDatagrid"})
     @ResponseBody
     public Datagrid<SessionInfo> onlineDatagrid(HttpServletRequest request) throws Exception {
         Page<SessionInfo> page = new Page<>(request);
@@ -516,7 +551,7 @@ public class LoginController extends SimpleController {
     /**
      * 桌面版 开始菜单
      */
-    @RequestMapping(value = {"startMenu"})
+    @PostMapping(value = {"startMenu"})
     @ResponseBody
     public List<Menu> startMenu() {
         List<Menu> menus = null;
@@ -529,7 +564,7 @@ public class LoginController extends SimpleController {
     /**
      * 桌面版 桌面应用程序列表
      */
-    @RequestMapping(value = {"apps"})
+    @PostMapping(value = {"apps"})
     @ResponseBody
     public List<Menu> apps() {
         List<Menu> menus = Lists.newArrayList();
@@ -597,7 +632,7 @@ public class LoginController extends SimpleController {
      * 异步方式返回session信息
      * @reload 刷新Session信息
      */
-    @RequestMapping(value = {"sessionInfo"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"sessionInfo"})
     @ResponseBody
     public Result sessionInfo(Boolean reload) {
         Result result = Result.successResult();

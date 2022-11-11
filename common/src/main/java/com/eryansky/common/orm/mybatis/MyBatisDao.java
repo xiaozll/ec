@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 标识MyBatis的DAO,方便{@link org.mybatis.spring.mapper.MapperScannerConfigurer}的扫描。
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2013-8-28
  */
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,7 +5,7 @@ import com.eryansky.fastweixin.api.response.BaseResponse;
 /**
  *  Response -- 创建新标签
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class CreateTagResponse extends BaseResponse {

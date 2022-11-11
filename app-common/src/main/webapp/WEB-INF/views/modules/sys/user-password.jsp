@@ -15,7 +15,7 @@
 				<c:when test="${isCurrentUserAdmin}">
 				   data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>
 				</c:when>
-				<c:when test="${isSecurityOn}">
+				<c:when test="${isSecurityOn || !isCurrentUserAdmin}">
 					data-options="required:true,missingMessage:'请输入新密码.',validType:['safepass_yc','minLength[1]']"/>
 				</c:when>
 				<c:otherwise>

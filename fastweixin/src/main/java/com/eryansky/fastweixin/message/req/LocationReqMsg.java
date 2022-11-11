@@ -2,10 +2,10 @@ package com.eryansky.fastweixin.message.req;
 
 public final class LocationReqMsg extends BaseReqMsg {
 
-    private double locationX;
-    private double locationY;
-    private int    scale;
-    private String label;
+    private final double locationX;
+    private final double locationY;
+    private final int    scale;
+    private final String label;
 
     public LocationReqMsg(double locationX, double locationY, int scale,
                           String label) {

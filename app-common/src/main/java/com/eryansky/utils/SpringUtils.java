@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 
 /**
  * Spring工具类
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-04-13
  */
 public class SpringUtils {
@@ -55,7 +55,8 @@ public class SpringUtils {
             } catch (Exception e) {
             }
 
-            return parser.parseExpression(str).getValue(context, String.class);
+            String value =  parser.parseExpression(str).getValue(context, String.class);
+            return value;
         } catch (Exception e) {
 //            logger.error(e.getMessage(),e);
         }

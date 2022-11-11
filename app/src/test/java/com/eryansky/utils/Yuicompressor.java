@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2014 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,7 +10,7 @@ import java.io.*;
 
 /**
  * 静态文件css/js文件压缩
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-14 
  */
 public class Yuicompressor {
@@ -23,10 +23,11 @@ public class Yuicompressor {
 //            "app/src/main/webapp/static/css",
 //            "app-common/src/main/resources/static/static/js/common",
             "app-common/src/main/resources/static/static/js/easyui/extend",
-            "app-common/src/main/resources/static/static/js/jquery-validation/1.11.1/jquery.validate.method.js",
+            "app-common/src/main/resources/static/static/js/jquery-validation-1.19.3/dist/extend",
             "app-common/src/main/resources/static/static/mobile/ImageUploader/js/",
 //            "app-common/src/main/resources/static/static/js/adminlte/dist/",
-            "app-common/src/main/resources/static/static/js/jquery/jquery-extend.js"
+            "app-common/src/main/resources/static/static/js/jquery/jquery-extend.js",
+            "app-common/src/main/resources/static/static/js/adminlte/dist"
     };
 
     //    java -jar yuicompressor-2.4.7.jar --type js --charset utf-8 ../src/main/webapp/static/app/modules/disk/disk.js -o ../src/main/webapp/static/app/modules/disk/disk-min.js
@@ -81,10 +82,7 @@ public class Yuicompressor {
                 return true;
             else {
                 String name = pathname.getName();
-                if ((name.endsWith(".js") && !name.endsWith(".min.js")) || (name.endsWith(".css") && !name.endsWith(".min.css")))
-                    return true;
-                else
-                    return false;
+                return (name.endsWith(".js") && !name.endsWith(".min.js")) || (name.endsWith(".css") && !name.endsWith(".min.css"));
             }
         }
     }
@@ -123,13 +121,11 @@ public class Yuicompressor {
                 e.printStackTrace();
 
             }
-
         } catch (IOException e) {
             System.out.println("error Message:"+e.getMessage());
             e.printStackTrace();
-        } finally{
-            return errorMSG;
         }
+        return errorMSG;
 
     }
 

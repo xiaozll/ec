@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *          Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -8,7 +8,7 @@ package com.eryansky.core.security;
 /**
  * 操作系统类：
  * 获取System.getProperty("os.name")对应的操作系统
- * Author: 尔演&Eryan eryanwcp@gmail.com
+ * Author: eryan
  * Date: 2014-02-19 10:33
  */
 public class OSinfo {

@@ -56,7 +56,7 @@
                     <%--姓名或登录名：<input type="text" id="loginNameOrName" name="loginNameOrName" class="easyui-validatebox textbox eu-input" placeholder="姓名或登录名..."--%>
                           <%--onkeydown="if(event.keyCode==13)search()"  maxLength="25" style="width: 160px"/>--%>
                     <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>
-                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="javascript:$contactGroup_search_form.form('reset');">重置</a>
+                    <a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-no',width:100,height:28" onclick="$contactGroup_search_form.form('reset');">重置</a>
                 </form>
             </div>
         </div>

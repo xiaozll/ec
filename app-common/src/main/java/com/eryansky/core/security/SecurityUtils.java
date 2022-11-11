@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -18,15 +18,11 @@ import com.eryansky.core.security._enum.DeviceType;
 import com.eryansky.core.security.jwt.JWTUtils;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys.mapper.*;
-import com.eryansky.modules.sys.service.PostService;
-import com.eryansky.modules.sys.service.ResourceService;
-import com.eryansky.modules.sys.service.RoleService;
-import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
 import com.google.common.net.InetAddresses;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,12 +37,14 @@ import java.util.stream.Collectors;
 /**
  * 系统使用的特殊工具类 简化代码编写.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-10-18 上午8:25:36
  */
 public class SecurityUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtils.class);
+
+
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
@@ -54,6 +52,7 @@ public class SecurityUtils {
     public static final class Static {
         private static ResourceService resourceService = SpringContextHolder.getBean(ResourceService.class);
         private static UserService userService = SpringContextHolder.getBean(UserService.class);
+        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
         private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
         private static PostService postService = SpringContextHolder.getBean(PostService.class);
         private static ApplicationSessionContext applicationSessionContext = ApplicationSessionContext.getInstance();
@@ -86,7 +85,7 @@ public class SecurityUtils {
                 }
             }
             if (userId == null) {
-                logger.warn("用户不存在.");
+                logger.debug("用户不存在.");
                 return false;
             }
 
@@ -133,7 +132,7 @@ public class SecurityUtils {
                 }
             }
             if (userId == null) {
-                logger.warn("用户不存在.");
+                logger.debug("用户不存在.");
                 return false;
             }
 
@@ -241,6 +240,16 @@ public class SecurityUtils {
     }
 
     /**
+     * 判断用户是否授权所有数据
+     * @param userId
+     * @param dataScope {@link DataScope}
+     * @return
+     */
+    public static boolean isPermittedDataScope(String userId,String dataScope) {
+        return isCurrentUserAdmin() || Integer.parseInt(dataScope) <= (Integer.parseInt(getUserMaxRoleDataScope(userId)));
+    }
+
+    /**
      * 获取用户最大的数据权限范围
      * @param userId
      * @return
@@ -263,6 +272,66 @@ public class SecurityUtils {
             }
         }
         return String.valueOf(dataScopeInteger);
+    }
+
+
+    /**
+     * 是否有某机构权限
+     * @param organId 机构ID
+     * @return
+     */
+    public static boolean isPermittedOrganDataScope(String organId) {
+        return isPermittedOrganDataScope(getCurrentUserId(),organId);
+    }
+
+    /**
+     * 是否有某机构权限
+     * @param userId 用户ID
+     * @param organId 机构ID
+     * @return
+     */
+    public static boolean isPermittedOrganDataScope(String userId,String organId) {
+        if(StringUtils.isBlank(userId) || StringUtils.isBlank(organId)){
+            return false;
+        }
+        User user = UserUtils.getUser(userId);
+        if(null == user){
+            return false;
+        }
+        List<Role> roles = Static.roleService.findRolesByUserId(userId);
+        for (Role r : roles) {
+            if (StringUtils.isBlank(r.getDataScope())) {
+                continue;
+            }
+            if (DataScope.ALL.getValue().equals(r.getDataScope())) {
+                return true;
+            }else if (DataScope.COMPANY_AND_CHILD.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.organService.findOwnerAndChildsIds(user.getCompanyId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.COMPANY.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.organService.findOwnerAndChildIds(user.getCompanyId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.OFFICE_AND_CHILD.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.organService.findOwnerAndChildIds(user.getDefaultOrganId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.OFFICE.getValue().equals(r.getDataScope())) {
+                if(organId.equals(user.getDefaultOrganId())){
+                    return true;
+                }
+            }else if (DataScope.CUSTOM.getValue().equals(r.getDataScope())) {
+                List<String> organIds = Static.roleService.findRoleOrganIds(r.getId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -372,7 +441,7 @@ public class SecurityUtils {
         SessionInfo sessionInfo = userToSessionInfo(user);
         sessionInfo.setIp(IpUtils.getIpAddr0(request));
         sessionInfo.setUserAgent(UserAgentUtils.getHTTPUserAgent(request));
-        sessionInfo.setDeviceType(UserAgentUtils.getDeviceType(request).toString());
+
         sessionInfo.setBrowserType(UserAgentUtils.getBrowser(request).getName());
         String deviceCode = WebUtils.getParameter(request, "deviceCode");
         sessionInfo.setDeviceCode(deviceCode);
@@ -383,10 +452,14 @@ public class SecurityUtils {
         sessionInfo.setLatitude(StringUtils.isBlank(latitude_s) ? null : BigDecimal.valueOf(Double.valueOf(latitude_s)));
         sessionInfo.setAccuracy(StringUtils.isBlank(accuracy_s) ? null : BigDecimal.valueOf(Double.valueOf(accuracy_s)));
         String appVersion_s = WebUtils.getParameter(request, "appVersion");
+        String deviceCode_s = WebUtils.getParameter(request, "deviceCode");
+        String platform_s = WebUtils.getParameter(request, "platform");
         sessionInfo.setAppVersion(appVersion_s);
+        sessionInfo.setDeviceCode(deviceCode_s);
+        sessionInfo.setDeviceType(StringUtils.isNotBlank(platform_s) ? platform_s:UserAgentUtils.getDeviceType(request).toString());
         sessionInfo.setSessionId(sessionId);
-        sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), sessionInfo.getLoginName()));
-        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), sessionInfo.getLoginName(), 7 * 24 * 60 * 60 * 1000));
+        sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword()));
+        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword(), 7 * 24 * 60 * 60 * 1000L));
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
 //        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号
@@ -406,16 +479,16 @@ public class SecurityUtils {
         boolean likeIOS = AppUtils.likeIOS(userAgent);
         boolean likeAndroid = AppUtils.likeAndroid(userAgent);
         if (likeIOS) {
-            sessionInfo.setSysTemDeviceType(DeviceType.iPhone.getDescription());
+            sessionInfo.setSystemDeviceType(DeviceType.iPhone.getDescription());
         } else if (likeAndroid) {
-            sessionInfo.setSysTemDeviceType(DeviceType.Android.getDescription());
+            sessionInfo.setSystemDeviceType(DeviceType.Android.getDescription());
         } else {
-            sessionInfo.setSysTemDeviceType(DeviceType.PC.getDescription());
+            sessionInfo.setSystemDeviceType(DeviceType.PC.getDescription());
         }
 
         initPermission(sessionInfo);
 
-        Static.applicationSessionContext.addSession(sessionInfo);
+        refreshSessionInfo(sessionInfo);
 //        Static.applicationSessionContext.addServletSession(sessionInfo.getSessionId(),session);
         request.getSession().setAttribute("loginUser", sessionInfo.getName() + "[" + sessionInfo.getLoginName() + "]");
         return sessionInfo;
@@ -436,11 +509,11 @@ public class SecurityUtils {
         sessionInfo.setSessionId(sessionId);
         sessionInfo.setId(sessionId);
 
-        sessionInfo.setSysTemDeviceType(DeviceType.PC.getDescription());
+        sessionInfo.setSystemDeviceType(DeviceType.PC.getDescription());
 
         initPermission(sessionInfo);
 
-        Static.applicationSessionContext.addSession(sessionInfo);
+        refreshSessionInfo(sessionInfo);
 //        HttpSession session = Static.applicationSessionContext.getServletSession(sessionId);
 //        if(null != session){
 //            Static.applicationSessionContext.addServletSession(sessionInfo.getSessionId(),session);
@@ -511,7 +584,9 @@ public class SecurityUtils {
      * @return
      */
     public static void refreshSessionInfo(SessionInfo sessionInfo) {
+        sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
         Static.applicationSessionContext.addSession(sessionInfo);
+        //syncExtendSession(sessionInfo);
     }
 
     /**
@@ -529,6 +604,7 @@ public class SecurityUtils {
             if (null == request) {
                 return null;
             }
+
             HttpSession session = null;
             try {
                 session = request.getSession();
@@ -538,12 +614,9 @@ public class SecurityUtils {
             if (null == session) {
                 return null;
             }
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session), session.getId());
+            sessionInfo = getSessionInfo(getFixedSessionId(getNoSuffixSessionId(session)));
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
-                if(StringUtils.isBlank(token)){
-                    token = request.getParameter("Authorization");
-                }
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
                 }
@@ -552,8 +625,8 @@ public class SecurityUtils {
             logger.error(e.getMessage());
         } finally {
             if (null != sessionInfo) {
-                sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
-                Static.applicationSessionContext.addSession(sessionInfo);
+                refreshSessionInfo(sessionInfo);
+
             }
         }
 
@@ -573,12 +646,9 @@ public class SecurityUtils {
             if (null == session) {
                 return null;
             }
-            sessionInfo = getSessionInfo(SecurityUtils.getNoSuffixSessionId(session), session.getId());
+            sessionInfo = getSessionInfo(getFixedSessionId(getNoSuffixSessionId(session)));
             if (sessionInfo == null) {
-                String token = SpringMVCHolder.getRequest().getHeader("Authorization");
-                if(StringUtils.isBlank(token)){
-                    token = SpringMVCHolder.getRequest().getParameter("Authorization");
-                }
+                String token = request.getHeader("Authorization");
                 if (StringUtils.isNotBlank(token)) {
                     sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
                 }
@@ -587,8 +657,7 @@ public class SecurityUtils {
             logger.error(e.getMessage());
         } finally {
             if (null != sessionInfo) {
-                sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
-                Static.applicationSessionContext.addSession(sessionInfo);
+                refreshSessionInfo(sessionInfo);
             }
         }
         return sessionInfo;
@@ -838,25 +907,8 @@ public class SecurityUtils {
      * @return
      */
     public static SessionInfo getSessionInfo(String id) {
-        return getSessionInfo(id, null);
+        return Static.applicationSessionContext.getSession(id);
     }
-
-    /**
-     * 根据SessionId查找对应的SessionInfo信息
-     * @param id
-     * @param sessionId
-     * @return
-     */
-    public static SessionInfo getSessionInfo(String id, String sessionId) {
-        SessionInfo sessionInfo = Static.applicationSessionContext.getSession(id);
-        //更新真实的SessionID
-        if (sessionInfo != null && sessionId != null && !sessionInfo.getSessionId().equals(sessionId)) {
-            sessionInfo.setSessionId(sessionId);
-            Static.applicationSessionContext.addSession(sessionInfo);
-        }
-        return sessionInfo;
-    }
-
 
     public static boolean isMobileLogin() {
         SessionInfo sessionInfo = getCurrentSessionInfo();
@@ -882,5 +934,41 @@ public class SecurityUtils {
         return list.parallelStream().map(SessionInfo::getHost).filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
+    /**
+     * APP与Webview session同步兼容 添加关联已有sessionId
+     * @param sessionId
+     * @return
+     */
+    public static void addExtendSession(String sessionId,String sessionInfoId) {
+       Static.applicationSessionContext.addExtendSession(sessionId,sessionInfoId);
+    }
+
+    /**
+     * APP与Webview session同步兼容 查找关联已有sessionId
+     * @param sessionId
+     * @return
+     */
+    public static String getExtendSessionId(String sessionId) {
+        return Static.applicationSessionContext.getExtendSession(sessionId);
+    }
+
+    /**
+     * APP与Webview session同步兼容
+     * @param sessionId
+     * @return
+     */
+    public static String getFixedSessionId(String sessionId) {
+        String sessionInfoId = getExtendSessionId(sessionId);
+        return null != sessionInfoId ? sessionInfoId:sessionId;
+    }
+
+    /**
+     * APP与Webview 同步刷新关联信息
+     * @param sessionInfo
+     */
+    public static void syncExtendSession(SessionInfo sessionInfo) {
+        Collection<String> sessionInfoIds = Static.applicationSessionContext.findSessionExtendKes();
+        sessionInfoIds.parallelStream().filter(v -> sessionInfo.getId().equals(getExtendSessionId(v))).forEach(v -> addExtendSession(v, sessionInfo.getSessionId()));
+    }
 }
 

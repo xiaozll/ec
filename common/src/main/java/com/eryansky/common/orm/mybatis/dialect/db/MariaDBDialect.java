@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2014 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -10,7 +10,7 @@ import com.eryansky.common.orm.mybatis.dialect.Dialect;
 /**
  * Maria方言的实现
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2018-12-28
  */
 public class MariaDBDialect implements Dialect {

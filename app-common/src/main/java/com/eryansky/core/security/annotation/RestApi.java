@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); 
  */
@@ -16,7 +16,7 @@ import static com.eryansky.core.security._enum.Logical.AND;
 
 /**
  * 需要的REST权限
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2020-09-09
  */
 @Target({ElementType.TYPE, ElementType.METHOD})
@@ -29,7 +29,7 @@ public @interface RestApi {
      */
     boolean required() default true;
 
-    String[] value() default "";
+    String[] value() default {};
 
     Logical logical() default AND;
 

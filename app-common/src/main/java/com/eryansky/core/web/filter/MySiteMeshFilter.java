@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * 以com.opensymphony.sitemesh.webapp.SiteMeshFilter为原型改造而来
  * <br/>支持黑名单、白名单 {@link BaseFilter}
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-07 
  */
 public class MySiteMeshFilter extends BaseFilter {

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 /**
  * 泛型美剧类型数据处理
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2020-02-12
  */
 public class GenericEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends BaseTypeHandler<T> {
@@ -39,19 +39,19 @@ public class GenericEnumTypeHandler<T extends Enum<T> & IGenericEnum<T>> extends
     @Override
     public T getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String value = rs.getString(columnName);
-        return (T) GenericEnumUtils.getByValue(type,value);
+        return GenericEnumUtils.getByValue(type,value);
     }
 
     @Override
     public T getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String value = rs.getString(columnIndex);
-        return (T) GenericEnumUtils.getByValue(type,value);
+        return GenericEnumUtils.getByValue(type,value);
     }
 
     @Override
     public T getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String value = cs.getString(columnIndex);
-        return (T) GenericEnumUtils.getByValue(type,value);
+        return GenericEnumUtils.getByValue(type,value);
     }
 
 

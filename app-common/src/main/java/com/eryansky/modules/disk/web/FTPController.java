@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-06-26
  */
 @Controller
@@ -24,13 +24,12 @@ public class FTPController extends SimpleController {
     @Autowired
     private IFileManager iFileManager;
 
-
     /**
      * 启动FTP客户端管理工具
      *
      * @return
      */
-    @RequestMapping(value = {"init"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"init"})
     @ResponseBody
     public Result init(Boolean reconnect, Long connectTime) {
         if (iFileManager instanceof FTPManager) {

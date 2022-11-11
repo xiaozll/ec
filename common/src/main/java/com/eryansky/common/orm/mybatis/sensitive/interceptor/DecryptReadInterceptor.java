@@ -25,7 +25,7 @@ import java.util.*;
  * SQL样例：
  * 1. UPDATE tbl SET x=?, y =
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 @Intercepts({
@@ -35,7 +35,7 @@ public class DecryptReadInterceptor implements Interceptor {
 
     private static final String MAPPED_STATEMENT = "mappedStatement";
 
-    private IEncrypt IEncrypt;
+    private final IEncrypt IEncrypt;
 
     public DecryptReadInterceptor() throws NoSuchAlgorithmException {
         this.IEncrypt = new AesSupport();

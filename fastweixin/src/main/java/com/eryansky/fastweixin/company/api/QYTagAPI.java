@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  *  标签管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYTagAPI extends QYBaseAPI{

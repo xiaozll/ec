@@ -3,7 +3,7 @@ package com.eryansky.fastweixin.api.enums;
 /**
  * 二维码接口状态枚举
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public enum QrcodeType {

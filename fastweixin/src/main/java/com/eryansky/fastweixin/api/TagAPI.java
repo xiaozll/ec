@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * 标签相关API
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-05-14
  */
 public class TagAPI extends BaseAPI {

@@ -212,6 +212,35 @@
         #{remark}
         )
     </insert>
+    <insert id="insertBatch">
+        INSERT INTO t_notice_mail_contact(
+        id,
+        status,
+        version,
+        create_user,
+        create_time,
+        update_user,
+        update_time,
+        EMAIL,
+        NAME,
+        MOBILE,
+        USER_ID,
+        REMARK
+        ) VALUES <foreach collection="list" item="item" separator=",">(
+        #{item.id},
+        #{item.status},
+        1,
+        #{item.createUser},
+        #{item.createTime},
+        #{item.updateUser},
+        #{item.updateTime},
+        #{item.email},
+        #{item.name},
+        #{item.mobile},
+        #{item.userId},
+        #{item.remark}
+        )</foreach>
+    </insert>
 
     <update id="update">
         UPDATE t_notice_mail_contact SET

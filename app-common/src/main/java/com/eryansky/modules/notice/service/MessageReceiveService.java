@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 @Service
@@ -256,7 +256,7 @@ public class MessageReceiveService extends CrudService<MessageReceiveDao, Messag
      * @return
      */
     public Page<MessageReceive> findPageByMessageId(Page<MessageReceive> page, String messageId) {
-        return findPageByMessageId(page, messageId);
+        return findPageByMessageId(page, messageId,null,null);
     }
 
     /**

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户代理字符串识别工具
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2016-05-03
  */
 public class UserAgentUtils {
@@ -99,7 +99,7 @@ public class UserAgentUtils {
 	 * @return
 	 */
 	public static boolean isMQQBrowser(HttpServletRequest request) {
-		return getHTTPUserAgent(request).indexOf("MQQBrowser") > 0 ? true : false;
+		return getHTTPUserAgent(request).indexOf("MQQBrowser") > 0;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class UserAgentUtils {
 	 * @return
 	 */
 	public static boolean isIE(HttpServletRequest request) {
-		return (getHTTPUserAgent(request).toLowerCase().indexOf("msie") > 0 || getHTTPUserAgent(request).toLowerCase().indexOf("rv:11.0") > 0) ? true : false;
+		return getHTTPUserAgent(request).toLowerCase().indexOf("msie") > 0 || getHTTPUserAgent(request).toLowerCase().indexOf("rv:11.0") > 0;
 	}
 	
 }

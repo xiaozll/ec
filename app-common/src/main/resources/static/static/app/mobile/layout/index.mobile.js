@@ -35,7 +35,7 @@ var message = function () {
     $(".af-badge").hide();
     $.ajax({
         url: appURL + '/a/portal/mymessages',
-        type: 'get',
+        type: 'post',
         dataType: 'json',
         success: function (data) {
             if (data.code === 1) {

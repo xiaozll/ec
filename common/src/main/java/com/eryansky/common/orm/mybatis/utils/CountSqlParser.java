@@ -21,13 +21,13 @@ public class CountSqlParser {
     private static final Alias TABLE_ALIAS;
 
     //<editor-fold desc="聚合函数">
-    private final Set<String> skipFunctions = Collections.synchronizedSet(new HashSet<String>());
-    private final Set<String> falseFunctions = Collections.synchronizedSet(new HashSet<String>());
+    private final Set<String> skipFunctions = Collections.synchronizedSet(new HashSet<>());
+    private final Set<String> falseFunctions = Collections.synchronizedSet(new HashSet<>());
 
     /**
      * 聚合函数，以下列函数开头的都认为是聚合函数
      */
-    private static final Set<String> AGGREGATE_FUNCTIONS = new HashSet<String>(Arrays.asList(
+    private static final Set<String> AGGREGATE_FUNCTIONS = new HashSet<>(Arrays.asList(
             ("APPROX_COUNT_DISTINCT," +
             "ARRAY_AGG," +
             "AVG," +
@@ -149,7 +149,7 @@ public class CountSqlParser {
         //解析SQL
         Statement stmt = null;
         //特殊sql不需要去掉order by时，使用注释前缀
-        if(sql.indexOf(KEEP_ORDERBY) >= 0){
+        if(sql.contains(KEEP_ORDERBY)){
             return getSimpleCountSql(sql, name);
         }
         try {
@@ -209,7 +209,7 @@ public class CountSqlParser {
     public void sqlToCount(Select select, String name) {
         SelectBody selectBody = select.getSelectBody();
         // 是否能简化count查询
-        List<SelectItem> COUNT_ITEM = new ArrayList<SelectItem>();
+        List<SelectItem> COUNT_ITEM = new ArrayList<>();
         COUNT_ITEM.add(new SelectExpressionItem(new Column("count(" + name +")")));
         if (selectBody instanceof PlainSelect && isSimpleCount((PlainSelect) selectBody)) {
             ((PlainSelect) selectBody).setSelectItems(COUNT_ITEM);
@@ -281,8 +281,8 @@ public class CountSqlParser {
             processPlainSelect((PlainSelect) selectBody);
         } else if (selectBody instanceof WithItem) {
             WithItem withItem = (WithItem) selectBody;
-            if (withItem.getSelectBody() != null) {
-                processSelectBody(withItem.getSelectBody());
+            if (null != withItem.getSubSelect() && withItem.getSubSelect().getSelectBody() != null) {
+                processSelectBody(withItem.getSubSelect().getSelectBody());
             }
         } else {
             SetOperationList operationList = (SetOperationList) selectBody;
@@ -328,7 +328,7 @@ public class CountSqlParser {
     public void processWithItemsList(List<WithItem> withItemsList) {
         if (withItemsList != null && withItemsList.size() > 0) {
             for (WithItem item : withItemsList) {
-                processSelectBody(item.getSelectBody());
+                processSelectBody(item.getSubSelect().getSelectBody());
             }
         }
     }

@@ -4,7 +4,7 @@ package com.eryansky.j2cache.lock;
  * 分布式并发锁<br>
  * 对给定的可以
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-12-24
  */
 public interface Lock {

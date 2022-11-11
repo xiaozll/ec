@@ -44,7 +44,7 @@ public class RedisClient implements Closeable, AutoCloseable {
     private final static int SO_TIMEOUT = 5000;
     private final static int MAX_ATTEMPTS = 3;
 
-    private ThreadLocal<BinaryJedisCommands> clients;
+    private final ThreadLocal<BinaryJedisCommands> clients;
 
     private JedisCluster cluster;
     private JedisPool single;
@@ -121,7 +121,7 @@ public class RedisClient implements Closeable, AutoCloseable {
      */
     private RedisClient(String mode, String hosts, String password, String cluster_name, int database, JedisPoolConfig poolConfig, boolean ssl) {
         password = (password != null && password.trim().length() > 0)? password.trim(): null;
-        this.clients = new ThreadLocal<BinaryJedisCommands>();
+        this.clients = new ThreadLocal<>();
         switch(mode){
             case "sentinel":
                 Set<String> nodes = new HashSet<String>();
@@ -187,12 +187,12 @@ public class RedisClient implements Closeable, AutoCloseable {
      * 释放当前 Redis 连接
      */
     public void release() {
-        BinaryJedisCommands client = clients.get();
+        Closeable client = (Closeable) clients.get();
         if(client != null) {
             //JedisCluster 会自动释放连接
-            if(client instanceof Closeable && !(client instanceof JedisCluster)) {
+            if(!(client instanceof JedisCluster)) {
                 try {
-                    ((Closeable) client).close();
+                    client.close();
                 } catch(IOException e) {
                     log.error("Failed to release jedis connection.", e);
                 }

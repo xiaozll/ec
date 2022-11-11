@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  * 店铺编号脱敏处理类
  * 360121121653 脱敏后: 3601****1653
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 public class ShopCodeSensitiveHandler implements SensitiveTypeHandler {

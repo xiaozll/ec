@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -18,12 +18,13 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.dao.LogDao;
 import com.eryansky.modules.sys.mapper.Log;
 import com.eryansky.utils.AppConstants;
+import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-09-26
  */
 @Service
@@ -53,8 +54,8 @@ public class LogService extends CrudService<LogDao, Log> {
      * @param endTime   结束时间
      * @return
      */
-    public Page<Log> findQueryPage(Page<Log> page, String type, String query, String userInfo, Date startTime, Date endTime) {
-        return findQueryPage(page, type, query, userInfo, startTime, endTime);
+    public Page<Log> findQueryPage(Page<Log> page,String type, String userInfo, String query, Date startTime, Date endTime) {
+        return findQueryPage(page, type,userInfo, query, startTime, endTime,true);
     }
 
     /**
@@ -76,9 +77,12 @@ public class LogService extends CrudService<LogDao, Log> {
         parameter.put("query", query);
         parameter.put("startTime", null != startTime ? DateUtils.formatDate(startTime) : null);
         parameter.put("endTime", null != endTime ? DateUtils.formatDate(endTime) : null);
+        Map<String, String> sqlMap = Maps.newHashMap();
+        sqlMap.put("dsf", "");
         if (isDataScopeFilter) {
-            parameter.put("dsf", dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
+            sqlMap.put("dsf", dataScopeFilter(SecurityUtils.getCurrentUser(), "o", "u"));
         }
+        parameter.put("sqlMap", sqlMap);
         page.setResult(dao.findQueryList(parameter));
         return page;
     }

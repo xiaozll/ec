@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -178,7 +178,7 @@ public abstract class AbstractBaseEntity<T, PK extends Serializable> implements 
             return false;
         }
         AbstractBaseEntity that = (AbstractBaseEntity) obj;
-        return null == this.getId() ? false : this.getId().equals(that.getId());
+        return null != this.getId() && this.getId().equals(that.getId());
     }
 
     @Override

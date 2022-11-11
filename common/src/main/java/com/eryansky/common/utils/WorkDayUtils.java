@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * 工作日
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2016-05-03
  */
 public class WorkDayUtils {
@@ -108,7 +108,7 @@ public class WorkDayUtils {
 	 * @return
 	 */
 	public String getChineseWeek(Calendar date) {
-		final String dayNames[] = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+		final String[] dayNames = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 		int dayOfWeek = date.get(Calendar.DAY_OF_WEEK); 
 		// System.out.println(dayNames[dayOfWeek - 1]);
 		return dayNames[dayOfWeek - 1];

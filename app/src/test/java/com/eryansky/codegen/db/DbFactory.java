@@ -6,7 +6,7 @@ import org.apache.commons.lang3.Validate;
 /**
  * 根据驱动获取数据库操作实例。
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 1.0
  * @date 2013-7-15 下午4:12:09
  */

@@ -40,13 +40,13 @@ class RedisClient implements Closeable, AutoCloseable {
     private final static int SO_TIMEOUT = 5000;
     private final static int MAX_ATTEMPTS = 3;
 
-    private ThreadLocal<BinaryJedisCommands> clients;
+    private final ThreadLocal<BinaryJedisCommands> clients;
 
     private JedisCluster cluster;
     private JedisPool single;
     private JedisSentinelPool sentinel;
     private ShardedJedisPool sharded;
-    private String redisPassword;
+    private final String redisPassword;
 
     /**
      * RedisClient 构造器

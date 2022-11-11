@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYVoiceMsg extends QYBaseMsg {
@@ -21,7 +21,7 @@ public class QYVoiceMsg extends QYBaseMsg {
         return this;
     }
 
-    public class Voice{
+    public static class Voice{
         @JSONField(name = "media_id")
         private String mediaId;
 

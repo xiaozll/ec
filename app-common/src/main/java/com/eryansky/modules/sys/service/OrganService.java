@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -35,11 +35,12 @@ import com.eryansky.modules.sys.dao.OrganDao;
 import org.springframework.util.Assert;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 机构表 service
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-05-08
  */
 @Service
@@ -57,9 +58,9 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     /**
      * 保存或修改.
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public Organ saveOrgan(Organ entity) {
-        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
+        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao});
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
         return entity;
@@ -70,17 +71,17 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      *
      * @param id 主键ID
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public String deleteById(final String id) {
         dao.delete(new Organ(id));
-        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
+        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao});
         return id;
     }
 
     /**
      * 自定义删除方法.
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public void deleteByIds(Collection<String> ids) {
         for (String id : ids) {
             deleteById(id);
@@ -90,10 +91,10 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     /**
      * 自定义删除方法.
      */
-    @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE}, allEntries = true)
+     @CacheEvict(value = {CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao}, allEntries = true)
     public void deleteOwnerAndChilds(String id) {
         dao.deleteOwnerAndChilds(new Organ(id));
-        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE});
+        logger.debug("清空缓存:{},{}", new Object[]{CacheConstants.ORGAN_USER_TREE_1_CACHE,CacheConstants.ORGAN_USER_TREE_2_CACHE,CacheConstants.CACHE_OrganDao});
     }
 
     /**
@@ -172,6 +173,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             return null;
         }
         Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_DELETE);
         parameter.put("id", id);
         parameter.put("code", code);
         return dao.getDeleteByIdOrCode(parameter);
@@ -442,19 +444,12 @@ public class OrganService extends TreeService<OrganDao, Organ> {
             }
 
         }
-
-        List<TreeNode> result = Lists.newArrayList();
-        keyIds = tempMap.keySet();
-        iteratorKey = keyIds.iterator();
-        while (iteratorKey.hasNext()) {
-            TreeNode treeNode = tempMap.get(iteratorKey.next());
-            if (cascade && Collections3.isEmpty(treeNode.getChildren())) {
-                treeNode.setState(TreeNode.STATE_OPEN);
+        return tempMap.entrySet().parallelStream().map(v-> {
+            if(cascade && Collections3.isEmpty(v.getValue().getChildren())){
+                v.getValue().setState(TreeNode.STATE_OPEN);
             }
-            result.add(treeNode);
-
-        }
-        return result;
+            return v.getValue();
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -555,14 +550,7 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public TreeNode getParentTreeNode(String parentId, Collection<TreeNode> treeNodes) {
-        TreeNode t = null;
-        for (TreeNode treeNode : treeNodes) {
-            if (parentId.equals(treeNode.getId())) {
-                t = treeNode;
-                break;
-            }
-        }
-        return t;
+        return treeNodes.parallelStream().filter(treeNode-> parentId.equals(treeNode.getId())).findFirst().orElse(null);
     }
 
     /**
@@ -573,15 +561,10 @@ public class OrganService extends TreeService<OrganDao, Organ> {
      * @return
      */
     public TreeNode getParentTreeNode(String parentId, String type, Collection<TreeNode> treeNodes) {
-        TreeNode t = null;
-        for (TreeNode treeNode : treeNodes) {
+        return treeNodes.parallelStream().filter(treeNode->{
             String _type = (String) treeNode.getAttributes().get("nType");
-            if (parentId.equals(treeNode.getId()) && _type != null && _type.equals(type)) {
-                t = treeNode;
-                break;
-            }
-        }
-        return t;
+            return parentId.equals(treeNode.getId()) && _type != null && _type.equals(type);
+        }).findFirst().orElse(null);
     }
 
     /**
@@ -1033,6 +1016,33 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         return findOwnerAndChildsIds(id, types);
     }
 
+
+    /**
+     * 查询本机以及下级机构IDS
+     *
+     * @param id    机构ID
+     * @return
+     */
+    public List<String> findOwnerAndChildIds(String id) {
+        return findOwnerAndChildIds(id,null);
+    }
+
+    /**
+     * 查询本机以及下级机构IDS
+     *
+     * @param id    机构ID
+     * @param types 机构类型
+     * @return
+     */
+    public List<String> findOwnerAndChildIds(String id, Collection<String> types) {
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("id", id);
+        parameter.put("types", types);
+        return dao.findOwnerAndChildIds(parameter);
+    }
+
     /**
      * 快速查找方法
      *
@@ -1112,6 +1122,20 @@ public class OrganService extends TreeService<OrganDao, Organ> {
     }
 
     /**
+     * 根据用户账号查找
+     *
+     * @param loginName
+     * @return
+     */
+    public OrganExtend getOrganExtendByUserLoginName(String loginName) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("loginName", loginName);
+        return dao.getOrganExtendByUserLoginName(parameter);
+    }
+
+
+    /**
      * 根据用户ID查找
      *
      * @param userId
@@ -1122,6 +1146,20 @@ public class OrganService extends TreeService<OrganDao, Organ> {
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put("userId", userId);
         return dao.getCompanyByUserId(parameter);
+    }
+
+
+    /**
+     * 根据用户ID查找
+     *
+     * @param userId
+     * @return
+     */
+    public OrganExtend getHomeCompanyByUserId(String userId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put("userId", userId);
+        return dao.getHomeCompanyByUserId(parameter);
     }
 
     /**

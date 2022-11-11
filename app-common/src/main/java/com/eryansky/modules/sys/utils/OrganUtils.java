@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -17,16 +17,19 @@ import com.eryansky.modules.sys.service.OrganService;
 import java.util.List;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-25
  */
 public class OrganUtils {
+
+    private OrganUtils(){}
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
+        private static final OrganService organService = SpringContextHolder.getBean(OrganService.class);
+        private Static(){}
     }
 
     /**
@@ -138,6 +141,20 @@ public class OrganUtils {
         return Static.organService.getOrganExtendByUserId(userId);
     }
 
+
+    /**
+     * 根据用户登录账号查找
+     *
+     * @param loginName 用户账号
+     * @return
+     */
+    public static OrganExtend getOrganExtendByUserLoginName(String loginName) {
+        if (StringUtils.isBlank(loginName)) {
+            return null;
+        }
+        return Static.organService.getOrganExtendByUserLoginName(loginName);
+    }
+
     /**
      * 根据用户ID查找
      *
@@ -149,6 +166,19 @@ public class OrganUtils {
             return null;
         }
         return Static.organService.getCompanyByUserId(userId);
+    }
+
+    /**
+     * 根据用户ID查找
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    public static OrganExtend getHomeCompanyByUserId(String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return null;
+        }
+        return Static.organService.getHomeCompanyByUserId(userId);
     }
 
 
@@ -163,7 +193,7 @@ public class OrganUtils {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getId();
         }
         return null;
@@ -180,7 +210,7 @@ public class OrganUtils {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getName();
         }
         return null;
@@ -197,7 +227,7 @@ public class OrganUtils {
             return null;
         }
         OrganExtend organExtend = getOrganCompany(organId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getShortName();
         }
         return null;

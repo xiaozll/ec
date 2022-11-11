@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,16 +15,19 @@ import java.util.List;
 /**
  * 数据字典工具类
  *
- * @author : 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date : 2014-05-17 21:22
  */
 public class DictionaryUtils {
+
+    private DictionaryUtils(){}
 
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static DictionaryItemService dictionaryItemService = SpringContextHolder.getBean(DictionaryItemService.class);
+        private static final DictionaryItemService dictionaryItemService = SpringContextHolder.getBean(DictionaryItemService.class);
+        private Static(){}
     }
 
     /**
@@ -74,18 +77,18 @@ public class DictionaryUtils {
      *
      * @param dictionaryName 字典项显示名称
      * @param dictionaryCode 类型编码
-     * @param defaultName    默认显示名称
+     * @param defaultValue    默认值
      * @return
      */
-    public static String getDictionaryValue(String dictionaryName, String dictionaryCode, String defaultName) {
+    public static String getDictionaryValue(String dictionaryName, String dictionaryCode, String defaultValue) {
         if (StringUtils.isNotBlank(dictionaryCode) && StringUtils.isNotBlank(dictionaryName)) {
-            for (DictionaryItem dict : getDictList(dictionaryCode)) {
-                if (dictionaryName.equals(dict.getName())) {
-                    return dict.getValue();
+            for (DictionaryItem item : getDictList(dictionaryCode)) {
+                if (dictionaryName.equals(item.getName())) {
+                    return item.getValue();
                 }
             }
         }
-        return defaultName;
+        return defaultValue;
     }
 
 }

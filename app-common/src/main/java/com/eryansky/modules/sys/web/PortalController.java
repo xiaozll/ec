@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -27,8 +27,7 @@ import com.eryansky.utils.AppConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +41,7 @@ import java.util.Map;
 /**
  * Portal主页门户管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-07-31 12:30
  */
 @Controller
@@ -59,7 +58,7 @@ public class PortalController extends SimpleController {
     private UserPasswordService userPasswordService;
 
 
-    @RequestMapping("")
+    @GetMapping(value = "")
     public ModelAndView portal() {
         ModelAndView modelAnView = new ModelAndView("layout/portal");
         return modelAnView;
@@ -71,7 +70,7 @@ public class PortalController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("mymessages")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "mymessages")
     @ResponseBody
     public Result mymessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         WebUtils.setNoCacheHeader(response);
@@ -80,7 +79,7 @@ public class PortalController extends SimpleController {
         // 当前登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         long noticeReceiveInfos = 0;
-        Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(request);
+        Page<NoticeReceiveInfo> page = new Page<>(request);
         page = noticeReceiveInfoService.findUserUnreadNotices(page, sessionInfo.getLoginName());
         if (Collections3.isNotEmpty(page.getResult())) {
             noticeReceiveInfos = page.getTotalCount();
@@ -104,7 +103,7 @@ public class PortalController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("checkPassword")
+    @PostMapping(value = "checkPassword")
     @ResponseBody
     public Result checkPassword(HttpServletResponse response) throws Exception {
         WebUtils.setNoCacheHeader(response);
@@ -115,18 +114,18 @@ public class PortalController extends SimpleController {
 
         if (AppConstants.getIsSecurityOn()) {
             Long tipPasswordType = checkPassword(sessionInfo.getUserId());
-            String tipPasswordMsg = null;
+            String tipMsg = null;
             if (tipPasswordType != null) {
                 int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
                 if (tipPasswordType == 0L) {
-                    tipPasswordMsg = "您从未修改过用户密码，请修改用户密码！";
+                    tipMsg = "您从未修改过用户密码，请修改用户密码！";
                 } else if (tipPasswordType == 1L) {
-                    tipPasswordMsg = "您已超过" + userPasswordUpdateCycle + "天没有修改用户密码，请修改用户密码！";
+                    tipMsg = "您已超过" + userPasswordUpdateCycle + "天没有修改用户密码，请修改用户密码！";
                 }
             }
 
             map.put("tipPasswordType", tipPasswordType);
-            map.put("tipPasswordMsg", tipPasswordMsg);
+            map.put("tipPasswordMsg", tipMsg);
         }
 
         result = Result.successResult().setObj(map);
@@ -159,18 +158,16 @@ public class PortalController extends SimpleController {
      * @return
      */
     @Mobile(value = MobileValue.PC)
-    @RequiresUser(required = false)
-    @RequestMapping("notice")
+    @GetMapping(value = "notice")
     public ModelAndView notice(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAnView = new ModelAndView("layout/portal-notice");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
-            Page<NoticeReceiveInfo> page = new Page<NoticeReceiveInfo>(SpringMVCHolder.getRequest());
+            Page<NoticeReceiveInfo> page = new Page<>(SpringMVCHolder.getRequest());
             page = noticeReceiveInfoService.findReadNoticePage(page, new NoticeReceiveInfo(), sessionInfo.getUserId(), null);
             modelAnView.addObject("page", page);
 
         }
-
         return modelAnView;
     }
 

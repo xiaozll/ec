@@ -16,13 +16,13 @@ import com.eryansky.j2cache.util.SerializationUtils;
  */
 public class SpringRedisMessageListener implements MessageListener{
 
-	private static Logger logger = LoggerFactory.getLogger(SpringRedisMessageListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(SpringRedisMessageListener.class);
 
-	private int localCommandId;
+	private final int localCommandId;
 
-	private ClusterPolicy clusterPolicy;
+	private final ClusterPolicy clusterPolicy;
 	
-	private String channel;
+	private final String channel;
 	
 	SpringRedisMessageListener(ClusterPolicy clusterPolicy, String channel,int localCommandId){
 		this.clusterPolicy = clusterPolicy;

@@ -28,7 +28,7 @@ import static com.eryansky.fastweixin.util.StrUtil.isNotBlank;
 /**
  * 将微信处理通用部分再抽象一层，使用其他框架框架的同学可以自行继承此类集成微信
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public abstract class WeixinSupport {
@@ -98,11 +98,9 @@ public abstract class WeixinSupport {
      */
     public void bindServer(HttpServletRequest request, HttpServletResponse response) {
         if (isLegal(request)) {
-            try {
-                PrintWriter pw = response.getWriter();
+            try (PrintWriter pw = response.getWriter()){
                 pw.write(request.getParameter("echostr"));
                 pw.flush();
-                pw.close();
             } catch (Exception e) {
                 LOG.error("绑定服务器异常", e);
             }
@@ -313,11 +311,10 @@ public abstract class WeixinSupport {
             msg.setToUserName(fromUserName);
             result = msg.toXml();
             if (StrUtil.isNotBlank(getAESKey())) {
-                try {
-                    WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getAppId());
+                try (WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getAppId())){
                     result = pc.encryptMsg(result, request.getParameter("timestamp"), request.getParameter("nonce"));
                     LOG.debug("加密后密文:{}", result);
-                } catch (AesException e) {
+                } catch (Exception e) {
                     LOG.error("加密异常", e);
                 }
             }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2014 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -18,12 +18,13 @@ import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
 /**
  * svg
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2020-01-03
  */
 public class SvgUtils {
@@ -44,7 +45,7 @@ public class SvgUtils {
             jsonList.add(map);
         }
         try {
-            StreamUtils.copy(JsonMapper.toJsonString(jsonList), Charset.forName("utf-8"),new FileOutputStream("app/src/main/resources/static/js/json/icon-app.json"));
+            StreamUtils.copy(JsonMapper.toJsonString(jsonList), StandardCharsets.UTF_8,new FileOutputStream("app/src/main/resources/static/js/json/icon-app.json"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,10 +80,7 @@ public class SvgUtils {
                 return true;
             else {
                 String name = pathname.getName();
-                if ((name.endsWith(".svg")))
-                    return true;
-                else
-                    return false;
+                return name.endsWith(".svg");
             }
         }
     }

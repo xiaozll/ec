@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -44,15 +44,15 @@ import java.util.concurrent.TimeUnit;
 //@Lazy(false)
 public class MultiSqlSessionFactoryMapperLoader implements DisposableBean, InitializingBean, ApplicationContextAware {
 
-    private static Logger logger = LoggerFactory.getLogger(MultiSqlSessionFactoryMapperLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(MultiSqlSessionFactoryMapperLoader.class);
 
 	private ConfigurableApplicationContext context = null;
-	private HashMap<String, String> fileMapping = new HashMap<String, String>();
+	private final HashMap<String, String> fileMapping = new HashMap<String, String>();
 	private Scanner scanner = null;
 	private ScheduledExecutorService service = null;
 	private Map<String,Resource[]> beanResourcesMap = null;
 	private Map<String,SqlSessionFactoryBean> beanSessionFactoryMap = null;
-	private List<Resource> resourceList = Lists.newArrayList();
+	private final List<Resource> resourceList = Lists.newArrayList();
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -92,7 +92,7 @@ public class MultiSqlSessionFactoryMapperLoader implements DisposableBean, Initi
 			service.scheduleAtFixedRate(new Task(), 5, 5, TimeUnit.SECONDS);
 
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			logger.error(e1.getMessage(),e1);
 		}
 
 	}
@@ -106,7 +106,7 @@ public class MultiSqlSessionFactoryMapperLoader implements DisposableBean, Initi
 					logger.debug("加载完毕.");
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(),e);
 			}
 		}
 
@@ -115,7 +115,7 @@ public class MultiSqlSessionFactoryMapperLoader implements DisposableBean, Initi
 	@SuppressWarnings({ "rawtypes" })
 	class Scanner {
 		
-		private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+		private final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 		public Scanner() {
 		}

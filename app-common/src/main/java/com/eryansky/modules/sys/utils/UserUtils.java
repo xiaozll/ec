@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -15,6 +15,7 @@ import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.encode.Encryption;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.SecurityType;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.*;
@@ -25,20 +26,22 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-11-25
  */
 public class UserUtils {
 
+    private UserUtils(){}
     /**
      * 静态内部类，延迟加载，懒汉式，线程安全的单例模式
      */
     public static final class Static {
-        private static UserService userService = SpringContextHolder.getBean(UserService.class);
-        private static OrganService organService = SpringContextHolder.getBean(OrganService.class);
-        private static RoleService roleService = SpringContextHolder.getBean(RoleService.class);
-        private static PostService postService = SpringContextHolder.getBean(PostService.class);
-        private static UserPasswordService userPasswordService = SpringContextHolder.getBean(UserPasswordService.class);
+        private static final UserService userService = SpringContextHolder.getBean(UserService.class);
+        private static final OrganService organService = SpringContextHolder.getBean(OrganService.class);
+        private static final RoleService roleService = SpringContextHolder.getBean(RoleService.class);
+        private static final PostService postService = SpringContextHolder.getBean(PostService.class);
+        private static final UserPasswordService userPasswordService = SpringContextHolder.getBean(UserPasswordService.class);
+
     }
 
     /**
@@ -76,6 +79,20 @@ public class UserUtils {
     public static User getUserByIdOrLoginName(String idOrLoginName) {
         if (StringUtils.isNotBlank(idOrLoginName)) {
             return Static.userService.getUserByIdOrLoginName(idOrLoginName);
+        }
+        return null;
+    }
+
+
+    /**
+     * 根据登录名或手机号查找用户
+     *
+     * @param loginNameOrMobile 登录名或手机号
+     * @return
+     */
+    public static User getUserByLoginNameOrMobile(String loginNameOrMobile) {
+        if (StringUtils.isNotBlank(loginNameOrMobile)) {
+            return Static.userService.getUserByLoginNameOrMobile(loginNameOrMobile);
         }
         return null;
     }
@@ -139,11 +156,22 @@ public class UserUtils {
      * @return
      */
     public static String getUserNameByLoginName(String loginName) {
+        return getUserNameByLoginName(loginName,null);
+    }
+
+    /**
+     * 根据loginName查找用户
+     *
+     * @param loginName 用户账号
+     * @param defaultResult 为null时返回
+     * @return
+     */
+    public static String getUserNameByLoginName(String loginName,String defaultResult) {
         User user = getUserByLoginName(loginName);
         if (null != user) {
             return user.getName();
         }
-        return null;
+        return defaultResult;
     }
 
     /**
@@ -175,6 +203,20 @@ public class UserUtils {
         User user = getUserByLoginName(loginName);
         if (null != user) {
             return user.getId();
+        }
+        return null;
+    }
+
+    /**
+     * 根据userId查找用户loginName
+     *
+     * @param userId 用户ID
+     * @return
+     */
+    public static String getLoginNameByUserId(String userId) {
+        User user = getUser(userId);
+        if (null != user) {
+            return user.getLoginName();
         }
         return null;
     }
@@ -258,7 +300,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getCompanyId();
         }
         return null;
@@ -275,7 +317,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getHomeCompanyId();
         }
         return null;
@@ -292,7 +334,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getCompanyCode();
         }
         return null;
@@ -309,7 +351,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getHomeCompanyCode();
         }
         return null;
@@ -326,7 +368,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getSysCode();
         }
         return null;
@@ -393,7 +435,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if(organExtend != null){
+        if(null != organExtend){
             return organExtend.getCode();
         }
         return null;
@@ -448,7 +490,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getName();
         }
         return null;
@@ -465,7 +507,7 @@ public class UserUtils {
             return null;
         }
         OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(userId);
-        if (organExtend != null) {
+        if (null != organExtend) {
             return organExtend.getShortName();
         }
         return null;
@@ -670,6 +712,26 @@ public class UserUtils {
 
         Static.postService.deletePostUsersByPostIdAndOrganIdAndUserIds(post.getId(),organId,Lists.newArrayList(userId));
         SecurityUtils.reloadSessionPermission(userId);
+    }
+
+
+
+    /**
+     * 记录登录日志
+     * @param userId 用户ID
+     */
+    public static void recordLogin(String userId) {
+        Static.userService.login(userId);
+    }
+
+
+    /**
+     * 记录注销日志
+     * @param userId 用户ID
+     * @param securityType 操作类型 {@link  SecurityType}
+     */
+    public static void recordLogout(String userId, SecurityType securityType) {
+        Static.userService.logout(userId,securityType);
     }
 
 }

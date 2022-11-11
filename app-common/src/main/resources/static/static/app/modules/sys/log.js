@@ -34,7 +34,7 @@ $(function () {
             {field: 'userCompanyName', title: '单位', width: 200, hidden: false},
             {field: 'userOrganName', title: '部门', width: 150, hidden: false},
             {field: 'userName', title: '姓名', width: 80},
-            {field: 'userId', title: '用户ID', width: 60, hidden: true},
+            {field: 'userId', title: '用户标识', width: 200, hidden: true},
             {field: 'ip', title: 'IP地址', width: 100},
             {field: 'userAgent', title: '客户端', width: 100, hidden: true},
             {field: 'browserType', title: '浏览器', width: 100, hidden: true},

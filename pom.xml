@@ -28,23 +28,23 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
-        <spring-boot.version>2.4.5</spring-boot.version>
-        <spring-integration-redis.version>5.4.4</spring-integration-redis.version>
-        <logback.version>6.6</logback.version>
+        <spring-boot.version>2.7.5</spring-boot.version>
+        <spring-integration-redis.version>5.5.15</spring-integration-redis.version>
+        <logback.version>7.2</logback.version>
+        <byte-buddy.version>1.12.18</byte-buddy.version>
 
-        <tomcat.version>9.0.45</tomcat.version>
-        <jstl.version>1.2</jstl.version>
+        <tomcat.version>9.0.68</tomcat.version>
 
-        <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
-        <commons-pool2.version>2.9.0</commons-pool2.version>
-        <druid-version>1.2.5</druid-version>
-        <mariadb.driver.version>2.7.2</mariadb.driver.version>
+        <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
+        <druid-version>1.2.11</druid-version>
+        <mariadb.driver.version>3.0.8</mariadb.driver.version>
         <oracle.driver.version>12.1.0.1-atlassian-hosted</oracle.driver.version>
         <db2.driver.version>10.1</db2.driver.version>
         <oscar.driver.version>4.0.2</oscar.driver.version>
@@ -53,35 +53,16 @@
         <commons-codec.version>1.15</commons-codec.version>
 
 
-        <ec-common.version>4.2.20210415.07</ec-common.version>
-        <ec-app-common.version>4.2.20210415.07</ec-app-common.version>
-        <ec-client-common.version>4.2.20210415.07</ec-client-common.version>
-        <ec-j2cache.version>4.2.20210415.07</ec-j2cache.version>
-        <ec-j2cache-spring-boot-starter.version>4.2.20210415.07</ec-j2cache-spring-boot-starter.version>
-        <ec-fastweixin.version>4.2.20210415.07</ec-fastweixin.version>
+        <ec-common.version>4.2.20221021.08</ec-common.version>
+        <ec-app-common.version>4.2.20221021.08</ec-app-common.version>
+        <ec-client-common.version>4.2.20221021.08</ec-client-common.version>
+        <ec-j2cache.version>4.2.20221021.08</ec-j2cache.version>
+        <ec-j2cache-spring-boot-starter.version>4.2.20221021.08</ec-j2cache-spring-boot-starter.version>
+        <ec-fastweixin.version>4.2.20221021.08</ec-fastweixin.version>
 
-        <jackson.version>2.11.4</jackson.version>
-        <swagger2.version>2.9.2</swagger2.version>
+        <jackson.version>2.14.0</jackson.version>
+        <springfox.version>3.0.0</springfox.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jfit-nexus</id>
-            <name>jfit Nexus Repository</name>
-            <url>http://www.jfit.com.cn/nexus/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>aliyun</id>
-            <name>aliyun</name>
-            <url>https://maven.aliyun.com/repository/spring</url>
-        </repository>
-        <repository>
-            <!-- required for org.hyperic:sigar -->
-            <id>mvnrepository-public-repository-group</id>
-            <url>http://repo.spring.io/plugins-release/</url>
-        </repository>
-    </repositories>
-
 
 
     <dependencies>
@@ -91,9 +72,10 @@
             <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${jstl.version}</version>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>1.2.6</version>
+<!--            <version>2.0.0</version>-->
         </dependency>
 
         <dependency>
@@ -142,6 +124,10 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-context-support</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -165,6 +151,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
         </dependency>
 
         <!-- mybatis-plus end -->
@@ -218,10 +209,28 @@
         <dependency>
             <groupId>org.tmatesoft.svnkit</groupId>
             <artifactId>svnkit</artifactId>
-            <version>1.10.3</version>
+            <version>1.10.7</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>${byte-buddy.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${byte-buddy.version}</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -243,25 +252,37 @@
             <artifactId>jackson-module-jaxb-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 
         <!-- Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>net.bytebuddy</groupId>
+                    <artifactId>byte-buddy</artifactId>
+                </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger2.version}</version>
         </dependency>
     </dependencies>
 
@@ -306,14 +327,14 @@
     <!-- 构件部署仓库 -->
     <distributionManagement>
         <repository>
-            <id>jfit-nexus-releases</id>
+            <id>nexus-releases</id>
             <name>发布版本仓库</name>
-            <url>http://www.jfit.com.cn/nexus/repository/releases/</url>
+            <url>http://www.eryansky.com/nexus/repository/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>jfit-nexus-snapshots</id>
+            <id>nexus-snapshots</id>
             <name>快照版本仓库</name>
-            <url>http://www.jfit.com.cn/nexus/repository/snapshots/</url>
+            <url>http://www.eryansky.com/nexus/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

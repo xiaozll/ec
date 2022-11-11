@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,30 +11,26 @@ import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
-import com.eryansky.common.web.springmvc.StringEscapeEditor;
 import com.eryansky.common.web.utils.WebUtils;
-import com.eryansky.core.excelTools.CsvUtils;
-import com.eryansky.core.excelTools.ExcelUtils;
-import com.eryansky.core.excelTools.JsGridReportBase;
-import com.eryansky.core.excelTools.TableData;
+import com.eryansky.core.excels.CsvUtils;
+import com.eryansky.core.excels.ExcelUtils;
+import com.eryansky.core.excels.JsGridReportBase;
+import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.ResetType;
 import com.eryansky.modules.sys.mapper.SystemSerialNumber;
 import com.eryansky.modules.sys.service.SystemSerialNumberService;
 import com.eryansky.modules.sys.sn.MaxSerial;
-import com.eryansky.modules.sys.utils.SystemSerialNumberUtils;
 import com.eryansky.utils.AppConstants;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-07-18
  */
 @Controller
@@ -63,7 +59,7 @@ public class SystemSerialNumberController extends SimpleController {
 
 
     @RequiresPermissions("sys:systemSerialNumber:view")
-    @RequestMapping(value = {"list", ""})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"list", ""})
     public String list(SystemSerialNumber model,
                        @RequestParam(value = "export", defaultValue = "false") Boolean export,
                        @RequestParam(value = "exportType", defaultValue = "xls") String exportType,
@@ -93,9 +89,7 @@ public class SystemSerialNumberController extends SimpleController {
                     //导出CSV
                     try {
                         List<Object[]> data = Lists.newArrayList();
-                        page.getResult().forEach(o -> {
-                            data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(), o.getMaxSerial(), o.getResetType(), o.getIsAutoIncrement(), o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())});
-                        });
+                        page.getResult().forEach(o -> data.add(new Object[]{o.getApp(), o.getModuleName(), o.getModuleCode(), o.getConfigTemplate(), o.getMaxSerial(), o.getResetType(), o.getIsAutoIncrement(), o.getPreMaxNum(), o.getRemark(), DateUtils.formatDateTime(o.getUpdateTime())}));
                         CsvUtils.exportToCsv(title, hearders, data, request, response);
                     } catch (IOException e) {
                         logger.error(e.getMessage(), e);
@@ -112,33 +106,40 @@ public class SystemSerialNumberController extends SimpleController {
 
 
     @RequiresPermissions("sys:systemSerialNumber:view")
-    @RequestMapping(value = "form")
+    @GetMapping(value = "form")
     public String form(@ModelAttribute("model") SystemSerialNumber model, Model uiModel) {
         uiModel.addAttribute("model", model);
         uiModel.addAttribute("resetTypes", ResetType.values());
         return "modules/sys/systemSerialNumberForm";
     }
 
+
+    @Override
+    protected void initBinder(WebDataBinder binder) {
+        super.defaultWebDataBinder(binder);
+        super.setAllowedFields(binder);
+    }
+
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(value = "save")
+    @PostMapping(value = "save")
     public String save(@ModelAttribute("model") SystemSerialNumber model,
                        String _maxSerial, Model uiModel, RedirectAttributes redirectAttributes) {
         if (!beanValidator(uiModel, model)) {
             return form(model, uiModel);
         }
-        MaxSerial maxSerial = (MaxSerial) JsonMapper.fromJsonString(_maxSerial, MaxSerial.class);
+        MaxSerial maxSerial = (MaxSerial) JsonMapper.fromJsonString(HtmlUtils.htmlUnescape(_maxSerial), MaxSerial.class);
         model.setMaxSerial(maxSerial);
         systemSerialNumberService.save(model);
         addMessage(redirectAttributes, "保存'" + model.getModuleName() + "'成功");
-        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber";
     }
 
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(value = "delete")
+    @GetMapping(value = "delete")
     public String delete(@ModelAttribute("model") SystemSerialNumber model, RedirectAttributes redirectAttributes) {
         systemSerialNumberService.delete(model);
         addMessage(redirectAttributes, "删除成功");
-        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber/";
+        return "redirect:" + AppConstants.getAdminPath() + "/sys/systemSerialNumber";
     }
 
 
@@ -149,7 +150,7 @@ public class SystemSerialNumberController extends SimpleController {
      * @throws Exception
      */
     @RequiresPermissions("sys:systemSerialNumber:edit")
-    @RequestMapping(value = {"resetSerialNumber"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"resetSerialNumber"})
     @ResponseBody
     public Result resetSerialNumber(String id) {
         if(StringUtils.isNotBlank(id)){
@@ -167,7 +168,7 @@ public class SystemSerialNumberController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     public Result detail(@ModelAttribute("model") SystemSerialNumber model) {
         return Result.successResult().setObj(model);

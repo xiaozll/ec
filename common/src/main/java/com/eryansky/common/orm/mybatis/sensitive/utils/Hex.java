@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 工具类
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @version 2019-12-13
  */
 public class Hex {
@@ -26,7 +26,7 @@ public class Hex {
             return null;
         }
 
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder();
         for (int j : src) {
             int v = j & 0xFF;
             String hv = Integer.toHexString(v);

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,10 @@ public class RedisGenericCache implements Level2Cache {
 
     private final static Logger log = LoggerFactory.getLogger(RedisGenericCache.class);
 
-    private String namespace;
-    private String region;
-    private RedisClient client;
-    private int scanCount;
+    private final String namespace;
+    private final String region;
+    private final RedisClient client;
+    private final int scanCount;
 
     /**
      * 缓存构造
@@ -51,11 +52,7 @@ public class RedisGenericCache implements Level2Cache {
 
 
     private byte[] _key(String key) {
-        try {
-            return (this.region + ":" + key).getBytes("utf-8");
-        } catch (UnsupportedEncodingException e) {
-            return (this.region + ":" + key).getBytes();
-        }
+        return (this.region + ":" + key).getBytes(StandardCharsets.UTF_8);
     }
 
     @Override

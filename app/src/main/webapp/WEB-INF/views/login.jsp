@@ -16,8 +16,8 @@
     <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Expires" content="0"/>
     <link rel="shortcut icon" href="${ctxStatic}/img/favicon.ico" />
-    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.10.2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.2.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.12.4.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.4.1.min.js" charset="utf-8"></script>
     <%-- jQuery Cookie插件 --%>
     <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery.cookie${yuicompressor}.js" charset="utf-8"></script>
     <link id="easyuiTheme" rel="stylesheet" type="text/css" href="${ctxStatic}/js/easyui/themes/<c:out value="${cookie.easyuiThemeName.value}" default="bootstrap"/>/easyui.css" />
@@ -28,9 +28,9 @@
     <%-- jQuery方法扩展 --%>
     <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-extend${yuicompressor}.js" charset="utf-8"></script>
 
-    <link href="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css" rel="stylesheet" />
-    <script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="${ctxStatic}/js/jquery-validation/1.11.1/jquery.validate.method.min.js" type="text/javascript"></script>
+    <link href="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend.min.css" type="text/css" rel="stylesheet" />
+    <script src="${ctxStatic}/js/jquery-validation-1.19.3/dist/jquery.validate.min.js" type="text/javascript"  charset="utf-8"></script>
+    <script src="${ctxStatic}/js/jquery-validation-1.19.3/dist/extend/jquery-validate-extend-methods.min.js" type="text/javascript"  charset="utf-8"></script>
     <script src="${ctxStatic}/js/jquery/qrcode/jquery.qrcode.min.js" type="text/javascript"></script>
 
     <link rel="stylesheet" href="${ctxStatic}/js/common/typica-login.css?_=${sysInitTime}">
@@ -43,7 +43,6 @@
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]> <script src="${ctxStatic}/js/common/html5.js"></script><![endif]-->
     <script src="${ctxStatic}/js/md5/md5.min.js"></script>
-    <%@ include file="/common/autocomplete.jsp"%>
     <style type="text/css">
         .control-group{border-bottom:0px;}
         .login-form label {
@@ -59,6 +58,7 @@
         var rememberMeCookieValue = "${cookie.rememberMe.value}";
         var needEncrypt = ${empty cookie._password.value};
         var SALT = "<%=Encrypt.SALT%>";
+        var securityToken = "${securityToken}";
         var homePage = "<%=request.getContextPath() + AppConstants.getAppHomePage()%>";
     </script>
     <script type="text/javascript" src="${ctxStatic}/app/login${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
@@ -82,7 +82,7 @@
     <div id="messageBox" class="alert alert-error hide"><button data-dismiss="alert" class="close">×</button>
         <label id="loginError" class="error"></label>
     </div>
-    <div id="messageBox2" class="alert alert-error hide"><button data-dismiss="alert" class="close" onclick="javascript:$('#messageBox2').addClass('hide');">×</button>
+    <div id="messageBox2" class="alert alert-error hide"><button data-dismiss="alert" class="close" onclick="$('#messageBox2').addClass('hide');">×</button>
         <label id="loginError2" class="error"></label>
     </div>
     <div id="login-wraper">
@@ -94,8 +94,7 @@
                     <div class="controls">
                         <input type="text" id="loginName" name="loginName" class="required" style="width: 210px;height:36px;padding: 5px;"
                                value="${fns:urlDecode(loginNameOrName)}" placeholder="用户名"/>
-                        <%--<i class="-user" title="用户名"></i>--%>
-                        <i class="icon-search" title="选择" onclick="chooseUser()"></i>
+                        <i class="icon-user" title="用户名"></i>
                     </div>
                 </div>
 
@@ -103,8 +102,7 @@
                     <%--<label for="password" class="control-label">密码</label>--%>
                     <div class="controls">
                         <input type="password" id="password" name="password"  value="${cookie._password.value}"
-                               class="required" style="width: 210px;height:36px;padding: 5px;" placeholder="密码"
-                               onkeydown="if(event.keyCode==13)login()" />
+                               class="required" style="width: 210px;height:36px;padding: 5px;" placeholder="密码"/>
                         <i class="icon-lock" title="密码"></i>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -19,7 +19,7 @@ import java.util.List;
  * FTP 使用Resource方式注解 <br>
  * 例如：@Resource(name = "payFtp")
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2012-3-20 下午1:30:39
  */
 public class FtpFactory {
@@ -204,7 +204,7 @@ public class FtpFactory {
         String directory = remote + File.separator;
         // String directory = remote.substring(0, remote.lastIndexOf("/") + 1);
         // 如果远程目录不存在，则递归创建远程服务器目录
-        if (!directory.equalsIgnoreCase(File.separator) && !changeWorkingDirectory(new String(directory), ftp)) {
+        if (!directory.equalsIgnoreCase(File.separator) && !changeWorkingDirectory(directory, ftp)) {
             int start = 0;
             int end = 0;
             if (directory.startsWith(File.separator)) {
@@ -258,7 +258,7 @@ public class FtpFactory {
                 logger.warn("创建文件夹" + dir + " 失败！");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
         return flag;
     }
@@ -393,10 +393,10 @@ public class FtpFactory {
                     // 根据绝对路径初始化文件
                     File localFile = new File(localPath + File.separator + ff.getName());
                     // 输出流
-                    OutputStream is = new FileOutputStream(localFile);
-                    // 下载文件
-                    ftp.retrieveFile(ff.getName(), is);
-                    is.close();
+                    try(OutputStream is = new FileOutputStream(localFile)){
+                        // 下载文件
+                        ftp.retrieveFile(ff.getName(), is);
+                    }
                     success = true;
                 }
             }

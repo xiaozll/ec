@@ -1,21 +1,27 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils;
+import com.eryansky.common.web.utils.DownloadUtils;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Pinyin4js {
+
+    private final static Logger logger = LoggerFactory.getLogger(Pinyin4js.class);
 
     /**
      * 常见特殊字符过滤
@@ -43,7 +49,7 @@ public class Pinyin4js {
             if(i == stringSet.size() - 1){
                 str.append(s);
             }else{
-                str.append(s + ",");
+                str.append(s).append(",");
             }
             i++;
         }
@@ -76,7 +82,7 @@ public class Pinyin4js {
                     try{
                         temp[i] = PinyinHelper.toHanyuPinyinStringArray(srcChar[i], hanYuPinOutputFormat);
                     }catch(BadHanyuPinyinOutputFormatCombination e) {
-                        e.printStackTrace();
+                        logger.error(e.getMessage(),e);
                     }
                 }else if(((int)c>=65 && (int)c<=90) || ((int)c>=97 && (int)c<=122)){
                     temp[i] = new String[]{String.valueOf(srcChar[i])};
@@ -84,11 +90,9 @@ public class Pinyin4js {
                     temp[i] = new String[]{""};
                 }
             }
-            String[] pingyinArray = Exchange(temp);
-            Set<String> pinyinSet = new HashSet<String>();
-            for(int i=0;i<pingyinArray.length;i++){
-                pinyinSet.add(pingyinArray[i]);
-            }
+            String[] pingyinArray = exchange(temp);
+            Set<String> pinyinSet = new HashSet<>();
+            pinyinSet.addAll(Arrays.asList(pingyinArray));
             return pinyinSet;
         }
         return null;
@@ -100,8 +104,8 @@ public class Pinyin4js {
      * @param strJaggedArray
      * @return
      */
-    public static String[] Exchange(String[][] strJaggedArray){
-        String[][] temp = DoExchange(strJaggedArray);
+    public static String[] exchange(String[][] strJaggedArray){
+        String[][] temp = doExchange(strJaggedArray);
         return temp[0];
     }
 
@@ -111,7 +115,7 @@ public class Pinyin4js {
      * @param strJaggedArray
      * @return
      */
-    private static String[][] DoExchange(String[][] strJaggedArray){
+    private static String[][] doExchange(String[][] strJaggedArray){
         int len = strJaggedArray.length;
         if(len >= 2){
             int len1 = strJaggedArray[0].length;
@@ -126,29 +130,27 @@ public class Pinyin4js {
                 }
             }
             String[][] newArray = new String[len-1][];
-            for(int i=2;i<len;i++){
-                newArray[i-1] = strJaggedArray[i];
-            }
+            System.arraycopy(strJaggedArray, 2, newArray, 1, len - 2);
             newArray[0] = temp;
-            return DoExchange(newArray);
+            return doExchange(newArray);
         }else{
             return strJaggedArray;
         }
     }
 
     public static String getPinYinHeadChar(String str) {
-        String convert = "";
+        StringBuilder convert = new StringBuilder();
         for (int j = 0; j < str.length(); j++) {
             char word = str.charAt(j);
             // 提取汉字的首字母
             String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
             if (pinyinArray != null) {
-                convert += pinyinArray[0].charAt(0);
+                convert.append(pinyinArray[0].charAt(0));
             } else {
-                convert += word;
+                convert.append(word);
             }
         }
-        return convert;
+        return convert.toString();
     }
 
         /**

@@ -12,7 +12,7 @@
 		function reLoad(){
 			$.ajax({
 				url: ctxAdmin + '/sys/systemMonitor',
-				type: 'get',
+				type: 'post',
 				cache:false,
 				dataType: 'json',
 				success: function (data) {
@@ -30,7 +30,7 @@
 		<table class="table table-striped table-bordered table-condensed">
 			<tbody>
 			<tr><td>名称</td><td>{{serverName}}</td></tr>
-			<%--<tr><td>IP地址</td><td>{{ip}}</td></tr>--%>
+			<tr><td>IP地址</td><td>{{ip}}</td></tr>
 			<tr><td>操作系统</td><td>{{serverOs}}</td></tr>
 			<tr><td>服务器时间</td><td>{{serverTime}}</td></tr>
 			<%--<tr><td>deployPath</td><td>{{deployPath}}</td></tr>--%>
@@ -80,6 +80,7 @@
 	<li class="active"><a href="${ctxAdmin}/sys/systemMonitor">系统监控</a></li>
 	<li><a href="${ctxAdmin}/sys/systemMonitor/log">系统日志</a></li>
 	<li><a href="${ctxAdmin}/sys/systemMonitor/cache">缓存管理</a></li>
+	<li><a href="${ctxAdmin}/sys/systemMonitor/queue">队列管理</a></li>
 </ul>
 <form:form id="searchForm" method="post" class="breadcrumb form-search">
 	&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="button" value="刷新" onclick="reLoad();"/>&nbsp;&nbsp;

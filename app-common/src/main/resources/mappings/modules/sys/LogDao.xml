@@ -169,7 +169,7 @@
                     AND a.create_time <![CDATA[<=]]> #{endTime}
                 </when>
             </choose>
-            ${dsf}
+            ${sqlMap.dsf}
         </where>
         <choose>
             <when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
@@ -485,6 +485,55 @@
 		#{longitude},
 		#{latitude}
 		)
+	</insert>
+    <insert id="insertBatch">
+		INSERT INTO t_sys_log(
+		id,
+		status,
+		version,
+		create_user,
+		create_time,
+		update_user,
+		update_time,
+		type,
+		ip,
+		device_type,
+		browser_type,
+		user_agent,
+		user_id,
+		oper_time,
+		action_time,
+		title,
+		module,
+		action,
+		remark,
+		exception,
+		longitude,
+		latitude
+		) VALUES <foreach collection="list" item="item" separator=",">(
+		#{item.id},
+		#{item.status},
+		0,
+		#{item.createUser},
+		#{item.createTime},
+		#{item.updateUser},
+		#{item.updateTime},
+		#{item.type},
+		#{item.ip},
+		#{item.deviceType},
+		#{item.browserType},
+		#{item.userAgent},
+		#{item.userId},
+		#{item.operTime},
+		#{item.actionTime},
+		#{item.title},
+		#{item.module},
+		#{item.action},
+		#{item.remark},
+		#{item.exception},
+		#{item.longitude},
+		#{item.latitude}
+        )</foreach>
 	</insert>
 
     <update id="update">

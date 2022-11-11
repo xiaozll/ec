@@ -2,8 +2,8 @@ package com.eryansky.fastweixin.message.req;
 
 public final class QrCodeEvent extends BaseEvent {
 
-    private String eventKey;
-    private String ticket;
+    private final String eventKey;
+    private final String ticket;
 
     public QrCodeEvent(String eventKey, String ticket) {
         super();

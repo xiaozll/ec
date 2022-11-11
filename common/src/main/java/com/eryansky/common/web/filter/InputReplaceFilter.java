@@ -1,12 +1,17 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.web.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.servlet.FilterChain;
@@ -17,12 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 特殊字符输入过滤拦截器.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-2-22 下午1:51:52
  */
 public class InputReplaceFilter extends BaseFilter {
 
-	private Properties pp = new Properties();
+	private static final Logger logger = LoggerFactory.getLogger(InputReplaceFilter.class);
+
+	private final Properties pp = new Properties();
 
 	// 非法词、敏感词、特殊字符、配置在初始化参数中
 	private void initConfig() {
@@ -30,11 +37,11 @@ public class InputReplaceFilter extends BaseFilter {
 		String file = config.getInitParameter("file");
 		// 文件实际位置
 		String realPath = config.getServletContext().getRealPath(file);
-		try {
+		try (InputStream inputStream = new FileInputStream(realPath)){
 			// 加载非法词
-			pp.load(new FileInputStream(realPath));
+			pp.load(inputStream);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 
 	}
@@ -45,19 +52,15 @@ public class InputReplaceFilter extends BaseFilter {
 		if (request.getMethod().equalsIgnoreCase("post")) {
 			request.setCharacterEncoding("utf-8");
 		} else {
-			Iterator its = request.getParameterMap().values().iterator();
-			while (its.hasNext()) {
-				String[] params = (String[]) its.next();
+			for (String[] params : request.getParameterMap().values()) {
 				int len = params.length;
 				for (int i = 0; i < len; i++) {
-					params[i] = new String(params[i].getBytes("utf-8"), "utf-8");
+					params[i] = new String(params[i].getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 				}
 			}
 		}
 		// 过滤客户端提交表单中特殊字符
-		Iterator its = request.getParameterMap().values().iterator();
-		while (its.hasNext()) {
-			String[] params = (String[]) its.next();
+		for (String[] params : request.getParameterMap().values()) {
 			for (int i = 0; i < params.length; i++) {
 				//特殊字符Html转译
 //				params[i] = params[i].replaceAll(params[i], EncodeUtils.htmlEscape(params[i]));

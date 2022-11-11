@@ -295,7 +295,7 @@ function showDialog(contactGroupId,contactGroupType){
 function del(contactGroupId,contactGroupName){
     $.messager.confirm('确认提示！', '您确定要删除['+contactGroupName+']？', function (r) {
         if (r) {
-            var ids = new Array();
+            var ids = [];
             ids.push(contactGroupId);
             $.ajax({
                 url: ctxAdmin + '/notice/contactGroup/remove',
@@ -360,7 +360,7 @@ function addContactGroupUserDialog(contactGroupId){
  * @param id
  */
 function addContactGroupUser(id){
-    var selectds = new Array();
+    var selectds = [];
     $("#selectUser option").each(function () {
         var txt = $(this).val();
         selectds.push($.trim(txt));
@@ -474,7 +474,7 @@ function editMail(mailContactId,contactGroupId){
  * @param contactGroupId 分组ID
  */
 function removeContactGroupObject(objectId,contactGroupId) {
-    var selectIds = new Array();
+    var selectIds = [];
     $.messager.progress({
         title: '提示信息！',
         text: '数据处理中，请稍后....'

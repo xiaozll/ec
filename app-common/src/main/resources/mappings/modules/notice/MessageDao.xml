@@ -77,13 +77,7 @@
 					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
 					<otherwise>'%'+#{query}+'%'</otherwise>
 				</choose>
-				OR a.app_id LIKE
-				<choose>
-					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
-					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
-					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
-					<otherwise>'%'+#{query}+'%'</otherwise>
-				</choose>
+				OR a.app_id = #{query}
 				)
 			</if>
 			${sqlMap.dsf}
@@ -142,23 +136,29 @@
 					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
 					<otherwise>'%'+#{query}+'%'</otherwise>
 				</choose>
-				OR a.app_id LIKE
-				<choose>
-					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
-					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
-					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
-					<otherwise>'%'+#{query}+'%'</otherwise>
-				</choose>
+				OR a.app_id = #{query}
 				)
 			</if>
-			${dsf}
+
+			<choose>
+				<when test="startTime != null and endTime != null">
+					AND a.send_time BETWEEN #{startTime} AND #{endTime}
+				</when>
+				<when test="startTime != null and endTime == null">
+					AND a.send_time <![CDATA[>=]]> #{startTime}
+				</when>
+				<when test="startTime == null and endTime != null">
+					AND a.send_time <![CDATA[<=]]> #{endTime}
+				</when>
+			</choose>
+			${sqlMap.dsf}
 		</where>
 		<choose>
 			<when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">
 				ORDER BY ${entityPage.orderBy} ${entityPage.order}
 			</when>
 			<otherwise>
-				ORDER BY a.update_time DESC
+				ORDER BY a.send_time DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -234,7 +234,48 @@
 			#{tipMessage}
 		)
 	</insert>
-	
+	<insert id="insertBatch">
+		INSERT INTO t_notice_message(
+			id,
+			status,
+			version,
+			create_user,
+			create_time,
+			update_user,
+			update_time,
+			app_id,
+			category,
+			title,
+			url,
+			image,
+			content,
+			biz_mode,
+			sender,
+			send_time,
+			organ_id,
+			tip_message
+		) VALUES <foreach collection="list" item="item" separator=",">(
+			#{item.id},
+			#{item.status},
+			0,
+			#{item.createUser},
+			#{item.createTime},
+			#{item.updateUser},
+			#{item.updateTime},
+			#{item.appId},
+			#{item.category},
+			#{item.title},
+			#{item.url},
+			#{item.image},
+			#{item.content},
+			#{item.bizMode},
+			#{item.sender},
+			#{item.sendTime},
+			#{item.organId},
+			#{item.tipMessage}
+		)</foreach>
+	</insert>
+
 	<update id="update">
 		UPDATE t_notice_message SET
 			status = #{status},

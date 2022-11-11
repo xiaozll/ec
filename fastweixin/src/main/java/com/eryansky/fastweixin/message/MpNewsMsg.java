@@ -2,7 +2,7 @@ package com.eryansky.fastweixin.message;
 /**
  * 提交至微信的图文消息素材
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class MpNewsMsg extends BaseMsg {

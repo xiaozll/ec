@@ -11,4 +11,4 @@
 Docker发布
 
 
-    mvn package com.google.cloud.tools:jib-maven-plugin:3.0.0:build -DsendCredentialsOverHttp=true
+    mvn package com.google.cloud.tools:jib-maven-plugin:3.2.1:build -DsendCredentialsOverHttp=true

@@ -12,17 +12,17 @@ import org.springframework.cache.support.NullValue;
 
 /**
  * {@link CacheManager} implementation for J2Cache.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-07-24
  *
  */
 public class J2CacheCache extends AbstractValueAdaptingCache {
 
-	private CacheChannel cacheChannel;
+	private final CacheChannel cacheChannel;
 
 	private String j2CacheName = "j2cache";
-	private boolean allowNullValues;
-	private boolean localCache;
+	private final boolean allowNullValues;
+	private final boolean localCache;
 
 	public J2CacheCache(String cacheName, CacheChannel cacheChannel) {
         this(cacheName,cacheChannel, true);

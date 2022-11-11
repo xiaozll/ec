@@ -1,10 +1,11 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.modules.notice.quartz;
 
+import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.core.quartz.QuartzJob;
 import com.eryansky.modules.notice.service.NoticeService;
 import org.quartz.JobExecutionContext;
@@ -16,9 +17,10 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * 通知 后台定时任务..
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2015-2-4 上午09:08:18
  */
+//@QuartzJob(name = "NoticeJob", cronExp = "0 0/1 * * * ?",instanceId = "ERYAN")
 @QuartzJob(name = "NoticeJob", cronExp = "0 0/10 * * * ?")
 public class NoticeJob extends QuartzJobBean {
 
@@ -31,9 +33,9 @@ public class NoticeJob extends QuartzJobBean {
      * 轮询通知
      */
     public void execute() {
-        logger.debug("轮询任务开始...");
+        logger.debug("通知公告-轮询任务开始...");
         noticeService.pollNotice();
-        logger.debug("轮询任务开始...");
+        logger.debug("通知公告-轮询任务结束.");
     }
 
     @Override

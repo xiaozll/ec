@@ -3,12 +3,12 @@ package com.eryansky.fastweixin.company.api;
 import com.eryansky.fastweixin.api.response.BaseResponse;
 import com.eryansky.fastweixin.company.api.config.QYAPIConfig;
 import com.eryansky.fastweixin.company.api.response.GetQYSendMessageResponse;
-import com.eryansky.fastweixin.company.message.QYBaseMsg;
+import com.eryansky.fastweixin.company.message.*;
 import com.eryansky.fastweixin.util.JSONUtil;
 
 /**
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYMessageAPI extends QYBaseAPI {

@@ -4,7 +4,7 @@ import com.eryansky.fastweixin.util.BeanUtil;
 
 /**
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public enum QYResultType {
@@ -780,12 +780,12 @@ public enum QYResultType {
     /**
      * 错误码
      */
-    private Integer code;
+    private final Integer code;
 
     /**
      * 结果描述
      */
-    private String description;
+    private final String description;
 
     QYResultType(Integer code, String description){
         this.code = code;

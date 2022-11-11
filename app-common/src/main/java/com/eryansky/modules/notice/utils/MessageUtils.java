@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * 消息工具类
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-14
  */
 public class MessageUtils {
@@ -211,7 +211,7 @@ public class MessageUtils {
      * @return
      */
     public static Page<MessageReceive> findUserMessages(String userId, int pageNo, int pageSize, String isRead) {
-        Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
+        Page<MessageReceive> page = new Page<>(pageNo, pageSize);
         return Static.messageReceiveService.findUserPage(page, userId, isRead);
     }
 
@@ -224,7 +224,7 @@ public class MessageUtils {
      * @return
      */
     public static Page<MessageReceive> findUserMessages(String userId, int pageNo, int pageSize, String appId, String isRead, String isSend) {
-        Page<MessageReceive> page = new Page<MessageReceive>(pageNo, pageSize);
+        Page<MessageReceive> page = new Page<>(pageNo, pageSize);
         return Static.messageReceiveService.findUserPage(page, appId, userId,isRead,null,null);
     }
 }

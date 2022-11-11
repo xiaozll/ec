@@ -11,7 +11,7 @@ import static com.eryansky.fastweixin.util.BeanUtil.requireNonNull;
 /**
  * json操作工具类，基于fastjson封装
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public final class JSONUtil {
@@ -19,7 +19,7 @@ public final class JSONUtil {
     /**
      * 默认json格式化方式
      */
-    public static final SerializerFeature[] DEFAULT_FORMAT = {SerializerFeature.WriteDateUseDateFormat, SerializerFeature.WriteEnumUsingToString,
+    protected static final SerializerFeature[] DEFAULT_FORMAT = {SerializerFeature.WriteDateUseDateFormat, SerializerFeature.WriteEnumUsingToString,
             SerializerFeature.WriteNonStringKeyAsString, SerializerFeature.QuoteFieldNames, SerializerFeature.SkipTransientField,
             SerializerFeature.SortField, SerializerFeature.PrettyFormat};
 

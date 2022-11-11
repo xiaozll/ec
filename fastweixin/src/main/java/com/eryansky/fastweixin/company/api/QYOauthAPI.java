@@ -13,7 +13,7 @@ import java.net.URLEncoder;
 /**
  * 企业号身份授权
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class QYOauthAPI extends QYBaseAPI {
@@ -51,7 +51,7 @@ public class QYOauthAPI extends QYBaseAPI {
         StringBuffer stringBuffer = new StringBuffer("https://open.weixin.qq.com/connect/oauth2/authorize?");
         stringBuffer.append("appid=").append(this.config.getCorpid())
                 .append("&redirect_uri=").append(url)
-                .append("&response_type=code&scope=").append(scope.toString())
+                .append("&response_type=code&scope=").append(scope)
                 .append("&state=").append(userstate)
                 .append("#wechat_redirect");
         return stringBuffer.toString();

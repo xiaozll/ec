@@ -336,8 +336,7 @@ public class PropertiesHelper {
 		p.load(inStream);
 	}
 
-	public void loadFromXML(InputStream in) throws IOException,
-			InvalidPropertiesFormatException {
+	public void loadFromXML(InputStream in) throws IOException {
 		p.loadFromXML(in);
 	}
 

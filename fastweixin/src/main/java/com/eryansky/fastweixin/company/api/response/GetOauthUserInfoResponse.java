@@ -6,7 +6,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  * Response -- 从Oauth中获取的用户信息
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2016-03-15
  */
 public class GetOauthUserInfoResponse extends BaseResponse {

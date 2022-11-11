@@ -2,7 +2,6 @@ package com.eryansky.modules.disk._enum;
 
 import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.common.orm._enum.IGenericEnum;
-import com.eryansky.modules.notice._enum.ReceiveObjectType;
 
 /**
  * 文件夹授权

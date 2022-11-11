@@ -1,34 +1,40 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.eryansky.common.utils.encode;
 
 import com.eryansky.common.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 /**
  * MD5工具类.
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date   2012-1-9下午3:15:25
  */
-public class MD5Util {    
-     /**  
+public class MD5Util {
+
+    private static final Logger logger = LoggerFactory.getLogger(MD5Util.class);
+
+     /**
      * 默认的密码字符串组合，用来将字节转换成 16 进制表示的字符,apache校验下载的文件的正确性用的就是默认的这个组合  
      */    
-    protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6','7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };    
+    protected static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6','7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
     protected static MessageDigest messagedigest = null;    
     static {    
         try {    
             messagedigest = MessageDigest.getInstance("MD5");    
         } catch (NoSuchAlgorithmException e) {    
-            e.printStackTrace();    
+            logger.error(e.getMessage(),e);
         }    
     }    
     /**
@@ -39,15 +45,14 @@ public class MD5Util {
      * @date   2012-1-9下午3:15:43
      */
     public static String getFileMD5String(File file) throws IOException {    
-        InputStream fis;    
-        fis = new FileInputStream(file);    
-        byte[] buffer = new byte[1024];    
-        int numRead = 0;    
-        while ((numRead = fis.read(buffer)) > 0) {    
-            messagedigest.update(buffer, 0, numRead);    
-        }    
-        fis.close();    
-        return bufferToHex(messagedigest.digest());    
+        try(InputStream fis = new FileInputStream(file)){
+            byte[] buffer = new byte[1024];
+            int numRead = 0;
+            while ((numRead = fis.read(buffer)) > 0) {
+                messagedigest.update(buffer, 0, numRead);
+            }
+        }
+        return bufferToHex(messagedigest.digest());
     }    
       
     /**
@@ -65,11 +70,11 @@ public class MD5Util {
         return bufferToHex(messagedigest.digest());  
     }  
     
-    public static String bufferToHex(byte bytes[]) {    
+    public static String bufferToHex(byte[] bytes) {
         return bufferToHex(bytes, 0, bytes.length);    
     }    
     
-    private static String bufferToHex(byte bytes[], int m, int n) {    
+    private static String bufferToHex(byte[] bytes, int m, int n) {
         StringBuffer stringbuffer = new StringBuffer(2 * n);    
         int k = m + n;    
         for (int l = m; l < k; l++) {    
@@ -86,7 +91,7 @@ public class MD5Util {
         stringbuffer.append(c1);    
     }
 
-    private static final String toHex(byte hash[]) {
+    private static final String toHex(byte[] hash) {
         if (hash == null) {
             return null;
         }
@@ -104,7 +109,7 @@ public class MD5Util {
 
     public static String hash(String s) {
         try {
-            return new String(toHex(getStringMD5(s).getBytes("UTF-8")).getBytes("UTF-8"), "UTF-8");
+            return new String(toHex(getStringMD5(s).getBytes(StandardCharsets.UTF_8)).getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         } catch (Exception e) {
             return s;
         }

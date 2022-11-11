@@ -3,7 +3,7 @@ package com.eryansky.j2cache.lock;
 /**
  * 回调接口
  *
- * @author 尔演@Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-12-24
  */
 public interface LockCallback<T> {

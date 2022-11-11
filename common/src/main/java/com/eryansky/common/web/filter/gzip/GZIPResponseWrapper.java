@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 public class GZIPResponseWrapper extends HttpServletResponseWrapper {
 	protected HttpServletResponse origResponse = null;
@@ -65,7 +66,7 @@ public class GZIPResponseWrapper extends HttpServletResponseWrapper {
 		}
 
 		stream = createOutputStream();
-		writer = new PrintWriter(new OutputStreamWriter(stream, "UTF-8"));
+		writer = new PrintWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8));
 		return (writer);
 	}
 

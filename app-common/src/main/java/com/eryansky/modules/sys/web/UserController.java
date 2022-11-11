@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -17,7 +17,6 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
-import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.core.security.annotation.RestApi;
@@ -26,12 +25,11 @@ import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.utils.DictionaryUtils;
 import com.eryansky.modules.sys.utils.PostUtils;
 import com.google.common.collect.Lists;
-import com.eryansky.core.excelTools.ExcelUtils;
-import com.eryansky.core.excelTools.JsGridReportBase;
-import com.eryansky.core.excelTools.TableData;
+import com.eryansky.core.excels.ExcelUtils;
+import com.eryansky.core.excels.JsGridReportBase;
+import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
 import com.eryansky.modules.disk.utils.DiskUtils;
@@ -45,10 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -61,7 +56,7 @@ import java.util.stream.Collectors;
 /**
  * 用户User管理 Controller层.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2013-3-21 上午12:20:13
  */
 @SuppressWarnings("serial")
@@ -94,7 +89,7 @@ public class UserController extends SimpleController {
 
     @RequiresPermissions("sys:user:view")
     @Logging(value = "用户管理", logType = LogType.access)
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     public String list() {
         return "modules/sys/user";
     }
@@ -105,17 +100,26 @@ public class UserController extends SimpleController {
      *
      * @return
      */
-    @RequestMapping(value = {"datagrid"})
+    @PostMapping(value = {"datagrid"})
     @ResponseBody
     public Datagrid<User> datagrid(String organId, String query, String userType) {
-        Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (StringUtils.isBlank(organId)) {
-            organId = (sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()) ? sessionInfo.getLoginHomeCompanyId():sessionInfo.getLoginOrganId();
+            organId = sessionInfo.getLoginOrganId();
+//            if(sessionInfo.isSuperUser() || SecurityUtils.isPermittedMaxRoleDataScope()){
+//                organId = sessionInfo.getLoginHomeCompanyId();
+//            }else if(SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY_AND_CHILD.getValue()) || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.HOME_COMPANY.getValue())){
+//                organId = sessionInfo.getLoginHomeCompanyId();
+//            }else if(SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.COMPANY_AND_CHILD.getValue()) || SecurityUtils.isPermittedDataScope(sessionInfo.getUserId(),DataScope.COMPANY.getValue())){
+//                organId = sessionInfo.getLoginCompanyId();
+//            }else{
+//                organId = sessionInfo.getLoginOrganId();
+//            }
         }
 
         page = userService.findPage(page, organId, query, userType);
-        Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
+        Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
         return dg;
     }
 
@@ -123,7 +127,7 @@ public class UserController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"input"})
+    @GetMapping(value = {"input"})
     public ModelAndView input(@ModelAttribute("model") User model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-input");
         List<Combobox> userTypes = Lists.newArrayList();
@@ -140,7 +144,7 @@ public class UserController extends SimpleController {
      * 性别下拉框
      *
      */
-    @RequestMapping(value = {"sexTypeCombobox"})
+    @PostMapping(value = {"sexTypeCombobox"})
     @ResponseBody
     public List<Combobox> sexTypeCombobox(String selectType) {
         List<Combobox> cList = Lists.newArrayList();
@@ -163,7 +167,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-保存用户", logType = LogType.access)
-    @RequestMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result save(@ModelAttribute("model") User user) {
         Result result = null;
@@ -176,6 +180,11 @@ public class UserController extends SimpleController {
         }
 
         if (StringUtils.isBlank(user.getId())) {// 新增
+            if(!SecurityUtils.isPermitted("sys:user:add")){
+                result = new Result(Result.ERROR, "未授权新增账号权限!", null);
+                logger.warn(result.toString());
+                return result;
+            }
             try {
                 user.setOriginalPassword(Encryption.encrypt(user.getPassword()));
             } catch (Exception e) {
@@ -201,7 +210,7 @@ public class UserController extends SimpleController {
 
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-删除用户", logType = LogType.access)
-    @RequestMapping(value = {"remove"})
+    @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         Result result;
@@ -214,7 +223,7 @@ public class UserController extends SimpleController {
     /**
      * 修改用户密码页面.
      */
-    @RequestMapping(value = {"password"})
+    @GetMapping(value = {"password"})
     public String password(@ModelAttribute("model") User model) {
         return "modules/sys/user-password";
 
@@ -231,7 +240,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @RequestMapping(value = {"updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "id", required = true) String id,
                                      @RequestParam(value = "upateOperate", required = true) String upateOperate,
@@ -294,7 +303,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @RequestMapping(value = {"_updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"_updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserPassword(@RequestParam(value = "userIds", required = true) List<String> userIds,
                                      @RequestParam(value = "newPassword", required = true) String newPassword){
@@ -315,7 +324,7 @@ public class UserController extends SimpleController {
     /**
      * 修改用户角色页面.
      */
-    @RequestMapping(value = {"role"})
+    @GetMapping(value = {"role"})
     public ModelAndView role(@ModelAttribute("model") User model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-role");
         modelAndView.addObject("model", model);
@@ -329,7 +338,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户角色", logType = LogType.access)
-    @RequestMapping(value = {"updateUserRole"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updateUserRole"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserRole(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "roleIds", required = false) Set<String> roleIds) {
@@ -341,7 +350,7 @@ public class UserController extends SimpleController {
     /**
      * 设置组织机构页面.
      */
-    @RequestMapping(value = {"organ"})
+    @GetMapping(value = {"organ"})
     public String organ(@ModelAttribute("model") User model, Model uiModel) {
         //设置默认组织机构初始值
         List<Combobox> defaultOrganCombobox = Lists.newArrayList();
@@ -368,7 +377,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户机构", logType = LogType.access)
-    @RequestMapping(value = {"updateUserOrgan"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updateUserOrgan"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserOrgan(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                   @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) {
@@ -380,7 +389,7 @@ public class UserController extends SimpleController {
     /**
      * 设置用户岗位页面.
      */
-    @RequestMapping(value = {"post"})
+    @GetMapping(value = {"post"})
     public String post(@ModelAttribute("model") User model, String organId, Model uiModel) {
         uiModel.addAttribute("organId", organId);
         List<String> postIds = postService.findPostIdsByUserId(model.getId(),organId);
@@ -396,7 +405,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户岗位", logType = LogType.access)
-    @RequestMapping(value = {"updateUserPost"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updateUserPost"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserPost(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                  @RequestParam(value = "postIds", required = false) Set<String> postIds) {
@@ -407,7 +416,7 @@ public class UserController extends SimpleController {
     /**
      * 修改用户资源页面.
      */
-    @RequestMapping(value = {"resource"})
+    @GetMapping(value = {"resource"})
     public String resource(@ModelAttribute("model") User model, Model uiModel) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         List<TreeNode> treeNodes = resourceService.findTreeNodeResourcesWithPermissions(sessionInfo.getUserId());
@@ -429,7 +438,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户资源", logType = LogType.access)
-    @RequestMapping(value = {"updateUserResource"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = {"updateUserResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result updateUserResource(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                      @RequestParam(value = "resourceIds", required = false) Set<String> resourceIds) {
@@ -446,7 +455,7 @@ public class UserController extends SimpleController {
      * @param multipartFile
      * @return
      */
-    @RequestMapping(value = {"upload"})
+    @PostMapping(value = {"upload"})
     @ResponseBody
     public Result upload(HttpServletRequest request,
                          @RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
@@ -478,7 +487,7 @@ public class UserController extends SimpleController {
      * @param response
      * @return
      */
-    @RequestMapping(value = {"userList"})
+    @PostMapping(value = {"userList"})
     @ResponseBody
     public String userList(String dataScope,
                            @RequestParam(value = "includeUserIds", required = false) List<String> includeUserIds,
@@ -491,6 +500,11 @@ public class UserController extends SimpleController {
             list = userService.findWithInclude(includeUserIds, query);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
             list = userService.findAllNormalWithExclude(excludeUserIds);
+        } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY_AND_CHILD.getValue()))) {
+            String organId = sessionInfo.getLoginHomeCompanyId();
+            list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);
+        } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY.getValue()))) {
+            list = userService.findUsersByCompanyId(sessionInfo.getLoginHomeCompanyId(), excludeUserIds);
         } else if ((StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue()))) {
             String organId = sessionInfo.getLoginCompanyId();
             list = userService.findOwnerAndChildsUsers(organId,null, excludeUserIds);
@@ -519,7 +533,7 @@ public class UserController extends SimpleController {
      * @param query
      * @return
      */
-    @RequestMapping(value = {"customUserList"})
+    @PostMapping(value = {"customUserList"})
     @ResponseBody
     public String userList(String dataScope,
                            HttpServletRequest request, HttpServletResponse response,
@@ -537,7 +551,7 @@ public class UserController extends SimpleController {
      * @param organId 机构ID
      * @return
      */
-    @RequestMapping(value = {"combogridOrganUser"})
+    @PostMapping(value = {"combogridOrganUser"})
     @ResponseBody
     public String combogridOrganUser(@RequestParam(value = "organId", required = true) String organId) {
         List<User> users = userService.findOrganUsers(organId);
@@ -551,12 +565,11 @@ public class UserController extends SimpleController {
      * @param q 查询关键字
      * @return
      */
-    @RequiresUser(required = false)
-    @RequestMapping(value = {"autoComplete"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"autoComplete"})
     @ResponseBody
     public List<String> autoComplete(String q) {
         List<String> cList = Lists.newArrayList();
-        Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
         User entity = new User();
         entity.setQuery(q);
         page = userService.findPage(page, entity);
@@ -569,7 +582,7 @@ public class UserController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() {
         Result result;
@@ -582,7 +595,7 @@ public class UserController extends SimpleController {
     /**
      * 修改用户信息.
      */
-    @RequestMapping("userInfoInput")
+    @GetMapping(value = "userInfoInput")
     public ModelAndView userInfoInput() {
         ModelAndView modelAndView = new ModelAndView("layout/north-userInfoInput");
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -596,7 +609,7 @@ public class UserController extends SimpleController {
      * 保存用户信息.
      */
     @Logging(value = "用户管理-保存信息", logType = LogType.access)
-    @RequestMapping(value = "saveUserinfo", produces = {MediaType.TEXT_HTML_VALUE})
+    @PostMapping(value = "saveUserinfo", produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
     public Result saveUserinfo(@ModelAttribute("model") User model) {
         Result result = null;
@@ -615,8 +628,7 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-    @RequiresUser(required = false)
-    @RequestMapping(value = {"organUserTreePage"})
+    @GetMapping(value = {"organUserTreePage"})
     public ModelAndView organUserTreePage(String parentId,
                                           String postCode,
                                           @RequestParam(value = "checkedUserIds", required = false) List<String> checkedUserIds,
@@ -642,8 +654,7 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-    @RequiresUser(required = false)
-    @RequestMapping(value = {"organUserTree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"organUserTree"})
     @ResponseBody
     public List<TreeNode> organUserTree(String parentId,
                                         String postCode,
@@ -681,8 +692,7 @@ public class UserController extends SimpleController {
      * @param response
      * @return
      */
-    @RequiresUser(required = false)
-    @RequestMapping(value = "ownerAndChildsOrganUserTree")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "ownerAndChildsOrganUserTree")
     @ResponseBody
     public List<TreeNode> ownerAndChildsOrganUserTree(String parentId,
                                    @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
@@ -707,8 +717,7 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
-    @RequiresUser(required = false)
-    @RequestMapping(value = { "organUserTreeByOrganCode" })
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = { "organUserTreeByOrganCode" })
     @ResponseBody
     public List<TreeNode> organUserTreeByOrganCode(String parentId,String organCode,
                                                    @RequestParam(value = "checkedUserIds", required = false)List<String> checkedUserIds,
@@ -738,7 +747,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-排序调整", logType = LogType.access)
-    @RequestMapping(value = {"changeOrderNo"})
+    @PostMapping(value = {"changeOrderNo"})
     @ResponseBody
     public Result changeOrderNo(@RequestParam(required = true) String upUserId,
                                 @RequestParam(required = true) String downUserId,
@@ -756,7 +765,7 @@ public class UserController extends SimpleController {
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-锁定用户", logType = LogType.access)
-    @RequestMapping(value = {"lock"})
+    @PostMapping(value = {"lock"})
     @ResponseBody
     public Result lock(@RequestParam(value = "userIds", required = false) List<String> userIds,
                        @RequestParam(required = false, defaultValue = User.STATUS_DELETE) String status) {
@@ -772,7 +781,7 @@ public class UserController extends SimpleController {
      */
     @RequiresRoles(AppConstants.ROLE_SYSTEM_MANAGER)
     @Logging(value = "用户管理-查看密码", logType = LogType.access)
-    @RequestMapping("viewUserPassword")
+    @PostMapping(value = "viewUserPassword")
     @ResponseBody
     public Result viewUserPassword(String loginName) throws Exception {
         Result result = Result.successResult();
@@ -791,7 +800,7 @@ public class UserController extends SimpleController {
      * @param multiple
      * @return
      */
-    @RequestMapping(value = {"select"})
+    @GetMapping(value = {"select"})
     public ModelAndView selectPage(@RequestParam(value = "userIds", required = false) List<String> userIds,
                                    @RequestParam(value = "excludeUserIds", required = false) List<String> excludeUserIds,
                                    String dataScope, Boolean multiple, @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
@@ -825,15 +834,15 @@ public class UserController extends SimpleController {
      * @param excludeUserIds 排除的用户IDS
      * @return
      */
-    @RequestMapping(value = {"datagridSelectUser"})
+    @PostMapping(value = {"datagridSelectUser"})
     @ResponseBody
     public String datagridSelectUser(String organId,
                                      String roleId,
                                      String query,
                                      @RequestParam(value = "excludeUserIds", required = false) List<String> excludeUserIds) {
-        Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
-        page = userService.findUsersByOrgan(page, organId, query, excludeUserIds);
-        Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
+        page = userService.findUserPageByOrgan(page, organId, query, excludeUserIds);
+        Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
         return JsonMapper.getInstance().toJson(dg, User.class, new String[]{"id", "loginName", "name", "sexView", "sort","defaultOrganName","companyName"});
     }
 
@@ -844,12 +853,12 @@ public class UserController extends SimpleController {
      * @return
      */
     @RequiresPermissions("sys:user:edit")
-    @RequestMapping("export")
+    @GetMapping(value = "export")
     public void export(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=UTF-8");
         List<User> users = userService.findAllNormal();
 
-        List<Object[]> list = new ArrayList<Object[]>();
+        List<Object[]> list = new ArrayList<>();
         Iterator<User> iterator = users.iterator();
         while (iterator.hasNext()) {
             User user = iterator.next();
@@ -857,7 +866,7 @@ public class UserController extends SimpleController {
                     user.getTel(), user.getMobile(), user.getEmail()});
         }
 
-        List<TableData> tds = new ArrayList<TableData>();
+        List<TableData> tds = new ArrayList<>();
 
         //Sheet
         String[] hearders = new String[]{"单位", "部门", "账号", "姓名", "性别", "电话", "手机号码", "邮箱"};//表头数组
@@ -875,13 +884,19 @@ public class UserController extends SimpleController {
     /**
      * 查看用户资源权限
      */
-    @RequestMapping(value = {"viewUserResources"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"viewUserResources"})
     public String viewUserResources(String userId, Model uiModel,
                                           HttpServletRequest request,
                                           HttpServletResponse response) {
         User model = UserUtils.getUser(userId);
         if(WebUtils.isAjaxRequest(request)){
             List<Resource> list = resourceService.findResourcesWithPermissions(userId);
+            //结构树展示优化
+            list.forEach(v->{
+                if(null == list.parallelStream().filter(r->r.getId().equals(v.get_parentId())).findAny().orElse(null)){
+                    v.setParent(null);
+                }
+            });
             return renderString(response, new Datagrid<>(list.size(), list));
         }
         uiModel.addAttribute("model", model);
@@ -891,7 +906,7 @@ public class UserController extends SimpleController {
     /**
      * 用户权限树
      */
-    @RequestMapping(value = {"userResourcesData"})
+    @PostMapping(value = {"userResourcesData"})
     @ResponseBody
     public Result userResourcesData(String userId) {
         String _userId = StringUtils.isNotBlank(userId) ? userId:SecurityUtils.getCurrentUserId();
@@ -905,7 +920,7 @@ public class UserController extends SimpleController {
      * @param model
      * @return
      */
-    @RequestMapping(value = {"detail"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"detail"})
     @ResponseBody
     @RestApi()
     public Result detail(@ModelAttribute("model") User model) {

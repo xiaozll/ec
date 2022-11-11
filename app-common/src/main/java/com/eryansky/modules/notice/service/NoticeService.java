@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -229,7 +229,8 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
             });
         }
         noticeReceiveInfoService.deleteByNoticeId(notice.getId());
-        receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
+//        receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
+        noticeReceiveInfoService.insertAutoBatch(receiveInfos);
         return notice;
     }
 
@@ -300,6 +301,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
 
         }
         if (!flag) {
+            receiveInfo.prePersist();
             receiveInfos.add(receiveInfo);
         }
 

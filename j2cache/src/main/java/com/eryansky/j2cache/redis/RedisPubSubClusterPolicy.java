@@ -39,14 +39,14 @@ public class RedisPubSubClusterPolicy extends JedisPubSub implements ClusterPoli
 
     private final static Logger log = LoggerFactory.getLogger(RedisPubSubClusterPolicy.class);
 
-    private int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
-    private static int CONNECT_TIMEOUT = 5000;    //Redis连接超时时间
-    private static int SO_TIMEOUT = 5000;
-    private static int MAX_ATTEMPTS = 3;
+    private final int LOCAL_COMMAND_ID = Command.genRandomSrc(); //命令源标识，随机生成，每个节点都有唯一标识
+    private static final int CONNECT_TIMEOUT = 5000;    //Redis连接超时时间
+    private static final int SO_TIMEOUT = 5000;
+    private static final int MAX_ATTEMPTS = 3;
 
     private Pool<Jedis> client;
     private JedisCluster cluster;
-    private String channel;
+    private final String channel;
     private CacheProviderHolder holder;
     private boolean clusterMode = false;
 
@@ -134,7 +134,6 @@ public class RedisPubSubClusterPolicy extends JedisPubSub implements ClusterPoli
                         break;
                     } catch (Exception e) {
                         log.error("failed connect redis cluster, reconnect it.", e);
-                        e.printStackTrace();
                         if (cluster != null) {
                             try {
                                 Thread.sleep(1000);

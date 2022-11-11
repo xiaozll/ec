@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 线程相关的Utils函数集合.
  * 
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class ThreadUtils {
 
@@ -94,9 +94,9 @@ public class ThreadUtils {
      */
     public static class WrapExceptionRunnable implements Runnable {
 
-        private static Logger logger = LoggerFactory.getLogger(WrapExceptionRunnable.class);
+        private static final Logger logger = LoggerFactory.getLogger(WrapExceptionRunnable.class);
 
-        private Runnable runnable;
+        private final Runnable runnable;
 
         public WrapExceptionRunnable(Runnable runnable) {
             this.runnable = runnable;

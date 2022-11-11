@@ -13,8 +13,25 @@ public class JWTUtils {
 
     private static final Logger log = LoggerFactory.getLogger(JWTUtils.class);
 
-    // 过期时间30分钟
+    /**
+     * 过期时间 默认30分钟
+     */
     private static final long EXPIRE_TIME = 1800 * 1000;
+    /**
+     * 密钥
+     */
+    private static final String DEFAULT_SECRET = "ec_secret";
+
+    /**
+     * 生成签名,30min后过期
+     *
+     * @param username 用户名
+     * @param secret   用户的密码
+     * @return 加密的token
+     */
+    public static String sign(String username) {
+        return sign(username,DEFAULT_SECRET,EXPIRE_TIME);
+    }
 
     /**
      * 生成签名,30min后过期
@@ -26,6 +43,7 @@ public class JWTUtils {
     public static String sign(String username, String secret) {
         return sign(username,secret,EXPIRE_TIME);
     }
+
     /**
      * 生成签名
      *

@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2012-2020 http://www.eryansky.com
+ *  Copyright (c) 2012-2022 https://www.eryansky.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  *
  * @param <T> Page中记录的类型.
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  */
 public class Page<T> implements Serializable{
 	//-- 公共变量 --//
@@ -59,9 +59,9 @@ public class Page<T> implements Serializable{
 
 
 	private int length = 8;// 显示页面长度
-	private int slider = 1;// 前后显示页面长度
+	private final int slider = 1;// 前后显示页面长度
 
-	private String funcName = "page"; // 设置点击页码调用的js函数名称，默认为page，在一页有多个分页对象时使用。
+	private final String funcName = "page"; // 设置点击页码调用的js函数名称，默认为page，在一页有多个分页对象时使用。
 
 	private String funcParam = ""; // 函数的附加参数，第三个参数值。
 
@@ -191,7 +191,7 @@ public class Page<T> implements Serializable{
 		//1
 		this.first = 1;
 
-		this.last = (int)(totalCount / (this.pageSize < 1 ? 20 : this.pageSize) + first - 1);
+		this.last = this.pageSize <= 1 ? 0 : (int)(totalCount / this.pageSize + first - 1);
 
 		if (this.totalCount % this.pageSize != 0 || this.last == 0) {
 			this.last++;
@@ -299,8 +299,8 @@ public class Page<T> implements Serializable{
 	public String getOrderBy() {
 		if(null != orderBy && !"".equals(orderBy)){
 			// SQL过滤，防止注入
-			String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|((extractvalue|updatexml)([\\s]*?)\\()|"
-					+ "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute|case when)\\b)";
+			String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|((extractvalue|updatexml|if|mid|database)([\\s]*?)\\()|"
+					+ "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute|case when|sleep|union|load_file)\\b)";
 			Pattern sqlPattern = Pattern.compile(reg, Pattern.CASE_INSENSITIVE);
 			if (sqlPattern.matcher(orderBy).find()) {
 				return "";
@@ -429,6 +429,13 @@ public class Page<T> implements Serializable{
 	 */
 	public Page<T> setTotalCount(final long totalCount) {
 		this.totalCount = totalCount;
+		if (pageSize >= totalCount){
+			pageNo = 1;
+		}
+		//如果总数据量大于从数据库中查询的数据量，重启计算页面各个参数
+		if((long) pageSize *pageNo>totalCount){
+			initialize();
+		}
 		return this;
 	}
 
@@ -436,7 +443,7 @@ public class Page<T> implements Serializable{
 	/**
 	 * 设置总页数
 	 * @param totalPage
-	 * @author 尔演&Eryan eryanwcp@gmail.com
+	 * @author Eryan
 	 * @date   2012-7-29 上午3:46:25
 	 */
 	public Page<T> setTotalPage(int totalPage) {

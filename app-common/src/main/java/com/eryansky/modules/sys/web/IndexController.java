@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012-2020 http://www.eryansky.com
+ * Copyright (c) 2012-2022 https://www.eryansky.com
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
@@ -12,20 +12,22 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.utils.AppConstants;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 主页管理
  *
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2014-09-16 10:30
  */
 @Controller
 @RequestMapping(value = "${adminPath}")
 public class IndexController extends SimpleController {
 
-    @RequestMapping(value = {""})
+    @GetMapping(value = {""})
     public ModelAndView welcome() {
         ModelAndView modelAnView = new ModelAndView("login");
         if (SecurityUtils.getCurrentSessionInfo() != null) {
@@ -34,7 +36,7 @@ public class IndexController extends SimpleController {
         return modelAnView;
     }
 
-    @RequestMapping(value = {"index"})
+    @GetMapping(value = {"index"})
     public ModelAndView index() {
         User sessionUser = SecurityUtils.getCurrentUser();
         String userPhoto = null;
@@ -50,7 +52,7 @@ public class IndexController extends SimpleController {
         return modelAnView;
     }
 
-    @RequestMapping("index/west")
+    @GetMapping(value = "index/west")
     public ModelAndView west() {
         ModelAndView modelAnView = new ModelAndView("layout/west");
         User sessionUser = SecurityUtils.getCurrentUser();

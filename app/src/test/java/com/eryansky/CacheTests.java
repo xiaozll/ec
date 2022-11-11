@@ -9,15 +9,18 @@ import com.eryansky.j2cache.CacheChannel;
 import com.eryansky.j2cache.lock.DefaultLockCallback;
 import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.Serializable;
 import java.util.List;
 
-@SpringBootTest
+@RunWith(value = SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = Application.class)
 public class CacheTests {
 
 	@Autowired(required = false)
@@ -76,6 +79,16 @@ public class CacheTests {
 		System.out.println(cacheChannel.queuePop(region));
 		System.out.println(cacheChannel.queuePop(region2));
 		System.out.println(cacheChannel.queueList(region));
+	}
+
+
+	@Test
+	public void queueThread() {
+		String region = "QUEUE_01";
+		String region2 = "QUEUE_02";
+		for(int i=0;i<1000;i++){
+			cacheChannel.queuePush(region,String.valueOf(i));
+		}
 	}
 
 	@Test

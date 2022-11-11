@@ -14,12 +14,12 @@ import org.apache.http.HttpStatus;
 
 /**
  * 企业微信号配置 支持集群
- * @author 尔演&Eryan eryanwcp@gmail.com
+ * @author Eryan
  * @date 2018-10-31
  */
 public final class ClusterQYAPIConfig extends QYAPIConfig {
 
-    private IAccessTokenCacheService accessTokenCacheService;
+    private final IAccessTokenCacheService accessTokenCacheService;
 
     /**
      * 构造方法一，实现同时获取AccessToken。不启用jsApi

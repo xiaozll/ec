@@ -69,9 +69,9 @@ public class QueuePollAspect {
 
     @AfterThrowing(value = "poll(queuePoll)", throwing = "e")
     public void throwingAdvice(JoinPoint joinPoint, QueuePoll queuePoll, Exception e) {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         String region = queuePoll.region() + "_" + queuePoll.value();
-        // 抛出错误时也要推出队列顶端元素，否则后面的接口就堵死了
+        // 抛出错误时也要退出队列顶端元素，否则后面的接口就堵死了
         CacheChannel cacheChannel = CacheUtils.getCacheChannel();
         cacheChannel.queuePop(region);
     }

@@ -124,8 +124,8 @@ public class ApiWebServiceImpl implements IApiWebService {
                 for (String localLoginName : receiveIds) {
                     User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
                     if (receiveUser == null) {
-                        logger.error("{},账号[{}],统一平台无相关账号信息", appId,localLoginName);
-                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
+                        logger.error("{},统一平台无相关账号信息:{}", appId,localLoginName);
+                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "统一平台无相关账号信息："+localLoginName);
                     }
                     receiveObjectIds.add(receiveUser.getId());
                 }
@@ -133,8 +133,8 @@ public class ApiWebServiceImpl implements IApiWebService {
                 for (String companyCode : receiveIds) {
                     Organ company = Static.organService.getByIdOrCode(companyCode);
                     if (company == null) {
-                        logger.error("{},机构[{}],统一平台无相关账号信息",appId,companyCode);
-                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
+                        logger.error("{},统一平台无相关机构信息:{}",appId,companyCode);
+                        return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "统一平台无相关机构信息："+companyCode);
                     }
                     List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());
                     if(Collections3.isNotEmpty(organList)){
@@ -240,8 +240,8 @@ public class ApiWebServiceImpl implements IApiWebService {
             for (String companyCode : receiveIds) {
                 Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {
-                    logger.error("{},机构[{}],统一平台无相关机构信息",appId,companyCode);
-                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
+                    logger.error("{},统一平台无相关机构信息:{}",appId,companyCode);
+                    return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "统一平台无相关机构信息："+companyCode);
                 }
                 List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());
                 if(Collections3.isNotEmpty(organList)){

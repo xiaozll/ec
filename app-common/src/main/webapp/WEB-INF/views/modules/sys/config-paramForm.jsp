@@ -22,8 +22,22 @@
                     }
                 }
             });
-
+            $("input[type='radio'][name='system.security.limit.ip.whiteEnable']").change(function() {
+                var value = this.value;
+                if (value == "true") {
+                    $("textarea[name='system.security.limit.ip.blacklist']").attr("readonly","readonly");
+                }else if (value == "false") {
+                    $("textarea[name='system.security.limit.ip.blacklist']").removeAttr("readonly");
+                }
+            });
             $.formLoadData($("#inputForm"),data);
+            var value = data['system.security.limit.ip.whiteEnable'];
+            if (value == "true") {
+                $("textarea[name='system.security.limit.ip.blacklist']").attr("readonly","readonly");
+            }else if (value == "false") {
+                $("textarea[name='system.security.limit.ip.blacklist']").removeAttr("readonly");
+            }
+
 
         });
     </script>

@@ -9,6 +9,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
 import com.eryansky.modules.notice._enum.ReceiveObjectType;
@@ -123,7 +124,7 @@ public class ApiWebServiceImpl implements IApiWebService {
                 for (String localLoginName : receiveIds) {
                     User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
                     if (receiveUser == null) {
-                        logger.error("账号[" + localLoginName + "],统一平台无相关账号信息");
+                        logger.error("{},账号[{}],统一平台无相关账号信息", appId,localLoginName);
                         return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "账号[" + localLoginName + "],统一平台无相关账号信息");
                     }
                     receiveObjectIds.add(receiveUser.getId());
@@ -132,7 +133,7 @@ public class ApiWebServiceImpl implements IApiWebService {
                 for (String companyCode : receiveIds) {
                     Organ company = Static.organService.getByIdOrCode(companyCode);
                     if (company == null) {
-                        logger.error("机构[" + companyCode + "],统一平台无相关账号信息");
+                        logger.error("{},机构[{}],统一平台无相关账号信息",appId,companyCode);
                         return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
                     }
                     List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());
@@ -239,7 +240,7 @@ public class ApiWebServiceImpl implements IApiWebService {
             for (String companyCode : receiveIds) {
                 Organ company = Static.organService.getByIdOrCode(companyCode);
                 if (company == null) {
-                    logger.error("机构[" + companyCode + "],统一平台无相关机构信息");
+                    logger.error("{},机构[{}],统一平台无相关机构信息",appId,companyCode);
                     return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "机构[" + companyCode + "],无相关映射信息");
                 }
                 List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());

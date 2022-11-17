@@ -533,9 +533,35 @@ public class DiskController extends SimpleController {
      * @param request
      * @param fileId   文件ID
      */
+    @RequiresUser(required = false)
     @Logging(logType = LogType.access, value = "下载文件")
     @GetMapping(value = {"fileDownload/{fileId}"})
     public ModelAndView fileDownload(HttpServletResponse response,
+                                     HttpServletRequest request, @PathVariable String fileId) throws Exception {
+        File file = fileService.get(fileId);
+        try {
+            return downloadSingleFileUtil(response, request, file);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            DownloadFileUtils.loggerHTTPHeader(request,response);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+//            throw e;
+        }
+
+    }
+
+
+    /**
+     * 文件下载
+     *
+     * @param response
+     * @param request
+     * @param fileId   文件ID
+     */
+    @Logging(logType = LogType.access, value = "下载文件")
+    @GetMapping(value = {"innerFileDownload/{fileId}"})
+    public ModelAndView innerFileDownload(HttpServletResponse response,
                                      HttpServletRequest request, @PathVariable String fileId) throws Exception {
         File file = fileService.get(fileId);
         try {

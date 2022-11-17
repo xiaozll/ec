@@ -8,6 +8,7 @@ import com.eryansky.core.security.SessionInfo;
 import com.eryansky.utils.AppConstants;
 import fr.opensagres.poi.xwpf.converter.core.BasicURIResolver;
 import fr.opensagres.poi.xwpf.converter.core.FileImageExtractor;
+import fr.opensagres.poi.xwpf.converter.core.XWPFConverterException;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLConverter;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -17,16 +18,15 @@ import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.usermodel.Picture;
 import org.apache.poi.hwpf.usermodel.PictureType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
@@ -41,6 +41,8 @@ import java.util.List;
  * @date 2015-01-09
  */
 public class Word2Html {
+
+    private static Logger logger = LoggerFactory.getLogger(Word2Html.class);
 
     public static final String ENCODING_UTF8 = "UTF-8";
 
@@ -91,7 +93,7 @@ public class Word2Html {
      */
     public static String docxToHtml(final HttpServletRequest request, InputStream inputStream, String outPutFile) throws IOException {
         XWPFDocument document = new XWPFDocument(inputStream);
-        XHTMLOptions options = XHTMLOptions.create();
+        XHTMLOptions options = XHTMLOptions.create().indent(4);
         String diskPath = null;
         String urlPath = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -116,9 +118,21 @@ public class Word2Html {
 
 //        OutputStream out = new FileOutputStream(new File(outPutFile));
 //        XHTMLConverter.getInstance().convert(document, out, options);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XHTMLConverter.getInstance().convert(document, baos, options);
-        String content = baos.toString();
+
+        String content = null;
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            XHTMLConverter.getInstance().convert(document, baos, options);
+            content = new String(baos.toByteArray(), ENCODING_UTF8);
+            //替换UEditor无法识别的转义字符
+            content = content.replaceAll("&ldquo;", "\"").replaceAll("&rdquo;", "\"").replaceAll("&mdash;", "-");
+        } catch (XWPFConverterException e) {
+            logger.error(e.getMessage(), e);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        if (StringUtils.isNotBlank(outPutFile)) {
+            writeFile(content, outPutFile);
+        }
         return content;
     }
 
@@ -195,21 +209,34 @@ public class Word2Html {
             }
         }
         Document htmlDocument = wordToHtmlConverter.getDocument();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        DOMSource domSource = new DOMSource(htmlDocument);
-        StreamResult streamResult = new StreamResult(out);
+        String content = null;
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()){
+            DOMSource domSource = new DOMSource(htmlDocument);
+            StreamResult streamResult = new StreamResult(out);
 
-        TransformerFactory tf = TransformerFactory.newInstance();
-        tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-        Transformer serializer = tf.newTransformer();
-        serializer.setOutputProperty(OutputKeys.ENCODING, ENCODING_UTF8);
-        serializer.setOutputProperty(OutputKeys.INDENT, "yes");////是否添加空格
-        serializer.setOutputProperty(OutputKeys.METHOD, "html");
-        serializer.transform(domSource, streamResult);
-        out.close();
-        String content = new String(out.toByteArray(), ENCODING_UTF8);
-//        writeFile(content, outPutFile);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            Transformer serializer = tf.newTransformer();
+            serializer.setOutputProperty(OutputKeys.ENCODING, ENCODING_UTF8);
+            serializer.setOutputProperty(OutputKeys.INDENT, "yes");////是否添加空格
+            serializer.setOutputProperty(OutputKeys.METHOD, "html");
+            serializer.transform(domSource, streamResult);
+            content = new String(out.toByteArray(), ENCODING_UTF8);
+            //替换UEditor无法识别的转义字符
+            content = content.replaceAll("&ldquo;", "\"").replaceAll("&rdquo;", "\"").replaceAll("&mdash;", "-");
+        } catch (TransformerFactoryConfigurationError e) {
+            logger.error(e.getMessage(),e);
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage(),e);
+        } catch (TransformerException e) {
+            logger.error(e.getMessage(),e);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage(),e);
+        }
+        if(StringUtils.isNotBlank(outPutFile)){
+            writeFile(content, outPutFile);
+        }
         return content;
 
     }
@@ -224,8 +251,8 @@ public class Word2Html {
             bw.write(content);
         } catch (FileNotFoundException fnfe) {
             fnfe.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+        } catch (IOException e) {
+            logger.error(e.getMessage(),e);
         } finally {
             try {
                 if (bw != null)

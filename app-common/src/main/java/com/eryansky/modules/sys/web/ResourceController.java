@@ -175,7 +175,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树-分级权限
      */
-    @PostMapping(value = {"resourceDataWithPermission"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"resourceDataWithPermission"})
     @ResponseBody
     public List<TreeNode> resourceDataWithPermission(){
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();

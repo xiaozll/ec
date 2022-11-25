@@ -10,15 +10,12 @@
     </parent>
 
     <artifactId>ec-app</artifactId>
-    <version>1.0.0.20221021</version>
+    <version>1.0.0.20221124</version>
     <packaging>${project.packaging}</packaging>
     <name>ec-app</name>
     <description>web</description>
 
     <properties>
-        <poi.version>5.2.2</poi.version>
-        <xwpf.version>2.0.4</xwpf.version>
-        <bsh.version>2.0b6</bsh.version>
         <velocity.version>2.3</velocity.version>
         <ckfinder.version>2.3</ckfinder.version>
         <sitemesh.version>2.4.2</sitemesh.version>
@@ -147,38 +144,6 @@
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.10.12</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${poi.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-scratchpad</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.opensagres.xdocreport</groupId>
-            <artifactId>fr.opensagres.poi.xwpf.converter.xhtml</artifactId>
-            <version>${xwpf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache-extras.beanshell</groupId>
-            <artifactId>bsh</artifactId>
-            <version>${bsh.version}</version>
         </dependency>
 
         <dependency>

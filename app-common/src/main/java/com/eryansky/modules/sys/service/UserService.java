@@ -61,7 +61,8 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
             CacheConstants.ORGAN_USER_TREE_2_CACHE,
             CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
+            CacheConstants.CACHE_UserDao,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void clearCache() {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
@@ -69,7 +70,8 @@ public class UserService extends CrudService<UserDao, User> {
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
                 + "," + CacheConstants.CACHE_OrganDao
-                + "," + CacheConstants.CACHE_UserDao);
+                + "," + CacheConstants.CACHE_UserDao
+                + "," + CacheConstants.CACHE_ResourceDao);
     }
 
     /**
@@ -83,7 +85,8 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
             CacheConstants.ORGAN_USER_TREE_2_CACHE,
             CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
+            CacheConstants.CACHE_UserDao,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void saveUser(User entity) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
@@ -91,7 +94,8 @@ public class UserService extends CrudService<UserDao, User> {
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
                 + "," + CacheConstants.CACHE_OrganDao
-                + "," + CacheConstants.CACHE_UserDao);
+                + "," + CacheConstants.CACHE_UserDao
+                + "," + CacheConstants.CACHE_ResourceDao);
         super.save(entity);
         //保存用户机构信息
 //        List<String> oldOrganIds = organService.findOrganIdsByUserId(entity.getId());
@@ -154,7 +158,8 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
             CacheConstants.ORGAN_USER_TREE_2_CACHE,
             CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
+            CacheConstants.CACHE_UserDao,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void save(User entity) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
@@ -162,7 +167,8 @@ public class UserService extends CrudService<UserDao, User> {
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
                 + "," + CacheConstants.CACHE_OrganDao
-                + "," + CacheConstants.CACHE_UserDao);
+                + "," + CacheConstants.CACHE_UserDao
+                + "," + CacheConstants.CACHE_ResourceDao);
         super.save(entity);
     }
 
@@ -177,7 +183,8 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
             CacheConstants.ORGAN_USER_TREE_2_CACHE,
             CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
+            CacheConstants.CACHE_UserDao,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteByIds(Collection<String> ids) {
         if (Collections3.isNotEmpty(ids)) {
             for (String id : ids) {
@@ -195,7 +202,8 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
             CacheConstants.ORGAN_USER_TREE_2_CACHE,
             CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
+            CacheConstants.CACHE_UserDao,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteById(String id) {
         logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
@@ -203,7 +211,8 @@ public class UserService extends CrudService<UserDao, User> {
                 + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
                 + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
                 + "," + CacheConstants.CACHE_OrganDao
-                + "," + CacheConstants.CACHE_UserDao);
+                + "," + CacheConstants.CACHE_UserDao
+                + "," + CacheConstants.CACHE_ResourceDao);
         if (isSuperUser(id)) {
             throw new SystemException("不允许删除超级用户!");
         }
@@ -890,22 +899,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organIds       所所机构ID集合
      * @param defaultOrganId 默认机构
      */
-    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
-            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
-            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
-            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
-            CacheConstants.ORGAN_USER_TREE_1_CACHE,
-            CacheConstants.ORGAN_USER_TREE_2_CACHE,
-            CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void updateUserOrgan(Collection<String> userIds, Collection<String> organIds, String defaultOrganId) {
-        logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
-                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
-                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
-                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
-                + "," + CacheConstants.CACHE_OrganDao
-                + "," + CacheConstants.CACHE_UserDao);
         if (Collections3.isNotEmpty(userIds)) {
             for (String userId : userIds) {
                 User model = this.get(userId);
@@ -1975,7 +1969,8 @@ public class UserService extends CrudService<UserDao, User> {
             CacheConstants.ORGAN_USER_TREE_1_CACHE,
             CacheConstants.ORGAN_USER_TREE_2_CACHE,
             CacheConstants.CACHE_OrganDao,
-            CacheConstants.CACHE_UserDao}, allEntries = true)
+            CacheConstants.CACHE_UserDao,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public int deleteUserResourceByResourceIdAndUserId(String userId, String resourceId) {
         Parameter parameter = Parameter.newParameter();
         parameter.put("userId", userId);

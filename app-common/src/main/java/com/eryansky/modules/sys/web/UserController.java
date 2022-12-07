@@ -382,6 +382,7 @@ public class UserController extends SimpleController {
     public Result updateUserOrgan(@RequestParam(value = "userIds", required = false) Set<String> userIds,
                                   @RequestParam(value = "organIds", required = false) Set<String> organIds, String defaultOrganId) {
         userService.updateUserOrgan(userIds, organIds, defaultOrganId);
+        userService.clearCache();
         return Result.successResult();
 
     }

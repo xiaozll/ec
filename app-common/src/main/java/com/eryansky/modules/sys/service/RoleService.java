@@ -41,8 +41,14 @@ public class RoleService extends CrudService<RoleDao, Role> {
     @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
-            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteByIds(Collection<String> ids) {
+        logger.debug("清空缓存:{}", CacheConstants.ROLE_ALL_CACHE
+                + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         if (Collections3.isNotEmpty(ids)) {
             for (String id : ids) {
                 deleteById(id);
@@ -59,12 +65,14 @@ public class RoleService extends CrudService<RoleDao, Role> {
     @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
-            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void deleteById(String id) {
         logger.debug("清空缓存:{}", CacheConstants.ROLE_ALL_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
-                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE);
+                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         super.delete(new Role(id));
     }
 
@@ -75,12 +83,14 @@ public class RoleService extends CrudService<RoleDao, Role> {
     @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
-            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void saveRole(Role entity) {
         logger.debug("清空缓存:{}", CacheConstants.ROLE_ALL_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
-                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE);
+                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
         saveRoleOrgans(entity.getId(), entity.getOrganIds());
@@ -334,7 +344,17 @@ public class RoleService extends CrudService<RoleDao, Role> {
      * @param id  岗位ID
      * @param ids 资源IDS
      */
+    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
+            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public void saveRoleResources(String id, Collection<String> ids) {
+        logger.debug("清空缓存:{}", CacheConstants.ROLE_ALL_CACHE
+                + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         Parameter parameter = Parameter.newParameter();
         parameter.put("id", id);
         parameter.put("ids", ids);
@@ -354,8 +374,14 @@ public class RoleService extends CrudService<RoleDao, Role> {
     @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
             CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
-            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE}, allEntries = true)
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.CACHE_ResourceDao}, allEntries = true)
     public int deleteRoleResourceByResourceIdAndRoleId(String roleId, String resourceId) {
+        logger.debug("清空缓存:{}", CacheConstants.ROLE_ALL_CACHE
+                + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                + "," + CacheConstants.CACHE_ResourceDao);
         Parameter parameter = Parameter.newParameter();
         parameter.put("roleId", roleId);
         parameter.put("resourceId", resourceId);

@@ -890,7 +890,22 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organIds       所所机构ID集合
      * @param defaultOrganId 默认机构
      */
+    @CacheEvict(value = {CacheConstants.ROLE_ALL_CACHE,
+            CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE,
+            CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
+            CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
+            CacheConstants.ORGAN_USER_TREE_1_CACHE,
+            CacheConstants.ORGAN_USER_TREE_2_CACHE,
+            CacheConstants.CACHE_OrganDao,
+            CacheConstants.CACHE_UserDao}, allEntries = true)
     public void updateUserOrgan(Collection<String> userIds, Collection<String> organIds, String defaultOrganId) {
+        logger.debug("清空缓存:{}", CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
+                + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
+                + "," + CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE
+                + "," + CacheConstants.ORGAN_USER_TREE_1_CACHE
+                + "," + CacheConstants.ORGAN_USER_TREE_2_CACHE
+                + "," + CacheConstants.CACHE_OrganDao
+                + "," + CacheConstants.CACHE_UserDao);
         if (Collections3.isNotEmpty(userIds)) {
             for (String userId : userIds) {
                 User model = this.get(userId);

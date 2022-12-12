@@ -186,7 +186,11 @@ public class SpringRedisGenericCache implements Level2Cache {
 					LockInsideExecutedException ie = new LockInsideExecutedException(e);
 					return lockCallback.handleException(ie);
 				} finally {
-					lock.unlock();
+					try {
+						lock.unlock();
+					} catch (Exception e) {
+						log.error(e.getMessage());
+					}
 				}
 			} else {
 				try {

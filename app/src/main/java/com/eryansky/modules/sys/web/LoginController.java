@@ -392,7 +392,7 @@ public class LoginController extends SimpleController {
      * 导航菜单.
      */
     @ResponseBody
-    @PostMapping(value = {"navTree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"navTree"})
     public List<TreeNode> navTree(HttpServletResponse response) {
         WebUtils.setNoCacheHeader(response);
         List<TreeNode> treeNodes = Lists.newArrayList();

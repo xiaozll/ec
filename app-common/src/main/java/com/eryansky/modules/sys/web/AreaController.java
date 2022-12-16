@@ -142,7 +142,7 @@ public class AreaController extends SimpleController {
      */
     @RequiresUser
     @ResponseBody
-    @PostMapping(value = "treeData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,
                                    String state,
                                    HttpServletResponse response) {
@@ -168,7 +168,7 @@ public class AreaController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "areaUpData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "areaUpData")
     public List<TreeNode> areaUpData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         List<Area> list = areaService.findAreaUp();
@@ -190,7 +190,7 @@ public class AreaController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "areaDownData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "areaDownData")
     public List<TreeNode> areaDownData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -215,7 +215,7 @@ public class AreaController extends SimpleController {
      * @return
      */
     @ResponseBody
-    @PostMapping(value = "ownAndChildData")
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "ownAndChildData")
     public List<TreeNode> ownAndChildData(String state,HttpServletResponse response) {
         List<TreeNode> treeNodes = Lists.newArrayList();
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();

@@ -114,7 +114,7 @@ public class DictionaryItemController extends SimpleController {
      * combotree下拉列表数据.
      */
     @SuppressWarnings("unchecked")
-    @PostMapping(value = {"combotree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"combotree"})
     @ResponseBody
     public List<TreeNode> combotree(@ModelAttribute("model") DictionaryItem dictionaryItem, String selectType) throws Exception {
         List<TreeNode> titleList = Lists.newArrayList();

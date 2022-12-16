@@ -134,7 +134,7 @@ public class DictionaryController extends SimpleController {
     /**
      * 下拉列表
      */
-    @PostMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) {
         List<Dictionary> list = dictionaryService.findParents();
@@ -248,7 +248,7 @@ public class DictionaryController extends SimpleController {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @PostMapping(value = {"combotree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"combotree"})
     @ResponseBody
     public List<TreeNode> combotree(String selectType, String dictionaryCode) {
         List<TreeNode> titleList = Lists.newArrayList();

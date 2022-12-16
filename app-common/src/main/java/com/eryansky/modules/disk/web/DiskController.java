@@ -119,7 +119,7 @@ public class DiskController extends SimpleController {
      * @param selectType
      * @return
      */
-    @PostMapping(value = {"folderTree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"folderTree"})
     @ResponseBody
     public List<TreeNode> folderTree(String folderAuthorize, String excludeFolderId, String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();
@@ -255,7 +255,7 @@ public class DiskController extends SimpleController {
      *
      * @return
      */
-    @PostMapping(value = {"diskTree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"diskTree"})
     @ResponseBody
     public List<TreeNode> diskTree() {
         List<TreeNode> treeNodes = Lists.newArrayList(); // 返回的树节点

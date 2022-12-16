@@ -147,7 +147,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树.
      */
-    @PostMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) throws Exception {
         List<TreeNode> treeNodes = null;
@@ -165,7 +165,7 @@ public class ResourceController extends SimpleController {
      * 资源树.
      */
     @RequiresPermissions("MANAGER")
-    @PostMapping(value = {"resourceData"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"resourceData"})
     @ResponseBody
     public List<TreeNode> resourceData(){
         List<TreeNode>  treeNodes = resourceService.findTreeNodeResources();
@@ -236,7 +236,7 @@ public class ResourceController extends SimpleController {
      * 父级资源下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @PostMapping(value = {"parent"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"parent"})
     @ResponseBody
     public List<TreeNode> parent(@ModelAttribute("model") Resource resource, String selectType) {
         List<TreeNode> treeNodes = null;

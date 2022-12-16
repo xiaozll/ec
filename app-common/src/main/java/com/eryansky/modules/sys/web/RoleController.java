@@ -364,7 +364,7 @@ public class RoleController extends SimpleController {
     /**
      * 机构树.
      */
-    @PostMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String selectType) {
         List<TreeNode> treeNodes = Lists.newArrayList();

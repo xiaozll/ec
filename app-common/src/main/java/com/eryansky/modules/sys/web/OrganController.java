@@ -133,7 +133,7 @@ public class OrganController extends SimpleController {
      * 父级机构下拉列表.
      */
     @SuppressWarnings("unchecked")
-    @PostMapping(value = {"parentOrgan"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"parentOrgan"})
     @ResponseBody
     public List<TreeNode> parentOrgan(String selectType, @ModelAttribute("model") Organ organ) {
         List<TreeNode> treeNodes = null;

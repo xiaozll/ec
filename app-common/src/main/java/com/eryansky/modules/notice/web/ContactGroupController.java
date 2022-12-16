@@ -96,7 +96,7 @@ public class ContactGroupController extends SimpleController {
      * 个人 联系人组树形菜单 查询用
      * @return
      */
-    @PostMapping(value = {"groupTree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"groupTree"})
     @ResponseBody
     public List<TreeNode> groupTree(String contactGroupType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
@@ -119,7 +119,7 @@ public class ContactGroupController extends SimpleController {
      * 个人 联系人组树形菜单
      * @return
      */
-    @PostMapping(value = {"tree"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody
     public List<TreeNode> tree(String contactGroupType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();

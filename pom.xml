@@ -35,7 +35,7 @@
         <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
         <spring-boot.version>2.7.7</spring-boot.version>
-        <spring-integration-redis.version>5.5.15</spring-integration-redis.version>
+        <spring-integration-redis.version>5.5.16</spring-integration-redis.version>
         <logback.version>7.2</logback.version>
         <byte-buddy.version>1.12.20</byte-buddy.version>
 

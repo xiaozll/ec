@@ -316,6 +316,10 @@
         DELETE FROM t_sys_user_post WHERE post_id = #{id} AND organ_id = #{organId}
     </delete>
 
+    <delete id="deletePostUsersByPostIdAndUserId">
+        DELETE FROM t_sys_user_post WHERE post_id = #{id} AND user_id = #{userId}
+    </delete>
+
     <delete id="deletePostUsersByPostIdAndOrganIdAndUserIds">
         DELETE FROM t_sys_user_post WHERE post_id = #{id} AND organ_id = #{organId} AND user_id IN
         <foreach item="item" collection="ids" open="(" separator="," close=")">

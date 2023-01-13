@@ -81,6 +81,14 @@ public interface PostDao extends CrudDao<Post> {
      */
     int deletePostUsersByPostIdAndOrganId(Parameter parameter);
 
+
+    /**
+     * 删除岗位用户关联信息（不指定机构、全部删除）
+     * @param parameter id:岗位ID userId:用户ID
+     * @return
+     */
+    int deletePostUsersByPostIdAndUserId(Parameter parameter);
+
     /**
      * 删除岗位用户关联信息(指定机构)
      *

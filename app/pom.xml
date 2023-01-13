@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>4.2.20221227.01</version>
+        <version>4.2.20221227.02</version>
     </parent>
 
     <artifactId>ec-app</artifactId>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.6.1</version>
+            <version>3.6.3</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -167,7 +167,7 @@
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
-            <version>0.4.18</version>
+            <version>0.4.19</version>
         </dependency>
         <!-- <dependency>
              <groupId>com.ckfinder</groupId>

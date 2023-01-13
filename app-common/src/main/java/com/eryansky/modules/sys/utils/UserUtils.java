@@ -693,7 +693,7 @@ public class UserUtils {
     }
 
     /**
-     * 删除用户岗位
+     * 删除用户岗位（指定机构）
      * @param userId 用户ID
      * @param organId 机构ID
      * @param postCode 岗位编码
@@ -711,6 +711,28 @@ public class UserUtils {
         }
 
         Static.postService.deletePostUsersByPostIdAndOrganIdAndUserIds(post.getId(),organId,Lists.newArrayList(userId));
+        SecurityUtils.reloadSessionPermission(userId);
+    }
+
+
+    /**
+     * 删除用户岗位（不指定机构，全部删除）
+     * @param userId 用户ID
+     * @param postCode 岗位编码
+     */
+    public static void deleteUserPost(String userId,String postCode) {
+        if(null == userId){
+            throw new ServiceException("用户ID不能为空！");
+        }
+        if(null == postCode){
+            throw new ServiceException("岗位编码不能为空！");
+        }
+        Post post = Static.postService.getByCode(postCode);
+        if(null == post){
+            throw new ServiceException("岗位【"+postCode+"】不存在！");
+        }
+
+        Static.postService.deletePostUsersByPostIdAndUserId(post.getId(),userId);
         SecurityUtils.reloadSessionPermission(userId);
     }
 

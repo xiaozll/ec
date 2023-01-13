@@ -305,6 +305,21 @@ public class PostService extends CrudService<PostDao, Post> {
         return  dao.deletePostUsersByPostIdAndOrganId(parameter);
     }
 
+
+    /**
+     * 删除岗位用户关联信息
+     *
+     * @param id      岗位ID
+     * @param userId  用户ID
+     */
+    public int deletePostUsersByPostIdAndUserId(String id, String userId) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("userId", userId);
+        return  dao.deletePostUsersByPostIdAndUserId(parameter);
+    }
+
+
     /**
      * 删除指定岗位-机构-用户关联信息
      *

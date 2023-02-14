@@ -101,7 +101,7 @@ $.extend($.fn.validatebox.defaults.rules, {
     },
     mobile: {
         validator: function (value, param) {
-            return /^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[8-9])[0-9]{8}$/.test(value);
+            return /^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[0-9])[0-9]{8}$/.test(value);
         },
         message: '正确的11位手机号码.'
     },

@@ -113,9 +113,9 @@ $.extend($.fn.validatebox.defaults.rules, {
     },
     phone: {//座机号码/固定电话验证
         validator: function(value, param){
-            return /(^0[1-9]{1}\d{9,10}$)|^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[0-9])[0-9]{8}$/.test(value);
+            return /^(0\d{2,3}\-)?([2-9]\d{6,7})+(\-\d{1,6})?$/.test(value);
         },
-        message: '电话号码输入有误，匹配格式：固话为区号(3-4位)号码(7-9位),手机为:11位手机号码.例如:"0791-88888888"'
+        message: '电话号码输入有误，匹配格式：固话为区号(3-4位)号码(7-9位).例如:"0791-88888888"'
     },
     mobileOrPhone: {//手机号码或固定电话验证
         validator: function(value, param){

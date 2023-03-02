@@ -1587,6 +1587,12 @@ $.validator.addMethod("phone", function(value, element) {
 	return this.optional(element) || (tel.test(value));
 }, "格式为:固话为区号(3-4位)号码(7-9位),手机为:真实手机号");
 
+// 电话号码验证
+$.validator.addMethod("mobileOrPhone", function(value, element) {
+	var tel = /(^0[1-9]{1}\d{9,10}$)|^(13[0-9]|14[5-9]|15[012356789]|166|17[0-8]|18[0-9]|19[0-9])[0-9]{8}$/;
+	return this.optional(element) || (tel.test(value));
+}, "格式为:固话为区号(3-4位)号码(7-9位),手机为:真实手机号");
+
 // 邮政编码验证
 $.validator.addMethod("zipCode", function(value, element) {
 	var tel = /^[0-9]{6}$/;

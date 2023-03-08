@@ -17,6 +17,11 @@ import java.lang.annotation.Target;
 public @interface RateLimiterApi {
 
 	/**
+	 * 全局范围或session范围
+	 * @return
+	 */
+	boolean scopeAll() default false;
+	/**
 	 * 缓存key
 	 *
 	 * @return
@@ -37,7 +42,7 @@ public @interface RateLimiterApi {
 	
 
 	/**
-	 * 计时周期(无效配置，请在缓存中配置caffeine.properties) 单位：秒
+	 * 计时周期(无效配置，请在缓存中配置caffeine.properties，对应region) 单位：秒
 	 * @return
 	 */
 	@Deprecated

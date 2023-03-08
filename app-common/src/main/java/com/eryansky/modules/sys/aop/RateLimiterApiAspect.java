@@ -45,7 +45,7 @@ public class RateLimiterApiAspect {
         String token = request.getSession().getId();
         String path = request.getServletPath();
         StringBuffer key = new StringBuffer();
-        key.append(token).append("_").append(path);
+        key.append(rateLimiterApi.scopeAll() ? "all":token).append("_").append(path);
 
         MethodSignature methodSignature = (MethodSignature) joinpoint.getSignature();
         int frequency = rateLimiterApi.frequency();

@@ -174,12 +174,7 @@ public class SpringRedisCache implements Level2Cache {
 //		long now = System.currentTimeMillis();
 		for (int i = 0; i < retryCount; i++) {
 			Lock lock = redisLockRegistry.obtain(region);
-			boolean flag = false;
-			try {
-				flag = lock.tryLock(keyExpireSeconds, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				log.error(e.getMessage(),e);
-			}
+			boolean flag = lock.tryLock();
 			if(flag) {
 				try {
 					return lockCallback.handleObtainLock();

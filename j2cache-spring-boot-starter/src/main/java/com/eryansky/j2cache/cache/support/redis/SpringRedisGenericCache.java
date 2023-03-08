@@ -172,12 +172,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 		int retryCount = Float.valueOf(timeoutInSecond * 1000 / frequency.getRetryInterval()).intValue();
 		for (int i = 0; i < retryCount; i++) {
 			Lock lock = redisLockRegistry.obtain(region);
-			boolean flag = false;
-			try {
-				flag = lock.tryLock(keyExpireSeconds, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				log.error(e.getMessage(),e);
-			}
+			boolean flag = lock.tryLock();
 			if(flag) {
 				try {
 					return lockCallback.handleObtainLock();
@@ -188,6 +183,7 @@ public class SpringRedisGenericCache implements Level2Cache {
 				} finally {
 					try {
 						lock.unlock();
+//						redisLockRegistry.expireUnusedOlderThan(keyExpireSeconds);
 					} catch (Exception e) {
 						log.error(e.getMessage());
 					}

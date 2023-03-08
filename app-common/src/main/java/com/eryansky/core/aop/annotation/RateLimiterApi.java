@@ -17,11 +17,6 @@ import java.lang.annotation.Target;
 public @interface RateLimiterApi {
 
 	/**
-	 * 全局范围或session范围
-	 * @return
-	 */
-	boolean scopeAll() default false;
-	/**
 	 * 缓存key
 	 *
 	 * @return
@@ -29,17 +24,22 @@ public @interface RateLimiterApi {
 	String region() default "lock_limit_key_timeout_default";
 
 	/**
-	 * 访问次数
+	 * 全局范围或session范围
 	 * @return
 	 */
-	int frequency() default 500;
+	boolean scopeAll() default false;
 
 	/**
 	 * 业务KEY
 	 * @return
 	 */
 	String paramKey() default "CDPathSta";
-	
+
+	/**
+	 * 访问次数
+	 * @return
+	 */
+	int frequency() default 500;
 
 	/**
 	 * 计时周期(无效配置，请在缓存中配置caffeine.properties，对应region) 单位：秒

@@ -773,6 +773,7 @@ public class SecurityUtils {
             Static.userService.logout(_sessionInfo.getUserId(), securityType);
         }
         Static.applicationSessionContext.removeSession(sessionId);
+        removeExtendSession(sessionId);
         if (null != invalidate && invalidate) {
             try {
 
@@ -784,6 +785,8 @@ public class SecurityUtils {
                 logger.error(e.getMessage());
             }
         }
+
+
     }
 
     /**
@@ -943,6 +946,7 @@ public class SecurityUtils {
        Static.applicationSessionContext.addExtendSession(sessionId,sessionInfoId);
     }
 
+
     /**
      * APP与Webview session同步兼容 查找关联已有sessionId
      * @param sessionId
@@ -969,6 +973,16 @@ public class SecurityUtils {
     public static void syncExtendSession(SessionInfo sessionInfo) {
         Collection<String> sessionInfoIds = Static.applicationSessionContext.findSessionExtendKes();
         sessionInfoIds.parallelStream().filter(v -> sessionInfo.getId().equals(getExtendSessionId(v))).forEach(v -> addExtendSession(v, sessionInfo.getSessionId()));
+    }
+
+
+    /**
+     * APP与Webview 同步删除关联信息
+     * @param sessionInfoId
+     */
+    public static void removeExtendSession(String sessionInfoId) {
+        Collection<String> sessionInfoIds = Static.applicationSessionContext.findSessionExtendKes();
+        sessionInfoIds.parallelStream().filter(v -> sessionInfoId.equals(getExtendSessionId(v))).forEach(v -> Static.applicationSessionContext.removeExtendSession(v));
     }
 }
 

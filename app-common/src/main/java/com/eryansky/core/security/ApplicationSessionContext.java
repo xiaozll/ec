@@ -103,6 +103,15 @@ public class ApplicationSessionContext {
 	}
 
 	/**
+	 * APP与Webview session同步兼容 添加关联已有sessionId
+	 * @param sessionId
+	 * @return
+	 */
+	public void removeExtendSession(String sessionId) {
+		CacheUtils.remove(CACHE_SESSION_EXTEND, sessionId);
+	}
+
+	/**
 	 * APP与Webview session同步兼容 查找关联已有sessionId
 	 * @param sessionId
 	 * @return

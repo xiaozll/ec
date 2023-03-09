@@ -981,8 +981,8 @@ public class SecurityUtils {
      * @param sessionInfoId
      */
     public static void removeExtendSession(String sessionInfoId) {
-        Collection<String> sessionInfoIds = Static.applicationSessionContext.findSessionExtendKes();
-        sessionInfoIds.parallelStream().filter(v -> sessionInfoId.equals(getExtendSessionId(v))).forEach(v -> Static.applicationSessionContext.removeExtendSession(v));
+        Collection<String> sessionIds = Static.applicationSessionContext.findSessionExtendKes();
+        sessionIds.parallelStream().filter(v -> sessionInfoId.equals(getExtendSessionId(v))).forEach(v -> Static.applicationSessionContext.removeExtendSession(v));
     }
 }
 

@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * API访问频率限制
+ * 注：仅限返回值为Result的方法添加盖注解
  * @author Eryan
  * @date : 2021-11-05
 */
@@ -15,6 +16,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface RateLimiterApi {
+
+	/**
+	 * 是否启用 默认值：true
+	 * <br/>支持SpEL表达式
+	 * @return
+	 */
+	String enable() default "true";
 
 	/**
 	 * 缓存key

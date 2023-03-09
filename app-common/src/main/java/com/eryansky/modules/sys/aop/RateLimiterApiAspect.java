@@ -38,6 +38,9 @@ public class RateLimiterApiAspect {
 
     @Around("limit(rateLimiterApi)")
     public Object aroundLog(ProceedingJoinPoint joinpoint, RateLimiterApi rateLimiterApi) throws Throwable {
+        if(!Boolean.parseBoolean(rateLimiterApi.enable())){
+            return joinpoint.proceed();
+        }
         HttpServletRequest request = SpringMVCHolder.getRequest();
         Assert.notNull(request, "request can not null");
 

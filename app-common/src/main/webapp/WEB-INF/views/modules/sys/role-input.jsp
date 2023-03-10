@@ -30,7 +30,7 @@
             </select>
         </div>
         <div>
-            <label>是否系统角色：</label>
+            <label>系统角色：</label>
             <e:isAdmin>
             <label style="text-align: left;width: 60px;">
                 <input type="radio" name="isSystem" style="width: 20px;" value="1" /> 是
@@ -53,7 +53,7 @@
         <div id="div_organIds" style="${model.dataScope eq 9 ? '':'display: none;'}">
             <label>授权机构：</label>
             <input id="organIds" name="organIds"
-                   style="width: 260px;height: 28px;">
+                   style="width: 200px;height: 28px;">
             <label><input id="changeMode" type="checkbox"/>级联模式</label>
         </div>
         <div>

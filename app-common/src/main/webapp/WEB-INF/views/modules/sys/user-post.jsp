@@ -11,7 +11,7 @@
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" value="${model.version}"/>
         <div>
-            <label>岗位：</label>
+            <label>关联岗位：</label>
             <input type="select" id="postIds" name="postIds"
                    style="width: 260px;height: 28px;"/>
         </div>

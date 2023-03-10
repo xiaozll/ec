@@ -142,7 +142,7 @@ function toggoleIsTop(isTop) {
 
 function loadNoticeOrgan() {
     $form_noticeOrgan_combotree = $("#_noticeOrganIds").combotree({
-        url: ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
+        url: ctxAdmin + '/sys/organ/tree?dataScope=4&cascade=true',
         multiple: true,//是否可多选
         editable: false,
         value: noticeReceiveOrganIds

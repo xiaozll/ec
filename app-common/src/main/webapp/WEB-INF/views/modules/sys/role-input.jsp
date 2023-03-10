@@ -12,10 +12,20 @@
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" value="${model.version}"/>
         <div>
+            <label>权限类型：</label>
+            <select id="roleType" name="roleType" class="easyui-combobox" style="width: 200px;height: 28px;" >
+                <c:forEach items="${roleTypes}" var="roleType">
+                    <option value="${roleType.value}" <c:if test="${model.roleType eq roleType.value}">selected</c:if>>${roleType.description}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div>
             <label>是否系统角色：</label>
+            <e:isAdmin>
             <label style="text-align: left;width: 60px;">
                 <input type="radio" name="isSystem" style="width: 20px;" value="1" /> 是
             </label>
+            </e:isAdmin>
             <label style="text-align: left;width: 60px;">
                 <input type="radio" name="isSystem" style="width: 20px;" value="0" /> 否
             </label>
@@ -46,14 +56,6 @@
             <input id="organIds" name="organIds"
                    style="width: 200px;height: 28px;">
             <label><input id="changeMode" type="checkbox"/>级联模式</label>
-        </div>
-        <div>
-            <label>权限类型：</label>
-            <select id="roleType" name="roleType" class="easyui-combobox" style="width: 120px;height: 28px;" >
-                <c:forEach items="${roleTypes}" var="roleType">
-                    <option value="${roleType.value}" <c:if test="${model.roleType eq roleType.value}">selected</c:if>>${roleType.description}</option>
-                </c:forEach>
-            </select>
         </div>
         <div>
             <label style="vertical-align: top;">备注：</label>

@@ -305,6 +305,18 @@ public class SecurityUtils {
             }
             if (DataScope.ALL.getValue().equals(r.getDataScope())) {
                 return true;
+            }else if (DataScope.HOME_COMPANY_AND_CHILD.getValue().equals(r.getDataScope())) {
+                OrganExtend company = OrganUtils.getHomeCompanyByUserId(user.getId());
+                List<String> organIds = Static.organService.findOwnerAndChildsIds(company.getId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
+            }else if (DataScope.HOME_COMPANY.getValue().equals(r.getDataScope())) {
+                OrganExtend company = OrganUtils.getHomeCompanyByUserId(user.getId());
+                List<String> organIds = Static.organService.findOwnerAndChildIds(company.getId());
+                if(organIds.contains(organId)){
+                    return true;
+                }
             }else if (DataScope.COMPANY_AND_CHILD.getValue().equals(r.getDataScope())) {
                 List<String> organIds = Static.organService.findOwnerAndChildsIds(user.getCompanyId());
                 if(organIds.contains(organId)){
@@ -900,6 +912,7 @@ public class SecurityUtils {
                 || StringUtils.contains(sessionInfo.getName(), query)
                 || StringUtils.contains(sessionInfo.getHost(), query)
                 || StringUtils.contains(sessionInfo.getIp(), query)
+                || StringUtils.contains(sessionInfo.getDeviceCode(), query)
                 || StringUtils.contains(sessionInfo.getAppVersion(), query)
                 || StringUtils.contains(sessionInfo.getMobile(), query)).collect(Collectors.toList());
     }

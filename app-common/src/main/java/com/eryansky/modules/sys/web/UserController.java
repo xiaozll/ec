@@ -391,28 +391,49 @@ public class UserController extends SimpleController {
      * 设置用户岗位页面.
      */
     @GetMapping(value = {"post"})
-    public String post(@ModelAttribute("model") User model, String organId, Model uiModel) {
-        uiModel.addAttribute("organId", organId);
-        List<String> postIds = postService.findPostIdsByUserId(model.getId(),organId);
+    public String post(@ModelAttribute("model") User model, Model uiModel) {
+        uiModel.addAttribute("organId", model.getDefaultOrganId());
+        List<String> postIds = postService.findPostIdsByUserId(model.getId(),model.getDefaultOrganId());
         uiModel.addAttribute("postIds", postIds);
+        uiModel.addAttribute("model", model);
         return "modules/sys/user-post";
     }
 
     /**
      * 修改用户岗位.
      *
-     * @param userIds 用户Id集合
+     * @param model 用户
      * @param postIds 岗位ID集合
      */
     @RequiresPermissions("sys:user:edit")
     @Logging(value = "用户管理-用户岗位", logType = LogType.access)
     @PostMapping(value = {"updateUserPost"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
-    public Result updateUserPost(@RequestParam(value = "userIds", required = false) Set<String> userIds,
+    public Result updateUserPost(@ModelAttribute("model") User model,
                                  @RequestParam(value = "postIds", required = false) Set<String> postIds) {
-        userService.updateUserPost(userIds, postIds);
+        userService.updateUserPost(model.getId(),model.getDefaultOrganId(), postIds);
         return Result.successResult();
     }
+
+    /**
+     * 修复用户岗位数据 自动清理用户不在部门的岗位信息 仅保留当前部门岗位信息
+     * @return
+     */
+    @RequiresPermissions("sys:user:edit")
+    @Logging(value = "用户管理-修复用户岗位数据", logType = LogType.access)
+    @GetMapping("fixUserPostData")
+    @ResponseBody
+    public Result fixUserPostData() {
+        logger.info("清理用户不在部门的岗位信息...");
+        List<User> userList = userService.findAllNormal();
+        userList.forEach(v->{
+            userService.deleteNotInUserOrgansPostsByUserId(v.getId(), Lists.newArrayList(v.getDefaultOrganId()));
+        });
+        logger.info("清理用户不在部门的岗位信息结束");
+        return Result.successResult();
+    }
+
+
 
     /**
      * 修改用户资源页面.

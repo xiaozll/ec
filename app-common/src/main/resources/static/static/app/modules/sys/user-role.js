@@ -9,7 +9,7 @@ $(function () {
 // 加載用户角色信息
 function loadUserRole() {
     $roleCombobox = $('#user_role_form-roleIds').combobox({
-        url: ctxAdmin + '/sys/role/combobox',
+        url: ctxAdmin + '/sys/role/comboboxWithPermission',
         multiple: true,
         editable: false
     });

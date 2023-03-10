@@ -216,6 +216,7 @@ public class PostController extends SimpleController {
             Combobox combobox = new Combobox(r.getId(), r.getName());
             cList.add(combobox);
         }
+        System.out.println(JsonMapper.toJsonString(cList));
         return cList;
     }
 

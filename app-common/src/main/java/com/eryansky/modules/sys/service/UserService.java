@@ -39,6 +39,7 @@ import com.eryansky.core.orm.mybatis.service.CrudService;
 import org.springframework.util.Assert;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.eryansky.modules.sys.service.OrganService.*;
 
@@ -940,15 +941,8 @@ public class UserService extends CrudService<UserDao, User> {
      * @param userIds 用户ID集合
      * @param postIds 岗位ID集合
      */
-    public void updateUserPost(Collection<String> userIds, Collection<String> postIds) throws ServiceException {
-        if (Collections3.isNotEmpty(userIds)) {
-            for (String userId : userIds) {
-                String organId = UserUtils.getDefaultOrganId(userId);
-                saveUserOrganPosts(userId, organId, postIds);
-            }
-        } else {
-            logger.warn("参数[userIds]为空.");
-        }
+    public void updateUserPost(String userId,String organId, Collection<String> postIds) throws ServiceException {
+        saveUserOrganPosts(userId, organId, postIds);
     }
 
     /**
@@ -2009,7 +2003,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param ids
      * @return
      */
-    public List<User> findByIds(List<String> ids) {
+    public List<User> findByIds(Collection<String> ids) {
         if(Collections3.isEmpty(ids)){
             return Collections.emptyList();
         }
@@ -2024,7 +2018,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param loginNames
      * @return
      */
-    public List<User> findByLoginNames(List<String> loginNames) {
+    public List<User> findByLoginNames(Collection<String> loginNames) {
         if(Collections3.isEmpty(loginNames)){
             return Collections.emptyList();
         }

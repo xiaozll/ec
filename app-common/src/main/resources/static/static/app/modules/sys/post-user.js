@@ -27,6 +27,7 @@ function loadUser() {
         columns: [[
             {field: 'ck', checkbox: true},
             {field: 'id', title: '主键ID', width: 100, hidden: 'true'},
+            {field: 'loginName', title: '账号', width: 100, hidden: 'true'},
             {field: 'name', title: '姓名', width: 60, sortable: true},
             {field: 'sexView', title: '性别', width: 50},
             {field: 'defaultOrganName', title: '部门', width: 120, sortable: true}

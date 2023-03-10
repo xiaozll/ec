@@ -70,7 +70,7 @@ public class Role extends DataEntity<Role> {
     private String query;
 
     public Role() {
-        this.isSystem = YesOrNo.YES.getValue();
+        this.isSystem = YesOrNo.NO.getValue();
         this.isActivity = YesOrNo.YES.getValue();
         this.organIds = Sets.newHashSet();
     }

@@ -38,7 +38,7 @@ $(function () {
 
 function loadData() {
     $.ajax({
-        url: ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
+        url: ctxAdmin + '/sys/organ/tree?dataScope=4&cascade=true',
         type: 'post',
         data: {},
         traditional: true,
@@ -71,7 +71,7 @@ function loadOrganIds(data) {
 
 function loadDataScope(data) {
     $("#dataScope").combobox({
-        url: ctxAdmin + '/sys/role/dataScope?selectType=select',
+        url: ctxAdmin + '/sys/role/dataScopeWithPermission?selectType=select',
         editable: false,
         onSelect: function (record) {
             var dataScope = record['value'];

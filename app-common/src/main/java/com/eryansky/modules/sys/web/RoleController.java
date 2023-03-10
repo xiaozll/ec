@@ -17,6 +17,7 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
@@ -41,6 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -109,7 +111,7 @@ public class RoleController extends SimpleController {
         }
         uiModel.addAttribute("organIds", roleService.findRoleOrganIds(model.getId()));
         uiModel.addAttribute("model", model);
-        uiModel.addAttribute("roleTypes", RoleType.values());
+        uiModel.addAttribute("roleTypes", SecurityUtils.isCurrentUserAdmin() ? RoleType.values():Lists.newArrayList(RoleType.USER));
         return "modules/sys/role-input";
     }
 
@@ -183,6 +185,41 @@ public class RoleController extends SimpleController {
     public Result updateRoleResource(@RequestParam(value = "resourceIds", required = false) Set<String> resourceIds,
                                      @ModelAttribute("model") Role role) {
         roleService.saveRoleResources(role.getId(), resourceIds);
+        return Result.successResult();
+    }
+
+
+    /**
+     * 从角色复制资源 页面
+     *
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = {"copy"})
+    public String copy(@ModelAttribute("model") Role model, Model uiModel) throws Exception {
+        uiModel.addAttribute("model",model);
+        return "modules/sys/role-copy";
+    }
+
+    /**
+     * 从角色复制资源
+     *
+     * @return
+     */
+    @RequiresPermissions("sys:role:edit")
+    @Logging(value = "角色管理-从角色复制资源", logType = LogType.access)
+    @PostMapping(value = {"copyFromRoles"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @ResponseBody
+    public Result copyFromRoles(@ModelAttribute("model") Role role,
+                                     @RequestParam(value = "roleIds", required = false) Collection<String> roleIds) {
+        //源有资源
+        List<Resource> resources = resourceService.findResourcesByRoleId(role.getId());
+        //新增资源
+        for(String rId:roleIds){
+            resources.addAll(resourceService.findResourcesByRoleId(rId));
+        }
+        Set<String> rIds = resources.stream().map(BaseEntity::getId).collect(Collectors.toSet());
+        roleService.saveRoleResources(role.getId(), rIds);
         return Result.successResult();
     }
 
@@ -337,12 +374,59 @@ public class RoleController extends SimpleController {
         return cList;
     }
 
+
     /**
-     * 角色下拉框列表.
+     * 数据范围下拉列表（授权）
+     *
+     * @param selectType {@link SelectType}
+     * @return
+     */
+    @PostMapping(value = {"dataScopeWithPermission"})
+    @ResponseBody
+    public List<Combobox> dataScopeWithPermission(String selectType) {
+        DataScope[] list = DataScope.values();
+        List<Combobox> cList = Lists.newArrayList();
+
+        Combobox titleCombobox = SelectType.combobox(selectType);
+        if (titleCombobox != null) {
+            cList.add(titleCombobox);
+        }
+        String maxRoleDataScope = SecurityUtils.getUserMaxRoleDataScope();
+        for (DataScope r : list) {
+            if(Integer.parseInt(r.getValue()) >= Integer.parseInt(maxRoleDataScope) ){
+                Combobox combobox = new Combobox(r.getValue() + "", r.getDescription());
+                cList.add(combobox);
+            }
+        }
+        return cList;
+    }
+
+    /**
+     * 角色下拉框列表
      */
     @PostMapping(value = {"combobox"})
     @ResponseBody
     public List<Combobox> combobox(String selectType) {
+        List<Role> list = roleService.findAll();
+        List<Combobox> cList = Lists.newArrayList();
+        Combobox titleCombobox = SelectType.combobox(selectType);
+        if (titleCombobox != null) {
+            cList.add(titleCombobox);
+        }
+        for (Role r : list) {
+            Combobox combobox = new Combobox(r.getId(), r.getName());
+            cList.add(combobox);
+        }
+        return cList;
+    }
+
+
+    /**
+     * 角色下拉框列表（授权）
+     */
+    @PostMapping(value = {"comboboxWithPermission"})
+    @ResponseBody
+    public List<Combobox> comboboxWithPermission(String selectType) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String organId = sessionInfo.getLoginCompanyId();
 
@@ -362,7 +446,7 @@ public class RoleController extends SimpleController {
 
 
     /**
-     * 机构树.
+     * 角色树.
      */
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody

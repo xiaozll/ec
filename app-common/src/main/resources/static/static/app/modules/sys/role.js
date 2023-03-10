@@ -2,9 +2,11 @@ var role_datagrid;
 var role_form;
 var role_search_form;
 var role_resource_form;
+var $role_copy_form;
 var role_user_form;
 var role_dialog;
 var role_resource_dialog;
+var $role_copy_dialog;
 var role_user_dialog;
 $(function () {
     role_form = $('#role_form').form();
@@ -62,12 +64,21 @@ $(function () {
             },
             '-',
             {
+                text: '复制资源',
+                iconCls: 'easyui-icon-cut',
+                handler: function () {
+                    copyRoleResource();
+                }
+            },
+            '-',
+            {
                 text: '设置资源',
                 iconCls: 'easyui-icon-edit',
                 handler: function () {
                     editRoleResource();
                 }
-            },'-',
+            },
+            '-',
             {
                 text: '查看资源',
                 iconCls: 'easyui-icon-search',
@@ -232,6 +243,9 @@ function initRoleResourceForm() {
     });
 }
 
+
+
+
 //修改角色角色
 function editRoleResource() {
     //选中的所有行
@@ -272,6 +286,82 @@ function editRoleResource() {
             },
             onLoad: function () {
                 initRoleResourceForm();
+            }
+        });
+
+    } else {
+        eu.showMsg("您未选择任何操作对象，请选择一行数据！");
+    }
+}
+
+//初始化复制资源表单
+function initRoleCopyForm() {
+    $role_copy_form = $('#role_copy_form').form({
+        url: ctxAdmin + '/sys/role/copyFromRoles',
+        onSubmit: function (param) {
+            $.messager.progress({
+                title: '提示信息！',
+                text: '数据处理中，请稍后....'
+            });
+            var isValid = $(this).form('validate');
+            if (!isValid) {
+                $.messager.progress('close');
+            }
+            return isValid;
+        },
+        success: function (data) {
+            $.messager.progress('close');
+            var json = $.parseJSON(data);
+            if (json.code === 1) {
+                $role_copy_dialog.dialog('destroy');//销毁对话框
+                role_datagrid.datagrid('reload');	// reload the role data
+                eu.showMsg(json.msg);//操作结果提示
+            } else {
+                eu.showAlertMsg(json.msg, 'error');
+            }
+        }
+    });
+}
+//复制资源
+function copyRoleResource() {
+    //选中的所有行
+    var rows = role_datagrid.datagrid('getSelections');
+    //选中的行（第一条）
+    var row = role_datagrid.datagrid('getSelected');
+    if (row) {
+        if (rows.length > 1) {
+            eu.showMsg("您选择了多个操作对象，默认操作最后一次被选中的记录！");
+        }
+        //弹出对话窗口
+        $role_copy_dialog = $('<div/>').dialog({
+            title: '从角色X复制资源',
+            top: 20,
+            width: 500,
+            height: 200,
+            modal: true,
+            maximizable: true,
+            href: ctxAdmin + '/sys/role/copy?id=' + row['id'],
+            buttons: [
+                {
+                    text: '保存',
+                    iconCls: 'easyui-icon-save',
+                    handler: function () {
+                        $role_copy_form.submit();
+                    }
+                },
+                {
+                    text: '关闭',
+                    iconCls: 'easyui-icon-cancel',
+                    handler: function () {
+                        $role_copy_dialog.dialog('destroy');
+                    }
+                }
+            ],
+            onClose: function () {
+                $role_copy_dialog.dialog('destroy');
+            },
+            onLoad: function () {
+                initRoleCopyForm();
             }
         });
 

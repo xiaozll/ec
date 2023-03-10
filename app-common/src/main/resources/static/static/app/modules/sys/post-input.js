@@ -27,7 +27,7 @@ $(function () {
 
 function loadData() {
     $.ajax({
-        url: ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
+        url: ctxAdmin + '/sys/organ/tree?dataScope=4&cascade=true',
         type: 'post',
         data: {},
         traditional: true,

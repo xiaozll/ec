@@ -13,7 +13,7 @@ $(function () {
     //组织机构树
     var selectedNode = null;//存放被选中的节点对象 临时变量
     $organ_tree = $("#organ_tree").tree({
-        url: ctxAdmin + "/sys/organ/tree?dataScope=2&cascade=true",
+        url: ctxAdmin + "/sys/organ/tree?dataScope=4&cascade=true",
         onClick: function (node) {
             search();
         },

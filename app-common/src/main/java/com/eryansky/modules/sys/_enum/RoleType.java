@@ -9,8 +9,7 @@ import com.eryansky.common.orm._enum.IGenericEnum;
 public enum RoleType implements IGenericEnum<RoleType> {
 
     USER("user", "普通角色"),
-    SECURITY_ROLE("security-role", "管理角色"),
-    ASSIGNMENT("assignment", "任务分配");
+    SECURITY_ROLE("security-role", "管理角色");
 
     /**
      * 值 String型

@@ -28,7 +28,7 @@ $(function () {
 
 function loadOrgan() {
     organs_combotree = $("#defaultOrganId").combotree({
-        url: ctxAdmin + '/sys/organ/tree?dataScope=2&cascade=true',
+        url: ctxAdmin + '/sys/organ/tree?dataScope=4&cascade=true',
         multiple: false,
         editable: false
     });

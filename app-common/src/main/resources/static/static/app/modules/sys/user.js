@@ -52,7 +52,7 @@ $(function () {
     //组织机构树
     var selectedNode = null;//存放被选中的节点对象 临时变量
     $organ_tree = $("#organ_tree").tree({
-        url: ctxAdmin + "/sys/organ/tree?dataScope=2&cascade=true",
+        url: ctxAdmin + "/sys/organ/tree?dataScope=4&cascade=true",
         onClick: function (node) {
             search();
         },
@@ -848,13 +848,6 @@ function initUserPostForm() {
             var isValid = $(this).form('validate');
             if (!isValid) {
                 $.messager.progress('close');
-            } else {
-                var rows = $user_datagrid.datagrid('getSelections');
-                var userIds = [];
-                $.each(rows, function (i, row) {
-                    userIds.push(row.id);
-                });
-                param.userIds = userIds;
             }
             return isValid;
         },
@@ -879,22 +872,14 @@ function editUserPost() {
     //选中的行（第一条）
     var row = $user_datagrid.datagrid('getSelected');
     if (row) {
-        var node = $organ_tree.tree('getSelected');
-
-        if (rows.length > 1 && node == null) {
-            eu.showMsg("批量设置岗位，请选中左侧机构树中的一个机构！");
+        if (rows.length > 1) {
+            row = rows[rows.length - 1];
+            eu.showMsg("您选择了多个操作对象，请选择一行数据！");
             return;
         }
-        var organParamUrl = "";
-        if (node != null) {
-            organParamUrl = "organId=" + node.id;
-        }
-
-        var userUrl = ctxAdmin + "/sys/user/post";
+        var userPostUrl = ctxAdmin + "/sys/user/post";
         if (row.id) {
-            userUrl = userUrl + "?id=" + row.id + "&" + organParamUrl;
-        } else {
-            userUrl += "?" + organParamUrl;
+            userPostUrl = userPostUrl + "?id=" + row.id;
         }
         //弹出对话窗口
         $user_post_dialog = $('<div/>').dialog({
@@ -904,7 +889,7 @@ function editUserPost() {
             height: 200,
             modal: true,
             maximizable: true,
-            href: userUrl,
+            href: userPostUrl,
             buttons: [
                 {
                     text: '保存',
@@ -926,9 +911,7 @@ function editUserPost() {
             },
             onLoad: function () {
                 initUserPostForm();
-                if (rows.length === 1) {//选中1个
-                    $user_post_form.form('load', row);
-                }
+                $user_post_form.form('load', row);
             }
         });
 

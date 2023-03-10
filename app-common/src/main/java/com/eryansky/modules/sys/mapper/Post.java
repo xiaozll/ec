@@ -7,6 +7,7 @@ package com.eryansky.modules.sys.mapper;
 
 
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.modules.sys.utils.OrganUtils;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.google.common.collect.Lists;
 
@@ -104,6 +105,10 @@ public class Post extends DataEntity<Post> {
 
     public void setOrganIds(List<String> organIds) {
         this.organIds = organIds;
+    }
+
+    public String getOrganName() {
+        return OrganUtils.getOrganName(organId);
     }
 
     public String getQuery() {

@@ -17,6 +17,12 @@
     <div data-options="region:'north',title:'过滤条件',collapsed:false,split:false,border:false"
          style="padding: 0px; height: 70px;width:100%; overflow-y: hidden;">
         <form id="role_search_form" style="padding: 5px;">
+            权限类型： &nbsp; <select id="roleType" name="roleType" class="easyui-combobox" style="width: 120px;height: 28px;" >
+                    <option value="">全部</option>
+                <c:forEach items="${roleTypes}" var="roleType">
+                    <option value="${roleType.value}">${roleType.description}</option>
+                </c:forEach>
+            </select>&nbsp;
             &nbsp;关键字： &nbsp;<input type="text" class="easyui-validatebox textbox eu-input" name="query" placeholder="请输入关键字..."
                               onkeydown="if(event.keyCode==13)search()"  maxLength="25" style="width: 160px" />
             &nbsp;<a class="easyui-linkbutton" href="#" data-options="iconCls:'easyui-icon-search',width:100,height:28,onClick:search">查 询</a>

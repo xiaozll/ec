@@ -42,6 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +78,8 @@ public class RoleController extends SimpleController {
     @RequiresPermissions("sys:role:view")
     @Logging(value = "角色管理", logType = LogType.access)
     @GetMapping(value = {""})
-    public String list() {
+    public String list(Model uiModel) {
+        uiModel.addAttribute("roleTypes", SecurityUtils.isCurrentUserAdmin() ? RoleType.values():Lists.newArrayList(RoleType.USER));
         return "modules/sys/role";
     }
 

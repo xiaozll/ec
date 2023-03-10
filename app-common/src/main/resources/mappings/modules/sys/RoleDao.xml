@@ -54,6 +54,9 @@
             <if test="organId != null and organId !=''">
                 AND a.organ_id = #{organId}
             </if>
+            <if test="roleType != null and roleType !=''">
+                AND a.role_type = #{roleType}
+            </if>
         </where>
         <choose>
             <when test="entityPage !=null and entityPage.orderBy != null and entityPage.orderBy != ''">

@@ -212,12 +212,13 @@ public class RoleController extends SimpleController {
     @ResponseBody
     public Result copyFromRoles(@ModelAttribute("model") Role role,
                                      @RequestParam(value = "roleIds", required = false) Collection<String> roleIds) {
-        //源有资源
+        //源有
         List<Resource> resources = resourceService.findResourcesByRoleId(role.getId());
-        //新增资源
+        //新增
         for(String rId:roleIds){
             resources.addAll(resourceService.findResourcesByRoleId(rId));
         }
+        //合并
         Set<String> rIds = resources.stream().map(BaseEntity::getId).collect(Collectors.toSet());
         roleService.saveRoleResources(role.getId(), rIds);
         return Result.successResult();

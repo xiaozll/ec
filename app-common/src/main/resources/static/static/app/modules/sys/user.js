@@ -264,6 +264,7 @@ $(function () {
                         return value;
                     }
                 },
+                {field: 'updateTime', title: '更新时间', width: 146},
                 {
                     field: 'operater', title: '操作', width: 260, formatter: function (value, rowData, rowIndex) {
                         var operaterHtml = "<a class='easyui-linkbutton' iconCls='easyui-icon-edit'  href='#' " + "onclick='edit(" + rowIndex + ");' >编辑</a>";

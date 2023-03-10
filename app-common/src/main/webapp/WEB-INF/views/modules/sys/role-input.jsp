@@ -12,8 +12,18 @@
         <!-- 用户版本控制字段 version -->
         <input type="hidden" id="version" name="version" value="${model.version}"/>
         <div>
+            <label>角色名称：</label>
+            <input name="name" type="text" class="easyui-validatebox textbox" value="${model.name}"
+                   maxLength="100" data-options="required:true,missingMessage:'请输入角色名称.',validType:['minLength[1]','legalInput']">
+        </div>
+        <div>
+            <label>角色编码：</label>
+            <input name="code" type="text" value="${model.code}" class="easyui-validatebox textbox"
+                   maxLength="36" >
+        </div>
+        <div>
             <label>权限类型：</label>
-            <select id="roleType" name="roleType" class="easyui-combobox" style="width: 200px;height: 28px;" >
+            <select id="roleType" name="roleType" class="easyui-combobox" style="width: 260px;height: 28px;" >
                 <c:forEach items="${roleTypes}" var="roleType">
                     <option value="${roleType.value}" <c:if test="${model.roleType eq roleType.value}">selected</c:if>>${roleType.description}</option>
                 </c:forEach>
@@ -37,24 +47,13 @@
                    style="width: 260px;height: 28px;">
         </div>
         <div>
-            <label>角色名称：</label>
-            <input name="name" type="text" class="easyui-validatebox textbox" value="${model.name}"
-                   maxLength="100" data-options="required:true,missingMessage:'请输入角色名称.',validType:['minLength[1]','legalInput']">
-        </div>
-        <div>
-            <label>角色编码：</label>
-            <input name="code" type="text" value="${model.code}" class="easyui-validatebox textbox"
-                   maxLength="36" >
-        </div>
-
-        <div>
             <label>数据范围：</label>
-            <input id="dataScope" name="dataScope" value="${model.dataScope}" style="width: 200px;height: 28px;">
+            <input id="dataScope" name="dataScope" value="${model.dataScope}" style="width: 260px;height: 28px;">
         </div>
         <div id="div_organIds" style="${model.dataScope eq 9 ? '':'display: none;'}">
             <label>授权机构：</label>
             <input id="organIds" name="organIds"
-                   style="width: 200px;height: 28px;">
+                   style="width: 260px;height: 28px;">
             <label><input id="changeMode" type="checkbox"/>级联模式</label>
         </div>
         <div>

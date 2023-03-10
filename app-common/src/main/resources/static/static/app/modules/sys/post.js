@@ -62,7 +62,8 @@ $(function () {
             {field: 'organName', title: '所属机构', width: 200, hidden: false},
             {field: 'code', title: '岗位编码', width: 200, sortable: true},
             {field: 'sort', title: '排序号', align: "right", width: 100, sortable: true},
-            {field: 'remark', title: '备注', width: 260}
+            {field: 'remark', title: '备注', width: 260},
+            {field: 'updateTime', title: '更新时间', width: 146}
         ]],
         toolbar: [{
             text: '新增',

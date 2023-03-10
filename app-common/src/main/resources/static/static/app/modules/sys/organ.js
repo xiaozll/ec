@@ -35,7 +35,8 @@ $(function () {
             {field: 'typeView', title: '机构类型', width: 100},
             {field: 'sort', title: '排序', align: 'right', width: 60, sortable: true},
             {field: 'statusView', title: '状态', align: 'center', width: 60},
-            {field: 'remark', title: '备注', width: 260}
+            {field: 'remark', title: '备注', width: 260},
+            {field: 'updateTime', title: '更新时间', width: 146}
         ]],
         toolbar: [{
             text: '新增',

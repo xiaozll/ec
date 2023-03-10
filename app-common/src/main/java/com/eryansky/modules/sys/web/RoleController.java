@@ -98,7 +98,7 @@ public class RoleController extends SimpleController {
         p = roleService.findPage(p, model);
         Datagrid<Role> datagrid = new Datagrid<>(p.getTotalCount(), p.getResult());
         String json = JsonMapper.getInstance().toJson(datagrid, Role.class,
-                new String[]{"id", "name", "code", "isSystem", "isSystemView", "organName","roleType","roleTypeView","dataScope","dataScopeView", "remark"});
+                new String[]{"id", "name", "code", "isSystem", "isSystemView", "organName","roleType","roleTypeView","dataScope","dataScopeView", "remark","updateTime"});
         return json;
     }
 

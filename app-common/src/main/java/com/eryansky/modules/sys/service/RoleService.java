@@ -85,7 +85,7 @@ public class RoleService extends CrudService<RoleDao, Role> {
             CacheConstants.RESOURCE_USER_MENU_TREE_CACHE,
             CacheConstants.RESOURCE_USER_RESOURCE_TREE_CACHE,
             CacheConstants.CACHE_ResourceDao}, allEntries = true)
-    public void saveRole(Role entity) {
+    public void saveRole(Role entity,Collection<String> dataOrganIds) {
         logger.debug("清空缓存:{}", CacheConstants.ROLE_ALL_CACHE
                 + "," + CacheConstants.RESOURCE_USER_AUTHORITY_URLS_CACHE
                 + "," + CacheConstants.RESOURCE_USER_MENU_TREE_CACHE
@@ -94,6 +94,7 @@ public class RoleService extends CrudService<RoleDao, Role> {
         Assert.notNull(entity, "参数[entity]为空!");
         super.save(entity);
         saveRoleOrgans(entity.getId(), entity.getOrganIds());
+        saveRoleDataOrgans(entity.getId(), dataOrganIds);
     }
 
     /**
@@ -245,6 +246,36 @@ public class RoleService extends CrudService<RoleDao, Role> {
         Parameter parameter = Parameter.newParameter();
         parameter.put("id", id);
         return dao.findRoleOrganIds(parameter);
+    }
+
+
+
+    /**
+     * 保存角色机构关联信息（授权数据权限机构）
+     * 保存之前先删除原有
+     *
+     * @param id  角色ID
+     * @param ids 机构IDS
+     */
+    public void saveRoleDataOrgans(String id, Collection<String> ids) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        parameter.put("ids", ids);
+        dao.deleteRoleDataOrgansByRoleId(parameter);
+        if (Collections3.isNotEmpty(ids)) {
+            dao.insertRoleDataOrgans(parameter);
+        }
+    }
+
+    /**
+     * 查找角色关联机构（授权数据权限机构）
+     *
+     * @param id
+     */
+    public List<String> findRoleDataOrganIds(String id) {
+        Parameter parameter = Parameter.newParameter();
+        parameter.put("id", id);
+        return dao.findRoleDataOrganIds(parameter);
     }
 
     /**

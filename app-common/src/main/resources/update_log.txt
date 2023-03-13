@@ -1,12 +1,22 @@
 ﻿20230310
-V4.2.20230224.07
+V4.2.20230224.09
 1、修复因变更机构岗位重复问题（自动清除历史机构岗位数据），以及优化人员岗位配置；
 #历史数据修复方法
 执行一次URL方法：/a/sys/user/fixUserPostData
 #组织机构同步，删除用户不在这些部门下的用户岗位信息
 userService.deleteNotInUserOrgansPostsByUserId(user.getId(), Lists.newArrayList(user.getDefaultOrganId()));
-2、优化角色分级授权配置，支持资源复制
-非管理账号仅授权查看：是否系统角色【是】、权限类型【普通角色】或 是否系统角色【否】、所属机构【本单位】相关数据
+2、优化角色分级授权配置，支持资源复制、支持分机构授权
+非管理账号仅授权查看：是否系统角色【是】、权限类型【普通角色】或 是否系统角色【否】、所属机构或授权机构【本单位】相关数据
+
+DROP TABLE IF EXISTS `t_sys_role_data_organ`;
+CREATE TABLE `t_sys_role_data_organ`  (
+  `ORGAN_ID` varchar(36) COMMENT '机构ID',
+  `ROLE_ID` varchar(36) COMMENT '角色ID',
+  INDEX `ROLE_ID`(`ROLE_ID`) USING BTREE,
+  INDEX `ORGAN_ID`(`ORGAN_ID`) USING BTREE
+) ENGINE = InnoDB COMMENT = '角色数据权限机构范围表';
+-- t_sys_role_organ 用于角色授权机构表
+
 3、修复部分账号切换账号权限不成功问题。
 
 20230113

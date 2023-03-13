@@ -154,7 +154,7 @@
         FROM t_sys_role a
         <where>
             a.status = '0'
-            AND (a.organ_id = #{organId} OR (a.is_system = #{isSystem} AND a.role_type = #{roleType}))
+            AND (a.organ_id = #{organId} OR (a.id IN SELECT role_id FROM t_sys_role_organ WHERE organ_id = #{organId} ) OR (a.is_system = #{isSystem} AND a.role_type = #{roleType}))
         </where>
     </select>
 
@@ -292,6 +292,26 @@
         WHERE a.role_id = #{id}
     </select>
     <!--角色机构-->
+
+
+    <!--角色机构（数据权限）-->
+    <delete id="deleteRoleDataOrgansByRoleId">
+        DELETE FROM t_sys_role_data_organ WHERE role_id = #{id}
+    </delete>
+
+    <insert id="insertRoleDataOrgans">
+        INSERT INTO t_sys_role_data_organ(role_id, organ_id)
+        <foreach collection="ids" item="item" separator=" union all ">
+            SELECT #{id}, #{item} FROM dual
+        </foreach>
+    </insert>
+
+    <select id="findRoleDataOrganIds" resultType="java.lang.String">
+        SELECT a.organ_id
+        FROM t_sys_role_data_organ a
+        WHERE a.role_id = #{id}
+    </select>
+    <!--角色机构（数据权限）-->
 
 
     <!--角色用户-->

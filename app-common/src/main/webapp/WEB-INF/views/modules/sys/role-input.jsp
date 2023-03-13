@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 <script type="text/javascript">
+    var dataOrganIds = ${fns:toJson(dataOrganIds)};
     var organIds = ${fns:toJson(organIds)};
     var isSystem = "${model.isSystem}";
 </script>
@@ -46,13 +47,18 @@
             <%--data-options="validType:combotreeRequired['#organId']"--%>
                    style="width: 260px;height: 28px;">
         </div>
+        <div id="div_organIds" style="${model.isSystem eq 0 ? '':'display: none;'}">
+            <label>授权机构：</label>
+            <input id="organIds" name="organIds"
+                   style="width: 260px;height: 28px;">
+        </div>
         <div>
             <label>数据范围：</label>
             <input id="dataScope" name="dataScope" value="${model.dataScope}" style="width: 260px;height: 28px;">
         </div>
-        <div id="div_organIds" style="${model.dataScope eq 9 ? '':'display: none;'}">
-            <label>授权机构：</label>
-            <input id="organIds" name="organIds"
+        <div id="div_data_organIds">
+            <label>机构范围：</label>
+            <input id="dataOrganIds" name="dataOrganIds"
                    style="width: 200px;height: 28px;">
             <label><input id="changeMode" type="checkbox"/>级联模式</label>
         </div>

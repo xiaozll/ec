@@ -1473,6 +1473,25 @@ comment on column T_SYS_ROLE_ORGAN.ROLE_ID is
 '角色ID';
 
 --==============================================================
+-- Table: T_SYS_ROLE_DATA_ORGAN
+--==============================================================
+create table T_SYS_ROLE_DATA_ORGAN
+(
+    ORGAN_ID             VARCHAR(36),
+    ROLE_ID              VARCHAR(36)
+);
+
+comment on table T_SYS_ROLE_DATA_ORGAN is
+'角色数据权限机构范围表';
+
+comment on column T_SYS_ROLE_DATA_ORGAN.ORGAN_ID is
+'机构ID';
+
+comment on column T_SYS_ROLE_DATA_ORGAN.ROLE_ID is
+'角色ID';
+
+
+--==============================================================
 -- Table: T_SYS_ROLE_RESOURCE
 --==============================================================
 create table T_SYS_ROLE_RESOURCE

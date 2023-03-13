@@ -111,6 +111,7 @@ public class RoleController extends SimpleController {
         if (StringUtils.isBlank(model.getId()) && !SecurityUtils.isCurrentUserAdmin()) {
             model.setIsSystem(YesOrNo.NO.getValue());
         }
+        uiModel.addAttribute("dataOrganIds", roleService.findRoleDataOrganIds(model.getId()));
         uiModel.addAttribute("organIds", roleService.findRoleOrganIds(model.getId()));
         uiModel.addAttribute("model", model);
         uiModel.addAttribute("roleTypes", SecurityUtils.isCurrentUserAdmin() ? RoleType.values():Lists.newArrayList(RoleType.USER));
@@ -124,7 +125,7 @@ public class RoleController extends SimpleController {
     @Logging(value = "角色管理-保存角色", logType = LogType.access)
     @PostMapping(value = {"save"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody()
-    public Result save(@ModelAttribute("model") Role role) {
+    public Result save(@ModelAttribute("model") Role role, @RequestParam(value = "dataOrganIds", required = false) List<String> dataOrganIds) {
         Result result;
         // 编码重复校验
         if (StringUtils.isNotBlank(role.getCode())) {
@@ -136,7 +137,7 @@ public class RoleController extends SimpleController {
             }
         }
 
-        roleService.saveRole(role);
+        roleService.saveRole(role,dataOrganIds);
         result = Result.successResult();
         return result;
     }

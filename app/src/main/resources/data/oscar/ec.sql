@@ -739,10 +739,18 @@ ALTER TABLE SYSDBA.T_SYS_ROLE  add constraint T_SYS_ROLE_PK primary key(ID);
 CREATE TABLE SYSDBA.T_SYS_ROLE_ORGAN
 (
     ROLE_ID character varying(36) ,
-    ORGAN_ID character varying(36) 
-)  
+    ORGAN_ID character varying(36)
+)
  BINLOG ON ;
 ---------------------TABLE INSERT SQL: T_SYS_ROLE_ORGAN---------------------
+                               ---------------------TABLE DDL: T_SYS_DATA_ROLE_ORGAN---------------------
+CREATE TABLE SYSDBA.T_SYS_DATA_ROLE_ORGAN
+(
+    ROLE_ID character varying(36) ,
+    ORGAN_ID character varying(36)
+)
+BINLOG ON ;
+---------------------TABLE INSERT SQL: T_SYS_DATA_ROLE_ORGAN---------------------
 ---------------------TABLE DDL: T_SYS_ROLE_RESOURCE---------------------
 CREATE TABLE SYSDBA.T_SYS_ROLE_RESOURCE
 (

@@ -76,6 +76,30 @@ public interface RoleDao extends CrudDao<Role> {
     List<String> findRoleOrganIds(Parameter parameter);
 
 
+
+    /**
+     * 删除角色机构关联信息（授权数据权限机构）
+     *
+     * @param parameter id:角色ID
+     */
+    int deleteRoleDataOrgansByRoleId(Parameter parameter);
+
+    /**
+     * 插入角色机构关联信息（授权数据权限机构）
+     *
+     * @param parameter id:角色ID ids:机构IDS
+     */
+    int insertRoleDataOrgans(Parameter parameter);
+
+    /**
+     * 角色机构关联信息（授权数据权限机构）
+     *
+     * @param parameter
+     * @return
+     */
+    List<String> findRoleDataOrganIds(Parameter parameter);
+
+
     /**
      * 删除角色用户关联信息
      *

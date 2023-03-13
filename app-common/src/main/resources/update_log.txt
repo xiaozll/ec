@@ -19,7 +19,6 @@ CREATE TABLE `t_sys_role_data_organ`  (
 
 3、内部应用单点跳转
 规则：/a/sso/目标代理URL全地址
-示例：移动门户（mp）跳转慧零售（tbk）应用 扫码销售：/a/sso/https://mp.jxtobacco.gov.cn/tbk/a/biz/sale/shopSaleOrder
 4、修复部分账号切换账号权限不成功问题。
 
 20230113

@@ -1,4 +1,4 @@
--- V4.2.20230224.09
+-- V4.2.20230224.10
 DROP TABLE IF EXISTS `t_sys_role_data_organ`;
 CREATE TABLE `t_sys_role_data_organ`  (
                                           `ORGAN_ID` varchar(36) COMMENT '机构ID',

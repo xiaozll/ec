@@ -83,7 +83,7 @@ public abstract class BaseService {
                             OrganExtend organExtend = OrganUtils.getOrganExtendByUserId(user.getId());
                             sqlString.append(" OR " + oa + ".id = '" + organExtend.getId() + "'");
                         } else if (DataScope.CUSTOM.getValue().equals(r.getDataScope())) {
-                            sqlString.append(" OR EXISTS (SELECT 1 FROM t_sys_role_organ WHERE role_id = '" + r.getId() + "'");
+                            sqlString.append(" OR EXISTS (SELECT 1 FROM t_sys_role_data_organ WHERE role_id = '" + r.getId() + "'");
                             sqlString.append(" AND organ_id = " + oa + ".id)");
                         }
                         dataScope.add(r.getDataScope());
@@ -187,7 +187,7 @@ public abstract class BaseService {
                 sqlString.append(" WHERE id = '" + organExtend.getId() + "'");
                 sqlString.append(" AND " + where + ")");
             } else if (DataScope.CUSTOM.getValue().equals(dataScopeString)) {
-                sqlString.append(" AND EXISTS (SELECT 1 FROM t_sys_role_organ ro123456, t_sys_organ o123456");
+                sqlString.append(" AND EXISTS (SELECT 1 FROM t_sys_role_data_organ ro123456, t_sys_organ o123456");
                 sqlString.append(" WHERE ro123456.organ_id = o123456.id");
                 sqlString.append(" AND ro123456.role_id = '" + roleId + "'");
                 sqlString.append(" AND o123456." + where + ")");

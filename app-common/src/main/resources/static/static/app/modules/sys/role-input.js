@@ -3,8 +3,8 @@ var dataOrganIds = dataOrganIds;
 var isSystem = isSystem;
 
 var $organ_combotree = undefined;
-var $data_organIds_combotree = undefined;
 var $organIds_combotree = undefined;
+var $data_organIds_combotree = undefined;
 $(function () {
     loadOrgan();
     loadOrganIds();

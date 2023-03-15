@@ -22,6 +22,8 @@ import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.net.InetAddresses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -598,6 +600,7 @@ public class SecurityUtils {
     public static void refreshSessionInfo(SessionInfo sessionInfo) {
         sessionInfo.setUpdateTime(Calendar.getInstance().getTime());
         Static.applicationSessionContext.addSession(sessionInfo);
+//        removeExtendSession(sessionInfo.getId());
         //syncExtendSession(sessionInfo);
     }
 
@@ -873,7 +876,7 @@ public class SecurityUtils {
      * @return
      */
     public static SessionInfo getSessionInfoByToken(String token) {
-        List<SessionInfo> list = findSessionInfoListWithOrder();
+        List<SessionInfo> list = findSessionInfoList();
         return list.parallelStream().filter(sessionInfo -> token.equals(sessionInfo.getToken())).findFirst().orElse(null);
     }
 
@@ -959,6 +962,26 @@ public class SecurityUtils {
        Static.applicationSessionContext.addExtendSession(sessionId,sessionInfoId);
     }
 
+    /**
+     * APP与Webview session cache keys
+     * @return
+     */
+    public static Collection<String> findExtendSessionIdKeys() {
+        return Static.applicationSessionContext.findSessionExtendKes();
+    }
+
+
+    /**
+     * APP与Webview session cache data
+     * @return
+     */
+    public static List<Map<String, String>> findExtendSessionIds() {
+        return Lists.newArrayList(findExtendSessionIdKeys()).parallelStream().map(v -> {
+            Map<String, String> data = Maps.newHashMap();
+            data.put(v, getExtendSessionId(v));
+            return data;
+        }).collect(Collectors.toList());
+    }
 
     /**
      * APP与Webview session同步兼容 查找关联已有sessionId

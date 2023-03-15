@@ -72,6 +72,10 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 String requestUrl = request.getRequestURI();
                 boolean verify = false;
                 String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
+                //判断是否已经登录过
+                if(null == sessionInfo){
+                    sessionInfo = SecurityUtils.getSessionInfoByToken(token);
+                }
                 String loginName = null;
                 User user = null;
                 try {

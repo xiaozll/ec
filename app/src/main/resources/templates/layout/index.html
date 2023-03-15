@@ -30,6 +30,7 @@
       var ctxStatic = ctx+'/static';
       var appURL = "[[${T(com.eryansky.utils.AppUtils).getClientAppURL()}]]";
       var portalPage = "[[${T(com.eryansky.utils.AppConstants).getAppPortalPage()}]]";
+      var isMobile = "${isMobile}";
     </script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -307,20 +308,26 @@
       function initMenu(){
         $.post(appURL+"/a/login/navTree2", function(data) {
           menuData = data;
-          // 初始化一级导航菜单
-          var ul = $("#navbar-collapse").find("ul").eq(0);
-          $.each(data, function (i, firstMenu) {
-            if (i === 0) {
-              $(ul).append('<li class="active"><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'<span class="sr-only"></span></a></li>');
-            } else {
-              $(ul).append('<li><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'</a></li>');
-            }
-          });
-          var defaultFirst = data[0];
-          // 初始化二级菜单
-          $('.sidebar-menu').sidebarMenu({data: defaultFirst.children});
-          // 初始化首页
-          initPortal(defaultFirst,false);
+          if(!isMobile){
+            // 初始化一级导航菜单
+            var ul = $("#navbar-collapse").find("ul").eq(0);
+            $.each(data, function (i, firstMenu) {
+              if (i === 0) {
+                $(ul).append('<li class="active"><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'<span class="sr-only"></span></a></li>');
+              } else {
+                $(ul).append('<li><a href="javascript:void(0);" onclick="navbarActive(this)"><i class="icon iconfont icon-'+firstMenu.icon+'"></i> '+firstMenu.text+'</a></li>');
+              }
+            });
+            var defaultFirst = data[0];
+            // 初始化二级菜单
+            // $('.sidebar-menu').sidebarMenu({data: defaultFirst.children});
+            $('.sidebar-menu').sidebarMenu({data: menuData});
+            // 初始化首页
+            initPortal(defaultFirst,false);
+          }else{
+            $('.sidebar-menu').sidebarMenu({data: menuData});
+          }
+
         },"json");
       }
 

@@ -80,6 +80,7 @@ public class LoginController extends SimpleController {
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         modelAndView.addObject("isValidateCodeLogin", isValidateCodeLogin);
+        modelAndView.addObject("isMobile", UserAgentUtils.isMobile(request));
         String randomSecurityToken = Identities.randomBase62(64);
         modelAndView.addObject("securityToken", randomSecurityToken);
         CacheUtils.put("securityToken:"+request.getSession().getId(),randomSecurityToken);

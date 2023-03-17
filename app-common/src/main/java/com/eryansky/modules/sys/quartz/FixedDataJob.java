@@ -25,7 +25,7 @@ import java.util.List;
  * @author Eryan
  * @date 2023-03-09
  */
-@QuartzJob(enable = false,name = "FixedDataJob", cronExp = "0 0 5 * * ?")
+//@QuartzJob(enable = false,name = "FixedDataJob", cronExp = "0 0 5 * * ?")
 public class FixedDataJob extends QuartzJobBean {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());

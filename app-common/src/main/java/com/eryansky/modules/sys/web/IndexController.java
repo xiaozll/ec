@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.security.SecurityUtils;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 主页管理
@@ -28,16 +31,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController extends SimpleController {
 
     @GetMapping(value = {""})
-    public ModelAndView welcome() {
+    public ModelAndView admin(HttpServletRequest request) {
         ModelAndView modelAnView = new ModelAndView("login");
         if (SecurityUtils.getCurrentSessionInfo() != null) {
-            return index();
+            return index(request);
         }
         return modelAnView;
     }
 
     @GetMapping(value = {"index"})
-    public ModelAndView index() {
+    public ModelAndView index(HttpServletRequest request) {
         User sessionUser = SecurityUtils.getCurrentUser();
         String userPhoto = null;
         if (sessionUser != null && StringUtils.isNotBlank(sessionUser.getPhoto())) {
@@ -49,6 +52,7 @@ public class IndexController extends SimpleController {
         }
         ModelAndView modelAnView = new ModelAndView("layout/index.html");
         modelAnView.addObject("userPhoto", userPhoto);
+        modelAnView.addObject("isMobile", UserAgentUtils.isMobile(request));
         return modelAnView;
     }
 

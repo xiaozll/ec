@@ -30,7 +30,7 @@
       var ctxStatic = ctx+'/static';
       var appURL = "[[${T(com.eryansky.utils.AppUtils).getClientAppURL()}]]";
       var portalPage = "[[${T(com.eryansky.utils.AppConstants).getAppPortalPage()}]]";
-      var isMobile = "${isMobile}";
+      var isMobile = [[${isMobile}]];
     </script>
   </head>
   <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -320,8 +320,7 @@
             });
             var defaultFirst = data[0];
             // 初始化二级菜单
-            // $('.sidebar-menu').sidebarMenu({data: defaultFirst.children});
-            $('.sidebar-menu').sidebarMenu({data: menuData});
+            $('.sidebar-menu').sidebarMenu({data: defaultFirst.children});
             // 初始化首页
             initPortal(defaultFirst,false);
           }else{

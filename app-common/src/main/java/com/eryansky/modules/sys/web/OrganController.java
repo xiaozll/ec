@@ -10,6 +10,7 @@ import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
@@ -38,10 +39,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 机构Organ管理 Controller层.
@@ -58,6 +57,8 @@ public class OrganController extends SimpleController {
     private OrganService organService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PostService postService;
     @Autowired
     private AreaService areaService;
     @Autowired
@@ -243,13 +244,18 @@ public class OrganController extends SimpleController {
     }
 
     /**
+     * @param parentId
      * @param selectType
      * @param dataScope  {@link DataScope}
+     * @param postId  岗位ID
      * @return
      */
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"tree"})
     @ResponseBody
-    public List<TreeNode> tree(String parentId, String selectType, String dataScope,
+    public List<TreeNode> tree(String parentId,
+                               String selectType,
+                               String dataScope,
+                               String postId,
                                @RequestParam(value = "cascade", required = false, defaultValue = "false") Boolean cascade) {
         List<TreeNode> titleList = Lists.newArrayList();
         TreeNode selectTreeNode = SelectType.treeNode(selectType);
@@ -257,21 +263,39 @@ public class OrganController extends SimpleController {
             titleList.add(selectTreeNode);
         }
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        String _parentId = parentId;
-        if (StringUtils.isBlank(parentId)) {
-            String organId = sessionInfo != null ? sessionInfo.getLoginOrganId() : null;
+        List<TreeNode> treeNodes;
+        //按岗位查找
+        if (StringUtils.isNotBlank(postId)) {
+            List<Organ> organList = organService.findAssociationOrgansByPostId(postId);
             if (sessionInfo.isSuperUser() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
-                organId = null;
-            } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY_AND_CHILD.getValue())) {
-                organId = sessionInfo.getLoginHomeCompanyId();
+
+            } else if(StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY_AND_CHILD.getValue())) {
+                organList = organList.parallelStream().filter(v-> Objects.equals(OrganUtils.getHomeCompanyIdByRecursive(v.getId()), sessionInfo.getLoginHomeCompanyId())).collect(Collectors.toList());
             } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) {
-                organId = sessionInfo.getLoginCompanyId();
+                organList = organList.parallelStream().filter(v-> Objects.equals(OrganUtils.getCompanyIdByRecursive(v.getId()), sessionInfo.getLoginCompanyId())).collect(Collectors.toList());
             } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) {
-                organId = sessionInfo.getLoginOrganId();
+                organList = organList.parallelStream().filter(v->v.getId().equals(sessionInfo.getLoginOrganId())).collect(Collectors.toList());
             }
-            _parentId = organId;
+            treeNodes = organList.parallelStream().map(v ->
+                    organService.organToTreeNode(v)
+            ).collect(Collectors.toList());
+        }else{
+            String _parentId = parentId;
+            if (StringUtils.isBlank(parentId)) {
+                String organId = sessionInfo != null ? sessionInfo.getLoginOrganId() : null;
+                if (sessionInfo.isSuperUser() || (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.ALL.getValue()))) {
+                    organId = null;
+                } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.HOME_COMPANY_AND_CHILD.getValue())) {
+                    organId = sessionInfo.getLoginHomeCompanyId();
+                } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.COMPANY_AND_CHILD.getValue())) {
+                    organId = sessionInfo.getLoginCompanyId();
+                } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) {
+                    organId = sessionInfo.getLoginOrganId();
+                }
+                _parentId = organId;
+            }
+            treeNodes = organService.findOrganTree(_parentId, true, cascade);
         }
-        List<TreeNode> treeNodes = organService.findOrganTree(_parentId, true, cascade);
         return ListUtils.union(titleList, treeNodes);
     }
 

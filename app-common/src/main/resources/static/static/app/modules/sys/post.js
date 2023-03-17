@@ -1,10 +1,13 @@
+var sessionInfoUserId = sessionInfoUserId;//参考父页面 post.jsp
+var hasPermissionPostEdit = hasPermissionPostEdit;
+var hasPermissionPostUserEdit = hasPermissionPostUserEdit;
+
 var $organ_tree;//组织机树(左边)
 var $post_datagrid;
 var $post_form;
 var $post_search_form;
 var $post_dialog;
 
-var $post_user_form;
 var $post_user_dialog;
 $(function () {
     $post_search_form = $('#post_search_form').form();
@@ -36,9 +39,50 @@ $(function () {
                     $(this).tree('select', selectedNode.target);
                 }
             }
-            $(this).tree("expandAll");
+            // $(this).tree("expandAll");
+            var rootNode = $(this).tree("getRoot");
+            if (rootNode) {//展开第一级
+                $(this).tree("expand", rootNode.target);
+            }
         }
     });
+
+
+    var toolbar = [];
+    if(hasPermissionPostEdit){
+        toolbar = toolbar.concat([{
+            text: '新增',
+            iconCls: 'easyui-icon-add',
+            handler: function () {
+                showDialog();
+            }
+        },'-',{
+            text: '编辑',
+            iconCls: 'easyui-icon-edit',
+            handler: function () {
+                edit()
+            }
+        },'-',{
+            text: '删除',
+                iconCls: 'easyui-icon-remove',
+                handler: function () {
+                del()
+            }
+        },'-']);
+    }
+
+    if(hasPermissionPostUserEdit){
+        toolbar = toolbar.concat([
+            {
+                text: '设置岗位',
+                iconCls: 'eu-icon-user',
+                handler: function () {
+                    editPostUser();
+                }
+            },
+            '-',
+        ]);
+    }
 
     //数据列表
     $post_datagrid = $('#post_datagrid').datagrid({
@@ -65,31 +109,7 @@ $(function () {
             {field: 'remark', title: '备注', width: 260},
             {field: 'updateTime', title: '更新时间', width: 146}
         ]],
-        toolbar: [{
-            text: '新增',
-            iconCls: 'easyui-icon-add',
-            handler: function () {
-                showDialog();
-            }
-        }, '-', {
-            text: '编辑',
-            iconCls: 'easyui-icon-edit',
-            handler: function () {
-                edit()
-            }
-        }, '-', {
-            text: '删除',
-            iconCls: 'easyui-icon-remove',
-            handler: function () {
-                del()
-            }
-        }, '-', {
-            text: '设置用户',
-            iconCls: 'eu-icon-user',
-            handler: function () {
-                editPostUser()
-            }
-        }],
+        toolbar: toolbar,
         onLoadSuccess: function () {
             $(this).datagrid('clearSelections');//取消所有的已选择项
             $(this).datagrid('unselectAll');//取消全选按钮为全选状态
@@ -213,34 +233,7 @@ function edit(rowIndex, rowData) {
 }
 
 
-//初始化岗位用户表单
-function initPostUserForm() {
-    $post_user_form = $('#post_user_form').form({
-        url: ctxAdmin + '/sys/post/updatePostUser',
-        onSubmit: function (param) {
-            $.messager.progress({
-                title: '提示信息！',
-                text: '数据处理中，请稍后....'
-            });
-            var isValid = $(this).form('validate');
-            if (!isValid) {
-                $.messager.progress('close');
-            }
-            return isValid;
-        },
-        success: function (data) {
-            $.messager.progress('close');
-            var json = $.parseJSON(data);
-            if (json.code === 1) {
-                $post_user_dialog.dialog('destroy');//销毁对话框
-                $post_datagrid.datagrid('reload');	// reload the role data
-                eu.showMsg(json.msg);//操作结果提示
-            } else {
-                eu.showAlertMsg(json.msg, 'error');
-            }
-        }
-    });
-}
+
 
 //修改岗位用户
 function editPostUser() {
@@ -250,30 +243,19 @@ function editPostUser() {
     var row = $post_datagrid.datagrid('getSelected');
     if (row) {
         if (rows.length > 1) {
-            eu.showMsg("您选择了多个操作对象，默认操作最后一次被选中的记录！");
+            eu.showMsg("您选择了多个操作对象，默认操作第一次被选中的记录！");
         }
         var userUrl = ctxAdmin + "/sys/post/user?id=" + row['id'];
-        var node = $organ_tree.tree('getSelected');//
-        if (node != null) {
-            userUrl += "&organId=" + node['id'];
-        }
-
         //弹出对话窗口
         $post_user_dialog = $('<div/>').dialog({
-            title: '岗位用户信息',
+            title: '岗位用户信息-'+row['id'],
             top: 20,
             width: 600,
-            height: 200,
+            height: 360,
             modal: true,
             maximizable: true,
             href: userUrl,
             buttons: [{
-                text: '保存',
-                iconCls: 'easyui-icon-save',
-                handler: function () {
-                    $post_user_form.submit();
-                }
-            }, {
                 text: '关闭',
                 iconCls: 'easyui-icon-cancel',
                 handler: function () {
@@ -284,7 +266,6 @@ function editPostUser() {
                 $post_user_dialog.dialog('destroy');
             },
             onLoad: function () {
-                initPostUserForm();
             }
         });
 
@@ -297,7 +278,6 @@ function editPostUser() {
 //删除
 function del() {
     var rows = $post_datagrid.datagrid('getSelections');
-
     if (rows.length > 0) {
         $.messager.confirm('确认提示！', '您确定要删除选中的所有行?', function (r) {
             if (r) {

@@ -1197,15 +1197,17 @@ public class UserService extends CrudService<UserDao, User> {
      *
      * @param page
      * @param roleId
+     * @param parentOrganId 分级授权机构ID
      * @param query
      * @return
      */
-    public Page<User> findPageRoleUsers(Page<User> page, String roleId, String query) {
+    public Page<User> findPageRoleUsers(Page<User> page, String roleId,String parentOrganId, String query) {
         Parameter parameter = new Parameter();
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put("roleId", roleId);
+        parameter.put("parentOrganId", parentOrganId);
         parameter.put("query", query);
         return page.setResult(dao.findUsersByRole(parameter));
     }
@@ -1296,15 +1298,19 @@ public class UserService extends CrudService<UserDao, User> {
      * @param page 分页对象
      * @param postId 岗位ID
      * @param postCode 岗位编码
+     * @param parentOrganId 顶级机构id
+     * @param query 关键字
      * @return
      */
-    public Page<User> findPageByPost(Page<User> page,String postId,String postCode) {
+    public Page<User> findPageByPost(Page<User> page,String postId,String postCode,String parentOrganId,String query) {
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put(BaseInterceptor.PAGE, page);
         parameter.put("postId", postId);
         parameter.put("postCode", postCode);
+        parameter.put("parentOrganId", parentOrganId);
+        parameter.put("query", query);
         return page.setResult(dao.findUsersByPost(parameter));
     }
 

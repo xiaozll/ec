@@ -297,7 +297,7 @@ function loadNoticeUser() {
         type: "post",
         dataType: 'json',
         contentType: "application/json",
-        url: ctxAdmin + '/sys/user/userList?dataScope=2',
+        url: ctxAdmin + '/sys/user/userList?dataScope=4',
         //async: false,
         success: function (data) {
             var dataSource = {data: data, group: {field: "defaultOrganName"}};
@@ -326,7 +326,7 @@ function _selectUser() {
     var input_selectUser_dialog = $("<div/>").dialog({
         title: "选择用户",
         top: 10,
-        href: ctxAdmin + '/sys/user/select?dataScope=2&cascade=true&userIds=' + userIds,
+        href: ctxAdmin + '/sys/user/select?dataScope=4&cascade=true&userIds=' + userIds,
         width: '700',
         height: '450',
         maximizable: true,

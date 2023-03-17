@@ -32,6 +32,7 @@ function initRoleUserDatagrid() {
                 {field: 'id', title: '主键', hidden: true, sortable: true, width: 80},
                 {field: 'sexView', title: '性别', width: 60, hidden: true, sortable: true},
                 {field: 'loginName', title: '账号', width: 60, hidden: true, sortable: true},
+                {field: 'mobileSensitive', title: '手机号', width: 100, hidden: true, sortable: true},
                 {field: 'sort', title: '排序号', width: 60, hidden: true, sortable: true},
                 {field: 'defaultOrganName', title: '部门', width: 200, sortable: true},
                 {field: 'companyName', title: '单位', width: 200, sortable: true}
@@ -51,6 +52,13 @@ function initRoleUserDatagrid() {
                 handler: function () {
                     delRoleUser()
                 }
+            },
+            {
+                text: '导出',
+                iconCls: 'easyui-icon-search',
+                handler: function () {
+                    exportQuery();
+                }
             }
         ]
     });
@@ -60,7 +68,7 @@ function showAddRoleUserDialog() {
     _dialog = $("<div/>").dialog({
         title: "选择用户",
         top: 10,
-        href: ctxAdmin + '/sys/role/select?dataScope=2&cascade=true&roleId=' + roleId,
+        href: ctxAdmin + '/sys/role/select?dataScope=4&cascade=true&roleId=' + roleId,
         width: '700',
         height: '450',
         maximizable: true,
@@ -150,4 +158,8 @@ function delRoleUser() {
 
 function searchRoleUser() {
     $role_user_datagrid.datagrid('load', $.serializeObject($user_role_search_form));
+}
+
+function exportQuery() {
+    $('#annexFrame').attr('src', ctxAdmin + '/sys/role/userDatagrid?export=true&roleId='+roleId +"&"+ $.param($.serializeObject($user_role_search_form)));
 }

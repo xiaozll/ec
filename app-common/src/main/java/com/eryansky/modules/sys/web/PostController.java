@@ -9,19 +9,29 @@ import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
+import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.excels.CsvUtils;
+import com.eryansky.core.excels.ExcelUtils;
+import com.eryansky.core.excels.JsGridReportBase;
+import com.eryansky.core.excels.TableData;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
+import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Post;
+import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.utils.PostUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
@@ -34,6 +44,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -139,6 +151,130 @@ public class PostController extends SimpleController {
         return Result.successResult();
     }
 
+    /**
+     * @param model 岗位
+     * @return
+     */
+    @GetMapping(value = {"select"})
+    public ModelAndView selectPage(@ModelAttribute("model") Post model) {
+        ModelAndView modelAndView = new ModelAndView("modules/sys/user-select");
+        List<User> users = null;
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        String dataScope = DataScope.COMPANY_AND_CHILD.getValue();
+        List<String> excludeUserIds =  userService.findUserIdsByPost(model.getId(),null);
+        modelAndView.addObject("users", users);
+        modelAndView.addObject("excludeUserIds", excludeUserIds);
+        if (Collections3.isNotEmpty(excludeUserIds)) {
+            modelAndView.addObject("excludeUserIdStrs", Collections3.convertToString(excludeUserIds, ","));
+        }
+        modelAndView.addObject("postId", model.getId());
+        modelAndView.addObject("dataScope", dataScope);//不分级授权
+        modelAndView.addObject("cascade", "true");//不分级授权
+        modelAndView.addObject("multiple", "");
+        modelAndView.addObject("userDatagridData", JsonMapper.getInstance().toJson(new Datagrid()));
+        return modelAndView;
+    }
+
+
+    /**
+     * 岗位用户数据
+     *
+     * @param postId 岗位ID
+     * @param query 关键字
+     * @param export 是否导出
+     * @return
+     */
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"userDatagrid"})
+    public String userDatagrid(String postId,
+                               String query,
+                               @RequestParam(value = "export", defaultValue = "false") Boolean export,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
+        //分级授权
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        String parentOrganId = SecurityUtils.isPermittedMaxRoleDataScope() ? null:sessionInfo.getLoginCompanyId();
+        if(export){
+            page.setPageSize(Page.PAGESIZE_ALL);
+        }
+
+        page = userService.findPageByPost(page, postId, null,parentOrganId,query);
+
+        if (export) {
+            List<Object[]> data = Lists.newArrayList();
+            page.getResult().forEach(u -> data.add(new Object[]{u.getName(), u.getLoginName(),u.getMobile(), u.getDefaultOrganName(), u.getCompanyName()}));
+
+            String title = "岗位用户信息-" + PostUtils.getPostName(postId);
+            //Sheet2
+            String[] hearders = new String[]{"姓名", "账号", "手机号", "部门", "单位"};//表头数组
+
+            if (page.getResult().size() < 65531) {
+                //导出Excel
+                try {
+                    TableData td = ExcelUtils.createTableData(data, ExcelUtils.createTableHeader(hearders, 0), null);
+                    td.setSheetTitle(title);
+                    JsGridReportBase report = new JsGridReportBase(request, response);
+                    report.exportToExcel(title, sessionInfo.getName(), td);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+            } else {
+                //导出CSV
+                try {
+                    CsvUtils.exportToCsv(title, hearders, data, request, response);
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            return null;
+        }
+        Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
+        return renderString(response, JsonMapper.getInstance().toJson(dg, User.class,
+                new String[]{"id", "name", "loginName","mobile","mobileSensitive","sexView", "sort", "defaultOrganName","companyName"}), WebUtils.JSON_TYPE);
+    }
+
+
+    /**
+     * 添加角色关联用户
+     *
+     * @param model   角色
+     * @param userIds 用户ID
+     * @return
+     */
+    @RequiresPermissions(value = {"sys:post:edit","sys:post:user:edit"},logical = Logical.OR)
+    @Logging(value = "岗位管理-添加关联用户", logType = LogType.access)
+    @PostMapping(value = {"addPostUser"})
+    @ResponseBody
+    public Result addPostUser(@ModelAttribute("model") Post model,
+                              @RequestParam(value = "userIds", required = true) Set<String> userIds) {
+        userIds.forEach(v->{
+            String organId = UserUtils.getDefaultOrganId(v);
+            postService.insertPostUsers(model.getId(),organId, Lists.newArrayList(v));
+        });
+        userService.clearCache();
+        return Result.successResult();
+    }
+
+    /**
+     * 移除角色关联用户
+     *
+     * @param model   角色
+     * @param userIds 用户IDS
+     * @return
+     */
+    @RequiresPermissions(value = {"sys:post:edit","sys:post:user:edit"},logical = Logical.OR)
+    @Logging(value = "岗位管理-移除关联用户", logType = LogType.access)
+    @PostMapping(value = {"removePostUser"})
+    @ResponseBody
+    public Result removePostUser(@ModelAttribute("model") Post model,
+                                 @RequestParam(value = "userIds", required = true) Set<String> userIds) {
+        userIds.forEach(v->{
+            postService.deletePostUsersByPostIdAndUserId(model.getId(), v);
+        });
+        userService.clearCache();
+        return Result.successResult();
+    }
+
 
     /**
      * 设置岗位用户页面.
@@ -148,41 +284,10 @@ public class PostController extends SimpleController {
         uiModel.addAttribute("organId", model.getOrganId());
         List<String> userIds = userService.findUserIdsByPostIdAndOrganId(model.getId(), model.getOrganId());
         uiModel.addAttribute("userIds", userIds);
+        uiModel.addAttribute("model", model);
         return "modules/sys/post-user";
     }
 
-    /**
-     * 修改岗位用户.
-     */
-    @RequiresPermissions("sys:post:edit")
-    @Logging(value = "岗位管理-岗位用户", logType = LogType.access)
-    @PostMapping(value = {"updatePostUser"}, produces = {MediaType.TEXT_HTML_VALUE})
-    @ResponseBody
-    public Result updatePostUser(@ModelAttribute("model") Post model,
-                                 @RequestParam(value = "userIds", required = false) Set<String> userIds) throws Exception {
-        postService.savePostOrganUsers(model.getId(), model.getOrganId(), userIds);
-        return Result.successResult();
-    }
-
-
-    /**
-     * 岗位所在部门下的人员信息
-     *
-     * @param postId
-     * @return
-     */
-    @PostMapping(value = {"postOrganUsers/{postId}"})
-    @ResponseBody
-    public Datagrid<User> postOrganUsers(@PathVariable String postId) {
-        List<User> users = userService.findUsersByPostId(postId);
-        Datagrid<User> dg;
-        if (Collections3.isEmpty(users)) {
-            dg = new Datagrid(0, Collections.emptyList());
-        } else {
-            dg = new Datagrid<User>(users.size(), users);
-        }
-        return dg;
-    }
 
     /**
      * 用户可选岗位列表 TODO

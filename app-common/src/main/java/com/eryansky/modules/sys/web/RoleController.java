@@ -17,9 +17,14 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.excels.CsvUtils;
+import com.eryansky.core.excels.ExcelUtils;
+import com.eryansky.core.excels.JsGridReportBase;
+import com.eryansky.core.excels.TableData;
 import com.eryansky.core.orm.mybatis.entity.BaseEntity;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.LogType;
@@ -29,6 +34,7 @@ import com.eryansky.modules.sys.mapper.Resource;
 import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.*;
+import com.eryansky.modules.sys.utils.PostUtils;
 import com.eryansky.modules.sys.utils.RoleUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.SelectType;
@@ -43,6 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -181,7 +188,7 @@ public class RoleController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions("sys:role:edit")
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:resource:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-角色资源", logType = LogType.access)
     @PostMapping(value = {"updateRoleResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -209,7 +216,7 @@ public class RoleController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions("sys:role:edit")
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:resource:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-从角色复制资源", logType = LogType.access)
     @PostMapping(value = {"copyFromRoles"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -244,20 +251,54 @@ public class RoleController extends SimpleController {
      * 角色用户数据
      *
      * @param roleId 角色ID
-     * @param name   角色ID
+     * @param query 关键字
      * @return
      */
-    @PostMapping(value = {"userDatagrid"})
-    @ResponseBody
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"userDatagrid"})
     public String userDatagrid(@RequestParam(value = "roleId", required = true) String roleId,
-                               String name) {
-        Page<User> page = new Page<User>(SpringMVCHolder.getRequest());
-        page = userService.findPageRoleUsers(page, roleId, name);
-        Datagrid<User> dg = new Datagrid<User>(page.getTotalCount(), page.getResult());
-        String json = JsonMapper.getInstance().toJson(dg, User.class,
-                new String[]{"id", "name", "loginName","sexView", "sort", "defaultOrganName","companyName"});
+                               String query,
+                               @RequestParam(value = "export", defaultValue = "false") Boolean export,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+        Page<User> page = new Page<>(SpringMVCHolder.getRequest());
+        if(export){
+            page.setPageSize(Page.PAGESIZE_ALL);
+        }
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        String parentOrganId = SecurityUtils.isPermittedMaxRoleDataScope() ? null:sessionInfo.getLoginCompanyId();
+        //无分级授权
+        page = userService.findPageRoleUsers(page, roleId,parentOrganId, query);
+        if (export) {
+            List<Object[]> data = Lists.newArrayList();
+            page.getResult().forEach(u -> data.add(new Object[]{u.getName(), u.getLoginName(),u.getMobile(), u.getDefaultOrganName(), u.getCompanyName()}));
 
-        return json;
+            String title = "角色用户信息-" + RoleUtils.getRoleName(roleId);
+            //Sheet2
+            String[] hearders = new String[]{"姓名", "账号", "手机号", "部门", "单位"};//表头数组
+
+            if (page.getResult().size() < 65531) {
+                //导出Excel
+                try {
+                    TableData td = ExcelUtils.createTableData(data, ExcelUtils.createTableHeader(hearders, 0), null);
+                    td.setSheetTitle(title);
+                    JsGridReportBase report = new JsGridReportBase(request, response);
+                    report.exportToExcel(title, sessionInfo.getName(), td);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
+            } else {
+                //导出CSV
+                try {
+                    CsvUtils.exportToCsv(title, hearders, data, request, response);
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+            return null;
+        }
+        Datagrid<User> dg = new Datagrid<>(page.getTotalCount(), page.getResult());
+        return renderString(response, JsonMapper.getInstance().toJson(dg, User.class,
+                new String[]{"id", "name", "loginName","mobile","mobileSensitive","sexView", "sort", "defaultOrganName","companyName"}), WebUtils.JSON_TYPE);
     }
 
     /**
@@ -275,7 +316,7 @@ public class RoleController extends SimpleController {
         if (Collections3.isNotEmpty(excludeUserIds)) {
             modelAndView.addObject("excludeUserIdStrs", Collections3.convertToString(excludeUserIds, ","));
         }
-        modelAndView.addObject("dataScope", "2");//不分级授权
+        modelAndView.addObject("dataScope", DataScope.COMPANY_AND_CHILD.getValue());//不分级授权
         modelAndView.addObject("cascade", "true");//不分级授权
         modelAndView.addObject("multiple", "");
         modelAndView.addObject("userDatagridData", JsonMapper.getInstance().toJson(new Datagrid()));
@@ -289,13 +330,14 @@ public class RoleController extends SimpleController {
      * @param userIds 用户ID
      * @return
      */
-    @RequiresPermissions("sys:role:edit")
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-添加关联用户", logType = LogType.access)
     @PostMapping(value = {"addRoleUser"})
     @ResponseBody
     public Result addRoleUser(@ModelAttribute("model") Role model,
                               @RequestParam(value = "userIds", required = true) Set<String> userIds) {
         roleService.insertRoleUsers(model.getId(), userIds);
+        userService.clearCache();
         return Result.successResult();
     }
 
@@ -307,13 +349,14 @@ public class RoleController extends SimpleController {
      * @param userIds 用户IDS
      * @return
      */
-    @RequiresPermissions("sys:role:edit")
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-移除关联用户", logType = LogType.access)
     @PostMapping(value = {"removeRoleUser"})
     @ResponseBody
     public Result removeRoleUser(@ModelAttribute("model") Role model,
                                  @RequestParam(value = "userIds", required = true) Set<String> userIds) {
         roleService.deleteRoleUsersByRoleIdANDUserIds(model.getId(), userIds);
+        userService.clearCache();
         return Result.successResult();
     }
 
@@ -323,13 +366,14 @@ public class RoleController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions("sys:role:edit")
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-保存角色用户", logType = LogType.access)
     @PostMapping(value = {"updateRoleUser"})
     @ResponseBody
     public Result updateRoleUser(@ModelAttribute("model") Role model,
                                  @RequestParam(value = "userIds", required = false) Set<String> userIds) {
         roleService.saveRoleUsers(model.getId(), userIds);
+        userService.clearCache();
         return Result.successResult();
     }
 

@@ -89,7 +89,6 @@ function uploadifyImage() {
         //上传到服务器，服务器返回相应信息到data里
         onUploadSuccess: function (file, data, response) {
             data = eval("(" + data + ")");
-            console.log(file, data, response);
             if (1 === data['code']) {
                 addImageFile(data['obj']['id'], data['obj']['url']);
                 imageDataMap.put(file.index, data.obj);

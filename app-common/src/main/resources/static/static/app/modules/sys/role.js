@@ -1,3 +1,8 @@
+var sessionInfoUserId = sessionInfoUserId;//参考父页面 role.jsp
+var hasPermissionRoleEdit = hasPermissionRoleEdit;
+var hasPermissionRoleUserEdit = hasPermissionRoleUserEdit;
+var hasPermissionRoleResourceEdit = hasPermissionRoleResourceEdit;
+
 var role_datagrid;
 var role_form;
 var role_search_form;
@@ -11,6 +16,76 @@ var role_user_dialog;
 $(function () {
     role_form = $('#role_form').form();
     role_search_form = $('#role_search_form').form();
+
+
+    var toolbar = [];
+    if(hasPermissionRoleEdit){
+        toolbar = toolbar.concat([{
+            text: '新增',
+            iconCls: 'easyui-icon-add',
+            handler: function () {
+                showDialog();
+            }
+        },'-',{
+            text: '编辑',
+            iconCls: 'easyui-icon-edit',
+            handler: function () {
+                edit()
+            }
+        },'-',{
+            text: '删除',
+            iconCls: 'easyui-icon-remove',
+            handler: function () {
+                del()
+            }
+        },'-']);
+    }
+
+    if(hasPermissionRoleResourceEdit){
+        toolbar = toolbar.concat([
+            {
+                text: '复制资源',
+                iconCls: 'easyui-icon-cut',
+                handler: function () {
+                    copyRoleResource();
+                }
+            },
+            '-',
+            {
+                text: '设置资源',
+                iconCls: 'easyui-icon-edit',
+                handler: function () {
+                    editRoleResource();
+                }
+            },
+        ]);
+    }
+
+    toolbar = toolbar.concat([
+        {
+            text: '查看资源',
+            iconCls: 'easyui-icon-search',
+            handler: function () {
+                viewRoleResource();
+            }
+        },
+        '-',
+    ]);
+
+    if(hasPermissionRoleUserEdit){
+        toolbar = toolbar.concat([
+            {
+                text: '设置用户',
+                iconCls: 'easyui-icon-edit',
+                handler: function () {
+                    editRoleUser();
+                }
+            },
+            '-',
+        ]);
+    }
+
+
     //数据列表
     role_datagrid = $('#role_datagrid').datagrid({
         url: ctxAdmin + '/sys/role/datagrid',
@@ -39,63 +114,7 @@ $(function () {
                 {field: 'updateTime', title: '更新时间', width: 146}
             ]
         ],
-        toolbar: [
-            {
-                text: '新增',
-                iconCls: 'easyui-icon-add',
-                handler: function () {
-                    showDialog();
-                }
-            },
-            '-',
-            {
-                text: '编辑',
-                iconCls: 'easyui-icon-edit',
-                handler: function () {
-                    edit();
-                }
-            },
-            '-',
-            {
-                text: '删除',
-                iconCls: 'easyui-icon-remove',
-                handler: function () {
-                    del();
-                }
-            },
-            '-',
-            {
-                text: '复制资源',
-                iconCls: 'easyui-icon-cut',
-                handler: function () {
-                    copyRoleResource();
-                }
-            },
-            '-',
-            {
-                text: '设置资源',
-                iconCls: 'easyui-icon-edit',
-                handler: function () {
-                    editRoleResource();
-                }
-            },
-            '-',
-            {
-                text: '查看资源',
-                iconCls: 'easyui-icon-search',
-                handler: function () {
-                    viewRoleResource();
-                }
-            },
-            '-',
-            {
-                text: '设置用户',
-                iconCls: 'easyui-icon-edit',
-                handler: function () {
-                    editRoleUser();
-                }
-            }
-        ],
+        toolbar: toolbar,
         onLoadSuccess: function () {
             $(this).datagrid('clearSelections');//取消所有的已选择项
             $(this).datagrid('unselectAll');//取消全选按钮为全选状态
@@ -255,11 +274,11 @@ function editRoleResource() {
     var row = role_datagrid.datagrid('getSelected');
     if (row) {
         if (rows.length > 1) {
-            eu.showMsg("您选择了多个操作对象，默认操作最后一次被选中的记录！");
+            eu.showMsg("您选择了多个操作对象，默认操作第一次被选中的记录！");
         }
         //弹出对话窗口
         role_resource_dialog = $('<div/>').dialog({
-            title: '角色资源信息',
+            title: '角色资源信息-'+row['id'],
             top: 20,
             width: 500,
             height: 200,
@@ -401,15 +420,15 @@ function editRoleUser() {
     var row = role_datagrid.datagrid('getSelected');
     if (row) {
         if (rows.length > 1) {
-            eu.showMsg("您选择了多个操作对象，默认操作最后一次被选中的记录！");
+            eu.showMsg("您选择了多个操作对象，默认操作第一次被选中的记录！");
         }
         var userUrl = ctxAdmin + "/sys/role/user";
         if (row.id) {
-            userUrl = userUrl + "?id=" + row.id;
+            userUrl = userUrl + "?id=" + row['id'];
         }
         //弹出对话窗口
         role_user_dialog = $('<div/>').dialog({
-            title: '角色用户信息',
+            title: '角色用户信息-'+row['id'],
             top: 20,
             width: 600,
             height: 360,

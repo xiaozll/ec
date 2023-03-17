@@ -1,6 +1,12 @@
+<%@ page import="com.eryansky.core.security.SecurityUtils" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file="/common/meta.jsp"%>
+<script type="text/javascript">
+    var sessionInfoUserId = "${sessionInfo.userId}";//当前的登录用户ID
+    var hasPermissionPostEdit= <%= SecurityUtils.isPermitted("sys:post:edit")%>;
+    var hasPermissionPostUserEdit= <%= SecurityUtils.isPermitted("sys:post:user:edit")%>;
+</script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/post${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <%-- 列表右键 --%>
 <div id="post_datagrid_menu" class="easyui-menu" style="width:120px;display: none;">

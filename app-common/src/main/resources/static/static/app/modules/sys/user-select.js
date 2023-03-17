@@ -1,3 +1,4 @@
+var postId = postId;//参考user-select.jsp
 var dataScope = dataScope;//参考user-select.jsp
 var userDatagridData = userDatagridData;//参考user-select.jsp
 var multiple = multiple;//参考user-select.jsp
@@ -51,9 +52,11 @@ function userDatagrid() {
             {field: 'id', title: '主键', hidden: true, sortable: true, width: 80},
             {field: 'sexView', title: '性别', width: 60, hidden: true, sortable: true},
             {field: 'loginName', title: '账号', width: 60, hidden: true, sortable: true},
+            {field: 'mobileSensitive', title: '手机号', width: 100, hidden: true, sortable: true},
             {field: 'sort', title: '排序号', width: 60, hidden: true, sortable: true},
             {field: 'defaultOrganName', title: '部门', width: 200, sortable: true},
-            {field: 'companyName', title: '单位', width: 200, sortable: true}
+            {field: 'companyName', title: '单位', width: 200, sortable: true},
+            {field: 'homeCompanyName', title: '上级单位', width: 200, sortable: true}
         ]],
         onCheck: function (rowIndex, rowData) {
             addSelectUser([rowData]);
@@ -155,12 +158,12 @@ function selectOrganTree() {
     //组织机构树
     var selectedOrganNode = null;//存放被选中的节点对象 临时变量
     $select_organ_tree = $("#select_organ_tree").tree({
-        url: ctxAdmin + "/sys/organ/tree?dataScope=" + dataScope + '&cascade=' + cascade,
+        url: ctxAdmin + "/sys/organ/tree?dataScope=" + dataScope + '&cascade=' + cascade + '&postId='+postId,
         onClick: function (node) {
-            var selectesRoleNode = $select_role_tree.tree('getSelected');
-            if (selectesRoleNode) {
-                $select_role_tree.tree('unSelect', selectesRoleNode.target);
-            }
+            // var selectesRoleNode = $select_role_tree.tree('getSelected');
+            // if (selectesRoleNode) {
+            //     $select_role_tree.tree('unSelect', selectesRoleNode.target);
+            // }
             search();
         },
         onBeforeLoad: function (node, param) {
@@ -185,7 +188,7 @@ function selectRoleTree() {
     //组织机构树
     var selectedRoleNode = null;//存放被选中的节点对象 临时变量
     $select_role_tree = $("#select_role_tree").tree({
-        url: ctxAdmin + "/sys/role/tree?dataScope=" + dataScope + '&cascade=' + cascade,
+        url: ctxAdmin + "/sys/role/tree?dataScope=" + dataScope + '&cascade=' + cascade + '&postId='+postId,
         onClick: function (node) {
             var selectesOrganNode = $select_organ_tree.tree('getSelected');
             if (selectesOrganNode) {

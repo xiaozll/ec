@@ -9,7 +9,7 @@
     <div data-options="region:'north',title:'过滤条件',collapsed:true,split:false,border:false"
          style="padding: 0px; height: 70px;width:100%; overflow-y: hidden;">
         <form id="user_role_search_form" style="padding: 5px;">
-            <input class="easyui-textbox" name="name"
+            <input class="easyui-textbox" id="query" name="query"
                    data-options="buttonText:' 查 询 ',buttonIcon:'easyui-icon-search',prompt:'用户信息...',onClickButton:searchRoleUser"
                    onkeydown="if(event.keyCode==13)searchRoleUser()" maxLength="25"
                    style="width:250px;height:28px;">
@@ -21,3 +21,4 @@
         <table id="role_user_datagrid"></table>
     </div>
 </div>
+<iframe id="annexFrame" style="display:none" src=""></iframe>

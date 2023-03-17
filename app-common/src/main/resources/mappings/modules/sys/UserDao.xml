@@ -778,11 +778,21 @@
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
+        LEFT JOIN t_sys_organ_extend o ON o.id = a.default_organ_id
         LEFT JOIN t_sys_user_role ur ON ur.user_id = a.id
         LEFT JOIN t_sys_role r ON r.id = ur.role_id
         <where>
             a.status = #{status}
             AND r.id = #{roleId}
+            <if test="parentOrganId != null and parentOrganId !=''">
+                AND (o.id = #{parentOrganId} OR o.parent_id = #{parentOrganId} OR parent_ids LIKE
+                <choose>
+                    <when test="dbName == 'db2'">'%,'||#{parentOrganId}||',%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%,', #{parentOrganId}, ',%')</when>
+                    <when test="dbName == 'oracle'">'%,'||#{parentOrganId}||',%'</when>
+                    <otherwise>'%,'+#{parentOrganId}+',%'</otherwise>
+                </choose>)
+            </if>
             <if test="query != null and query !=''">
                 AND (
                 a.login_name LIKE
@@ -802,7 +812,7 @@
                 )
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY o.home_company_id,o.company_id,o.id,a.sort ASC
     </select>
 
 
@@ -810,6 +820,7 @@
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
+        LEFT JOIN t_sys_organ_extend o ON o.id = a.default_organ_id
         LEFT JOIN t_sys_user_post up ON up.user_id = a.id
         LEFT JOIN t_sys_post p ON p.id = up.post_id
         <where>
@@ -820,8 +831,35 @@
             <if test="postCode != null and postCode !=''">
                 AND p.code = #{postCode}
             </if>
+            <if test="parentOrganId != null and parentOrganId !=''">
+                AND (o.id = #{parentOrganId} OR o.parent_id = #{parentOrganId} OR parent_ids LIKE
+                <choose>
+                    <when test="dbName == 'db2'">'%,'||#{parentOrganId}||',%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%,', #{parentOrganId}, ',%')</when>
+                    <when test="dbName == 'oracle'">'%,'||#{parentOrganId}||',%'</when>
+                    <otherwise>'%,'+#{parentOrganId}+',%'</otherwise>
+                </choose>)
+            </if>
+            <if test="query != null and query !=''">
+                AND (
+                a.login_name LIKE
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
+                OR a.name LIKE
+                <choose>
+                    <when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+                    <when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+                    <when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+                    <otherwise>'%'+#{query}+'%'</otherwise>
+                </choose>
+                )
+            </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY o.home_company_id,o.company_id,o.id,a.sort ASC
     </select>
 
     <select id="findUserIdsByPost" resultType="java.lang.String">
@@ -839,7 +877,7 @@
                 AND p.code = #{postCode}
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY a.default_organ_id,a.sort ASC
     </select>
 
     <select id="findListByPostAndOrgan" resultType="User">
@@ -919,7 +957,7 @@
                 AND o.home_company_code = #{homeCompanyCode}
             </if>
         </where>
-        ORDER BY a.sort ASC
+        ORDER BY a.default_organ_id,a.sort ASC
     </select>
 
 

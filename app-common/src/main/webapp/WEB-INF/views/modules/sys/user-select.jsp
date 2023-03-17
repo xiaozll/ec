@@ -6,6 +6,7 @@
     }
 </style>
 <script type="text/javascript">
+    var postId = '${postId}';
     var dataScope = '${dataScope}';
     var userDatagridData = ${userDatagridData};
     var multiple = '${multiple}';

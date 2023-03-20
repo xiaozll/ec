@@ -6,7 +6,7 @@ V4.2.20230224.13
 #组织机构同步，删除用户不在这些部门下的用户岗位信息
 userService.deleteNotInUserOrgansPostsByUserId(user.getId(), Lists.newArrayList(user.getDefaultOrganId()));
 
-2、优化角色分级授权配置，支持资源复制、支持分机构授权
+2、角色管理，优化分级授权配置，支持资源复制、支持分机构授权
 非管理账号仅授权查看：是否系统角色【是】、权限类型【普通角色】或 是否系统角色【否】、所属机构【本单位】（可管理）或授权机构（可读，不可修改）相关数据
 DROP TABLE IF EXISTS `t_sys_role_data_organ`;
 CREATE TABLE `t_sys_role_data_organ`  (
@@ -23,11 +23,11 @@ CREATE TABLE `t_sys_role_data_organ`  (
 3、内部应用单点跳转（仅限同源账号、组织机构管理）
 规则：/a/sso/目标代理URL全地址
 
-4、优化岗位配置，支持按机构选人操作
+4、岗位管理，优化分级授权配置以及岗位用户配置，支持按机构选人操作
 新增资源权限（功能）：
 设置用户：sys:post:user:edit
 
-5、用户管理优化按钮权限
+5、用户管理，优化按钮权限
 新增资源权限（功能）：
 密码修改：sys:user:password:edit
 设置机构：sys:user:organ:edit

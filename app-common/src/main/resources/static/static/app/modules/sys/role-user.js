@@ -55,7 +55,7 @@ function initRoleUserDatagrid() {
             },
             {
                 text: '导出',
-                iconCls: 'easyui-icon-search',
+                iconCls: 'eu-icon-disk_download',
                 handler: function () {
                     exportQuery();
                 }

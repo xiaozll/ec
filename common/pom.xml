@@ -28,7 +28,7 @@
         <commons-codec.version>1.15</commons-codec.version>
         <commons-logging.version>1.2</commons-logging.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <jsqlparser.version>4.5</jsqlparser.version>
+        <jsqlparser.version>4.6</jsqlparser.version>
         <cglib-nodep.version>3.3.0</cglib-nodep.version>
         <slf4j.version>1.7.36</slf4j.version>
 

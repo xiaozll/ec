@@ -21,7 +21,7 @@
         <bsh.version>2.0b6</bsh.version>
 
         <sitemesh.version>2.4.2</sitemesh.version>
-        <commons-csv.version>1.9.0</commons-csv.version>
+        <commons-csv.version>1.10.0</commons-csv.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
         <commons-cli.version>1.5.0</commons-cli.version>
         <fop.version>2.7</fop.version>

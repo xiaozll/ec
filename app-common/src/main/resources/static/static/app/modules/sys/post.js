@@ -74,7 +74,7 @@ $(function () {
     if(hasPermissionPostUserEdit){
         toolbar = toolbar.concat([
             {
-                text: '设置岗位',
+                text: '设置用户',
                 iconCls: 'eu-icon-user',
                 handler: function () {
                     editPostUser();

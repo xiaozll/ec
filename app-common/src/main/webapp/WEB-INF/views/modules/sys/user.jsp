@@ -8,8 +8,14 @@
 <%--<%@ include file="/common/zTree.jsp"%>--%>
 <script type="text/javascript">
     var sessionInfoUserId = "${sessionInfo.userId}";//当前的登录用户ID
-    var hasPermissionUserAdd = <%= SecurityUtils.isPermitted("sys:user:add")%>;//当前的登录用户ID
-    var hasPermissionUserDelete = <%= SecurityUtils.isPermitted("sys:user:delete")%>;//当前的登录用户ID
+    var hasPermissionUserAdd = <%= SecurityUtils.isPermitted("sys:user:add")%>;
+    var hasPermissionUserDelete = <%= SecurityUtils.isPermitted("sys:user:delete")%>;
+    var hasPermissionUserEdit = <%= SecurityUtils.isPermitted("sys:user:edit")%>;
+    var hasPermissionUserPasswordEdit = <%= SecurityUtils.isPermitted("sys:user:password:edit")%>;
+    var hasPermissionUserOrganEdit = <%= SecurityUtils.isPermitted("sys:user:organ:edit")%>;
+    var hasPermissionUserPostEdit = <%= SecurityUtils.isPermitted("sys:user:post:edit")%>;
+    var hasPermissionUserRoleEdit = <%= SecurityUtils.isPermitted("sys:user:role:edit")%>;
+    var hasPermissionUserResourceEdit = <%= SecurityUtils.isPermitted("sys:user:resource:edit")%>;
 </script>
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/user${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <%-- 列表右键 --%>

@@ -17,6 +17,7 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
+import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.core.security.annotation.RestApi;
@@ -238,7 +239,7 @@ public class UserController extends SimpleController {
      * @param newPassword  新密码
      * @return
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:password:edit"})
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
     @PostMapping(value = {"updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -301,7 +302,7 @@ public class UserController extends SimpleController {
      * @param newPassword 新密码
      * @return
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:password:edit"})
     @Logging(value = "用户管理-修改密码", logType = LogType.access)
     @PostMapping(value = {"_updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -336,7 +337,7 @@ public class UserController extends SimpleController {
     /**
      * 修改用户角色.
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:role:edit"})
     @Logging(value = "用户管理-用户角色", logType = LogType.access)
     @PostMapping(value = {"updateUserRole"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -375,7 +376,7 @@ public class UserController extends SimpleController {
      * @param defaultOrganId 默认机构
      * @return
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:organ:edit"})
     @Logging(value = "用户管理-用户机构", logType = LogType.access)
     @PostMapping(value = {"updateUserOrgan"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -419,7 +420,7 @@ public class UserController extends SimpleController {
      * 修复用户岗位数据 自动清理用户不在部门的岗位信息 仅保留当前部门岗位信息
      * @return
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:post:edit"})
     @Logging(value = "用户管理-修复用户岗位数据", logType = LogType.access)
     @GetMapping("fixUserPostData")
     @ResponseBody
@@ -458,7 +459,7 @@ public class UserController extends SimpleController {
      * @param resourceIds 资源ID集合
      * @return
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:resource:edit"})
     @Logging(value = "用户管理-用户资源", logType = LogType.access)
     @PostMapping(value = {"updateUserResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -874,7 +875,7 @@ public class UserController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:view","sys:user:edit"})
     @GetMapping(value = "export")
     public void export(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/msexcel;charset=UTF-8");

@@ -1,6 +1,12 @@
 var sessionInfoUserId = sessionInfoUserId;//参考父页面 user.jsp
 var hasPermissionUserAdd = hasPermissionUserAdd;
 var hasPermissionUserDelete = hasPermissionUserDelete;
+var hasPermissionUserEdit = hasPermissionUserEdit;
+var hasPermissionUserPasswordEdit = hasPermissionUserPasswordEdit;
+var hasPermissionUserOrganEdit = hasPermissionUserOrganEdit;
+var hasPermissionUserPostEdit = hasPermissionUserPostEdit;
+var hasPermissionUserRoleEdit = hasPermissionUserRoleEdit;
+var hasPermissionUserResourceEdit = hasPermissionUserResourceEdit;
 /**
  * 判断是否登录用户是不是超级管理员.
  * @returns {Boolean}
@@ -99,13 +105,17 @@ $(function () {
             }
         },'-']);
     }
-    toolbar = toolbar.concat([ {
-        text: '编辑',
-        iconCls: 'easyui-icon-edit',
-        handler: function () {
-            edit()
-        }
-    },'-']);
+
+    if(hasPermissionUserEdit){
+        toolbar = toolbar.concat([ {
+            text: '编辑',
+            iconCls: 'easyui-icon-edit',
+            handler: function () {
+                edit()
+            }
+        },'-']);
+    }
+
 
     if(hasPermissionUserDelete){
         toolbar = toolbar.concat([ {
@@ -114,48 +124,61 @@ $(function () {
             handler: function () {
                 del()
             }
-        },'-']);
+        }, '-']);
     }
-    toolbar = toolbar.concat([{
+
+    if(hasPermissionUserPasswordEdit){
+        toolbar = toolbar.concat([ {
             text: '修改密码',
             iconCls: 'eu-icon-lock',
             handler: function () {
                 editPassword()
             }
-        },
-        '-',
-        {
+        },'-']);
+    }
+
+
+    if(hasPermissionUserOrganEdit){
+        toolbar = toolbar.concat([ {
             text: '设置机构',
             iconCls: 'eu-icon-group',
             handler: function () {
                 editUserOrgan()
             }
-        },
-        '-',
-        {
+        }, '-']);
+    }
+
+    if(hasPermissionUserPostEdit){
+        toolbar = toolbar.concat([ {
             text: '设置岗位',
             iconCls: 'eu-icon-user',
             handler: function () {
                 editUserPost()
             }
-        },
-        '-',
-        {
+        },'-']);
+    }
+
+    if(hasPermissionUserRoleEdit){
+        toolbar = toolbar.concat([ {
             text: '设置角色',
             iconCls: 'eu-icon-group',
             handler: function () {
                 editUserRole()
             }
-        },
-        '-',
-        {
+        },'-']);
+    }
+
+    if(hasPermissionUserResourceEdit){
+        toolbar = toolbar.concat([ {
             text: '设置资源',
             iconCls: 'eu-icon-folder',
             handler: function () {
                 editUserResource()
             }
         },
-        '-',
+        '-']);
+    }
+    toolbar = toolbar.concat([
         {
             text: '查看权限',
             iconCls: 'easyui-icon-search',
@@ -178,9 +201,10 @@ $(function () {
             handler: function () {
                 move();
             }
-        },
-        '-',
-        {
+        }
+    ]);
+    if(hasPermissionUserEdit){
+        toolbar = toolbar.concat([ {
             text: '启用',
             iconCls: 'eu-icon-user',
             handler: function () {
@@ -194,8 +218,9 @@ $(function () {
             handler: function () {
                 lock(true);
             }
-        }
-    ]);
+        },'-']);
+    }
+
     //数据列表
     $user_datagrid = $('#user_datagrid').datagrid({
         url: ctxAdmin + '/sys/user/datagrid',

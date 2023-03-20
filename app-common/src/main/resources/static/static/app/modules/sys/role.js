@@ -76,7 +76,7 @@ $(function () {
         toolbar = toolbar.concat([
             {
                 text: '设置用户',
-                iconCls: 'easyui-icon-edit',
+                iconCls: 'eu-icon-user',
                 handler: function () {
                     editRoleUser();
                 }

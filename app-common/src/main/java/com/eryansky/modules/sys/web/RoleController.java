@@ -273,7 +273,7 @@ public class RoleController extends SimpleController {
 
             String title = "角色用户信息-" + RoleUtils.getRoleName(roleId);
             //Sheet2
-            String[] hearders = new String[]{"姓名", "账号", "手机号", "部门", "单位"};//表头数组
+            String[] hearders = new String[]{"姓名", "账号", "手机号", "部门", "单位"};
 
             if (page.getResult().size() < 65531) {
                 //导出Excel

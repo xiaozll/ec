@@ -180,7 +180,7 @@ public class PostController extends SimpleController {
      * 岗位用户数据
      *
      * @param postId 岗位ID
-     * @param query 关键字
+     * @param query 关键字 匹配用户
      * @param export 是否导出
      * @return
      */

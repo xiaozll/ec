@@ -1,5 +1,5 @@
-﻿20230313
-V4.2.20230224.09
+﻿20230320
+V4.2.20230224.13
 1、修复因变更机构岗位重复问题（自动清除历史机构岗位数据），以及优化人员岗位配置；
 #历史数据修复方法
 执行一次URL方法：/a/sys/user/fixUserPostData
@@ -16,10 +16,18 @@ CREATE TABLE `t_sys_role_data_organ`  (
   INDEX `ORGAN_ID`(`ORGAN_ID`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '角色数据权限机构范围表';
 -- t_sys_role_organ 用于角色授权机构表
+新增资源权限（功能）：
+管理角色用户：sys:role:user:edit
+管理角色资源：sys:role:resource:edit
 
-3、内部应用单点跳转
+3、内部应用单点跳转（仅限同源账号、组织机构管理）
 规则：/a/sso/目标代理URL全地址
-4、修复部分账号切换账号权限不成功问题。
+4、优化岗位配置，支持按机构选人操作
+新增资源权限（功能）：
+管理岗位用户：sys:post:user:edit
+
+5、修复部分账号切换账号权限不成功问题。
+账号切换时，APP与webview会话不同步问题。
 
 20230113
 V4.2.20221227.02

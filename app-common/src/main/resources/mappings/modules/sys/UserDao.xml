@@ -807,7 +807,7 @@
                 )
             </if>
         </where>
-        ORDER BY o.home_company_id,o.company_id,o.id,a.sort ASC
+        ORDER BY o.home_company_code,o.company_code,o.code,a.sort ASC
     </select>
 
 
@@ -849,7 +849,7 @@
                 )
             </if>
         </where>
-        ORDER BY o.home_company_id,o.company_id,o.id,a.sort ASC
+        ORDER BY o.home_company_code,o.company_code,o.code,a.sort ASC
     </select>
 
     <select id="findUserIdsByPost" resultType="java.lang.String">

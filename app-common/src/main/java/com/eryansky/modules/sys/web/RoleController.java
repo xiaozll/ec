@@ -157,9 +157,8 @@ public class RoleController extends SimpleController {
     @PostMapping(value = {"remove"})
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
-        Result result;
         roleService.deleteByIds(ids);
-        result = Result.successResult();
+        Result result = Result.successResult();
         logger.debug(result.toString());
         return result;
     }

@@ -9,7 +9,6 @@ import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Datagrid;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
-import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
@@ -28,7 +27,6 @@ import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys.mapper.Post;
-import com.eryansky.modules.sys.mapper.Role;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.PostUtils;
@@ -46,7 +44,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -132,6 +129,7 @@ public class PostController extends SimpleController {
         }
 
         postService.savePost(model);
+        userService.clearCache();
         result = Result.successResult();
         return result;
     }
@@ -148,6 +146,7 @@ public class PostController extends SimpleController {
     @ResponseBody
     public Result remove(@RequestParam(value = "ids", required = false) List<String> ids) {
         postService.deleteByIds(ids);
+        userService.clearCache();
         return Result.successResult();
     }
 
@@ -159,7 +158,6 @@ public class PostController extends SimpleController {
     public ModelAndView selectPage(@ModelAttribute("model") Post model) {
         ModelAndView modelAndView = new ModelAndView("modules/sys/user-select");
         List<User> users = null;
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         String dataScope = DataScope.COMPANY_AND_CHILD.getValue();
         List<String> excludeUserIds =  userService.findUserIdsByPost(model.getId(),null);
         modelAndView.addObject("users", users);

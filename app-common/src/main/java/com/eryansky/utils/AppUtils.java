@@ -409,7 +409,7 @@ public class AppUtils {
      * @return
      */
     public static List<StatusState> getStatusStates(){
-        List<StatusState> list = new ArrayList<StatusState>(3);
+        List<StatusState> list = new ArrayList<>(3);
         list.add(StatusState.AUDIT);
         list.add(StatusState.NORMAL);
         list.add(StatusState.DELETE);
@@ -421,7 +421,7 @@ public class AppUtils {
      * @return
      */
     public static List<StatusState> getSimpleStatusStates(){
-        List<StatusState> list = new ArrayList<StatusState>(2);
+        List<StatusState> list = new ArrayList<>(2);
         list.add(StatusState.NORMAL);
         list.add(StatusState.LOCK);
         return list;

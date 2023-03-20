@@ -276,9 +276,9 @@ public class OrganController extends SimpleController {
             } else if (StringUtils.isNotBlank(dataScope) && dataScope.equals(DataScope.OFFICE_AND_CHILD.getValue())) {
                 organList = organList.parallelStream().filter(v->v.getId().equals(sessionInfo.getLoginOrganId())).collect(Collectors.toList());
             }
-            treeNodes = organList.parallelStream().map(v ->
+            treeNodes = AppUtils.toTreeTreeNodes(organList.parallelStream().map(v ->
                     organService.organToTreeNode(v)
-            ).collect(Collectors.toList());
+            ).collect(Collectors.toList()));
         }else{
             String _parentId = parentId;
             if (StringUtils.isBlank(parentId)) {

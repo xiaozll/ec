@@ -119,8 +119,6 @@
                     AND f.type = '0'
                 </otherwise>
             </choose>
-
-
             <if test="query != null and query !=''">
                 AND a.name LIKE
                 <choose>

@@ -16,10 +16,9 @@ function initRoleUserDatagrid() {
         rownumbers: true,
         fitColumns: false,
         striped: true,
-        pageSize: 20,
+        pageSize: 20,//每页记录数
+        pageList: [10, 20, 50, 100, 1000, 99999],
         remoteSort: false,
-        sortName: 'sort',
-        sortOrder: 'asc',
         idField: 'id',
         frozenColumns: [
             [

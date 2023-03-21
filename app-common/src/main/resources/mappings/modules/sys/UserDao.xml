@@ -849,7 +849,7 @@
                 )
             </if>
         </where>
-        ORDER BY o.home_company_code,o.company_code,o.code,a.sort ASC
+        ORDER BY o.home_company_code,o.company_code,o.sort,a.sort ASC
     </select>
 
     <select id="findUserIdsByPost" resultType="java.lang.String">
@@ -867,7 +867,7 @@
                 AND p.code = #{postCode}
             </if>
         </where>
-        ORDER BY a.default_organ_id,a.sort ASC
+        ORDER BY a.sort ASC
     </select>
 
     <select id="findListByPostAndOrgan" resultType="User">
@@ -907,7 +907,14 @@
                 AND o.home_company_code = #{homeCompanyCode}
             </if>
         </where>
-        ORDER BY a.sort ASC
+        <choose>
+            <when test="organCode != null or companyId != null or companyCode != null or homeCompanyId != null or homeCompanyCode != null">
+                ORDER BY o.home_company_code,o.company_code,o.sort,a.sort ASC
+            </when>
+            <otherwise>
+                ORDER BY a.default_organ_id,a.sort ASC
+            </otherwise>
+        </choose>
     </select>
 
     <select id="findUserIdsByPostAndOrgan" resultType="java.lang.String">
@@ -947,7 +954,14 @@
                 AND o.home_company_code = #{homeCompanyCode}
             </if>
         </where>
-        ORDER BY a.default_organ_id,a.sort ASC
+        <choose>
+            <when test="organCode != null or companyId != null or companyCode != null or homeCompanyId != null or homeCompanyCode != null">
+                ORDER BY o.home_company_code,o.company_code,o.sort,a.sort ASC
+            </when>
+            <otherwise>
+                ORDER BY a.default_organ_id,a.sort ASC
+            </otherwise>
+        </choose>
     </select>
 
 

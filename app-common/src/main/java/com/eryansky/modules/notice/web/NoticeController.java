@@ -523,7 +523,7 @@ public class NoticeController extends SimpleController {
      *
      * @return
      */
-    @PostMapping(value = {"myUnreadNotice"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"myUnreadNotice"})
     @ResponseBody
     public String myUnreadNotice(HttpServletRequest request, HttpServletResponse response) {
         Result result = null;

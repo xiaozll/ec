@@ -455,28 +455,45 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
             response.addCookie(cookie);
         }
     }
-
     /**
      * 自动获取应用URL地址
      * @param request
      * @return
      */
     public static String getAppURL(HttpServletRequest request) {
+        return getAppURL(request,false);
+    }
+
+    /**
+     * 自动获取应用URL地址
+     * @param request
+     * @param adaptiveScheme 兼容http、http请求头
+     * @return
+     */
+    public static String getAppURL(HttpServletRequest request,boolean adaptiveScheme) {
         StringBuffer url = new StringBuffer();
         int port = request.getServerPort();
         if (port < 0) {
             port = 80;
         }
-        String scheme = request.getScheme();
-        url.append(scheme);
-        url.append("://");
-        url.append(request.getServerName());
-        if (((scheme.equals("http")) && (port != 80))
-                || ((scheme.equals("https")) && (port != 443))) {
-            url.append(':');
-            url.append(port);
+
+        if(adaptiveScheme){
+            url.append("//");
+            url.append(request.getServerName());
+        }else{
+            String scheme = request.getScheme();
+            url.append(scheme);
+            url.append("://");
+            url.append(request.getServerName());
+            if (((scheme.equals("http")) && (port != 80))
+                    || ((scheme.equals("https")) && (port != 443))) {
+                url.append(':');
+                url.append(port);
+            }
         }
         url.append(request.getContextPath());
         return url.toString();
     }
+
+
 }

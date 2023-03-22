@@ -447,10 +447,29 @@ public class AppUtils {
         return value;
     }
 
-
+    /**
+     * 
+     * @return
+     */
     public static String getClientAppURL() {
         try {
             return WebUtils.getAppURL(SpringMVCHolder.getRequest());
+        } catch (Exception e) {
+        }
+        String value = AppConstants.getAppURL();
+        if(StringUtils.isNotBlank(value)){
+            return value;
+        }
+        return value;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static String getAdaptiveClientAppURL() {
+        try {
+            return WebUtils.getAppURL(SpringMVCHolder.getRequest(),true);
         } catch (Exception e) {
         }
         String value = AppConstants.getAppURL();

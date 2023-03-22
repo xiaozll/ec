@@ -478,8 +478,14 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         }
 
         if(adaptiveScheme){
+            String scheme = request.getScheme();
             url.append("//");
             url.append(request.getServerName());
+            if (((scheme.equals("http")) && (port != 80))
+                    || ((scheme.equals("https")) && (port != 443))) {
+                url.append(':');
+                url.append(port);
+            }
         }else{
             String scheme = request.getScheme();
             url.append(scheme);

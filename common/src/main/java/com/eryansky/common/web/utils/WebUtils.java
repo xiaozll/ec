@@ -461,7 +461,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
      * @return
      */
     public static String getAppURL(HttpServletRequest request) {
-        return getAppURL(request,true);
+        return getAppURL(request,false);
     }
 
     /**

@@ -19,7 +19,7 @@
         <velocity.version>2.3</velocity.version>
         <ckfinder.version>2.3</ckfinder.version>
         <sitemesh.version>2.4.2</sitemesh.version>
-        <liquibase.version>4.18.0</liquibase.version>
+        <liquibase.version>4.20.0</liquibase.version>
         <commons-cli.version>1.5.0</commons-cli.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -143,7 +143,7 @@
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
-            <version>1.10.12</version>
+            <version>1.10.13</version>
         </dependency>
 
         <dependency>

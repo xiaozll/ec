@@ -83,7 +83,7 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      * @return
      */
     public VersionLog getLatestVersionLog(String app,String versionLogType) {
-        return getLatestVersionLog(app,versionLogType, YesOrNo.YES.getValue(),YesOrNo.NO.getValue());
+        return getLatestVersionLog(app,versionLogType, YesOrNo.YES.getValue(),YesOrNo.YES.getValue());
     }
 
     /**

@@ -92,6 +92,7 @@ public class VersionLogService extends CrudService<VersionLogDao, VersionLog> {
      * @param app
      * @param versionLogType
      * @param isPub
+     * @param isShelf
      * @return
      */
     public VersionLog getLatestVersionLog(String app,String versionLogType,String isPub,String isShelf) {

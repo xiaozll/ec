@@ -11,9 +11,13 @@
 <%-- 列表右键 --%>
 <div id="post_datagrid_menu" class="easyui-menu" style="width:120px;display: none;">
     <div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
-    <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
-    <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
-    <div onclick="editPostUser();" data-options="iconCls:'eu-icon-user'">设置用户</div>
+    <e:hasPermission name="sys:post:edit">
+        <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
+        <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:post:user:edit">
+        <div onclick="editPostUser();" data-options="iconCls:'eu-icon-user'">设置用户</div>
+    </e:hasPermission>
 </div>
 <%-- easyui-layout布局 --%>
 <div class="easyui-layout" fit="true" style="margin: 0px;border: 0px;overflow: hidden;width:100%;height:100%;">

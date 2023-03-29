@@ -29,11 +29,19 @@
     <e:hasPermission name="sys:user:delete">
         <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
     </e:hasPermission>
-    <e:hasPermission name="sys:user:edit">
+    <e:hasPermission name="sys:user:password:edit">
         <div onclick="editPassword();" data-options="iconCls:'eu-icon-lock'">修改密码</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:organ:edit">
         <div onclick="editUserOrgan();" data-options="iconCls:'eu-icon-group'">设置机构</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:post:edit">
         <div onclick="editUserPost();" data-options="iconCls:'eu-icon-group'">设置岗位</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:role:edit">
         <div onclick="editUserRole();" data-options="iconCls:'eu-icon-group'">设置角色</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:user:resource:edit">
         <div onclick="editUserResource();" data-options="iconCls:'eu-icon-folder'">设置资源</div>
     </e:hasPermission>
 </div>

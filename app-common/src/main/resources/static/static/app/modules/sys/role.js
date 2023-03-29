@@ -44,18 +44,18 @@ $(function () {
     if(hasPermissionRoleResourceEdit){
         toolbar = toolbar.concat([
             {
-                text: '复制资源',
-                iconCls: 'easyui-icon-cut',
-                handler: function () {
-                    copyRoleResource();
-                }
-            },
-            '-',
-            {
                 text: '设置资源',
                 iconCls: 'easyui-icon-edit',
                 handler: function () {
                     editRoleResource();
+                }
+            },
+            '-',
+            {
+                text: '复制资源',
+                iconCls: 'easyui-icon-cut',
+                handler: function () {
+                    copyRoleResource();
                 }
             },
         ]);

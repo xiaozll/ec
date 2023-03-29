@@ -11,13 +11,21 @@
 <script type="text/javascript" src="${ctxStatic}/app/modules/sys/role${yuicompressor}.js?_=${sysInitTime}" charset="utf-8"></script>
 <%-- 列表右键 --%>
 <div id="role_datagrid_menu" class="easyui-menu" style="width:120px;display: none;">
-	<div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
-	<div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
-	<div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
-    <e:isAdmin>
+
+    <e:hasPermission name="sys:role:edit">
+        <div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
+        <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
+        <div onclick="del();" data-options="iconCls:'easyui-icon-remove'">删除</div>
+    </e:hasPermission>
+    <e:hasPermission name="sys:role:resource:edit">
         <div onclick="editRoleResource();" data-options="iconCls:'eu-icon-folder'">设置资源</div>
-    </e:isAdmin>
-    <div onclick="editRoleUser();" data-options="iconCls:'eu-icon-user'">设置用户</div>
+        <div onclick="copyRoleResource();" data-options="iconCls:'easyui-icon-search'">复制资源</div>
+    </e:hasPermission>
+    <div onclick="viewRoleResource();" data-options="iconCls:'eu-icon-folder'">查看资源</div>
+    <e:hasPermission name="sys:role:user:edit">
+        <div onclick="editRoleUser();" data-options="iconCls:'eu-icon-user'">设置用户</div>
+    </e:hasPermission>
+
 </div>
 
 <div class="easyui-layout" fit="true" style="margin: 0px;border: 0px;overflow: hidden;width:100%;height:100%;">

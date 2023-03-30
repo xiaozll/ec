@@ -1,9 +1,45 @@
+var hasPermissionOrganEdit = hasPermissionOrganEdit;
+var hasPermissionOrganUserEdit = hasPermissionOrganUserEdit;
+
 var $organ_treegrid;
 var $organ_form;
 var $organ_user_form;
 var $organ_dialog;
 var $organ_user_dialog;
 $(function () {
+    var toolbar = [];
+    if(hasPermissionOrganEdit){
+        toolbar = toolbar.concat([{
+            text: '新增',
+            iconCls: 'easyui-icon-add',
+            handler: function () {
+                showDialog();
+            }
+        }, '-', {
+            text: '编辑',
+            iconCls: 'easyui-icon-edit',
+            handler: function () {
+                edit()
+            }
+        }, '-', {
+            text: '删除',
+            iconCls: 'easyui-icon-remove',
+            handler: function () {
+                del()
+            }
+        },'-']);
+    }
+
+    if(hasPermissionOrganUserEdit){
+        toolbar = toolbar.concat([{
+            text: '设置用户',
+            iconCls: 'eu-icon-user',
+            handler: function () {
+                editOrganUser()
+            }
+        },'-']);
+    }
+
     //数据列表
     $organ_treegrid = $('#organ_treegrid').treegrid({
         url: ctxAdmin + '/sys/organ/treegrid',
@@ -38,31 +74,7 @@ $(function () {
             {field: 'remark', title: '备注', width: 260},
             {field: 'updateTime', title: '更新时间', width: 146}
         ]],
-        toolbar: [{
-            text: '新增',
-            iconCls: 'easyui-icon-add',
-            handler: function () {
-                showDialog();
-            }
-        }, '-', {
-            text: '编辑',
-            iconCls: 'easyui-icon-edit',
-            handler: function () {
-                edit()
-            }
-        }, '-', {
-            text: '删除',
-            iconCls: 'easyui-icon-remove',
-            handler: function () {
-                del()
-            }
-        }, '-', {
-            text: '设置用户',
-            iconCls: 'eu-icon-user',
-            handler: function () {
-                editOrganUser()
-            }
-        }],
+        toolbar: toolbar,
         onBeforeLoad: function (row, param) {
             if (row) {
                 param.parentId = row['id'];
@@ -78,7 +90,9 @@ $(function () {
 
         },
         onDblClickRow: function (row) {
-            edit(row);
+            if(hasPermissionOrganEdit){
+                edit(row);
+            }
         },
         onLoadSuccess: function (data) {
             //$(this).treegrid("collapseAll");

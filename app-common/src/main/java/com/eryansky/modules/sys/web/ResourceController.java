@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.sys.web;
 
+import com.eryansky.client.common.utils.Constants;
 import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Datagrid;
@@ -20,6 +21,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
+import com.eryansky.core.security.annotation.RequiresRoles;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.ResourceType;
 import com.eryansky.modules.sys.mapper.Resource;
@@ -28,6 +30,7 @@ import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.ResourceService;
 import com.eryansky.modules.sys.service.RoleService;
 import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.ListUtils;
@@ -165,7 +168,7 @@ public class ResourceController extends SimpleController {
     /**
      * 资源树.
      */
-    @RequiresPermissions("MANAGER")
+    @RequiresRoles(AppConstants.ROLE_SYSTEM_MANAGER)
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"resourceData"})
     @ResponseBody
     public List<TreeNode> resourceData(){
@@ -315,7 +318,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:resource:edit","sys:resource:role:edit"})
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:resource:edit","sys:resource:role:edit","sys:role:resource:edit"})
     @PostMapping(value = {"deleteRoles/{resourceId}"})
     @ResponseBody
     public Result deleteRoles(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
@@ -367,7 +370,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:resource:edit","sys:resource:user:edit"})
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:resource:edit","sys:resource:user:edit","sys:user:resource:edit"})
     @PostMapping(value = {"deleteUsers/{resourceId}"})
     @ResponseBody
     public Result deleteUsers(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {

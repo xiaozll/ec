@@ -124,7 +124,9 @@ $(function () {
             });
         },
         onDblClickRow: function (rowIndex, rowData) {
-            edit(rowIndex, rowData);
+            if(hasPermissionPostEdit){
+                edit(rowIndex, rowData);
+            }
         }
     }).datagrid('showTooltip');
 });

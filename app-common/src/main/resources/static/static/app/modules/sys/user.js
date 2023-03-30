@@ -317,7 +317,9 @@ $(function () {
             });
         },
         onDblClickRow: function (rowIndex, rowData) {
-            edit(rowIndex, rowData);
+            if(hasPermissionUserEdit){
+                edit(rowIndex, rowData);
+            }
         }
     }).datagrid('showTooltip');
 

@@ -187,7 +187,7 @@ public class RoleController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions(value = {"sys:role:edit","sys:role:resource:edit"},logical = Logical.OR)
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:resource:edit","sys:resource:role:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-角色资源", logType = LogType.access)
     @PostMapping(value = {"updateRoleResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -215,7 +215,7 @@ public class RoleController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions(value = {"sys:role:edit","sys:role:resource:edit"},logical = Logical.OR)
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:resource:edit","sys:resource:role:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-从角色复制资源", logType = LogType.access)
     @PostMapping(value = {"copyFromRoles"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -329,7 +329,7 @@ public class RoleController extends SimpleController {
      * @param userIds 用户ID
      * @return
      */
-    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit"},logical = Logical.OR)
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit","sys:user:role:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-添加关联用户", logType = LogType.access)
     @PostMapping(value = {"addRoleUser"})
     @ResponseBody
@@ -348,7 +348,7 @@ public class RoleController extends SimpleController {
      * @param userIds 用户IDS
      * @return
      */
-    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit"},logical = Logical.OR)
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit","sys:user:role:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-移除关联用户", logType = LogType.access)
     @PostMapping(value = {"removeRoleUser"})
     @ResponseBody
@@ -365,7 +365,7 @@ public class RoleController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit"},logical = Logical.OR)
+    @RequiresPermissions(value = {"sys:role:edit","sys:role:user:edit","sys:user:role:edit"},logical = Logical.OR)
     @Logging(value = "角色管理-保存角色用户", logType = LogType.access)
     @PostMapping(value = {"updateRoleUser"})
     @ResponseBody

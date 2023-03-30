@@ -45,7 +45,7 @@ $(function () {
         toolbar = toolbar.concat([
             {
                 text: '设置资源',
-                iconCls: 'easyui-icon-edit',
+                iconCls: 'eu-icon-folder',
                 handler: function () {
                     editRoleResource();
                 }
@@ -129,7 +129,9 @@ $(function () {
             });
         },
         onDblClickRow: function (rowIndex, rowData) {
-            edit(rowIndex, rowData);
+            if(hasPermissionRoleEdit){
+                edit(rowIndex, rowData);
+            }
         }
     }).datagrid('showTooltip');
 

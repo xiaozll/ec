@@ -94,7 +94,9 @@ $(function () {
 
         },
         onDblClickRow: function (row) {
-            edit(row);
+            if(hasPermissionResourceEdit){
+                edit(row);
+            }
         }
     }).datagrid('showTooltip');
 

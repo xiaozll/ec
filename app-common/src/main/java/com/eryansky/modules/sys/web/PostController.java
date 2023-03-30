@@ -239,7 +239,7 @@ public class PostController extends SimpleController {
      * @param userIds 用户ID
      * @return
      */
-    @RequiresPermissions(value = {"sys:post:edit","sys:post:user:edit"},logical = Logical.OR)
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:post:edit","sys:user:post:edit","sys:post:user:edit"})
     @Logging(value = "岗位管理-添加关联用户", logType = LogType.access)
     @PostMapping(value = {"addPostUser"})
     @ResponseBody
@@ -260,7 +260,7 @@ public class PostController extends SimpleController {
      * @param userIds 用户IDS
      * @return
      */
-    @RequiresPermissions(value = {"sys:post:edit","sys:post:user:edit"},logical = Logical.OR)
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:post:edit","sys:user:post:edit","sys:post:user:edit"})
     @Logging(value = "岗位管理-移除关联用户", logType = LogType.access)
     @PostMapping(value = {"removePostUser"})
     @ResponseBody

@@ -48,8 +48,8 @@
     <div onclick="move(true);" data-options="iconCls:'eu-icon-up'">上移</div>
     <div onclick="move();" data-options="iconCls:'eu-icon-down'">下移</div>
     <e:hasPermission name="sys:user:edit">
-        <div onclick="lock(false);" data-options="iconCls:'easyui-icon-user'">启用</div>
-        <div onclick="lock(true);" data-options="iconCls:'easyui-icon-lock'">停用</div>
+        <div onclick="lock(false);" data-options="iconCls:'eu-icon-user'">启用</div>
+        <div onclick="lock(true);" data-options="iconCls:'eu-icon-lock'">停用</div>
     </e:hasPermission>
 </div>
 <%-- easyui-layout布局 --%>

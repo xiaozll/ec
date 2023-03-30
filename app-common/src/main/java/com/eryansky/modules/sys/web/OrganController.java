@@ -17,6 +17,7 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.modules.sys._enum.DataScope;
@@ -231,7 +232,7 @@ public class OrganController extends SimpleController {
      *
      * @return
      */
-    @RequiresPermissions("sys:organ:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:organ:edit","sys:organ:user:edit","sys:user:organ:edit"})
     @Logging(value = "机构管理-机构用户", logType = LogType.access)
     @PostMapping(value = {"updateOrganUser"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody

@@ -337,7 +337,7 @@ public class UserController extends SimpleController {
     /**
      * 修改用户角色.
      */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:role:edit"})
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:role:edit","sys:role:user:edit"})
     @Logging(value = "用户管理-用户角色", logType = LogType.access)
     @PostMapping(value = {"updateUserRole"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -376,7 +376,7 @@ public class UserController extends SimpleController {
      * @param defaultOrganId 默认机构
      * @return
      */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:organ:edit"})
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:organ:user:edit","sys:user:organ:edit"})
     @Logging(value = "用户管理-用户机构", logType = LogType.access)
     @PostMapping(value = {"updateUserOrgan"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -406,7 +406,7 @@ public class UserController extends SimpleController {
      * @param model 用户
      * @param postIds 岗位ID集合
      */
-    @RequiresPermissions("sys:user:edit")
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:post:edit","sys:post:user:edit"})
     @Logging(value = "用户管理-用户岗位", logType = LogType.access)
     @PostMapping(value = {"updateUserPost"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
@@ -420,7 +420,6 @@ public class UserController extends SimpleController {
      * 修复用户岗位数据 自动清理用户不在部门的岗位信息 仅保留当前部门岗位信息
      * @return
      */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:post:edit"})
     @Logging(value = "用户管理-修复用户岗位数据", logType = LogType.access)
     @GetMapping("fixUserPostData")
     @ResponseBody
@@ -459,7 +458,7 @@ public class UserController extends SimpleController {
      * @param resourceIds 资源ID集合
      * @return
      */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:resource:edit"})
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:resource:user:edit","sys:user:resource:edit"})
     @Logging(value = "用户管理-用户资源", logType = LogType.access)
     @PostMapping(value = {"updateUserResource"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody

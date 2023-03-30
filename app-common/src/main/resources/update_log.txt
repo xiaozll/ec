@@ -1,5 +1,5 @@
 ﻿20230320
-V4.2.20230224.13
+V4.2.20230326.04
 1、修复因变更机构岗位重复问题（自动清除历史机构岗位数据），以及优化人员岗位配置；
 #历史数据修复方法
 执行一次URL方法：/a/sys/user/fixUserPostData
@@ -34,6 +34,12 @@ CREATE TABLE `t_sys_role_data_organ`  (
 设置岗位：sys:user:post:edit
 设置角色：sys:user:role:edit
 设置资源：sys:user:resource:edit
+
+6、角色管理，优化按钮权限
+新增资源权限（功能）：
+编辑：sys:resource:edit
+角色：sys:resource:role:edit
+用户：sys:resource:user:edit
 
 6、修复部分账号切换账号权限不成功问题。
 账号切换时，APP与webview会话不同步问题。

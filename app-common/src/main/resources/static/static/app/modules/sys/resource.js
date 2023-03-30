@@ -1,3 +1,8 @@
+var hasPermissionResourceEdit = hasPermissionResourceEdit;//参考父页面 resource.jsp
+var hasPermissionResourceRoleEdit = hasPermissionResourceRoleEdit;
+var hasPermissionResourceUserEdit = hasPermissionResourceUserEdit;
+
+
 var $resource_treegrid;
 var $resource_form;
 var $resource_dialog;
@@ -5,6 +10,50 @@ var $resource_role_dialog;
 var $resource_user_dialog;
 
 $(function () {
+    var toolbar = [];
+    if(hasPermissionResourceEdit){
+        toolbar = toolbar.concat([{
+            text: '新增',
+            iconCls: 'easyui-icon-add',
+            handler: function () {
+                showDialog();
+            }
+        }, '-', {
+            text: '编辑',
+            iconCls: 'easyui-icon-edit',
+            handler: function () {
+                edit()
+            }
+        }, '-', {
+            text: '删除',
+            iconCls: 'easyui-icon-remove',
+            handler: function () {
+                del()
+            }
+        },'-']);
+    }
+
+
+    if(hasPermissionResourceRoleEdit){
+        toolbar = toolbar.concat([{
+            text: '角色',
+            iconCls: 'eu-icon-lock',
+            handler: function () {
+                resourceRole();
+            }
+        },'-']);
+    }
+
+    if(hasPermissionResourceUserEdit){
+        toolbar = toolbar.concat([{
+            text: '用户',
+            iconCls: 'eu-icon-user',
+            handler: function () {
+                resourceUser();
+            }
+        },'-']);
+    }
+
     //数据列表
     $resource_treegrid = $('#resource_treegrid').treegrid({
         url: ctxAdmin + '/sys/resource/treegrid',
@@ -34,37 +83,7 @@ $(function () {
             {field: 'remark', title: '备注', width: 260},
             {field: 'updateTime', title: '更新时间', width: 146}
         ]],
-        toolbar: [{
-            text: '新增',
-            iconCls: 'easyui-icon-add',
-            handler: function () {
-                showDialog();
-            }
-        }, '-', {
-            text: '编辑',
-            iconCls: 'easyui-icon-edit',
-            handler: function () {
-                edit()
-            }
-        }, '-', {
-            text: '删除',
-            iconCls: 'easyui-icon-remove',
-            handler: function () {
-                del()
-            }
-        }, '-', {
-            text: '角色',
-            iconCls: 'eu-icon-lock',
-            handler: function () {
-                resourceRole();
-            }
-        }, '-', {
-            text: '用户',
-            iconCls: 'eu-icon-user',
-            handler: function () {
-                resourceUser();
-            }
-        }],
+        toolbar: toolbar,
         onContextMenu: function (e, row) {
             e.preventDefault();
             $(this).treegrid('select', row.id);

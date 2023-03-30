@@ -18,6 +18,7 @@ import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.ResourceType;
@@ -314,6 +315,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:resource:edit","sys:resource:role:edit"})
     @PostMapping(value = {"deleteRoles/{resourceId}"})
     @ResponseBody
     public Result deleteRoles(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {
@@ -365,6 +367,7 @@ public class ResourceController extends SimpleController {
      * @return
      * @throws Exception
      */
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:resource:edit","sys:resource:user:edit"})
     @PostMapping(value = {"deleteUsers/{resourceId}"})
     @ResponseBody
     public Result deleteUsers(@PathVariable String resourceId,@RequestParam(value = "ids", required = false) List<String> ids,HttpServletRequest request,HttpServletResponse response) {

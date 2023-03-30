@@ -21,7 +21,7 @@
 <%-- 列表右键 --%>
 <div id="user_datagrid_menu" class="easyui-menu" style="width:120px;display: none;">
     <e:hasPermission name="sys:user:add">
-    <div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
+        <div onclick="showDialog();" data-options="iconCls:'easyui-icon-add'">新增</div>
     </e:hasPermission>
     <e:hasPermission name="sys:user:edit">
         <div onclick="edit();" data-options="iconCls:'easyui-icon-edit'">编辑</div>
@@ -43,6 +43,13 @@
     </e:hasPermission>
     <e:hasPermission name="sys:user:resource:edit">
         <div onclick="editUserResource();" data-options="iconCls:'eu-icon-folder'">设置资源</div>
+    </e:hasPermission>
+    <div onclick="viewUserResources();" data-options="iconCls:'easyui-icon-search'">查看权限</div>
+    <div onclick="move(true);" data-options="iconCls:'eu-icon-up'">上移</div>
+    <div onclick="move();" data-options="iconCls:'eu-icon-down'">下移</div>
+    <e:hasPermission name="sys:user:edit">
+        <div onclick="lock(false);" data-options="iconCls:'easyui-icon-user'">启用</div>
+        <div onclick="lock(true);" data-options="iconCls:'easyui-icon-lock'">停用</div>
     </e:hasPermission>
 </div>
 <%-- easyui-layout布局 --%>

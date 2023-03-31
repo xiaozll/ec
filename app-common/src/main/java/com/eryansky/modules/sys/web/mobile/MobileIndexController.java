@@ -174,6 +174,7 @@ public class MobileIndexController extends SimpleController {
      */
     @Logging(logType = LogType.access, value = "APP下载")
     @RequiresUser(required = false)
+    @PrepareOauth2(enable = false)
     @GetMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,
                                     HttpServletRequest request,

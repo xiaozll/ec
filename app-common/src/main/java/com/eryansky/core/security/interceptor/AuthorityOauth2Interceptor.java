@@ -14,6 +14,7 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.security.jwt.JWTUtils;
+import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
@@ -85,7 +86,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                         logger.warn("{},Token校验失败（用户不存在）,{},{}", loginName, requestUrl, token);
                         return true;
                     }
-                    verify = JWTUtils.verify(token, loginName, user.getPassword());
+                    verify = SecurityUtils.verifySessionInfoToken(token, loginName, user.getPassword());
                 } catch (Exception e) {
                     if(!(e instanceof TokenExpiredException)){
                         logger.error("{}-{},Token校验失败,{},{},{}", SpringMVCHolder.getIp(),loginName, requestUrl, token, e.getMessage());
@@ -94,6 +95,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 if (verify && null != user) {
                     if(null != sessionInfo){
                         SecurityUtils.addExtendSession(request.getSession().getId(),sessionInfo.getId());
+                        SecurityUtils.setOrRefreshSessionInfoToken(sessionInfo,user.getPassword());
                         logger.debug("{},{},自动跳过登录,{},{},{}", loginName, IpUtils.getIpAddr0(request), requestUrl,request.getSession().getId(),sessionInfo.getId());
                     }else{
                         SecurityUtils.putUserToSession(request,user);

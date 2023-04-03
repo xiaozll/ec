@@ -472,8 +472,7 @@ public class SecurityUtils {
         sessionInfo.setDeviceCode(deviceCode_s);
         sessionInfo.setDeviceType(StringUtils.isNotBlank(platform_s) ? platform_s:UserAgentUtils.getDeviceType(request).toString());
         sessionInfo.setSessionId(sessionId);
-        sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword()));
-        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), user.getPassword(), 7 * 24 * 60 * 60 * 1000L));
+        setOrRefreshSessionInfoToken(sessionInfo,user.getPassword());
         sessionInfo.setId(SecurityUtils.getNoSuffixSessionId(session));
 //        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号
@@ -603,6 +602,28 @@ public class SecurityUtils {
 //        removeExtendSession(sessionInfo.getId());
         //syncExtendSession(sessionInfo);
     }
+
+    /**
+     * 设置或刷新用户Token信息
+     * @param sessionInfo sessionInfo
+     * @return
+     */
+    public static void setOrRefreshSessionInfoToken(SessionInfo sessionInfo, String secret) {
+        sessionInfo.setToken(JWTUtils.sign(sessionInfo.getLoginName(), null == secret ? StringUtils.EMPTY : secret));
+        sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), null == secret ? StringUtils.EMPTY : secret, 7 * 24 * 60 * 60 * 1000L));
+    }
+
+    /**
+     * 用户Token信息 校验
+     * @param token
+     * @param username
+     * @param secret
+     * @return
+     */
+    public static boolean verifySessionInfoToken(String token,String username, String secret) {
+        return JWTUtils.verify(token, username,  null == secret ? StringUtils.EMPTY : secret);
+    }
+
 
     /**
      * 获取当前用户session信息.

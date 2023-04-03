@@ -319,7 +319,7 @@ public class LoginController extends SimpleController {
         }
 
         try {
-            verify = JWTUtils.verify(token,loginName,user.getPassword());
+            verify = SecurityUtils.verifySessionInfoToken(token,loginName,user.getPassword());
         } catch (Exception e) {
             if(!(e instanceof TokenExpiredException)){
                 logger.error("{}-{},Token校验失败,{},{}", SpringMVCHolder.getIp(),loginName,  token, e.getMessage());

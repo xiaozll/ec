@@ -192,6 +192,15 @@ public class AppConstants extends SysConstants {
         return Boolean.valueOf(value);
     }
 
+    /**
+     * oauth2拦截器 默认：default；仅限包含URL或注释：include
+     * @return
+     */
+    public static String getOauth2Scope() {
+        String code = "system.security.oauth2.scope";
+        return getConfigValue(code);
+    }
+
 
     /**
      * oauth2 排除URL 多个之间以“,”分割
@@ -203,11 +212,33 @@ public class AppConstants extends SysConstants {
     }
 
     /**
-     * 消     * oauth2 排除URL 多个之间以“,”分割
+     * oauth2 排除URL 多个之间以“,”分割
      * @return
      */
     public static List<String> getOauth2ExcludePathList() {
         String value = getOauth2ExcludePaths();
+        if(StringUtils.isNotBlank(value)){
+            return Arrays.asList(value.split(","));
+        }
+        return Collections.emptyList();
+    }
+
+
+    /**
+     * oauth2 包含URL 多个之间以“,”分割
+     * @return
+     */
+    public static String getOauth2IncludePaths() {
+        String code = "system.security.oauth2.includePaths";
+        return getConfigValue(code);
+    }
+
+    /**
+     * oauth2 包含URL 多个之间以“,”分割
+     * @return
+     */
+    public static List<String> getOauth2IncludePathList() {
+        String value = getOauth2IncludePaths();
         if(StringUtils.isNotBlank(value)){
             return Arrays.asList(value.split(","));
         }

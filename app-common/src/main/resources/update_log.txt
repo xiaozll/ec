@@ -22,6 +22,7 @@ CREATE TABLE `t_sys_role_data_organ`  (
 
 3、内部应用单点跳转（仅限同源账号、组织机构管理）
 规则：/a/sso/目标代理URL全地址
+目标系统config.properties 开启system.security.oauth2.enable=true
 
 4、岗位管理，优化分级授权配置以及岗位用户配置，支持按机构选人操作
 新增资源权限（功能）：

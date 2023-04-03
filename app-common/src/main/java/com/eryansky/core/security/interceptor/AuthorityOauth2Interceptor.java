@@ -51,7 +51,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //已登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (null != sessionInfo && request.getSession().getId().equals(sessionInfo.getId())) {
+        if (null != sessionInfo && request.getSession().getId().equals(sessionInfo.getId()) && null != UserType.getByValue(sessionInfo.getUserType())) {
             return true;
         }
 
@@ -77,6 +77,12 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 if(null == sessionInfo){
                     sessionInfo = SecurityUtils.getSessionInfoByToken(token);
                 }
+                //兼容非内置用户时，自动跳过拦截
+                if(null != sessionInfo && null == UserType.getByValue(sessionInfo.getUserType())){
+                    logger.warn("{},Token校验失败（用户不存在）,{},{}", sessionInfo.getLoginName(), requestUrl, token);
+                    return true;
+                }
+                
                 String loginName = null;
                 User user = null;
                 try {

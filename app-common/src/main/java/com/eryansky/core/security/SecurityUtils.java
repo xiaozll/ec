@@ -654,7 +654,7 @@ public class SecurityUtils {
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
                 if (StringUtils.isNotBlank(token)) {
-                    sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
+                    sessionInfo = getSessionInfoByTokenOrRefreshToken(StringUtils.replaceOnce(token, "Bearer ", ""));
                 }
             }
         } catch (Exception e) {
@@ -686,7 +686,7 @@ public class SecurityUtils {
             if (sessionInfo == null) {
                 String token = request.getHeader("Authorization");
                 if (StringUtils.isNotBlank(token)) {
-                    sessionInfo = getSessionInfoByToken(StringUtils.replaceOnce(token, "Bearer ", ""));
+                    sessionInfo = getSessionInfoByTokenOrRefreshToken(StringUtils.replaceOnce(token, "Bearer ", ""));
                 }
             }
         } catch (Exception e) {
@@ -899,6 +899,26 @@ public class SecurityUtils {
     public static SessionInfo getSessionInfoByToken(String token) {
         List<SessionInfo> list = findSessionInfoList();
         return list.parallelStream().filter(sessionInfo -> token.equals(sessionInfo.getToken())).findFirst().orElse(null);
+    }
+
+    /**
+     * 查看某个用户登录信息
+     * @param refreshToken
+     * @return
+     */
+    public static SessionInfo getSessionInfoByRefreshToken(String refreshToken) {
+        List<SessionInfo> list = findSessionInfoList();
+        return list.parallelStream().filter(sessionInfo -> refreshToken.equals(sessionInfo.getRefreshToken())).findFirst().orElse(null);
+    }
+
+    /**
+     * 查看某个用户登录信息
+     * @param token
+     * @return
+     */
+    public static SessionInfo getSessionInfoByTokenOrRefreshToken(String token) {
+        List<SessionInfo> list = findSessionInfoList();
+        return list.parallelStream().filter(sessionInfo -> token.equals(sessionInfo.getToken()) || token.equals(sessionInfo.getRefreshToken())).findFirst().orElse(null);
     }
 
     /**

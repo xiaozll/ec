@@ -122,7 +122,7 @@ public class SessionController extends SimpleController {
     @PostMapping(value = {"syncTokenToSession"})
     @ResponseBody
     public Result syncTokenToSession(String token,String sessionId,HttpServletRequest request) {
-        SessionInfo sessionInfo = SecurityUtils.getSessionInfoByToken(token);
+        SessionInfo sessionInfo = SecurityUtils.getSessionInfoByTokenOrRefreshToken(token);
         String _sessionId = StringUtils.isNotBlank(sessionId) ? sessionId:request.getSession().getId();
         //更新真实的SessionID
         if (sessionInfo != null && _sessionId != null && !sessionInfo.getSessionId().equals(_sessionId)) {

@@ -75,7 +75,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                 String token = StringUtils.replaceOnce(authorization, "Bearer ", "");
                 //判断是否已经登录过
                 if(null == sessionInfo){
-                    sessionInfo = SecurityUtils.getSessionInfoByToken(token);
+                    sessionInfo = SecurityUtils.getSessionInfoByTokenOrRefreshToken(token);
                 }
                 //兼容非内置用户时，自动跳过拦截
                 if(null != sessionInfo && null == UserType.getByValue(sessionInfo.getUserType())){

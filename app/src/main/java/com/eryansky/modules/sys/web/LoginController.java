@@ -260,10 +260,8 @@ public class LoginController extends SimpleController {
     public Result postlogout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
-            // 退出时清空session中的内容
-            String sessionId = SecurityUtils.getNoSuffixSessionId(request.getSession());
             //由监听器更新在线用户列表
-            SecurityUtils.removeSessionInfoFromSession(sessionId, SecurityType.logout);
+            SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(), SecurityType.logout);
             logger.info("用户{}退出系统.", sessionInfo.getLoginName());
         }
         return Result.successResult();
@@ -281,10 +279,8 @@ public class LoginController extends SimpleController {
     public String logout(HttpServletRequest request) {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (sessionInfo != null) {
-            // 退出时清空session中的内容
-            String sessionId = SecurityUtils.getNoSuffixSessionId(request.getSession());
             //由监听器更新在线用户列表
-            SecurityUtils.removeSessionInfoFromSession(sessionId, SecurityType.logout);
+            SecurityUtils.removeSessionInfoFromSession(sessionInfo.getSessionId(), SecurityType.logout);
             logger.info("用户{}退出系统.", sessionInfo.getLoginName());
         }
         return "redirect:/";

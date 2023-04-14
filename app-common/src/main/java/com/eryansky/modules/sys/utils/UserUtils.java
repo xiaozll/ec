@@ -150,6 +150,18 @@ public class UserUtils {
     }
 
     /**
+     * 根据账号、员工编号查找用户
+     *
+     * @param loginName 账号
+     * @param code 工编号
+     * @param mobile 手机号
+     * @return
+     */
+    public static List<User> findByLoginNameOrCodeOrMobile(String loginName,String code,String mobile) {
+        return Static.userService.findByLoginNameOrCodeOrMobile(loginName,code,mobile);
+    }
+
+    /**
      * 根据loginName查找用户
      *
      * @param loginName 用户账号

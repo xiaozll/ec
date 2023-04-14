@@ -477,7 +477,7 @@ public class SecurityUtils {
 //        sessionInfo.addIfNotExistLoginName(sessionInfo.getLoginName());
         //可选账号
 //        List<User> users = UserUtils.findByCode(sessionInfo.getCode());
-        List<User> users = UserUtils.findByLoginNameOrCode(sessionInfo.getLoginName(), sessionInfo.getCode());
+        List<User> users = UserUtils.findByLoginNameOrCodeOrMobile(sessionInfo.getLoginName(), sessionInfo.getCode(),sessionInfo.getMobile());
         users.forEach(v -> {
             if (!v.getLoginName().equalsIgnoreCase(sessionInfo.getLoginName())) {
                 sessionInfo.addIfNotExistLoginName(v.getLoginName());

@@ -98,6 +98,11 @@ public class GetQYUserInfoResponse extends BaseResponse {
      */
     private Map<String, Object> extattr;
     /**
+     * 是否邀请该成员使用企业微信，默认值为true
+     */
+    @JSONField(name = "to_invite")
+    private Boolean toInvite;
+    /**
      * 成员对外属性，字段详情见对外属性；代开发自建应用需要管理员授权才返回；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取
      * {@link QYUserExternalProfile}
      */
@@ -261,6 +266,14 @@ public class GetQYUserInfoResponse extends BaseResponse {
         this.extattr = extattr;
     }
 
+    public Boolean getToInvite() {
+        return toInvite;
+    }
+
+    public void setToInvite(Boolean toInvite) {
+        this.toInvite = toInvite;
+    }
+
     public QYUserExternalProfile getExternalProfile() {
         return externalProfile;
     }
@@ -278,6 +291,6 @@ public class GetQYUserInfoResponse extends BaseResponse {
     }
 
     public QYUser getUser(){
-        return new QYUser(userId,name,mobile,department,order,isLeaderInDept,position,gender,email,avatar,thumbAvatar,telephone,alias,status,openUserId,qrCode,address,mainDepartment,extattr,externalProfile,externalPosition);
+        return new QYUser(userId,name,mobile,department,order,isLeaderInDept,position,gender,email,avatar,thumbAvatar,telephone,alias,status,openUserId,qrCode,address,mainDepartment,extattr,toInvite,externalProfile,externalPosition);
     }
 }

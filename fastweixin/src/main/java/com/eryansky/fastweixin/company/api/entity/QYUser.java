@@ -102,6 +102,12 @@ public class QYUser extends BaseModel {
      */
     private Map<String, Object> extattr;
     /**
+     * 是否邀请该成员使用企业微信，默认值为true
+     */
+    @JSONField(name = "to_invite")
+    private Boolean toInvite;
+
+    /**
      * 成员对外属性，字段详情见对外属性；代开发自建应用需要管理员授权才返回；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取
      * {@link QYUserExternalProfile}
      */
@@ -116,7 +122,7 @@ public class QYUser extends BaseModel {
     public QYUser() {
     }
 
-    public QYUser(String userId, String name, String mobile, Integer[] department, Integer[] order, Integer[] isLeaderInDept, String position, String gender, String email, String avatar, String thumbAvatar, String telephone, String alias, Integer status, String openUserId, String qrCode, String address, Integer mainDepartment, Map<String, Object> extattr, QYUserExternalProfile externalProfile, String externalPosition) {
+    public QYUser(String userId, String name, String mobile, Integer[] department, Integer[] order, Integer[] isLeaderInDept, String position, String gender, String email, String avatar, String thumbAvatar, String telephone, String alias, Integer status, String openUserId, String qrCode, String address, Integer mainDepartment, Map<String, Object> extattr,Boolean toInvite, QYUserExternalProfile externalProfile, String externalPosition) {
         this.userId = userId;
         this.name = name;
         this.mobile = mobile;
@@ -136,6 +142,7 @@ public class QYUser extends BaseModel {
         this.address = address;
         this.mainDepartment = mainDepartment;
         this.extattr = extattr;
+        this.toInvite = toInvite;
         this.externalProfile = externalProfile;
         this.externalPosition = externalPosition;
     }
@@ -311,6 +318,15 @@ public class QYUser extends BaseModel {
 
     public QYUser setMainDepartment(Integer mainDepartment) {
         this.mainDepartment = mainDepartment;
+        return this;
+    }
+
+    public Boolean getToInvite() {
+        return toInvite;
+    }
+
+    public QYUser setToInvite(Boolean toInvite) {
+        this.toInvite = toInvite;
         return this;
     }
 }

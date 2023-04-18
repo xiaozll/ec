@@ -730,7 +730,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organId
      * @return
      */
-    public List<User> findOrganUsersByOrganId(String organId) {
+    public List<User> findOrganUsers(String organId) {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);

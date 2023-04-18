@@ -214,7 +214,7 @@ public class OrganController extends SimpleController {
      */
     @GetMapping(value = {"user"})
     public String user(@ModelAttribute("model") Organ model, Model uiModel) {
-        List<User> organUsers = userService.findOrganUsersByOrganId(model.getId());
+        List<User> organUsers = userService.findOrganUsers(model.getId());
         String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers, User.class,
                 new String[]{"id", "name", "sexView", "defaultOrganName"});
         logger.debug(organUserCombogridData);

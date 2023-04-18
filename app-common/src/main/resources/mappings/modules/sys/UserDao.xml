@@ -648,7 +648,7 @@
     </select>
 
 
-    <select id="findOrganUsers" resultType="User">
+    <select id="findOrganUsersByOrganId" resultType="User">
         SELECT
         <include refid="userColumns"/>
         FROM t_sys_user a
@@ -657,6 +657,19 @@
         <where>
             AND a.status = '0'
             AND o.id = #{organId}
+        </where>
+        ORDER BY a.sort ASC
+    </select>
+
+    <select id="findOrganUsersByOrganCode" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        LEFT JOIN t_sys_user_organ uo ON uo.user_id = a.id
+        LEFT JOIN t_sys_organ_extend o ON o.id = uo.organ_id
+        <where>
+            AND a.status = '0' AND o.status = '0'
+            AND o.code = #{organCode}
         </where>
         ORDER BY a.sort ASC
     </select>

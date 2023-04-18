@@ -10,7 +10,6 @@ import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.utils.StringUtils;
-import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.core.aop.annotation.Logging;
@@ -19,7 +18,6 @@ import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security._enum.Logical;
 import com.eryansky.core.security.annotation.RequiresPermissions;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.modules.sys._enum.DataScope;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.OrganType;
@@ -27,7 +25,6 @@ import com.eryansky.modules.sys.mapper.*;
 import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.DictionaryUtils;
 import com.eryansky.modules.sys.utils.OrganUtils;
-import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
 import com.eryansky.utils.SelectType;
 import com.google.common.collect.Lists;
@@ -217,7 +214,7 @@ public class OrganController extends SimpleController {
      */
     @GetMapping(value = {"user"})
     public String user(@ModelAttribute("model") Organ model, Model uiModel) {
-        List<User> organUsers = userService.findOrganUsers(model.getId());
+        List<User> organUsers = userService.findOrganUsersByOrganId(model.getId());
         String organUserCombogridData = JsonMapper.getInstance().toJson(organUsers, User.class,
                 new String[]{"id", "name", "sexView", "defaultOrganName"});
         logger.debug(organUserCombogridData);

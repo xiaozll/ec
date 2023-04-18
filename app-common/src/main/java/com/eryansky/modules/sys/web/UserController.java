@@ -576,7 +576,7 @@ public class UserController extends SimpleController {
     @PostMapping(value = {"combogridOrganUser"})
     @ResponseBody
     public String combogridOrganUser(@RequestParam(value = "organId", required = true) String organId) {
-        List<User> users = userService.findOrganUsers(organId);
+        List<User> users = userService.findOrganUsersByOrganId(organId);
         Datagrid dg = new Datagrid(users.size(), users);
         return JsonMapper.getInstance().toJson(dg, User.class,
                 new String[]{"id", "loginName", "name", "sexView", "defaultOrganName"});

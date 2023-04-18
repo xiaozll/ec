@@ -23,7 +23,6 @@ import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.OrganExtend;
 import com.eryansky.modules.sys.utils.OrganUtils;
-import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.CacheConstants;
 import com.google.common.collect.Lists;
@@ -39,7 +38,6 @@ import com.eryansky.core.orm.mybatis.service.CrudService;
 import org.springframework.util.Assert;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.eryansky.modules.sys.service.OrganService.*;
 
@@ -732,13 +730,28 @@ public class UserService extends CrudService<UserDao, User> {
      * @param organId
      * @return
      */
-    public List<User> findOrganUsers(String organId) {
+    public List<User> findOrganUsersByOrganId(String organId) {
         Assert.notNull(organId, "参数[organId]为空!");
         Parameter parameter = new Parameter();
         parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
         parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
         parameter.put("organId", organId);
-        return dao.findOrganUsers(parameter);
+        return dao.findOrganUsersByOrganId(parameter);
+    }
+
+    /**
+     * 获取机构用户
+     *
+     * @param organCode
+     * @return
+     */
+    public List<User> findOrganUsersByOrganCode(String organCode) {
+        Assert.notNull(organCode, "参数[organCode]为空!");
+        Parameter parameter = new Parameter();
+        parameter.put(DataEntity.FIELD_STATUS, DataEntity.STATUS_NORMAL);
+        parameter.put(BaseInterceptor.DB_NAME, AppConstants.getJdbcType());
+        parameter.put("organCode", organCode);
+        return dao.findOrganUsersByOrganCode(parameter);
     }
 
     /**
@@ -1102,7 +1115,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @return
      */
     public List<String> findUserIdsByOrganId(String organId) {
-        List<String> list = new ArrayList<String>(1);
+        List<String> list = new ArrayList<>(1);
         list.add(organId);
         return findUserIdsByOrganIds(list);
     }
@@ -1131,7 +1144,7 @@ public class UserService extends CrudService<UserDao, User> {
      * @return
      */
     public List<String> findUsersLoginNamesByOrganId(String organId) {
-        List<String> list = new ArrayList<String>(1);
+        List<String> list = new ArrayList<>(1);
         list.add(organId);
         return findUsersLoginNamesByOrganIds(list);
     }

@@ -260,13 +260,16 @@ function ImageUploader($parent, options) {
         }();
         $slider.html("");
         var l = $('<div class="' + imageName + '"/>');
+        var scroll = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset;
+        var screen = window.screen.height;
+        var top = scroll-(screen*0.1);
         l.css({
             paddingTop: "5%",
             height: "90%",
             width: "100%",
             textAlign: "center",
             position: "absolute",
-            top: "0px",
+            top: top,
             left: "0px",
             zIndex: "600"
         });

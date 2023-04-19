@@ -7,6 +7,8 @@ var hasPermissionUserOrganEdit = hasPermissionUserOrganEdit;
 var hasPermissionUserPostEdit = hasPermissionUserPostEdit;
 var hasPermissionUserRoleEdit = hasPermissionUserRoleEdit;
 var hasPermissionUserResourceEdit = hasPermissionUserResourceEdit;
+
+var toolbar = toolbar;
 /**
  * 判断是否登录用户是不是超级管理员.
  * @returns {Boolean}
@@ -51,7 +53,6 @@ var $user_organ_dialog;
 
 var $user_post_form;
 var $user_post_dialog;
-
 $(function () {
     $user_search_form = $('#user_search_form').form();
 
@@ -95,7 +96,6 @@ $(function () {
         }
     });
 
-    var toolbar = [];
     if(hasPermissionUserAdd){
         toolbar = toolbar.concat([{
             text: '新增',
@@ -1103,4 +1103,11 @@ function search() {
     queryData = $.extend(queryData, organData, formData);//合并对象
 
     $user_datagrid.datagrid('load', queryData);
+}
+
+
+//扩展toolbar 用于后置
+function addToolbar(_toolbar) {
+    toolbar = toolbar.concat(_toolbar);
+    return toolbar;
 }

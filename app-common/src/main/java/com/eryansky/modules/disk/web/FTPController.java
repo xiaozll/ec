@@ -6,6 +6,7 @@
 package com.eryansky.modules.disk.web;
 
 import com.eryansky.common.model.Result;
+import com.eryansky.common.utils.ThreadUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.modules.disk.extend.FTPManager;
 import com.eryansky.modules.disk.extend.IFileManager;
@@ -41,11 +42,10 @@ public class FTPController extends SimpleController {
                 }
             }
             ftpManager.init();
-        } else {
-            Result.successResult().setMsg(iFileManager.getClass().getName());
+            ThreadUtils.sleep(3*1000L);
+            return Result.successResult().setObj(ftpManager.isConnected());
         }
-
-        return Result.successResult();
+        return Result.errorResult().setMsg(iFileManager.getClass().getName());
     }
 
 }

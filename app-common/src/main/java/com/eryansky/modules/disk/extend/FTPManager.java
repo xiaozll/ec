@@ -50,7 +50,7 @@ public class FTPManager implements IFileManager {
      * 是否重连
      */
     private boolean reconnect = true;
-    private boolean isconnect = false;
+    private boolean connected = false;
     /**
      * 重连间隔时间 默认：1分钟
      */
@@ -513,15 +513,15 @@ public class FTPManager implements IFileManager {
     public void init() {
         final Thread thread = new Thread(() -> {
             boolean init = false;
-            isconnect = false;
-            while (!init || (!isconnect && reconnect)) {
+            connected = false;
+            while (!init || (!connected && reconnect)) {
                 init = true;
                 try {
                     connect(url, port, username, password);
                     logger.info("连接FTP服务器成功,{},{}", url, port);
-                    isconnect = true;
+                    connected = true;
                 } catch (IOException e) {
-                    isconnect = false;
+                    connected = false;
                     logger.error("连接FTP服务器失败,{},{}", url, port);
                     try {
                         Thread.sleep(connectTime);
@@ -571,5 +571,9 @@ public class FTPManager implements IFileManager {
         String code = FileUploadUtils.encodingFilenamePrefix(userId,
                 fileName);
         return path + "/" + code + "_" + fileName;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 }

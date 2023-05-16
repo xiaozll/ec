@@ -21,7 +21,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * @date 2015-2-4 上午09:08:18
  */
 //@QuartzJob(name = "NoticeJob", cronExp = "0 0/1 * * * ?",instanceId = "ERYAN")
-@QuartzJob(name = "NoticeJob", cronExp = "0 0/10 * * * ?")
+@QuartzJob(name = "NoticeJob", cronExp = "0 0/10 6-23 * * ?")
 public class NoticeJob extends QuartzJobBean {
 
     private static final Logger logger = LoggerFactory.getLogger(NoticeJob.class);

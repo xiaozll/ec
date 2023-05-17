@@ -52,7 +52,7 @@ public class AppErrorController extends AbstractErrorController {
     }
 
 
-    @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status = getStatus(request);
         response.setStatus(status.value());
@@ -75,7 +75,7 @@ public class AppErrorController extends AbstractErrorController {
 
     }
 
-    @GetMapping
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST})
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
         if (status == HttpStatus.NO_CONTENT) {

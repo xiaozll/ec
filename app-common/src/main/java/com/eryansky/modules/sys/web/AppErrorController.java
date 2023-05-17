@@ -1,6 +1,7 @@
 package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.utils.mapper.JsonMapper;
+import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public class AppErrorController extends AbstractErrorController {
         response.setStatus(status.value());
 //        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
         Map<String, Object> errorData = new java.util.HashMap<>(getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
-
+        errorData.put("clientIP", IpUtils.getIpAddr0(request));
         logger.error("{}",JsonMapper.toJsonString(errorData));
         ModelAndView modelAndView = null;
         int statusCode = status.value();
@@ -83,6 +84,7 @@ public class AppErrorController extends AbstractErrorController {
         }
 //        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE));
+        body.put("clientIP", IpUtils.getIpAddr0(request));
         logger.error("{}",JsonMapper.toJsonString(body));
         return new ResponseEntity<>(body, status);
     }

@@ -83,6 +83,7 @@ public class AppErrorController extends AbstractErrorController {
         }
 //        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE));
+        logger.error("{}",JsonMapper.toJsonString(body));
         return new ResponseEntity<>(body, status);
     }
 

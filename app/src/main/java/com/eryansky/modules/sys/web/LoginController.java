@@ -167,7 +167,7 @@ public class LoginController extends SimpleController {
     @PrepareOauth2(enable = false)
     @RequiresUser(required = false)
     @ResponseBody
-    @GetMapping(value = {"login"})
+    @PostMapping(value = {"login"})
     public Result login(@RequestParam(required = true) String loginName,
                         @RequestParam(required = true) String password,
                         @RequestParam(defaultValue = "true") Boolean encrypt,

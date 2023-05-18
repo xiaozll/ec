@@ -61,7 +61,7 @@ public class AppErrorController extends AbstractErrorController {
 //        Map<String, Object> errorData = Collections.unmodifiableMap(getErrorAttributes(request, ErrorAttributeOptions.defaults()));
         Map<String, Object> errorData = new java.util.HashMap<>(getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
         errorData.put("clientIP", IpUtils.getIpAddr0(request));
-        errorData.put("userAgent", UserAgentUtils.getUserAgent(request));
+        errorData.put("userAgent", UserAgentUtils.getHTTPUserAgent(request));
         logger.error("{}",JsonMapper.toJsonString(errorData));
         ModelAndView modelAndView = null;
         int statusCode = status.value();
@@ -87,7 +87,7 @@ public class AppErrorController extends AbstractErrorController {
 //        Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE));
         body.put("clientIP", IpUtils.getIpAddr0(request));
-        body.put("userAgent", UserAgentUtils.getUserAgent(request));
+        body.put("userAgent", UserAgentUtils.getHTTPUserAgent(request));
         logger.error("{}",JsonMapper.toJsonString(body));
         return new ResponseEntity<>(body, status);
     }

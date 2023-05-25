@@ -216,6 +216,7 @@ public class MobileIndexController extends SimpleController {
      * @param fileId
      * @return
      */
+    @Logging(value = "删除文件", logType = LogType.access)
     @PostMapping(value = {"deleteFile"})
     @ResponseBody
     public Result deleteFile(@RequestParam(value = "fileId") String fileId) {

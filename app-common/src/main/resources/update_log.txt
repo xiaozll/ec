@@ -1,4 +1,12 @@
-﻿20230320
+﻿20230529
+V4.2.20230521.03
+1、修复部分URL垂直越权漏洞,用户管理增加功能权限：数据查看“sys:user:dataView”
+/a/sys/user/organUserTree
+/a/sys/user/customUserList
+2、修复部分请求错误页面信息泄露
+server.tomcat.relaxed-query-chars=|,{,},[,],\,
+
+20230320
 V4.2.20230326.04
 1、修复因变更机构岗位重复问题（自动清除历史机构岗位数据），以及优化人员岗位配置；
 #历史数据修复方法

@@ -555,6 +555,7 @@ public class UserController extends SimpleController {
      * @param query
      * @return
      */
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:view","sys:user:dataView"})
     @PostMapping(value = {"customUserList"})
     @ResponseBody
     public String userList(String dataScope,
@@ -676,6 +677,7 @@ public class UserController extends SimpleController {
      * @param cascade
      * @return
      */
+    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:view","sys:user:dataView"})
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"organUserTree"})
     @ResponseBody
     public List<TreeNode> organUserTree(String parentId,

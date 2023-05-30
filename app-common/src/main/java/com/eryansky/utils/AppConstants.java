@@ -36,7 +36,10 @@ public class AppConstants extends SysConstants {
      * 修改用户密码 个人(不需要输入原始密码)
      */
     public static final String USER_UPDATE_PASSWORD_NO = "0";
-
+    /**
+     * 普通角色（基本角色）
+     */
+    public static final String ROLE_BASE = "role_base";
     /**
      * 系统管理员角色编号
      */

@@ -9,7 +9,6 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
-import com.eryansky.core.security.ApplicationSessionContext;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.PrepareOauth2;
@@ -32,7 +31,6 @@ import java.util.List;
 
 /**
  * 模拟Outho2认证拦截器
- * 优先级：注解>数据库权限配置
  * @author Eryan
  * @date 2021-09-09
  */

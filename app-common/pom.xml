@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>4.2.20230521.04</version>
+        <version>4.2.20230521.05</version>
     </parent>
     <artifactId>ec-app-common</artifactId>
     <version>${ec-app-common.version}</version>
@@ -16,7 +16,7 @@
 
     <properties>
         <!--<essm.j2cache.version>2.8.20181224</essm.j2cache.version>-->
-        <poi.version>5.2.2</poi.version>
+        <poi.version>5.2.3</poi.version>
         <xwpf.version>2.0.4</xwpf.version>
         <bsh.version>2.0b6</bsh.version>
 

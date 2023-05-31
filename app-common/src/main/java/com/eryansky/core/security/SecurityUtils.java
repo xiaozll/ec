@@ -1076,8 +1076,8 @@ public class SecurityUtils {
         Set<String> urlSet = getUrlLimitByUserId(userId);
         if(null == urlSet){
             urlSet = Sets.newHashSet();
-            urlSet.add(url);
         }
+        urlSet.add(url);
         CacheUtils.put(LOCK_URL_LIMIT_REGION, userId,urlSet);
     }
 

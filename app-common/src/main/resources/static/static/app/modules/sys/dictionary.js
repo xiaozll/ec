@@ -458,12 +458,19 @@ function showDictionaryDialog(dictionaryId) {
  * @param target
  */
 function setDictionaryItemSortValue(target) {
-    $.get(ctxAdmin + '/sys/dictionaryItem/maxSort', function (data) {
-        if (data.code === 1) {
-            $(target).numberbox({value: data.obj + 30});
-            $(target).numberbox('validate');
+    $.ajax({
+        url: ctxAdmin + '/sys/dictionaryItem/maxSort',
+        type: 'post',
+        data: {},
+        traditional: true,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code === 1) {
+                $(target).numberbox({value: data.obj + 30});
+                $(target).numberbox('validate');
+            }
         }
-    }, 'json');
+    });
 }
 
 

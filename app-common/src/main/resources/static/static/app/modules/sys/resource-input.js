@@ -67,9 +67,16 @@ function loadType(parentId) {
 
 //设置排序默认值
 function setSortValue() {
-    $.get(ctxAdmin + '/sys/resource/maxSort', function (data) {
-        if (data.code === 1) {
-            $('#sort').numberspinner('setValue', data.obj + 30);
+    $.ajax({
+        url: ctxAdmin + '/sys/resource/maxSort',
+        type: 'post',
+        data: {},
+        traditional: true,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code === 1) {
+                $('#sort').numberspinner('setValue', data.obj + 30);
+            }
         }
-    }, 'json');
+    });
 }

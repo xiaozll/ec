@@ -13,7 +13,6 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.UserType;
@@ -61,7 +60,6 @@ public class UserMobileController extends SimpleController {
      * @param uiModel
      * @return
      */
-    @RequiresUser(required = false)
     @GetMapping(value = "password")
     public String password(@ModelAttribute("model")User model, String msg, Model uiModel) {
         if(null == model || StringUtils.isBlank(model.getId())){
@@ -83,7 +81,6 @@ public class UserMobileController extends SimpleController {
      * @param newPassword
      * @return
      */
-    @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
     @PostMapping(value = "savePs")
     @ResponseBody
@@ -136,7 +133,6 @@ public class UserMobileController extends SimpleController {
      * @param newPassword
      * @return
      */
-    @RequiresUser(required = false)
     @Logging(logType = LogType.access,value = "修改密码")
     @PostMapping(value = "savePassword")
     @ResponseBody
@@ -313,7 +309,6 @@ public class UserMobileController extends SimpleController {
      * @param loginName
      * @return
      */
-    @RequiresUser(required = false)
     @PostMapping(value = {"detailByIdOrLoginName"})
     @ResponseBody
     public Result detailByIdOrLoginName(String id,

@@ -45,11 +45,18 @@ function loadSex() {
 
 //设置排序默认值
 function setSortValue() {
-    $.get(ctxAdmin + '/sys/user/maxSort', function (data) {
-        if (data.code === 1) {
-            $('#orderNo').numberspinner('setValue', data.obj + 30);
+    $.ajax({
+        url: ctxAdmin + '/sys/user/maxSort',
+        type: 'post',
+        data: {},
+        traditional: true,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code === 1) {
+                $('#orderNo').numberspinner('setValue', data.obj + 30);
+            }
         }
-    }, 'json');
+    });
 }
 
 function addImageFile(id, url) {

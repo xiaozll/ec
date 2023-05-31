@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.modules.sys._enum.AreaType;
 import com.eryansky.modules.sys.mapper.Area;
 import com.eryansky.modules.sys.service.AreaService;
@@ -140,7 +139,6 @@ public class AreaController extends SimpleController {
      * @param response
      * @return
      */
-    @RequiresUser
     @ResponseBody
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "treeData")
     public List<TreeNode> treeData(@RequestParam(required = false) String extId,

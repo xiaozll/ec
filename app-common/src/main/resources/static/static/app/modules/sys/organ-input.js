@@ -73,9 +73,16 @@ function loadType(parentId) {
 
 //设置排序默认值
 function setSortValue() {
-    $.get(ctxAdmin + '/sys/organ/maxSort', function (data) {
-        if (data.code === 1) {
-            $('#sort').numberspinner('setValue', data.obj + 30);
+    $.ajax({
+        url: ctxAdmin + '/sys/organ/maxSort',
+        type: 'post',
+        data: {},
+        traditional: true,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code === 1) {
+                $('#sort').numberspinner('setValue', data.obj + 30);
+            }
         }
-    }, 'json');
+    });
 }

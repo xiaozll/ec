@@ -21,7 +21,6 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.security.annotation.RequiresPermissions;
-import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
 import com.eryansky.modules.disk._enum.FolderType;
@@ -284,7 +283,6 @@ public class VersionLogController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequiresUser(required = false)
     @GetMapping(value = {"downloadApp/{versionLogType}"})
     public ModelAndView downloadApp(HttpServletResponse response,String app, @PathVariable String versionLogType) {
         return downloadApp(SpringMVCHolder.getRequest(),response,app,versionLogType);
@@ -300,7 +298,6 @@ public class VersionLogController extends SimpleController {
      * @return
      * @throws Exception
      */
-    @RequiresUser(required = false)
     @GetMapping(value = {"downloadApp"})
     public ModelAndView downloadApp(HttpServletRequest request, HttpServletResponse response,String app, @PathVariable String versionLogType){
         String _versionLogType = versionLogType;

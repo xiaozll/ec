@@ -21,11 +21,18 @@
 
     //设置排序默认值
     function setSortValue() {
-        $.get('${ctxAdmin}/notice/contactGroup/maxSort', function(data) {
-            if (data.code == 1) {
-                $('#sort').numberspinner('setValue',data.obj+1);
+        $.ajax({
+            url: ctxAdmin + '/notice/contactGroup/maxSort',
+            type: 'post',
+            data: {},
+            traditional: true,
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 1) {
+                    $('#sort').numberspinner('setValue',data.obj+10);
+                }
             }
-        }, 'json');
+        });
     }
 </script>
 <div>

@@ -256,7 +256,7 @@ public class ResourceController extends SimpleController {
     /**
      * 排序最大值.
      */
-    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"maxSort"})
+    @PostMapping(value = {"maxSort"})
     @ResponseBody
     public Result maxSort() throws Exception {
         Result result;

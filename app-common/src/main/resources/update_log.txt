@@ -1,4 +1,12 @@
-﻿20230529
+﻿20230531
+1、用户管理取消数据查看“sys:user:dataView”权限
+/a/sys/user/organUserTree
+/a/sys/user/customUserList
+2、增加URL黑名单访问限制
+UrlLimitInterceptor
+
+
+20230529
 V4.2.20230521.04
 1、修复部分URL垂直越权漏洞,用户管理增加功能权限：数据查看“sys:user:dataView”
 /a/sys/user/organUserTree

@@ -339,6 +339,18 @@ public class AppConstants extends SysConstants {
 
 
     /**
+     * URL请求限制
+     *
+     * @return
+     */
+    public static Boolean isLimitUrlEnable() {
+        String code = "system.security.limit.url.enable";
+        String value = getConfigValue(code,"false");
+        return Boolean.valueOf(value);
+    }
+
+
+    /**
      * 启用内部代理
      *
      * @return

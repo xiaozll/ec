@@ -22,6 +22,7 @@ import com.eryansky.modules.sys.service.*;
 import com.eryansky.modules.sys.utils.OrganUtils;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.utils.AppUtils;
+import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.net.InetAddresses;
@@ -1060,6 +1061,29 @@ public class SecurityUtils {
     public static void removeExtendSession(String sessionInfoId) {
         Collection<String> sessionIds = Static.applicationSessionContext.findSessionExtendKes();
         sessionIds.parallelStream().filter(v -> sessionInfoId.equals(getExtendSessionId(v))).forEach(v -> Static.applicationSessionContext.removeExtendSession(v));
+    }
+
+
+    public static final String LOCK_URL_LIMIT_REGION = "lock_url_limit";
+
+    /**
+     * 添加用户访问URL限制
+     * @param userId
+     * @param url
+     */
+    public static void addUrlLimit(String userId,String url) {
+        Set<String> urlSet = getUrlLimitByUserId(userId);
+        urlSet.add(url);
+        CacheUtils.put(LOCK_URL_LIMIT_REGION, userId,urlSet);
+    }
+
+
+    /**
+     * 获取用户访问URL限制
+     * @param userId
+     */
+    public static Set<String> getUrlLimitByUserId(String userId) {
+        return CacheUtils.get(LOCK_URL_LIMIT_REGION, userId);
     }
 }
 

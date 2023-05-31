@@ -8,7 +8,6 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.utils.AppConstants;
-import com.eryansky.utils.CacheUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Set;
 
 /**
  * URL限制请求拦截器
@@ -24,8 +24,6 @@ import java.util.List;
 public class UrlLimitInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(UrlLimitInterceptor.class);
-
-    public static final String LOCK_URL_LIMIT_REGION = "lock_url_limit";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -65,7 +63,7 @@ public class UrlLimitInterceptor implements HandlerInterceptor {
      */
     private Boolean urlIsLock(String userId, String url) {
         //黑名单 缓存
-        List<String> urls = CacheUtils.get(LOCK_URL_LIMIT_REGION, userId);
+        Set<String> urls = SecurityUtils.getUrlLimitByUserId(userId);
         if (Collections3.isNotEmpty(urls) && urls.contains(url)) {
             return true;
         }

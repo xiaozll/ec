@@ -146,7 +146,8 @@ public class ConfigController extends SimpleController {
             "system.rest.enable",
             "system.rest.defaultApiKey",
             "system.rest.limit.ip.enable",
-            "system.rest.limit.ip.whitelist"
+            "system.rest.limit.ip.whitelist",
+            "system.rest.limit.url.enable",
     };
 
     /**

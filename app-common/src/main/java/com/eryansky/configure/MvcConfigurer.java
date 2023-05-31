@@ -5,10 +5,7 @@ import com.eryansky.common.utils.jackson.XssDefaultJsonDeserializer;
 import com.eryansky.common.utils.jackson.XssDefaultJsonSerializer;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.dialect.dialect.ShiroDialect;
-import com.eryansky.core.security.interceptor.AuthorityInterceptor;
-import com.eryansky.core.security.interceptor.AuthorityOauth2Interceptor;
-import com.eryansky.core.security.interceptor.IpLimitInterceptor;
-import com.eryansky.core.security.interceptor.RestDefaultAuthorityInterceptor;
+import com.eryansky.core.security.interceptor.*;
 import com.eryansky.core.web.interceptor.LogInterceptor;
 import com.eryansky.core.web.interceptor.MobileInterceptor;
 import com.eryansky.modules.disk.extend.DISKManager;
@@ -64,6 +61,11 @@ public class MvcConfigurer implements WebMvcConfigurer {
               .addPathPatterns("/**")
               .order(Ordered.HIGHEST_PRECEDENCE + 90);
 
+      if(Boolean.TRUE.equals(AppConstants.isLimitUrlEnable())){
+         registry.addInterceptor(new UrlLimitInterceptor())
+                 .addPathPatterns("/**")
+                 .order(Ordered.HIGHEST_PRECEDENCE + 90);
+      }
 
       registry.addInterceptor(new LogInterceptor(requestMappingHandlerAdapter))
               .addPathPatterns("/**")

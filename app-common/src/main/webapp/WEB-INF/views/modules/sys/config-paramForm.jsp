@@ -215,7 +215,7 @@
         <div class="controls">
             <label><input name="system.rest.enable" type="radio" value="true"/>启用</label>
             <label><input name="system.rest.enable" type="radio" value="false"/>禁用</label>
-            <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否开启REST授权</span>
+            <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否开启REST授权,需重启服务</span>
         </div>
     </div>
     <div class="control-group">
@@ -240,6 +240,15 @@
             <span class="help-inline">每行一个或多个之间以";"分割，支持"*"通配符</span>
         </div>
     </div>
+
+<%--    <div class="control-group">--%>
+<%--        <label class="control-label">URL黑名单限制：</label>--%>
+<%--        <div class="controls">--%>
+<%--            <label><input name="system.rest.limit.url.enable" type="radio" value="true"/>启用</label>--%>
+<%--            <label><input name="system.rest.limit.url.enable" type="radio" value="false"/>禁用</label>--%>
+<%--            <span class="help-inline">需重启服务</span>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
     <div class="form-actions">
         <e:hasPermission name="sys:config:edit">

@@ -10,6 +10,7 @@
             $("#inputForm").validate({
                 submitHandler: function (form) {
                     loading('正在提交，请稍等...');
+                    $("input[type='radio'][name='system.rest.enable']").removeAttr("disabled");
                     form.submit();
                 },
                 errorContainer: "#messageBox",
@@ -221,8 +222,8 @@
         <div class="control-group">
             <label class="control-label">REST授权：</label>
             <div class="controls">
-                <label><input name="system.rest.enable" type="radio" value="true"/>启用</label>
-                <label><input name="system.rest.enable" type="radio" value="false"/>禁用</label>
+                <label><input name="system.rest.enable" type="radio" value="true" disabled/>启用</label>
+                <label><input name="system.rest.enable" type="radio" value="false" disabled/>禁用</label>
                 <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否开启REST授权，需重启服务</span>
             </div>
         </div>

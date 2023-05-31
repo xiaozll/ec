@@ -35,7 +35,6 @@ public class UrlLimitInterceptor implements HandlerInterceptor {
             return true;
         }
         String url = StringUtils.replaceOnce(request.getRequestURI().replaceAll("//", "/"), request.getContextPath(), "");
-        log.debug("请求IP={},URL={}", sessionInfo.getLoginName(), url);
         if (urlIsLock(sessionInfo.getUserId(), url)) {
             log.warn("禁止访问：{} {} {}", sessionInfo.getLoginName(), url, UserAgentUtils.getHTTPUserAgent(request));
             Result result = Result.noPermissionResult().setMsg("禁止访问：" + sessionInfo.getLoginName() + "," + url);

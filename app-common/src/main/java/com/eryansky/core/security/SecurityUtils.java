@@ -25,6 +25,7 @@ import com.eryansky.utils.AppUtils;
 import com.eryansky.utils.CacheUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.net.InetAddresses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1073,7 +1074,10 @@ public class SecurityUtils {
      */
     public static void addUrlLimit(String userId,String url) {
         Set<String> urlSet = getUrlLimitByUserId(userId);
-        urlSet.add(url);
+        if(null == urlSet){
+            urlSet = Sets.newHashSet();
+            urlSet.add(url);
+        }
         CacheUtils.put(LOCK_URL_LIMIT_REGION, userId,urlSet);
     }
 

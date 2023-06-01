@@ -63,10 +63,7 @@ public class UrlLimitInterceptor implements HandlerInterceptor {
     private Boolean urlIsLock(String userId, String url) {
         //黑名单 缓存
         Set<String> urls = SecurityUtils.getUrlLimitByUserId(userId);
-        if (Collections3.isNotEmpty(urls) && urls.contains(url)) {
-            return true;
-        }
-        return false;
+        return Collections3.isNotEmpty(urls) && urls.contains(url);
     }
 
 

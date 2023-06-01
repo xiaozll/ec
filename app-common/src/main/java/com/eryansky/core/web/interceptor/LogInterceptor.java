@@ -124,43 +124,39 @@ public class LogInterceptor implements HandlerInterceptor {
 		//注解处理
 		if (!flag && handler instanceof HandlerMethod) {
 			handlerMethod = (HandlerMethod) handler;
-			Logging logging = null;
-			if (handlerMethod != null) {
-				//需要登录
-				logging = handlerMethod.getMethodAnnotation(Logging.class);
-				MethodParameter[] parameters = handlerMethod.getMethodParameters();
-				Object[] parameterValues = new Object[parameters.length];
-				for (int i = 0; i < parameters.length; i++) {
-					MethodParameter parameter = parameters[i];
-					HandlerMethodArgumentResolver resolver = getArgumentResolver(parameter);
-					ModelAndViewContainer mavContainer = new ModelAndViewContainer();
-					mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));
-					WebDataBinderFactory webDataBinderFactory = getDataBinderFactory(handlerMethod);
-					try {
-						Object value = resolver.resolveArgument(parameter, mavContainer, webRequest, webDataBinderFactory);
-						parameterValues[i] = value;
-					} catch (Exception e) {
-						if(!(e instanceof org.springframework.http.converter.HttpMessageNotReadableException)){
-							logger.error(e.getMessage() + ",{}" ,requestUrl);
-						}
+			Logging logging = handlerMethod.getMethodAnnotation(Logging.class);
+			MethodParameter[] parameters = handlerMethod.getMethodParameters();
+			Object[] parameterValues = new Object[parameters.length];
+			for (int i = 0; i < parameters.length; i++) {
+				MethodParameter parameter = parameters[i];
+				HandlerMethodArgumentResolver resolver = getArgumentResolver(parameter);
+				ModelAndViewContainer mavContainer = new ModelAndViewContainer();
+				mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));
+				WebDataBinderFactory webDataBinderFactory = getDataBinderFactory(handlerMethod);
+				try {
+					Object value = resolver.resolveArgument(parameter, mavContainer, webRequest, webDataBinderFactory);
+					parameterValues[i] = value;
+				} catch (Exception e) {
+					if(!(e instanceof org.springframework.http.converter.HttpMessageNotReadableException)){
+						logger.error(e.getMessage() + ",{}" ,requestUrl);
 					}
 				}
+			}
 
-				if (logging != null && Boolean.parseBoolean(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
-					flag = true;
-					_flag = true;
-					logType = logging.logType().getValue();
-					String logValue = logging.value();
-					newLogValue = logValue;
-					if (StringUtils.isNotBlank(logValue)) {
-						newLogValue = SpringUtils.parseSpel(logValue, handlerMethod.getMethod(), parameterValues);
-					}
-					if (StringUtils.isNotBlank(logging.remark())) {
-						remark = SpringUtils.parseSpel(logging.remark(), handlerMethod.getMethod(), parameterValues);
-					}
-				} else if (logging != null && !Boolean.parseBoolean(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
-					_flag = false;
+			if (logging != null && Boolean.parseBoolean(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
+				flag = true;
+				_flag = true;
+				logType = logging.logType().getValue();
+				String logValue = logging.value();
+				newLogValue = logValue;
+				if (StringUtils.isNotBlank(logValue)) {
+					newLogValue = SpringUtils.parseSpel(logValue, handlerMethod.getMethod(), parameterValues);
 				}
+				if (StringUtils.isNotBlank(logging.remark())) {
+					remark = SpringUtils.parseSpel(logging.remark(), handlerMethod.getMethod(), parameterValues);
+				}
+			} else if (logging != null && !Boolean.parseBoolean(SpringUtils.parseSpel(logging.logging(), handlerMethod.getMethod(), parameterValues))) {
+				_flag = false;
 			}
 
 		}

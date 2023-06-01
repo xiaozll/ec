@@ -47,8 +47,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
         if (null != handlerResult) {
             return handlerResult;
         }
-        String requestUrl = request.getRequestURI();
-        requestUrl = requestUrl.replaceAll("//", "/");
+        String requestUrl = request.getRequestURI().replaceAll("//", "/");
         if (logger.isDebugEnabled()) {
             logger.debug("{} {} {}",request.getSession().getId(),request.getHeader("Authorization"),requestUrl);
         }

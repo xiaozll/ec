@@ -96,7 +96,7 @@ public class AuthorityOauth2Interceptor implements AsyncHandlerInterceptor {
                         logger.error("{}-{},Token校验失败,{},{},{}", SpringMVCHolder.getIp(),loginName, requestUrl, token, e.getMessage());
                     }
                 }
-                if (verify && null != user) {
+                if (verify) {
                     if(null != sessionInfo){
                         SecurityUtils.addExtendSession(request.getSession().getId(),sessionInfo.getId());
                         logger.debug("{},{},自动跳过登录,{},{},{}", loginName, IpUtils.getIpAddr0(request), requestUrl,request.getSession().getId(),sessionInfo.getId());

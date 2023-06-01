@@ -27,11 +27,11 @@ public class UrlLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (null == sessionInfo) {//自动跳过
+        if (!AppConstants.isLimitUrlEnable()) {
             return true;
         }
-        if (!AppConstants.isLimitUrlEnable()) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if (null == sessionInfo) {//自动跳过
             return true;
         }
         String url = StringUtils.replaceOnce(request.getRequestURI().replaceAll("//", "/"), request.getContextPath(), "");

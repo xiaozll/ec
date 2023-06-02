@@ -60,7 +60,7 @@
         <ec-j2cache-spring-boot-starter.version>4.2.20230521.09</ec-j2cache-spring-boot-starter.version>
         <ec-fastweixin.version>4.2.20230521.09</ec-fastweixin.version>
 
-        <jackson.version>2.14.2</jackson.version>
+        <jackson.version>2.15.2</jackson.version>
     </properties>
 
 
@@ -244,6 +244,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>

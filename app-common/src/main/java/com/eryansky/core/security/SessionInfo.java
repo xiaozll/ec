@@ -128,7 +128,7 @@ public class SessionInfo implements Serializable {
     /**
      * 用户岗位
      */
-    private List<String> postCodes = new ArrayList<String>(0);
+    private List<PermissonPost> permissonPosts = new ArrayList<>(0);
 
     /**
      * 登录时间
@@ -153,7 +153,7 @@ public class SessionInfo implements Serializable {
     /**
      * 授权角色
      */
-    private List<PermissonRole> permissonRoles = new ArrayList<PermissonRole>(0);
+    private List<PermissonRole> permissonRoles = new ArrayList<>(0);
     /**
      * 授权权限（菜单/功能）
      */
@@ -548,12 +548,12 @@ public class SessionInfo implements Serializable {
         return this;
     }
 
-    public List<String> getPostCodes() {
-        return postCodes;
+    public List<PermissonPost> getPermissonPosts() {
+        return permissonPosts;
     }
 
-    public SessionInfo setPostCodes(List<String> postCodes) {
-        this.postCodes = postCodes;
+    public SessionInfo setPermissonPosts(List<PermissonPost> permissonPosts) {
+        this.permissonPosts = permissonPosts;
         return this;
     }
 

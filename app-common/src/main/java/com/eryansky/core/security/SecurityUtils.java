@@ -381,7 +381,7 @@ public class SecurityUtils {
             }
 
             if (sessionInfo != null && userId.equals(sessionInfo.getUserId())) {
-                return null != sessionInfo.getPostCodes().parallelStream().filter(postCode::equals).findFirst().orElse(null);
+                return null != sessionInfo.getPermissonPosts().parallelStream().filter(postCode::equals).findFirst().orElse(null);
             }
 
             List<Post> posts = Static.postService.findPostsByUserId(userId);
@@ -439,7 +439,7 @@ public class SecurityUtils {
         List<Role> roles = Static.roleService.findRolesByUserId(sessionInfo.getUserId());
         roles.forEach(role -> sessionInfo.addPermissonRoles(new PermissonRole(role.getId(), role.getCode())));
         List<Post> posts = Static.postService.findPostsByUserId(sessionInfo.getUserId());
-        posts.forEach(post -> sessionInfo.getPostCodes().add(StringUtils.isNotBlank(post.getCode()) ? post.getCode() : post.getId()));
+        posts.forEach(post -> sessionInfo.getPermissonPosts().add(new PermissonPost(post.getId(),post.getCode(),post.getName(),sessionInfo.getLoginOrganId())));
     }
 
 
@@ -571,7 +571,7 @@ public class SecurityUtils {
         }
         sessionInfo.getPermissons().clear();
         sessionInfo.getPermissonRoles().clear();
-        sessionInfo.getPostCodes().clear();
+        sessionInfo.getPermissonPosts().clear();
         initPermission(sessionInfo);
         refreshSessionInfo(sessionInfo);
         return sessionInfo;
@@ -587,7 +587,7 @@ public class SecurityUtils {
         sessionInfos.forEach(sessionInfo -> {
             sessionInfo.getPermissons().clear();
             sessionInfo.getPermissonRoles().clear();
-            sessionInfo.getPostCodes().clear();
+            sessionInfo.getPermissonPosts().clear();
             initPermission(sessionInfo);
             refreshSessionInfo(sessionInfo);
         });

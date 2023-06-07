@@ -40,6 +40,12 @@ public interface LogDao extends CrudDao<Log> {
      * @return
      */
     int clearInvalidLog(Map<String, Object> parameter);
+    /**
+     * 清空有效期之外的日志（历史）
+     *
+     * @return
+     */
+    int clearHistoryLog(Map<String, Object> parameter);
 
     /**
      * 用户登录测试

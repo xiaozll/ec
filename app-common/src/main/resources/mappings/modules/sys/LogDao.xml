@@ -582,6 +582,15 @@
         </where>
     </delete>
 
+    <delete id="clearHistoryLog" >
+        DELETE FROM t_sys_log_history
+        <where>
+            <if test="createTime != null ">
+                create_time <![CDATA[<]]> #{createTime}
+            </if>
+        </where>
+    </delete>
+
 
 	<insert id="insertToHistory">
 		INSERT INTO t_sys_log_history(

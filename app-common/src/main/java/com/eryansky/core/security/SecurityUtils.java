@@ -381,7 +381,7 @@ public class SecurityUtils {
             }
 
             if (sessionInfo != null && userId.equals(sessionInfo.getUserId())) {
-                return null != sessionInfo.getPermissonPosts().parallelStream().filter(postCode::equals).findFirst().orElse(null);
+                return null != sessionInfo.getPostCodes().parallelStream().filter(postCode::equals).findFirst().orElse(null);
             }
 
             List<Post> posts = Static.postService.findPostsByUserId(userId);
@@ -440,6 +440,7 @@ public class SecurityUtils {
         roles.forEach(role -> sessionInfo.addPermissonRoles(new PermissonRole(role.getId(), role.getCode())));
         List<Post> posts = Static.postService.findPostsByUserId(sessionInfo.getUserId());
         posts.forEach(post -> sessionInfo.getPermissonPosts().add(new PermissonPost(post.getId(),post.getCode(),post.getName(),sessionInfo.getLoginOrganId())));
+        posts.forEach(post -> sessionInfo.getPostCodes().add(StringUtils.isNotBlank(post.getCode()) ? post.getCode() : post.getId()));
     }
 
 

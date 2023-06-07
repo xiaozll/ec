@@ -129,6 +129,10 @@ public class SessionInfo implements Serializable {
      * 用户岗位
      */
     private List<PermissonPost> permissonPosts = new ArrayList<>(0);
+    /**
+     * 用户岗位
+     */
+    private List<String> postCodes = new ArrayList<String>(0);
 
     /**
      * 登录时间
@@ -545,6 +549,15 @@ public class SessionInfo implements Serializable {
      */
     public SessionInfo setLoginOrganName(String loginOrganName) {
         this.loginOrganName = loginOrganName;
+        return this;
+    }
+
+    public List<String> getPostCodes() {
+        return postCodes;
+    }
+
+    public SessionInfo setPostCodes(List<String> postCodes) {
+        this.postCodes = postCodes;
         return this;
     }
 

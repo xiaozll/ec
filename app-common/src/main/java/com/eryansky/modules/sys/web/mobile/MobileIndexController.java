@@ -313,19 +313,19 @@ public class MobileIndexController extends SimpleController {
     /**
      * 图片文件上传
      * @param multipartFile
-     * @param folderName 文件夹名称
+     * @param folderCode 文件夹名称
      */
     @PostMapping(value = {"imageUpLoad"})
     @ResponseBody
-    public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile,String folderName) {
+    public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile,String folderCode) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Exception exception = null;
         File file = null;
         try {
             String _folderName = "IMAGE";
-            if(StringUtils.isNotBlank(folderName)){
-                _folderName = FilenameUtils.getName(folderName);
+            if(StringUtils.isNotBlank(folderCode)){
+                _folderName = FilenameUtils.getName(folderCode);
             }
             file = DiskUtils.saveSystemFile(_folderName, sessionInfo.getUserId(), multipartFile);
             DiskUtils.saveFile(file);

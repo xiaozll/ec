@@ -11,8 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
     <meta http-equiv="Pragma" content="no-cache"/>
     <meta http-equiv="Expires" content="0"/>
-    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-2.1.4.js" charset="utf-8"></script>
-    <link rel="stylesheet" type="text/css" href="${ctxStatic}/app/mobile/modules/platform/news-view${yuicompressor}.css?_=${sysInitTime}" />
+    <%-- 引入jQuery --%>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-1.12.4.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery/jquery-migrate-1.4.1.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="${ctxStatic}/app/mobile/modules/notice/news-view${yuicompressor}.css?_=${sysInitTime}" />
     <script type="text/javascript">
         $(function(){
             var maxWidth = $(window).width();

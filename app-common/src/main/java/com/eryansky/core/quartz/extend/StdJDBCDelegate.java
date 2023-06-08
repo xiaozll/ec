@@ -46,7 +46,7 @@ public class StdJDBCDelegate extends org.quartz.impl.jdbcjobstore.StdJDBCDelegat
                         return false;
                     }
                 } catch (ClassNotFoundException e) {
-                    logger.error(e.getMessage(), e);
+                    logger.error(e.getMessage()+","+k.getName(), e);
                 }
                 return true;
 

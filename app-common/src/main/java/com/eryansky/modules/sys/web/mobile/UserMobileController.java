@@ -332,6 +332,7 @@ public class UserMobileController extends SimpleController {
 
     /**
      * 图片文件上传
+     * @param multipartFile
      */
     @PostMapping(value = {"imageUpLoad"})
     @ResponseBody

@@ -32,6 +32,7 @@ import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.fileupload.FileUploadBase;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Base64Utils;
@@ -311,16 +312,22 @@ public class MobileIndexController extends SimpleController {
 
     /**
      * 图片文件上传
+     * @param multipartFile
+     * @param folderName 文件夹名称
      */
     @PostMapping(value = {"imageUpLoad"})
     @ResponseBody
-    public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
+    public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile,String folderName) {
         Result result = null;
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         Exception exception = null;
         File file = null;
         try {
-            file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), multipartFile);
+            String _folderName = "IMAGE";
+            if(StringUtils.isNotBlank(folderName)){
+                _folderName = FilenameUtils.getName(folderName);
+            }
+            file = DiskUtils.saveSystemFile(_folderName, sessionInfo.getUserId(), multipartFile);
             DiskUtils.saveFile(file);
             Map<String, Object> _data = Maps.newHashMap();
             String data = "data:image/jpeg;base64," + Base64Utils.encodeToString(FileCopyUtils.copyToByteArray(new FileInputStream(file.getDiskFile())));

@@ -215,14 +215,14 @@ function initDatagrid() {
             {
                 field: 'operate',
                 title: '操作',
-                width: 200,
+                width: 260,
                 formatter: function (value, rowData, rowIndex) {
                     var operateHtml = "";
                     var editHtml = "<a class='easyui-linkbutton' data-options='iconCls:\"easyui-icon-edit\"' onclick='edit(\"" + rowData["id"] + "\");' >编辑</a>";
                     if (rowData["bizMode"] === '0') {//未发布
                         operateHtml = editHtml + "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
                     } else if (rowData["bizMode"] === "1") {//已发布
-                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
+                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-trip\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='push(\"" + rowData["id"] + "\");' >推送</a>";
                     }
                     if (rowData["isRecordRead"] === "1" && rowData["bizMode"] !== "0" && rowData["bizMode"] !== "3") {//记录查看情况
@@ -550,7 +550,7 @@ function publish(noticeId) {
  * 推送
  * @param noticeId
  */
-function publish(noticeId) {
+function push(noticeId) {
     $.post(ctxAdmin + '/notice/push/' + noticeId, {}, function (data) {
         if (data.code === 1) {
             eu.showMsg(data.msg);//操作结果提示

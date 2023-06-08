@@ -124,7 +124,7 @@ public class ApiWebServiceImpl implements IApiWebService {
                 for (String localLoginName : receiveIds) {
                     User receiveUser = Static.userService.getUserByIdOrLoginName(localLoginName);
                     if (receiveUser == null) {
-                        logger.error("{},统一平台无相关账号信息:{}", appId,localLoginName);
+                        logger.error("统一平台无相关账号信息：{} {}", appId,localLoginName);
                         return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "统一平台无相关账号信息："+localLoginName);
                     }
                     receiveObjectIds.add(receiveUser.getId());
@@ -133,7 +133,7 @@ public class ApiWebServiceImpl implements IApiWebService {
                 for (String companyCode : receiveIds) {
                     Organ company = Static.organService.getByIdOrCode(companyCode);
                     if (company == null) {
-                        logger.error("{},统一平台无相关机构信息:{}",appId,companyCode);
+                        logger.error("统一平台无相关机构信息：{} {}",appId,companyCode);
                         return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "统一平台无相关机构信息："+companyCode);
                     }
                     List<String> organList = Static.organService.findDepartmentAndGroupOrganIdsByCompanyId(company.getId());

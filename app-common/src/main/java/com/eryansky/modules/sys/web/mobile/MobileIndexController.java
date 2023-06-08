@@ -323,7 +323,7 @@ public class MobileIndexController extends SimpleController {
         Exception exception = null;
         File file = null;
         try {
-            String _folderName = "IMAGE";
+            String _folderName = "IMAGE";//默认文件夹
             if(StringUtils.isNotBlank(folderCode)){
                 _folderName = FilenameUtils.getName(folderCode);
             }

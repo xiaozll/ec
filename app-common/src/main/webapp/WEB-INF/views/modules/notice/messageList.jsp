@@ -46,6 +46,7 @@
 						<%--<a href="${ctxAdmin}/notice/message/form?id=${model.id}">修改</a>--%>
 						<a href="${ctxAdmin}/notice/message/info?id=${model.id}" >查看详情</a>
 						<a href="${ctxAdmin}/notice/message/delete?id=${model.id}${model.status ne 0?'&isRe=true':''}" onclick="return confirmx('确认要${model.status ne 0?'恢复':''}删除该消息吗？', this.href)" >${model.status ne 0?'恢复':''}删除</a>
+						<a href="${ctxAdmin}/notice/message/push?id=${model.id}" onclick="return confirmx('确认要推送该消息吗？', this.href)" >推送</a>
 					</e:hasPermission>
 				</td>
 

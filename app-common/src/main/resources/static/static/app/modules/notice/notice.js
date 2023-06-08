@@ -223,6 +223,7 @@ function initDatagrid() {
                         operateHtml = editHtml + "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
                     } else if (rowData["bizMode"] === "1") {//已发布
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
+                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='push(\"" + rowData["id"] + "\");' >推送</a>";
                     }
                     if (rowData["isRecordRead"] === "1" && rowData["bizMode"] !== "0" && rowData["bizMode"] !== "3") {//记录查看情况
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_find\"'  onclick='readInfo(\"" + rowData["id"] + "\");' >阅读情况</a>";
@@ -538,6 +539,20 @@ function publish(noticeId) {
     $.post(ctxAdmin + '/notice/publish/' + noticeId, {}, function (data) {
         if (data.code === 1) {
             $notice_datagrid.datagrid('reload');	// reload the user data
+            eu.showMsg(data.msg);//操作结果提示
+        } else {
+            eu.showAlertMsg(data.msg, 'error');
+        }
+    });
+}
+
+/**
+ * 推送
+ * @param noticeId
+ */
+function publish(noticeId) {
+    $.post(ctxAdmin + '/notice/push/' + noticeId, {}, function (data) {
+        if (data.code === 1) {
             eu.showMsg(data.msg);//操作结果提示
         } else {
             eu.showAlertMsg(data.msg, 'error');

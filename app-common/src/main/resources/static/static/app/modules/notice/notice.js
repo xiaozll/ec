@@ -222,8 +222,8 @@ function initDatagrid() {
                     if (rowData["bizMode"] === '0') {//未发布
                         operateHtml = editHtml + "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_forward\"' onclick='publish(\"" + rowData["id"] + "\");' >发布 </a>";
                     } else if (rowData["bizMode"] === "1") {//已发布
-                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-trip\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
-                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='push(\"" + rowData["id"] + "\");' >推送</a>";
+                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-notice_stop\"' onclick='invalid(\"" + rowData["id"] + "\");' >终止</a>";
+                        operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-trip\"' onclick='push(\"" + rowData["id"] + "\");' >推送</a>";
                     }
                     if (rowData["isRecordRead"] === "1" && rowData["bizMode"] !== "0" && rowData["bizMode"] !== "3") {//记录查看情况
                         operateHtml += "&nbsp;<a class='easyui-linkbutton' data-options='iconCls:\"eu-icon-mail_find\"'  onclick='readInfo(\"" + rowData["id"] + "\");' >阅读情况</a>";

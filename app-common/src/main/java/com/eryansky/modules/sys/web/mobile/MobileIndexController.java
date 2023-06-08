@@ -321,7 +321,6 @@ public class MobileIndexController extends SimpleController {
         File file = null;
         try {
             file = DiskUtils.saveSystemFile("IMAGE", sessionInfo.getUserId(), multipartFile);
-            file.setStatus(StatusState.LOCK.getValue());
             DiskUtils.saveFile(file);
             Map<String, Object> _data = Maps.newHashMap();
             String data = "data:image/jpeg;base64," + Base64Utils.encodeToString(FileCopyUtils.copyToByteArray(new FileInputStream(file.getDiskFile())));

@@ -2,6 +2,7 @@ package com.eryansky.modules.sys.web.mobile;
 
 import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.model.Result;
+import com.eryansky.common.orm._enum.StatusState;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.EncodeUtils;
@@ -14,20 +15,31 @@ import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
 import com.eryansky.core.web.annotation.Mobile;
+import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
+import com.eryansky.core.web.upload.exception.InvalidExtensionException;
+import com.eryansky.modules.disk.mapper.File;
+import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.LogType;
 import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.eryansky.utils.AppConstants;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Base64Utils;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -316,4 +328,52 @@ public class UserMobileController extends SimpleController {
         User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
         return Result.successResult().setObj(model);
     }
+
+
+    /**
+     * 图片文件上传
+     */
+    @PostMapping(value = {"imageUpLoad"})
+    @ResponseBody
+    public Result imageUpLoad(@RequestParam(value = "uploadFile", required = false) MultipartFile multipartFile) {
+        Result result = null;
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        Exception exception = null;
+        File file = null;
+        try {
+            file = DiskUtils.saveSystemFile(User.FOLDER_USER_PHOTO, sessionInfo.getUserId(), multipartFile);
+            DiskUtils.saveFile(file);
+            Map<String, Object> _data = Maps.newHashMap();
+            String data = "data:image/jpeg;base64," + Base64Utils.encodeToString(FileCopyUtils.copyToByteArray(new FileInputStream(file.getDiskFile())));
+            _data.put("file", file);
+            _data.put("data", data);
+            _data.put("url", AppConstants.getAdminPath() + "/disk/fileDownload/" + file.getId());
+            result = Result.successResult().setObj(_data).setMsg("文件上传成功！");
+        } catch (InvalidExtensionException e) {
+            exception = e;
+            result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
+        } catch (FileUploadBase.FileSizeLimitExceededException e) {
+            exception = e;
+            result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG);
+        } catch (FileNameLengthLimitExceededException e) {
+            exception = e;
+            result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG);
+        } catch (ActionException e) {
+            exception = e;
+            result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
+        } catch (IOException e) {
+            exception = e;
+            result = Result.errorResult().setMsg(DiskUtils.UPLOAD_FAIL_MSG + e.getMessage());
+        } finally {
+            if (exception != null) {
+                logger.error(exception.getMessage(),exception);
+                if (file != null) {
+                    DiskUtils.deleteFile(file.getId());
+                }
+            }
+        }
+        return result;
+
+    }
+
 }

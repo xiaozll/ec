@@ -223,7 +223,7 @@ public class LoginController extends SimpleController {
             SessionInfo sessionInfo = SecurityUtils.putUserToSession(request, user);
             userService.login(sessionInfo.getUserId());
             CacheUtils.remove("securityToken:"+request.getSession().getId());
-            logger.info("用户{}登录系统,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
+            logger.info("用户登录系统：{} {}", user.getLoginName(), SpringMVCHolder.getIp());
 
             //设置调整URL 如果session中包含未被授权的URL 则跳转到该页面
 //            String resultUrl = request.getContextPath()+ AppConstants.getAdminPath()  + "/login/index?theme=" + theme;
@@ -308,7 +308,7 @@ public class LoginController extends SimpleController {
         boolean verify = false;
         User user = UserUtils.getUserByLoginName(loginName);
         if(null == user){
-            logger.warn("不存在账号[{}],", loginName);
+            logger.warn("不存在账号：{}", loginName);
             return Result.errorResult().setMsg("系统不存在账号["+loginName+"]！");
         }
 
@@ -327,7 +327,7 @@ public class LoginController extends SimpleController {
         userService.login(sessionInfo.getUserId());
         SecurityUtils.refreshSessionInfo(sessionInfo);
 
-        logger.info("用户{}自动登录,IP:{}.", user.getLoginName(), SpringMVCHolder.getIp());
+        logger.info("用户自动登录：{} {}", user.getLoginName(), SpringMVCHolder.getIp());
 
         //设置跳转URL 如果session中包含未被授权的URL 则跳转到该页面
         String resultUrl = request.getContextPath()+ AppConstants.getAdminPath();
@@ -365,7 +365,7 @@ public class LoginController extends SimpleController {
         SessionInfo newSessionInfo = SecurityUtils.putUserToSession(request,user);
         userService.login(newSessionInfo.getUserId());
 
-        logger.info("{}，切换账号：{} -> {}，IP：{}.", sessionInfo.getId(),sessionInfo.getLoginName(),newSessionInfo.getLoginName(), SpringMVCHolder.getIp());
+        logger.info("切换账号：{} -> {} {}", sessionInfo.getLoginName(),newSessionInfo.getLoginName(), SpringMVCHolder.getIp());
         Map<String,Object> data = Maps.newHashMap();
         data.put("sessionInfo",newSessionInfo);
         return Result.successResult().setObj(data);

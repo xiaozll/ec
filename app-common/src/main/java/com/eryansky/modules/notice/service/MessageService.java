@@ -13,6 +13,7 @@ import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.modules.notice.mapper.Notice;
 import com.eryansky.modules.notice.vo.NoticeQueryVo;
 import com.eryansky.modules.sys.utils.UserUtils;
 //import com.eryansky.modules.weixin.utils.WeixinUtils;
@@ -124,7 +125,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
     }
 
     /**
-     * 保存并发送
+     * 保存并发送 切面实现消息推送
      *
      * @param message
      * @param messageReceiveObjectType {@link MessageReceiveObjectType}
@@ -169,5 +170,15 @@ public class MessageService extends CrudService<MessageDao, Message> {
         message.setBizMode(MessageMode.Published.getValue());
         this.save(message);
         return message;
+    }
+
+
+    /**
+     * 推送（仅限推送,由切面实现）
+     *
+     * @param messageId
+     */
+    public Message push(String messageId) {
+        return get(messageId);
     }
 }

@@ -10,6 +10,8 @@ import com.eryansky.common.orm.mybatis.MyBatisDao;
 import com.eryansky.common.orm.persistence.CrudDao;
 import com.eryansky.modules.notice.mapper.MessageSender;
 
+import java.util.List;
+
 
 /**
  * @author Eryan
@@ -19,6 +21,8 @@ import com.eryansky.modules.notice.mapper.MessageSender;
 public interface MessageSenderDao extends CrudDao<MessageSender> {
 
     int deleteByMessageId(Parameter parameter);
+
+    List<MessageSender> findByMessageId(Parameter parameter);
 
 }
 

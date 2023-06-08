@@ -332,6 +332,21 @@ public class NoticeController extends SimpleController {
 
 
     /**
+     * 推送（仅限推送,由切面实现）
+     *
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("notice:publish")
+    @PostMapping(value = {"push"})
+    @ResponseBody
+    public Result save(@ModelAttribute("model") Notice model) {
+        noticeService.push(model.getId());
+        return Result.successResult();
+    }
+
+
+    /**
      * 标记为已读
      *
      * @param ids

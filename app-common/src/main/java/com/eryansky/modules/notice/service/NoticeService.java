@@ -165,7 +165,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
 
 
     /**
-     * 发布公告
+     * 发布公告 切面实现消息推送
      *
      * @param noticeId 公告ID
      */
@@ -178,7 +178,7 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
     }
 
     /**
-     * 发布公告
+     * 发布公告 切面实现消息推送
      *
      * @param notice 通知
      */
@@ -232,6 +232,15 @@ public class NoticeService extends CrudService<NoticeDao, Notice> {
 //        receiveInfos.forEach(n->noticeReceiveInfoService.save(n));
         noticeReceiveInfoService.insertAutoBatch(receiveInfos);
         return notice;
+    }
+
+    /**
+     * 推送（仅限推送,由切面实现）
+     *
+     * @param noticeId 公告ID
+     */
+    public Notice push(String noticeId) {
+        return get(noticeId);
     }
 
     /**

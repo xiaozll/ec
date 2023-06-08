@@ -10,6 +10,7 @@ import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
+import com.eryansky.modules.notice.mapper.Notice;
 import com.eryansky.modules.notice.task.MessageTask;
 import com.eryansky.modules.notice.utils.NoticeConstants;
 import com.google.common.collect.Lists;
@@ -152,6 +153,23 @@ public class MessageController extends SimpleController {
         return modelAndView;
     }
 
+    /**
+     * 推送（仅限推送,由切面实现）
+     *
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("notice:message:edit")
+    @PostMapping(value = {"push"})
+    @ResponseBody
+    public ModelAndView push(@ModelAttribute("model") Message model, RedirectAttributes redirectAttributes) {
+        messageService.push(model.getId());
+        addMessage(redirectAttributes, "提交推送消息请求成功");
+        ModelAndView modelAndView = new ModelAndView("redirect:" + AppConstants.getAdminPath() + "/notice/message");
+        return modelAndView;
+    }
+
+
     @RequiresPermissions("notice:message:view")
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "info")
     public ModelAndView info(@ModelAttribute("model") Message model, HttpServletRequest request, HttpServletResponse response) {
@@ -164,6 +182,8 @@ public class MessageController extends SimpleController {
         modelAndView.addObject("page", page);
         return modelAndView;
     }
+
+
 
 
     @GetMapping(value = "view")

@@ -45,6 +45,15 @@
 		</choose>
 	</select>
 
+	<select id="findByMessageId" resultType="MessageSender">
+		SELECT
+		<include refid="messageSenderColumns"/>
+		FROM t_notice_message_sender a
+		<where>
+			a.message_id = #{messageId}
+		</where>
+	</select>
+
 	<select id="selectMany" resultType="MessageSender">
 		${selectStatement}
 	</select>

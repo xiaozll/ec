@@ -232,8 +232,9 @@ function search() {
     if (selectRoleNode != null) {
         roleId = selectRoleNode.id; //搜索 id:主键 即是通过左边组织机构树点击得到搜索结果
     }
+    var formData = $.serializeObject($select_user_search_form);
     $select_user_datagrid.datagrid({
         url: ctxAdmin + "/sys/user/datagridSelectUser",
-        queryParams: {organId: organId, roleId: roleId, excludeUserIds: excludeUserIdStrs, query: $("#query").textbox('getValue')}
+        queryParams: {organId: organId, roleId: roleId, excludeUserIds: excludeUserIdStrs, query:formData['query']}
     });
 }

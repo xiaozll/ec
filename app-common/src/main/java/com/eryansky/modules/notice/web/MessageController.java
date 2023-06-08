@@ -160,7 +160,7 @@ public class MessageController extends SimpleController {
      * @return
      */
     @RequiresPermissions("notice:message:edit")
-    @PostMapping(value = {"push"})
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = {"push"})
     @ResponseBody
     public ModelAndView push(@ModelAttribute("model") Message model, RedirectAttributes redirectAttributes) {
         messageService.push(model.getId());

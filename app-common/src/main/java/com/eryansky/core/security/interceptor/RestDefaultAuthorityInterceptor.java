@@ -6,13 +6,11 @@
 package com.eryansky.core.security.interceptor;
 
 import com.eryansky.common.model.Result;
-import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.annotation.RestApi;
 import com.eryansky.utils.AppConstants;
 import com.eryansky.utils.CacheUtils;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
@@ -60,7 +58,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
         }
 
         //注解处理
-        handlerResult = this.defaultandler(request, response, o, requestUrl);
+        handlerResult = this.defaultaHndler(request, response, o, requestUrl);
         CacheUtils.put(cacheKey, handlerResult);
         if (null != handlerResult) {
             return handlerResult;
@@ -78,7 +76,7 @@ public class RestDefaultAuthorityInterceptor implements AsyncHandlerInterceptor 
      * @return
      * @throws Exception
      */
-    private Boolean defaultandler(HttpServletRequest request, HttpServletResponse response, Object handler, String requestUrl) throws Exception {
+    private Boolean defaultaHndler(HttpServletRequest request, HttpServletResponse response, Object handler, String requestUrl) throws Exception {
         HandlerMethod handlerMethod = null;
         //注解处理 满足设置不拦截
         if(handler instanceof HandlerMethod) {

@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -51,18 +51,6 @@ public class WXBizMsgCrypt implements AutoCloseable {
     String token;
     String appId;
     private static final SecureRandom random = new SecureRandom();
-    /**
-     * 初始向量IV, 初始向量IV的长度规定为128位16个字节, 初始向量的来源为随机生成.
-     */
-    private static GCMParameterSpec gcMParameterSpec;
-
-    static {
-        byte[] bytesIV = new byte[16];
-        random.nextBytes(bytesIV);
-        gcMParameterSpec = new GCMParameterSpec(128, bytesIV);
-        java.security.Security.setProperty("crypto.policy", "unlimited");
-    }
-
     /**
      * 构造函数
      *
@@ -143,7 +131,8 @@ public class WXBizMsgCrypt implements AutoCloseable {
             // 设置加密模式为AES的CBC模式
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             SecretKeySpec keySpec = new SecretKeySpec(aesKey, "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec, gcMParameterSpec);
+            IvParameterSpec iv = new IvParameterSpec(aesKey, 0, 16);
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
 
             // 加密
             byte[] encrypted = cipher.doFinal(unencrypted);
@@ -171,7 +160,8 @@ public class WXBizMsgCrypt implements AutoCloseable {
             // 设置解密模式为AES的CBC模式
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             SecretKeySpec key_spec = new SecretKeySpec(aesKey, "AES");
-            cipher.init(Cipher.DECRYPT_MODE, key_spec, gcMParameterSpec);
+            IvParameterSpec iv = new IvParameterSpec(Arrays.copyOfRange(aesKey, 0, 16));
+            cipher.init(Cipher.DECRYPT_MODE, key_spec, iv);
 
             // 使用BASE64对密文进行解码
             byte[] encrypted = Base64.decodeBase64(text);

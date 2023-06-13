@@ -21,6 +21,8 @@ public final class ClusterQYAPIConfig extends QYAPIConfig {
 
     private final IAccessTokenCacheService accessTokenCacheService;
 
+    private String url;
+
     /**
      * 构造方法一，实现同时获取AccessToken。不启用jsApi
      *
@@ -29,7 +31,7 @@ public final class ClusterQYAPIConfig extends QYAPIConfig {
      * @param accessTokenCacheService 集群缓存实现接口
      */
     public ClusterQYAPIConfig(String corpid, String corpSecret,IAccessTokenCacheService accessTokenCacheService) {
-        this(corpid, corpSecret, false,accessTokenCacheService);
+        this(corpid, corpSecret, false,null,accessTokenCacheService);
     }
 
     /**
@@ -40,8 +42,9 @@ public final class ClusterQYAPIConfig extends QYAPIConfig {
      * @param enableJsApi enableJsApi
      * @param accessTokenCacheService 集群缓存实现接口
      */
-    public ClusterQYAPIConfig(String corpid, String corpsecret, boolean enableJsApi,IAccessTokenCacheService accessTokenCacheService) {
-        super(corpid,corpsecret,enableJsApi);
+    public ClusterQYAPIConfig(String corpid, String corpsecret, boolean enableJsApi,String url,IAccessTokenCacheService accessTokenCacheService) {
+        super(corpid,corpsecret,enableJsApi,url);
+        this.url = url;
         if(accessTokenCacheService == null){
             throw new WeixinException("参数[accessTokenCacheService]不能为null");
         }
@@ -109,7 +112,7 @@ public final class ClusterQYAPIConfig extends QYAPIConfig {
         // 记住原本的事件，用于出错回滚
         final long oldTime = accessTokenCache.getWeixinTokenStartTime();
         accessTokenCache.setWeixinTokenStartTime(refreshTime);
-        String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + corpsecret;
+        String url = (null != this.url ? this.url:"https://qyapi.weixin.qq.com") + "/cgi-bin/gettoken?corpid=" + corpid + "&corpsecret=" + corpsecret;
         NetWorkCenter.get(url, null, new NetWorkCenter.ResponseCallback() {
             @Override
             public void onResponse(int resultCode, String resultJson) {
@@ -140,7 +143,7 @@ public final class ClusterQYAPIConfig extends QYAPIConfig {
         // 记住原本的事件，用于出错回滚
         final long oldTime = accessTokenCache.getWeixinTokenStartTime();
         accessTokenCache.setJsTokenStartTime(refreshTime);
-        String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=" + getAccessToken();
+        String url = (null != this.url ? this.url:"https://qyapi.weixin.qq.com") + "/cgi-bin/get_jsapi_ticket?access_token=" + getAccessToken();
         NetWorkCenter.get(url, null, new NetWorkCenter.ResponseCallback() {
 
             @Override

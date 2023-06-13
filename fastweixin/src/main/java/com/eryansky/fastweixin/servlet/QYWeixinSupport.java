@@ -125,7 +125,7 @@ public abstract class QYWeixinSupport{
 
         QYBaseRespMsg msg = null;
 
-        if(msgType.equals(QYReqType.EVENT)){
+        if(QYReqType.EVENT.equals(msgType)){
             String eventType = (String)reqMap.get("Event");
             if(QYEventType.SUBSCRIBE.equals(eventType)){
                 QYBaseEvent event = new QYBaseEvent();

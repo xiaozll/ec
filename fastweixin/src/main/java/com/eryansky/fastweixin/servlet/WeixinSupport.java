@@ -5,7 +5,6 @@ import com.eryansky.fastweixin.handle.EventHandle;
 import com.eryansky.fastweixin.handle.MessageHandle;
 import com.eryansky.fastweixin.message.BaseMsg;
 import com.eryansky.fastweixin.message.TextMsg;
-import com.eryansky.fastweixin.message.aes.AesException;
 import com.eryansky.fastweixin.message.aes.WXBizMsgCrypt;
 import com.eryansky.fastweixin.util.MessageUtil;
 import com.eryansky.fastweixin.util.SignUtil;

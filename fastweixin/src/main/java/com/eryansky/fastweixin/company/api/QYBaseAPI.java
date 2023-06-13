@@ -19,7 +19,7 @@ import java.util.List;
  */
 public abstract class QYBaseAPI {
 
-    protected static final String BASE_API_URL = "https://qyapi.weixin.qq.com/";
+    protected static String BASE_API_URL = "https://qyapi.weixin.qq.com/";
 
     protected final QYAPIConfig config;
 
@@ -30,6 +30,9 @@ public abstract class QYBaseAPI {
      */
     protected QYBaseAPI(QYAPIConfig config) {
         this.config = config;
+        if(null != config.getUrl()){
+            BASE_API_URL = config.getUrl();
+        }
     }
 
     /**

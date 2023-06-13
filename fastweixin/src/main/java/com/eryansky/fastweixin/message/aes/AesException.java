@@ -5,16 +5,17 @@ public class AesException extends Exception {
 
     public final static int OK = 0;
     public final static int ValidateSignatureError = -40001;
-    public final static int ParseXmlError = -40002;
+    public final static int PARSE_JSON_ERROR = -40002;
     public final static int ComputeSignatureError = -40003;
     public final static int IllegalAesKey = -40004;
     public final static int ValidateCorpidError = -40005;
     public final static int EncryptAESError = -40006;
     public final static int DecryptAESError = -40007;
     public final static int IllegalBuffer = -40008;
-    //public final static int EncodeBase64Error = -40009;
-    //public final static int DecodeBase64Error = -40010;
-    //public final static int GenReturnXmlError = -40011;
+    public final static int ENCODE_BASE64_ERROR = -40009;
+    public final static int DECODE_BASE64_ERROR = -40010;
+    public final static int GenReturnJsonError = -40011;
+    public final static int ParseXmlError = -400021;
 
     private int code;
 
@@ -22,6 +23,8 @@ public class AesException extends Exception {
         switch (code) {
             case ValidateSignatureError:
                 return "签名验证错误";
+            case PARSE_JSON_ERROR:
+                return "json解析失败";
             case ParseXmlError:
                 return "xml解析失败";
             case ComputeSignatureError:
@@ -36,12 +39,12 @@ public class AesException extends Exception {
                 return "aes解密失败";
             case IllegalBuffer:
                 return "解密后得到的buffer非法";
-//		case EncodeBase64Error:
-//			return "base64加密错误";
-//		case DecodeBase64Error:
-//			return "base64解密错误";
-//		case GenReturnXmlError:
-//			return "xml生成失败";
+            case ENCODE_BASE64_ERROR:
+                return "base64加密错误";
+            case DECODE_BASE64_ERROR:
+                return "base64解密错误";
+            case GenReturnJsonError:
+                return "josn生成失败";
             default:
                 return null; // cannot be
         }

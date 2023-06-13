@@ -67,19 +67,21 @@
 		FROM t_sys_config a
 		<where>
 			<if test="query != null and query != ''">
-				AND (a.code LIKE
+				AND (
+				a.code LIKE
 				<choose>
-					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
-					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
-					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
-					<otherwise>'%'+#{code}+'%'</otherwise>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
 				</choose>
-				OR a.value LIKE
+				OR
+				a.value LIKE
 				<choose>
-					<when test="dbName == 'db2'">'%'||#{code}||'%'</when>
-					<when test="dbName == 'mysql'">CONCAT('%', #{code}, '%')</when>
-					<when test="dbName == 'oracle'">'%'||#{code}||'%'</when>
-					<otherwise>'%'+#{code}+'%'</otherwise>
+					<when test="dbName == 'db2'">'%'||#{query}||'%'</when>
+					<when test="dbName == 'mysql'">CONCAT('%', #{query}, '%')</when>
+					<when test="dbName == 'oracle'">'%'||#{query}||'%'</when>
+					<otherwise>'%'+#{query}+'%'</otherwise>
 				</choose>
 				)
 			</if>

@@ -21,7 +21,7 @@ import java.io.IOException;
 @Controller
 public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
 
-    private static final Logger LOG = LoggerFactory.getLogger(QYWeixinControllerSupport.class);
+    private static final Logger logger = LoggerFactory.getLogger(QYWeixinControllerSupport.class);
 
     /**
      * 绑定微信服务器
@@ -29,15 +29,15 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
      * @param request
      * @return
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping()
     @ResponseBody
     protected final String bind(HttpServletRequest request,
-                                HttpServletResponse response,
                                 @RequestParam(value = "msg_signature", required = false) String msgSignature,
                                 @RequestParam(value = "nonce", required = false) String nonce,
                                 @RequestParam(value = "echostr", required = false) String echoStr,
                                 @RequestParam(value = "timestamp", required = false) String timestamp,
                                 @RequestBody(required = false) String xml){
+        logger.debug("{'msg_signature'：{},'nonce':{},'echostr':{},'timestamp':{}},'body':{}",msgSignature,nonce,echoStr,timestamp,xml);
         return legalStr(request,msgSignature,nonce,timestamp,echoStr);
     }
 
@@ -45,13 +45,11 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
      * 微信消息交互处理
      *
      * @param request
-     * @param response
      * @return
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping()
     @ResponseBody
     protected final String process(HttpServletRequest request,
-                                   HttpServletResponse response,
                                    @RequestParam(value = "msg_signature", required = false) String msgSignature,
                                    @RequestParam(value = "nonce", required = false) String nonce,
                                    @RequestParam(value = "echostr", required = false) String echoStr,
@@ -61,8 +59,7 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
 //            return "";
 //        }
         String result = processRequest(request);
-        response.getWriter().write(result);
-        return null;
+        return result;
     }
 
     /**
@@ -79,7 +76,7 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
         try (WXBizMsgCrypt pc = new WXBizMsgCrypt(getToken(), getAESKey(), getCropId())){
             _echoStr = pc.verifyUrl(msgSignature, timestamp, nonce, echoStr);
         } catch (Exception e) {
-            LOG.error(e.getMessage(),e);
+            logger.error(e.getMessage(),e);
         }
         return _echoStr;
     }

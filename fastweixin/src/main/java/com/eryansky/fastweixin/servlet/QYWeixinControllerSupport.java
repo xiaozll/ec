@@ -32,13 +32,16 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
     @GetMapping()
     @ResponseBody
     protected final String bind(HttpServletRequest request,
+                                HttpServletResponse response,
                                 @RequestParam(value = "msg_signature", required = false) String msgSignature,
                                 @RequestParam(value = "nonce", required = false) String nonce,
                                 @RequestParam(value = "echostr", required = false) String echoStr,
                                 @RequestParam(value = "timestamp", required = false) String timestamp,
-                                @RequestBody(required = false) String xml){
+                                @RequestBody(required = false) String xml) throws IOException {
         logger.debug("{'msg_signature'：{},'nonce':{},'echostr':{},'timestamp':{}},'body':{}",msgSignature,nonce,echoStr,timestamp,xml);
-        return legalStr(request,msgSignature,nonce,timestamp,echoStr);
+        String result = legalStr(request,msgSignature,nonce,timestamp,echoStr);
+        response.getWriter().write(result);
+        return null;
     }
 
     /**
@@ -50,6 +53,7 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
     @PostMapping()
     @ResponseBody
     protected final String process(HttpServletRequest request,
+                                   HttpServletResponse response,
                                    @RequestParam(value = "msg_signature", required = false) String msgSignature,
                                    @RequestParam(value = "nonce", required = false) String nonce,
                                    @RequestParam(value = "echostr", required = false) String echoStr,
@@ -59,7 +63,8 @@ public abstract class QYWeixinControllerSupport extends QYWeixinSupport {
 //            return "";
 //        }
         String result = processRequest(request);
-        return result;
+        response.getWriter().write(result);
+        return null;
     }
 
     /**

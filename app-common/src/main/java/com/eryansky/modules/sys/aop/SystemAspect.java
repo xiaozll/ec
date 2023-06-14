@@ -8,6 +8,7 @@ package com.eryansky.modules.sys.aop;
 import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.OrganService;
@@ -25,6 +26,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 切面
@@ -106,7 +109,7 @@ public class SystemAspect implements InitializingBean, DisposableBean {
     }
 
     /**
-     * 同步到扩展机构表
+     * 用户密码修改监听 添加密码修改记录
      *
      * @param joinPoint 切入点
      */
@@ -119,6 +122,29 @@ public class SystemAspect implements InitializingBean, DisposableBean {
         UserUtils.addUserPasswordUpdate(returnObj);
 
     }
+
+
+
+    /**
+     * 用户密码修改（重置）监听 添加密码修改记录
+     *
+     * @param joinPoint 切入点
+     */
+    @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.UserService.updateUserPassword(..))")
+    public void afterBatchUserPasswordUpdate(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        List<String> userIds = (List<String>) args[0];
+        if(Collections3.isEmpty(userIds)){
+            return;
+        }
+        userIds.forEach(userId->{
+            User user = UserUtils.getUser(userId);
+            UserUtils.addUserPasswordUpdate(user);
+        });
+
+
+    }
+
 
 
     @Override

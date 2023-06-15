@@ -14,6 +14,7 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.vo.PasswordTip;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -74,7 +75,7 @@ public class PortalController extends SimpleController {
     public Result mymessages(HttpServletRequest request, HttpServletResponse response) throws Exception {
         WebUtils.setNoCacheHeader(response);
         Result result = null;
-        Map<String, Long> map = Maps.newHashMap();
+        Map<String, Object> map = Maps.newHashMap();
         // 当前登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         long noticeReceiveInfos = 0;
@@ -86,8 +87,9 @@ public class PortalController extends SimpleController {
         map.put("noticeReceiveInfos", noticeReceiveInfos);
 
         if (AppConstants.getIsSecurityOn()) {
-            Long tipPasswordType = checkPassword(sessionInfo.getUserId());
-            map.put("tipPasswordType", tipPasswordType);
+            PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
+            map.put("tipPasswordType", passwordTip.getCode());
+            map.put("tipPasswordMsg", passwordTip.getMsg());
         }
 
         result = Result.successResult().setObj(map);
@@ -110,45 +112,14 @@ public class PortalController extends SimpleController {
         Map<String, Object> map = Maps.newHashMap();
         // 当前登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-
         if (AppConstants.getIsSecurityOn()) {
-            Long tipPasswordType = checkPassword(sessionInfo.getUserId());
-            String tipMsg = null;
-            if (tipPasswordType != null) {
-                int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
-                if (tipPasswordType == 1L) {
-                    tipMsg = "您从未修改过用户密码，请设置用户密码！";
-                } else if (tipPasswordType == 2L) {
-                    tipMsg = "您已超过" + userPasswordUpdateCycle + "天没有修改用户密码，请修改用户密码！";
-                }
-            }
-
-            map.put("tipPasswordType", tipPasswordType);
-            map.put("tipPasswordMsg", tipMsg);
+            PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
+            map.put("tipPasswordType", passwordTip.getCode());
+            map.put("tipPasswordMsg", passwordTip.getMsg());
         }
 
         result = Result.successResult().setObj(map);
         return result;
-    }
-
-    private Long checkPassword(String userId) {
-        UserPassword userPassword = userPasswordService.getLatestUserPasswordByUserIdExcludeReset(userId);
-//            String tipPasswordMsg = "";
-        Calendar calendar = Calendar.getInstance();
-        int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
-        calendar.add(Calendar.DATE, -userPasswordUpdateCycle);
-        Date time = calendar.getTime();
-        Long tipPasswordType = null;
-
-
-        if (userPassword == null) {
-//                tipPasswordMsg = "您从未修改过登录秘密，请修改登录密码！";
-            tipPasswordType = 1L;
-        } else if (time.compareTo(userPassword.getModifyTime()) > 0) {
-//                tipPasswordMsg = "您已超过"+userPasswordUpdateCycle+"天没有修改登录密码，请修改登录密码！";
-            tipPasswordType = 2L;
-        }
-        return tipPasswordType;
     }
 
     /**

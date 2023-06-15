@@ -1007,7 +1007,7 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
-     * 重置用户密码 批量
+     * 重置用户密码（AOP切面） 批量
      *
      * @param userIds  用户ID集合
      * @param password 密码(未加密)

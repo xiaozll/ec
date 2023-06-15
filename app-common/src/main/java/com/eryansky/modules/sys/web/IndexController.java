@@ -10,8 +10,13 @@ import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.security.SecurityUtils;
+import com.eryansky.core.security.SessionInfo;
 import com.eryansky.modules.sys.mapper.User;
+import com.eryansky.modules.sys.service.UserPasswordService;
+import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.vo.PasswordTip;
 import com.eryansky.utils.AppConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +34,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "${adminPath}")
 public class IndexController extends SimpleController {
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserPasswordService userPasswordService;
 
     @GetMapping(value = {""})
     public ModelAndView admin(HttpServletRequest request) {
@@ -56,20 +66,36 @@ public class IndexController extends SimpleController {
         return modelAnView;
     }
 
-    @GetMapping(value = "index/west")
-    public ModelAndView west() {
-        ModelAndView modelAnView = new ModelAndView("layout/west");
-        User sessionUser = SecurityUtils.getCurrentUser();
-        modelAnView.addObject("user", sessionUser);
-        String userPhoto = null;
-        if (null != sessionUser && StringUtils.isNotBlank(sessionUser.getPhoto())) {
-            userPhoto = sessionUser.getPhotoUrl();
-        } else {
-            userPhoto = SpringMVCHolder.getRequest().getContextPath() + "/static/img/icon_boy.png";
+    /**
+     * 用户密码修改页面
+     * @param request
+     * @param type {@link com.eryansky.modules.sys._enum.UserPasswordUpdateType}
+     * @return
+     */
+    @GetMapping(value = {"index/password"})
+    public ModelAndView password(HttpServletRequest request,String type) {
+        ModelAndView modelAnView = new ModelAndView("modules/sys/password.html");
+        String _type = type;
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if(StringUtils.isBlank(type)){
+            PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
+            _type = String.valueOf(passwordTip.getCode());
         }
-        modelAnView.addObject("userPhoto", userPhoto);
+        modelAnView.addObject("type",_type);
         return modelAnView;
     }
 
+    /**
+     * 用户信息维护
+     * @param request
+     * @return
+     */
+    @GetMapping(value = {"index/userinfo"})
+    public ModelAndView password(HttpServletRequest request) {
+        ModelAndView modelAnView = new ModelAndView("modules/sys/userinfo.html");
+        User sessionUser = SecurityUtils.getCurrentUser();
+        modelAnView.addObject("model", sessionUser);
+        return modelAnView;
+    }
 
 }

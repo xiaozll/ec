@@ -157,10 +157,10 @@ function mymessages(refreshPanel, tipMessage) {
 
                 if (obj["tipPasswordType"] !== undefined && obj["tipPasswordType"] !== null) {
                     var tipMsg = '';
-                    if (obj["tipPasswordType"] === 0) {
-                        tipMsg = "您从未修改过用户密码，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
-                    } else if (obj["tipPasswordType"] === 1) {
-                        tipMsg = "距离上次修改密码已经很长时间了，请<a onclick='try { parent.editLoginUserPassword();} catch(e) {editLoginUserPassword(); }'>修改用户密码</a>！";
+                    if (obj["tipPasswordType"] === 1) {
+                        tipMsg = "您从未修改过用户密码，请<a onclick='updateUserPassword();'>设置用户密码</a>！";
+                    } else if (obj["tipPasswordType"] === 2) {
+                        tipMsg = "距离上次修改密码已经很长时间了，请<a onclick='updateUserPassword();'>修改用户密码</a>！";
                     }
                     if(tipMsg !== ''){
                         $.messager.show({
@@ -180,65 +180,11 @@ function mymessages(refreshPanel, tipMessage) {
     });
 }
 
-var login_password_dialog;
-var login_password_form;
 
-function initLoginPasswordForm() {
-    login_password_form = $('#login_password_form').form({
-        url: ctxAdmin + '/sys/user/updateUserPassword',
-        onSubmit: function (param) {
-            param.upateOperate = '1';
-            return $(this).form('validate');
-        },
-        success: function (data) {
-            var json = eval('(' + data + ')');
-            if (json.code === 1) {
-                login_about_dialog.dialog('close');
-                eu.showMsg(json.msg);//操作结果提示
-            } else if (json.code === 2) {
-                $.messager.alert('提示信息！', json.msg, 'warning', function () {
-                    var userId = $('#login_password_form_id').val();
-                    $(this).form('clear');
-                    $('#login_password_form_id').val(userId);
-                    if (json.obj) {
-                        $('#login_password_form input[name="' + json.obj + '"]').focus();
-                    }
-                });
-            } else {
-                eu.showAlertMsg(json.msg, 'error');
-            }
-        }
-    });
-}
-
-function editLoginUserPassword() {
-    //弹出对话窗口
-    login_password_dialog = $('<div/>').dialog({
-        title: '&nbsp;修改用户密码',
-        top: 100,
-        width: 460,
-        height: 240,
-        modal: true,
-        iconCls: 'easyui-icon-edit',
-        href: ctxAdmin + '/common/layout/north-password',
-        buttons: [{
-            text: '保存',
-            iconCls: 'easyui-icon-save',
-            handler: function () {
-                login_password_form.submit();
-            }
-        }, {
-            text: '关闭',
-            iconCls: 'easyui-icon-cancel',
-            handler: function () {
-                login_password_dialog.dialog('destroy');
-            }
-        }],
-        onClose: function () {
-            login_password_dialog.dialog('destroy');
-        },
-        onLoad: function () {
-            initLoginPasswordForm();
-        }
-    });
+/**
+ * 修改密码
+ */
+function updateUserPassword() {
+    var url = ctx+"/a/index/password";
+    parent.addTabs({id: 'index_password', title: '密码修改', close: true, url: url, urlType: ''});
 }

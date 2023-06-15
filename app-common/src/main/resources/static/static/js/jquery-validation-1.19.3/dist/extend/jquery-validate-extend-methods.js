@@ -1627,6 +1627,17 @@ $.validator.addMethod("decimal", function(value, element, params) {
 	return this.optional(element) || (regX.test(value));
 }, $.validator.format("最多只保留小数点后{0}位的数值"));
 
+	//安全密码建议
+	$.validator.addMethod("safepass",function(value, element) {
+		return !(/^(([A-Z]*|[a-z]*|\d*|[-_\~!@#\$%\^&\*\.\(\)\[\]\{\}<>\?\\\/\'\"]*)|.{0,5})$|\s/.test(value));
+	},"密码由数字、字母、符号混排，至少8位.");
+
+	//安全密码建议
+	$.validator.addMethod("safepass_yc",function(value, element) {
+		return  !(/^(([A-Z]*|[a-z]*|\d*|[-_\~!@#\$%\^&\*\.\(\)\[\]\{\}<>\?\\\/\'\"]*)|.{0,7})$|\s/.test(value));
+	},"密码由数字、字母、符号混排，至少8位.")
+
+
 //校验身份证号
 $.validator.addMethod("card",function(value, element) {
 	return this.optional(element) || checkIdcard(value);

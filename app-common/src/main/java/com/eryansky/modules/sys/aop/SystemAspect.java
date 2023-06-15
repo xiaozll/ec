@@ -9,6 +9,7 @@ import com.eryansky.common.orm.model.Parameter;
 import com.eryansky.common.orm.mybatis.interceptor.BaseInterceptor;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.modules.sys._enum.UserPasswordUpdateType;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.OrganService;
@@ -109,6 +110,20 @@ public class SystemAspect implements InitializingBean, DisposableBean {
     }
 
     /**
+     * 用户密码初始化监听 添加密码修改记录
+     *
+     * @param joinPoint 切入点
+     */
+    @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.UserService.updatePasswordFirstByUserId(..))",returning = "returnObj")
+    public void afterUserPasswordFirstUpdate(JoinPoint joinPoint, User returnObj) {
+        if(null == returnObj){
+            return;
+        }
+        UserUtils.addUserPasswordUpdate(returnObj, UserPasswordUpdateType.UserInit.getValue());
+    }
+
+
+    /**
      * 用户密码修改监听 添加密码修改记录
      *
      * @param joinPoint 切入点
@@ -119,18 +134,15 @@ public class SystemAspect implements InitializingBean, DisposableBean {
        if(null == returnObj){
            return;
        }
-        UserUtils.addUserPasswordUpdate(returnObj);
-
+        UserUtils.addUserPasswordUpdate(returnObj, UserPasswordUpdateType.UserUpdate.getValue());
     }
 
-
-
     /**
-     * 用户密码修改（重置）监听 添加密码修改记录
+     * 用户密码重置监听 添加密码修改记录
      *
      * @param joinPoint 切入点
      */
-    @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.UserService.updateUserPassword(..))")
+    @AfterReturning(value = "execution(* com.eryansky.modules.sys.service.UserService.updateUserPasswordReset(..))")
     public void afterBatchUserPasswordUpdate(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         List<String> userIds = (List<String>) args[0];
@@ -139,7 +151,7 @@ public class SystemAspect implements InitializingBean, DisposableBean {
         }
         userIds.forEach(userId->{
             User user = UserUtils.getUser(userId);
-            UserUtils.addUserPasswordUpdate(user);
+            UserUtils.addUserPasswordUpdate(user, UserPasswordUpdateType.SystemReset.getValue());
         });
 
 

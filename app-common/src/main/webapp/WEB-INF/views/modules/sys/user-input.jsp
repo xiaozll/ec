@@ -92,7 +92,8 @@
         </div>
         <div>
             <label>出生日期：</label>
-            <input id="birthday" name="birthday" value="${model.birthday}"  type="text" class="easyui-my97" />
+            <fmt:formatDate value="${model.birthday}" pattern="yyyy-MM-dd" var="birthdayStr"></fmt:formatDate>
+            <input id="birthday" name="birthday" value="${birthdayStr}"  type="text" class="easyui-my97" />
         </div>
         <div>
             <label>公司邮箱：</label>

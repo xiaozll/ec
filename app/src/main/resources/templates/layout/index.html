@@ -88,7 +88,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
-                  <li class="user-header">
+                  <li class="user-header" onclick="updateUserInfo();">
                     <img src="../../dist/img/user2-160x160.jpg" th:src="${userPhoto}" class="img-circle" alt="User Image">
                     <p>
                       [[${sessionInfo.name}]]
@@ -97,9 +97,9 @@
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
-                    <!--                    <div class="pull-left">-->
-                    <!--                      <a href="#" class="btn btn-default btn-flat">密码修改</a>-->
-                    <!--                    </div>-->
+                    <div class="pull-left">
+                      <a href="#" class="btn btn-default btn-flat" onclick="updateUserPassword();">密码修改</a>
+                    </div>
                     <div class="pull-right">
                       <a href="javascript:void(0);" class="btn btn-default btn-flat" onclick="logout()">退出</a>
                     </div>
@@ -342,6 +342,22 @@
             url: menu.url
           });
         }
+      }
+
+      /**
+       * 用户信息维护
+       */
+      function updateUserInfo() {
+        var url = appURL+"/a/index/userinfo";
+        addTabs({id: 'index_userinfo', title: '用户信息维护', close: true, url: url, urlType: ''});
+      }
+
+      /**
+       * 密码修改
+       */
+      function updateUserPassword() {
+        var url = appURL+"/a/index/password";
+        addTabs({id: 'index_password', title: '密码修改', close: true, url: url, urlType: ''});
       }
 
       /**

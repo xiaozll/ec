@@ -105,6 +105,17 @@ public class UserService extends CrudService<UserDao, User> {
         saveUserOrgans(entity.getId(), organIds);
     }
 
+    /**
+     * 密码初始化（AOP切面拦截）
+     * @param id 用户ID
+     * @param password 密码 {@link Encrypt#e(String)}
+     * @param originalPassword 原始密码 {@link Encryption#encrypt(String)}
+     * @return
+     */
+    public User updatePasswordFirstByUserId(String id, String password, String originalPassword){
+        return updatePassword(id,null,password,originalPassword);
+    }
+
 
     /**
      * 修改密码（AOP切面拦截）
@@ -971,7 +982,8 @@ public class UserService extends CrudService<UserDao, User> {
     /**
      * 设置用户岗位 批量
      *
-     * @param userIds 用户ID集合
+     * @param userId 用户ID集合
+     * @param organId 机构ID集合
      * @param postIds 岗位ID集合
      */
     public void updateUserPost(String userId,String organId, Collection<String> postIds) throws ServiceException {
@@ -995,13 +1007,12 @@ public class UserService extends CrudService<UserDao, User> {
     }
 
     /**
-     * 修改用户密码 批量
+     * 重置用户密码 批量
      *
      * @param userIds  用户ID集合
      * @param password 密码(未加密)
      */
-    @Deprecated
-    public void updateUserPassword(Collection<String> userIds, String password) throws ServiceException {
+    public void updateUserPasswordReset(Collection<String> userIds, String password) throws ServiceException {
         if (Collections3.isNotEmpty(userIds)) {
             for (String userId : userIds) {
                 User model = this.get(userId);

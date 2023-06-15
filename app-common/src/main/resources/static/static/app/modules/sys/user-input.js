@@ -38,8 +38,7 @@ function loadOrgan() {
 function loadSex() {
     $('#sex').combobox({
         url: ctxAdmin + '/sys/user/sexTypeCombobox?selectType=select',
-        editable: false,
-        value: '2'
+        editable: false
     });
 }
 

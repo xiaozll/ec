@@ -116,9 +116,9 @@ public class PortalController extends SimpleController {
             String tipMsg = null;
             if (tipPasswordType != null) {
                 int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
-                if (tipPasswordType == 0L) {
-                    tipMsg = "您从未修改过用户密码，请修改用户密码！";
-                } else if (tipPasswordType == 1L) {
+                if (tipPasswordType == 1L) {
+                    tipMsg = "您从未修改过用户密码，请设置用户密码！";
+                } else if (tipPasswordType == 2L) {
                     tipMsg = "您已超过" + userPasswordUpdateCycle + "天没有修改用户密码，请修改用户密码！";
                 }
             }
@@ -132,7 +132,7 @@ public class PortalController extends SimpleController {
     }
 
     private Long checkPassword(String userId) {
-        UserPassword userPassword = userPasswordService.getLatestUserPasswordByUserId(userId);
+        UserPassword userPassword = userPasswordService.getLatestUserPasswordByUserIdExcludeReset(userId);
 //            String tipPasswordMsg = "";
         Calendar calendar = Calendar.getInstance();
         int userPasswordUpdateCycle = AppConstants.getUserPasswordUpdateCycle();
@@ -143,10 +143,10 @@ public class PortalController extends SimpleController {
 
         if (userPassword == null) {
 //                tipPasswordMsg = "您从未修改过登录秘密，请修改登录密码！";
-            tipPasswordType = 0L;
+            tipPasswordType = 1L;
         } else if (time.compareTo(userPassword.getModifyTime()) > 0) {
 //                tipPasswordMsg = "您已超过"+userPasswordUpdateCycle+"天没有修改登录密码，请修改登录密码！";
-            tipPasswordType = 1L;
+            tipPasswordType = 2L;
         }
         return tipPasswordType;
     }

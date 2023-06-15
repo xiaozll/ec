@@ -20,6 +20,7 @@ import com.eryansky.core.web.upload.exception.InvalidExtensionException;
 import com.eryansky.modules.disk.mapper.File;
 import com.eryansky.modules.disk.utils.DiskUtils;
 import com.eryansky.modules.sys._enum.LogType;
+import com.eryansky.modules.sys._enum.UserPasswordUpdateType;
 import com.eryansky.modules.sys._enum.UserType;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
@@ -65,32 +66,13 @@ public class UserMobileController extends SimpleController {
     }
 
     /**
-     * 修改密码 页面
-     *
-     * @param model
-     * @param msg
-     * @param uiModel
-     * @return
-     */
-    @GetMapping(value = "password")
-    public String password(@ModelAttribute("model")User model, String msg, Model uiModel) {
-        if(null == model || StringUtils.isBlank(model.getId())){
-            model = SecurityUtils.getCurrentUser();
-        }
-        uiModel.addAttribute("model",model);
-        if(StringUtils.isNotBlank(msg)){
-            addMessage(uiModel,msg);
-        }
-        return "modules/sys/user-password";
-    }
-
-    /**
      * 修改密码 保存
      * @param id
      * @param loginName
      * @param encrypt 是否加密 加密方法采用base64加密方案
-     * @param password
-     * @param newPassword
+     * @param type 修改密码类型 1：初始化密码 2：帐号与安全修改密码
+     * @param password 原始密码
+     * @param newPassword 新密码
      * @return
      */
     @Logging(logType = LogType.access,value = "修改密码")
@@ -99,14 +81,18 @@ public class UserMobileController extends SimpleController {
     public Result savePs(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "ln",required = false) String loginName,
                                @RequestParam(defaultValue = "false") Boolean encrypt,
-                               @RequestParam(name = "ps")String password,
-                               @RequestParam(name = "newPs")String newPassword) {
+                               @RequestParam(name = "type") String type,
+                               @RequestParam(name = "ps",required = false)String password,
+                               @RequestParam(name = "newPs",required = true)String newPassword) {
         if (StringUtils.isBlank(id) && StringUtils.isBlank(loginName)) {
             return Result.warnResult().setMsg("无用户信息！");
         }
         User model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName):userService.get(id);
         if (model == null || StringUtils.isBlank(model.getId())) {
             throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            return Result.warnResult().setMsg("新密码为空，请完善！");
         }
 //        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
 //        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
@@ -123,24 +109,27 @@ public class UserMobileController extends SimpleController {
             return Result.warnResult().setMsg("密码解码错误！");
         }
 
-        if (!originalPassword.equals(Encrypt.e(pagePassword))) {
+        if (!UserPasswordUpdateType.UserInit.getValue().equals(type) && !originalPassword.equals(Encrypt.e(pagePassword))) {
             return Result.warnResult().setMsg("原始密码输入错误！");
         }
 
         UserUtils.checkSecurity(model.getId(),_newPassword);
         //修改本地密码
-        List<String> userIds = new ArrayList<String>(1);
-        userIds.add(model.getId());
-        UserUtils.updateUserPassword(userIds,_newPassword);
-        return Result.successResult();
+        if(UserPasswordUpdateType.UserInit.getValue().equals(type)){
+            UserUtils.updateUserPasswordFirst(model.getId(),_newPassword);
+        }else{
+            UserUtils.updateUserPassword(model.getId(),_newPassword);
+        }
+        return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
     }
 
 
     /**
-     * 修改密码 保存
+     * 修改密码 保存 #savePs
      * @param id
      * @param loginName
      * @param encrypt 默认密钥： 0~!@#$%^&*9 {@link Encryption#DEFAULT_KEY}
+     * @param type 修改密码类型 1：初始化密码 2：帐号与安全修改密码
      * @param password
      * @param newPassword
      * @return
@@ -148,9 +137,11 @@ public class UserMobileController extends SimpleController {
     @Logging(logType = LogType.access,value = "修改密码")
     @PostMapping(value = "savePassword")
     @ResponseBody
+    @Deprecated
     public Result savePassword(@RequestParam(name = "id",required = false) String id,
                                @RequestParam(name = "loginName",required = false) String loginName,
                                @RequestParam(defaultValue = "false") Boolean encrypt,
+                               @RequestParam(name = "type") String type,
                                @RequestParam(name = "password")String password,
                                @RequestParam(name = "newPassword")String newPassword) {
         User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
@@ -178,10 +169,12 @@ public class UserMobileController extends SimpleController {
 
         UserUtils.checkSecurity(model.getId(),_newPassword);
         //修改本地密码
-        List<String> userIds = new ArrayList<String>(1);
-        userIds.add(model.getId());
-        UserUtils.updateUserPassword(userIds,_newPassword);
-        return Result.successResult();
+        if(UserPasswordUpdateType.UserInit.getValue().equals(type)){
+            UserUtils.updateUserPasswordFirst(model.getId(),_newPassword);
+        }else{
+            UserUtils.updateUserPassword(model.getId(),_newPassword);
+        }
+        return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
     }
 
 

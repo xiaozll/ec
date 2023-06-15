@@ -555,11 +555,13 @@ public class UserUtils {
      * 更新用户密码
      *
      * @param user 用户
+     * @param type {@link  com.eryansky.modules.sys._enum.UserPasswordUpdateType}
      * @return
      */
-    public static UserPassword addUserPasswordUpdate(User user) {
+    public static UserPassword addUserPasswordUpdate(User user,String type) {
         UserPassword userPassword = new UserPassword(user.getId(), user.getPassword());
         userPassword.setOriginalPassword(user.getOriginalPassword());
+        userPassword.setType(type);
         Static.userPasswordService.save(userPassword);
         return userPassword;
     }
@@ -586,15 +588,37 @@ public class UserUtils {
      * @param userIds  用户ID集合
      * @param password 密码(未加密)
      */
-    public static void updateUserPassword(List<String> userIds, String password) {
-//        Static.userService.updateUserPassword(userIds, password);
-        userIds.forEach(userId->{
-            try {
-                Static.userService.updatePasswordByUserId(userId,Encrypt.e(password), Encryption.encrypt(password));
-            } catch (Exception e) {
-                throw new ActionException(e);
-            }
-        });
+    public static void updateUserPasswordReset(List<String> userIds, String password) {
+        Static.userService.updateUserPasswordReset(userIds, password);
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param userId  用户ID
+     * @param password 密码(未加密)
+     */
+    public static void updateUserPassword(String userId, String password) {
+        try {
+            Static.userService.updatePasswordByUserId(userId,Encrypt.e(password), Encryption.encrypt(password));
+        } catch (Exception e) {
+            throw new ActionException(e);
+        }
+    }
+
+
+    /**
+     * 初始化用户密码
+     *
+     * @param userId  用户ID
+     * @param password 密码(未加密)
+     */
+    public static void updateUserPasswordFirst(String userId, String password) {
+        try {
+            Static.userService.updatePasswordFirstByUserId(userId,Encrypt.e(password), Encryption.encrypt(password));
+        } catch (Exception e) {
+            throw new ActionException(e);
+        }
     }
 
 
@@ -609,7 +633,7 @@ public class UserUtils {
         }
         if(AppConstants.getIsSecurityOn()){
             int max = AppConstants.getUserPasswordRepeatCount();
-            List<UserPassword> userPasswords = Static.userPasswordService.getUserPasswordsByUserId(userId,max);
+            List<UserPassword> userPasswords = Static.userPasswordService.findUserPasswordsByUserIdExcludeReset(userId,max);
             if(Collections3.isNotEmpty(userPasswords)){
                 for(UserPassword userPassword:userPasswords){
                     if (userPassword.getPassword().equals(Encrypt.e(pagePassword))) {

@@ -222,7 +222,7 @@ public class UserController extends SimpleController {
     }
 
     /**
-     * 修改用户密码页面.
+     * 重置用户密码页面.
      */
     @GetMapping(value = {"password"})
     public String password(@ModelAttribute("model") User model) {
@@ -230,70 +230,7 @@ public class UserController extends SimpleController {
 
     }
 
-    /**
-     * 修改用户密码.
-     *
-     * @param id           用户ID
-     * @param upateOperate 需要密码"1" 不需要密码"0".
-     * @param password     原始密码
-     * @param newPassword  新密码
-     * @return
-     */
-    @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:password:edit"})
-    @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @PostMapping(value = {"updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
-    @ResponseBody
-    public Result updateUserPassword(@RequestParam(value = "id", required = true) String id,
-                                     @RequestParam(value = "upateOperate", required = true) String upateOperate,
-                                     String password,
-                                     @RequestParam(value = "newPassword", required = true) String newPassword) throws Exception {
-        Result result;
-        User u = userService.get(id);
-        if (u != null) {
-            boolean isCheck = true;
-            //需要输入原始密码
-            if (AppConstants.USER_UPDATE_PASSWORD_YES.equals(upateOperate)) {
-                String originalPassword = u.getPassword(); //数据库存储的原始密码
-                String pagePassword = password; //页面输入的原始密码（未加密）
-                checkSecurity(newPassword);
 
-                if (!originalPassword.equals(Encrypt.e(pagePassword))) {
-                    isCheck = false;
-                }
-            }
-            //不需要输入原始密码
-            if (AppConstants.USER_UPDATE_PASSWORD_NO.equals(upateOperate)) {
-                isCheck = true;
-            }
-            if (isCheck) {
-                u.setPassword(Encrypt.e(newPassword));
-                u.setOriginalPassword(Encryption.encrypt(newPassword));
-                userService.updatePasswordByUserId(id,u.getPassword(),u.getOriginalPassword());
-                result = Result.successResult();
-            } else {
-                result = new Result(Result.WARN, "原始密码输入错误.", "password");
-            }
-        } else {
-            throw new ActionException("用户【" + id + "】不存在或已被删除.");
-        }
-        logger.debug(result.toString());
-        return result;
-    }
-
-    public void checkSecurity(String pagePassword) {
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (AppConstants.getIsSecurityOn()) {
-            int max = AppConstants.getUserPasswordRepeatCount();
-            List<UserPassword> userPasswords = userPasswordService.getUserPasswordsByUserId(sessionInfo.getUserId(), max);
-            if (Collections3.isNotEmpty(userPasswords)) {
-                for (UserPassword userPassword : userPasswords) {
-                    if (userPassword.getPassword().equals(Encrypt.e(pagePassword))) {
-                        throw new ActionException("你输入的密码在最近" + max + "次以内已使用过，请更换！");
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * 修改用户密码 批量、无需输入原密码.
@@ -303,21 +240,12 @@ public class UserController extends SimpleController {
      * @return
      */
     @RequiresPermissions(logical = Logical.OR,value = {"sys:user:edit","sys:user:password:edit"})
-    @Logging(value = "用户管理-修改密码", logType = LogType.access)
-    @PostMapping(value = {"_updateUserPassword"}, produces = {MediaType.TEXT_HTML_VALUE})
+    @Logging(value = "用户管理-重置密码", logType = LogType.access)
+    @PostMapping(value = {"passwordReset"}, produces = {MediaType.TEXT_HTML_VALUE})
     @ResponseBody
-    public Result updateUserPassword(@RequestParam(value = "userIds", required = true) List<String> userIds,
+    public Result passwordReset(@RequestParam(value = "userIds", required = true) List<String> userIds,
                                      @RequestParam(value = "newPassword", required = true) String newPassword){
-        userService.updateUserPassword(userIds, newPassword);
-//        userIds.forEach(userId->{
-//            try {
-//                userService.updatePasswordByUserId(userId,Encrypt.e(newPassword),Encryption.encrypt(newPassword));
-//            } catch (Exception e) {
-//                logger.error(e.getMessage(),e);
-//                throw new ActionException(e);
-//            }
-//        });
-
+        UserUtils.updateUserPasswordReset(userIds, newPassword);
         return Result.successResult();
     }
 
@@ -611,33 +539,6 @@ public class UserController extends SimpleController {
         Result result;
         Integer maxSort = userService.getMaxSort();
         result = new Result(Result.SUCCESS, null, maxSort);
-        return result;
-    }
-
-
-    /**
-     * 修改用户信息.
-     */
-    @GetMapping(value = "userInfoInput")
-    public ModelAndView userInfoInput() {
-        ModelAndView modelAndView = new ModelAndView("layout/north-userInfoInput");
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        User user = userService.get(sessionInfo.getUserId());
-        JsonMapper jsonMapper = JsonMapper.getInstance();
-        modelAndView.addObject("userJson", jsonMapper.toJson(user));
-        return modelAndView;
-    }
-
-    /**
-     * 保存用户信息.
-     */
-    @Logging(value = "用户管理-保存信息", logType = LogType.access)
-    @PostMapping(value = "saveUserinfo", produces = {MediaType.TEXT_HTML_VALUE})
-    @ResponseBody
-    public Result saveUserinfo(@ModelAttribute("model") User model) {
-        Result result = null;
-        userService.save(model);
-        result = Result.successResult();
         return result;
     }
 

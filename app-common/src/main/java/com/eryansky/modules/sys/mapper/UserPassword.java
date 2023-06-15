@@ -6,7 +6,10 @@
 package com.eryansky.modules.sys.mapper;
 
 
+import com.eryansky.common.orm._enum.GenericEnumUtils;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
+import com.eryansky.modules.sys._enum.SexType;
+import com.eryansky.modules.sys._enum.UserPasswordUpdateType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Calendar;
@@ -24,6 +27,10 @@ public class UserPassword extends DataEntity<UserPassword> {
      * 用户ID
      */
     private String userId;
+    /**
+     * 密码修改类型 {@link  UserPasswordUpdateType}
+     */
+    private String type;
     /**
      * 修改时间
      */
@@ -54,6 +61,18 @@ public class UserPassword extends DataEntity<UserPassword> {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTypeView() {
+        return GenericEnumUtils.getDescriptionByValue(UserPasswordUpdateType.class,type,type);
     }
 
     @JsonFormat(pattern = DATE_TIME_SHORT_FORMAT, timezone = TIMEZONE)

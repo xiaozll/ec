@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>essm桌面版</title>
+<title>桌面版</title>
 <%@ include file="/common/meta.jsp"%>
     <link rel="stylesheet" type="text/css" href="${ctxStatic}/js/easyui/extend/app/app.css?_=${sysInitTime}" />
     <script type="text/javascript" src="${ctxStatic}/js/easyui/extend/app/jquery.app.js?_=${sysInitTime}" charset="utf-8"></script>

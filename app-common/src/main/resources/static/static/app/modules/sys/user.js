@@ -491,9 +491,8 @@ function viewUserResources(rowIndex) {
 //初始化修改密码表单
 function initPasswordForm() {
     $user_password_form = $('#user_password_form').form({
-        url: ctxAdmin + '/sys/user/_updateUserPassword',
+        url: ctxAdmin + '/sys/user/passwordReset',
         onSubmit: function (param) {
-            param.upateOperate = '0';
             $.messager.progress({
                 title: '提示信息！',
                 text: '数据处理中，请稍后....'

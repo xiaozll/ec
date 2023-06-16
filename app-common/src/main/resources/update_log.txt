@@ -2,6 +2,7 @@
 V4.2.20230521.20
 1、密码修改安全优化
 ALTER TABLE t_sys_user_password ADD COLUMN type char(1) COMMENT '修改类型 重置：0 用户初始化：1 用户安全修改：2';
+注意修改：portal.js
 
 20230531
 1、用户管理取消数据查看“sys:user:dataView”权限

@@ -66,7 +66,7 @@ public class UserMobileController extends SimpleController {
     }
 
     /**
-     * 修改密码 保存
+     * 设置初始密码或修改密码（仅限用户自己修改）
      * @param id
      * @param loginName
      * @param encrypt 是否加密 加密方法采用base64加密方案
@@ -94,10 +94,10 @@ public class UserMobileController extends SimpleController {
         if (StringUtils.isBlank(newPassword)) {
             return Result.warnResult().setMsg("新密码为空，请完善！");
         }
-//        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
-//        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
-//            throw new ActionException("未授权修改账号密码！");
-//        }
+        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
+        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
+            throw new ActionException("未授权修改账号密码！");
+        }
         String originalPassword = model.getPassword(); //数据库存储的原始密码
         String pagePassword= null;//页面输入的原始密码（未加密）
         String _newPassword= null;
@@ -111,60 +111,6 @@ public class UserMobileController extends SimpleController {
 
         if (!UserPasswordUpdateType.UserInit.getValue().equals(type) && !originalPassword.equals(Encrypt.e(pagePassword))) {
             return Result.warnResult().setMsg("原始密码输入错误！");
-        }
-
-        UserUtils.checkSecurity(model.getId(),_newPassword);
-        //修改本地密码
-        if(UserPasswordUpdateType.UserInit.getValue().equals(type)){
-            UserUtils.updateUserPasswordFirst(model.getId(),_newPassword);
-        }else{
-            UserUtils.updateUserPassword(model.getId(),_newPassword);
-        }
-        return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
-    }
-
-
-    /**
-     * 修改密码 保存 #savePs
-     * @param id
-     * @param loginName
-     * @param encrypt 默认密钥： 0~!@#$%^&*9 {@link Encryption#DEFAULT_KEY}
-     * @param type 修改密码类型 1：初始化密码 2：帐号与安全修改密码
-     * @param password
-     * @param newPassword
-     * @return
-     */
-    @Logging(logType = LogType.access,value = "修改密码")
-    @PostMapping(value = "savePassword")
-    @ResponseBody
-    @Deprecated
-    public Result savePassword(@RequestParam(name = "id",required = false) String id,
-                               @RequestParam(name = "loginName",required = false) String loginName,
-                               @RequestParam(defaultValue = "false") Boolean encrypt,
-                               @RequestParam(name = "type") String type,
-                               @RequestParam(name = "password")String password,
-                               @RequestParam(name = "newPassword")String newPassword) {
-        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
-        if (model == null) {
-            return Result.errorResult().setMsg("用户[" + (null == model ? "":model.getLoginName()) + "]不存在.");
-        }
-//        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
-//        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
-//            throw new ActionException("未授权修改账号密码！");
-//        }
-        String originalPassword = model.getPassword(); //数据库存储的原始密码
-        String pagePassword= null;//页面输入的原始密码（未加密）
-        String _newPassword= null;
-        try {
-            pagePassword = encrypt ? Encryption.decrypt(StringUtils.trim(password)) : StringUtils.trim(password);
-            _newPassword = encrypt ? Encryption.decrypt(StringUtils.trim(newPassword)) : StringUtils.trim(newPassword);
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            return Result.errorResult().setMsg("密码解码错误！");
-        }
-
-        if (!originalPassword.equals(Encrypt.e(pagePassword))) {
-            return Result.warnResult().setMsg("【"+model.getLoginName()+"】"+"原始密码输入错误！");
         }
 
         UserUtils.checkSecurity(model.getId(),_newPassword);

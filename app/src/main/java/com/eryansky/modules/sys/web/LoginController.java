@@ -242,17 +242,11 @@ public class LoginController extends SimpleController {
                 PasswordTip passwordTip = userPasswordService.checkPassword(user.getId());
                 if (passwordTip.isTip()) {
                     StringBuilder url = new StringBuilder();
-                    if (isMobile) {
-                        url.append(PasswordTip.CODE_YES == passwordTip.getCode() ? AppConstants.getSecurityInitPasswordUrlMobile() : AppConstants.getSecurityUpdatePasswordUrlMobile());
-                    } else {
-                        url.append(PasswordTip.CODE_YES == passwordTip.getCode() ? AppConstants.getSecurityInitPasswordUrlPc() : AppConstants.getSecurityUpdatePasswordUrlPc());
-                    }
+                    url.append(isMobile ? AppConstants.getSecurityUpdatePasswordUrlMobile():AppConstants.getSecurityUpdatePasswordUrlPc());
                     if (!url.toString().startsWith("http")) {
                         url.insert(0,AppUtils.getClientAppURL());
                     }
-                    if(PasswordTip.CODE_YES == passwordTip.getCode()){
-                        url.append("?token=").append(SecurityUtils.createUserToken(user));
-                    }
+                    url.append(StringUtils.contains(url.toString(),"?") ? "&":"?").append("token=").append(SecurityUtils.createUserToken(user)).append("&fromLogin=true");
                     Map<String,Object> data = Maps.newHashMap();
                     data.put("url",url);
                     data.put("passwordTip",passwordTip);

@@ -6,6 +6,7 @@
 package com.eryansky.modules.sys.web;
 
 import com.eryansky.common.exception.ActionException;
+import com.eryansky.common.model.Result;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.encode.Encrypt;
@@ -77,6 +78,9 @@ public class IndexController extends SimpleController {
      * 用户密码初始化或修改页面
      * @param request
      * @param type {@link com.eryansky.modules.sys._enum.UserPasswordUpdateType}
+     * @param fromLogin 从登录页跳转
+     * @param fromExtend 从外部APP跳转
+     * @param extendUrl 外部APPURL
      * @param token 安全Token
      * @return
      */
@@ -84,29 +88,39 @@ public class IndexController extends SimpleController {
     @GetMapping(value = {"index/password"})
     public ModelAndView password(HttpServletRequest request,
                                  String type,
+                                 @RequestParam(name = "fromLogin",defaultValue = "false") Boolean fromLogin,
+                                 @RequestParam(name = "fromExtend",defaultValue = "false") Boolean fromExtend,
+                                 @RequestParam(name = "extendUrl",required = false) String extendUrl,
                                  @RequestParam(name = "token",required = false) String token) {
         ModelAndView modelAnView = new ModelAndView("modules/sys/password.html");
-        User user = null;
-        if (StringUtils.isNotBlank(token)) {
-            String tokenLoginName = SecurityUtils.getLoginNameByToken(token);
-            user = UserUtils.getUserByLoginName(tokenLoginName);
-        }
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (null == user && null == sessionInfo) {
+        User model = null;
+        if (fromLogin && StringUtils.isNotBlank(token)) {
+            String tokenLoginName = SecurityUtils.getLoginNameByToken(token);
+            model = UserUtils.getUserByLoginName(tokenLoginName);
+        }else{
+            if (null == sessionInfo) {
+                throw new ActionException("非法请求！");
+            }
+            model = SecurityUtils.getCurrentUser();
+        }
+
+        if (null == model) {
             throw new ActionException("非法请求！");
         }
 
         String _type = type;
-        User sessionUser = SecurityUtils.getCurrentUser();
         if(StringUtils.isBlank(type)){
-            PasswordTip passwordTip = userPasswordService.checkPassword(sessionUser.getId());
+            PasswordTip passwordTip = userPasswordService.checkPassword(model.getId());
             _type = String.valueOf(passwordTip.getCode());
         }
         modelAnView.addObject("type",_type);
-        modelAnView.addObject("model", sessionUser);
+        modelAnView.addObject("model", model);
         modelAnView.addObject("isCheckPasswordPolicy", AppConstants.isCheckPasswordPolicy());
-        modelAnView.addObject("homeUrl", AppUtils.getClientAppURL());
-        modelAnView.addObject("isInit", StringUtils.isNotBlank(token));
+        modelAnView.addObject("homeUrl",fromExtend ? extendUrl: AppUtils.getClientAppURL());
+        modelAnView.addObject("fromLogin", fromLogin);
+        modelAnView.addObject("fromExtend", fromExtend);
+        modelAnView.addObject("token", token);
         return modelAnView;
     }
 

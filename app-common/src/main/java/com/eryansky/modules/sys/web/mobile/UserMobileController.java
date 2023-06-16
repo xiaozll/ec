@@ -74,39 +74,61 @@ public class UserMobileController extends SimpleController {
      * @param type 修改密码类型 1：初始化密码 2：帐号与安全修改密码
      * @param password 原始密码
      * @param newPassword 新密码
+     * @param token 安全Token
      * @return
      */
-    @Logging(logType = LogType.access,value = "修改密码")
+    @RequiresUser(required = false)
+    @Logging(logType = LogType.access, value = "修改密码")
     @PostMapping(value = "savePs")
     @ResponseBody
-    public Result savePs(@RequestParam(name = "id",required = false) String id,
-                               @RequestParam(name = "ln",required = false) String loginName,
-                               @RequestParam(defaultValue = "false") Boolean encrypt,
-                               @RequestParam(name = "type") String type,
-                               @RequestParam(name = "ps",required = false)String password,
-                               @RequestParam(name = "newPs",required = true)String newPassword) {
-        if (StringUtils.isBlank(id) && StringUtils.isBlank(loginName)) {
-            return Result.warnResult().setMsg("无用户信息！");
+    public Result savePs(@RequestParam(name = "id", required = false) String id,
+                         @RequestParam(name = "ln", required = false) String loginName,
+                         @RequestParam(defaultValue = "false") Boolean encrypt,
+                         @RequestParam(name = "type") String type,
+                         @RequestParam(name = "ps", required = false) String password,
+                         @RequestParam(name = "newPs", required = true) String newPassword,
+                         @RequestParam(name = "token", required = false) String token) {
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        User model = null;
+        if (StringUtils.isNotBlank(token)) {
+            String tokenLoginName = SecurityUtils.getLoginNameByToken(token);
+            model = UserUtils.getUserByLoginName(tokenLoginName);
+            //安全校验 仅允许自己修改
+            if (null != model && !model.getId().equals(id)) {
+                logger.warn("未授权修改账号密码：{} {} {}", model.getLoginName(), loginName, token);
+                throw new ActionException("未授权修改账号密码！");
+            }
+        } else {
+            if (null == sessionInfo) {
+                throw new ActionException("非法请求！");
+            }
+            if (StringUtils.isBlank(id) && StringUtils.isBlank(loginName)) {
+                return Result.warnResult().setMsg("无用户信息！");
+            }
+            model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName) : userService.get(id);
+            //安全校验 仅允许自己修改
+            if (null != model && !model.getId().equals(sessionInfo.getUserId())) {
+                logger.warn("未授权修改账号密码：{} {} {}", model.getLoginName(), model.getLoginName(), token);
+                throw new ActionException("未授权修改账号密码！");
+            }
         }
-        User model = StringUtils.isNotBlank(loginName) ? userService.getUserByLoginName(loginName):userService.get(id);
-        if (model == null || StringUtils.isBlank(model.getId())) {
-            throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
+
+        if (null == model) {
+            throw new ActionException("非法请求！");
         }
+
         if (StringUtils.isBlank(newPassword)) {
             return Result.warnResult().setMsg("新密码为空，请完善！");
         }
-        SessionInfo sessionInfo =  SecurityUtils.getCurrentSessionInfo();
-        if (null == sessionInfo || !sessionInfo.getUserId().equals(model.getId())) {
-            throw new ActionException("未授权修改账号密码！");
-        }
+
         String originalPassword = model.getPassword(); //数据库存储的原始密码
-        String pagePassword= null;//页面输入的原始密码（未加密）
-        String _newPassword= null;
+        String pagePassword = null;//页面输入的原始密码（未加密）
+        String _newPassword = null;
         try {
             pagePassword = encrypt ? new String(EncodeUtils.base64Decode(StringUtils.trim(password))) : StringUtils.trim(password);
             _newPassword = encrypt ? new String(EncodeUtils.base64Decode(StringUtils.trim(newPassword))) : StringUtils.trim(newPassword);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return Result.warnResult().setMsg("密码解码错误！");
         }
 
@@ -114,63 +136,17 @@ public class UserMobileController extends SimpleController {
             return Result.warnResult().setMsg("原始密码输入错误！");
         }
 
-        UserUtils.checkSecurity(model.getId(),_newPassword);
+        UserUtils.checkSecurity(model.getId(), _newPassword);
         //修改本地密码
-        if(UserPasswordUpdateType.UserInit.getValue().equals(type)){
-            UserUtils.updateUserPasswordFirst(model.getId(),_newPassword);
-        }else{
-            UserUtils.updateUserPassword(model.getId(),_newPassword);
+        if (UserPasswordUpdateType.UserInit.getValue().equals(type)) {
+            UserUtils.updateUserPasswordFirst(model.getId(), _newPassword);
+        } else {
+            UserUtils.updateUserPassword(model.getId(), _newPassword);
         }
         //注销当前会话信息
-//        SecurityUtils.offLine(sessionInfo.getSessionId());
-        return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
-    }
-
-
-
-    /**
-     * 设置初始密码（仅限用户自己修改）
-     * @param id
-     * @param token 安全Token
-     * @param encrypt 是否加密 加密方法采用base64加密方案
-     * @param token
-     * @param newPassword 新密码
-     * @return
-     */
-    @RequiresUser(required = false)
-    @Logging(logType = LogType.access,value = "初始密码")
-    @PostMapping(value = "saveInitPs")
-    @ResponseBody
-    public Result saveInitPs(@RequestParam(name = "id",required = true) String id,
-                             @RequestParam(name = "token",required = true) String token,
-                         @RequestParam(defaultValue = "false") Boolean encrypt,
-                         @RequestParam(name = "newPs",required = true)String newPassword) {
-        String loginName = SecurityUtils.getLoginNameByToken(token);
-        User tokenUser = UserUtils.getUserByLoginName(loginName);
-        if(null == tokenUser){
-            throw new ActionException("非法请求！");
+        if(null != sessionInfo){
+            SecurityUtils.offLine(sessionInfo.getSessionId());
         }
-        User model = userService.get(id);
-        if (model == null || StringUtils.isBlank(model.getId())) {
-            throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
-        }
-        if (!tokenUser.getId().equals(model.getId())) {
-            logger.warn("未授权修改账号密码：{} {} {}",model.getLoginName(),tokenUser.getLoginName(),token);
-            throw new ActionException("未授权修改账号密码！");
-        }
-
-        if (StringUtils.isBlank(newPassword)) {
-            return Result.warnResult().setMsg("新密码为空，请完善！");
-        }
-        String _newPassword= null;
-        try {
-            _newPassword = encrypt ? new String(EncodeUtils.base64Decode(StringUtils.trim(newPassword))) : StringUtils.trim(newPassword);
-        } catch (Exception e) {
-            logger.error(e.getMessage(),e);
-            return Result.warnResult().setMsg("密码解码错误！");
-        }
-        UserUtils.checkSecurity(model.getId(),_newPassword);
-        UserUtils.updateUserPasswordFirst(model.getId(),_newPassword);
         return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
     }
 

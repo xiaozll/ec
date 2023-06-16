@@ -486,7 +486,7 @@ public class AppConstants extends SysConstants {
      * @return
      */
     public static boolean isCheckLoginPassword() {
-        String code = "security.checkLoginPassword";
+        String code = "security.password.checkLogin";
         String value = getConfigValue(code, "false");
         return "true".equals(value) || "1".equals(value);
     }
@@ -497,7 +497,7 @@ public class AppConstants extends SysConstants {
      * @return
      */
     public static boolean isCheckPasswordPolicy() {
-        String code = "security.checkPasswordPolicy";
+        String code = "security.password.checkPolicy";
         String value = getConfigValue(code, "false");
         return "true".equals(value) || "1".equals(value);
     }

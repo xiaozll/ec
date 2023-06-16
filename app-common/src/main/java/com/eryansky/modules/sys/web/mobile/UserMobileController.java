@@ -147,7 +147,7 @@ public class UserMobileController extends SimpleController {
         if(null != sessionInfo){
             SecurityUtils.offLine(sessionInfo.getSessionId());
         }
-        return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
+        return Result.successResult();
     }
 
     /**

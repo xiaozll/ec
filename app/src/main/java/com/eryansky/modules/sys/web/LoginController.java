@@ -251,7 +251,12 @@ public class LoginController extends SimpleController {
                         url.insert(0,AppUtils.getClientAppURL());
                     }
                     url.append("?token=").append(SecurityUtils.createUserToken(user));
-                    return new Result().setCode(RESULT_CODE_PASSWORD_ERROR).setObj(url).setMsg(passwordTip.getMsg());
+                    Map<String,Object> data = Maps.newHashMap();
+                    data.put("url",url);
+                    data.put("passwordTip",passwordTip);
+                    data.put("userId",user.getId());
+                    data.put("loginName",user.getLoginName());
+                    return new Result().setCode(RESULT_CODE_PASSWORD_ERROR).setObj(data).setMsg(passwordTip.getMsg());
                 }
             }
 

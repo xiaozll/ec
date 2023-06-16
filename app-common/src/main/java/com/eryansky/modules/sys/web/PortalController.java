@@ -88,8 +88,7 @@ public class PortalController extends SimpleController {
 
         if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
-            map.put("tipPasswordType", passwordTip.getCode());
-            map.put("tipPasswordMsg", passwordTip.getMsg());
+            map.put("passwordTip", passwordTip);
         }
 
         result = Result.successResult().setObj(map);
@@ -107,15 +106,13 @@ public class PortalController extends SimpleController {
     @PostMapping(value = "checkPassword")
     @ResponseBody
     public Result checkPassword(HttpServletResponse response) throws Exception {
-        WebUtils.setNoCacheHeader(response);
         Result result = null;
         Map<String, Object> map = Maps.newHashMap();
         // 当前登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
-            map.put("tipPasswordType", passwordTip.getCode());
-            map.put("tipPasswordMsg", passwordTip.getMsg());
+            map.put("passwordTip", passwordTip);
         }
 
         result = Result.successResult().setObj(map);

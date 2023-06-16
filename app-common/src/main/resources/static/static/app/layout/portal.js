@@ -155,11 +155,11 @@ function mymessages(refreshPanel, tipMessage) {
                 }
                 $("#p1").panel("setTitle", protal_titles[0] + messagesHtml);
 
-                if (obj["tipPasswordType"] !== undefined && obj["tipPasswordType"] !== null) {
+                if (obj["passwordTip"] !== undefined && obj["passwordTip"]['isTip'] === true) {
                     var tipMsg = '';
-                    if (obj["tipPasswordType"] === 1) {
+                    if (obj["passwordTip"]['code']=== 1) {
                         tipMsg = "您从未修改过用户密码，请<a onclick='updateUserPassword();'>设置用户密码</a>！";
-                    } else if (obj["tipPasswordType"] === 2) {
+                    } else if (obj["passwordTip"]['code'] === 2) {
                         tipMsg = "距离上次修改密码已经很长时间了，请<a onclick='updateUserPassword();'>修改用户密码</a>！";
                     }
                     if(tipMsg !== ''){

@@ -111,7 +111,7 @@ function login() {
                 $("#loginError2").html(data.msg);
                 $("#messageBox2").removeClass("hide");
                 setTimeout(function(){
-                   window.location = data.obj;
+                   window.location = data['obj']['url'];
                 },3*1000);
             } else {
                 $('#validateCode').val('');

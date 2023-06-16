@@ -504,30 +504,11 @@ public class AppConstants extends SysConstants {
 
 
     /**
-     * 初始化密码地址 PC端
-     * @return
-     */
-    public static String getSecurityInitPasswordUrlPc() {
-        String code = "security.initPasswordUrl.pc";
-        return getConfigValue(code);
-    }
-
-    /**
      * 修改密码地址 PC端
      * @return
      */
     public static String getSecurityUpdatePasswordUrlPc() {
         String code = "security.updatePasswordUrl.pc";
-        return getConfigValue(code);
-    }
-
-
-    /**
-     * 初始化密码地址 移动端
-     * @return
-     */
-    public static String getSecurityInitPasswordUrlMobile() {
-        String code = "security.initPasswordUrl.mobile";
         return getConfigValue(code);
     }
 

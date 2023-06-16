@@ -250,7 +250,9 @@ public class LoginController extends SimpleController {
                     if (!url.toString().startsWith("http")) {
                         url.insert(0,AppUtils.getClientAppURL());
                     }
-                    url.append("?token=").append(SecurityUtils.createUserToken(user));
+                    if(PasswordTip.CODE_YES == passwordTip.getCode()){
+                        url.append("?token=").append(SecurityUtils.createUserToken(user));
+                    }
                     Map<String,Object> data = Maps.newHashMap();
                     data.put("url",url);
                     data.put("passwordTip",passwordTip);

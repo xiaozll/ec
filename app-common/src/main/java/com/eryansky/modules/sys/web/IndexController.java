@@ -74,38 +74,28 @@ public class IndexController extends SimpleController {
     }
 
     /**
-     * 初始化密码页面
+     * 用户密码初始化或修改页面
      * @param request
-     * @param token 用户Token
+     * @param type {@link com.eryansky.modules.sys._enum.UserPasswordUpdateType}
+     * @param token 安全Token
      * @return
      */
     @RequiresUser(required = false)
-    @GetMapping(value = {"index/initPassword"})
-    public ModelAndView initPassword(HttpServletRequest request,@RequestParam(name = "token",required = true) String token) {
+    @GetMapping(value = {"index/password"})
+    public ModelAndView password(HttpServletRequest request,
+                                 String type,
+                                 @RequestParam(name = "token",required = false) String token) {
         ModelAndView modelAnView = new ModelAndView("modules/sys/password.html");
-        String loginName = SecurityUtils.getLoginNameByToken(token);
-        User user = UserUtils.getUserByLoginName(loginName);
-        if(null == user){
+        User user = null;
+        if (StringUtils.isNotBlank(token)) {
+            String tokenLoginName = SecurityUtils.getLoginNameByToken(token);
+            user = UserUtils.getUserByLoginName(tokenLoginName);
+        }
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        if (null == user && null == sessionInfo) {
             throw new ActionException("非法请求！");
         }
-        modelAnView.addObject("type", UserPasswordUpdateType.UserInit.getValue());
-        modelAnView.addObject("model", user);
-        modelAnView.addObject("token", token);
-        modelAnView.addObject("isInit", true);
-        modelAnView.addObject("isCheckPasswordPolicy", AppConstants.isCheckPasswordPolicy());
-        modelAnView.addObject("homeUrl", AppUtils.getClientAppURL());
-        return modelAnView;
-    }
 
-    /**
-     * 用户密码修改页面
-     * @param request
-     * @param type {@link com.eryansky.modules.sys._enum.UserPasswordUpdateType}
-     * @return
-     */
-    @GetMapping(value = {"index/password"})
-    public ModelAndView password(HttpServletRequest request,String type) {
-        ModelAndView modelAnView = new ModelAndView("modules/sys/password.html");
         String _type = type;
         User sessionUser = SecurityUtils.getCurrentUser();
         if(StringUtils.isBlank(type)){
@@ -115,6 +105,8 @@ public class IndexController extends SimpleController {
         modelAnView.addObject("type",_type);
         modelAnView.addObject("model", sessionUser);
         modelAnView.addObject("isCheckPasswordPolicy", AppConstants.isCheckPasswordPolicy());
+        modelAnView.addObject("homeUrl", AppUtils.getClientAppURL());
+        modelAnView.addObject("isInit", StringUtils.isNotBlank(token));
         return modelAnView;
     }
 

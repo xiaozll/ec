@@ -192,7 +192,9 @@
           success: function (data) {
             if (data.code === 1) {
               showTip(data['msg']);
-              window.location.reload();
+              window.setTimeout(function(){
+                window.location.reload();
+              },2*1000);
             } else {
               showTip(data['msg']);
             }

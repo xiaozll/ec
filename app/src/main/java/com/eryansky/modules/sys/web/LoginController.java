@@ -23,8 +23,11 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.security.annotation.PrepareOauth2;
 import com.eryansky.core.web.annotation.MobileValue;
 import com.eryansky.modules.sys.service.ResourceService;
+import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
+import com.eryansky.modules.sys.vo.PasswordTip;
+import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityConstants;
@@ -62,8 +65,12 @@ public class LoginController extends SimpleController {
     @Autowired
     private UserService userService;
     @Autowired
+    private UserPasswordService userPasswordService;
+    @Autowired
     private ResourceService resourceService;
-
+    private static final int RESULT_CODE_APP_VERSION_ERROR = 5;//APP版本禁止登录
+    private static final int RESULT_CODE_DEVICE_ERROR = 4;//移动设备校验错误码
+    private static final int RESULT_CODE_PASSWORD_ERROR = 6;//密码过期等
     /**
      * 欢迎页面
      *
@@ -76,7 +83,7 @@ public class LoginController extends SimpleController {
     public ModelAndView welcome(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
-        boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
+        boolean isValidateCodeLogin = AppConstants.getLoginAgainSize()== 0 || isValidateCodeLogin(loginName, false, false);
         modelAndView.addObject("isValidateCodeLogin", isValidateCodeLogin);
         modelAndView.addObject("isMobile", UserAgentUtils.isMobile(request));
         String randomSecurityToken = Identities.randomBase62(64);
@@ -112,7 +119,7 @@ public class LoginController extends SimpleController {
         if (clean) {
             loginFailMap.remove(useruame);
         }
-        return loginFailNum >= 3;
+        return loginFailNum > AppConstants.getLoginAgainSize();
     }
 
     /**
@@ -179,11 +186,11 @@ public class LoginController extends SimpleController {
 
         Result result = null;
         String msg = null;
-        final String VALIDATECODE_TIP = "密码输入错误超过3次，请输入验证码!";
+        final String VALIDATECODE_TIP = "密码输入错误超过"+AppConstants.getLoginAgainSize()+"次，请输入验证码!";
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         if (isValidateCodeLogin && UserAgentUtils.isComputer(request)) {
             if (StringUtils.isBlank(validateCode)) {
-                return Result.errorResult().setMsg("密码输入错误超过3次，请输入验证码!").setObj(isValidateCodeLogin);
+                return Result.errorResult().setMsg("密码输入错误超过"+AppConstants.getLoginAgainSize()+"次，请输入验证码!").setObj(isValidateCodeLogin);
             }
             if (!ValidateCodeServlet.validate(request, validateCode)) {
                 msg = "验证码不正确或验证码已过期!";
@@ -196,9 +203,19 @@ public class LoginController extends SimpleController {
             _password = Encrypt.e(password);
         }
 
+
+
         // 获取用户信息
         User user = userService.getUserByLP(loginName, _password,securityToken);
-        if (user == null) {
+        boolean flag = null != user;
+        if(null  == user && AppConstants.isdevMode()){
+            user = userService.getUserByLoginName(loginName);
+            flag = null != user;
+        }
+
+
+
+        if (!flag) {
             msg = "用户名或密码不正确!";
         } else if (user.getStatus().equals(StatusState.LOCK.getValue())) {
             msg = "该用户已被锁定，暂不允许登陆!";
@@ -210,12 +227,31 @@ public class LoginController extends SimpleController {
             }
             result = new Result(Result.ERROR, msg, isValidateCodeLogin);
         } else {
-            if (AppConstants.getIsSecurityOn()) {
+            boolean isSecurityOn = AppConstants.getIsSecurityOn();
+            if (isSecurityOn) {
                 List<SessionInfo> userSessionInfos = SecurityUtils.findSessionInfoByLoginName(loginName);
                 int sessionUserLimitSize = AppConstants.getUserSessionSize();
                 if(sessionUserLimitSize > 0 &&  userSessionInfos.size() >=sessionUserLimitSize ){
                     result = new Result(Result.ERROR, "已达到用户最大会话登录限制["+ sessionUserLimitSize+"，请注销其它登录信息后再试！]", sessionUserLimitSize);
                     return result;
+                }
+            }
+
+            boolean isMobile = UserAgentUtils.isMobile(request);
+            if (isSecurityOn && AppConstants.isCheckLoginPassword()) {
+                PasswordTip passwordTip = userPasswordService.checkPassword(user.getId());
+                if (passwordTip.isTip()) {
+                    StringBuilder url = new StringBuilder();
+                    if (isMobile) {
+                        url.append(PasswordTip.CODE_YES == passwordTip.getCode() ? AppConstants.getSecurityInitPasswordUrlMobile() : AppConstants.getSecurityUpdatePasswordUrlMobile());
+                    } else {
+                        url.append(PasswordTip.CODE_YES == passwordTip.getCode() ? AppConstants.getSecurityInitPasswordUrlPc() : AppConstants.getSecurityUpdatePasswordUrlPc());
+                    }
+                    if (!url.toString().startsWith("http")) {
+                        url.insert(0,AppUtils.getClientAppURL());
+                    }
+                    url.append("?token=").append(SecurityUtils.createUserToken(user));
+                    return new Result().setCode(RESULT_CODE_PASSWORD_ERROR).setObj(url).setMsg(passwordTip.getMsg());
                 }
             }
 

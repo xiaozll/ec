@@ -631,8 +631,11 @@ public class UserUtils {
         if(User.SUPERUSER_ID.equals(userId)){
             return;
         }
-        if(AppConstants.getIsSecurityOn()){
+        if(AppConstants.getIsSecurityOn() && AppConstants.isCheckPasswordPolicy()){
             int max = AppConstants.getUserPasswordRepeatCount();
+            if(max <=0){
+                return;
+            }
             List<UserPassword> userPasswords = Static.userPasswordService.findUserPasswordsByUserIdExcludeReset(userId,max);
             if(Collections3.isNotEmpty(userPasswords)){
                 for(UserPassword userPassword:userPasswords){

@@ -115,25 +115,27 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">最大登录用户数限制：</label>
+            <label class="control-label">登录密码安全检查：</label>
             <div class="controls">
-                <input name="sessionUser.MaxSize" type="number" min="-1" max="999999" class="input-small"/>
-                <span class="help-inline">不允许登录：小于0 不限制；0 限制：具体数值</span>
+                <label><input name="security.checkLoginPassword" type="radio" value="true"/>启用</label>
+                <label><input name="security.checkLoginPassword" type="radio" value="false"/>禁用</label>
+                <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启用登录密码安全检查</span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">强密码策略：</label>
+            <div class="controls">
+                <label><input name="security.checkPasswordPolicy" type="radio" value="true"/>启用</label>
+                <label><input name="security.checkPasswordPolicy" type="radio" value="false"/>禁用</label>
+                <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启用登录密码安全检查</span>
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">用户可创建会话数量：</label>
-            <div class="controls">
-                <input name="sessionUser.UserSessionSize" type="number" min="0" max="100" class="input-small"/>
-                <span class="help-inline">用户可创建会话数量 默认值：0</span>
-            </div>
-        </div>
 
         <div class="control-group">
             <label class="control-label">用户密码更新周期：</label>
             <div class="controls">
-                <input name="password.updateCycle" type="number" min="0" max="9999" class="input-small"/>
+                <input name="security.password.updateCycle" type="number" min="0" max="9999" class="input-small"/>
                 <span class="help-inline">默认值：30（天）</span>
             </div>
         </div>
@@ -141,8 +143,33 @@
         <div class="control-group">
             <label class="control-label">密码重复校验：</label>
             <div class="controls">
-                <input name="password.repeatCount" type="number" min="0" max="100" class="input-small"/>
+                <input name="security.password.repeatCount" type="number" min="0" max="100" class="input-small"/>
                 <span class="help-inline">用户密码至少多少次内不能重复 默认值：0</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">密码错误次数：</label>
+            <div class="controls">
+                <input name="security.password.loginAgainSize" type="number" min="0" max="100" class="input-small"/>
+                <span class="help-inline">默认值：3</span>
+            </div>
+        </div>
+
+
+        <div class="control-group">
+            <label class="control-label">最大登录用户数限制：</label>
+            <div class="controls">
+                <input name="security.sessionUser.MaxSize" type="number" min="-1" max="999999" class="input-small"/>
+                <span class="help-inline">不允许登录：小于0 不限制；0 限制：具体数值</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">用户可创建会话数量：</label>
+            <div class="controls">
+                <input name="security.sessionUser.UserSessionSize" type="number" min="0" max="100" class="input-small"/>
+                <span class="help-inline">用户可创建会话数量 默认值：0</span>
             </div>
         </div>
 

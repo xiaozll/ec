@@ -14,6 +14,7 @@ import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.aop.annotation.Logging;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security.annotation.RequiresUser;
 import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.core.web.upload.exception.FileNameLengthLimitExceededException;
 import com.eryansky.core.web.upload.exception.InvalidExtensionException;
@@ -120,9 +121,58 @@ public class UserMobileController extends SimpleController {
         }else{
             UserUtils.updateUserPassword(model.getId(),_newPassword);
         }
+        //注销当前会话信息
+//        SecurityUtils.offLine(sessionInfo.getSessionId());
         return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
     }
 
+
+
+    /**
+     * 设置初始密码（仅限用户自己修改）
+     * @param id
+     * @param token 安全Token
+     * @param encrypt 是否加密 加密方法采用base64加密方案
+     * @param token
+     * @param newPassword 新密码
+     * @return
+     */
+    @RequiresUser(required = false)
+    @Logging(logType = LogType.access,value = "初始密码")
+    @PostMapping(value = "saveInitPs")
+    @ResponseBody
+    public Result saveInitPs(@RequestParam(name = "id",required = true) String id,
+                             @RequestParam(name = "token",required = true) String token,
+                         @RequestParam(defaultValue = "false") Boolean encrypt,
+                         @RequestParam(name = "newPs",required = true)String newPassword) {
+        String loginName = SecurityUtils.getLoginNameByToken(token);
+        User tokenUser = UserUtils.getUserByLoginName(loginName);
+        if(null == tokenUser){
+            throw new ActionException("非法请求！");
+        }
+        User model = userService.get(id);
+        if (model == null || StringUtils.isBlank(model.getId())) {
+            throw new ActionException("用户[" + (null == model ? "":model.getId()) + "]不存在.");
+        }
+        if (!tokenUser.getId().equals(model.getId())) {
+            logger.warn("未授权修改账号密码：{} {} {}",model.getLoginName(),tokenUser.getLoginName(),token);
+            throw new ActionException("未授权修改账号密码！");
+        }
+
+        if (StringUtils.isBlank(newPassword)) {
+            return Result.warnResult().setMsg("新密码为空，请完善！");
+        }
+        String _newPassword= null;
+        try {
+            _newPassword = encrypt ? new String(EncodeUtils.base64Decode(StringUtils.trim(newPassword))) : StringUtils.trim(newPassword);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return Result.warnResult().setMsg("密码解码错误！");
+        }
+        UserUtils.checkSecurity(model.getId(),_newPassword);
+        UserUtils.updateUserPasswordFirst(model.getId(),_newPassword);
+        return Result.successResult().setObj(UserPasswordUpdateType.UserUpdate.getValue());
+    }
 
     /**
      * 修改个人信息 页面

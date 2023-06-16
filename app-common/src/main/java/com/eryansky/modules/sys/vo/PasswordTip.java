@@ -7,7 +7,7 @@ package com.eryansky.modules.sys.vo;
 
 /**
  * @author Eryan
- * @date 2018-06-14 
+ * @date 2018-06-14
  */
 public class PasswordTip {
 
@@ -26,6 +26,7 @@ public class PasswordTip {
         this.code = code;
         this.msg = msg;
     }
+
 
     public int getCode() {
         return code;

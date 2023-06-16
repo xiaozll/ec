@@ -5,22 +5,29 @@
  */
 package com.eryansky.modules.sys.web;
 
+import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
+import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
+import com.eryansky.core.security.annotation.RequiresUser;
+import com.eryansky.modules.sys._enum.UserPasswordUpdateType;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.service.UserService;
+import com.eryansky.modules.sys.utils.UserUtils;
 import com.eryansky.modules.sys.vo.PasswordTip;
 import com.eryansky.utils.AppConstants;
+import com.eryansky.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +74,30 @@ public class IndexController extends SimpleController {
     }
 
     /**
+     * 初始化密码页面
+     * @param request
+     * @param token 用户Token
+     * @return
+     */
+    @RequiresUser(required = false)
+    @GetMapping(value = {"index/initPassword"})
+    public ModelAndView initPassword(HttpServletRequest request,@RequestParam(name = "token",required = true) String token) {
+        ModelAndView modelAnView = new ModelAndView("modules/sys/password.html");
+        String loginName = SecurityUtils.getLoginNameByToken(token);
+        User user = UserUtils.getUserByLoginName(loginName);
+        if(null == user){
+            throw new ActionException("非法请求！");
+        }
+        modelAnView.addObject("type", UserPasswordUpdateType.UserInit.getValue());
+        modelAnView.addObject("model", user);
+        modelAnView.addObject("token", token);
+        modelAnView.addObject("isInit", true);
+        modelAnView.addObject("isCheckPasswordPolicy", AppConstants.isCheckPasswordPolicy());
+        modelAnView.addObject("homeUrl", AppUtils.getClientAppURL());
+        return modelAnView;
+    }
+
+    /**
      * 用户密码修改页面
      * @param request
      * @param type {@link com.eryansky.modules.sys._enum.UserPasswordUpdateType}
@@ -76,12 +107,14 @@ public class IndexController extends SimpleController {
     public ModelAndView password(HttpServletRequest request,String type) {
         ModelAndView modelAnView = new ModelAndView("modules/sys/password.html");
         String _type = type;
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        User sessionUser = SecurityUtils.getCurrentUser();
         if(StringUtils.isBlank(type)){
-            PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
+            PasswordTip passwordTip = userPasswordService.checkPassword(sessionUser.getId());
             _type = String.valueOf(passwordTip.getCode());
         }
         modelAnView.addObject("type",_type);
+        modelAnView.addObject("model", sessionUser);
+        modelAnView.addObject("isCheckPasswordPolicy", AppConstants.isCheckPasswordPolicy());
         return modelAnView;
     }
 

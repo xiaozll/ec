@@ -480,6 +480,67 @@ public class AppConstants extends SysConstants {
         return "true".equals(value) || "1".equals(value);
     }
 
+    /**
+     * 启用登录密码安全检查
+     *
+     * @return
+     */
+    public static boolean isCheckLoginPassword() {
+        String code = "security.checkLoginPassword";
+        String value = getConfigValue(code, "false");
+        return "true".equals(value) || "1".equals(value);
+    }
+
+    /**
+     * 启用强密码策略
+     *
+     * @return
+     */
+    public static boolean isCheckPasswordPolicy() {
+        String code = "security.checkPasswordPolicy";
+        String value = getConfigValue(code, "false");
+        return "true".equals(value) || "1".equals(value);
+    }
+
+
+    /**
+     * 初始化密码地址 PC端
+     * @return
+     */
+    public static String getSecurityInitPasswordUrlPc() {
+        String code = "security.initPasswordUrl.pc";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 修改密码地址 PC端
+     * @return
+     */
+    public static String getSecurityUpdatePasswordUrlPc() {
+        String code = "security.updatePasswordUrl.pc";
+        return getConfigValue(code);
+    }
+
+
+    /**
+     * 初始化密码地址 移动端
+     * @return
+     */
+    public static String getSecurityInitPasswordUrlMobile() {
+        String code = "security.initPasswordUrl.mobile";
+        return getConfigValue(code);
+    }
+
+    /**
+     * 修改密码地址 移动端
+     * @return
+     */
+    public static String getSecurityUpdatePasswordUrlMobile() {
+        String code = "security.updatePasswordUrl.mobile";
+        return getConfigValue(code);
+    }
+
+
 
     /**
      * 系统最大登录用户数
@@ -487,7 +548,7 @@ public class AppConstants extends SysConstants {
      * @return
      */
     public static int getSessionUserMaxSize() {
-        String code = "sessionUser.MaxSize";
+        String code = "security.sessionUser.MaxSize";
         String value = getConfigValue(code);
         return Integer.valueOf(value);
     }
@@ -500,7 +561,7 @@ public class AppConstants extends SysConstants {
      * @return
      */
     public static int getUserSessionSize() {
-        String code = "sessionUser.UserSessionSize";
+        String code = "security.sessionUser.UserSessionSize";
         String value = getConfigValue(code);
         return StringUtils.isBlank(value) ? 0 : Integer.valueOf(value);
     }
@@ -511,7 +572,7 @@ public class AppConstants extends SysConstants {
      * @return
      */
     public static int getLoginAgainSize() {
-        String code = "password.loginAgainSize";
+        String code = "security.password.loginAgainSize";
         String value = getConfigValue(code);
         return StringUtils.isBlank(value) ? 3 : Integer.valueOf(value);
     }
@@ -522,18 +583,18 @@ public class AppConstants extends SysConstants {
      * @return
      */
     public static int getUserPasswordUpdateCycle() {
-        String code = "password.updateCycle";
+        String code = "security.password.updateCycle";
         String value = getConfigValue(code);
         return StringUtils.isBlank(value) ? 30 : Integer.valueOf(value);
     }
 
     /**
-     * 用户密码至少多少次内不能重复 默认值：5
+     * 用户密码至少多少次内不能重复 不校验：0 默认值：5
      *
      * @return
      */
     public static int getUserPasswordRepeatCount() {
-        String code = "password.repeatCount";
+        String code = "security.password.repeatCount";
         String value = getConfigValue(code);
         return StringUtils.isBlank(value) ? 5 : Integer.valueOf(value);
     }

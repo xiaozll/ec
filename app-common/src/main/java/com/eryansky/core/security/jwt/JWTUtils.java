@@ -26,7 +26,6 @@ public class JWTUtils {
      * 生成签名,30min后过期
      *
      * @param username 用户名
-     * @param secret   用户的密码
      * @return 加密的token
      */
     public static String sign(String username) {

@@ -86,7 +86,7 @@ public class PortalController extends SimpleController {
         }
         map.put("noticeReceiveInfos", noticeReceiveInfos);
 
-        if (AppConstants.getIsSecurityOn()) {
+        if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
             map.put("tipPasswordType", passwordTip.getCode());
             map.put("tipPasswordMsg", passwordTip.getMsg());
@@ -112,7 +112,7 @@ public class PortalController extends SimpleController {
         Map<String, Object> map = Maps.newHashMap();
         // 当前登录用户
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (AppConstants.getIsSecurityOn()) {
+        if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
             map.put("tipPasswordType", passwordTip.getCode());
             map.put("tipPasswordMsg", passwordTip.getMsg());

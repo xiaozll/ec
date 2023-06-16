@@ -616,6 +616,9 @@ public class SecurityUtils {
         sessionInfo.setRefreshToken(JWTUtils.sign(sessionInfo.getLoginName(), null == secret ? StringUtils.EMPTY : secret, 7 * 24 * 60 * 60 * 1000L));
     }
 
+
+
+
     /**
      * 用户Token信息 校验
      * @param token
@@ -625,6 +628,37 @@ public class SecurityUtils {
      */
     public static boolean verifySessionInfoToken(String token,String username, String secret) {
         return JWTUtils.verify(token, username,  null == secret ? StringUtils.EMPTY : secret);
+    }
+
+
+    /**
+     * 创建用户Token信息
+     * @param user
+     * @return
+     */
+    public static String createUserToken(User user) {
+        String secret = user.getPassword();
+        return JWTUtils.sign(user.getLoginName(), null == secret ? StringUtils.EMPTY : secret);
+    }
+
+    /**
+     * 用户Token信息 校验
+     * @param token
+     * @param user
+     * @return
+     */
+    public static boolean verifyUserToken(String token,User user) {
+        String secret = user.getPassword();
+        return JWTUtils.verify(token, user.getLoginName(),  null == secret ? StringUtils.EMPTY : secret);
+    }
+
+    /**
+     * 根据Token获取用户信息 校验
+     * @param token
+     * @return
+     */
+    public static String getLoginNameByToken(String token) {
+        return JWTUtils.getUsername(token);
     }
 
 
@@ -824,8 +858,6 @@ public class SecurityUtils {
                 logger.error(e.getMessage());
             }
         }
-
-
     }
 
     /**

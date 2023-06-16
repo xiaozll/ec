@@ -2,7 +2,7 @@
 <%@ page import="com.eryansky.core.security.SecurityUtils" %>
 <%@ include file="/common/taglibs.jsp"%>
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-<c:set var="isSecurityOn" value="<%=AppConstants.getIsSecurityOn()%>"></c:set>
+<c:set var="isCheckPasswordPolicy" value="<%=AppConstants.isCheckPasswordPolicy()%>"></c:set>
 <c:set var="isCurrentUserAdmin" value="<%=SecurityUtils.isCurrentUserAdmin()%>"></c:set>
 <div>
 	<form id="user_password_form" class="dialog-form" method="post">
@@ -15,7 +15,7 @@
 				<c:when test="${isCurrentUserAdmin}">
 				   data-options="required:true,missingMessage:'请输入新密码.',validType:['minLength[1]']"/>
 				</c:when>
-				<c:when test="${isSecurityOn || !isCurrentUserAdmin}">
+				<c:when test="${isCheckPasswordPolicy || !isCurrentUserAdmin}">
 					data-options="required:true,missingMessage:'请输入新密码.',validType:['safepass_yc','minLength[1]']"/>
 				</c:when>
 				<c:otherwise>

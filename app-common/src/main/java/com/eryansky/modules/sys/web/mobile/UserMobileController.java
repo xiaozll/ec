@@ -318,6 +318,29 @@ public class UserMobileController extends SimpleController {
         return Result.successResult().setObj(model);
     }
 
+    /**
+     * 详细信息
+     *
+     * @param id
+     * @param loginName
+     * @param token
+     * @return
+     */
+    @RequiresUser(required = false)
+    @GetMapping(value = {"detailByIdOrLoginName"})
+    @ResponseBody
+    public Result detailByIdOrLoginName(String id,
+                                        String loginName,
+                                        @RequestParam(value = "token",required = true)String token) {
+        String tokenLoginName = SecurityUtils.getLoginNameByToken(token);
+        User user = UserUtils.getUserByLoginName(tokenLoginName);
+        if(null == user){
+            throw new ActionException("非法请求！");
+        }
+        User model = StringUtils.isNotBlank(id) ? userService.get(id):userService.getUserByLoginName(loginName);
+        return Result.successResult().setObj(model);
+    }
+
 
     /**
      * 图片文件上传

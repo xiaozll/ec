@@ -155,7 +155,7 @@ function mymessages(refreshPanel, tipMessage) {
                 }
                 $("#p1").panel("setTitle", protal_titles[0] + messagesHtml);
 
-                if (obj["passwordTip"] !== undefined && obj["passwordTip"]['isTip'] === true) {
+                if (obj["passwordTip"] !== undefined && obj["passwordTip"]['tip'] === true) {
                     var tipMsg = '';
                     if (obj["passwordTip"]['code']=== 1) {
                         tipMsg = "您从未修改过用户密码，请<a onclick='updateUserPassword();'>设置用户密码</a>！";

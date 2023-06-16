@@ -246,12 +246,14 @@ public class LoginController extends SimpleController {
                     if (!url.toString().startsWith("http")) {
                         url.insert(0,AppUtils.getClientAppURL());
                     }
-                    url.append(StringUtils.contains(url.toString(),"?") ? "&":"?").append("token=").append(SecurityUtils.createUserToken(user)).append("&fromLogin=true");
+                    String token = SecurityUtils.createUserToken(user);
+                    url.append(StringUtils.contains(url.toString(),"?") ? "&":"?").append("token=").append(token).append("&fromLogin=true");
                     Map<String,Object> data = Maps.newHashMap();
                     data.put("url",url);
                     data.put("passwordTip",passwordTip);
                     data.put("userId",user.getId());
                     data.put("loginName",user.getLoginName());
+                    data.put("token",token);
                     return new Result().setCode(RESULT_CODE_PASSWORD_ERROR).setObj(data).setMsg(passwordTip.getMsg());
                 }
             }

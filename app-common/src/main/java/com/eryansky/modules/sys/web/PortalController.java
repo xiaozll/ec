@@ -22,7 +22,6 @@ import com.eryansky.core.web.annotation.Mobile;
 import com.eryansky.modules.notice.mapper.NoticeReceiveInfo;
 import com.eryansky.modules.notice.service.NoticeReceiveInfoService;
 import com.eryansky.modules.notice.service.NoticeService;
-import com.eryansky.modules.sys.mapper.UserPassword;
 import com.eryansky.utils.AppConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,11 +84,12 @@ public class PortalController extends SimpleController {
 
         if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
-            map.put("passwordTip", passwordTip);
+            if(passwordTip.isTip()){
+                map.put("passwordTip", passwordTip);
+            }
         }
 
         result = Result.successResult().setObj(map);
-//        logger.info(map.toString());
         return result;
     }
 

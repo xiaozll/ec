@@ -293,17 +293,19 @@ public class UserMobileController extends SimpleController {
     public Result detailByIdOrLoginName(String id,
                                         String loginName,
                                         String token) {
-        User user = null;
+        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
+        User model = null;
         if (StringUtils.isNotBlank(token)) {
             String tokenLoginName = SecurityUtils.getLoginNameByToken(token);
-            user = UserUtils.getUserByLoginName(tokenLoginName);
+            model = UserUtils.getUserByLoginName(tokenLoginName);
+        }else{
+            if (null == sessionInfo) {
+                throw new ActionException("非法请求！");
+            }
+            model = StringUtils.isNotBlank(id) ? userService.get(id) : userService.getUserByLoginName(loginName);
         }
-        SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
-        if (null == user && null == sessionInfo) {
-            throw new ActionException("非法请求！");
-        }
-        User model = StringUtils.isNotBlank(id) ? userService.get(id) : userService.getUserByLoginName(loginName);
-        if (null == user) {
+
+        if (null == model) {
             throw new ActionException("非法请求！");
         }
         return Result.successResult().setObj(model);

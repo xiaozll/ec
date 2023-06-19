@@ -186,11 +186,12 @@ public class LoginController extends SimpleController {
 
         Result result = null;
         String msg = null;
-        final String VALIDATECODE_TIP = "密码输入错误超过"+AppConstants.getLoginAgainSize()+"次，请输入验证码!";
+        int loginAgainSize = AppConstants.getLoginAgainSize();
+        final String VALIDATECODE_TIP = "密码输入错误超过"+(loginAgainSize == 0 ? 1:loginAgainSize)+"次，请输入验证码!";
         boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         if (isValidateCodeLogin && UserAgentUtils.isComputer(request)) {
             if (StringUtils.isBlank(validateCode)) {
-                return Result.errorResult().setMsg("密码输入错误超过"+AppConstants.getLoginAgainSize()+"次，请输入验证码!").setObj(isValidateCodeLogin);
+                return Result.errorResult().setMsg("密码输入错误超过"+(loginAgainSize == 0 ? 1:loginAgainSize)+"次，请输入验证码!").setObj(isValidateCodeLogin);
             }
             if (!ValidateCodeServlet.validate(request, validateCode)) {
                 msg = "验证码不正确或验证码已过期!";

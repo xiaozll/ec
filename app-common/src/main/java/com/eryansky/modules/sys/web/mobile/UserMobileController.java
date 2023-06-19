@@ -84,7 +84,7 @@ public class UserMobileController extends SimpleController {
     public Result savePs(@RequestParam(name = "id", required = false) String id,
                          @RequestParam(name = "ln", required = false) String loginName,
                          @RequestParam(defaultValue = "false") Boolean encrypt,
-                         @RequestParam(name = "type") String type,
+                         @RequestParam(name = "type", required = false) String type,
                          @RequestParam(name = "ps", required = false) String password,
                          @RequestParam(name = "newPs", required = true) String newPassword,
                          @RequestParam(name = "token", required = false) String token) {

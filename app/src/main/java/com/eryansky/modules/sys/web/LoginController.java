@@ -84,7 +84,7 @@ public class LoginController extends SimpleController {
     public ModelAndView welcome(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("login");
         String loginName = CookieUtils.getCookie(SpringMVCHolder.getRequest(), "loginName");
-        boolean isValidateCodeLogin = AppConstants.getLoginAgainSize()== 0 || isValidateCodeLogin(loginName, false, false);
+        boolean isValidateCodeLogin = isValidateCodeLogin(loginName, false, false);
         modelAndView.addObject("isValidateCodeLogin", isValidateCodeLogin);
         modelAndView.addObject("isMobile", UserAgentUtils.isMobile(request));
         String randomSecurityToken = Identities.randomBase62(64);
@@ -120,7 +120,7 @@ public class LoginController extends SimpleController {
         if (clean) {
             loginFailMap.remove(useruame);
         }
-        return loginFailNum > AppConstants.getLoginAgainSize();
+        return loginFailNum >= AppConstants.getLoginAgainSize();
     }
 
     /**

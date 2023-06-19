@@ -8,11 +8,14 @@ package com.eryansky.utils;
 import com.eryansky.common.model.TreeNode;
 import com.eryansky.common.orm._enum.StatusState;
 import com.eryansky.common.utils.StringUtils;
+import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
+import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.modules.sys._enum.YesOrNo;
+import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -21,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -519,6 +523,63 @@ public class AppUtils {
             logger.error(e.getMessage(),e);
         }
         return null;
+    }
+
+    /**
+     * 创建修改密码URL
+     * @param request
+     * @return
+     */
+    public static String createSecurityUpdatePasswordUrl(HttpServletRequest request){
+        return createSecurityUpdatePasswordUrl(request,null,false,false,null);
+    }
+
+
+    /**
+     * 创建修改密码URL
+     * @param request
+     * @return
+     */
+    public static String createLocalSecurityUpdatePasswordUrl(HttpServletRequest request,String token){
+        return createSecurityUpdatePasswordUrl(request,token,true,false,null);
+    }
+
+
+    /**
+     * 创建修改密码URL
+     * @param request
+     * @return
+     */
+    public static String createExtendSecurityUpdatePasswordUrl(HttpServletRequest request,String token){
+        return createSecurityUpdatePasswordUrl(request,token,true,true,AppUtils.getClientAppURL());
+    }
+
+    /**
+     * 创建修改密码URL
+     * @param request
+     * @param token
+     * @param toExtend 是否跳转外部URL
+     * @param toUrl 本地URL地址
+     * @return
+     */
+    public static String createSecurityUpdatePasswordUrl(HttpServletRequest request,String token,boolean fromLogin,boolean toExtend,String toUrl){
+        StringBuilder url = new StringBuilder();
+        boolean isMobile = UserAgentUtils.isMobile(request);
+        url.append(isMobile ? AppConstants.getSecurityUpdatePasswordUrlMobile():AppConstants.getSecurityUpdatePasswordUrlPc());
+        if (!url.toString().startsWith("http")) {
+            url.insert(0,AppUtils.getClientAppURL());
+        }
+        url.append(StringUtils.contains(url.toString(),"?") ? "&":"?");
+        if(StringUtils.isNotBlank(token)){
+            url.append("token=").append(token);
+        }
+        if(fromLogin){
+            url.append("&fromLogin=").append(fromLogin);
+        }
+        if(toExtend){
+            url.append("&fromExtend=true&extendUrl=").append(null != toUrl ? toUrl : AppUtils.getClientAppURL());
+        }
+        return url.toString();
     }
 
 

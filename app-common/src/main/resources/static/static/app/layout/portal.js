@@ -158,9 +158,9 @@ function mymessages(refreshPanel, tipMessage) {
                 if (obj["passwordTip"] !== undefined && obj["passwordTip"]['tip'] === true) {
                     var tipMsg = '';
                     if (obj["passwordTip"]['code']=== 1) {
-                        tipMsg = "您从未修改过用户密码，请<a onclick='updateUserPassword();'>设置用户密码</a>！";
+                        tipMsg = "您从未修改过用户密码，请<a onclick='updateUserPassword(\""+obj["passwordTip"]['url']+"\");'>设置用户密码</a>！";
                     } else if (obj["passwordTip"]['code'] === 2) {
-                        tipMsg = "距离上次修改密码已经很长时间了，请<a onclick='updateUserPassword();'>修改用户密码</a>！";
+                        tipMsg = "距离上次修改密码已经很长时间了，请<a onclick='updateUserPassword(\""+obj["passwordTip"]['url']+"\");'>修改用户密码</a>！";
                     }
                     if(tipMsg !== ''){
                         $.messager.show({
@@ -184,7 +184,8 @@ function mymessages(refreshPanel, tipMessage) {
 /**
  * 修改密码
  */
-function updateUserPassword() {
-    var url = ctx+"/a/index/password";
+function updateUserPassword(serverUrl) {
+    var url = null != serverUrl ? serverUrl: (ctx+"/a/index/password");
+    console.log(url);
     parent.addTabs({id: 'index_password', title: '密码修改', close: true, url: url, urlType: ''});
 }

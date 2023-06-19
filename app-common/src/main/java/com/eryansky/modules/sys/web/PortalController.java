@@ -12,9 +12,11 @@ import com.eryansky.common.web.springmvc.SimpleController;
 import com.eryansky.common.web.springmvc.SpringMVCHolder;
 import com.eryansky.common.web.utils.WebUtils;
 import com.eryansky.core.web.annotation.MobileValue;
+import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserPasswordService;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.vo.PasswordTip;
+import com.eryansky.utils.AppUtils;
 import com.google.common.collect.Maps;
 import com.eryansky.core.security.SecurityUtils;
 import com.eryansky.core.security.SessionInfo;
@@ -86,6 +88,7 @@ public class PortalController extends SimpleController {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
             if(passwordTip.isTip()){
                 map.put("passwordTip", passwordTip);
+                passwordTip.setUrl(AppUtils.createSecurityUpdatePasswordUrl(request));
             }
         }
 
@@ -102,7 +105,7 @@ public class PortalController extends SimpleController {
      */
     @PostMapping(value = "checkPassword")
     @ResponseBody
-    public Result checkPassword(HttpServletResponse response) throws Exception {
+    public Result checkPassword(HttpServletRequest request,HttpServletResponse response) throws Exception {
         Result result = null;
         Map<String, Object> map = Maps.newHashMap();
         // 当前登录用户
@@ -110,6 +113,7 @@ public class PortalController extends SimpleController {
         if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
             map.put("passwordTip", passwordTip);
+            passwordTip.setUrl(AppUtils.createSecurityUpdatePasswordUrl(request));
         }
 
         result = Result.successResult().setObj(map);

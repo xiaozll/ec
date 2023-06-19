@@ -242,15 +242,10 @@ public class LoginController extends SimpleController {
             if (isSecurityOn && AppConstants.isCheckLoginPassword()) {
                 PasswordTip passwordTip = userPasswordService.checkPassword(user.getId());
                 if (passwordTip.isTip()) {
-                    StringBuilder url = new StringBuilder();
-                    url.append(isMobile ? AppConstants.getSecurityUpdatePasswordUrlMobile():AppConstants.getSecurityUpdatePasswordUrlPc());
-                    if (!url.toString().startsWith("http")) {
-                        url.insert(0,AppUtils.getClientAppURL());
-                    }
                     String token = SecurityUtils.createUserToken(user);
-                    url.append(StringUtils.contains(url.toString(),"?") ? "&":"?").append("token=").append(token).append("&fromLogin=true");
+                    passwordTip.setUrl(AppUtils.createLocalSecurityUpdatePasswordUrl(request,token));
                     Map<String,Object> data = Maps.newHashMap();
-                    data.put("url",url);
+                    data.put("url",passwordTip.getUrl());
                     data.put("passwordTip",passwordTip);
                     data.put("userId",user.getId());
                     data.put("loginName",user.getLoginName());

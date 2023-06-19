@@ -17,6 +17,7 @@ public class PasswordTip {
 
     private int code;
     private String msg;
+    private String url;
 
     public PasswordTip() {
         this.code = CODE_NO;
@@ -27,6 +28,11 @@ public class PasswordTip {
         this.msg = msg;
     }
 
+    public PasswordTip(int code, String msg, String url) {
+        this.code = code;
+        this.msg = msg;
+        this.url = url;
+    }
 
     public int getCode() {
         return code;
@@ -42,6 +48,14 @@ public class PasswordTip {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isTip() {

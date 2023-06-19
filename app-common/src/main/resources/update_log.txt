@@ -1,5 +1,5 @@
 ﻿20230614
-V4.2.20230521.21
+V4.2.20230521.22
 1、密码修改安全优化
 ALTER TABLE t_sys_user_password ADD COLUMN type char(1) COMMENT '修改类型 重置：0 用户初始化：1 用户安全修改：2';
 注意修改：LoginController portal.js user.js user-password.jsp

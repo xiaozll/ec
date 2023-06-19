@@ -112,8 +112,8 @@ public class PortalController extends SimpleController {
         SessionInfo sessionInfo = SecurityUtils.getCurrentSessionInfo();
         if (AppConstants.getIsSecurityOn() && AppConstants.isCheckLoginPassword()) {
             PasswordTip passwordTip = userPasswordService.checkPassword(sessionInfo.getUserId());
-            map.put("passwordTip", passwordTip);
             passwordTip.setUrl(AppUtils.createSecurityUpdatePasswordUrl(request));
+            map.put("passwordTip", passwordTip);
         }
 
         result = Result.successResult().setObj(map);

@@ -114,6 +114,7 @@ public class UserMobileController extends SimpleController {
         }
 
         if (null == model) {
+            logger.error("{} {} {}",id,loginName,token);
             throw new ActionException("非法请求！");
         }
 

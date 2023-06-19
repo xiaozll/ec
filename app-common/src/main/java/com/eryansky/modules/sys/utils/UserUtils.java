@@ -631,18 +631,17 @@ public class UserUtils {
         if(User.SUPERUSER_ID.equals(userId)){
             return;
         }
-        if(AppConstants.getIsSecurityOn() && AppConstants.isCheckPasswordPolicy()){
-            int max = AppConstants.getUserPasswordRepeatCount();
-            if(max <=0){
-                return;
-            }
-            List<UserPassword> userPasswords = Static.userPasswordService.findUserPasswordsByUserIdExcludeReset(userId,max);
-            if(Collections3.isNotEmpty(userPasswords)){
-                for(UserPassword userPassword:userPasswords){
-                    if (userPassword.getPassword().equals(Encrypt.e(pagePassword))) {
-                        throw new ServiceException("你输入的密码在最近"+max+"次以内已使用过，请更换！");
-                    }
-                }
+        if(!AppConstants.getIsSecurityOn()){
+            return;
+        }
+        int max = AppConstants.getUserPasswordRepeatCount();
+        if(max <=0){
+            return;
+        }
+        List<UserPassword> userPasswords = Static.userPasswordService.findUserPasswordsByUserIdExcludeReset(userId,max);
+        for(UserPassword userPassword:userPasswords){
+            if (userPassword.getPassword().equals(Encrypt.e(pagePassword))) {
+                throw new ServiceException("你输入的密码在最近"+max+"次以内已使用过，请更换！");
             }
         }
     }

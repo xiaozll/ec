@@ -574,7 +574,7 @@ public class AppUtils {
             url.append("token=").append(token);
         }
         if(fromLogin){
-            url.append("&fromLogin=").append(fromLogin);
+            url.append("&fromLogin=true");
         }
         if(toExtend){
             url.append("&fromExtend=true&extendUrl=").append(null != toUrl ? toUrl : AppUtils.getClientAppURL());

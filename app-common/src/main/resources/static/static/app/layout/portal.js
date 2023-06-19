@@ -185,7 +185,6 @@ function mymessages(refreshPanel, tipMessage) {
  * 修改密码
  */
 function updateUserPassword(serverUrl) {
-    var url = null != serverUrl ? serverUrl: (ctx+"/a/index/password");
-    console.log(url);
+    var url = serverUrl ? serverUrl: (ctx+"/a/index/password");
     parent.addTabs({id: 'index_password', title: '密码修改', close: true, url: url, urlType: ''});
 }

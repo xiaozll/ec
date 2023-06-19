@@ -295,3 +295,29 @@ function autoScroll(obj){
 		$(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
 	});
 }
+
+var entityMap = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#39;',
+	'/': '&#x2F;',
+	'`': '&#x60;',
+	'=': '&#x3D;'
+};
+
+function escapeHtml (string) {
+	return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
+function unEscape(htmlStr) {
+	htmlStr = htmlStr.replace(/&lt;/g , "<");
+	htmlStr = htmlStr.replace(/&gt;/g , ">");
+	htmlStr = htmlStr.replace(/&quot;/g , "\"");
+	htmlStr = htmlStr.replace(/&#39;/g , "\'");
+	htmlStr = htmlStr.replace(/&amp;/g , "&");
+	return htmlStr;
+}

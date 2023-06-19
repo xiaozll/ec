@@ -796,3 +796,31 @@ $.keepToDecimalFull = function(num,fractionalLength,fill) {
 	}
 	return s_x;
 };
+
+
+
+var entityMap = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#39;',
+	'/': '&#x2F;',
+	'`': '&#x60;',
+	'=': '&#x3D;'
+};
+
+$.escapeHtml = function(string) {
+	return String(string).replace(/[&<>"'`=\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
+$.unEscape = function(htmlStr) {
+	htmlStr = htmlStr.replace(/&lt;/g , "<");
+	htmlStr = htmlStr.replace(/&gt;/g , ">");
+	htmlStr = htmlStr.replace(/&quot;/g , "\"");
+	htmlStr = htmlStr.replace(/&#39;/g , "\'");
+	htmlStr = htmlStr.replace(/&amp;/g , "&");
+	return htmlStr;
+}

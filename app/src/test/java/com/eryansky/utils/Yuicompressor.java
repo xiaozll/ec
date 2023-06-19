@@ -21,13 +21,13 @@ public class Yuicompressor {
 //            "app-common/src/main/resources/static/static/css",
 //            "app/src/main/webapp/static/app",
 //            "app/src/main/webapp/static/css",
-//            "app-common/src/main/resources/static/static/js/common",
-            "app-common/src/main/resources/static/static/js/easyui/extend",
+            "app-common/src/main/resources/static/static/js/common",
+//            "app-common/src/main/resources/static/static/js/easyui/extend",
             "app-common/src/main/resources/static/static/js/jquery-validation-1.19.3/dist/extend",
             "app-common/src/main/resources/static/static/mobile/ImageUploader/js/",
 //            "app-common/src/main/resources/static/static/js/adminlte/dist/",
             "app-common/src/main/resources/static/static/js/jquery/jquery-extend.js",
-            "app-common/src/main/resources/static/static/js/adminlte/dist"
+//            "app-common/src/main/resources/static/static/js/adminlte/dist"
     };
 
     //    java -jar yuicompressor-2.4.7.jar --type js --charset utf-8 ../src/main/webapp/static/app/modules/disk/disk.js -o ../src/main/webapp/static/app/modules/disk/disk-min.js

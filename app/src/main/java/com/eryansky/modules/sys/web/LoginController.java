@@ -14,6 +14,7 @@ import com.eryansky.common.utils.Identities;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.UserAgentUtils;
 import com.eryansky.common.utils.collections.Collections3;
+import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.web.servlet.ValidateCodeServlet;
 import com.eryansky.common.web.springmvc.SimpleController;
@@ -245,7 +246,7 @@ public class LoginController extends SimpleController {
                     String token = SecurityUtils.createUserToken(user);
                     passwordTip.setUrl(AppUtils.createLocalSecurityUpdatePasswordUrl(request,token));
                     Map<String,Object> data = Maps.newHashMap();
-                    data.put("url",passwordTip.getUrl());
+                    data.put("url", passwordTip.getUrl());
                     data.put("passwordTip",passwordTip);
                     data.put("userId",user.getId());
                     data.put("loginName",user.getLoginName());

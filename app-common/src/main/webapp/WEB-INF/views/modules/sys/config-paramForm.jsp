@@ -117,16 +117,16 @@
         <div class="control-group">
             <label class="control-label">登录密码安全检查：</label>
             <div class="controls">
-                <label><input name="security.checkLoginPassword" type="radio" value="true"/>启用</label>
-                <label><input name="security.checkLoginPassword" type="radio" value="false"/>禁用</label>
+                <label><input name="security.password.checkLogin" type="radio" value="true"/>启用</label>
+                <label><input name="security.password.checkLogin" type="radio" value="false"/>禁用</label>
                 <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启用登录密码安全检查</span>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">强密码策略：</label>
             <div class="controls">
-                <label><input name="security.checkPasswordPolicy" type="radio" value="true"/>启用</label>
-                <label><input name="security.checkPasswordPolicy" type="radio" value="false"/>禁用</label>
+                <label><input name="security.password.checkPolicy" type="radio" value="true"/>启用</label>
+                <label><input name="security.password.checkPolicy" type="radio" value="false"/>禁用</label>
                 <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启用登录密码安全检查</span>
             </div>
         </div>

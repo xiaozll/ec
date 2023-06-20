@@ -358,7 +358,7 @@ public class UserController extends SimpleController {
         userList.forEach(v->{
             int d = userService.deleteNotInUserOrgansPostsByUserId(v.getId(), Lists.newArrayList(v.getDefaultOrganId()));
             if(d != 0){
-                logger.warn("删除用户岗位：{} {} {}",d,v.getId(), v.getDefaultOrganId());
+                logger.warn("删除用户不在部门的岗位数据：{} {} {}",d,v.getId(), v.getDefaultOrganId());
             }
         });
         userService.clearCache();

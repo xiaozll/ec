@@ -957,7 +957,7 @@ public class UserService extends CrudService<UserDao, User> {
                 //去除用户已删除机构下的岗位关联信息
                 int d = deleteNotInUserOrgansPostsByUserId(userId, organIds);
                 if(d != 0){
-                    logger.warn("删除用户岗位：{} {} {}",d,userId, defaultOrganId);
+                    logger.warn("删除用户不在部门的岗位数据：{} {} {}",d,userId, defaultOrganId);
                 }
                 //设置默认部门
                 model.setDefaultOrganId(defaultOrganId);

@@ -111,7 +111,7 @@
             <div class="controls">
                 <label><input name="security.on" type="radio" value="true"/>启用</label>
                 <label><input name="security.on" type="radio" value="false"/>禁用</label>
-                <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;定期修改密码等</span>
+                <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码安全、会话控制等</span>
             </div>
         </div>
         <div class="control-group">
@@ -133,7 +133,7 @@
 
 
         <div class="control-group">
-            <label class="control-label">用户密码更新周期：</label>
+            <label class="control-label">密码更新周期：</label>
             <div class="controls">
                 <input name="security.password.updateCycle" type="number" min="0" max="9999" class="input-small"/>
                 <span class="help-inline">默认值：30（天）</span>
@@ -144,7 +144,7 @@
             <label class="control-label">密码重复校验：</label>
             <div class="controls">
                 <input name="security.password.repeatCount" type="number" min="0" max="100" class="input-small"/>
-                <span class="help-inline">用户密码至少多少次内不能重复 默认值：0</span>
+                <span class="help-inline">用户密码至少多少次内不能重复 不校验：0  默认值：5</span>
             </div>
         </div>
 

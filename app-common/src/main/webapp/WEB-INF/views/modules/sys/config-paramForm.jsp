@@ -152,7 +152,7 @@
             <label class="control-label">密码错误次数：</label>
             <div class="controls">
                 <input name="security.password.loginAgainSize" type="number" min="0" max="100" class="input-small"/>
-                <span class="help-inline">默认值：3</span>
+                <span class="help-inline">开启验证码设置为0 默认值：3</span>
             </div>
         </div>
 

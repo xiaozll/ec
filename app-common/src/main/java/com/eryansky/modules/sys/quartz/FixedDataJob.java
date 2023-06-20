@@ -5,6 +5,7 @@
  */
 package com.eryansky.modules.sys.quartz;
 
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.quartz.QuartzJob;
 import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.SystemService;
@@ -42,7 +43,10 @@ public class FixedDataJob extends QuartzJobBean {
         //自动清理用户不在部门的岗位信息 仅保留当前部门岗位信息
         List<User> userList = userService.findAllNormal();
         userList.forEach(v->{
-            userService.deleteNotInUserOrgansPostsByUserId(v.getId(), Lists.newArrayList(v.getDefaultOrganId()));
+            int d = userService.deleteNotInUserOrgansPostsByUserId(v.getId(), Lists.newArrayList(v.getDefaultOrganId()));
+            if(d != 0){
+                logger.warn("删除用户岗位：{} {} {}",d,v.getId(), v.getDefaultOrganId());
+            }
         });
         logger.info("清理用户不在部门的岗位信息结束");
         logger.info("定时任务...结束：数据修正任务");

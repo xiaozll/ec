@@ -341,6 +341,7 @@ public class UserController extends SimpleController {
     public Result updateUserPost(@ModelAttribute("model") User model,
                                  @RequestParam(value = "postIds", required = false) Set<String> postIds) {
         userService.updateUserPost(model.getId(),model.getDefaultOrganId(), postIds);
+        userService.clearCache();
         return Result.successResult();
     }
 
@@ -355,8 +356,12 @@ public class UserController extends SimpleController {
         logger.info("清理用户不在部门的岗位信息...");
         List<User> userList = userService.findAllNormal();
         userList.forEach(v->{
-            userService.deleteNotInUserOrgansPostsByUserId(v.getId(), Lists.newArrayList(v.getDefaultOrganId()));
+            int d = userService.deleteNotInUserOrgansPostsByUserId(v.getId(), Lists.newArrayList(v.getDefaultOrganId()));
+            if(d != 0){
+                logger.warn("删除用户岗位：{} {} {}",d,v.getId(), v.getDefaultOrganId());
+            }
         });
+        userService.clearCache();
         logger.info("清理用户不在部门的岗位信息结束");
         return Result.successResult();
     }

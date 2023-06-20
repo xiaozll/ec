@@ -16,6 +16,7 @@ import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.Encrypt;
 import com.eryansky.common.utils.encode.Encryption;
+import com.eryansky.common.utils.mapper.JsonMapper;
 import com.eryansky.core.orm.mybatis.entity.DataEntity;
 import com.eryansky.core.security.SecurityType;
 import com.eryansky.modules.sys._enum.SexType;
@@ -954,7 +955,10 @@ public class UserService extends CrudService<UserDao, User> {
                 //保存用户机构信息
                 saveUserOrgans(userId, organIds);
                 //去除用户已删除机构下的岗位关联信息
-                deleteNotInUserOrgansPostsByUserId(userId, organIds);
+                int d = deleteNotInUserOrgansPostsByUserId(userId, organIds);
+                if(d != 0){
+                    logger.warn("删除用户岗位：{} {} {}",d,userId, defaultOrganId);
+                }
                 //设置默认部门
                 model.setDefaultOrganId(defaultOrganId);
                 this.save(model);
@@ -1917,13 +1921,14 @@ public class UserService extends CrudService<UserDao, User> {
      * @param id  用户ID
      * @param ids 机构IDS
      */
-    public void deleteNotInUserOrgansPostsByUserId(String id, Collection<String> ids) {
+    public int deleteNotInUserOrgansPostsByUserId(String id, Collection<String> ids) {
         Parameter parameter = Parameter.newParameter();
         parameter.put("id", id);
         parameter.put("ids", ids);
         if (Collections3.isNotEmpty(ids)) {
-            dao.deleteNotInUserOrgansPostsByUserId(parameter);
+            return dao.deleteNotInUserOrgansPostsByUserId(parameter);
         }
+        return 0;
     }
 
 

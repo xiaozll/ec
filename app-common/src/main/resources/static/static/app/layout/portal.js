@@ -147,11 +147,11 @@ function mymessages(refreshPanel, tipMessage) {
                 var hashNewMessage = false;//是否提示声音
                 var obj = data.obj;
                 var messagesHtml = undefined;
-                if (obj["noticeReceiveInfos"] > 0) {
+                if (obj["noticeReceiveInfos"] && obj["noticeReceiveInfos"] > 0) {
                     hashNewMessage = true;
                     messagesHtml = "&nbsp;" + "<span  style='color: #FE6600;font-size: 16px;'>" + obj["noticeReceiveInfos"] + "</span>&nbsp条";
                 } else {
-                    messagesHtml = "&nbsp;" + "<span>" + obj["noticeReceiveInfos"] + "</span>&nbsp;条";
+                    messagesHtml = "&nbsp;" + "<span>" + (undefined != obj["noticeReceiveInfos"] ? obj["noticeReceiveInfos"]:0) + "</span>&nbsp;条";
                 }
                 $("#p1").panel("setTitle", protal_titles[0] + messagesHtml);
 

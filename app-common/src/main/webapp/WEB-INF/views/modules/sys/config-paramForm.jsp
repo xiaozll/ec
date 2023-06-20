@@ -127,7 +127,7 @@
             <div class="controls">
                 <label><input name="security.password.checkPolicy" type="radio" value="true"/>启用</label>
                 <label><input name="security.password.checkPolicy" type="radio" value="false"/>禁用</label>
-                <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;启用登录密码安全检查</span>
+                <span class="help-inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数字、字母、符号混排，至少8位</span>
             </div>
         </div>
 

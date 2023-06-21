@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>4.2.20230521.25</version>
+        <version>4.2.20230521.26</version>
     </parent>
 
     <artifactId>ec-j2cache</artifactId>
@@ -18,9 +18,9 @@
         <lettuce.version>6.2.3.RELEASE</lettuce.version>
         <objenesis.version>3.2</objenesis.version>
         <fst.version>2.57</fst.version>
-        <snappy.version>1.1.9.1</snappy.version>
+        <snappy.version>1.1.10.1</snappy.version>
         <jline.version>2.14.6</jline.version>
-        <guava.version>32.0.0-jre</guava.version>
+        <guava.version>32.0.1-jre</guava.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

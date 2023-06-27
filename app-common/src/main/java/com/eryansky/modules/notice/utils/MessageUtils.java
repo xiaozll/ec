@@ -26,6 +26,7 @@ import com.google.common.collect.Lists;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 消息工具类
@@ -85,10 +86,10 @@ public class MessageUtils {
      * @param content       消息内容
      * @param linkUrl       消息链接
      */
-    public static void sendToUserMessage(String receiveUserId, String content,
+    public static CompletableFuture<Message> sendToUserMessage(String receiveUserId, String content,
                                          String linkUrl) {
         User user = Static.userService.getSuperUser();
-        sendUserMessage(user.getId(), content, linkUrl, receiveUserId, null);
+        return sendUserMessage(user.getId(), content, linkUrl, receiveUserId, null);
     }
 
     /**
@@ -100,13 +101,13 @@ public class MessageUtils {
      * @param receiveUserId   必选 接收对象ID集合
      * @param messageChannels 可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
-    public static void sendUserMessage(String sender,
+    public static CompletableFuture<Message> sendUserMessage(String sender,
                                        String content,
                                        String linkUrl,
                                        String receiveUserId,
                                        List<MessageChannel> messageChannels) {
         List<String> receiveObjectIds = Lists.newArrayList(receiveUserId);
-        sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds, messageChannels);
+        return sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds, messageChannels);
     }
 
 
@@ -120,12 +121,12 @@ public class MessageUtils {
      * @param receiveObjectIds  必选 接收对象ID集合
      * @param messageChannels   可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
-    public static void sendMessage(String appId, String sender, String content,
+    public static CompletableFuture<Message> sendMessage(String appId, String sender, String content,
                                    String linkUrl,
                                    String receiveObjectType,
                                    List<String> receiveObjectIds,
                                    List<MessageChannel> messageChannels) {
-        sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null, messageChannels);
+        return sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null, messageChannels);
     }
 
     /**
@@ -138,11 +139,11 @@ public class MessageUtils {
      * @param receiveObjectIds  必选 接收对象ID集合
      * @param messageChannels   可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
-    public static void sendMessage(String appId, String sender, String content,
+    public static CompletableFuture<Message> sendMessage(String appId, String sender, String content,
                                    String linkUrl,
                                    String receiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         MessageReceiveObjectType m = MessageReceiveObjectType.getByValue(receiveObjectType);
-        sendMessage(appId, sender, null,null, content, linkUrl, m, receiveObjectIds, date, messageChannels);
+        return sendMessage(appId, sender, null,null, content, linkUrl, m, receiveObjectIds, date, messageChannels);
     }
 
 
@@ -156,10 +157,10 @@ public class MessageUtils {
      * @param receiveObjectIds         必选 接收对象ID集合
      * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
-    public static void sendMessage(String sender, String content,
+    public static CompletableFuture<Message> sendMessage(String sender, String content,
                                    String linkUrl,
                                    MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, List<MessageChannel> messageChannels) {
-        sendMessage(null, sender,null, null, content, linkUrl, messageReceiveObjectType, receiveObjectIds, null, messageChannels);
+        return sendMessage(null, sender,null, null, content, linkUrl, messageReceiveObjectType, receiveObjectIds, null, messageChannels);
     }
 
     /**
@@ -175,9 +176,9 @@ public class MessageUtils {
      * @param receiveObjectIds         必选 接收对象ID集合
      * @param messageChannels          可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
-    public static void sendMessage(String appId, String sender, String title,String category, String content,
-                                   String linkUrl,
-                                   MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
+    public static CompletableFuture<Message> sendMessage(String appId, String sender, String title, String category, String content,
+                                                         String linkUrl,
+                                                         MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         Message model = new Message();
         User user = UserUtils.getUser(sender);
         if (user == null) {
@@ -199,7 +200,7 @@ public class MessageUtils {
         model.setUrl(linkUrl);
         model.setSendTime(date);
         Static.messageService.save(model);
-        Static.messageTask.saveAndSend(model, messageReceiveObjectType, receiveObjectIds);
+        return Static.messageTask.saveAndSend(model, messageReceiveObjectType, receiveObjectIds);
     }
 
     /**

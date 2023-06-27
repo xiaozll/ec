@@ -1,9 +1,12 @@
 package com.eryansky.server.impl;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import javax.jws.WebService;
 
+import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
@@ -13,6 +16,7 @@ import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
 import com.eryansky.modules.notice._enum.ReceiveObjectType;
+import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.notice.service.NoticeService;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.service.OrganService;
@@ -154,8 +158,14 @@ public class ApiWebServiceImpl implements IApiWebService {
 
             //微信发送消息
             try {
-                MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, messageReceiveObjectType, receiveObjectIds,sendTime,messageChannels);
-                return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功");
+                CompletableFuture<Message> messageCompletableFuture = MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, messageReceiveObjectType, receiveObjectIds,sendTime,messageChannels);
+                Message message = null;
+                try {
+                    message = messageCompletableFuture.get();
+                } catch (Exception e) {
+                    return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "未知异常");
+                }
+                return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功").setData(null == message ? null:message.getId());
             } catch (Exception e) {
                 return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息发送失败");
             }

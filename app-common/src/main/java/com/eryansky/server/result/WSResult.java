@@ -31,6 +31,7 @@ public class WSResult {
 	//-- WSResult基本属性 --//
 	private String code = SUCCESS;
 	private String message;
+	private Object data;
 
 	/**
 	 * 创建结果.
@@ -56,16 +57,27 @@ public class WSResult {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public WSResult setCode(String code) {
 		this.code = code;
+		return this;
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public WSResult setMessage(String message) {
 		this.message = message;
+		return this;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public WSResult setData(Object data) {
+		this.data = data;
+		return this;
 	}
 
 	/**

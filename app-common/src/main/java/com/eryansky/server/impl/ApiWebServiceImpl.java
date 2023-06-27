@@ -148,6 +148,9 @@ public class ApiWebServiceImpl implements IApiWebService {
                 return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "参数[receiveType]异常："+receiveType);
             }
 
+            if(Collections3.isEmpty(receiveObjectIds)){
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "未匹配到接收者账号");
+            }
 
             //微信发送消息
             try {

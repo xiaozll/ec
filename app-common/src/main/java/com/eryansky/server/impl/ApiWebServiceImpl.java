@@ -2,17 +2,13 @@ package com.eryansky.server.impl;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-
 import javax.jws.WebService;
 
-import com.eryansky.common.exception.ServiceException;
 import com.eryansky.common.utils.DateUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.EncodeUtils;
 import com.eryansky.common.utils.mapper.JsonMapper;
-import com.eryansky.common.utils.net.IpUtils;
 import com.eryansky.modules.notice._enum.MessageChannel;
 import com.eryansky.modules.notice._enum.MessageReceiveObjectType;
 import com.eryansky.modules.notice._enum.ReceiveObjectType;
@@ -20,7 +16,6 @@ import com.eryansky.modules.notice.mapper.Message;
 import com.eryansky.modules.notice.service.NoticeService;
 import com.eryansky.modules.sys.mapper.Organ;
 import com.eryansky.modules.sys.service.OrganService;
-import com.eryansky.modules.sys.service.SystemService;
 import com.eryansky.server.IApiWebService;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -156,13 +151,14 @@ public class ApiWebServiceImpl implements IApiWebService {
                 return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "未匹配到接收者账号");
             }
 
-            //微信发送消息
+            //发送消息
             try {
                 CompletableFuture<Message> messageCompletableFuture = MessageUtils.sendMessage(appId, senderUser.getId(),title,category, content, linkUrl, messageReceiveObjectType, receiveObjectIds,sendTime,messageChannels);
                 Message message = null;
                 try {
                     message = messageCompletableFuture.get();
                 } catch (Exception e) {
+                    logger.error(e.getMessage(),e);
                     return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "未知异常");
                 }
                 return WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息发送成功").setData(null == message ? null:message.getId());
@@ -175,6 +171,45 @@ public class ApiWebServiceImpl implements IApiWebService {
         }
     }
 
+    @Override
+    public WSResult pushMessage(String data) {
+        logger.debug(data);
+        try {
+            Map<String, Object> map = JsonMapper.getInstance().fromJson(data, HashMap.class);
+            if(map == null){
+                logger.error("请求参数格式错误:" + data);
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "请求参数格式错误:data=" + data);
+            }
+
+            String appId = (String) map.get("appId");
+            String messageId = (String) map.get("messageId");
+            try {
+                checkOptional(appId, "appId");
+                checkOptional(messageId, "messageId");
+            } catch (Exception e) {//2.判断必填参数
+                logger.error(e.getMessage());
+                return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, e.getMessage());
+            }
+
+            //推送消息
+            try {
+                CompletableFuture<Message> messageCompletableFuture = MessageUtils.pushMessage(appId);
+                Message message = null;
+                try {
+                    message = messageCompletableFuture.get();
+                } catch (Exception e) {
+                    logger.error(e.getMessage(),e);
+                    return WSResult.buildResult(WSResult.class, WSResult.PARAMETER_ERROR, "未知异常");
+                }
+                return null == message ? WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息推送失败"): WSResult.buildResult(WSResult.class, WSResult.SUCCESS, "消息推送成功").setData(message.getId());
+            } catch (Exception e) {
+                return WSResult.buildResult(WSResult.class, WSResult.IMAGE_ERROR, "消息推送失败");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return WSResult.buildDefaultErrorResult(WSResult.class);
+        }
+    }
 
 
     /*

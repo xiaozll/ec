@@ -69,6 +69,17 @@ public class MessageTask {
         return CompletableFuture.completedFuture(messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds));
     }
 
+
+    /**
+     * 消息推送（仅限推送,由切面实现）
+     * @param messageId
+     * @return
+     */
+    @Async
+    public CompletableFuture<Message> push(String messageId) {
+        return CompletableFuture.completedFuture(messageService.push(messageId));
+    }
+
     /**
      * 设置通知已读状态
      *

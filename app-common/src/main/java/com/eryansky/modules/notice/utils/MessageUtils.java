@@ -22,6 +22,7 @@ import com.eryansky.modules.sys.mapper.User;
 import com.eryansky.modules.sys.service.UserService;
 import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.Collection;
 import java.util.Date;
@@ -201,6 +202,15 @@ public class MessageUtils {
         model.setSendTime(date);
         Static.messageService.save(model);
         return Static.messageTask.saveAndSend(model, messageReceiveObjectType, receiveObjectIds);
+    }
+
+    /**
+     * 消息推送（仅限推送,由切面实现）
+     * @param messageId
+     * @return
+     */
+    public static CompletableFuture<Message> pushMessage(String messageId) {
+        return Static.messageTask.push(messageId);
     }
 
     /**

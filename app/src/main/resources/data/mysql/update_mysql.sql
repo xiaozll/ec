@@ -1,3 +1,6 @@
+-- V4.2.20230521.26
+ALTER TABLE t_sys_user_password ADD COLUMN type char(1) COMMENT '修改类型 重置：0 用户初始化：1 用户安全修改：2';
+
 -- V4.2.20230224.10
 DROP TABLE IF EXISTS `t_sys_role_data_organ`;
 CREATE TABLE `t_sys_role_data_organ`  (

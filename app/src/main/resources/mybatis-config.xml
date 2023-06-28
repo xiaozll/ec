@@ -45,7 +45,8 @@
 	</typeAliases>
 
 	<typeHandlers>
-		<typeHandler javaType="com.eryansky.modules.sys.sn.MaxSerial"  handler="com.eryansky.common.orm.mybatis.type.JsonTypeHandler"></typeHandler>
+		<typeHandler javaType="com.eryansky.modules.sys.sn.MaxSerial"
+					 handler="com.eryansky.common.orm.mybatis.type.JsonTypeHandler"/>
 	</typeHandlers>
 
 	<!-- 插件配置 -->

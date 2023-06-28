@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 泛型美剧类型数据处理
+ * 泛型枚举类型数据处理
  * @author Eryan
  * @version 2020-02-12
  */

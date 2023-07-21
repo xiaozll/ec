@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -43,7 +44,7 @@ public class MessageTask {
      * @param receiveObjectType
      */
     @Async
-    public CompletableFuture<Message> saveAndSend(Message message, String receiveObjectType, List<String> receiveObjectIds) {
+    public CompletableFuture<Message> saveAndSend(Message message, String receiveObjectType, Collection<String> receiveObjectIds) {
         MessageReceiveObjectType messageReceiveObjectType = MessageReceiveObjectType.getByValue(receiveObjectType);
         if(null == messageReceiveObjectType){
             logger.warn("参数[receiveObjectType]未定义对应类型，{}",receiveObjectType);
@@ -65,7 +66,7 @@ public class MessageTask {
      * @param receiveObjectIds
      */
     @Async
-    public CompletableFuture<Message> saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
+    public CompletableFuture<Message> saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, Collection<String> receiveObjectIds) {
         return CompletableFuture.completedFuture(messageService.saveAndSend(message, messageReceiveObjectType, receiveObjectIds));
     }
 

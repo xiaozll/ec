@@ -33,10 +33,7 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Eryan
@@ -131,7 +128,7 @@ public class MessageService extends CrudService<MessageDao, Message> {
      * @param messageReceiveObjectType {@link MessageReceiveObjectType}
      * @param receiveObjectIds
      */
-    public Message saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds) {
+    public Message saveAndSend(Message message, MessageReceiveObjectType messageReceiveObjectType, Collection<String> receiveObjectIds) {
         if (Collections3.isEmpty(receiveObjectIds)) {
             throw new SystemException("未定义参数[receiveObjectIds]");
         }

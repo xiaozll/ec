@@ -64,8 +64,8 @@ public class MessageUtils {
      * @param receiveUserId 接收用户ID
      * @param content       消息内容
      */
-    public static void sendToUserMessage(String receiveUserId, String content) {
-        sendToUserMessage(receiveUserId, content, null);
+    public static CompletableFuture<Message> sendToUserMessage(String receiveUserId, String content) {
+        return sendToUserMessage(receiveUserId, content, null);
     }
 
     /**
@@ -74,10 +74,8 @@ public class MessageUtils {
      * @param receiveUserIds 接收用户IDS
      * @param content        消息内容
      */
-    public static void sendToUserMessage(Collection<String> receiveUserIds, String content) {
-        for (String receiveUserId : receiveUserIds) {
-            sendToUserMessage(receiveUserId, content, null);
-        }
+    public static CompletableFuture<Message> sendToUserMessage(Collection<String> receiveUserIds, String content) {
+        return sendUserMessage(User.SUPERUSER_ID,content,null,receiveUserIds,null);
     }
 
     /**
@@ -89,8 +87,7 @@ public class MessageUtils {
      */
     public static CompletableFuture<Message> sendToUserMessage(String receiveUserId, String content,
                                          String linkUrl) {
-        User user = Static.userService.getSuperUser();
-        return sendUserMessage(user.getId(), content, linkUrl, receiveUserId, null);
+        return sendUserMessage(User.SUPERUSER_ID, content, linkUrl, Lists.newArrayList(receiveUserId), null);
     }
 
     /**
@@ -99,16 +96,15 @@ public class MessageUtils {
      * @param sender          发送者用户ID {@link User}
      * @param content         必选 消息内容
      * @param linkUrl         消息URL链接地址
-     * @param receiveUserId   必选 接收对象ID集合
+     * @param receiveUserIds   必选 接收对象ID集合
      * @param messageChannels 可选 消息接收通道 默认值：{@link MessageChannel#Message}
      */
     public static CompletableFuture<Message> sendUserMessage(String sender,
                                        String content,
                                        String linkUrl,
-                                       String receiveUserId,
+                                       Collection<String> receiveUserIds,
                                        List<MessageChannel> messageChannels) {
-        List<String> receiveObjectIds = Lists.newArrayList(receiveUserId);
-        return sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveObjectIds, messageChannels);
+        return sendMessage(null, sender, content, linkUrl, MessageReceiveObjectType.User.getValue(), receiveUserIds, messageChannels);
     }
 
 
@@ -125,7 +121,7 @@ public class MessageUtils {
     public static CompletableFuture<Message> sendMessage(String appId, String sender, String content,
                                    String linkUrl,
                                    String receiveObjectType,
-                                   List<String> receiveObjectIds,
+                                   Collection<String> receiveObjectIds,
                                    List<MessageChannel> messageChannels) {
         return sendMessage(appId, sender, content, linkUrl, receiveObjectType, receiveObjectIds, null, messageChannels);
     }
@@ -142,7 +138,7 @@ public class MessageUtils {
      */
     public static CompletableFuture<Message> sendMessage(String appId, String sender, String content,
                                    String linkUrl,
-                                   String receiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
+                                   String receiveObjectType, Collection<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         MessageReceiveObjectType m = MessageReceiveObjectType.getByValue(receiveObjectType);
         return sendMessage(appId, sender, null,null, content, linkUrl, m, receiveObjectIds, date, messageChannels);
     }
@@ -179,7 +175,7 @@ public class MessageUtils {
      */
     public static CompletableFuture<Message> sendMessage(String appId, String sender, String title, String category, String content,
                                                          String linkUrl,
-                                                         MessageReceiveObjectType messageReceiveObjectType, List<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
+                                                         MessageReceiveObjectType messageReceiveObjectType, Collection<String> receiveObjectIds, Date date, List<MessageChannel> messageChannels) {
         Message model = new Message();
         User user = UserUtils.getUser(sender);
         if (user == null) {

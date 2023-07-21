@@ -48,6 +48,8 @@ public interface UserDao extends CrudDao<User> {
 
     List<User> findByLoginNameOrCodeOrMobile(Parameter parameter);
 
+    List<User> findByPasswords(Parameter parameter);
+
     Integer getMaxSort();
 
     List<User> findQuery(Parameter parameter);

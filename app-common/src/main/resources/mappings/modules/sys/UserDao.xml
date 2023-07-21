@@ -270,6 +270,24 @@
     </select>
 
 
+    <select id="findByPasswords" resultType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_sys_user a
+        <where>
+            <if test="status != null and status !=''">
+                AND a.status = #{status}
+            </if>
+            <if test="passwords != null and passwords.size() !=0">
+                AND a.password IN
+                <foreach collection="passwords" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
     <select id="findLoginUser" resultType="User">
         SELECT
         <include refid="userColumns"/>

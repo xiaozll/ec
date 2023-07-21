@@ -24,6 +24,7 @@ import com.eryansky.modules.sys.utils.UserUtils;
 import com.google.common.collect.Lists;
 import org.springframework.scheduling.annotation.Async;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -195,7 +196,7 @@ public class MessageUtils {
         model.setSender(user.getId());
         model.setContent(content);
         model.setUrl(linkUrl);
-        model.setSendTime(date);
+        model.setSendTime(null != date ? date:Calendar.getInstance().getTime());
         Static.messageService.save(model);
         return Static.messageTask.saveAndSend(model, messageReceiveObjectType, receiveObjectIds);
     }

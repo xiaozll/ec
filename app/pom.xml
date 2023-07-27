@@ -176,6 +176,13 @@
 <!--                </exclusion>-->
 <!--            </exclusions>-->
         </dependency>
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.8.0_212</version>
+            <scope>system</scope>
+            <systemPath>${JAVA_HOME}/lib/tools.jar</systemPath>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -243,12 +250,16 @@
                 <configuration>
                     <from>
                         <image>openjdk:8-jre-alpine</image>
+                        <auth>
+                            <username>eryanwcp</username>
+                            <password></password>
+                        </auth>
                     </from>
                     <to>
                         <image>www.eryansky.com:8082/eryansky/${project.artifactId}:${project.version}</image>
                         <auth>
                             <username>deployment</username>
-                            <password>Password@nexus</password>
+                            <password></password>
                         </auth>
                     </to>
                     <allowInsecureRegistries>true</allowInsecureRegistries>
@@ -261,13 +272,22 @@
                         </args>
                         <volumes>
                             <volume>/data</volume>
+                            <volume>/logs</volume>
                         </volumes>
                         <ports>
                             <port>8080</port>
                         </ports>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+<!--                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>-->
                     </container>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>dockerBuild</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <phase>compile</phase>-->

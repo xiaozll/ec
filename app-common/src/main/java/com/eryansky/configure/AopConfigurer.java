@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import com.eryansky.modules.notice.utils.MessageUtils;
+import com.eryansky.modules.sys.mapper.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -45,7 +47,10 @@ public class AopConfigurer implements AsyncConfigurer {
         executor.setMaxPoolSize(initProcessors * 5);//最大线程数量
         executor.setQueueCapacity(initProcessors * 100);//线程池的队列容量
         executor.setRejectedExecutionHandler((Runnable r, ThreadPoolExecutor exe) -> {
-            logger.error("当前任务线程池队列已满. {} {} {}",executor.getCorePoolSize(),executor.getMaxPoolSize(),executor.getActiveCount());
+            StringBuffer msg = new StringBuffer();
+            msg.append("当前任务线程池队列已满：").append(executor.getActiveCount()).append("/").append(executor.getCorePoolSize()).append("~").append(executor.getMaxPoolSize());
+            logger.error(msg.toString());
+            MessageUtils.sendToUserMessage(User.SUPERUSER_ID,msg.toString());
         });
         executor.initialize();
         return executor;
@@ -53,7 +58,12 @@ public class AopConfigurer implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (throwable, method, objects) -> logger.error("线程池执行任务发生未知异常,{} {}:{}",method.getName(),throwable.getMessage(), throwable);
+        return (throwable, method, objects) -> {
+            StringBuffer msg = new StringBuffer();
+            msg.append("线程池执行任务发生未知异常：").append(method.getDeclaringClass().getName()).append(".").append(method.getName()).append(",").append(throwable.getMessage());
+            logger.error(msg.toString(),throwable);
+            MessageUtils.sendToUserMessage(User.SUPERUSER_ID,msg.toString());
+        };
     }
 
 }

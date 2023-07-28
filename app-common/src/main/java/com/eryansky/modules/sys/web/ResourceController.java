@@ -5,7 +5,6 @@
  */
 package com.eryansky.modules.sys.web;
 
-import com.eryansky.client.common.utils.Constants;
 import com.eryansky.common.exception.ActionException;
 import com.eryansky.common.model.Combobox;
 import com.eryansky.common.model.Datagrid;

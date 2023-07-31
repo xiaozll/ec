@@ -252,14 +252,14 @@
                         <image>openjdk:8-jre-alpine</image>
                         <auth>
                             <username>eryanwcp</username>
-                            <password>15879034026wcp</password>
+                            <password></password>
                         </auth>
                     </from>
                     <to>
                         <image>www.eryansky.com:8082/eryansky/${project.artifactId}:${project.version}</image>
                         <auth>
                             <username>deployment</username>
-                            <password>Password@nexus</password>
+                            <password></password>
                         </auth>
                     </to>
                     <allowInsecureRegistries>true</allowInsecureRegistries>

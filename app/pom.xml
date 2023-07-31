@@ -252,14 +252,14 @@
                         <image>openjdk:8-jre-alpine</image>
                         <auth>
                             <username>eryanwcp</username>
-                            <password></password>
+                            <password>15879034026wcp</password>
                         </auth>
                     </from>
                     <to>
                         <image>www.eryansky.com:8082/eryansky/${project.artifactId}:${project.version}</image>
                         <auth>
                             <username>deployment</username>
-                            <password></password>
+                            <password>Password@nexus</password>
                         </auth>
                     </to>
                     <allowInsecureRegistries>true</allowInsecureRegistries>
@@ -277,17 +277,9 @@
                         <ports>
                             <port>8080</port>
                         </ports>
-<!--                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>-->
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>dockerBuild</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <phase>compile</phase>-->

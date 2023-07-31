@@ -52,7 +52,7 @@
                     if (data['totalCount'] > 0) {
                         var html = Mustache.render($("#list_template").html(), data);
                         $("#list").html(html);
-                        $(".pagination").append(data['appHtml']);
+                        $(".pagination").append(data['html']);
 
                     } else {
                         $("#list").html("<div style='color: red;padding: 10px 30px;text-align:center;font-size: 16px;'>暂无数据</div>");
@@ -113,7 +113,7 @@
             {{/result}}
             </tbody>
         </table>
-        <div class="pagination">${page}</div>
+        <div class="page pagination"></div>
     </script>
 </head>
 <body>

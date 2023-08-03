@@ -275,6 +275,7 @@ public class SystemMonitorController extends SimpleController {
      *
      * @param pretty 美化
      * @param showTotal 全部显示
+     * @param fileName 文件名称
      * @param request
      * @param response
      * @param uiModel
@@ -343,7 +344,7 @@ public class SystemMonitorController extends SimpleController {
                 return renderString(response, Result.errorResult().setObj(e.getMessage()));
             }
         }
-        List<String> fileNames = Arrays.stream(Objects.requireNonNull(rootFile.getParentFile().listFiles())).map(File::getName).collect(Collectors.toList());
+        List<String> fileNames = Arrays.stream(Objects.requireNonNull(rootFile.getParentFile().listFiles())).map(File::getName).sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         uiModel.addAttribute("page", page);
         uiModel.addAttribute("fileNames", fileNames);
         uiModel.addAttribute("fileName", file.getName());

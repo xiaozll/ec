@@ -285,14 +285,19 @@ public class SystemMonitorController extends SimpleController {
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST},value = "log")
     public String log(@RequestParam(name = "pretty",defaultValue = "false") boolean pretty,
                       @RequestParam(name = "showTotal",defaultValue = "false") boolean showTotal,
+                      @RequestParam(name = "fileName",required = false) String fileName,
                       HttpServletRequest request, HttpServletResponse response, Model uiModel) {
         Page<String> page = new Page<>(request, response, 1000);
         if(showTotal){
             page.setPageSize(Page.PAGESIZE_ALL);
         }
+        String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
+        File rootFile = new File(_logPath);
+        File file = rootFile;
+        if(StringUtils.isNotBlank(fileName)){
+            file = new File(rootFile.getParentFile(),fileName);
+        }
         if (WebUtils.isAjaxRequest(request)) {
-            String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
-            File file = new File(_logPath);
             try {
                 // 读取日志
                 List<String> totalLogs = org.apache.commons.io.FileUtils.readLines(file, StandardCharsets.UTF_8);
@@ -338,16 +343,23 @@ public class SystemMonitorController extends SimpleController {
                 return renderString(response, Result.errorResult().setObj(e.getMessage()));
             }
         }
+        List<String> fileNames = Arrays.stream(Objects.requireNonNull(rootFile.getParentFile().listFiles())).map(File::getName).collect(Collectors.toList());
         uiModel.addAttribute("page", page);
+        uiModel.addAttribute("fileNames", fileNames);
+        uiModel.addAttribute("fileName", file.getName());
         return "modules/sys/systemMonitor-log";
     }
 
     @Logging(value = "系统监控-系统日志文件下载", logType = LogType.access)
     @RequiresPermissions("sys:systemMonitor:view")
     @GetMapping(value = "downloadLogFile")
-    public String downloadLogFile(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+    public String downloadLogFile(HttpServletRequest request, HttpServletResponse response, String fileName) {
         String _logPath = AppConstants.getLogPath(findLogFilePath());//读取配置文件配置的路径
-        File file = new File(_logPath);
+        File rootFile = new File(_logPath);
+        File file = rootFile;
+        if(StringUtils.isNotBlank(fileName)){
+            file = new File(rootFile.getParentFile(),fileName);
+        }
         WebUtils.setDownloadableHeader(request, response, file.getName());
         try (OutputStream os = response.getOutputStream();
              FileInputStream fileInputStream = new FileInputStream(file);

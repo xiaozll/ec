@@ -11,6 +11,7 @@ import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
 import com.eryansky.common.model.Result;
 import com.eryansky.common.orm.Page;
+import com.eryansky.common.utils.PrettyMemoryUtils;
 import com.eryansky.common.utils.StringUtils;
 import com.eryansky.common.utils.collections.Collections3;
 import com.eryansky.common.utils.encode.EncodeUtils;
@@ -338,7 +339,7 @@ public class SystemMonitorController extends SimpleController {
                 }).collect(Collectors.toList());
                 page.setTotalCount(totalLogs.size());
                 page.setResult(resultLogs);
-                return renderString(response, Result.successResult().setObj(page));
+                return renderString(response, Result.successResult().setObj(page).setData(PrettyMemoryUtils.prettyByteSize(file.length())));
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 return renderString(response, Result.errorResult().setObj(e.getMessage()));

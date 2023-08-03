@@ -33,6 +33,7 @@
 				dataType: 'json',
 				success: function (data) {
 					if (data.code === 1) {
+						data['obj']['fileSize'] = data['data'];
 						var html = Mustache.render($("#list_template").html(), data['obj']);
 						$("#list").html(html);
 						$(".pagination").append(data['obj']['html']);
@@ -49,6 +50,7 @@
 	</script>
 	<script type="text/template" id="list_template">
 		<div class="page pagination"></div>
+		<div style="color: red;">&nbsp;&nbsp;文件大小：{{fileSize}}</div>
 		<div style="padding: 10px;">
 			{{#result}}
 			{{&.}}</br>

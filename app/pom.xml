@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.eryansky</groupId>
         <artifactId>ec-parent</artifactId>
-        <version>4.2.20230721.02</version>
+        <version>4.2.20230721.03</version>
     </parent>
 
     <artifactId>ec-app</artifactId>
@@ -251,15 +251,15 @@
                     <from>
                         <image>openjdk:8-jre-alpine</image>
                         <auth>
-                            <username>eryanwcp</username>
-                            <password></password>
+                            <username>username</username>
+                            <password>password</password>
                         </auth>
                     </from>
                     <to>
                         <image>www.eryansky.com:8082/eryansky/${project.artifactId}:${project.version}</image>
                         <auth>
-                            <username>deployment</username>
-                            <password></password>
+                            <username>password</username>
+                            <password>password</password>
                         </auth>
                     </to>
                     <allowInsecureRegistries>true</allowInsecureRegistries>

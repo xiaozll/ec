@@ -44,6 +44,7 @@
         }
 	</script>
 	<script type="text/template" id="list_template">
+		<div class="page pagination"></div>
 		<div style="padding: 10px;">
 			{{#result}}
 			{{&.}}</br>
